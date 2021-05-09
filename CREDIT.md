@@ -1,0 +1,9 @@
+# additional list of credit links
+- https://youtu.be/9dfkMgrjDOw BrightFyre Comprehensive FNF mod from source code level
+- https://www.youtube.com/channel/UCvbZKyPNpKGri4uKGsZSw6w BrightFyre channel
+- https://gamebanana.com/games/8694 GameBanana Friday Night Funkin
+- https://gamebanana.com/tuts/13764 Compile tutorial
+- https://gamebanana.com/tuts/13764?post=9113939 Missing Visual Studio Command line solution
+- https://gamebanana.com/mods/43569 MIDIfy the Friday Night Funkin into good old days of Java MIDP Nokia phone
+- https://gamebanana.com/tuts/13849 Make Songchart in minute by just chart with MIDI then convert to chart json yay
+- https://github.com/NyxTheShield/MIDI2FNF the MIDI chart to FNF chart json wow
