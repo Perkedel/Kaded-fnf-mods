@@ -1,0 +1,43 @@
+--bbpanzu translation string format--
+--https://gamebanana.com/mods/44206--
+--Bahasa Indonesia, by JOELwindows7--
+--GUI STUFF---
+MINGGU:
+SKOR TERBAIK:
+GAMPANG
+BIASA
+SUZAH
+RANK:
+SKOR MINGGU:
+Trek
+SKOR:
+--PAUSE MENU STUFF--
+Lanjutkan
+Ulangi lagu
+Keluar ke menu
+
+--SPLASH SCREEN THINGS--
+mempersembahkan
+bekerjasama
+dengan
+newgrounds
+Jumat
+Malam
+Asyik
+
+--SONG NAMES--
+Tutorial
+Bopeebo
+Segar
+Dadbattle
+Seremz
+Selatan
+Pico
+Philly Bagus
+Terhapus
+Celana satin
+Mabok
+Emak
+Kakao
+Telorasin
+Wahana seram bersalju
