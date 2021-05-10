@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<textureatlas imagepath="Hookx.png">
+    <!-- JOELwindows7 uses https://www.leshylabs.com/apps/sstool/ -->
+    <!-- to build xml spritesheet -->
+    <subtexture name="Hookx idle dance0000" x="0" y="0" width="512" height="665"/>
+    <subtexture name="Hookx idle dance0001" x="512" y="0" width="512" height="665"/>
+    <subtexture name="Hookx idle dance0002" x="1024" y="0" width="512" height="665"/>
+    <subtexture name="Hookx idle dance0003" x="1536" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note LEFT0000" x="2048" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note LEFT0001" x="2560" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note LEFT0002" x="3072" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note LEFT0003" x="3584" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note DOWN0000" x="4096" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note DOWN0001" x="4608" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note DOWN0002" x="5120" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note DOWN0003" x="5632" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note UP0000" x="6144" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note UP0001" x="6656" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note UP0002" x="7168" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note UP0003" x="7680" y="0" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note RIGHT0000" x="0" y="665" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note RIGHT0001" x="512" y="665" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note RIGHT0002" x="1024" y="665" width="512" height="665"/>
+    <subtexture name="Hookx Sing Note RIGHT0003" x="1536" y="665" width="512" height="665"/>
+</textureatlas>

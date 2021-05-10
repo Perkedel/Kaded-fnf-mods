@@ -139,6 +139,24 @@ class Character extends FlxSprite
 				addOffset("singDOWN", 0, -30);
 
 				playAnim('idle');
+			case 'Hookx':
+				// HOOKX ANIMATION LOADING CODE
+				tex = Paths.getSparrowAtlas('characters/Hookx');
+				frames = tex;
+				animation.addByPrefix('idle', 'Hookx idle dance', 24);
+				animation.addByPrefix('singUP', 'Hookx Sing Note UP', 24);
+				animation.addByPrefix('singRIGHT', 'Hookx Sing Note RIGHT', 24);
+				animation.addByPrefix('singDOWN', 'Hookx Sing Note DOWN', 24);
+				animation.addByPrefix('singLEFT', 'Hookx Sing Note LEFT', 24);
+
+				addOffset('idle');
+				addOffset("singUP", 1, 2);
+				addOffset("singRIGHT", 3, 4);
+				addOffset("singLEFT", 5, 6);
+				addOffset("singDOWN", 7, 8);
+
+
+				playAnim('idle');
 			case 'spooky':
 				tex = Paths.getSparrowAtlas('characters/spooky_kids_assets');
 				frames = tex;

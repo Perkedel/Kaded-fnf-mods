@@ -7,3 +7,5 @@
 - https://gamebanana.com/mods/43569 MIDIfy the Friday Night Funkin into good old days of Java MIDP Nokia phone
 - https://gamebanana.com/tuts/13849 Make Songchart in minute by just chart with MIDI then convert to chart json yay
 - https://github.com/NyxTheShield/MIDI2FNF the MIDI chart to FNF chart json wow
+- https://github.com/BurntBread007/Funkin-XML-Editor edit the XML now
+- https://www.leshylabs.com/apps/sstool/ regular xml spritesheet maker

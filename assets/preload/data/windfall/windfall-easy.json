@@ -1,0 +1,14 @@
+{
+    "song": {
+        "player2": "dad",
+        "player1": "bf",
+        "speed": 1,
+        "needsVoices": false,
+        "sectionLengths": [],
+        "song": "Windfall",
+        "notes": [],
+        "bpm": 103,
+        "sections": 0,
+        "validScore": true
+    }
+}
