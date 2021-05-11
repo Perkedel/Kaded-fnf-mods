@@ -27,7 +27,8 @@ class Character extends FlxSprite
 
 		var tex:FlxAtlasFrames;
 		antialiasing = true;
-
+		//JOELwindows7: bruh you forgot to lowercase curCharacter case name. that's why it crash if I capital one of the letter.
+		//please toLowerCase, should I do that?
 		switch (curCharacter)
 		{
 			case 'gf':
@@ -139,8 +140,9 @@ class Character extends FlxSprite
 				addOffset("singDOWN", 0, -30);
 
 				playAnim('idle');
-			case 'Hookx':
+			case 'hookx':
 				// HOOKX ANIMATION LOADING CODE
+				//JOELwindows7: bruh you forgot to lowecase the character case name!
 				tex = Paths.getSparrowAtlas('characters/Hookx');
 				frames = tex;
 				animation.addByPrefix('idle', 'Hookx idle dance', 24);
@@ -150,10 +152,10 @@ class Character extends FlxSprite
 				animation.addByPrefix('singLEFT', 'Hookx Sing Note LEFT', 24);
 
 				addOffset('idle');
-				addOffset("singUP", 1, 2);
-				addOffset("singRIGHT", 3, 4);
-				addOffset("singLEFT", 5, 6);
-				addOffset("singDOWN", 7, 8);
+				addOffset("singUP");
+				addOffset("singRIGHT");
+				addOffset("singLEFT");
+				addOffset("singDOWN");
 
 
 				playAnim('idle');

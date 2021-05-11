@@ -772,6 +772,14 @@ class PlayState extends MusicBeatState
 				dad.x -= 150;
 				dad.y += 100;
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
+			case 'hookx':
+				// JOELwindows7:
+				// I am sorry to happened. I have no idea.
+				// world is bad. not worth living
+				// but why give up, we got something
+				// take my hand. I'll be waiting you outside
+				dad.y += 100;
+				dad.x -= 150;
 		}
 
 
