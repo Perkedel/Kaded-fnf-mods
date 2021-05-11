@@ -45,7 +45,7 @@ class StoryMenuState extends MusicBeatState
 		['mom', 'bf', 'gf'],
 		['parents-christmas', 'bf', 'gf'],
 		['senpai', 'bf', 'gf'],
-		['hookx','bf','gf']
+		['hookx', 'bf', 'gf']
 	];
 
 	var weekNames:Array<String> = [
@@ -56,7 +56,7 @@ class StoryMenuState extends MusicBeatState
 		"MOMMY MUST MURDER",
 		"RED SNOW",
 		"Hating Simulator ft. Moawling",
-		"Hookx the Portrait TV ft. TheFatRat"
+		"TheFatRat songs"
 	];
 
 	var txtWeekTitle:FlxText;
@@ -106,6 +106,7 @@ class StoryMenuState extends MusicBeatState
 		rankText.size = scoreText.size;
 		rankText.screenCenter(X);
 
+		//Mark selection for campaign menu ui assets
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
 

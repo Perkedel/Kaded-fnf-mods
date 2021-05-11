@@ -156,6 +156,8 @@ class PlayState extends MusicBeatState
 	var halloweenBG:FlxSprite;
 	var isHalloween:Bool = false;
 
+	var jakartaFairBG:FlxSprite;
+
 	var phillyCityLights:FlxTypedGroup<FlxSprite>;
 	var phillyTrain:FlxSprite;
 	var trainSound:FlxSound;
@@ -685,6 +687,24 @@ class PlayState extends MusicBeatState
 	
 						add(stageCurtains);
 				}
+			case 'jakartaFair':
+				{
+					defaultCamZoom = 0.9;
+					curStage = 'jakartaFair';
+					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
+					bg.antialiasing = true;
+					bg.scrollFactor.set(0.9, 0.9);
+					bg.active = false;
+					add(bg);
+
+					var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
+					stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+					stageFront.updateHitbox();
+					stageFront.antialiasing = true;
+					stageFront.scrollFactor.set(0.9, 0.9);
+					stageFront.active = false;
+					add(stageFront);
+				}
 			default:
 			{
 					defaultCamZoom = 0.9;
@@ -724,6 +744,10 @@ class PlayState extends MusicBeatState
 			case 'gf-pixel':
 				gfVersion = 'gf-pixel';
 			case 'gf':
+				gfVersion = 'gf';
+			case 'gf-ht':
+				// TODO: for Jakarta fair booth Van Elektronische with Hookx, train cart booth room
+				// ht = home theater. a landscape TV with Sondkart GF-HT100 Soundbar bellow it.
 				gfVersion = 'gf';
 			default:
 				gfVersion = 'gf';
@@ -823,6 +847,9 @@ class PlayState extends MusicBeatState
 				boyfriend.y += 220;
 				gf.x += 180;
 				gf.y += 300;
+			case 'jakartaFair':
+				boyfriend.x += 200;
+				dad.x -= 200;
 		}
 
 		add(gf);

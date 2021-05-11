@@ -29,7 +29,8 @@ class MenuCharacter extends FlxSprite
 		'pico' => new CharacterSetting(0, 0, 1.0, true),
 		'mom' => new CharacterSetting(-30, 140, 0.85),
 		'parents-christmas' => new CharacterSetting(100, 130, 1.8),
-		'senpai' => new CharacterSetting(-40, -45, 1.4)
+		'senpai' => new CharacterSetting(-40, -45, 1.4),
+		'hookx' => new  CharacterSetting(0,100,1.2)
 	];
 
 	private var flipped:Bool = false;
@@ -41,6 +42,7 @@ class MenuCharacter extends FlxSprite
 
 		antialiasing = true;
 
+		//mark chooser
 		frames = Paths.getSparrowAtlas('campaign_menu_UI_characters');
 
 		animation.addByPrefix('bf', "BF idle dance white", 24);
@@ -52,6 +54,7 @@ class MenuCharacter extends FlxSprite
 		animation.addByPrefix('mom', "Mom Idle BLACK LINES", 24);
 		animation.addByPrefix('parents-christmas', "Parent Christmas Idle", 24);
 		animation.addByPrefix('senpai', "SENPAI idle Black Lines", 24);
+		animation.addByPrefix('hookx',"Hookx idle dance JERRY RIG",24); //JOELwindows7: Zack Jerry rig loves transparent devices
 
 		setGraphicSize(Std.int(width * scale));
 		updateHitbox();
@@ -61,11 +64,13 @@ class MenuCharacter extends FlxSprite
 	{
 		if (character == '')
 		{
+			// trace("invisible char");
 			visible = false;
 			return;
 		}
 		else
 		{
+			//trace("visible char");
 			visible = true;
 		}
 
