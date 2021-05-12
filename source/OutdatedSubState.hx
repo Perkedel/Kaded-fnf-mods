@@ -22,7 +22,16 @@ class OutdatedSubState extends MusicBeatState
 			"Kade Engine is Outdated!\n"
 			+ MainMenuState.kadeEngineVer
 			+ " is your current version\nwhile the most recent version is " + needVer
-			+ "!\nPress Space to go to the github or ESCAPE to ignore this!!",
+			+ "!\nPress Space to go to the github or ESCAPE to ignore this!!"
+			+ "\nAlso if you still see this despite already updated this mod,"
+			+ "\nplease tell JOELwindows7 to fetch upstream now!"
+			+ "\n\nKade Engine lu udah jadul!\n"
+			+ MainMenuState.kadeEngineVer
+			+ " adalah versi lu saat ini\npadahal yg paling baru itu " + needVer
+			+ "!\nPencet Spasi buat pergi ke github atau ESCAPE buat abaikan!!"
+			+ "\nSama kalau lu masih ngeliat ini pdhl udah update mod ini,"
+			+ "\ntolong bilang pak JOELwindows7 buat ambil sumber hulu segera!"
+			,
 			32);
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();

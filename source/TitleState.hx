@@ -43,6 +43,7 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
+	var odyseeSpr:FlxSprite;
 
 	var curWacky:Array<String> = [];
 
@@ -219,6 +220,14 @@ class TitleState extends MusicBeatState
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = true;
+
+		odyseeSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('odysee_Logo_Transparent_White_Text'));
+		add(odyseeSpr);
+		odyseeSpr.visible = false;
+		odyseeSpr.setGraphicSize(Std.int(odyseeSpr.width * .5),Std.int(odyseeSpr.height * .5)); 
+		odyseeSpr.updateHitbox();
+		odyseeSpr.screenCenter(X);
+		odyseeSpr.antialiasing = true;
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
@@ -404,12 +413,20 @@ class TitleState extends MusicBeatState
 			// credTextShit.screenCenter();
 			case 5:
 				if (Main.watermarks)
-					createCoolText(['Kade Engine', 'by']);
+					if (Main.odyseeMark)
+						createCoolText(['not partnered yet (I think..)', 'with']);
+					else
+						createCoolText(['Kade Engine', 'by']);
 				else
 					createCoolText(['In Partnership', 'with']);
 			case 7:
 				if (Main.watermarks)
-					addMoreText('KadeDeveloper');
+					if (Main.odyseeMark){
+						//addMoreText('Odysee');
+						odyseeSpr.visible = true;
+					}
+					else
+						addMoreText('KadeDeveloper');
 				else
 				{
 					addMoreText('Newgrounds');
@@ -419,6 +436,7 @@ class TitleState extends MusicBeatState
 			case 8:
 				deleteCoolText();
 				ngSpr.visible = false;
+				odyseeSpr.visible = false;
 			// credTextShit.visible = false;
 
 			// credTextShit.text = 'Shoutouts Tom Fulp';
@@ -455,6 +473,7 @@ class TitleState extends MusicBeatState
 		if (!skippedIntro)
 		{
 			remove(ngSpr);
+			remove(odyseeSpr);
 
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);

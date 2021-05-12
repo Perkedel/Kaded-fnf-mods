@@ -156,8 +156,6 @@ class PlayState extends MusicBeatState
 	var halloweenBG:FlxSprite;
 	var isHalloween:Bool = false;
 
-	var jakartaFairBG:FlxSprite;
-
 	var phillyCityLights:FlxTypedGroup<FlxSprite>;
 	var phillyTrain:FlxSprite;
 	var trainSound:FlxSound;
@@ -333,7 +331,15 @@ class PlayState extends MusicBeatState
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			case 'windfall':
+				
 				dialogue = CoolUtil.coolTextFile(Paths.txt('windfall/windfallDialogue'));
+			case 'senpai-midi':
+				trace("Playstate pls load senpai-midi dialogue");
+				dialogue = CoolUtil.coolTextFile(Paths.txt('senpai-midi/senpai-midiDialogue'));
+			case 'roses-midi':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('roses-midi/roses-midiDialogue'));
+			case 'thorns-midi':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns-midi/thorns-midiDialogue'));
 		}
 
 		switch(SONG.stage)
@@ -689,21 +695,43 @@ class PlayState extends MusicBeatState
 				}
 			case 'jakartaFair':
 				{
+					//JOELwindows7:
+					/*
+					Jakarta fair, ayo ke Jakarta Fair
+					Ajang arena pameran dan hiburan
+
+					ayo kita pergi kesana, rekreasi sekaligus berbelanja
+					belanja terlengkap di Jakarta fair...
+
+					ayo kita, ke Jakarta fair. ayo kita ke Jakarta fair. Kemayoran!!!
+					*/
 					defaultCamZoom = 0.9;
 					curStage = 'jakartaFair';
-					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
+					var bgActualOffset_x = -300;
+					var bgActualOffset_y = -100;
+					var bg:FlxSprite = new FlxSprite(bgActualOffset_x + -500, bgActualOffset_y + -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgBehindALL'));
+					bg.setGraphicSize(Std.int(bg.width * 1.2),Std.int(bg.height * 1.2));
 					bg.antialiasing = true;
-					bg.scrollFactor.set(0.9, 0.9);
+					bg.scrollFactor.set(.9, .9);
 					bg.active = false;
 					add(bg);
 
-					var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
-					stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+					var stageFront:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgInsideBooth'));
+					stageFront.setGraphicSize(Std.int(stageFront.width * 1.2),Std.int(stageFront.height * 1.2));
 					stageFront.updateHitbox();
 					stageFront.antialiasing = true;
-					stageFront.scrollFactor.set(0.9, 0.9);
+					stageFront.scrollFactor.set(1, 1);
 					stageFront.active = false;
 					add(stageFront);
+
+					var stageCurtains:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgRearSpeakers'));
+					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2),Std.int(stageFront.height * 1.2));
+					stageCurtains.updateHitbox();
+					stageCurtains.antialiasing = true;
+					stageCurtains.scrollFactor.set(1.5, 1.5);
+					stageCurtains.active = false;
+
+					add(stageCurtains);
 				}
 			default:
 			{
@@ -848,8 +876,10 @@ class PlayState extends MusicBeatState
 				gf.x += 180;
 				gf.y += 300;
 			case 'jakartaFair':
-				boyfriend.x += 200;
-				dad.x -= 200;
+				boyfriend.x += 250;
+				dad.x -= 100;
+				gf.x -= 100;
+				gf.y -= 50;
 		}
 
 		add(gf);
@@ -1050,6 +1080,17 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'thorns':
 					schoolIntro(doof);
+				case 'senpai-midi':
+					//JOELwindows7: Oh God. why. no wonder it didn't appear. what the peck?!
+					schoolIntro(doof);
+				case 'roses-midi':
+					FlxG.sound.play(Paths.sound('ANGRY'));
+					schoolIntro(doof);
+				case 'thorns-midi':
+					schoolIntro(doof);
+				case 'windfall':
+					//TODO: jakarta fair intro doof pls
+					startCountdown();
 				default:
 					startCountdown();
 			}
@@ -1069,6 +1110,7 @@ class PlayState extends MusicBeatState
 		super.create();
 	}
 
+	//JOELwindows7: here is the school intro. pls copy for Jakarta Fair one!
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
@@ -1086,11 +1128,12 @@ class PlayState extends MusicBeatState
 		senpaiEvil.updateHitbox();
 		senpaiEvil.screenCenter();
 
-		if (SONG.song.toLowerCase() == 'roses' || SONG.song.toLowerCase() == 'thorns')
+		//JOELwindows7: here pay attention for senpai songs
+		if (SONG.song.toLowerCase() == 'roses' || SONG.song.toLowerCase() == 'thorns' || SONG.song.toLowerCase() == 'roses-midi' || SONG.song.toLowerCase() == 'thorns-midi')
 		{
 			remove(black);
 
-			if (SONG.song.toLowerCase() == 'thorns')
+			if (SONG.song.toLowerCase() == 'thorns' || SONG.song.toLowerCase() == 'thorns-midi')
 			{
 				add(red);
 			}
@@ -1110,7 +1153,8 @@ class PlayState extends MusicBeatState
 				{
 					inCutscene = true;
 
-					if (SONG.song.toLowerCase() == 'thorns')
+					//JOELwindows7: omg what?!?!
+					if (SONG.song.toLowerCase() == 'thorns' || SONG.song.toLowerCase() == 'thorns-midi')
 					{
 						add(senpaiEvil);
 						senpaiEvil.alpha = 0;
@@ -1151,6 +1195,11 @@ class PlayState extends MusicBeatState
 				remove(black);
 			}
 		});
+	}
+
+	function normalIntro(?dialogueBox:DialogueBox):Void 
+	{
+		//TODO: normal intro for Jakarta Fair, Odysee, REDACTED_OC_AUTHOR_IN_DANGER, etc. etc.
 	}
 
 	var startTimer:FlxTimer;

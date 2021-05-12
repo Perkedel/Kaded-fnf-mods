@@ -66,3 +66,5 @@ This game was made with love to Newgrounds and its community. Extra love to Tom 
 # Other pages
  - [BUILDING.md](https://github.com/KadeDev/Kade-Engine/blob/master/BUILDING.md) - How to compile/build the game
  - [ModCharts.md](https://github.com/KadeDev/Kade-Engine/blob/master/ModCharts.md) - Mod Chart Documentation
+ - [CREDIT.md](https://github.com/KadeDev/Kade-Engine/blob/master/CREDIT.md) - additional credit big shoutouts
+ - [CRITICISM.md](https://github.com/KadeDev/Kade-Engine/blob/master/CRITICISM.md) - Criticism & appreciations of FNF and the communities

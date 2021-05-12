@@ -31,11 +31,12 @@ class StoryMenuState extends MusicBeatState
 		['Satin-Panties', "High", "Milf"],
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
 		['Senpai', 'Roses', 'Thorns'],
-		['Windfall']
+		['Windfall'],
+		['Senpai-midi','Roses-midi','Thorns-midi']
 	];
 	var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
+	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true, true, true];
 
 	var weekCharacters:Array<Dynamic> = [
 		['', 'bf', 'gf'],
@@ -45,7 +46,8 @@ class StoryMenuState extends MusicBeatState
 		['mom', 'bf', 'gf'],
 		['parents-christmas', 'bf', 'gf'],
 		['senpai', 'bf', 'gf'],
-		['hookx', 'bf', 'gf']
+		['hookx', 'bf', 'gf'],
+		['senpai', 'bf', 'gf'],
 	];
 
 	var weekNames:Array<String> = [
@@ -56,7 +58,8 @@ class StoryMenuState extends MusicBeatState
 		"MOMMY MUST MURDER",
 		"RED SNOW",
 		"Hating Simulator ft. Moawling",
-		"TheFatRat songs"
+		"TheFatRat songs",
+		"Hating_Simulator_nokia.jar Microemulator",
 	];
 
 	var txtWeekTitle:FlxText;

@@ -536,6 +536,28 @@ class WatermarkOption extends Option
 	}
 }
 
+class OdyseemarkOption extends Option
+{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			Main.odyseeMark = !Main.odyseeMark;
+			FlxG.save.data.odyseeMark = Main.odyseeMark;
+			display = updateDisplay();
+			return true;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Odysee Watermarks " + (Main.odyseeMark ? "on" : "off");
+		}
+}
+
 class OffsetMenu extends Option
 {
 	public function new(desc:String)

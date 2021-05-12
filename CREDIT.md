@@ -12,3 +12,12 @@
 - https://github.com/BurntBread007/Funkin-XML-Editor edit the XML now
 - https://www.leshylabs.com/apps/sstool/ regular xml spritesheet maker
 - https://duckduckgo.com/?q=samsung+sero&t=brave&iax=images&ia=images search ddg.gg `samsung sero` for Hookx inspiration reference. in fact, OpenCX Hookx / Van Elektronische `WERROR_TRASHED_MOD` is clone of Samsung Sero. don't worry the screen also rotates.
+- https://www.howtogeek.com/411210/how-to-exit-the-vi-or-vim-editor/ how to exit vim
+- https://youtu.be/WEFYPL1DmGs jakarta fair song
+- https://www.leshylabs.com/apps/sstool/ spritesheettool
+- https://www.youtube.com/c/TheFatRat TheFatRat Youtube channel
+- https://youtu.be/JF5feT8WeTE TheFatRat - Windfall
+
+# other mods that wins the inclusion. Congratulations!
+- https://gamebanana.com/mods/43569 FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
+- 
