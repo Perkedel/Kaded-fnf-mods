@@ -4,7 +4,21 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.2 Perkedel Unreleased 1]
+## [1.4.2 Perkedel 1.0 unreleased 2]
+### Changed
+- complete the normal windfall chart json
+- move the jakartaFair behind background actual offset just 100 to the right (+100) little more.
+- okay add 50 more right of that jakartaFair behind background actual offset! Now x is -150 yes. let's see asap.
+
+### Added
+- proposal of watermark choosing, later to overhaul watermarker to collect all things together. let people choose from the "enums" of watermarks they'd like and also let them add their own for their fork mods yeah!
+
+### Fixed
+- attempt to fix watermark text logic by checking both kade & perkedel switch bool
+- attempt to fix Perkedel titler. did the setting actually save or no?
+- don't forget remove Perkedel spr once you've done rendering
+
+## [1.4.2 Perkedel mod 1.0 unreleased 1]
 ### Changed
 - set the Odysee watermark intro words into question esque whether we partnered or not with Odysee LBRY
 - VS code json beautifications of some built-in chart

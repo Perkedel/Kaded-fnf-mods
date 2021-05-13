@@ -707,7 +707,7 @@ class PlayState extends MusicBeatState
 					*/
 					defaultCamZoom = 0.9;
 					curStage = 'jakartaFair';
-					var bgActualOffset_x = -300;
+					var bgActualOffset_x = -150;
 					var bgActualOffset_y = -100;
 					var bg:FlxSprite = new FlxSprite(bgActualOffset_x + -500, bgActualOffset_y + -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgBehindALL'));
 					bg.setGraphicSize(Std.int(bg.width * 1.2),Std.int(bg.height * 1.2));
@@ -977,7 +977,7 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 
 		// Add Kade Engine watermark
-		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : Main.perkedelMark ? " - KE " + MainMenuState.kadeEngineVer + " Perkedel Mod": ""), 16);
+		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks && !Main.perkedelMark ? " - KE " + MainMenuState.kadeEngineVer : Main.watermarks && Main.perkedelMark ? " - KE " + MainMenuState.kadeEngineVer + " Perkedel Mod": ""), 16);
 		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		kadeEngineWatermark.scrollFactor.set();
 		add(kadeEngineWatermark);

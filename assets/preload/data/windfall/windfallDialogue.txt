@@ -1,7 +1,7 @@
 :dad:(Say Hi, Hookx to start)
 :bf:Hi, Hookx!
-:dad:Hello! I am Hookx. Your friendly singer. 
-:dad:You can practice your singing with me. You can also Duet against me as well.
-:bf:Give me any song you have!
+:dad:Hello! I am Hookx. Your friendly singer robot. 
+:dad:You can practice your singing with me. You can also Duet against me as well. Please choose your mode.
+:bf:duet against! Give me any song you have!
 :dad:Alright! This weeks song are Windfall, Rule The World, and We'll meet again, all by TheFatRat. Begin the song?
 :bf: Bring it on!

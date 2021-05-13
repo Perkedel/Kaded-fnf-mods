@@ -52,6 +52,7 @@ class OptionsMenu extends MusicBeatState
 			#end
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 			new WatermarkOption("Turn off all watermarks from the engine."),
+			new ChooseWatermark("Choose your favourite watermark to be shown in the engine"),
 			new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),
 			new BotPlay("Showcase your charts and mods with autoplay.")

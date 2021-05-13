@@ -536,6 +536,7 @@ class WatermarkOption extends Option
 	}
 }
 
+//JOELwindows7: copy paste the toggle from above to here
 class OdyseemarkOption extends Option
 {
 	public function new(desc:String)
@@ -558,6 +559,7 @@ class OdyseemarkOption extends Option
 		}
 }
 
+//JOELwindows7: again do the same. change the purpose option target yeay
 class PerkedelmarkOption extends Option
 {
 	public function new(desc:String)
@@ -577,6 +579,54 @@ class PerkedelmarkOption extends Option
 		private override function updateDisplay():String
 		{
 			return "Perkedel Watermarks " + (Main.perkedelMark ? "on" : "off");
+		}
+}
+
+//JOELwindows7: okay. we got to think ahead. there will be many watermarkers so we need to scroll choose the left right.
+//here we go!
+class ChooseWatermark extends Option
+{
+	//JOELwindows7: copy from Scroll speed option!
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+			acceptValues = true;
+		}
+
+		//Hey, add your watermark id here
+		var availableWatermark =[
+			'odysee',
+			'pekedel',
+		];
+
+		//Then add the path where it goes
+		var watermarkPath =[
+
+		];
+	
+		public override function press():Bool
+		{
+			return false;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Chosen Watermark " + Main.chosenMark;
+		}
+	
+		override function right():Bool {
+			Main.chosenMarkNum ++;
+			Main.chosenMark = availableWatermark[Main.chosenMarkNum];
+			display = updateDisplay();
+			return true;
+		}
+	
+		override function left():Bool {
+			Main.chosenMarkNum --;
+			Main.chosenMark = availableWatermark[Main.chosenMarkNum];
+			display = updateDisplay();
+			return true;
 		}
 }
 

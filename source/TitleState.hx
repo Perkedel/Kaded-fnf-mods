@@ -438,7 +438,8 @@ class TitleState extends MusicBeatState
 						//addMoreText('Odysee');
 						odyseeSpr.visible = true;
 					}
-					else if (Main.perkedelMark){
+					else if (!Main.odyseeMark && Main.perkedelMark){
+						//JOELwindows7: uuhhh, can we be more efficient here? uh, is there enum?
 						perkedelSpr.visible = true;
 					}
 					else
@@ -491,6 +492,7 @@ class TitleState extends MusicBeatState
 		{
 			remove(ngSpr);
 			remove(odyseeSpr);
+			remove(perkedelSpr);
 
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);
