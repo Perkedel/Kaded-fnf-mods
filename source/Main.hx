@@ -25,6 +25,7 @@ class Main extends Sprite
 
 	public static var watermarks = true; // Whether to put Kade Engine liteartly anywhere
 	public static var odyseeMark = true; // Whether to put Odysee mark literally anywhere
+	public static var perkedelMark = true; // Whether to put Perkedel Technologies literally anywhere
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 

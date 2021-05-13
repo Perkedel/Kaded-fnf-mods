@@ -558,6 +558,28 @@ class OdyseemarkOption extends Option
 		}
 }
 
+class PerkedelmarkOption extends Option
+{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			Main.perkedelMark = !Main.perkedelMark;
+			FlxG.save.data.perkedelMark = Main.perkedelMark;
+			display = updateDisplay();
+			return true;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Perkedel Watermarks " + (Main.perkedelMark ? "on" : "off");
+		}
+}
+
 class OffsetMenu extends Option
 {
 	public function new(desc:String)

@@ -44,6 +44,7 @@ class TitleState extends MusicBeatState
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
 	var odyseeSpr:FlxSprite;
+	var perkedelSpr:FlxSprite;
 
 	var curWacky:Array<String> = [];
 
@@ -229,6 +230,14 @@ class TitleState extends MusicBeatState
 		odyseeSpr.screenCenter(X);
 		odyseeSpr.antialiasing = true;
 
+		perkedelSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('Perkedel_Logo_Typeborder'));
+		add(perkedelSpr);
+		perkedelSpr.visible = false;
+		perkedelSpr.setGraphicSize(Std.int(perkedelSpr.width * .2),Std.int(perkedelSpr.height * .2)); 
+		perkedelSpr.updateHitbox();
+		perkedelSpr.screenCenter(X);
+		perkedelSpr.antialiasing = true;
+
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
 		FlxG.mouse.visible = false;
@@ -413,10 +422,14 @@ class TitleState extends MusicBeatState
 			// credTextShit.screenCenter();
 			case 5:
 				if (Main.watermarks)
-					if (Main.odyseeMark)
-						createCoolText(['not partnered yet (I think..)', 'with']);
-					else
-						createCoolText(['Kade Engine', 'by']);
+					{
+						if (Main.odyseeMark)
+							createCoolText(['are we partnered', 'with']);
+						else if (Main.perkedelMark)
+							createCoolText(['Perkedel Kaded FNF mods', 'by']);
+						else
+							createCoolText(['Kade Engine', 'by']);
+					}
 				else
 					createCoolText(['In Partnership', 'with']);
 			case 7:
@@ -424,6 +437,9 @@ class TitleState extends MusicBeatState
 					if (Main.odyseeMark){
 						//addMoreText('Odysee');
 						odyseeSpr.visible = true;
+					}
+					else if (Main.perkedelMark){
+						perkedelSpr.visible = true;
 					}
 					else
 						addMoreText('KadeDeveloper');
@@ -436,6 +452,7 @@ class TitleState extends MusicBeatState
 			case 8:
 				deleteCoolText();
 				ngSpr.visible = false;
+				perkedelSpr.visible = false;
 				odyseeSpr.visible = false;
 			// credTextShit.visible = false;
 

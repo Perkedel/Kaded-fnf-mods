@@ -8,6 +8,8 @@
 - https://gamebanana.com/tuts/13764?post=9113939 Missing Visual Studio Command line solution
 - https://gamebanana.com/mods/43569 MIDIfy the Friday Night Funkin into good old days of Java MIDP Nokia phone
 - https://gamebanana.com/tuts/13849 Make Songchart in minute by just chart with MIDI then convert to chart json yay
+- https://gamebanana.com/tools/7066 empty chart
+- https://gamebanana.com/mods/44244 auditory feedback
 - https://github.com/NyxTheShield/MIDI2FNF the MIDI chart to FNF chart json wow
 - https://github.com/BurntBread007/Funkin-XML-Editor edit the XML now
 - https://www.leshylabs.com/apps/sstool/ regular xml spritesheet maker
@@ -20,4 +22,8 @@
 
 # other mods that wins the inclusion. Congratulations!
 - https://gamebanana.com/mods/43569 FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
-- 
+
+
+# internal extension
+- https://github.com/Perkedel/AfterChurch all inkscape assets
+- https://github.com/Pekedel/HexagonEngine logo inkscape assets

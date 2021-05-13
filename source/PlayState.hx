@@ -977,7 +977,7 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 
 		// Add Kade Engine watermark
-		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : ""), 16);
+		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : Main.perkedelMark ? " - KE " + MainMenuState.kadeEngineVer + " Perkedel Mod": ""), 16);
 		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		kadeEngineWatermark.scrollFactor.set();
 		add(kadeEngineWatermark);
@@ -1089,7 +1089,7 @@ class PlayState extends MusicBeatState
 				case 'thorns-midi':
 					schoolIntro(doof);
 				case 'windfall':
-					//TODO: jakarta fair intro doof pls
+					//TODO: jakarta fair normal intro doof pls
 					startCountdown();
 				default:
 					startCountdown();
@@ -1097,6 +1097,7 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
+			trace("Not Story mode");
 			switch (curSong.toLowerCase())
 			{
 				default:

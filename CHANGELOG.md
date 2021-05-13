@@ -4,6 +4,20 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2 Perkedel Unreleased 1]
+### Changed
+- set the Odysee watermark intro words into question esque whether we partnered or not with Odysee LBRY
+- VS code json beautifications of some built-in chart
+
+### Added
+- Odysee watermark https://odysee.com , [press kit here](https://odysee.com/@OdyseeHelp:b/odyseepresskit:b?r=4jRC3d5tDF9DhZzAnEqaArPdyCH2MAyy ) 
+- ON/OFF option for Odysee watermark
+- unique stage called [Jakarta Fair](https://en.wikipedia.org/wiki/Jakarta_Fair ). the scene is that boyfriend was inside a train cart experience booth at Van Elektronische mega booth in [JIEXPO](https://www.jiexpo.com/ ) backyard. oh here's the official [website](http://www.jakartafair.co.id/ ) btw
+- unique character called Hookx the friendly singing robot portrait TV
+- proposal of TheFatRat - Windfall song
+- [SeaNothing's MIDI remake of all FNF songs with voices, ft. the mods as well](https://gamebanana.com/mods/43569)
+- copy of Week6 which for that MIDI SeaNothing.
+
 ## [1.4.2]
 ### Changed
 - Trails on notes are more consistent
