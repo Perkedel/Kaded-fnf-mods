@@ -43,6 +43,8 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
+	var perkedelSpr:FlxSprite;
+	var odyseeSpr:FlxSprite;
 
 	var curWacky:Array<String> = [];
 

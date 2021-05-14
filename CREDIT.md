@@ -22,6 +22,25 @@ thancc for all these resources! without them, everything is impossible.
 - https://www.leshylabs.com/apps/sstool/ spritesheettool
 - https://www.youtube.com/c/TheFatRat TheFatRat Youtube channel
 - https://youtu.be/JF5feT8WeTE TheFatRat - Windfall
+- https://groups.google.com/g/haxeflixel/c/Le1VeL4WQlY where is the Haxe save data located?
+  
+# in event of git merge conflict
+use VScode and Github desktop!
+
+- make sure to backup your last mod commit into a new branch first.
+- try to checkout the new topic branch that conflict with the default branch where you supposed to merge all topic into default. 
+- carefully open Github desktop. the conflict window appears. 
+- resolve the conflict, by click each `open in visual studio code` in each file conflicted. 
+- carefully compare the change and bring your change from green field into the incoming blue field. 
+- after you've carefully manually copying over your mod code to blue field, go to the top of green, click `accept incoming`.
+- after all conflict resolved you can commit merge. yay
+
+## involved helps
+- https://stackoverflow.com/questions/6006737/git-merge-errors/6006775
+- https://stackoverflow.com/questions/57044187/git-error-you-need-to-resolve-your-current-index-first#57044188
+- https://stackoverflow.com/questions/36086202/git-merge-is-not-possible-because-i-have-unmerged-files
+- https://www.hostinger.com/tutorials/how-to-rename-a-git-branch/
+- https://stackoverflow.com/questions/36086202/git-merge-is-not-possible-because-i-have-unmerged-files
 
 # Musics involved
 - https://linktr.ee/TheFatRat TheFatRat songs
