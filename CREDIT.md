@@ -60,8 +60,12 @@ use VScode and Github desktop!
 - https://linktr.ee/TheFatRat TheFatRat songs
 - https://gamebanana.com/mods/43569 SeaNothing's MIDI remake of FNF songs
 
-# other mods that wins the inclusion. Congratulations!
+# other mods that wins the inclusion (without permission if has CC or uh whatever bruh, otherwise unlikely). Congratulations!
 - https://gamebanana.com/mods/43569 FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
+- https://gamebanana.com/sounds/52066 (WARNING: has NC, ND) frick vine school class, assembled by Picaro2604. discovered that this kade randomly choose which missNote you can have. 7 8 9 miss note
+- https://gamebanana.com/sounds/51010 (WARNING: has NC, ND) tourettes guy miss note Beskupehn_Espira redistributions. 4 5 6 miss note
+- https://gamebanana.com/sounds/51159 (WARNING: has NC, ND) bruh miss note. MrBruh redistributed it this. 10 11 12 miss note
+- https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
 
 
 # internal extension
