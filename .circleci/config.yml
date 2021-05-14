@@ -15,10 +15,10 @@ jobs:
       - run:
           name: setup Haxe and libraries
           environment:
-            HAXELIB_ROOT: /home/appveyor/haxelib
-            HAXE_INSTALLDIR: /home/appveyor/haxe
+            HAXELIB_ROOT: ~/haxelib
+            HAXE_INSTALLDIR: ~/haxe
           command: |
-            cd /home/appveyor
+            cd ~
             sudo add-apt-repository ppa:haxe/releases -y
             sudo apt update
             sudo apt install neko tar -y
@@ -45,25 +45,25 @@ jobs:
       - run:
           name: Just build this game already Linux
           command: |
-            cd /home/appveyor/projects/kaded-fnf-mods
+            cd ~/projects/kaded-fnf-mods
             haxelib run lime build linux
-            tar -cvf funkin-linux.tar -C /home/appveyor/projects/kade-engine-linux/export/release/linux/bin
+            tar -cvf funkin-linux.tar -C ~/projects/kade-engine-linux/export/release/linux/bin
       - run:
           name: Just build this game already Windows
           command: |
-            cd /home/appveyor/projects/kaded-fnf-mods
+            cd ~/projects/kaded-fnf-mods
             haxelib run lime build windows
-            zip -r funkin-windows.zip /home/appveyor/projects/kade-engine-linux/export/release/windows/bin
+            zip -r funkin-windows.zip ~/projects/kade-engine-linux/export/release/windows/bin
       - run:
           name: Just build this game already macOS
           command: |
-            cd /home/appveyor/projects/kaded-fnf-mods
+            cd ~/projects/kaded-fnf-mods
             haxelib run lime build mac
-            tar -cvf funkin-mac.tar -C /home/appveyor/projects/kade-engine-linux/export/release/macos/bin
+            tar -cvf funkin-mac.tar -C ~/projects/kade-engine-linux/export/release/macos/bin
       - run:
           name: Just build this game already HTML5
           command: |
-            cd /home/appveyor/projects/kaded-fnf-mods
+            cd ~/projects/kaded-fnf-mods
             haxelib run lime build html5
-            tar -cvf funkin-html5.tar -C /home/appveyor/projects/kade-engine-linux/export/release/html5/bin
+            tar -cvf funkin-html5.tar -C ~/projects/kade-engine-linux/export/release/html5/bin
 
