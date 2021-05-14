@@ -31,6 +31,9 @@ thancc for all these resources! without them, everything is impossible.
 - https://gamejolt.com/games/fnfandroid/593952 android FNF
 - https://developer.android.com/ndk/downloads?hl=fi android NDK
 - https://mcpedl.com/friday-night-funkin-add-on/ minecraft bedrock addon of fnf
+- https://www.geeksforgeeks.org/zip-command-in-linux-with-examples/ how to commandline zip file in Linux
+- https://www.computerhope.com/unix/zip.htm zip linux
+- https://circleci.com/docs/2.0/configuration-reference/#run how to circleCI config.yml
   
 # in event of git merge conflict
 use VScode and Github desktop!
