@@ -26,7 +26,7 @@ jobs:
             mkdir -p $HAXE_INSTALLDIR
             tar -xf haxe-4.1.5-linux64.tar.gz -C $HAXE_INSTALLDIR
             export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20201231082044_5e33a78aa
-            mkdir $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
+            mkdir -p $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
             haxelib install lime 7.9.0
             haxelib install openfl
             haxelib install flixel
