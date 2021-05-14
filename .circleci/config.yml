@@ -4,14 +4,14 @@ version: 2.1
 jobs:
   build:
     machine:
-      enabled: true
+      image: ubuntu-latest
     steps:
       - checkout
       - run:
-        name: Just check updates & install dependencies
-        command: |
-          sudo apt-get update
-          sudo apt-get -y install wget zip unzip
+          name: Just check updates & install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get -y install wget zip unzip
       - run:
           name: setup Haxe and libraries
           environment:
