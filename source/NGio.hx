@@ -1,3 +1,5 @@
+#if !mobile
+// JOELwindows7: if not mobile was from https://github.com/luckydog7/Funkin-android/blob/master/source/NGio.hx
 package;
 
 import flixel.FlxG;
@@ -198,3 +200,4 @@ class NGio
 		}
 	}
 }
+#end

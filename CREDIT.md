@@ -12,7 +12,10 @@ thancc for all these resources! without them, everything is impossible.
 - https://gamebanana.com/mods/43569 MIDIfy the Friday Night Funkin into good old days of Java MIDP Nokia phone
 - https://gamebanana.com/tuts/13849 Make Songchart in minute by just chart with MIDI then convert to chart json yay
 - https://gamebanana.com/tools/7066 empty chart
-- https://gamebanana.com/mods/44244 auditory feedback
+- https://gamebanana.com/mods/44244 auditory feedback (but kade already has one in the 7 debug chart editor menu)
+- https://gamebanana.com/questions/7525?post=9145950 empty chart (yes, that was JOELwindows7)
+- https://gamebanana.com/tools/7015 FileDaddy. easily install mod for FNF
+- https://hdboye.github.io/FnfModAttempt/ list of fnf mods & play nows (no longer updated) capu wattomp
 - https://github.com/NyxTheShield/MIDI2FNF the MIDI chart to FNF chart json wow
 - https://github.com/BurntBread007/Funkin-XML-Editor edit the XML now
 - https://www.leshylabs.com/apps/sstool/ regular xml spritesheet maker
@@ -23,6 +26,11 @@ thancc for all these resources! without them, everything is impossible.
 - https://www.youtube.com/c/TheFatRat TheFatRat Youtube channel
 - https://youtu.be/JF5feT8WeTE TheFatRat - Windfall
 - https://groups.google.com/g/haxeflixel/c/Le1VeL4WQlY where is the Haxe save data located?
+- https://github.com/luckydog7/Funkin-android android FNF
+- https://github.com/luckydog7/Funkin-android/blob/master/source/NGio.hx don't define the code if not android
+- https://gamejolt.com/games/fnfandroid/593952 android FNF
+- https://developer.android.com/ndk/downloads?hl=fi android NDK
+- https://mcpedl.com/friday-night-funkin-add-on/ minecraft bedrock addon of fnf
   
 # in event of git merge conflict
 use VScode and Github desktop!
