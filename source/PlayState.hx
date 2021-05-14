@@ -730,8 +730,76 @@ class PlayState extends MusicBeatState
 					stageCurtains.antialiasing = true;
 					stageCurtains.scrollFactor.set(1.5, 1.5);
 					stageCurtains.active = false;
-
 					add(stageCurtains);
+				}
+			case 'qmoveph':
+				{
+					defaultCamZoom = 0.9;
+					curStage = 'qmoveph';
+					var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('qmoveph/DefaultBackground'));
+					bg.setGraphicSize(Std.int(bg.width *1.1), Std.int(bg.height * 1.1));
+					bg.antialiasing = true;
+					bg.scrollFactor.set(0.9, 0.9);
+					bg.active = false;
+					add(bg);
+				}
+			case 'cruelThesis':
+				{
+					defaultCamZoom = 0.9;
+					curStage = 'cruelThesis';
+					var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('VanElektronische/VanElektronische_corpThesis'));
+					bg.setGraphicSize(Std.int(bg.width *1.2), Std.int(bg.height * 1.2));
+					bg.antialiasing = true;
+					bg.scrollFactor.set(0.9, 0.9);
+					bg.active = false;
+					add(bg);
+				}
+			case 'lapanganParalax':
+				{
+					defaultCamZoom = 0.9;
+					curStage = 'stage';
+					var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Bekgron'));
+					bg.setGraphicSize(Std.int(bg.width * 1.2), Std.int(bg.height * 1.2));
+					bg.antialiasing = true;
+					bg.scrollFactor.set(0.3, 0.3);
+					bg.active = false;
+					add(bg);
+
+					var bg2:FlxSprite = new FlxSprite(-200, -150).loadGraphic(Paths.image('lapanganParalax/Betwaangron'));
+					bg2.setGraphicSize(Std.int(bg2.width * 1.2), Std.int(bg2.height * 1.2));
+					bg2.antialiasing = true;
+					bg2.scrollFactor.set(0.5, 0.5);
+					bg2.active = false;
+					add(bg2);
+
+					var bg3:FlxSprite = new FlxSprite(-200, -50).loadGraphic(Paths.image('lapanganParalax/Betweengron'));
+					bg3.setGraphicSize(Std.int(bg3.width * 1.2), Std.int(bg3.height * 1.2));
+					bg3.antialiasing = true;
+					bg3.scrollFactor.set(0.7, 0.7);
+					bg3.active = false;
+					add(bg3);
+
+					var stageFront:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Midgron'));
+					stageFront.setGraphicSize(Std.int(stageFront.width * 1.2), Std.int(stageFront.height * 1.2));
+					stageFront.updateHitbox();
+					stageFront.antialiasing = true;
+					stageFront.scrollFactor.set(0.9, 0.9);
+					stageFront.active = false;
+					add(stageFront);
+
+					var stageCurtains:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Forgron'));
+					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2), Std.int(stageCurtains.height * 1.2));
+					stageCurtains.updateHitbox();
+					stageCurtains.antialiasing = true;
+					stageCurtains.scrollFactor.set(1.3, 1.3);
+					stageCurtains.active = false;
+					add(stageCurtains);
+				}
+			case 'blank':
+				{
+				// JOELwindows7: Just blank. nothing.
+				// chroma key color is #000000 . well, it's hard, yes, 
+				// so if you need chroma key, you should green screen instead.
 				}
 			default:
 			{
@@ -880,6 +948,21 @@ class PlayState extends MusicBeatState
 				dad.x -= 100;
 				gf.x -= 100;
 				gf.y -= 50;
+			case 'qmoveph':
+				boyfriend.x += 300;
+				dad.x -= 200;
+			case 'cruelThesis':
+				boyfriend.x += 300;
+				boyfriend.y += 50;
+				dad.x -= 200;
+				dad.y += 50;
+			case 'lapanganParalax':
+				boyfriend.x += 200;
+				dad.x -= 100;
+			case 'blank':
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
 		}
 
 		add(gf);

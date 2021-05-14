@@ -1,3 +1,6 @@
+# Big shoutout yay
+thancc for all these resources! without them, everything is impossible.
+
 # additional list of credit links
 - https://youtu.be/9dfkMgrjDOw BrightFyre Comprehensive FNF mod from source code level
 - https://www.youtube.com/channel/UCvbZKyPNpKGri4uKGsZSw6w BrightFyre channel
@@ -19,6 +22,10 @@
 - https://www.leshylabs.com/apps/sstool/ spritesheettool
 - https://www.youtube.com/c/TheFatRat TheFatRat Youtube channel
 - https://youtu.be/JF5feT8WeTE TheFatRat - Windfall
+
+# Musics involved
+- https://linktr.ee/TheFatRat TheFatRat songs
+- https://gamebanana.com/mods/43569 SeaNothing's MIDI remake of FNF songs
 
 # other mods that wins the inclusion. Congratulations!
 - https://gamebanana.com/mods/43569 FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
