@@ -34,6 +34,9 @@ thancc for all these resources! without them, everything is impossible.
 - https://www.geeksforgeeks.org/zip-command-in-linux-with-examples/ how to commandline zip file in Linux
 - https://www.computerhope.com/unix/zip.htm zip linux
 - https://circleci.com/docs/2.0/configuration-reference/#run how to circleCI config.yml
+- https://circleci.com/docs/2.0/arm-resources/?source=banner ARM ubuntu resource image
+- https://www.tutorialspoint.com/unix_commands/mkdir.htm mkdir pls
+- https://circleci.com/docs/2.0/configuration-reference/#available-linux-gpu-images linux gpu?!
   
 # in event of git merge conflict
 use VScode and Github desktop!
