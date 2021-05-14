@@ -16,7 +16,7 @@ jobs:
           name: setup Haxe and libraries
           environment:
             HAXELIB_ROOT: ~/haxelib
-            HAXE_INSTALLDIR: ~/haxe
+            HAXE_INSTALLDIR: $HOME/haxe
           command: |
             cd ~
             sudo add-apt-repository ppa:haxe/releases -y
