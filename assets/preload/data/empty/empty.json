@@ -2,6 +2,7 @@
     "song": {
         "player2": "dad",
         "player1": "bf",
+        "stage": "stage",
         "speed": 1,
         "needsVoices": false,
         "sectionLengths": [],

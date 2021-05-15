@@ -29,6 +29,9 @@ todo: why though wtf you betrayed us?
 ### Mods
 alot of mods! way too many mods.
 
+### Bridge of discipline between DDR & Parappa
+the game works like DDR versus mode, and its semantic obviously is Simon Says, which Parappa the Rapper game does.
+
 ## Amazing Awesome!!! Particular
 
 ### MIDI

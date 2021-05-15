@@ -25,6 +25,11 @@ class CoolUtil
 		return daList;
 	}
 
+	//JOELwindows7: how to check if file exist without crashing entire game?!
+	// public static function checkExist(path:String){
+		
+	// }
+
 	// public static function coolJsonFile(path:String) {
 		
 	// }
