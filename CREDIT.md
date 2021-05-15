@@ -15,6 +15,9 @@ thancc for all these resources! without them, everything is impossible.
 - https://gamebanana.com/mods/44244 auditory feedback (but kade already has one in the 7 debug chart editor menu)
 - https://gamebanana.com/questions/7525?post=9145950 empty chart (yes, that was JOELwindows7)
 - https://gamebanana.com/tools/7015 FileDaddy. easily install mod for FNF
+- https://gamebanana.com/wips/55046 contains all character from almost most mods of FNF communities, all playable yay! maybe I should do the same here?
+- https://gamejolt.com/games/unipla/616582  contains all character from almost most mods of FNF communities, all playable yay! maybe I should do the same here?
+- https://gamebanana.com/mods/44236 Mic'd up FNF yess. with wholely different UI UX.
 - https://hdboye.github.io/FnfModAttempt/ list of fnf mods & play nows (no longer updated) capu wattomp
 - https://github.com/NyxTheShield/MIDI2FNF the MIDI chart to FNF chart json wow
 - https://github.com/BurntBread007/Funkin-XML-Editor edit the XML now
@@ -37,6 +40,9 @@ thancc for all these resources! without them, everything is impossible.
 - https://circleci.com/docs/2.0/arm-resources/?source=banner ARM ubuntu resource image
 - https://www.tutorialspoint.com/unix_commands/mkdir.htm mkdir pls
 - https://circleci.com/docs/2.0/configuration-reference/#available-linux-gpu-images linux gpu?!
+- https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple Pinkest Pink by Stuart Semple. I wish HaxeFlixel supports HDR so that we can have the pinkest possible light going on.. also pexk you Anish Kapoor you stingy whore like one cocky boy who never share coloring pencil to whom needs it especially it's the meant color for the art.
+- https://haxeflixel.com/documentation/cheat-sheet/ HaxeFlixel cheatsheet
+- https://lime.software/docs/home/ Haxe Lime
   
 # in event of git merge conflict
 use VScode and Github desktop!

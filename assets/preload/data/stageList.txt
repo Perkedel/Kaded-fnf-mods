@@ -11,3 +11,6 @@ qmoveph
 cruelThesis
 lapanganParalax
 blank
+greenscreen
+bluechroma
+semple

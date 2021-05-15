@@ -34,10 +34,17 @@ class DialogueBox extends FlxSpriteGroup
 	var handSelect:FlxSprite;
 	var bgFade:FlxSprite;
 
+	//JOELwindows7: heuristic flag for non-pixel level
+	var nonPixel:Bool = false;
+
 	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>)
 	{
 		super();
 
+		//JOELwindows7: not my code. but what the?! refer other class without import?! NO NEED TO POINT THE INSTANCE TOO?!
+		// whoah! in Flutter, I have to import. even when they're next to it! wow! Haxe is great!!!
+		// AND THE PECK?! in Unity, I must point also the instance inside the class 
+		// (just to grab its current value of a variable right now), not just the class itself. hoof! I am jealous!
 		switch (PlayState.SONG.song.toLowerCase())
 		{
 			case 'senpai':
@@ -53,6 +60,8 @@ class DialogueBox extends FlxSpriteGroup
 			case 'thorns-midi':
 				FlxG.sound.playMusic(Paths.music('LunchboxScary-midi'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			default:
+				trace("No pre-dialog sound to play!");
 		}
 
 		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
@@ -101,6 +110,8 @@ class DialogueBox extends FlxSpriteGroup
 				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
 				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
+
+				nonPixel = true;
 			case 'senpai-midi':
 				trace("please senpai-midi dialog where");
 				hasDialog = true;
@@ -109,7 +120,7 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByIndices('normal', 'Text Box Appear', [4], "", 24);
 			case 'roses-midi':
 				hasDialog = true;
-				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'));
+				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX-midi'));
 
 				box.frames = Paths.getSparrowAtlas('weeb/pixelUI/dialogueBox-senpaiMad');
 				box.animation.addByPrefix('normalOpen', 'SENPAI ANGRY IMPACT SPEECH', 24, false);
@@ -154,8 +165,12 @@ class DialogueBox extends FlxSpriteGroup
 		add(portraitRight);
 		portraitRight.visible = false;
 		
+		//JOELwindows7: I've added a heuristic to size width accordingly between nonPixel and pixel level.
 		box.animation.play('normalOpen');
-		box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
+		if(nonPixel)
+			box.setGraphicSize(Std.int(box.width * 0.9)); // JOELwindows7: copy from original without daPixelZoom value!
+		else
+			box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
 		box.updateHitbox();
 		add(box);
 

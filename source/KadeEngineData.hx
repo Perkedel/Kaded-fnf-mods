@@ -57,6 +57,12 @@ class KadeEngineData
 		if (FlxG.save.data.watermark == null)
 			FlxG.save.data.watermark = true;
 
+		if (FlxG.save.data.odyseeMark == null)
+			FlxG.save.data.odyseeMark = true;
+
+		if (FlxG.save.data.perkedelMark == null)
+			FlxG.save.data.perkedelMark = true;
+
 		if (FlxG.save.data.ghost == null)
 			FlxG.save.data.ghost = true;
 
@@ -72,6 +78,9 @@ class KadeEngineData
 		Conductor.recalculateTimings();
 
 		Main.watermarks = FlxG.save.data.watermark;
+		//JOELwindows7: hey, remember to load the data first!
+		Main.odyseeMark = FlxG.save.data.odyseeMark;
+		Main.perkedelMark = FlxG.save.data.perkedelMark;
 
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 	}

@@ -549,6 +549,7 @@ class OdyseemarkOption extends Option
 		{
 			Main.odyseeMark = !Main.odyseeMark;
 			FlxG.save.data.odyseeMark = Main.odyseeMark;
+			trace("Odysee watermark: " + FlxG.save.data.odyseeMark);
 			display = updateDisplay();
 			return true;
 		}
@@ -572,6 +573,7 @@ class PerkedelmarkOption extends Option
 		{
 			Main.perkedelMark = !Main.perkedelMark;
 			FlxG.save.data.perkedelMark = Main.perkedelMark;
+			trace("Perkedel watermark: " + FlxG.save.data.perkedelMark);
 			display = updateDisplay();
 			return true;
 		}

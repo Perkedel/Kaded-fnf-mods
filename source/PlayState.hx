@@ -801,12 +801,62 @@ class PlayState extends MusicBeatState
 				{
 					defaultCamZoom = 0.9;
 					curStage = 'blank';
-				// JOELwindows7: Just blank. nothing.
-				// chroma key color is #000000 . well, it's hard, yes, 
-				// so if you need chroma key, you should green screen instead.
+					// JOELwindows7: Just blank. nothing.
+					// chroma key color is #000000 . well, it's hard, yes, 
+					// so if you need chroma key, you should green screen instead.
+				}
+			case 'greenscreen':
+				{
+					defaultCamZoom = 0.9;
+					curStage = 'greenscreen';
+					//JOELwindows7: turns out you can generate graphic with Make Graphic! 
+					// it is even there on the FlxSprite construction wow!
+					// read function of `schoolIntro`. there's a variable called `red` which is the FlxSprite of full red.
+					// so, now you can chroma key full green!
+					// heh what the peck man? GREEN is #008000 (dim green)!?? but LIME is #00FF00 (full green)?!? really bro?!
+					// you confused me!!! the true green was supposed to be full green #00FF00 what the peck, Flixel?!
+					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.LIME);
+					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
+					hue.updateHitbox();
+					hue.antialiasing = true;
+					hue.scrollFactor.set(0.1,0.1);
+					hue.active = false;
+					add(hue);
+				}
+			case 'bluechroma':
+				{
+					//JOELwindows7: same as greenscreen but blue. not to be confused with blue screen of death!
+					defaultCamZoom = 0.9;
+					curStage = 'bluechroma';
+					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLUE);
+					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
+					hue.updateHitbox();
+					hue.antialiasing = true;
+					hue.scrollFactor.set(0.1,0.1);
+					hue.active = false;
+					add(hue);
+				}
+			case 'semple':
+				{
+					//JOELwindows7: Stuart Semple is multidisciplinary Bristish artist! A painter, and more.
+					// He is famous for the pinkest color you've ever seen.
+					// https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple
+					// and peck Anish Kapoor.
+					defaultCamZoom = 0.9;
+					curStage = 'semple';
+					// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
+					// because no camera has the ability to capture way over Pink Semple had.
+					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.MAGENTA);
+					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
+					hue.updateHitbox();
+					hue.antialiasing = true;
+					hue.scrollFactor.set(0.1,0.1);
+					hue.active = false;
+					add(hue);
 				}
 			default:
 			{
+					trace("Hey uh, we don't have the stage information, sorry.");
 					defaultCamZoom = 0.9;
 					curStage = 'stage';
 					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
@@ -967,6 +1017,29 @@ class PlayState extends MusicBeatState
 				boyfriend.x += 500;
 				dad.x -= 400;
 				gf.y -= 100;
+			case 'greenscreen':
+				// JOELwindows7: copy my blank above to here bellow.
+				// so to further make it easier to separate somehow in the meme editing.. idk
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
+			case 'bluechroma':
+				// JOELwindows7: in case you need blue chroma as well..
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
+			case 'semple':
+				// JOELwindows7: Stuart Semple's Pinkest pink!!!
+				// Do not play if you are any related to Anish Kapoor both DNA / blood and professional field
+				// Penalty applies to all Kapoor starting from Anish Kapoor, inherits, and friends that within his idea, unless they decided
+				// to betray Kapoor monopolism proprietarism so penalty terminates starting from that traitor to friends within traitor's opposition and inherits.
+				// Penalties for mentioned defendants are demonetized from Dasandim UBI free Kvz program, etc.
+				// anyway, so uh, we need HDR to brightestly pinkest pink.
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
+			default: 
+				trace("Hey uh, we missing the offset information for stage " + curStage + " guys.");
 		}
 
 		add(gf);
@@ -1186,8 +1259,10 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'windfall':
 					//TODO: jakarta fair normal intro doof pls
-					startCountdown();
+					//startCountdown();
+					schoolIntro(doof);
 				default:
+					trace("No School Intro info in isStoryMode. start coundown anyway");
 					startCountdown();
 			}
 		}
@@ -1196,6 +1271,7 @@ class PlayState extends MusicBeatState
 			switch (curSong.toLowerCase())
 			{
 				default:
+					trace("No something School Intro to do in freeplay mode. start countdown anyway");
 					startCountdown();
 			}
 		}

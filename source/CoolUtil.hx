@@ -24,6 +24,10 @@ class CoolUtil
 
 		return daList;
 	}
+
+	// public static function coolJsonFile(path:String) {
+		
+	// }
 	
 	public static function coolStringFile(path:String):Array<String>
 		{

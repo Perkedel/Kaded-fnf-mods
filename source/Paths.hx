@@ -7,6 +7,7 @@ import openfl.utils.Assets as OpenFlAssets;
 
 class Paths
 {
+	//JOELwindows7: not my code. but hey uh, is it has to be it, the web cannot ogg?
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
 	static var currentLevel:String;

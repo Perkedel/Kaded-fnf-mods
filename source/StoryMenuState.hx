@@ -1,5 +1,7 @@
 package;
 
+import lime.utils.Assets;
+import flixel.input.actions.FlxActionManager.ActionSetJson;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
@@ -12,6 +14,8 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
+import haxe.Json;
+import haxe.format.JsonParser;
 
 #if windows
 import Discord.DiscordClient;
@@ -19,10 +23,24 @@ import Discord.DiscordClient;
 
 using StringTools;
 
+//JOELwindows7: let's inspire from Song.hx. 
+//here's the typedef for Json file of weekList yess.
+typedef SwagWeeks = {
+	var weekData:Array<Dynamic>;
+	var weekUnlocked:Array<Bool>;
+	var weekCharacters:Array<Dynamic>;
+	var weekNames:Array<String>;
+} 
+
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
+	//JOELwindows7: ahei. so, we have already make the week list as a json file.
+	// therefore, you just have to do edit assets/data/weekList.json (rendered version)
+	// and follow the way it works like the tutorial. also, use "" instead of '',
+	// because JSON only consider value a string with "".
+	// have fun!
 	var weekData:Array<Dynamic> = [
 		['Tutorial'],
 		['Bopeebo', 'Fresh', 'Dadbattle'],
@@ -34,6 +52,7 @@ class StoryMenuState extends MusicBeatState
 		['Windfall'],
 		['Senpai-midi','Roses-midi','Thorns-midi']
 	];
+	// JOELwindows7: yeah, so, these hard code edit no longer needed.
 	var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true, true, true];
@@ -80,6 +99,25 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
+		//JOELwindows7: Do the work for the weeklist pls!
+		//JOELwindows7: Okay, why not weeklist also procedural? just asking?
+		// not all people are into coding.
+		// hmm isn't that better to use JSON instead? it's easier to manage!
+		// just copy 3 week list variables above, JSONify them all! yeah!
+		/*
+		var initWeekList = CoolUtil.coolTextFile(Paths.txt('weekList'));
+		for (i in 0...initWeekList.length){
+
+		}
+		*/
+		//JOELwindows7: okay fine let's just json it.
+		var initWeekJson = loadFromJson('weekList');
+		weekData = initWeekJson.weekData;
+		weekUnlocked = initWeekJson.weekUnlocked;
+		weekCharacters = initWeekJson.weekCharacters;
+		weekNames = initWeekJson.weekNames;
+
+
 		#if windows
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
@@ -275,6 +313,27 @@ class StoryMenuState extends MusicBeatState
 	var selectedWeek:Bool = false;
 	var stopspamming:Bool = false;
 
+	//JOELwindows7: Okay so, cleanup Json? and then parse? okeh
+	// yeah I know, I copied from Song.hx. for this one, the weekList.json isn't anywhere in special folder
+	// but root of asset/data . that's all... idk
+	public static function loadFromJson(jsonInput:String):SwagWeeks{
+		var rawJson = Assets.getText(Paths.json(jsonInput)).trim();
+		trace("load weeklist Json");
+
+		while (!rawJson.endsWith("}")){
+			//JOELwindows7: okay also going through bullshit cleaning what the peck strange
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+		return parseJSONshit(rawJson);
+	}
+	//JOELwindows7: lol!literally copy from Song.hx minus the 
+	//changing valid score which SwagWeeks typedef doesn't have, idk..
+	public static function parseJSONshit(rawJson:String):SwagWeeks
+	{
+		var swagShit:SwagWeeks = cast Json.parse(rawJson);
+		return swagShit;
+	}
+	
 	function selectWeek()
 	{
 		if (weekUnlocked[curWeek])
