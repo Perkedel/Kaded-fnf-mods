@@ -1,7 +1,7 @@
 # Big shoutout yay
 thancc for all these resources! without them, everything is impossible.
 
-# additional list of credit links
+# list of credit links
 - https://youtu.be/9dfkMgrjDOw BrightFyre Comprehensive FNF mod from source code level
 - https://www.youtube.com/channel/UCvbZKyPNpKGri4uKGsZSw6w BrightFyre channel
 - https://docs.google.com/document/d/1kddBhfcHoj5WEBn_VRozmMjUFZzFphTPmkyo6ellWiY/edit?usp=sharing from the comment of part add character we got the Google doc version of the tutorial
@@ -18,6 +18,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://gamebanana.com/wips/55046 contains all character from almost most mods of FNF communities, all playable yay! maybe I should do the same here?
 - https://gamejolt.com/games/unipla/616582  contains all character from almost most mods of FNF communities, all playable yay! maybe I should do the same here?
 - https://gamebanana.com/mods/44236 Mic'd up FNF yess. with wholely different UI UX.
+- https://gamebanana.com/mods/44140 GenoX FNF UTAU cover
 - https://hdboye.github.io/FnfModAttempt/ list of fnf mods & play nows (no longer updated) capu wattomp
 - https://github.com/NyxTheShield/MIDI2FNF the MIDI chart to FNF chart json wow
 - https://github.com/BurntBread007/Funkin-XML-Editor edit the XML now
@@ -40,9 +41,16 @@ thancc for all these resources! without them, everything is impossible.
 - https://circleci.com/docs/2.0/arm-resources/?source=banner ARM ubuntu resource image
 - https://www.tutorialspoint.com/unix_commands/mkdir.htm mkdir pls
 - https://circleci.com/docs/2.0/configuration-reference/#available-linux-gpu-images linux gpu?!
-- https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple Pinkest Pink by Stuart Semple. I wish HaxeFlixel supports HDR so that we can have the pinkest possible light going on.. also pexk you Anish Kapoor you stingy whore like one cocky boy who never share coloring pencil to whom needs it especially it's the meant color for the art.
+- https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple Pinkest Pink by Stuart Semple. I wish HaxeFlixel supports HDR so that we can have the pinkest possible light going on.. also pexk you Anish Kapoor you stingy whore like one cocky boy who never share coloring pencil to whom needs it espelly it's the meant color for the art.
 - https://haxeflixel.com/documentation/cheat-sheet/ HaxeFlixel cheatsheet
-- https://lime.software/docs/home/ Haxe Lime
+- https://lime.software/docs/home/ Haxe Limed hh
+- https://github.com/GenoX-Fome/funkin-utau/ FNF UTAU voice bank thancc GenoX
+- https://youtu.be/MdXhnxgyxC4 the GameBanana of that FNF UTAU GenoX
+- https://youtu.be/HeV0F9F8adU NyxTheShield FNF voice in SFZ, SF2, DWB
+- https://github.com/NyxTheShield/FNFSoundfonts NyxTheShield FNF Voice SFZ, SF2, DWB
+- https://www.plogue.com/downloads.html Plogue softwares. get the Sforzando the SFZ player for that FNF Sfz
+- https://youtu.be/MdXhnxgyxC4 another GenoX tutorial how to FNF voice
+- https://kadedev.github.io/Kade-Engine/guides/weeks old way to add week
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -65,6 +73,7 @@ use VScode and Github desktop!
 # Musics involved
 - https://linktr.ee/TheFatRat TheFatRat songs
 - https://gamebanana.com/mods/43569 SeaNothing's MIDI remake of FNF songs
+- https://youtu.be/RWf50T52n58 AFI Junior - Guruku Tersayang
 
 # other mods that wins the inclusion (without permission if has CC or uh whatever bruh, otherwise unlikely). Congratulations!
 - https://gamebanana.com/mods/43569 FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
@@ -72,6 +81,9 @@ use VScode and Github desktop!
 - https://gamebanana.com/sounds/51010 (WARNING: has NC, ND) tourettes guy miss note Beskupehn_Espira redistributions. 4 5 6 miss note
 - https://gamebanana.com/sounds/51159 (WARNING: has NC, ND) bruh miss note. MrBruh redistributed it this. 10 11 12 miss note
 - https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
+- https://gamebanana.com/sounds/51838 BABABOOEY! irdk_anymore. miss note 13 14 15
+- https://gamebanana.com/tools/7033 nickham13 BF voice SF2
+- https://github.com/GenoX-Fome/funkin-utau/ GenoX FNF UTAU voices. use for AFI Junior - Guruku Tersayang pls
 
 
 # internal extension
