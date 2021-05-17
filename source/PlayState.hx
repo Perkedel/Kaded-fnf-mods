@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.keyboard.FlxKey;
 import haxe.Exception;
 import openfl.geom.Matrix;
 import openfl.display.BitmapData;
@@ -307,12 +308,9 @@ class PlayState extends MusicBeatState
 
 		trace('INFORMATION ABOUT WHAT U PLAYIN WIT:\nFRAMES: ' + Conductor.safeFrames + '\nZONE: ' + Conductor.safeZoneOffset + '\nTS: ' + Conductor.timeScale + '\nBotPlay : ' + FlxG.save.data.botplay);
 	
-
-
 		//dialogue shit
 		switch (SONG.song.toLowerCase())
 		{
-			//JOELwindows7: psst, how about you built these in each song json file? or, uh... idk..
 			case 'tutorial':
 				dialogue = ["Hey you're pretty cute.", 'Use the arrow keys to keep up \nwith me singing.'];
 			case 'bopeebo':
@@ -337,7 +335,7 @@ class PlayState extends MusicBeatState
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			case 'windfall':
-		
+	
 				dialogue = CoolUtil.coolTextFile(Paths.txt('windfall/windfallDialogue'));
 			case 'senpai-midi':
 				trace("Playstate pls load senpai-midi dialogue");
@@ -858,7 +856,7 @@ class PlayState extends MusicBeatState
 					hue.active = false;
 					add(hue);
 				}
-			default:
+		default:
 			{
 					defaultCamZoom = 0.9;
 					curStage = 'stage';
@@ -2052,7 +2050,7 @@ class PlayState extends MusicBeatState
 			// 1 / 1000 chance for Gitaroo Man easter egg
 			if (FlxG.random.bool(0.1))
 			{
-				// gitaroo man easter egg
+				trace('GITAROO MAN EASTER EGG');
 				FlxG.switchState(new GitarooPause());
 			}
 			else
@@ -2116,7 +2114,19 @@ class PlayState extends MusicBeatState
 			}
 			#end
 		}
-		
+
+		if (FlxG.keys.justPressed.ZERO)
+		{
+			FlxG.switchState(new AnimationDebug(SONG.player1));
+			#if windows
+			if (luaModchart != null)
+			{
+				luaModchart.die();
+				luaModchart = null;
+			}
+			#end
+		}
+
 		#end
 
 		if (startingSong)
@@ -2385,6 +2395,29 @@ class PlayState extends MusicBeatState
 			#end
 
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+		}
+ 		if (FlxG.save.data.resetButton)
+		{
+			if(FlxG.keys.justPressed.R)
+				{
+					boyfriend.stunned = true;
+
+					persistentUpdate = false;
+					persistentDraw = false;
+					paused = true;
+		
+					vocals.stop();
+					FlxG.sound.music.stop();
+		
+					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+		
+					#if windows
+					// Game Over doesn't get his own variable because it's only used here
+					DiscordClient.changePresence("GAME OVER -- " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy),"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
+					#end
+		
+					// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+				}
 		}
 
 		if (unspawnNotes[0] != null)
