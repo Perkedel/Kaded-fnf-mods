@@ -51,6 +51,19 @@ thancc for all these resources! without them, everything is impossible.
 - https://www.plogue.com/downloads.html Plogue softwares. get the Sforzando the SFZ player for that FNF Sfz
 - https://youtu.be/MdXhnxgyxC4 another GenoX tutorial how to FNF voice
 - https://kadedev.github.io/Kade-Engine/guides/weeks old way to add week
+- https://youtu.be/ODFOpoXjzaA bbpanzu how to pico voice
+- https://www.fullbucket.de/music/freqshifter.html frequency shifter VST
+- https://youtu.be/7oQP_qdsa-8 this Dive the series episode gave intel about the original creator of Guruku Tersayang song, Melly Goeslaw. published by PT. Aquarius Pustaka Musik
+- https://youtu.be/_iI3Hwi9yxs refer origin animation to Guruku Tersayang
+- https://lmms.io/forum/viewtopic.php?t=5725 how to set tempo automation in LMMS
+- https://youtu.be/1dFJZvr4pA8 another Guruku tersayang reference (outshifted)
+- https://api.haxeflixel.com/flixel/input/gamepad/FlxGamepad.html disappointing! there is no rumble method for gamepad!
+- https://www.heikoplate.de/psruti.html turn any MIDI into Yamaha Musicsoft MIDI
+- https://openmidiproject.osdn.jp/Sekaiju_en.html Sekaiju! make and edit MIDI for real this time.
+- https://psrtutorial.com/util/plate.html PSR tutorial featured PSR UTI
+- https://www.heikoplate.de/psruti.html here's PSR UTI.
+- https://odysee.com/@JOELwindows7:a/GurukuTersayang_BaWaMI:4?r=FKgkgQ5Mr5kWhLj6fG8zZkeMVtj4pLHm you can also try BaWaMi to render MIDI
+- http://misaka.selfip.net/blog/?page_id=84#bawami here's BaWaMi. it is another own unique synth for playing MIDI. it's already distinct sounded from the rest.
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -84,6 +97,10 @@ use VScode and Github desktop!
 - https://gamebanana.com/sounds/51838 BABABOOEY! irdk_anymore. miss note 13 14 15
 - https://gamebanana.com/tools/7033 nickham13 BF voice SF2
 - https://github.com/GenoX-Fome/funkin-utau/ GenoX FNF UTAU voices. use for AFI Junior - Guruku Tersayang pls
+- https://www.fullbucket.de/music/freqshifter.html use this for Pico voice or whatever.
+- https://www.heikoplate.de/psruti.html PSR UTI. Used for enchancing MIDI quality into Yamaha Musicsoft MIDI
+- https://odysee.com/@JOELwindows7:a/GurukuTersayang_MIDI:d?r=FKgkgQ5Mr5kWhLj6fG8zZkeMVtj4pLHm the MIDI of Guruku Tersayang. originally by Helly Hilmi (website gone), edited by JOELwindows7 with Sekaiju & then enchanced with PSR UTI
+- https://openmidiproject.osdn.jp/Sekaiju_en.html Sekaiju. Compose and edit MIDI, support almost all MIDI file standard data editing from notes to special data like SysEx.
 
 
 # internal extension

@@ -39,7 +39,7 @@ class StoryMenuState extends MusicBeatState
 	//JOELwindows7: ahei. so, we have already make the week list as a json file.
 	// therefore, you just have to do edit assets/data/weekList.json (rendered version)
 	// and follow the way it works like the tutorial. also, use "" instead of '',
-	// because JSON only consider value a string with "".
+	// because JSON only consider value a string and variable name like that with "".
 	// have fun!
 	var weekData:Array<Dynamic> = [
 		['Tutorial'],
@@ -105,10 +105,9 @@ class StoryMenuState extends MusicBeatState
 		// hmm isn't that better to use JSON instead? it's easier to manage!
 		// just copy 3 week list variables above, JSONify them all! yeah!
 		/*
-		var initWeekList = CoolUtil.coolTextFile(Paths.txt('weekList'));
-		for (i in 0...initWeekList.length){
-
-		}
+		Pain is temporary
+		GLORY IS FOREVER
+		LOL wintergatan
 		*/
 		//JOELwindows7: okay fine let's just json it.
 		var initWeekJson = loadFromJson('weekList');

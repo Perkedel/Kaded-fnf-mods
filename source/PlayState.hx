@@ -749,6 +749,7 @@ class PlayState extends MusicBeatState
 				}
 			case 'cruelThesis':
 				{
+					//JOELwindows7: LOL Van Elektronishe with Cruel Angel Thesis lol Evangelion
 					defaultCamZoom = 0.9;
 					curStage = 'cruelThesis';
 					var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('VanElektronische/VanElektronische_corpThesis'));
@@ -849,6 +850,33 @@ class PlayState extends MusicBeatState
 					// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
 					// because no camera has the ability to capture way over Pink Semple had.
 					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.MAGENTA);
+					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
+					hue.updateHitbox();
+					hue.antialiasing = true;
+					hue.scrollFactor.set(0.1,0.1);
+					hue.active = false;
+					add(hue);
+				}
+			case 'whitening':
+				{
+					//JOELwindows7: This looks familiar. oh no.
+					defaultCamZoom = 0.9;
+					curStage = 'whitening';
+					// JOELwindows7: guys, pls don't blamm me. it's nothing to do. let's assume it's purely coincidental.
+					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
+					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
+					hue.updateHitbox();
+					hue.antialiasing = true;
+					hue.scrollFactor.set(0.1,0.1);
+					hue.active = false;
+					add(hue);
+				}
+			case 'kuning':
+				{
+					//JOELwindows7: yellow this one out
+					defaultCamZoom = 0.9;
+					curStage = 'kuning';
+					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.YELLOW);
 					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
 					hue.updateHitbox();
 					hue.antialiasing = true;
@@ -1037,6 +1065,16 @@ class PlayState extends MusicBeatState
 				// to betray Kapoor monopolism proprietarism so penalty terminates starting from that traitor to friends within traitor's opposition and inherits.
 				// Penalties for mentioned defendants are demonetized from Dasandim UBI free Kvz program, etc.
 				// anyway, so uh, we need HDR to brightestly pinkest pink.
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
+			case 'whitening':
+				// JOELwindows7: don't use light mode! it will burn your eyes!
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
+			case 'kuning':
+				// JOELwindows7: Yellow day!
 				boyfriend.x += 500;
 				dad.x -= 400;
 				gf.y -= 100;
