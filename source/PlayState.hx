@@ -306,7 +306,10 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(SONG.bpm);
 
 		trace('INFORMATION ABOUT WHAT U PLAYIN WIT:\nFRAMES: ' + Conductor.safeFrames + '\nZONE: ' + Conductor.safeZoneOffset + '\nTS: ' + Conductor.timeScale + '\nBotPlay : ' + FlxG.save.data.botplay);
-		
+	
+
+
+		//dialogue shit
 		switch (SONG.song.toLowerCase())
 		{
 			//JOELwindows7: psst, how about you built these in each song json file? or, uh... idk..
@@ -321,7 +324,7 @@ class PlayState extends MusicBeatState
 				];
 			case 'fresh':
 				dialogue = ["Not too shabby boy.", ""];
-			case 'dadbattle':
+			case 'dad battle':
 				dialogue = [
 					"gah you think you're hot stuff?",
 					"If you can beat me here...",
@@ -334,7 +337,7 @@ class PlayState extends MusicBeatState
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			case 'windfall':
-			
+		
 				dialogue = CoolUtil.coolTextFile(Paths.txt('windfall/windfallDialogue'));
 			case 'senpai-midi':
 				trace("Playstate pls load senpai-midi dialogue");
@@ -857,7 +860,6 @@ class PlayState extends MusicBeatState
 				}
 			default:
 			{
-					trace("Hey uh, we don't have the stage information, sorry.");
 					defaultCamZoom = 0.9;
 					curStage = 'stage';
 					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
@@ -897,6 +899,7 @@ class PlayState extends MusicBeatState
 			case 'gf':
 				gfVersion = 'gf';
 			case 'gf-ht':
+				//JOELwindows7:
 				// TODO: for Jakarta fair booth Van Elektronische with Hookx, train cart booth room
 				// ht = home theater. a landscape TV with Sondkart GF-HT100 Soundbar bellow it.
 				gfVersion = 'gf';
@@ -1146,6 +1149,7 @@ class PlayState extends MusicBeatState
 		// healthBar
 		add(healthBar);
 
+		//JOELwindows7: I add watermark Perkedel Mod
 		// Add Kade Engine watermark
 		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : "") + (Main.perkedelMark ? " Perkedel Mod" : ""), 16);
 		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
@@ -1284,6 +1288,7 @@ class PlayState extends MusicBeatState
 	}
 
 	//JOELwindows7: here is the school intro. pls copy for Jakarta Fair one!
+	// wait, I don't think that's necessary anymore. we got here aleady.
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
@@ -1362,7 +1367,6 @@ class PlayState extends MusicBeatState
 											}, true);
 										});
 								}
-								
 								new FlxTimer().start(3.2, function(deadTime:FlxTimer)
 								{
 									FlxG.camera.fade(FlxColor.WHITE, 1.6, false);
@@ -1381,11 +1385,6 @@ class PlayState extends MusicBeatState
 				remove(black);
 			}
 		});
-	}
-
-	function normalIntro(?dialogueBox:DialogueBox):Void 
-	{
-		//TODO: normal intro for Jakarta Fair, Odysee, REDACTED_OC_AUTHOR_IN_DANGER, etc. etc.
 	}
 
 	var startTimer:FlxTimer;
@@ -1462,7 +1461,7 @@ class PlayState extends MusicBeatState
 
 			{
 				case 0:
-						FlxG.sound.play(Paths.sound('intro3' + altSuffix + midiSuffix), 0.6);
+					FlxG.sound.play(Paths.sound('intro3' + altSuffix + midiSuffix), 0.6);
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
 					ready.scrollFactor.set();
@@ -1480,7 +1479,7 @@ class PlayState extends MusicBeatState
 							ready.destroy();
 						}
 					});
-						FlxG.sound.play(Paths.sound('intro2' + altSuffix + midiSuffix), 0.6);
+					FlxG.sound.play(Paths.sound('intro2' + altSuffix + midiSuffix), 0.6);
 				case 2:
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 					set.scrollFactor.set();
@@ -1497,7 +1496,7 @@ class PlayState extends MusicBeatState
 							set.destroy();
 						}
 					});
-						FlxG.sound.play(Paths.sound('intro1' + altSuffix + midiSuffix), 0.6);
+					FlxG.sound.play(Paths.sound('intro1' + altSuffix + midiSuffix), 0.6);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 					go.scrollFactor.set();
@@ -1516,7 +1515,7 @@ class PlayState extends MusicBeatState
 							go.destroy();
 						}
 					});
-						FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
+					FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
 				case 4:
 			}
 
@@ -3382,6 +3381,14 @@ class PlayState extends MusicBeatState
 
 					if(!loadRep && note.mustPress)
 						saveNotes.push(HelperFunctions.truncateFloat(note.strumTime, 2));
+					
+					playerStrums.forEach(function(spr:FlxSprite)
+					{
+						if (Math.abs(note.noteData) == spr.ID)
+						{
+							spr.animation.play('confirm', true);
+						}
+					});
 					
 					note.wasGoodHit = true;
 					vocals.volume = 1;
