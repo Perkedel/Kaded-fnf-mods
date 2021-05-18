@@ -64,6 +64,11 @@ thancc for all these resources! without them, everything is impossible.
 - https://www.heikoplate.de/psruti.html here's PSR UTI.
 - https://odysee.com/@JOELwindows7:a/GurukuTersayang_BaWaMI:4?r=FKgkgQ5Mr5kWhLj6fG8zZkeMVtj4pLHm you can also try BaWaMi to render MIDI
 - http://misaka.selfip.net/blog/?page_id=84#bawami here's BaWaMi. it is another own unique synth for playing MIDI. it's already distinct sounded from the rest.
+- https://www.selfmadedesigner.com/cropping-inkscape/ how to crop object inkscape
+- https://fridaynightfunkin.fandom.com/ friday night funkin fandom wiki
+- https://fridaynightfunking.fandom.com/ mods fandom wiki
+- https://gamebanana.com/wips/53720 hat kid
+- https://ninja-muffin24.itch.io/friday-night-funkin prototype
   
 # in event of git merge conflict
 use VScode and Github desktop!
