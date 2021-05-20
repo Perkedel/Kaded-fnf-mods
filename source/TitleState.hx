@@ -20,12 +20,20 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+#if !mobile
+#if !neko
 import io.newgrounds.NG;
+#end
+#end
 import lime.app.Application;
 import openfl.Assets;
 
-#if windows
+#if desktop
+#if !neko
+#if !hl
 import Discord.DiscordClient;
+#end
+#end
 #end
 
 #if cpp
@@ -68,13 +76,17 @@ class TitleState extends MusicBeatState
 		
 		PlayerSettings.init();
 
-		#if windows
+		#if desktop
+		#if !neko
+		#if !hl
 		DiscordClient.initialize();
 
 		Application.current.onExit.add (function (exitCode) {
 			DiscordClient.shutdown();
 		 });
 		 
+		#end
+		#end
 		#end
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
@@ -86,8 +98,12 @@ class TitleState extends MusicBeatState
 		// NGio.noLogin(APIStuff.API);
 
 		#if ng
+		#if !mobile
+		#if !neko
 		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
 		trace('NEWGROUNDS LOL');
+		#end
+		#end
 		#end
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
@@ -306,11 +322,15 @@ class TitleState extends MusicBeatState
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
 			#if !switch
+			#if !mobile
+			#if !neko
 			NGio.unlockMedal(60960);
 
 			// If it's Friday according to da clock
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
+			#end
+			#end
 			#end
 
 			if (FlxG.save.data.flashing)

@@ -11,8 +11,12 @@ import flixel.util.FlxColor;
 import lime.utils.Assets;
 
 
-#if windows
+#if desktop
+#if !neko
+#if !hl
 import Discord.DiscordClient;
+#end
+#end
 #end
 
 using StringTools;
@@ -53,9 +57,13 @@ class FreeplayState extends MusicBeatState
 			}
 		 */
 
-		 #if windows
+		 #if desktop
+		 #if !neko
+		 #if !hl
 		 // Updating Discord Rich Presence
 		 DiscordClient.changePresence("In the Freeplay Menu", null);
+		 #end
+		 #end
 		 #end
 
 		var isDebug:Bool = false;
@@ -242,7 +250,11 @@ class FreeplayState extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		#if !switch
+		#if !mobile
+		#if !neko
 		// NGio.logEvent('Fresh');
+		#end
+		#end
 		#end
 
 		// NGio.logEvent('Fresh');

@@ -69,6 +69,12 @@ thancc for all these resources! without them, everything is impossible.
 - https://fridaynightfunking.fandom.com/ mods fandom wiki
 - https://gamebanana.com/wips/53720 hat kid
 - https://ninja-muffin24.itch.io/friday-night-funkin prototype
+- https://developer.android.com/ndk/guides/standalone_toolchain.html
+- https://gamebanana.com/tuts/13764
+- https://haxeflixel.com/documentation/
+- https://www.electronjs.org/
+- https://kadedev.github.io/Kade-Engine/building
+- https://lime.software/docs/project-files/xml-format/ project.xml format spec
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -106,6 +112,8 @@ use VScode and Github desktop!
 - https://www.heikoplate.de/psruti.html PSR UTI. Used for enchancing MIDI quality into Yamaha Musicsoft MIDI
 - https://odysee.com/@JOELwindows7:a/GurukuTersayang_MIDI:d?r=FKgkgQ5Mr5kWhLj6fG8zZkeMVtj4pLHm the MIDI of Guruku Tersayang. originally by Helly Hilmi (website gone), edited by JOELwindows7 with Sekaiju & then enchanced with PSR UTI
 - https://openmidiproject.osdn.jp/Sekaiju_en.html Sekaiju. Compose and edit MIDI, support almost all MIDI file standard data editing from notes to special data like SysEx.
+- https://github.com/luckydog7/Funkin-android followed almost everything just to make this Perkedel Kaded fnf mod works also on Android
+- https://github.com/ninjamuffin99/Funkin also manually yoink the last code directives where Kade engine didn't think it could've work like Discord RPC stuffs.
 
 
 # internal extension

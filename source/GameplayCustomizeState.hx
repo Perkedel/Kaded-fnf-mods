@@ -2,8 +2,12 @@ import flixel.math.FlxMath;
 import flixel.FlxCamera;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
-#if windows
+#if desktop
+#if !neko
+#if !hl
 import Discord.DiscordClient;
+#end
+#end
 import sys.thread.Thread;
 #end
 
@@ -33,9 +37,13 @@ class GameplayCustomizeState extends MusicBeatState
     private var camHUD:FlxCamera;
     
     public override function create() {
-        #if windows
+        #if desktop
+        #if !neko
+        #if !hl
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Customizing Gameplay", null);
+		#end
+		#end
 		#end
 
 		Conductor.changeBPM(102);

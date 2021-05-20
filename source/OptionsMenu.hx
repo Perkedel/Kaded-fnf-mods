@@ -221,7 +221,11 @@ class OptionsMenu extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		#if !switch
+		#if !mobile
+		#if !neko
 		// NGio.logEvent("Fresh");
+		#end
+		#end
 		#end
 		
 		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
