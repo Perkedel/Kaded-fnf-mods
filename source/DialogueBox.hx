@@ -112,6 +112,20 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
 
 				nonPixel = true;
+			case 'rule the world':
+				hasDialog = true;
+				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
+				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
+				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
+
+				nonPixel = true;
+			case 'well meet again':
+				hasDialog = true;
+				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
+				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
+				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
+
+				nonPixel = true;
 			case 'senpai-midi':
 				trace("please senpai-midi dialog where");
 				hasDialog = true;
@@ -147,6 +161,8 @@ class DialogueBox extends FlxSpriteGroup
 		else
 			trace("You should have dialog man");
 		
+		//JOELwindows7: TODO: heuristic for character in chosen song above.
+		//decommision and instead reinstance per switch case above!
 		portraitLeft = new FlxSprite(-20, 40);
 		portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait');
 		portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);

@@ -55,10 +55,8 @@ import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 
 #if desktop
-#if !neko
-#if !hl
+#if cpp
 import Discord.DiscordClient;
-#end
 #end
 #end
 //JOELwindows7: hey, I changed the directive to think for other desktop OSes as well.
@@ -99,11 +97,15 @@ class PlayState extends MusicBeatState
 	var kadeEngineWatermark:FlxText;
 	
 	#if desktop
+	#if !neko
+	#if !hl
 	// Discord RPC variables
 	var storyDifficultyText:String = "";
 	var iconRPC:String = "";
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
+	#end
+	#end
 	#end
 
 	private var vocals:FlxSound;
@@ -254,8 +256,7 @@ class PlayState extends MusicBeatState
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart"));
 
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		// Making difficulty text for Discord Rich Presence.
 		switch (storyDifficulty)
 		{
@@ -295,7 +296,6 @@ class PlayState extends MusicBeatState
 
 		// Updating Discord Rich Presence.
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
-		#end
 		#end
 		#end
 
@@ -348,8 +348,11 @@ class PlayState extends MusicBeatState
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			case 'windfall':
-
 				dialogue = CoolUtil.coolTextFile(Paths.txt('windfall/windfallDialogue'));
+			case 'rule the world':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('rule the world/rule the worldDialogue'));
+			case 'well meet again':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('well meet again/well meet againDialogue'));
 			case 'senpai-midi':
 				trace("Playstate pls load senpai-midi dialogue");
 				dialogue = CoolUtil.coolTextFile(Paths.txt('senpai-midi/senpai-midiDialogue'));
@@ -897,6 +900,19 @@ class PlayState extends MusicBeatState
 					hue.active = false;
 					add(hue);
 				}
+			case 'blood':
+				{
+					//JOELwindows7: red screen
+					defaultCamZoom = 0.9;
+					curStage = 'kuning';
+					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.RED);
+					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
+					hue.updateHitbox();
+					hue.antialiasing = true;
+					hue.scrollFactor.set(0.1,0.1);
+					hue.active = false;
+					add(hue);
+				}
 		default:
 			{
 					defaultCamZoom = 0.9;
@@ -1267,7 +1283,8 @@ class PlayState extends MusicBeatState
 		{
 			switch (curSong.toLowerCase())
 			{
-				case "winter-horrorland":
+				//JOELwindows7: the JSON file for that winter horrorland also removes the dash!
+				case "winter horrorland":
 					var blackScreen:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 					add(blackScreen);
 					blackScreen.scrollFactor.set();
@@ -1311,8 +1328,11 @@ class PlayState extends MusicBeatState
 				case 'thorns-midi':
 					schoolIntro(doof);
 				case 'windfall':
-					//TODO: jakarta fair normal intro doof pls
 					//startCountdown();
+					schoolIntro(doof);
+				case 'rule the world':
+					schoolIntro(doof);
+				case 'well meet again':
 					schoolIntro(doof);
 				default:
 					trace("No School Intro info in isStoryMode. start coundown anyway");
@@ -1574,7 +1594,7 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
 				case 4:
 					//JOELwindows7: just add trace for fun
-					trace("Run the song now!")
+					trace("Run the song now!");
 			}
 
 			swagCounter += 1;
@@ -1647,11 +1667,9 @@ class PlayState extends MusicBeatState
 		}
 		
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
-		#end
 		#end
 		#end
 	}
@@ -1942,10 +1960,8 @@ class PlayState extends MusicBeatState
 			}
 
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			DiscordClient.changePresence("PAUSED on " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "Acc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
-			#end
 			#end
 			#end
 			if (!startTimer.finished)
@@ -1969,8 +1985,7 @@ class PlayState extends MusicBeatState
 			paused = false;
 
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			if (startTimer.finished)
 			{
 				DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses, iconRPC, true, songLength - Conductor.songPosition);
@@ -1979,7 +1994,6 @@ class PlayState extends MusicBeatState
 			{
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), iconRPC);
 			}
-			#end
 			#end
 			#end
 		}
@@ -1998,10 +2012,8 @@ class PlayState extends MusicBeatState
 		vocals.play();
 
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
-		#end
 		#end
 		#end
 	}
@@ -2147,22 +2159,18 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.SEVEN)
 		{
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			DiscordClient.changePresence("Chart Editor", null, null, true);
-			#end
 			#end
 			#end
 			FlxG.switchState(new ChartingState());
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
-			#end
 			#end
 			#end
 		}
@@ -2513,13 +2521,12 @@ class PlayState extends MusicBeatState
 			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			// Game Over doesn't get his own variable because it's only used here
 			DiscordClient.changePresence("GAME OVER -- " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy),"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
 			#end
 			#end
-			#end
+
 
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
@@ -2539,14 +2546,11 @@ class PlayState extends MusicBeatState
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		
 					#if desktop
-					#if !neko
-					#if !hl
+					#if cpp
 					// Game Over doesn't get his own variable because it's only used here
 					DiscordClient.changePresence("GAME OVER -- " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy),"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
 					#end
-					#end
-					#end
-		
+					#end		
 					// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 				}
 		}
@@ -3745,14 +3749,12 @@ class PlayState extends MusicBeatState
 		// yes this is bad
 		// but i'm doing it to update misses and accuracy
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
 
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "Acc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC,true,  songLength - Conductor.songPosition);
-		#end
 		#end
 		#end
 

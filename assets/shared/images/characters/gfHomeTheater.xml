@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="GF_assets.png">
+<TextureAtlas imagePath="gfHomeTheater.png">
     <!-- JOELwindows7 manual TextureAtlas override -->
 	<!-- copied from GF_assets.xml lmao -->
 	<SubTexture name="GF Cheer0000" x="0" y="0" width="700" height="700"/>

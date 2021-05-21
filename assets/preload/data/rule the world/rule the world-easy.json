@@ -1,14 +1,14 @@
 {
     "song": {
-        "player2": "dad",
+        "player2": "hookx",
         "player1": "bf",
         "stage": "jakartaFair",
         "speed": 1,
         "needsVoices": false,
         "sectionLengths": [],
-        "song": "ruleTheWorld",
+        "song": "Rule The World",
         "notes": [],
-        "bpm": 100,
+        "bpm": 102,
         "sections": 0,
         "validScore": true
     }

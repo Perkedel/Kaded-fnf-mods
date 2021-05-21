@@ -12,10 +12,8 @@ import lime.utils.Assets;
 
 
 #if desktop
-#if !neko
-#if !hl
+#if cpp
 import Discord.DiscordClient;
-#end
 #end
 #end
 
@@ -58,11 +56,9 @@ class FreeplayState extends MusicBeatState
 		 */
 
 		 #if desktop
-		 #if !neko
-		 #if !hl
+		 #if cpp
 		 // Updating Discord Rich Presence
 		 DiscordClient.changePresence("In the Freeplay Menu", null);
-		 #end
 		 #end
 		 #end
 

@@ -20,10 +20,8 @@ import io.newgrounds.NG;
 import lime.app.Application;
 
 #if desktop
-#if !neko
-#if !hl
+#if cpp
 import Discord.DiscordClient;
-#end
 #end
 #end
 
@@ -56,11 +54,9 @@ class MainMenuState extends MusicBeatState
 	override function create()
 	{
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
-		#end
 		#end
 		#end
 

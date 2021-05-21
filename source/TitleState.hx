@@ -449,7 +449,7 @@ class TitleState extends MusicBeatState
 						if (Main.odyseeMark)
 							createCoolText(['are we partnered', 'with']);
 						else if (Main.perkedelMark)
-							createCoolText(['Perkedel Kaded FNF mods', 'by']);
+							createCoolText(['Perkedel last fnf moments', 'by']);
 						else
 							createCoolText(['Kade Engine', 'by']);
 					}

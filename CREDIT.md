@@ -75,6 +75,8 @@ thancc for all these resources! without them, everything is impossible.
 - https://www.electronjs.org/
 - https://kadedev.github.io/Kade-Engine/building
 - https://lime.software/docs/project-files/xml-format/ project.xml format spec
+- https://code.haxe.org/category/beginner/strings.html what de buck i must unheurestically for `StringTools.endsWith()`?!
+- https://getsongbpm.com/tools/audio get the song bpm now
   
 # in event of git merge conflict
 use VScode and Github desktop!
