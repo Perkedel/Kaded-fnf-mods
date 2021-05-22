@@ -13,6 +13,7 @@ We have:
   - Hookx the friendly karaoke robot
   - Home Theater, while Girlfriend was busy looking for fashion or whatever physical distancing occassion needed, this Home theater is here. it has a modular landscape TV (which the screen and the computer (called TV evolution box thingy) are separatable), Sondkart GF-100 Soundbar, and a furniture to hold the TV evolution box and the soundbar.
 - All without replacing weeks, stages, or even skin at all! the vanilla assets and stuff still remains intact! (the week 7 is missing placeholder (High effort Ugh) and the original week 7 exclusive embargo is still ongoing as of 23/05/2021, Kickstarter ended)
+- ways to load weeks!!! with `weekList.json` file, you can edit the variable right away without needing to recompile entire game. finally! add weeks without recompile! more proceduralizer to come.
 - Forked from Kade Engine with love yay!
 - idk what next?
 
