@@ -97,14 +97,12 @@ class PlayState extends MusicBeatState
 	var kadeEngineWatermark:FlxText;
 	
 	#if desktop
-	#if !neko
-	#if !hl
+	#if cpp
 	// Discord RPC variables
 	var storyDifficultyText:String = "";
 	var iconRPC:String = "";
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
-	#end
 	#end
 	#end
 
@@ -904,7 +902,7 @@ class PlayState extends MusicBeatState
 				{
 					//JOELwindows7: red screen
 					defaultCamZoom = 0.9;
-					curStage = 'kuning';
+					curStage = 'blood';
 					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.RED);
 					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
 					hue.updateHitbox();
@@ -1102,6 +1100,11 @@ class PlayState extends MusicBeatState
 				gf.y -= 100;
 			case 'kuning':
 				// JOELwindows7: Yellow day!
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
+			case 'blood':
+				// JOELwindows7: Red screen!
 				boyfriend.x += 500;
 				dad.x -= 400;
 				gf.y -= 100;
@@ -2165,12 +2168,14 @@ class PlayState extends MusicBeatState
 			#end
 			FlxG.switchState(new ChartingState());
 			#if desktop
-			#if cpp
+			#if !neko
+			#if !hl
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
+			#end
 			#end
 			#end
 		}

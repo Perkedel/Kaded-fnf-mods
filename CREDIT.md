@@ -107,7 +107,7 @@ use VScode and Github desktop!
 - https://gamebanana.com/sounds/51010 (WARNING: has NC, ND) tourettes guy miss note Beskupehn_Espira redistributions. 4 5 6 miss note
 - https://gamebanana.com/sounds/51159 (WARNING: has NC, ND) bruh miss note. MrBruh redistributed it this. 10 11 12 miss note
 - https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
-- https://gamebanana.com/sounds/51838 BABABOOEY! irdk_anymore. miss note 13 14 15
+- https://gamebanana.com/sounds/51838 (WARNING: has NC, ND) BABABOOEY! irdk_anymore. miss note 13 14 15
 - https://gamebanana.com/tools/7033 nickham13 BF voice SF2
 - https://github.com/GenoX-Fome/funkin-utau/ GenoX FNF UTAU voices. use for AFI Junior - Guruku Tersayang pls
 - https://www.fullbucket.de/music/freqshifter.html use this for Pico voice or whatever.
@@ -116,7 +116,36 @@ use VScode and Github desktop!
 - https://openmidiproject.osdn.jp/Sekaiju_en.html Sekaiju. Compose and edit MIDI, support almost all MIDI file standard data editing from notes to special data like SysEx.
 - https://github.com/luckydog7/Funkin-android followed almost everything just to make this Perkedel Kaded fnf mod works also on Android
 - https://github.com/ninjamuffin99/Funkin also manually yoink the last code directives where Kade engine didn't think it could've work like Discord RPC stuffs.
+- https://gamebanana.com/mods/44306 Placeholder of week 7 temporarily.
 
+# what the peck why there's that one license there? / Have you got permission?
+Okay let me clarify it this Creative Commons licenses here. Let's see what I understand.
+
+any of license available with CC allows me to **yoink** it this to here. now, because there's `BY` (Attribution), I must credit. Of course, I cannot disagree with anything. everyone must know where to download and what the peck title is that.
+
+the `SA` (share alike) is about this. so if I just inserted to my mods here, that doesn't mean anything. **HOWEVER**, if I happened to edit that part with `SA`, I then must also license that particular remix (not whole mods) the same license as the original.
+
+the `NC` (No commercial) is notorious. I think, if this mod contains any asset with `NC`, then this whole mod cannot be deployed to arcade machine. Well, you then have to bring your own this mod there. Because No commercial gain thingy idk.
+
+the `ND` (No Derivative) is death wish. Again **this does not affect entire mod** hopefully. I can only just yoink (because Creative Commons), but I am allowed to remix those particular assets with `ND` at all. Just yoink that's it.
+
+and yeah, that's why I think inserting those mods without permission **should and must be** okay, as long you understand the licenses that had their permissions and restriction in it. Basically, make sure you credit. second, if it has `=` (No Derivative), do not remix that but yoink is okay. third if it has ~~`$`~~ (No commercial), then don't deploy this mod officially in arcade machine (if you have to, then you must remove all of the offending assets with No commecial first, or ask negotiate commercial permission from the authors involved making the assets). fourth, if it has `🔄` (Share Alike) then if you edited the particular asset, this new remix (not the whole mods) must be licensed same as original is (you can keep licensing rest of your mod anything less restrictive).
+
+right, so I assume you didn't put any license into it for those are CC4.0-BY-NC-ND, because if you didn't write it then it uses that default license, CC4.0-BY-NC-ND. idk about you, but maybe it's recommended to have at least a bit of knowledge of license here.
+
+I'm not legal expert at all. I just, not into law games, but concerns it this part of a thing. And c'mon, why we go here? weren't we supposed to make more mods or play more mods already? why bother if someone yoinked your mods beside if they don't credited it?
+
+# wtf gamebanana?! what vagueness is this?!?!
+## Requirement of permission
+https://gamebanana.com/threads/218927 Section 3.7 `No Proof Of Permission`
+
+okay, so what I interpret is that, yoinks are not okay at all. is that right? Yeah I get it, but for what license?
+
+you see, all mods who haven't written license will be default to Creative Commons 4.0 Attribution No Commercial No Derivatives (CC4.0-BY-NC-ND). By standard of most part of the earth, you can yoink pictures from the internet even without permission that are licensed Creative Commons to any creation, as long you put credit clearly in the creation description, as stated in `BY` Attribution in this CC.
+
+Yeah, I might become modpack here and there, but we got original contexts in here.
+
+ah peck this poop. let's scrap the test files. just to be safe people.
 
 # internal extension
 - https://github.com/Perkedel/AfterChurch all inkscape assets
