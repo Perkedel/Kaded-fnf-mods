@@ -39,6 +39,7 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		//JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
 
 		for (i in 0...initSonglist.length)

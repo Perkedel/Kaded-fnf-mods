@@ -93,6 +93,9 @@ class PlayState extends MusicBeatState
 
 	var halloweenLevel:Bool = false;
 
+	//JOELwindows7: numbers of Missnote sfx! load from text file, how many Miss notes you had?
+	var numOfMissNoteSfx:Int = 3;
+
 	var songLength:Float = 0;
 	var kadeEngineWatermark:FlxText;
 	
@@ -250,6 +253,9 @@ class PlayState extends MusicBeatState
 		#if neko
 		executeModchart = false; // JOELwindows7: FORCE disable for neko targets just to be safe
 		#end
+		#if hl
+		executeModchart = false;
+		#end
 
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart"));
 
@@ -297,6 +303,12 @@ class PlayState extends MusicBeatState
 		#end
 		#end
 
+		//JOELwindows7: load the num missnote sfx file and interpret!
+		// inspire the loader from FreeplayState.hx or OH ChartingState.hx. look at those dropdowns
+		// that lists characters, stages, etc.
+		// yeah I know, for future use we array this.
+		var initMissSfx = CoolUtil.coolTextFile(Paths.txt('numbersOfMissSfx'));
+		numOfMissNoteSfx = Std.parseInt(initMissSfx[0]);
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -416,9 +428,14 @@ class PlayState extends MusicBeatState
 					if(FlxG.save.data.distractions){
 						add(phillyTrain);
 					}
-
+					
+					//JOELwindows7: buddy, you forgot to put the train sound in week3 special folder
+					//No wonder the train cannot come. it missing that sound.
+					//remember, the trains position depends on the sound playback position!
 					trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes','week3'));
 					FlxG.sound.list.add(trainSound);
+					//there, I've copied the train_passes ogg & mp3 into the week3/sounds . let's see
+					//if it works again.
 
 					// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
 
@@ -953,7 +970,7 @@ class PlayState extends MusicBeatState
 				//JOELwindows7:
 				// TODO: for Jakarta fair booth Van Elektronische with Hookx, train cart booth room
 				// ht = home theater. a landscape TV with Sondkart GF-HT100 Soundbar bellow it.
-				gfVersion = 'gf';
+				gfVersion = 'gf-ht';
 			default:
 				gfVersion = 'gf';
 		}
@@ -975,7 +992,28 @@ class PlayState extends MusicBeatState
 					camPos.x += 600;
 					tweenCamIn();
 				}
-
+			case 'gf-ht':
+				//JOELwindows7: copy paste above. the Home Theater also had left down up right as well!
+				dad.setPosition(gf.x, gf.y);
+				gf.visible = false;
+				if (isStoryMode)
+				{
+					camPos.x += 600;
+					tweenCamIn();
+				}
+			case 'gf-standalone':
+				//JOELwindows7: reserved for future use
+				//basically gf get down from speaker and duet against player 1
+				dad.y += 100;
+				dad.x -= 100;
+				switch(gfVersion){
+					case 'gf':
+						//remove the gf from speaker
+					case 'gf-ht':
+						//don't do anything and stay cool. no change.
+					default:
+						//do something if the GF is speaker.
+				}
 			case "spooky":
 				dad.y += 200;
 			case "monster":
@@ -2129,6 +2167,8 @@ class PlayState extends MusicBeatState
 			case 'philly':
 				if (trainMoving)
 				{
+					//JOELwindows7: is update state
+					//trace("lookout trains");
 					trainFrameTiming += elapsed;
 
 					if (trainFrameTiming >= 1 / 24)
@@ -3421,7 +3461,8 @@ class PlayState extends MusicBeatState
 
 			songScore -= 10;
 
-			FlxG.sound.play(Paths.soundRandom('missnote', 1, 15), FlxG.random.float(0.1, 0.2));
+			//JOELwindows7: now the numbers of miss note sfx depends on the file yay!
+			FlxG.sound.play(Paths.soundRandom('missnote', 1, numOfMissNoteSfx), FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
 			// FlxG.log.add('played imss note');
 
@@ -3660,6 +3701,7 @@ class PlayState extends MusicBeatState
 
 	function trainStart():Void
 	{
+		trace("Here comes the train choo choo!");
 		if(FlxG.save.data.distractions){
 		trainMoving = true;
 		if (!trainSound.playing)
@@ -3672,6 +3714,8 @@ class PlayState extends MusicBeatState
 	function updateTrainPos():Void
 	{
 		if(FlxG.save.data.distractions){
+			//JOELwindows7: is update state
+			//trace("whoah that's fast train");
 			if (trainSound.time >= 4700)
 				{
 					startedMoving = true;
@@ -3701,6 +3745,7 @@ class PlayState extends MusicBeatState
 	function trainReset():Void
 	{
 		if(FlxG.save.data.distractions){
+			trace("train passes bye train");
 			gf.playAnim('hairFall');
 			phillyTrain.x = FlxG.width + 200;
 			trainMoving = false;
@@ -3882,6 +3927,7 @@ class PlayState extends MusicBeatState
 	
 					if (curBeat % 4 == 0)
 					{
+						trace("change light pls");
 						phillyCityLights.forEach(function(light:FlxSprite)
 						{
 							light.visible = false;
@@ -3898,6 +3944,7 @@ class PlayState extends MusicBeatState
 				if (curBeat % 8 == 4 && FlxG.random.bool(30) && !trainMoving && trainCooldown > 8)
 				{
 					if(FlxG.save.data.distractions){
+						trace("Hey look train!");
 						trainCooldown = FlxG.random.int(-4, 0);
 						trainStart();
 					}

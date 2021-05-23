@@ -102,7 +102,7 @@ use VScode and Github desktop!
 - https://youtu.be/RWf50T52n58 AFI Junior - Guruku Tersayang
 
 # other mods that wins the inclusion (without permission if has CC or uh whatever bruh, otherwise unlikely). Congratulations!
-- https://gamebanana.com/mods/43569 FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
+- https://gamebanana.com/mods/43569 (do whatever the fck you want license) FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
 - https://gamebanana.com/sounds/52066 (WARNING: has NC, ND) frick vine school class, assembled by Picaro2604. discovered that this kade randomly choose which missNote you can have. 7 8 9 miss note
 - https://gamebanana.com/sounds/51010 (WARNING: has NC, ND) tourettes guy miss note Beskupehn_Espira redistributions. 4 5 6 miss note
 - https://gamebanana.com/sounds/51159 (WARNING: has NC, ND) bruh miss note. MrBruh redistributed it this. 10 11 12 miss note
@@ -117,6 +117,9 @@ use VScode and Github desktop!
 - https://github.com/luckydog7/Funkin-android followed almost everything just to make this Perkedel Kaded fnf mod works also on Android
 - https://github.com/ninjamuffin99/Funkin also manually yoink the last code directives where Kade engine didn't think it could've work like Discord RPC stuffs.
 - https://gamebanana.com/mods/44306 Placeholder of week 7 temporarily.
+- https://inkscape.org there's a symbol panel that has all common symbols you can freely use. press `Shift` + `Ctrl` + `Y` or top menu `Object`, `Symbols (Shift + Ctrl + Y)`. there's more symbols too https://inkscape.org/gallery/=symbol/?order=liked . and this one too https://github.com/PanderMusubi/inkscape-open-symbols that I believe we've installed.
+- https://github.com/PanderMusubi/inkscape-open-symbols the symbols collection for Inkscape yay!
+- the Exit sign, arrows, etc. for Jakarta Fair booth, Home theater, etc. in this mod is from AIGA symbol sets. it it's difficult, you can try search bar of that symbol panel: `Exit`. yeah!
 
 # what the peck why there's that one license there? / Have you got permission?
 Okay let me clarify it this Creative Commons licenses here. Let's see what I understand.
@@ -143,9 +146,20 @@ okay, so what I interpret is that, yoinks are not okay at all. is that right? Ye
 
 you see, all mods who haven't written license will be default to Creative Commons 4.0 Attribution No Commercial No Derivatives (CC4.0-BY-NC-ND). By standard of most part of the earth, you can yoink pictures from the internet even without permission that are licensed Creative Commons to any creation, as long you put credit clearly in the creation description, as stated in `BY` Attribution in this CC.
 
+and sometimes I can find mods licensed seriously, humbly, permissively, free culture license compliants. such as Do whatever the fck you want thingy.. Now what with these? we can just put it in right? yeah we credit of course, even it is public domain.
+
 Yeah, I might become modpack here and there, but we got original contexts in here.
 
 ah peck this poop. let's scrap the test files. just to be safe people.
+
+## Recompile must be Open Source too, but why not the old one too?
+https://gamebanana.com/threads/218927 Section 3.10 `Recompiles`
+
+I may sound like a *karen on the loose that worthy canceling everywhere*. but hear me out:
+
+I believe you should consider enforcing that law on older mods too as well, well eventually. Yeah after time elapsed there enforcing for the new mods as of the date stated, then you should consider enforcing that too on older mods.
+
+of course, kindly contact the submitters first. give them time for maybe, a month! no response, withhold. I think that's the good plan idk if not wrong.
 
 # internal extension
 - https://github.com/Perkedel/AfterChurch all inkscape assets

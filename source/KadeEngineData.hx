@@ -33,6 +33,10 @@ class KadeEngineData
 			FlxG.save.data.changedHit = false;
 		}
 
+		//JOELwindows7: don't forget init save data of fullscreen mode
+		if (FlxG.save.data.fullscreen == null)
+			FlxG.save.data.fullscreen == FlxG.fullscreen;
+
 		if (FlxG.save.data.fpsRain == null)
 			FlxG.save.data.fpsRain = false;
 
@@ -84,6 +88,7 @@ class KadeEngineData
 		//JOELwindows7: hey, remember to load the data first!
 		Main.odyseeMark = FlxG.save.data.odyseeMark;
 		Main.perkedelMark = FlxG.save.data.perkedelMark;
+		FlxG.fullscreen = FlxG.save.data.fullscreen;
 
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 	}

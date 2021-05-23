@@ -2,6 +2,7 @@
     "song": {
         "player2": "hookx",
         "player1": "bf",
+        "gfVersion": "gf-ht",
         "stage": "jakartaFair",
         "speed": 1,
         "needsVoices": false,

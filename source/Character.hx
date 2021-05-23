@@ -62,6 +62,38 @@ class Character extends FlxSprite
 				addOffset('scared', -2, -17);
 
 				playAnim('danceRight');
+			case 'gf-ht':
+				//JOELwindows7: copy from above GIRLFRIEND CODE
+				tex = Paths.getSparrowAtlas('characters/gfHomeTheater');
+				frames = tex;
+				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
+				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
+				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
+				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
+				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
+				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
+				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
+				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
+				animation.addByPrefix('scared', 'GF FEAR', 24);
+
+
+				addOffset('cheer',0,2);
+				addOffset('sad',0,2);
+				addOffset('danceLeft',0,2);
+				addOffset('danceRight',0,2);
+
+				addOffset("singUP",0,2);
+				addOffset("singRIGHT",0,2);
+				addOffset("singLEFT",0,2);
+				addOffset("singDOWN",0,2);
+				addOffset('hairBlow',0,2);
+				addOffset('hairFall',0,2);
+
+				addOffset('scared',0,2);
+
+				playAnim('danceRight');
 
 			case 'gf-christmas':
 				tex = Paths.getSparrowAtlas('characters/gfChristmas');
@@ -607,6 +639,10 @@ class Character extends FlxSprite
 			case 'gf':
 				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 					playAnim('danceRight');
+			case 'gf-ht':
+				//JOELwindows7: okay idk how to make this work at all!
+				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+					playAnim('danceRight');
 		}
 
 		super.update(elapsed);
@@ -633,7 +669,17 @@ class Character extends FlxSprite
 						else
 							playAnim('danceLeft');
 					}
-
+				case 'gf-ht':
+					//JOELwindows7: copy this if from above case
+					if (!animation.curAnim.name.startsWith('hair'))
+						{
+							danced = !danced;
+	
+							if (danced)
+								playAnim('danceRight');
+							else
+								playAnim('danceLeft');
+						}
 				case 'gf-christmas':
 					if (!animation.curAnim.name.startsWith('hair'))
 					{
@@ -691,7 +737,7 @@ class Character extends FlxSprite
 		else
 			offset.set(0, 0);
 
-		if (curCharacter == 'gf')
+		if (curCharacter == 'gf' || curCharacter == 'gf-ht')
 		{
 			if (AnimName == 'singLEFT')
 			{

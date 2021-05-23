@@ -292,6 +292,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.F)
 		{
 			FlxG.fullscreen = !FlxG.fullscreen;
+			FlxG.save.data.fullscreen = FlxG.fullscreen;
 		}
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
@@ -449,7 +450,7 @@ class TitleState extends MusicBeatState
 						if (Main.odyseeMark)
 							createCoolText(['are we partnered', 'with']);
 						else if (Main.perkedelMark)
-							createCoolText(['Perkedel last fnf moments', 'by']);
+							createCoolText(['last funkin moments', 'by']);
 						else
 							createCoolText(['Kade Engine', 'by']);
 					}

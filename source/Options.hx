@@ -194,6 +194,7 @@ class DistractionsAndEffectsOption extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.distractions = !FlxG.save.data.distractions;
+		trace("Distraction set to " + Std.string(FlxG.save.data.distractions));
 		display = updateDisplay();
 		return true;
 	}
@@ -510,6 +511,30 @@ class AccuracyDOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Accuracy Mode: " + (FlxG.save.data.accuracyMod == 0 ? "Accurate" : "Complex");
+	}
+}
+
+//JOELwindows7: pls don't forget full screen mode!
+//Rediscovered press F in title state to toggle full screen?!?!
+class FullScreenOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	
+	public override function press():Bool
+	{
+		FlxG.fullscreen = !FlxG.fullscreen;
+		trace("fullscreen is now " + Std.string(FlxG.fullscreen));
+		FlxG.save.data.fullscreen = FlxG.fullscreen;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Screen mode " + (FlxG.fullscreen ? "Fullscreen" : "Windowed");
 	}
 }
 

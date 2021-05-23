@@ -3,16 +3,16 @@ collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
 We have:
 - Week Strong! vs. Hookx the friendly karaoke robot! ft. 3 TheFatRat Songs: Windfall, Rule The World, We'll meet again
-- new **UNITQUE** stages (which unfortunately are also hard code too):
+- new **UNIQUE** stages (which unfortunately are also hard code too):
   - Jakarta Fair. inside one of the walking mini booth in the Van Elektronische booth
   - Qmoveph. our default background found in our softwares consisting of stars and circles, complemented with a blue hue on the top, gradiently browns towards the bottom, both sides loopable.
   - Fieldes. Yards with a bunch of hills behind it.
   - Cruel Thesis. a background with self explanatory accent strip on the bottom left corner with Van Elektronische brand logo in the center, complemented with purple themed hue diagonal gradients.
   - Colors screens!!! Solid color screen for chroma keying purposes! there are: Blue, Red, Green, Yellow, White, Blank! The characters and gf also also far distanced for easy management and further keyings later.
-- new **UNIQUE** characters!:
+- new **UNIQUE** characters! (pls fix so I don't have to hard code):
   - Hookx the friendly karaoke robot
   - Home Theater, while Girlfriend was busy looking for fashion or whatever physical distancing occassion needed, this Home theater is here. it has a modular landscape TV (which the screen and the computer (called TV evolution box thingy) are separatable), Sondkart GF-100 Soundbar, and a furniture to hold the TV evolution box and the soundbar.
-- All without replacing weeks, stages, or even skin at all! the vanilla assets and stuff still remains intact! (the week 7 is missing placeholder (High effort Ugh) and the original week 7 exclusive embargo is still ongoing as of 23/05/2021, Kickstarter ended)
+- **All without replacing weeks, stages, or even skin at all!** the vanilla assets and stuff still remains intact! (the week 7 is missing placeholder (High effort Ugh) and the original week 7 exclusive embargo is still ongoing as of 23/05/2021, Kickstarter ended)
 - ways to load weeks!!! with `weekList.json` file, you can edit the variable right away without needing to recompile entire game. finally! add weeks without recompile! more proceduralizer to come.
 - Forked from Kade Engine with love yay!
 - idk what next?
@@ -43,6 +43,7 @@ Well, it's not the live person he met but another robot instead. Why not try tho
 - week strong. vs. Hookx the friendly singing portrait tv robot assistant
 - hey, weren't we supposed to build sTILE instead?
 - add constructive criticism about how unprocedural map loading is unlike other rhythm games
+- abandon this mod when the procedural way of loading everything new (weeks, stages, background, scripts, etc.) has been ready on the upstream or the OG upstream, backport everything there.
 
 <!-- Kade Descriptions -->
 # Kade Engine Descriptions
