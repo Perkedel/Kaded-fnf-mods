@@ -724,3 +724,24 @@ class BotPlay extends Option
 	private override function updateDisplay():String
 		return "BotPlay " + (FlxG.save.data.botplay ? "on" : "off");
 }
+
+//JOELwindows7: for future use in case it is necessary
+class NoMidClick extends Option
+{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+		
+		public override function press():Bool
+		{
+			FlxG.save.data.noMidClick = !FlxG.save.data.noMidClick;
+			trace('No Middle Click : ' + FlxG.save.data.noMidClick);
+			display = updateDisplay();
+			return true;
+		}
+		
+		private override function updateDisplay():String
+			return "No Middle click " + (FlxG.save.data.noMidClick ? "on" : "off");
+}

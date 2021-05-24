@@ -1,0 +1,33 @@
+{
+    "watermarks": [
+        "default",
+        "kadeEngine",
+        "Odysee",
+        "perkedel"
+    ],
+    "firstText": [
+        "In Partership with",
+        "Kade Engine",
+        "Are we partnered with",
+        "Last Funkin Moments"
+    ],
+    "secondText": [
+        "Newgrounds",
+        "KadeDeveloper",
+        "",
+        ""
+    ],
+    "secondloadImage": [
+        true,
+        false,
+        true,
+        true
+
+    ],
+    "secondImagePath": [
+        "newgrounds_logo",
+        "",
+        "odysee_Logo_Transparent_White_Text",
+        "Perkedel_Logo_Typeborder"
+    ]
+}

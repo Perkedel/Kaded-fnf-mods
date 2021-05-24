@@ -256,7 +256,9 @@ class TitleState extends MusicBeatState
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
+		//JOELwindows7: don't invisiblize the mouse until a gamepad or keyboard being pressed on it. idk..
 		FlxG.mouse.visible = false;
+		//nvm. title don't need cursor.
 
 		if (initialized)
 			skipIntro();
@@ -285,6 +287,11 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		//JOELwindows7: make mouse visible when moved.
+		// if(FlxG.mouse.justMoved)
+		// 	FlxG.mouse.visible = true;
+		//nvm. you just press enter or click in here.
+
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
@@ -292,7 +299,9 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.F)
 		{
 			FlxG.fullscreen = !FlxG.fullscreen;
+			//JOELwindows7: save data for fullscreen mode
 			FlxG.save.data.fullscreen = FlxG.fullscreen;
+			FlxG.save.flush(); // JOELwindows7: from OptionMenu.hx it constantly save data.
 		}
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
@@ -306,6 +315,11 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end
+
+		//JOELwindows7: add mouse click to press enter
+		if(FlxG.mouse.justPressed){
+			pressedEnter = true;
+		}
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 

@@ -11,6 +11,9 @@ class GitarooPause extends MusicBeatState
 
 	var replaySelect:Bool = false;
 
+	//JOELwindows7: has clicked the menu
+	var hasClicked:Bool = false;
+
 	public function new():Void
 	{
 		super();
@@ -18,6 +21,9 @@ class GitarooPause extends MusicBeatState
 
 	override function create()
 	{
+		//make mouse visible
+		FlxG.mouse.visible = true;
+
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -55,7 +61,7 @@ class GitarooPause extends MusicBeatState
 		if (controls.LEFT_P || controls.RIGHT_P)
 			changeThing();
 
-		if (controls.ACCEPT)
+		if (controls.ACCEPT || hasClicked)
 		{
 			if (replaySelect)
 			{
@@ -65,6 +71,23 @@ class GitarooPause extends MusicBeatState
 			{
 				FlxG.switchState(new MainMenuState());
 			}
+			hasClicked = false;
+		}
+
+		//JOELwindows7: games from scratch overlap sprite mouse click
+		if(FlxG.mouse.overlaps(replayButton)){
+			setThing(true);
+
+			if(FlxG.mouse.justPressed){
+				hasClicked = true;
+			}
+		}
+		if(FlxG.mouse.overlaps(cancelButton)){
+			setThing(false);
+
+			if(FlxG.mouse.justPressed){
+				hasClicked = true;
+			}
 		}
 
 		super.update(elapsed);
@@ -73,6 +96,23 @@ class GitarooPause extends MusicBeatState
 	function changeThing():Void
 	{
 		replaySelect = !replaySelect;
+
+		if (replaySelect)
+		{
+			cancelButton.animation.curAnim.curFrame = 0;
+			replayButton.animation.curAnim.curFrame = 1;
+		}
+		else
+		{
+			cancelButton.animation.curAnim.curFrame = 1;
+			replayButton.animation.curAnim.curFrame = 0;
+		}
+	}
+
+	//JOELwindows7: select manually which one.
+	function setThing(intoWha:Bool = false):Void
+	{
+		replaySelect = intoWha;
 
 		if (replaySelect)
 		{

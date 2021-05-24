@@ -77,6 +77,17 @@ thancc for all these resources! without them, everything is impossible.
 - https://lime.software/docs/project-files/xml-format/ project.xml format spec
 - https://code.haxe.org/category/beginner/strings.html what de buck i must unheurestically for `StringTools.endsWith()`?!
 - https://getsongbpm.com/tools/audio get the song bpm now
+- https://www.microsoft.com/store/productId/9WZDNCRFHVN5 Windows 10 calculator!!! I need to build multiplication stack of 7 for GF-HT texture atlas positionings.
+- https://haxeflixel.com/documentation/mouse/ how to mouse in HaxeFlixel
+- https://api.haxeflixel.com/flixel/input/touch/FlxTouch.html how to touchscreen in HaxeFlixel
+- https://snippets.haxeflixel.com/input/button/ how to button in HaxeFlixel
+- https://api.haxeflixel.com/flixel/ui/FlxSpriteButton.html how to sprite button in HaxeFlixel
+- https://api.haxeflixel.com/flixel/addons/display/FlxExtendedSprite.html how to extended sprite in HaxeFlixel
+- https://gamefromscratch.com/haxeflixel-tutorial-mouse-input/ the other way around to mouse input against a sprite
+- https://api.haxeflixel.com/flixel/ui/FlxButton.html dump doc
+- https://api.haxeflixel.com/flixel/addons/display/MouseCallback.html dump doc
+- https://api.haxeflixel.com/flixel/addons/display/FlxExtendedSprite.html dump doc
+- https://api.haxeflixel.com/flixel/ui/FlxSpriteButton.html dump doc
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -120,6 +131,7 @@ use VScode and Github desktop!
 - https://inkscape.org there's a symbol panel that has all common symbols you can freely use. press `Shift` + `Ctrl` + `Y` or top menu `Object`, `Symbols (Shift + Ctrl + Y)`. there's more symbols too https://inkscape.org/gallery/=symbol/?order=liked . and this one too https://github.com/PanderMusubi/inkscape-open-symbols that I believe we've installed.
 - https://github.com/PanderMusubi/inkscape-open-symbols the symbols collection for Inkscape yay!
 - the Exit sign, arrows, etc. for Jakarta Fair booth, Home theater, etc. in this mod is from AIGA symbol sets. it it's difficult, you can try search bar of that symbol panel: `Exit`. yeah!
+- https://gamebanana.com/tools/7107 Pico sf2 yay finally
 
 # what the peck why there's that one license there? / Have you got permission?
 Okay let me clarify it this Creative Commons licenses here. Let's see what I understand.

@@ -32,20 +32,25 @@ class HealthIcon extends FlxSprite
 		animation.add('spirit', [23, 23], 0, false, isPlayer);
 		animation.add('bf-old', [14, 15], 0, false, isPlayer);
 		animation.add('gf', [16], 0, false, isPlayer);
-		animation.add('hookx', [24,25], 0, false, isPlayer);
+		animation.add('hookx', [24,25], 0, false, isPlayer); //JOELwindows7: add Hookx icon
 		animation.add('gf-christmas', [16], 0, false, isPlayer);
 		animation.add('gf-pixel', [16], 0, false, isPlayer);
+		animation.add('gf-ht',[28,29],0,false,isPlayer); //JOELwindows7: add home theater icon
 		animation.add('parents-christmas', [17, 18], 0, false, isPlayer);
 		animation.add('monster', [19, 20], 0, false, isPlayer);
 		animation.add('monster-christmas', [19, 20], 0, false, isPlayer);
-		animation.add('surprise',[21],0,false,isPlayer);
-		animation.add('warning',[22],0,false,isPlayer);
+		//JOELwindows7: add surprise warning icons
+		animation.add('surprise',[26],0,false,isPlayer);
+		animation.add('warning',[27],0,false,isPlayer);
 		animation.play(char);
 
 		switch(char)
 		{
 			case 'bf-pixel' | 'senpai' | 'senpai-angry' | 'spirit' | 'gf-pixel':
 				antialiasing = false;
+				//JOELwindows7: not my code. but, YOU PECKING CAN DO THIS WITH SWITCH CASE??!! 
+				//`|` IN SWITCH CASE?! IN HAXE??!?!? HAAAAAAAAAAAAAAAAAAAAAAAA!!!
+				//lemme tell you, this I believe is not possible in CPP!!!! you must If if you dual case!
 		}
 
 		scrollFactor.set();

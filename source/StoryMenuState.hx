@@ -271,12 +271,13 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!selectedWeek)
 			{
-				if (controls.UP_P)
+				//JOELwindows7: add the mouse support here too as well
+				if (controls.UP_P || FlxG.mouse.wheel == 1)
 				{
 					changeWeek(-1);
 				}
 
-				if (controls.DOWN_P)
+				if (controls.DOWN_P || FlxG.mouse.wheel == -1)
 				{
 					changeWeek(1);
 				}
@@ -291,19 +292,19 @@ class StoryMenuState extends MusicBeatState
 				else
 					leftArrow.animation.play('idle');
 
-				if (controls.RIGHT_P)
+				if (controls.RIGHT_P || FlxG.mouse.justPressedMiddle)
 					changeDifficulty(1);
 				if (controls.LEFT_P)
 					changeDifficulty(-1);
 			}
 
-			if (controls.ACCEPT)
+			if (controls.ACCEPT || FlxG.mouse.justPressed)
 			{
 				selectWeek();
 			}
 		}
 
-		if (controls.BACK && !movedBack && !selectedWeek)
+		if ((controls.BACK || FlxG.mouse.justPressedRight) && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;

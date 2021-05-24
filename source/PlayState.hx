@@ -833,7 +833,7 @@ class PlayState extends MusicBeatState
 				}
 			case 'blank':
 				{
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'blank';
 					// JOELwindows7: Just blank. nothing.
 					// chroma key color is #000000 . well, it's hard, yes, 
@@ -841,7 +841,7 @@ class PlayState extends MusicBeatState
 				}
 			case 'greenscreen':
 				{
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'greenscreen';
 					//JOELwindows7: turns out you can generate graphic with Make Graphic! 
 					// it is even there on the FlxSprite construction wow!
@@ -860,7 +860,7 @@ class PlayState extends MusicBeatState
 			case 'bluechroma':
 				{
 					//JOELwindows7: same as greenscreen but blue. not to be confused with blue screen of death!
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'bluechroma';
 					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLUE);
 					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
@@ -876,7 +876,7 @@ class PlayState extends MusicBeatState
 					// He is famous for the pinkest color you've ever seen.
 					// https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple
 					// and peck Anish Kapoor.
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'semple';
 					// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
 					// because no camera has the ability to capture way over Pink Semple had.
@@ -891,7 +891,7 @@ class PlayState extends MusicBeatState
 			case 'whitening':
 				{
 					//JOELwindows7: This looks familiar. oh no.
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'whitening';
 					// JOELwindows7: guys, pls don't blamm me. it's nothing to do. let's assume it's purely coincidental.
 					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
@@ -905,7 +905,7 @@ class PlayState extends MusicBeatState
 			case 'kuning':
 				{
 					//JOELwindows7: yellow this one out
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'kuning';
 					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.YELLOW);
 					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
@@ -918,7 +918,7 @@ class PlayState extends MusicBeatState
 			case 'blood':
 				{
 					//JOELwindows7: red screen
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'blood';
 					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.RED);
 					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
@@ -967,9 +967,7 @@ class PlayState extends MusicBeatState
 			case 'gf-pixel':
 				gfVersion = 'gf-pixel';
 			case 'gf-ht':
-				//JOELwindows7:
-				// TODO: for Jakarta fair booth Van Elektronische with Hookx, train cart booth room
-				// ht = home theater. a landscape TV with Sondkart GF-HT100 Soundbar bellow it.
+				//JOELwindows7: doned the gf-ht
 				gfVersion = 'gf-ht';
 			default:
 				gfVersion = 'gf';
@@ -1047,6 +1045,10 @@ class PlayState extends MusicBeatState
 				// take my hand. I'll be waiting you outside
 				dad.y += 100;
 				dad.x -= 150;
+			default:
+				trace("Oh no! it looks like you forgot the position data for Player 2 " + SONG.player2);
+				FlxG.log.add("Forgot position data for Player2 " + SONG.player2);
+				
 		}
 
 
@@ -1147,7 +1149,8 @@ class PlayState extends MusicBeatState
 				dad.x -= 400;
 				gf.y -= 100;
 			default: 
-				trace("Hey uh, we missing the offset information for stage " + curStage + " guys.");
+				trace("Hey uh, we missing the stage offset information for stage " + curStage + " guys.");
+				FlxG.log.add("Missing stage offset positioning for " + curStage);
 		}
 
 		add(gf);
@@ -1376,7 +1379,7 @@ class PlayState extends MusicBeatState
 				case 'well meet again':
 					schoolIntro(doof);
 				default:
-					trace("No School Intro info in isStoryMode. start coundown anyway");
+					trace("No School Intro info in isStoryMode for " + curSong + ". start coundown anyway");
 					startCountdown();
 			}
 		}
@@ -1385,7 +1388,7 @@ class PlayState extends MusicBeatState
 			switch (curSong.toLowerCase())
 			{
 				default:
-					trace("No something School Intro to do in freeplay mode. start countdown anyway");
+					trace("No something School Intro to do in freeplay mode for " + curSong + ". start countdown anyway");
 					startCountdown();
 			}
 		}
@@ -2579,6 +2582,7 @@ class PlayState extends MusicBeatState
 		{
 			if(FlxG.keys.justPressed.R)
 				{
+					trace("Pressed self Eik Serkat button");
 					boyfriend.stunned = true;
 
 					persistentUpdate = false;
@@ -3890,7 +3894,8 @@ class PlayState extends MusicBeatState
 			boyfriend.playAnim('hey', true);
 		}
 
-		if (curBeat % 16 == 15 && SONG.song == 'Tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
+		//JOELwindows7: found pay attention to this if player 2 is gf.
+		if (curBeat % 16 == 15 && SONG.song == 'Tutorial' && (dad.curCharacter == 'gf' || dad.curCharacter == 'gf-ht') && curBeat > 16 && curBeat < 48)
 			{
 				boyfriend.playAnim('hey', true);
 				dad.playAnim('cheer', true);

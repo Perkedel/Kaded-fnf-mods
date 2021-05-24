@@ -182,9 +182,12 @@ class FreeplayState extends MusicBeatState
 
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
 
-		var upP = controls.UP_P;
-		var downP = controls.DOWN_P;
-		var accepted = controls.ACCEPT;
+		//JOELwindows7: add mouse support in here
+		//huh, how inconsistent. now the keypress bools are syndicated via
+		// each variable. interesting.
+		var upP = controls.UP_P || FlxG.mouse.wheel == 1;
+		var downP = controls.DOWN_P || FlxG.mouse.wheel ==-1;
+		var accepted = controls.ACCEPT || FlxG.mouse.justPressed;
 
 		if (upP)
 		{
@@ -195,12 +198,14 @@ class FreeplayState extends MusicBeatState
 			changeSelection(1);
 		}
 
+		//JOELwindows7: change difficulty with mid click
+		//and except the rest. no variable syndication
 		if (controls.LEFT_P)
 			changeDiff(-1);
-		if (controls.RIGHT_P)
+		if (controls.RIGHT_P || FlxG.mouse.justPressedMiddle)
 			changeDiff(1);
 
-		if (controls.BACK)
+		if (controls.BACK || FlxG.mouse.justPressedRight)
 		{
 			FlxG.switchState(new MainMenuState());
 		}

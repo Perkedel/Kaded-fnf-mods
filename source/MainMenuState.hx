@@ -1,5 +1,8 @@
 package;
 
+import flixel.ui.FlxSpriteButton;
+import flixel.ui.FlxButton;
+import flixel.addons.display.FlxExtendedSprite;
 import Controls.KeyboardScheme;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -30,6 +33,9 @@ using StringTools;
 class MainMenuState extends MusicBeatState
 {
 	var curSelected:Int = 0;
+	//JOELwindows7: which clicked & have they clicked.
+	var curClicked:Int = 0;
+	var haveClicked:Bool = false;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
@@ -98,6 +104,7 @@ class MainMenuState extends MusicBeatState
 
 		for (i in 0...optionShit.length)
 		{
+			//JOELwindows7: change to extended sprites!
 			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
 			menuItem.frames = tex;
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
@@ -141,6 +148,24 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
+			//JOELwindows7: make mouse visible when moved.
+			if(FlxG.mouse.justMoved){
+				//trace("mouse moved");
+				FlxG.mouse.visible = true;
+			}
+			//JOELwindows7: detect any keypresses or any button presses
+			if(FlxG.keys.justPressed.ANY){
+				//lmao! inspire from GameOverState.hx!
+				FlxG.mouse.visible = false;
+			}
+			if(FlxG.gamepads.lastActive != null){
+				if(FlxG.gamepads.lastActive.justPressed.ANY){
+					FlxG.mouse.visible = false;
+				}
+				//peck this I'm tired! plns work lol
+			}
+
+			//JOELwindows7: attempt add mouse support kinda..
 			if (controls.UP_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -153,12 +178,12 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
-			if (controls.BACK)
+			if (controls.BACK || FlxG.mouse.justPressedRight)
 			{
 				FlxG.switchState(new TitleState());
 			}
 
-			if (controls.ACCEPT)
+			if (controls.ACCEPT || haveClicked)
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
@@ -171,6 +196,7 @@ class MainMenuState extends MusicBeatState
 				}
 				else
 				{
+					FlxG.mouse.visible = false;
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 					
@@ -208,13 +234,31 @@ class MainMenuState extends MusicBeatState
 						}
 					});
 				}
+				//JOELwindows7: have clicked refalsing after done.
+				haveClicked = false;
 			}
+			
+			
 		}
 
 		super.update(elapsed);
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
+			//JOELwindows7: itterate sprite menu items overlaps and click functions
+			if(!selectedSomethin){
+				if(FlxG.mouse.overlaps(spr)){
+					if(curSelected != spr.ID){
+						FlxG.sound.play(Paths.sound('scrollMenu'));
+						goToItem(spr.ID);
+					}
+					if(FlxG.mouse.justPressed){
+						trace("mouse clicked on " + Std.string(curSelected) + ". " + optionShit[curSelected]);
+						haveClicked = true;
+					}
+				}
+			}
+			
 			spr.screenCenter(X);
 		});
 	}
@@ -241,6 +285,30 @@ class MainMenuState extends MusicBeatState
 	function changeItem(huh:Int = 0)
 	{
 		curSelected += huh;
+
+		if (curSelected >= menuItems.length)
+			curSelected = 0;
+		if (curSelected < 0)
+			curSelected = menuItems.length - 1;
+
+		menuItems.forEach(function(spr:FlxSprite)
+		{
+			spr.animation.play('idle');
+
+			if (spr.ID == curSelected)
+			{
+				spr.animation.play('selected');
+				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
+			}
+
+			spr.updateHitbox();
+		});
+	}
+
+	//JOELwindows7: go to item for hover mouse
+	//copy from above but the curSelected is set value instead
+	function goToItem(huh:Int = 0){
+		curSelected = huh;
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;

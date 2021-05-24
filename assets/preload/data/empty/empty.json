@@ -11,6 +11,7 @@
         "notes": [],
         "bpm": 100,
         "sections": 0,
-        "validScore": true
+        "validScore": true,
+        "noteStyle": "normal"
     }
 }
