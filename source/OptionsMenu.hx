@@ -52,6 +52,7 @@ class OptionsMenu extends MusicBeatState
 			new FPSOption("Toggle the FPS Counter"),
 			new ReplayOption("View replays"),
 			#end
+			new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), //JOELwindows7: make this Odysee exclusive pls. how!
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 			new WatermarkOption("Enable and disable all watermarks from the engine."),
 			//new ChooseWatermark("Choose your favourite watermark to be shown in the engine"),

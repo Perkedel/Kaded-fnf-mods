@@ -2419,6 +2419,32 @@ class PlayState extends MusicBeatState
 								}else triggeredAlready = false;
 							}
 						}
+						case 'Rule the World':
+						{
+							//JOELwindows7: okay how do I supposed to cheer?
+							//copy from above and adjust beat.
+							//oh God. well I gotta figure this one out.
+							if(curBeat < 64){
+								if(curBeat % 4 == 0)
+								{
+									if(!triggeredAlready)
+										{
+											gf.playAnim('cheer');
+											triggeredAlready = true;
+										}
+								} else triggeredAlready = false;
+							}
+							if(curBeat < 318 && curBeat < 383){
+								if(curBeat % 4 == 0)
+								{
+									if(!triggeredAlready)
+										{
+											gf.playAnim('cheer');
+											triggeredAlready = true;
+										}
+								} else triggeredAlready = false;
+							}
+						}
 					}
 				}
 			}
@@ -3452,6 +3478,11 @@ class PlayState extends MusicBeatState
 			health -= 0.04;
 			if (combo > 5 && gf.animOffsets.exists('sad'))
 			{
+				//JOELwindows7: add girlfriend oop & aah for combo break,
+				//Just like osu!
+				FlxG.sound.play(Paths.soundRandom('GF_', 1, 2), 0.5);
+				trace("Yah, sayang banget padahal kan udah " + Std.string(combo) + " kombo tadi :\'( ");
+
 				gf.playAnim('sad');
 			}
 			combo = 0;

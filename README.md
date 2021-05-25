@@ -1,4 +1,5 @@
-![[Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png )
+![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png )
+[Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
 # Last Funkin Moments
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 

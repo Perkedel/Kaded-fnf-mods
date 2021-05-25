@@ -113,25 +113,40 @@ use VScode and Github desktop!
 - https://youtu.be/RWf50T52n58 AFI Junior - Guruku Tersayang
 
 # other mods that wins the inclusion (without permission if has CC or uh whatever bruh, otherwise unlikely). Congratulations!
+Note: in Game Banana, mods that did not have license written will set to CC4.0-BY-NC-ND by default (marked by `Warning: presumably no license so default`). We believe that with ND circle legally prevents anyone to yoink such mods without asking permission. However, such statement is vague, due to the gray area like e.g. SF2. in any case, review the details and yoink with caution.
+
 - https://gamebanana.com/mods/43569 (do whatever the fck you want license) FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
-- https://gamebanana.com/sounds/52066 (WARNING: has NC, ND) frick vine school class, assembled by Picaro2604. discovered that this kade randomly choose which missNote you can have. 7 8 9 miss note
-- https://gamebanana.com/sounds/51010 (WARNING: has NC, ND) tourettes guy miss note Beskupehn_Espira redistributions. 4 5 6 miss note
-- https://gamebanana.com/sounds/51159 (WARNING: has NC, ND) bruh miss note. MrBruh redistributed it this. 10 11 12 miss note
-- https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
-- https://gamebanana.com/sounds/51838 (WARNING: has NC, ND) BABABOOEY! irdk_anymore. miss note 13 14 15
-- https://gamebanana.com/tools/7033 nickham13 BF voice SF2
+- https://gamebanana.com/tools/7033 (Warning: presumably no license so default) nickham13 BF voice SF2
 - https://github.com/GenoX-Fome/funkin-utau/ GenoX FNF UTAU voices. use for AFI Junior - Guruku Tersayang pls
 - https://www.fullbucket.de/music/freqshifter.html use this for Pico voice or whatever.
 - https://www.heikoplate.de/psruti.html PSR UTI. Used for enchancing MIDI quality into Yamaha Musicsoft MIDI
 - https://odysee.com/@JOELwindows7:a/GurukuTersayang_MIDI:d?r=FKgkgQ5Mr5kWhLj6fG8zZkeMVtj4pLHm the MIDI of Guruku Tersayang. originally by Helly Hilmi (website gone), edited by JOELwindows7 with Sekaiju & then enchanced with PSR UTI
 - https://openmidiproject.osdn.jp/Sekaiju_en.html Sekaiju. Compose and edit MIDI, support almost all MIDI file standard data editing from notes to special data like SysEx.
 - https://github.com/luckydog7/Funkin-android followed almost everything just to make this Perkedel Kaded fnf mod works also on Android
-- https://github.com/ninjamuffin99/Funkin also manually yoink the last code directives where Kade engine didn't think it could've work like Discord RPC stuffs.
-- https://gamebanana.com/mods/44306 Placeholder of week 7 temporarily.
+- https://github.com/ninjamuffin99/Funkin also manually yoink the last code directives where Kade engine didn't think it could've work in Linux and macOS too like Discord RPC stuffs. also add naughtiness according to week 7 update on newgrounds which btw according to [this tankman fact from Darnebolian](https://youtu.be/ZlRPJ8Umt0A?t=201 ) this toggle `naughtiness` does nothing at the moment. so eh heh. whatever okay!
 - https://inkscape.org there's a symbol panel that has all common symbols you can freely use. press `Shift` + `Ctrl` + `Y` or top menu `Object`, `Symbols (Shift + Ctrl + Y)`. there's more symbols too https://inkscape.org/gallery/=symbol/?order=liked . and this one too https://github.com/PanderMusubi/inkscape-open-symbols that I believe we've installed.
 - https://github.com/PanderMusubi/inkscape-open-symbols the symbols collection for Inkscape yay!
 - the Exit sign, arrows, etc. for Jakarta Fair booth, Home theater, etc. in this mod is from AIGA symbol sets. it it's difficult, you can try search bar of that symbol panel: `Exit`. yeah!
 - https://gamebanana.com/tools/7107 Pico sf2 yay finally
+- - https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
+
+# other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
+> Why am I not credited?!
+
+> why my mods got removed?!
+
+- https://gamebanana.com/sounds/52066 (WARNING: has NC, ND) frick vine school class, assembled by Picaro2604. discovered that this kade randomly choose which missNote you can have. 7 8 9 miss note
+- https://gamebanana.com/sounds/51010 (WARNING: has NC, ND) tourettes guy miss note Beskupehn_Espira redistributions. 4 5 6 miss note
+- https://gamebanana.com/sounds/51159 (WARNING: has NC, ND) bruh miss note. MrBruh redistributed it this. 10 11 12 miss note
+- https://gamebanana.com/sounds/51838 (WARNING: has NC, ND) BABABOOEY! irdk_anymore. miss note 13 14 15
+- https://gamebanana.com/mods/44306 (Warning: has NC, ND) Placeholder of week 7 temporarily. (Canceled, due to unforseen and fear of bad circumstances against centralized mod hosting, as well as precaution against ND circled Creative Commons license)
+
+**dislcaimer**: above list are no way meant to insult, defame, or threat authors of the mods listed. Perkedel requires all contributor from all tiers, roles, etc. to be transparent not only what have been yoinked, but also deyoinked assets, as well as the reason behind each deyoinks and removal (also including the foreshadowing which means mods that wish to be yoinked but ND circled license in the way). for those author that got the mod removed, feel free to make change in your licensing in case you disagree with the removal.
+
+If you wish to grant us permission to yoink your mods here, please change your license that at least removes offending circle (such as `No Derivative`). Perkedel do not accept exclusive grant certificate, or even bribe absolutely, due to nature of Perkedel that importance people more than ownself, especially in terms of motto and service (violation like granting exclusive grant either to us or someonw will cause your name blacklisted for particular sector which is fnf mods. your mod will be blacklisted from being yoinked). We require that you in full heart declared whether or not should anyone use your assets, code script, and stuff.
+
+for more detail about our statement regarding the `No Derivative` is death wish, feel free to read here  
+https://gamebanana.com/questions/11159?post=9179454 
 
 # what the peck why there's that one license there? / Have you got permission?
 Okay let me clarify it this Creative Commons licenses here. Let's see what I understand.
@@ -154,6 +169,8 @@ I'm not legal expert at all. I just, not into law games, but concerns it this pa
 ## Requirement of permission
 https://gamebanana.com/threads/218927 Section 3.7 `No Proof Of Permission`
 
+[![]("https://gamebanana.com/questions/embeddables/11159?type=large")](https://gamebanana.com/questions/11159)
+
 okay, so what I interpret is that, yoinks are not okay at all. is that right? Yeah I get it, but for what license?
 
 you see, all mods who haven't written license will be default to Creative Commons 4.0 Attribution No Commercial No Derivatives (CC4.0-BY-NC-ND). By standard of most part of the earth, you can yoink pictures from the internet even without permission that are licensed Creative Commons to any creation, as long you put credit clearly in the creation description, as stated in `BY` Attribution in this CC.
@@ -169,7 +186,7 @@ https://gamebanana.com/threads/218927 Section 3.10 `Recompiles`
 
 I may sound like a *karen on the loose that worthy canceling everywhere*. but hear me out:
 
-I believe you should consider enforcing that law on older mods too as well, well eventually. Yeah after time elapsed there enforcing for the new mods as of the date stated, then you should consider enforcing that too on older mods.
+I believe you should consider enforcing that law on older mods too as well, well eventually, not in instant. Yeah after time elapsed there enforcing for the new mods as of the date stated, then you should consider enforcing that too on older mods.
 
 of course, kindly contact the submitters first. give them time for maybe, a month! no response, withhold. I think that's the good plan idk if not wrong.
 
