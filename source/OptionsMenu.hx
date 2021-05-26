@@ -70,6 +70,9 @@ class OptionsMenu extends MusicBeatState
 	private var grpControls:FlxTypedGroup<Alphabet>;
 	public static var versionShit:FlxText;
 
+	//JOELwindows7: add mouse click flag
+	var haveClicked:Bool = false;
+
 	var currentSelectedCat:OptionCatagory;
 	var blackBorder:FlxSprite;
 	override function create()
@@ -91,6 +94,7 @@ class OptionsMenu extends MusicBeatState
 			var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true, false, true);
 			controlLabel.isMenuItem = true;
 			controlLabel.targetY = i;
+			controlLabel.ID = i; //add the ID too for compare curSelected like Main Menu
 			grpControls.add(controlLabel);
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 		}
@@ -121,6 +125,24 @@ class OptionsMenu extends MusicBeatState
 	{
 		super.update(elapsed);
 
+		//JOELwindows7: make mouse visible when moved.
+		if(FlxG.mouse.justMoved){
+			//trace("mouse moved");
+			FlxG.mouse.visible = true;
+		}
+		//JOELwindows7: detect any keypresses or any button presses
+		if(FlxG.keys.justPressed.ANY){
+			//lmao! inspire from GameOverState.hx!
+			FlxG.mouse.visible = false;
+		}
+		if(FlxG.gamepads.lastActive != null){
+			if(FlxG.gamepads.lastActive.justPressed.ANY){
+				FlxG.mouse.visible = false;
+			}
+			//peck this I'm tired! plns work lol
+		}
+		
+
 			//JOELwindows7: right click to go back, I guess.
 			//incase gamers get mad, smash keyboard, no longer working?
 			if ((controls.BACK || FlxG.mouse.justPressedRight) && !isCat)
@@ -134,6 +156,7 @@ class OptionsMenu extends MusicBeatState
 						var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true, false);
 						controlLabel.isMenuItem = true;
 						controlLabel.targetY = i;
+						controlLabel.ID = i; //add the ID too for compare curSelected like Main Menu
 						grpControls.add(controlLabel);
 						// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 					}
@@ -206,7 +229,7 @@ class OptionsMenu extends MusicBeatState
 			if (controls.RESET)
 					FlxG.save.data.offset = 0;
 
-			if (controls.ACCEPT || FlxG.mouse.justPressed)
+			if (controls.ACCEPT || haveClicked) //JOELwindows7: add clicked when mouse click
 			{
 				if (isCat)
 				{
@@ -214,6 +237,7 @@ class OptionsMenu extends MusicBeatState
 						grpControls.remove(grpControls.members[curSelected]);
 						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, currentSelectedCat.getOptions()[curSelected].getDisplay(), true, false);
 						ctrl.isMenuItem = true;
+						ctrl.ID = curSelected;
 						grpControls.add(ctrl);
 					}
 				}
@@ -227,13 +251,29 @@ class OptionsMenu extends MusicBeatState
 							var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, currentSelectedCat.getOptions()[i].getDisplay(), true, false);
 							controlLabel.isMenuItem = true;
 							controlLabel.targetY = i;
+							controlLabel.ID = i; //add the ID too for compare curSelected like Main Menu
 							grpControls.add(controlLabel);
 							// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 						}
 					curSelected = 0;
 				}
+				haveClicked=false;
 			}
 		FlxG.save.flush();
+
+		//JOELwindows7: query every single menu category and each items
+		//inspire this from MainMenuState like before!
+		grpControls.forEach(function(alphabet:Alphabet){
+			if(FlxG.mouse.overlaps(alphabet)){
+				if(FlxG.mouse.justPressed){
+					if(alphabet.ID == curSelected){
+						haveClicked = true;
+					} else {
+						goToSelection(alphabet.ID);
+					}
+				}
+			}
+		});
 	}
 
 	var isSettingControl:Bool = false;
@@ -251,6 +291,58 @@ class OptionsMenu extends MusicBeatState
 		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
 
 		curSelected += change;
+
+		if (curSelected < 0)
+			curSelected = grpControls.length - 1;
+		if (curSelected >= grpControls.length)
+			curSelected = 0;
+
+		if (isCat)
+			currentDescription = currentSelectedCat.getOptions()[curSelected].getDescription();
+		else
+			currentDescription = "Please select a category";
+		if (isCat)
+		{
+			if (currentSelectedCat.getOptions()[curSelected].getAccept())
+				versionShit.text =  currentSelectedCat.getOptions()[curSelected].getValue() + " - Description - " + currentDescription;
+			else
+				versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+		}
+		else
+			versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+		// selector.y = (70 * curSelected) + 30;
+
+		var bullShit:Int = 0;
+
+		for (item in grpControls.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			item.alpha = 0.6;
+			// item.setGraphicSize(Std.int(item.width * 0.8));
+
+			if (item.targetY == 0)
+			{
+				item.alpha = 1;
+				// item.setGraphicSize(Std.int(item.width));
+			}
+		}
+	}
+
+	//JOELwindows7: copy from above but this time set the selection number
+	function goToSelection(change:Int = 0){
+		#if !switch
+		#if !mobile
+		#if !neko
+		// NGio.logEvent("Fresh");
+		#end
+		#end
+		#end
+		
+		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
+
+		curSelected = change;
 
 		if (curSelected < 0)
 			curSelected = grpControls.length - 1;

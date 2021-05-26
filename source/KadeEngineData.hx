@@ -67,6 +67,9 @@ class KadeEngineData
 		if (FlxG.save.data.perkedelMark == null)
 			FlxG.save.data.perkedelMark = true;
 
+		if (FlxG.save.data.naughtiness == null)
+			FlxG.save.data.naughtiness = true;
+
 		if (FlxG.save.data.ghost == null)
 			FlxG.save.data.ghost = true;
 

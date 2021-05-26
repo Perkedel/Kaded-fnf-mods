@@ -37,6 +37,9 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<HealthIcon> = [];
 
+	//JOELwindows7: add mouse click flag
+	var haveClicked:Bool = false;
+
 	override function create()
 	{
 		//JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
@@ -84,6 +87,7 @@ class FreeplayState extends MusicBeatState
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
 			songText.isMenuItem = true;
 			songText.targetY = i;
+			songText.ID = i; //ID the song text to compare curSelected song.
 			grpSongs.add(songText);
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
@@ -187,7 +191,7 @@ class FreeplayState extends MusicBeatState
 		// each variable. interesting.
 		var upP = controls.UP_P || FlxG.mouse.wheel == 1;
 		var downP = controls.DOWN_P || FlxG.mouse.wheel ==-1;
-		var accepted = controls.ACCEPT || FlxG.mouse.justPressed;
+		var accepted = controls.ACCEPT || haveClicked;
 
 		if (upP)
 		{
@@ -212,6 +216,7 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted)
 		{
+			FlxG.mouse.visible = false;
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
 
 			trace(poop);
@@ -222,7 +227,40 @@ class FreeplayState extends MusicBeatState
 			PlayState.storyWeek = songs[curSelected].week;
 			trace('CUR WEEK' + PlayState.storyWeek);
 			LoadingState.loadAndSwitchState(new PlayState());
+			haveClicked = false;
+		} else {
+			//JOELwindows7: make mouse visible when moved.
+			if(FlxG.mouse.justMoved){
+				//trace("mouse moved");
+				FlxG.mouse.visible = true;
+			}
+			//JOELwindows7: detect any keypresses or any button presses
+			if(FlxG.keys.justPressed.ANY){
+				//lmao! inspire from GameOverState.hx!
+				FlxG.mouse.visible = false;
+			}
+			if(FlxG.gamepads.lastActive != null){
+				if(FlxG.gamepads.lastActive.justPressed.ANY){
+					FlxG.mouse.visible = false;
+				}
+				//peck this I'm tired! plns work lol
+			}
 		}
+
+		//JOELwindows7: mouse support
+		grpSongs.forEach(function(thing:Alphabet){
+			if(FlxG.mouse.overlaps(thing)){
+				if(FlxG.mouse.justPressed){
+					if(thing.ID == curSelected){
+						//run the song
+						haveClicked = true;
+					} else {
+						//go to the song
+						goToSelection(thing.ID);
+					}
+				}
+			}
+		});
 	}
 
 	function changeDiff(change:Int = 0)
@@ -263,6 +301,62 @@ class FreeplayState extends MusicBeatState
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;
+
+		if (curSelected < 0)
+			curSelected = songs.length - 1;
+		if (curSelected >= songs.length)
+			curSelected = 0;
+
+		// selector.y = (70 * curSelected) + 30;
+
+		#if !switch
+		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		// lerpScore = 0;
+		#end
+
+		#if PRELOAD_ALL
+		FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+		#end
+
+		var bullShit:Int = 0;
+
+		for (i in 0...iconArray.length)
+		{
+			iconArray[i].alpha = 0.6;
+		}
+
+		iconArray[curSelected].alpha = 1;
+
+		for (item in grpSongs.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			item.alpha = 0.6;
+			// item.setGraphicSize(Std.int(item.width * 0.8));
+
+			if (item.targetY == 0)
+			{
+				item.alpha = 1;
+				// item.setGraphicSize(Std.int(item.width));
+			}
+		}
+	}
+
+	//JOELwindows7: copy from above but this time it set selection number
+	function goToSelection(change:Int = 0){
+		#if !switch
+		#if !mobile
+		#if !neko
+		// NGio.logEvent('Fresh');
+		#end
+		#end
+		#end
+
+		// NGio.logEvent('Fresh');
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+		curSelected = change;
 
 		if (curSelected < 0)
 			curSelected = songs.length - 1;

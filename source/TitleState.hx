@@ -77,15 +77,13 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		DiscordClient.initialize();
 
 		Application.current.onExit.add (function (exitCode) {
 			DiscordClient.shutdown();
 		 });
 		 
-		#end
 		#end
 		#end
 

@@ -1702,9 +1702,9 @@ class PlayState extends MusicBeatState
 		}
 		
 		// Song check real quick
-		switch(curSong)
+		switch(curSong) //JOELwindows7: not my code, except Rule The World. isn't it better to check insensitive case (toLowerCase())?
 		{
-			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog': allowedToHeadbang = true;
+			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog' | 'Rule The World': allowedToHeadbang = true;
 			default: allowedToHeadbang = false;
 		}
 		
@@ -2417,23 +2417,23 @@ class PlayState extends MusicBeatState
 								}else triggeredAlready = false;
 							}
 						}
-						case 'Rule the World':
+						case 'Rule The World':
 						{
 							//JOELwindows7: okay how do I supposed to cheer?
 							//copy from above and adjust beat.
 							//oh God. well I gotta figure this one out.
-							if(curBeat < 64){
-								if(curBeat % 4 == 0)
-								{
-									if(!triggeredAlready)
-										{
-											gf.playAnim('cheer');
-											triggeredAlready = true;
-										}
-								} else triggeredAlready = false;
-							}
-							if(curBeat < 318 && curBeat < 383){
-								if(curBeat % 4 == 0)
+							//
+							//Okay so curBeat is curStep div by 4.
+							//I think if curBeat modulo 4 is 0 means every new section?
+							//yes they are. so there are 0 1 2 3 in curBeat modulo 4.
+							//you can granularlize it if you want like 0 1 2 3 4 5 6 7 in curBeat % 8 etc.
+							if(curBeat < 16 || 
+								(curBeat > 80 && curBeat < 96) || 
+								(curBeat > 160 && curBeat < 192) || 
+								(curBeat > 264 && curBeat < 304)
+								)
+							{
+								if(curBeat % 4 == 0 || curBeat % 4 == 2)
 								{
 									if(!triggeredAlready)
 										{

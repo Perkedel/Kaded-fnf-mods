@@ -33,6 +33,9 @@ class PauseSubState extends MusicBeatSubstate
 	
 	var offsetChanged:Bool = false;
 
+	//JOELwindows7: mouse click flag
+	var haveClicked:Bool = false;
+
 	public function new(x:Float, y:Float)
 	{
 		super();
@@ -87,6 +90,7 @@ class PauseSubState extends MusicBeatSubstate
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
+			songText.ID = i; //JOELwindows7: ID each menu item to compare with current selected
 			grpMenuShit.add(songText);
 		}
 
@@ -107,7 +111,7 @@ class PauseSubState extends MusicBeatSubstate
 		var downP = controls.DOWN_P || FlxG.mouse.wheel == -1;
 		var leftP = controls.LEFT_P;
 		var rightP = controls.RIGHT_P;
-		var accepted = controls.ACCEPT || FlxG.mouse.justPressed;
+		var accepted = controls.ACCEPT || haveClicked;
 		var oldOffset:Float = 0;
 		var songPath = 'assets/data/' + PlayState.SONG.song.toLowerCase() + '/';
 
@@ -140,6 +144,7 @@ class PauseSubState extends MusicBeatSubstate
 						var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 						songText.isMenuItem = true;
 						songText.targetY = i;
+						songText.ID = i; //JOELwindows7: add ID to compare with curSelected
 						grpMenuShit.add(songText);
 					}
 
@@ -165,6 +170,7 @@ class PauseSubState extends MusicBeatSubstate
 						var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 						songText.isMenuItem = true;
 						songText.targetY = i;
+						songText.ID = i; //JOELwindows7: add ID to compare with curSelected
 						grpMenuShit.add(songText);
 					}
 
@@ -178,13 +184,16 @@ class PauseSubState extends MusicBeatSubstate
 
 		if (accepted)
 		{
+			FlxG.mouse.visible = false; //JOELwindows7: invisiblize after select
 			var daSelected:String = menuItems[curSelected];
 
 			switch (daSelected)
 			{
 				case "Resume":
+					FlxG.mouse.visible = false; //JOELwindows7: just in case
 					close();
 				case "Restart Song":
+					FlxG.mouse.visible = false; //JOELwindows7: just in case
 					FlxG.resetState();
 				case "Exit to menu":
 					if(PlayState.loadRep)
@@ -210,6 +219,24 @@ class PauseSubState extends MusicBeatSubstate
 					
 					FlxG.switchState(new MainMenuState());
 			}
+			haveClicked = false;
+		} else {
+			//JOELwindows7: make mouse visible when moved.
+			if(FlxG.mouse.justMoved){
+				//trace("mouse moved");
+				FlxG.mouse.visible = true;
+			}
+			//JOELwindows7: detect any keypresses or any button presses
+			if(FlxG.keys.justPressed.ANY){
+				//lmao! inspire from GameOverState.hx!
+				FlxG.mouse.visible = false;
+			}
+			if(FlxG.gamepads.lastActive != null){
+				if(FlxG.gamepads.lastActive.justPressed.ANY){
+					FlxG.mouse.visible = false;
+				}
+				//peck this I'm tired! plns work lol
+			}
 		}
 
 		if (FlxG.keys.justPressed.J)
@@ -217,6 +244,20 @@ class PauseSubState extends MusicBeatSubstate
 			// for reference later!
 			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
+
+		grpMenuShit.forEach(function(poop:Alphabet){
+			if(FlxG.mouse.overlaps(poop)){
+				if(FlxG.mouse.justPressed){
+					trace("click a menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
+					if(poop.ID == curSelected){
+						haveClicked = true;
+					} else {
+						//go to clicked menu
+						goToSelection(poop.ID);
+					}
+				}
+			}
+		});
 	}
 
 	override function destroy()
@@ -229,6 +270,33 @@ class PauseSubState extends MusicBeatSubstate
 	function changeSelection(change:Int = 0):Void
 	{
 		curSelected += change;
+
+		if (curSelected < 0)
+			curSelected = menuItems.length - 1;
+		if (curSelected >= menuItems.length)
+			curSelected = 0;
+
+		var bullShit:Int = 0;
+
+		for (item in grpMenuShit.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			item.alpha = 0.6;
+			// item.setGraphicSize(Std.int(item.width * 0.8));
+
+			if (item.targetY == 0)
+			{
+				item.alpha = 1;
+				// item.setGraphicSize(Std.int(item.width));
+			}
+		}
+	}
+
+	//JOELwindows7: same as above but this one set to which menu item
+	function goToSelection(change:Int){
+		curSelected = change;
 
 		if (curSelected < 0)
 			curSelected = menuItems.length - 1;

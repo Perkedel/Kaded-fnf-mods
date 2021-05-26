@@ -128,6 +128,14 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.60 * (60 / FlxG.save.data.fpsCap));
 
+		//JOELwindows7: hard code our download link in case illegally reuploaded no matter what sign given
+		//we also covered both Kade Engine and the vanilla itself
+		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 54, 0, "Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\noriginal Kade Engine at https://github.com/KadeDev/Kade-Engine,\nand vanilla Funkin at https://github.com/ninjamuffin99/Funkin .\n\nplay vanilla Funkin at https://www.newgrounds.com/portal/view/770371", 12);
+		reuploadEdgeCase.scrollFactor.set();
+		reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(reuploadEdgeCase);
+		//Kade, ninja, you should do that too. follow this example!
+
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod" : ""), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -330,7 +338,7 @@ class MainMenuState extends MusicBeatState
 		{
 			spr.animation.play('idle');
 
-			if (spr.ID == curSelected)
+			if (spr.ID == curSelected && finishedFunnyMove)
 			{
 				spr.animation.play('selected');
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);

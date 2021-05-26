@@ -78,6 +78,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://code.haxe.org/category/beginner/strings.html what de buck i must unheurestically for `StringTools.endsWith()`?!
 - https://getsongbpm.com/tools/audio get the song bpm now
 - https://www.microsoft.com/store/productId/9WZDNCRFHVN5 Windows 10 calculator!!! I need to build multiplication stack of 7 for GF-HT texture atlas positionings.
+- also I may use any calculator available. Android calculator, Casio calculator, etc. wait, iPad has no calculator built in. and I don't have iPad lmao!
 - https://haxeflixel.com/documentation/mouse/ how to mouse in HaxeFlixel
 - https://api.haxeflixel.com/flixel/input/touch/FlxTouch.html how to touchscreen in HaxeFlixel
 - https://snippets.haxeflixel.com/input/button/ how to button in HaxeFlixel
@@ -92,6 +93,12 @@ thancc for all these resources! without them, everything is impossible.
 - `Avengers: Endgame` by Marvel Studios. Thanos's `I used the stones to destroy the stones`.
 - https://store.steampowered.com/app/1089980/The_Henry_Stickmin_Collection/ lmao henry stickmin too Innersloth
 - https://discord.com This is a gamer's chat now should've been used by enterprises (which are not gamer too) as well. They've got alot of easter eggs going on and they're happy about it (which is what's good human do). not like Google, Microsoft, anyone who eventually removed easter eggs, claiming for `Trust and Honesty Policy` poops.
+- https://knowyourmeme.com/memes/somebody-toucha-my-spaghet somebody toucha my spaghett!
+- https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/cloth-face-cover-guidance.html how to properly wear mask. COVID-19 prevention
+- https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple the pinkest pink. again, peck Anish Kapoor!
+- idk where did I got those weeb sentences & chants. but I've heard them everyday on the event of otaku and weaboos.
+- [Tactical Nuke](https://youtu.be/IXTJlH7g0tw ) from Call of Duty or Modern Warfare something, I forgot
+- https://knowyourmeme.com/memes/meme-man cool and good stonk
   
 # in event of git merge conflict
 use VScode and Github desktop!

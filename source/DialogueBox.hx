@@ -110,12 +110,16 @@ class DialogueBox extends FlxSpriteGroup
 				add(face);
 			
 			case 'windfall':
+				//JOELwindows7: the dialogue normalizations
 				hasDialog = true;
 				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
 				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
 
 				nonPixel = true;
+
+				customCharPls = true;
+				initiatePortraitLeft(-20,40,0.9,'jakartaFair/Hookx-dialogueAppear','enter','Hookx Portrait Enter');
 			case 'rule the world':
 				hasDialog = true;
 				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
@@ -123,6 +127,9 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
 
 				nonPixel = true;
+
+				customCharPls = true;
+				initiatePortraitLeft(-20,40,0.9,'jakartaFair/Hookx-dialogueAppear','enter','Hookx Portrait Enter');
 			case 'well meet again':
 				hasDialog = true;
 				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
@@ -130,6 +137,9 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
 
 				nonPixel = true;
+
+				customCharPls = true;
+				initiatePortraitLeft(-20,40,0.9,'jakartaFair/Hookx-dialogueAppear','enter','Hookx Portrait Enter');
 			case 'senpai-midi':
 				trace("please senpai-midi dialog where");
 				hasDialog = true;
@@ -165,8 +175,8 @@ class DialogueBox extends FlxSpriteGroup
 		else
 			trace("You should have dialog man");
 		
-		//JOELwindows7: TODO: heuristic for character in chosen song above.
-		//decommision and instead reinstance per switch case above!
+		//JOELwindows7: doned the heuristic sort of
+		//for dad player
 		if(!customCharPls)
 		{
 			portraitLeft = new FlxSprite(-20, 40);
@@ -179,20 +189,25 @@ class DialogueBox extends FlxSpriteGroup
 			portraitLeft.visible = false;
 		}
 
-		portraitRight = new FlxSprite(0, 40);
-		portraitRight.frames = Paths.getSparrowAtlas('weeb/bfPortrait');
-		portraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter', 24, false);
-		portraitRight.setGraphicSize(Std.int(portraitRight.width * PlayState.daPixelZoom * 0.9));
-		portraitRight.updateHitbox();
-		portraitRight.scrollFactor.set();
-		add(portraitRight);
-		portraitRight.visible = false;
+		//For BF too as well
+		if(!customBfPls)
+		{
+			portraitRight = new FlxSprite(0, 40);
+			portraitRight.frames = Paths.getSparrowAtlas('weeb/bfPortrait');
+			portraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter', 24, false);
+			portraitRight.setGraphicSize(Std.int(portraitRight.width * PlayState.daPixelZoom * 0.9));
+			portraitRight.updateHitbox();
+			portraitRight.scrollFactor.set();
+			add(portraitRight);
+			portraitRight.visible = false;
+		}
 		
 		//JOELwindows7: I've added a heuristic to size width accordingly between nonPixel and pixel level.
 		box.animation.play('normalOpen');
 		if(nonPixel)
 			box.setGraphicSize(Std.int(box.width * 0.9)); // JOELwindows7: copy from original without daPixelZoom value!
 		else
+			box.setPosition(FlxG.width * .5,FlxG.height - 20);
 			box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
 		box.updateHitbox();
 		add(box);
@@ -257,7 +272,8 @@ class DialogueBox extends FlxSpriteGroup
 			dialogueStarted = true;
 		}
 
-		if (FlxG.keys.justPressed.ANY  && dialogueStarted == true)
+		//JOELwindows7: add mouse click t continue
+		if ((FlxG.keys.justPressed.ANY || FlxG.mouse.justPressed) && dialogueStarted == true)
 		{
 			remove(dialogue);
 				
@@ -300,6 +316,32 @@ class DialogueBox extends FlxSpriteGroup
 	}
 
 	var isEnding:Bool = false;
+
+	//JOELwindows7: let's just put some part of module as a function shall we?
+	function initiatePortraitLeft(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/senpaiPortrait', name:String = 'enter', prefix:String = 'Senpai Portrait Enter', frameRate:Int = 24, flip:Bool = false):Void
+	{
+		portraitLeft = new FlxSprite(newSpriteX, newSpriteY);
+		portraitLeft.frames = Paths.getSparrowAtlas(textureXmlPath);
+		portraitLeft.animation.addByPrefix(name, prefix, frameRate, flip);
+		portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * zooming));
+		portraitLeft.updateHitbox();
+		portraitLeft.scrollFactor.set();
+		add(portraitLeft);
+		portraitLeft.visible = false;
+	}
+
+	//JOELwindows7: same for the bf too
+	function initiatePortraitRight(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/bfPortrait', name:String = 'enter', prefix:String = 'Boyfriend portrait Enter', frameRate:Int = 24, flip:Bool = false):Void
+	{
+		portraitRight = new FlxSprite(0, 40);
+		portraitRight.frames = Paths.getSparrowAtlas(textureXmlPath);
+		portraitRight.animation.addByPrefix(name, prefix, frameRate, flip);
+		portraitRight.setGraphicSize(Std.int(portraitRight.width * PlayState.daPixelZoom * zooming));
+		portraitRight.updateHitbox();
+		portraitRight.scrollFactor.set();
+		add(portraitRight);
+		portraitRight.visible = false;
+	}
 
 	function startDialogue():Void
 	{

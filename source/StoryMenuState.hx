@@ -100,6 +100,9 @@ class StoryMenuState extends MusicBeatState
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
+	//JOELwindows7: add mouse click flag
+	var haveClicked:Bool = false;
+
 	override function create()
 	{
 		//JOELwindows7: Do the work for the weeklist pls!
@@ -173,6 +176,7 @@ class StoryMenuState extends MusicBeatState
 			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
+			weekThing.ID = i; //JOELwindows7: add ID to compare with curSelected week
 			grpWeekText.add(weekThing);
 
 			weekThing.screenCenter(X);
@@ -282,26 +286,50 @@ class StoryMenuState extends MusicBeatState
 					changeWeek(1);
 				}
 
-				if (controls.RIGHT)
+				//JOELwindows7: regular mouse overlaps click sprite
+				//https://gamefromscratch.com/haxeflixel-tutorial-mouse-input/
+				if (controls.RIGHT || (FlxG.mouse.overlaps(rightArrow) && FlxG.mouse.pressed) || FlxG.mouse.pressedMiddle)
 					rightArrow.animation.play('press')
 				else
 					rightArrow.animation.play('idle');
 
-				if (controls.LEFT)
+				if (controls.LEFT || (FlxG.mouse.overlaps(leftArrow) && FlxG.mouse.pressed))
 					leftArrow.animation.play('press');
 				else
 					leftArrow.animation.play('idle');
 
-				if (controls.RIGHT_P || FlxG.mouse.justPressedMiddle)
+				if (controls.RIGHT_P || (FlxG.mouse.overlaps(rightArrow) && FlxG.mouse.justPressed) || FlxG.mouse.justPressedMiddle)
 					changeDifficulty(1);
-				if (controls.LEFT_P)
+				if (controls.LEFT_P || (FlxG.mouse.overlaps(leftArrow) && FlxG.mouse.justPressed))
 					changeDifficulty(-1);
+
+				//manage mouse visibility
+				//JOELwindows7: make mouse visible when moved.
+				if(FlxG.mouse.justMoved){
+					//trace("mouse moved");
+					FlxG.mouse.visible = true;
+				}
+				//JOELwindows7: detect any keypresses or any button presses
+				if(FlxG.keys.justPressed.ANY){
+					//lmao! inspire from GameOverState.hx!
+					FlxG.mouse.visible = false;
+				}
+				if(FlxG.gamepads.lastActive != null){
+					if(FlxG.gamepads.lastActive.justPressed.ANY){
+						FlxG.mouse.visible = false;
+					}
+					//peck this I'm tired! plns work lol
+				}
+			} else {
+				//JOELwindows7: week has been selected
+				FlxG.mouse.visible = false;
 			}
 
-			if (controls.ACCEPT || FlxG.mouse.justPressed)
+			if (controls.ACCEPT || haveClicked)
 			{
 				selectWeek();
-			}
+				haveClicked = false;
+			} 
 		}
 
 		if ((controls.BACK || FlxG.mouse.justPressedRight) && !movedBack && !selectedWeek)
@@ -312,6 +340,23 @@ class StoryMenuState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+
+		//JOELwindows7: mouse support
+		grpWeekText.forEach(function(item:MenuItem){
+			if(!selectedWeek){
+				if(FlxG.mouse.overlaps(item)){
+					if(FlxG.mouse.justPressed){
+						if(item.ID == curWeek){
+							haveClicked = true;
+						} else {
+							//go to week which
+							goToWeek(item.ID);
+						}
+					}
+				}
+			}
+		});
+		
 	}
 
 	var movedBack:Bool = false;
@@ -421,6 +466,32 @@ class StoryMenuState extends MusicBeatState
 	function changeWeek(change:Int = 0):Void
 	{
 		curWeek += change;
+
+		if (curWeek >= weekData.length)
+			curWeek = 0;
+		if (curWeek < 0)
+			curWeek = weekData.length - 1;
+
+		var bullShit:Int = 0;
+
+		for (item in grpWeekText.members)
+		{
+			item.targetY = bullShit - curWeek;
+			if (item.targetY == Std.int(0) && weekUnlocked[curWeek])
+				item.alpha = 1;
+			else
+				item.alpha = 0.6;
+			bullShit++;
+		}
+
+		FlxG.sound.play(Paths.sound('scrollMenu'));
+
+		updateText();
+	}
+
+	//JOELwindows7: copy above but this time set week selection
+	function goToWeek(change:Int = 0){
+		curWeek = change;
 
 		if (curWeek >= weekData.length)
 			curWeek = 0;
