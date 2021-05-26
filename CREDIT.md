@@ -88,6 +88,10 @@ thancc for all these resources! without them, everything is impossible.
 - https://api.haxeflixel.com/flixel/addons/display/MouseCallback.html dump doc
 - https://api.haxeflixel.com/flixel/addons/display/FlxExtendedSprite.html dump doc
 - https://api.haxeflixel.com/flixel/ui/FlxSpriteButton.html dump doc
+- https://en.wikipedia.org/wiki/Papers,_Please wait. [`Papers, Please`](https://store.steampowered.com/app/239030/Papers_Please/ ) is Haxe too?!??! **WHAT DA FAAAK?!?!??!** [HAXE IS EVERYWHERE](https://imgflip.com/i/5azex9 )!!!
+- `Avengers: Endgame` by Marvel Studios. Thanos's `I used the stones to destroy the stones`.
+- https://store.steampowered.com/app/1089980/The_Henry_Stickmin_Collection/ lmao henry stickmin too Innersloth
+- https://discord.com This is a gamer's chat now should've been used by enterprises (which are not gamer too) as well. They've got alot of easter eggs going on and they're happy about it (which is what's good human do). not like Google, Microsoft, anyone who eventually removed easter eggs, claiming for `Trust and Honesty Policy` poops.
   
 # in event of git merge conflict
 use VScode and Github desktop!
