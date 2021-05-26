@@ -899,7 +899,7 @@ class PlayState extends MusicBeatState
 				//JOELwindows7:
 				// TODO: for Jakarta fair booth Van Elektronische with Hookx, train cart booth room
 				// ht = home theater. a landscape TV with Sondkart GF-HT100 Soundbar bellow it.
-				gfVersion = 'gf';
+				gfVersion = 'gf-ht';
 			default:
 				gfVersion = 'gf';
 		}
@@ -1285,8 +1285,6 @@ class PlayState extends MusicBeatState
 		super.create();
 	}
 
-	//JOELwindows7: here is the school intro. pls copy for Jakarta Fair one!
-	// wait, I don't think that's necessary anymore. we got here aleady.
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
@@ -1454,7 +1452,7 @@ class PlayState extends MusicBeatState
 				midiSuffix = "-" + detectMidiSuffix;
 			} else
 				midiSuffix = "";
-
+			
 			switch (swagCounter)
 
 			{
@@ -2553,21 +2551,24 @@ class PlayState extends MusicBeatState
 								dad.playAnim('singLEFT' + altAnim, true);
 						}
 						
-						cpuStrums.forEach(function(spr:FlxSprite)
+						if (FlxG.save.data.cpuStrums)
 						{
-							if (Math.abs(daNote.noteData) == spr.ID)
+							cpuStrums.forEach(function(spr:FlxSprite)
 							{
-								spr.animation.play('confirm', true);
-							}
-							if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
-							{
-								spr.centerOffsets();
-								spr.offset.x -= 13;
-								spr.offset.y -= 13;
-							}
-							else
-								spr.centerOffsets();
-						});
+								if (Math.abs(daNote.noteData) == spr.ID)
+								{
+									spr.animation.play('confirm', true);
+								}
+								if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
+								{
+									spr.centerOffsets();
+									spr.offset.x -= 13;
+									spr.offset.y -= 13;
+								}
+								else
+									spr.centerOffsets();
+							});
+						}
 	
 						#if windows
 						if (luaModchart != null)
@@ -2639,14 +2640,17 @@ class PlayState extends MusicBeatState
 				});
 			}
 
-		cpuStrums.forEach(function(spr:FlxSprite)
+		if (FlxG.save.data.cpuStrums)
 		{
-			if (spr.animation.finished)
+			cpuStrums.forEach(function(spr:FlxSprite)
 			{
-				spr.animation.play('static');
-				spr.centerOffsets();
-			}
-		});
+				if (spr.animation.finished)
+				{
+					spr.animation.play('static');
+					spr.centerOffsets();
+				}
+			});
+		}
 
 		if (!inCutscene)
 			keyShit();
@@ -3273,7 +3277,7 @@ class PlayState extends MusicBeatState
 
 			songScore -= 10;
 
-			FlxG.sound.play(Paths.soundRandom('missnote', 1, 15), FlxG.random.float(0.1, 0.2));
+			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
 			// FlxG.log.add('played imss note');
 
