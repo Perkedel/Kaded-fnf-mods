@@ -218,6 +218,7 @@ class DistractionsAndEffectsOption extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.distractions = !FlxG.save.data.distractions;
+		trace("Distraction set to " + Std.string(FlxG.save.data.distractions));
 		display = updateDisplay();
 		return true;
 	}
@@ -531,6 +532,30 @@ class AccuracyDOption extends Option
 	}
 }
 
+//JOELwindows7: pls don't forget full screen mode!
+//Rediscovered press F in title state to toggle full screen?!?!
+class FullScreenOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	
+	public override function press():Bool
+	{
+		FlxG.fullscreen = !FlxG.fullscreen;
+		trace("fullscreen is now " + Std.string(FlxG.fullscreen));
+		FlxG.save.data.fullscreen = FlxG.fullscreen;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Screen mode " + (FlxG.fullscreen ? "Fullscreen" : "Windowed");
+	}
+}
+
 class CustomizeGameplay extends Option
 {
 	public function new(desc:String)
@@ -716,4 +741,46 @@ class BotPlay extends Option
 	
 	private override function updateDisplay():String
 		return "BotPlay " + (FlxG.save.data.botplay ? "on" : "off");
+}
+
+//JOELwindows7: for future use in case it is necessary
+class NoMidClickOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	
+	public override function press():Bool
+	{
+		FlxG.save.data.noMidClick = !FlxG.save.data.noMidClick;
+		trace('No Middle Click : ' + FlxG.save.data.noMidClick);
+		display = updateDisplay();
+		return true;
+	}
+	
+	private override function updateDisplay():String
+		return "No Middle click " + (FlxG.save.data.noMidClick ? "on" : "off");
+}
+
+//JOELwindows7: idk, that on the original game newgrounds week 7
+//it had this. apparently this doesn't do anything yet.
+class NaughtinessOption extends Option {
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	
+	public override function press():Bool
+	{
+		FlxG.save.data.naughtiness = !FlxG.save.data.naughtiness;
+		trace('Naughtiness : ' + FlxG.save.data.naughtiness);
+		display = updateDisplay();
+		return true;
+	}
+	
+	private override function updateDisplay():String
+		return "Naughtiness " + (FlxG.save.data.naughtiness ? "on" : "off");
 }

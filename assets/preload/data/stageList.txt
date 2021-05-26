@@ -14,3 +14,5 @@ blank
 greenscreen
 bluechroma
 semple
+whitening
+kuning

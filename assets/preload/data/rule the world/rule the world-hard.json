@@ -1,0 +1,16 @@
+{
+    "song": {
+        "player2": "hookx",
+        "player1": "bf",
+        "gfVersion": "gf-ht",
+        "stage": "jakartaFair",
+        "speed": 1,
+        "needsVoices": false,
+        "sectionLengths": [],
+        "song": "Rule The World",
+        "notes": [],
+        "bpm": 102,
+        "sections": 0,
+        "validScore": true
+    }
+}

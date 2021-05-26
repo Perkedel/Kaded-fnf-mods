@@ -20,12 +20,20 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+#if !mobile
+#if !neko
 import io.newgrounds.NG;
+#end
+#end
 import lime.app.Application;
 import openfl.Assets;
 
-#if windows
+#if desktop
+#if !neko
+#if !hl
 import Discord.DiscordClient;
+#end
+#end
 #end
 
 #if cpp
@@ -68,13 +76,17 @@ class TitleState extends MusicBeatState
 		
 		PlayerSettings.init();
 
-		#if windows
+		#if desktop
+		#if !neko
+		#if !hl
 		DiscordClient.initialize();
 
 		Application.current.onExit.add (function (exitCode) {
 			DiscordClient.shutdown();
 		 });
 		 
+		#end
+		#end
 		#end
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
@@ -86,8 +98,12 @@ class TitleState extends MusicBeatState
 		// NGio.noLogin(APIStuff.API);
 
 		#if ng
+		#if !mobile
+		#if !neko
 		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
 		trace('NEWGROUNDS LOL');
+		#end
+		#end
 		#end
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
@@ -240,7 +256,9 @@ class TitleState extends MusicBeatState
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
+		//JOELwindows7: don't invisiblize the mouse until a gamepad or keyboard being pressed on it. idk..
 		FlxG.mouse.visible = false;
+		//nvm. title don't need cursor.
 
 		if (initialized)
 			skipIntro();
@@ -269,6 +287,11 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		//JOELwindows7: make mouse visible when moved.
+		// if(FlxG.mouse.justMoved)
+		// 	FlxG.mouse.visible = true;
+		//nvm. you just press enter or click in here.
+
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
@@ -276,6 +299,9 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.F)
 		{
 			FlxG.fullscreen = !FlxG.fullscreen;
+			//JOELwindows7: save data for fullscreen mode
+			FlxG.save.data.fullscreen = FlxG.fullscreen;
+			FlxG.save.flush(); // JOELwindows7: from OptionMenu.hx it constantly save data.
 		}
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
@@ -289,6 +315,11 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end
+
+		//JOELwindows7: add mouse click to press enter
+		if(FlxG.mouse.justPressed){
+			pressedEnter = true;
+		}
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
@@ -306,11 +337,15 @@ class TitleState extends MusicBeatState
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
 			#if !switch
+			#if !mobile
+			#if !neko
 			NGio.unlockMedal(60960);
 
 			// If it's Friday according to da clock
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
+			#end
+			#end
 			#end
 
 			if (FlxG.save.data.flashing)
@@ -431,7 +466,7 @@ class TitleState extends MusicBeatState
 						if (Main.odyseeMark)
 							createCoolText(['are we partnered', 'with']);
 						else if (Main.perkedelMark)
-							createCoolText(['Perkedel Kaded FNF mods', 'by']);
+							createCoolText(['last funkin moments', 'by']);
 						else
 							createCoolText(['Kade Engine', 'by']);
 					}

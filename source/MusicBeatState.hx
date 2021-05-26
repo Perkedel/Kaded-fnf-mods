@@ -1,7 +1,11 @@
 package;
 
-#if windows
+#if desktop
+#if !neko
+#if !hl
 import Discord.DiscordClient;
+#end
+#end
 #end
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;

@@ -3,6 +3,7 @@
         "player2": "dad",
         "player1": "bf",
         "stage": "stage",
+        "gfVersion": "gf",
         "speed": 1,
         "needsVoices": false,
         "sectionLengths": [],
@@ -10,6 +11,7 @@
         "notes": [],
         "bpm": 100,
         "sections": 0,
-        "validScore": true
+        "validScore": true,
+        "noteStyle": "normal"
     }
 }

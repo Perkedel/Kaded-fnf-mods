@@ -38,6 +38,7 @@ class OptionsMenu extends MusicBeatState
 		]),
 		new OptionCatagory("Appearance", [
 			#if desktop
+			new FullScreenOption("Toggle Fullscreen Mode"),
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
 			new RainbowFPSOption("Make the FPS Counter Rainbow"),
 			new AccuracyOption("Display accuracy information."),
@@ -54,9 +55,10 @@ class OptionsMenu extends MusicBeatState
 			new FPSOption("Toggle the FPS Counter"),
 			new ReplayOption("View replays"),
 			#end
+			new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), //JOELwindows7: make this Odysee exclusive pls. how!
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 			new WatermarkOption("Enable and disable all watermarks from the engine."),
-			new ChooseWatermark("Choose your favourite watermark to be shown in the engine"),
+			//new ChooseWatermark("Choose your favourite watermark to be shown in the engine"),
 			new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),
 			new BotPlay("Showcase your charts and mods with autoplay.")
@@ -119,9 +121,11 @@ class OptionsMenu extends MusicBeatState
 	{
 		super.update(elapsed);
 
-			if (controls.BACK && !isCat)
+			//JOELwindows7: right click to go back, I guess.
+			//incase gamers get mad, smash keyboard, no longer working?
+			if ((controls.BACK || FlxG.mouse.justPressedRight) && !isCat)
 				FlxG.switchState(new MainMenuState());
-			else if (controls.BACK)
+			else if (controls.BACK || FlxG.mouse.justPressedRight)
 			{
 				isCat = false;
 				grpControls.clear();
@@ -135,9 +139,10 @@ class OptionsMenu extends MusicBeatState
 					}
 				curSelected = 0;
 			}
-			if (controls.UP_P)
+			//JOELwindows7: idk how to mouse on option menu
+			if (controls.UP_P || FlxG.mouse.wheel == 1)
 				changeSelection(-1);
-			if (controls.DOWN_P)
+			if (controls.DOWN_P || FlxG.mouse.wheel == -1)
 				changeSelection(1);
 			
 			if (isCat)
@@ -201,7 +206,7 @@ class OptionsMenu extends MusicBeatState
 			if (controls.RESET)
 					FlxG.save.data.offset = 0;
 
-			if (controls.ACCEPT)
+			if (controls.ACCEPT || FlxG.mouse.justPressed)
 			{
 				if (isCat)
 				{
@@ -236,7 +241,11 @@ class OptionsMenu extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		#if !switch
+		#if !mobile
+		#if !neko
 		// NGio.logEvent("Fresh");
+		#end
+		#end
 		#end
 		
 		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);

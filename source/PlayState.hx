@@ -54,10 +54,13 @@ import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 
-#if windows
+#if desktop
+#if cpp
 import Discord.DiscordClient;
 #end
-#if windows
+#end
+//JOELwindows7: hey, I changed the directive to think for other desktop OSes as well.
+#if desktop
 import Sys;
 import sys.FileSystem;
 #end
@@ -90,15 +93,20 @@ class PlayState extends MusicBeatState
 
 	var halloweenLevel:Bool = false;
 
+	//JOELwindows7: numbers of Missnote sfx! load from text file, how many Miss notes you had?
+	var numOfMissNoteSfx:Int = 3;
+
 	var songLength:Float = 0;
 	var kadeEngineWatermark:FlxText;
 	
-	#if windows
+	#if desktop
+	#if cpp
 	// Discord RPC variables
 	var storyDifficultyText:String = "";
 	var iconRPC:String = "";
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
+	#end
 	#end
 
 	private var vocals:FlxSound;
@@ -236,16 +244,23 @@ class PlayState extends MusicBeatState
 		repPresses = 0;
 		repReleases = 0;
 
-		#if windows
+		#if desktop
 		executeModchart = FileSystem.exists(Paths.lua(PlayState.SONG.song.toLowerCase()  + "/modchart"));
 		#end
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
 		#end
+		#if neko
+		executeModchart = false; // JOELwindows7: FORCE disable for neko targets just to be safe
+		#end
+		#if hl
+		executeModchart = false;
+		#end
 
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart"));
 
-		#if windows
+		#if desktop
+		#if cpp
 		// Making difficulty text for Discord Rich Presence.
 		switch (storyDifficulty)
 		{
@@ -286,7 +301,14 @@ class PlayState extends MusicBeatState
 		// Updating Discord Rich Presence.
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
 		#end
+		#end
 
+		//JOELwindows7: load the num missnote sfx file and interpret!
+		// inspire the loader from FreeplayState.hx or OH ChartingState.hx. look at those dropdowns
+		// that lists characters, stages, etc.
+		// yeah I know, for future use we array this.
+		var initMissSfx = CoolUtil.coolTextFile(Paths.txt('numbersOfMissSfx'));
+		numOfMissNoteSfx = Std.parseInt(initMissSfx[0]);
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -336,8 +358,11 @@ class PlayState extends MusicBeatState
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			case 'windfall':
-
 				dialogue = CoolUtil.coolTextFile(Paths.txt('windfall/windfallDialogue'));
+			case 'rule the world':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('rule the world/rule the worldDialogue'));
+			case 'well meet again':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('well meet again/well meet againDialogue'));
 			case 'senpai-midi':
 				trace("Playstate pls load senpai-midi dialogue");
 				dialogue = CoolUtil.coolTextFile(Paths.txt('senpai-midi/senpai-midiDialogue'));
@@ -403,9 +428,14 @@ class PlayState extends MusicBeatState
 					if(FlxG.save.data.distractions){
 						add(phillyTrain);
 					}
-
+					
+					//JOELwindows7: buddy, you forgot to put the train sound in week3 special folder
+					//No wonder the train cannot come. it missing that sound.
+					//remember, the trains position depends on the sound playback position!
 					trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes','week3'));
 					FlxG.sound.list.add(trainSound);
+					//there, I've copied the train_passes ogg & mp3 into the week3/sounds . let's see
+					//if it works again.
 
 					// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
 
@@ -750,6 +780,7 @@ class PlayState extends MusicBeatState
 				}
 			case 'cruelThesis':
 				{
+					//JOELwindows7: LOL Van Elektronishe with Cruel Angel Thesis lol Evangelion
 					defaultCamZoom = 0.9;
 					curStage = 'cruelThesis';
 					var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('VanElektronische/VanElektronische_corpThesis'));
@@ -802,7 +833,7 @@ class PlayState extends MusicBeatState
 				}
 			case 'blank':
 				{
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'blank';
 					// JOELwindows7: Just blank. nothing.
 					// chroma key color is #000000 . well, it's hard, yes, 
@@ -810,7 +841,7 @@ class PlayState extends MusicBeatState
 				}
 			case 'greenscreen':
 				{
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'greenscreen';
 					//JOELwindows7: turns out you can generate graphic with Make Graphic! 
 					// it is even there on the FlxSprite construction wow!
@@ -829,7 +860,7 @@ class PlayState extends MusicBeatState
 			case 'bluechroma':
 				{
 					//JOELwindows7: same as greenscreen but blue. not to be confused with blue screen of death!
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'bluechroma';
 					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLUE);
 					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
@@ -845,7 +876,7 @@ class PlayState extends MusicBeatState
 					// He is famous for the pinkest color you've ever seen.
 					// https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple
 					// and peck Anish Kapoor.
-					defaultCamZoom = 0.9;
+					defaultCamZoom = 0.5;
 					curStage = 'semple';
 					// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
 					// because no camera has the ability to capture way over Pink Semple had.
@@ -857,7 +888,47 @@ class PlayState extends MusicBeatState
 					hue.active = false;
 					add(hue);
 				}
-			default:
+			case 'whitening':
+				{
+					//JOELwindows7: This looks familiar. oh no.
+					defaultCamZoom = 0.5;
+					curStage = 'whitening';
+					// JOELwindows7: guys, pls don't blamm me. it's nothing to do. let's assume it's purely coincidental.
+					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
+					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
+					hue.updateHitbox();
+					hue.antialiasing = true;
+					hue.scrollFactor.set(0.1,0.1);
+					hue.active = false;
+					add(hue);
+				}
+			case 'kuning':
+				{
+					//JOELwindows7: yellow this one out
+					defaultCamZoom = 0.5;
+					curStage = 'kuning';
+					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.YELLOW);
+					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
+					hue.updateHitbox();
+					hue.antialiasing = true;
+					hue.scrollFactor.set(0.1,0.1);
+					hue.active = false;
+					add(hue);
+				}
+			case 'blood':
+				{
+					//JOELwindows7: red screen
+					defaultCamZoom = 0.5;
+					curStage = 'blood';
+					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.RED);
+					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
+					hue.updateHitbox();
+					hue.antialiasing = true;
+					hue.scrollFactor.set(0.1,0.1);
+					hue.active = false;
+					add(hue);
+				}
+		default:
 			{
 					defaultCamZoom = 0.9;
 					curStage = 'stage';
@@ -896,9 +967,7 @@ class PlayState extends MusicBeatState
 			case 'gf-pixel':
 				gfVersion = 'gf-pixel';
 			case 'gf-ht':
-				//JOELwindows7:
-				// TODO: for Jakarta fair booth Van Elektronische with Hookx, train cart booth room
-				// ht = home theater. a landscape TV with Sondkart GF-HT100 Soundbar bellow it.
+				//JOELwindows7: doned the gf-ht
 				gfVersion = 'gf-ht';
 			default:
 				gfVersion = 'gf';
@@ -921,7 +990,28 @@ class PlayState extends MusicBeatState
 					camPos.x += 600;
 					tweenCamIn();
 				}
-
+			case 'gf-ht':
+				//JOELwindows7: copy paste above. the Home Theater also had left down up right as well!
+				dad.setPosition(gf.x, gf.y);
+				gf.visible = false;
+				if (isStoryMode)
+				{
+					camPos.x += 600;
+					tweenCamIn();
+				}
+			case 'gf-standalone':
+				//JOELwindows7: reserved for future use
+				//basically gf get down from speaker and duet against player 1
+				dad.y += 100;
+				dad.x -= 100;
+				switch(gfVersion){
+					case 'gf':
+						//remove the gf from speaker
+					case 'gf-ht':
+						//don't do anything and stay cool. no change.
+					default:
+						//do something if the GF is speaker.
+				}
 			case "spooky":
 				dad.y += 200;
 			case "monster":
@@ -955,6 +1045,10 @@ class PlayState extends MusicBeatState
 				// take my hand. I'll be waiting you outside
 				dad.y += 100;
 				dad.x -= 150;
+			default:
+				trace("Oh no! it looks like you forgot the position data for Player 2 " + SONG.player2);
+				FlxG.log.add("Forgot position data for Player2 " + SONG.player2);
+				
 		}
 
 
@@ -1039,8 +1133,24 @@ class PlayState extends MusicBeatState
 				boyfriend.x += 500;
 				dad.x -= 400;
 				gf.y -= 100;
+			case 'whitening':
+				// JOELwindows7: don't use light mode! it will burn your eyes!
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
+			case 'kuning':
+				// JOELwindows7: Yellow day!
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
+			case 'blood':
+				// JOELwindows7: Red screen!
+				boyfriend.x += 500;
+				dad.x -= 400;
+				gf.y -= 100;
 			default: 
-				trace("Hey uh, we missing the offset information for stage " + curStage + " guys.");
+				trace("Hey uh, we missing the stage offset information for stage " + curStage + " guys.");
+				FlxG.log.add("Missing stage offset positioning for " + curStage);
 		}
 
 		add(gf);
@@ -1217,7 +1327,8 @@ class PlayState extends MusicBeatState
 		{
 			switch (curSong.toLowerCase())
 			{
-				case "winter-horrorland":
+				//JOELwindows7: the JSON file for that winter horrorland also removes the dash!
+				case "winter horrorland":
 					var blackScreen:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 					add(blackScreen);
 					blackScreen.scrollFactor.set();
@@ -1261,11 +1372,14 @@ class PlayState extends MusicBeatState
 				case 'thorns-midi':
 					schoolIntro(doof);
 				case 'windfall':
-					//TODO: jakarta fair normal intro doof pls
 					//startCountdown();
 					schoolIntro(doof);
+				case 'rule the world':
+					schoolIntro(doof);
+				case 'well meet again':
+					schoolIntro(doof);
 				default:
-					trace("No School Intro info in isStoryMode. start coundown anyway");
+					trace("No School Intro info in isStoryMode for " + curSong + ". start coundown anyway");
 					startCountdown();
 			}
 		}
@@ -1274,7 +1388,7 @@ class PlayState extends MusicBeatState
 			switch (curSong.toLowerCase())
 			{
 				default:
-					trace("No something School Intro to do in freeplay mode. start countdown anyway");
+					trace("No something School Intro to do in freeplay mode for " + curSong + ". start countdown anyway");
 					startCountdown();
 			}
 		}
@@ -1388,8 +1502,12 @@ class PlayState extends MusicBeatState
 
 	var luaWiggles:Array<WiggleEffect> = [];
 
-	#if windows
+	#if desktop
+	#if !neko
+	#if !hl
 	public static var luaModchart:ModchartState = null;
+	#end
+	#end
 	#end
 
 	function startCountdown():Void
@@ -1400,12 +1518,16 @@ class PlayState extends MusicBeatState
 		generateStaticArrows(1);
 
 
-		#if windows
+		#if desktop
+		#if !neko
+		#if !hl
 		if (executeModchart)
 		{
 			luaModchart = ModchartState.createModchartState();
 			luaModchart.executeState('start',[PlayState.SONG.song]);
 		}
+		#end
+		#end
 		#end
 
 		talking = false;
@@ -1514,7 +1636,7 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
 				case 4:
 					//JOELwindows7: just add trace for fun
-					trace("Run the song now!")
+					trace("Run the song now!");
 			}
 
 			swagCounter += 1;
@@ -1586,9 +1708,11 @@ class PlayState extends MusicBeatState
 			default: allowedToHeadbang = false;
 		}
 		
-		#if windows
+		#if desktop
+		#if cpp
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
+		#end
 		#end
 	}
 
@@ -1621,7 +1745,7 @@ class PlayState extends MusicBeatState
 		var playerCounter:Int = 0;
 
 		// Per song offset check
-		#if windows
+		#if desktop
 			var songPath = 'assets/data/' + PlayState.SONG.song.toLowerCase() + '/';
 			for(file in sys.FileSystem.readDirectory(songPath))
 			{
@@ -1877,8 +2001,10 @@ class PlayState extends MusicBeatState
 				vocals.pause();
 			}
 
-			#if windows
+			#if desktop
+			#if cpp
 			DiscordClient.changePresence("PAUSED on " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "Acc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
+			#end
 			#end
 			if (!startTimer.finished)
 				startTimer.active = false;
@@ -1900,7 +2026,8 @@ class PlayState extends MusicBeatState
 				startTimer.active = true;
 			paused = false;
 
-			#if windows
+			#if desktop
+			#if cpp
 			if (startTimer.finished)
 			{
 				DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses, iconRPC, true, songLength - Conductor.songPosition);
@@ -1909,6 +2036,7 @@ class PlayState extends MusicBeatState
 			{
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), iconRPC);
 			}
+			#end
 			#end
 		}
 
@@ -1925,8 +2053,10 @@ class PlayState extends MusicBeatState
 		vocals.time = Conductor.songPosition;
 		vocals.play();
 
-		#if windows
+		#if desktop
+		#if cpp
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
+		#end
 		#end
 	}
 
@@ -1947,7 +2077,9 @@ class PlayState extends MusicBeatState
 		if (FlxG.save.data.botplay && FlxG.keys.justPressed.ONE)
 			camHUD.visible = !camHUD.visible;
 
-		#if windows
+		#if desktop
+		#if !neko
+		#if !hl
 		if (executeModchart && luaModchart != null && songStarted)
 		{
 			luaModchart.setVar('songPos',Conductor.songPosition);
@@ -2000,7 +2132,8 @@ class PlayState extends MusicBeatState
 					playerStrums.members[i].visible = p2;
 			}
 		}
-
+		#end
+		#end
 		#end
 
 		// reverse iterate to remove oldest notes first and not invalidate the iteration
@@ -2035,6 +2168,8 @@ class PlayState extends MusicBeatState
 			case 'philly':
 				if (trainMoving)
 				{
+					//JOELwindows7: is update state
+					//trace("lookout trains");
 					trainFrameTiming += elapsed;
 
 					if (trainFrameTiming >= 1 / 24)
@@ -2067,16 +2202,22 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			#if windows
+			#if desktop
+			#if cpp
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
+			#end
 			FlxG.switchState(new ChartingState());
-			#if windows
+			#if desktop
+			#if !neko
+			#if !hl
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
+			#end
+			#end
 			#end
 		}
 
@@ -2114,24 +2255,32 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.EIGHT)
 		{
 			FlxG.switchState(new AnimationDebug(SONG.player2));
-			#if windows
+			#if desktop
+			#if !neko
+			#if !hl
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
 			#end
+			#end
+			#end
 		}
 
 		if (FlxG.keys.justPressed.ZERO)
 		{
 			FlxG.switchState(new AnimationDebug(SONG.player1));
-			#if windows
+			#if desktop
+			#if !neko
+			#if !hl
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
+			#end
+			#end
 			#end
 		}
 
@@ -2268,30 +2417,68 @@ class PlayState extends MusicBeatState
 								}else triggeredAlready = false;
 							}
 						}
+						case 'Rule the World':
+						{
+							//JOELwindows7: okay how do I supposed to cheer?
+							//copy from above and adjust beat.
+							//oh God. well I gotta figure this one out.
+							if(curBeat < 64){
+								if(curBeat % 4 == 0)
+								{
+									if(!triggeredAlready)
+										{
+											gf.playAnim('cheer');
+											triggeredAlready = true;
+										}
+								} else triggeredAlready = false;
+							}
+							if(curBeat < 318 && curBeat < 383){
+								if(curBeat % 4 == 0)
+								{
+									if(!triggeredAlready)
+										{
+											gf.playAnim('cheer');
+											triggeredAlready = true;
+										}
+								} else triggeredAlready = false;
+							}
+						}
 					}
 				}
 			}
 			
-			#if windows
+			#if desktop
+			#if !neko
+			#if !hl
 			if (luaModchart != null)
 				luaModchart.setVar("mustHit",PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection);
+			#end
+			#end
 			#end
 
 			if (camFollow.x != dad.getMidpoint().x + 150 && !PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection)
 			{
 				var offsetX = 0;
 				var offsetY = 0;
-				#if windows
+				#if desktop
+				#if !neko
+				#if !hl
 				if (luaModchart != null)
 				{
 					offsetX = luaModchart.getVar("followXOffset", "float");
 					offsetY = luaModchart.getVar("followYOffset", "float");
 				}
 				#end
+				#end
+				#end
 				camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
-				#if windows
+				#if desktop
+				#if !neko
+				#if !hl
 				if (luaModchart != null)
 					luaModchart.executeState('playerTwoTurn', []);
+				#end
+				#end
 				#end
 				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
 
@@ -2315,18 +2502,26 @@ class PlayState extends MusicBeatState
 			{
 				var offsetX = 0;
 				var offsetY = 0;
-				#if windows
+				#if desktop
+				#if !neko
+				#if !hl
 				if (luaModchart != null)
 				{
 					offsetX = luaModchart.getVar("followXOffset", "float");
 					offsetY = luaModchart.getVar("followYOffset", "float");
 				}
 				#end
+				#end
+				#end
 				camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
 
-				#if windows
+				#if desktop
+				#if !neko
+				#if !hl
 				if (luaModchart != null)
 					luaModchart.executeState('playerOneTurn', []);
+				#end
+				#end
 				#end
 
 				switch (curStage)
@@ -2397,10 +2592,13 @@ class PlayState extends MusicBeatState
 
 			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
-			#if windows
+			#if desktop
+			#if cpp
 			// Game Over doesn't get his own variable because it's only used here
 			DiscordClient.changePresence("GAME OVER -- " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy),"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
 			#end
+			#end
+
 
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
@@ -2408,6 +2606,7 @@ class PlayState extends MusicBeatState
 		{
 			if(FlxG.keys.justPressed.R)
 				{
+					trace("Pressed self Eik Serkat button");
 					boyfriend.stunned = true;
 
 					persistentUpdate = false;
@@ -2419,11 +2618,12 @@ class PlayState extends MusicBeatState
 		
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		
-					#if windows
+					#if desktop
+					#if cpp
 					// Game Over doesn't get his own variable because it's only used here
 					DiscordClient.changePresence("GAME OVER -- " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy),"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
 					#end
-		
+					#end		
 					// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 				}
 		}
@@ -2570,9 +2770,13 @@ class PlayState extends MusicBeatState
 							});
 						}
 	
-						#if windows
+						#if desktop
+						#if !neko
+						#if !hl
 						if (luaModchart != null)
 							luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+						#end
+						#end
 						#end
 
 						dad.holdTimer = 0;
@@ -2676,12 +2880,16 @@ class PlayState extends MusicBeatState
 		if (FlxG.save.data.fpsCap > 290)
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
 
-		#if windows
+		#if desktop
+		#if !neko
+		#if !hl
 		if (luaModchart != null)
 		{
 			luaModchart.die();
 			luaModchart = null;
 		}
+		#end
+		#end
 		#end
 
 		canPause = false;
@@ -2718,12 +2926,16 @@ class PlayState extends MusicBeatState
 
 					FlxG.switchState(new StoryMenuState());
 
-					#if windows
+					#if desktop
+					#if !neko
+					#if !hl
 					if (luaModchart != null)
 					{
 						luaModchart.die();
 						luaModchart = null;
 					}
+					#end
+					#end
 					#end
 
 					// if ()
@@ -2731,7 +2943,13 @@ class PlayState extends MusicBeatState
 
 					if (SONG.validScore)
 					{
+						#if !mobile
+						#if !switch
+						#if !neko
 						NGio.unlockMedal(60961);
+						#end
+						#end
+						#end
 						Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 					}
 
@@ -3264,6 +3482,11 @@ class PlayState extends MusicBeatState
 			health -= 0.04;
 			if (combo > 5 && gf.animOffsets.exists('sad'))
 			{
+				//JOELwindows7: add girlfriend oop & aah for combo break,
+				//Just like osu!
+				FlxG.sound.play(Paths.soundRandom('GF_', 1, 2), 0.5);
+				trace("Yah, sayang banget padahal kan udah " + Std.string(combo) + " kombo tadi :\'( ");
+
 				gf.playAnim('sad');
 			}
 			combo = 0;
@@ -3277,7 +3500,8 @@ class PlayState extends MusicBeatState
 
 			songScore -= 10;
 
-			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+			//JOELwindows7: now the numbers of miss note sfx depends on the file yay!
+			FlxG.sound.play(Paths.soundRandom('missnote', 1, numOfMissNoteSfx), FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
 			// FlxG.log.add('played imss note');
 
@@ -3293,9 +3517,13 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('singRIGHTmiss', true);
 			}
 
-			#if windows
+			#if desktop
+			#if !neko
+			#if !hl
 			if (luaModchart != null)
 				luaModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
+			#end
+			#end
 			#end
 
 
@@ -3444,9 +3672,13 @@ class PlayState extends MusicBeatState
 							boyfriend.playAnim('singLEFT', true);
 					}
 		
-					#if windows
+					#if desktop
+					#if !neko
+					#if !hl
 					if (luaModchart != null)
 						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+					#end
+					#end
 					#end
 
 
@@ -3508,6 +3740,7 @@ class PlayState extends MusicBeatState
 
 	function trainStart():Void
 	{
+		trace("Here comes the train choo choo!");
 		if(FlxG.save.data.distractions){
 		trainMoving = true;
 		if (!trainSound.playing)
@@ -3520,6 +3753,8 @@ class PlayState extends MusicBeatState
 	function updateTrainPos():Void
 	{
 		if(FlxG.save.data.distractions){
+			//JOELwindows7: is update state
+			//trace("whoah that's fast train");
 			if (trainSound.time >= 4700)
 				{
 					startedMoving = true;
@@ -3549,6 +3784,7 @@ class PlayState extends MusicBeatState
 	function trainReset():Void
 	{
 		if(FlxG.save.data.distractions){
+			trace("train passes bye train");
 			gf.playAnim('hairFall');
 			phillyTrain.x = FlxG.width + 200;
 			trainMoving = false;
@@ -3580,12 +3816,16 @@ class PlayState extends MusicBeatState
 			resyncVocals();
 		}
 
-		#if windows
+		#if desktop
+		#if !neko
+		#if !hl
 		if (executeModchart && luaModchart != null)
 		{
 			luaModchart.setVar('curStep',curStep);
 			luaModchart.executeState('stepHit',[curStep]);
 		}
+		#end
+		#end
 		#end
 
 		if (dad.curCharacter == 'spooky' && curStep % 4 == 2)
@@ -3597,12 +3837,14 @@ class PlayState extends MusicBeatState
 		// yes this updates every step.
 		// yes this is bad
 		// but i'm doing it to update misses and accuracy
-		#if windows
+		#if desktop
+		#if cpp
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
 
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "Acc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC,true,  songLength - Conductor.songPosition);
+		#end
 		#end
 
 	}
@@ -3619,12 +3861,16 @@ class PlayState extends MusicBeatState
 			notes.sort(FlxSort.byY, (FlxG.save.data.downscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING));
 		}
 
-		#if windows
+		#if desktop
+		#if !neko
+		#if !hl
 		if (executeModchart && luaModchart != null)
 		{
 			luaModchart.setVar('curBeat',curBeat);
 			luaModchart.executeState('beatHit',[curBeat]);
 		}
+		#end
+		#end
 		#end
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
@@ -3683,7 +3929,8 @@ class PlayState extends MusicBeatState
 			boyfriend.playAnim('hey', true);
 		}
 
-		if (curBeat % 16 == 15 && SONG.song == 'Tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
+		//JOELwindows7: found pay attention to this if player 2 is gf.
+		if (curBeat % 16 == 15 && SONG.song == 'Tutorial' && (dad.curCharacter == 'gf' || dad.curCharacter == 'gf-ht') && curBeat > 16 && curBeat < 48)
 			{
 				boyfriend.playAnim('hey', true);
 				dad.playAnim('cheer', true);
@@ -3720,6 +3967,7 @@ class PlayState extends MusicBeatState
 	
 					if (curBeat % 4 == 0)
 					{
+						trace("change light pls");
 						phillyCityLights.forEach(function(light:FlxSprite)
 						{
 							light.visible = false;
@@ -3736,6 +3984,7 @@ class PlayState extends MusicBeatState
 				if (curBeat % 8 == 4 && FlxG.random.bool(30) && !trainMoving && trainCooldown > 8)
 				{
 					if(FlxG.save.data.distractions){
+						trace("Hey look train!");
 						trainCooldown = FlxG.random.int(-4, 0);
 						trainStart();
 					}

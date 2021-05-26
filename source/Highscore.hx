@@ -17,7 +17,11 @@ class Highscore
 
 
 		#if !switch
+		#if !mobile
+		#if !neko
 		NGio.postScore(score, song);
+		#end
+		#end
 		#end
 
 		if(!FlxG.save.data.botplay)
@@ -36,7 +40,11 @@ class Highscore
 	{
 
 		#if !switch
+		#if !mobile
+		#if !neko
 		NGio.postScore(score, "Week " + week);
+		#end
+		#end
 		#end
 
 		if(!FlxG.save.data.botplay)

@@ -17,8 +17,11 @@ import lime.net.curl.CURLCode;
 import haxe.Json;
 import haxe.format.JsonParser;
 
-#if windows
+//JOELwindows7: hey, I changed all discord rpc to only available to desktop, except neko and hashlink.
+#if desktop
+#if cpp
 import Discord.DiscordClient;
+#end
 #end
 
 using StringTools;
@@ -39,7 +42,7 @@ class StoryMenuState extends MusicBeatState
 	//JOELwindows7: ahei. so, we have already make the week list as a json file.
 	// therefore, you just have to do edit assets/data/weekList.json (rendered version)
 	// and follow the way it works like the tutorial. also, use "" instead of '',
-	// because JSON only consider value a string with "".
+	// because JSON only consider value a string and variable name like that with "".
 	// have fun!
 	var weekData:Array<Dynamic> = [
 		['Tutorial'],
@@ -105,10 +108,9 @@ class StoryMenuState extends MusicBeatState
 		// hmm isn't that better to use JSON instead? it's easier to manage!
 		// just copy 3 week list variables above, JSONify them all! yeah!
 		/*
-		var initWeekList = CoolUtil.coolTextFile(Paths.txt('weekList'));
-		for (i in 0...initWeekList.length){
-
-		}
+		Pain is temporary
+		GLORY IS FOREVER
+		LOL wintergatan
 		*/
 		//JOELwindows7: okay fine let's just json it.
 		var initWeekJson = loadFromJson('weekList');
@@ -118,9 +120,11 @@ class StoryMenuState extends MusicBeatState
 		weekNames = initWeekJson.weekNames;
 
 
-		#if windows
+		#if desktop
+		#if cpp
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
+		#end
 		#end
 
 		transIn = FlxTransitionableState.defaultTransIn;
@@ -267,12 +271,13 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!selectedWeek)
 			{
-				if (controls.UP_P)
+				//JOELwindows7: add the mouse support here too as well
+				if (controls.UP_P || FlxG.mouse.wheel == 1)
 				{
 					changeWeek(-1);
 				}
 
-				if (controls.DOWN_P)
+				if (controls.DOWN_P || FlxG.mouse.wheel == -1)
 				{
 					changeWeek(1);
 				}
@@ -287,19 +292,19 @@ class StoryMenuState extends MusicBeatState
 				else
 					leftArrow.animation.play('idle');
 
-				if (controls.RIGHT_P)
+				if (controls.RIGHT_P || FlxG.mouse.justPressedMiddle)
 					changeDifficulty(1);
 				if (controls.LEFT_P)
 					changeDifficulty(-1);
 			}
 
-			if (controls.ACCEPT)
+			if (controls.ACCEPT || FlxG.mouse.justPressed)
 			{
 				selectWeek();
 			}
 		}
 
-		if (controls.BACK && !movedBack && !selectedWeek)
+		if ((controls.BACK || FlxG.mouse.justPressedRight) && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;

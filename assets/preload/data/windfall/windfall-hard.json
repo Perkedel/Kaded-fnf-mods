@@ -2067,6 +2067,7 @@
             }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 102, "changeBPM": false, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 102, "changeBPM": false, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 102, "changeBPM": false, "mustHitSection": true }
         ],
         "player2": "hookx",
+        "gfVersion": "gf-ht",
         "song": "windfall",
         "validScore": true,
         "sections": 0,

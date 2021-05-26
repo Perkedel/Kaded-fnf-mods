@@ -1,8 +1,12 @@
 package;
 
 import openfl.Lib;
-#if windows
+#if desktop
+#if !neko
+#if !hl
 import llua.Lua;
+#end
+#end
 #end
 import Controls.Control;
 import flixel.FlxG;
@@ -98,11 +102,12 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		var upP = controls.UP_P;
-		var downP = controls.DOWN_P;
+		//JOELwindows7: add mouse control in pause menu too
+		var upP = controls.UP_P || FlxG.mouse.wheel == 1;
+		var downP = controls.DOWN_P || FlxG.mouse.wheel == -1;
 		var leftP = controls.LEFT_P;
 		var rightP = controls.RIGHT_P;
-		var accepted = controls.ACCEPT;
+		var accepted = controls.ACCEPT || FlxG.mouse.justPressed;
 		var oldOffset:Float = 0;
 		var songPath = 'assets/data/' + PlayState.SONG.song.toLowerCase() + '/';
 
@@ -189,12 +194,16 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.save.data.downscroll = false;
 					}
 					PlayState.loadRep = false;
-					#if windows
+					#if desktop
+					#if !neko
+					#if !hl
 					if (PlayState.luaModchart != null)
 					{
 						PlayState.luaModchart.die();
 						PlayState.luaModchart = null;
 					}
+					#end
+					#end
 					#end
 					if (FlxG.save.data.fpsCap > 290)
 						(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);

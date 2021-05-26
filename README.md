@@ -1,8 +1,54 @@
-# todo
+![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png )
+[Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
+# Last Funkin Moments
+collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
+
+We have:
+- Week Strong! vs. Hookx the friendly karaoke robot! ft. 3 TheFatRat Songs: Windfall, Rule The World, We'll meet again
+- new **UNIQUE** stages (which unfortunately are also hard code too):
+  - Jakarta Fair. inside one of the walking mini booth in the Van Elektronische booth
+  - Qmoveph. our default background found in our softwares consisting of stars and circles, complemented with a blue hue on the top, gradiently browns towards the bottom, both sides loopable.
+  - Fieldes. Yards with a bunch of hills behind it.
+  - Cruel Thesis. a background with self explanatory accent strip on the bottom left corner with Van Elektronische brand logo in the center, complemented with purple themed hue diagonal gradients.
+  - Colors screens!!! Solid color screen for chroma keying purposes! there are: Blue, Red, Green, Yellow, White, Blank! The characters and gf also also far distanced for easy management and further keyings later.
+- new **UNIQUE** characters! (pls fix so I don't have to hard code):
+  - Hookx the friendly karaoke robot
+  - Home Theater, while Girlfriend was busy looking for fashion or whatever physical distancing occassion needed, this Home theater is here. it has a modular landscape TV (which the screen and the computer (called TV evolution box thingy) are separatable), Sondkart GF-100 Soundbar, and a furniture to hold the TV evolution box and the soundbar.
+- **All without replacing weeks, stages, or even skin at all!** the vanilla assets and stuff still remains intact! (the week 7 is missing placeholder (High effort Ugh) and the original week 7 exclusive embargo is still ongoing as of 23/05/2021, Kickstarter ended)
+- ways to load weeks!!! with `weekList.json` file, you can edit the variable right away without needing to recompile entire game. finally! add weeks without recompile! more proceduralizer to come.
+- Forked from Kade Engine with love yay!
+- idk what next?
+
+<!-- (Unmarketed) We also have some yoinks from other mods without permission. Checkout [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) at section `other mods that wins the inclusion`. Yes, even we are *stealing* quote on quote, we always make sure mod page link url are always credited, along with their names of whom submited them. -->
+
+check [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) for stuffs involved during making it this mod
+
+enjoy the last drop of funkin before everything went.
+
+# Today's Update!
+## Week Strong! vs. Hookx the friendly Karaoke robot!
+After the coronavirus pandemic seems regressing day by day as many vaccines clouter finally reaches family level, Boyfriend, Girlfriend, Pico, and families got their vaccines and all people can finally travel freely to all countries. The humanity once again gained victory in herd immunity. But what shall they do?
+
+Boyfriend decided to go on to the opposite side of the world *to prove that he is the best rapper all around the world* (actually no, they're just bored after finding somebody to compete against, so..). well, turns out, that opposite side of the world isn't much edge of the world, infact that's where JOELwindows7 comes from, Indonesia. He heard from news that *the largest expo in Southeast Asia is going to open* at Jakarta. So then he invited all his friends and families to fly to Jakarta, Indonesia.
+
+Jakarta Fair finally opens again after the gruelling cruelty of coronavirus has finally defeated. Boyfriend and families went to Jakarta fair for mere curiosity and who knows find someone that would compete with him. It had alot of stuffs, so they separate a while to look for interesting stuffs around the fair. Girlfriend will search for fashions, while Boyfriend looks for technologies. He found one of the megabooth that has sophisticated walking minibooth in it, Van Elektronische (Perkedel Technologies). He entered one of the booth and encountered Hookx, the friendly Karaoke robot.
+
+Well, it's not the live person he met but another robot instead. Why not try though? I think Hookx got something interesting. So then Boyfriend proceed interacting with that robot that shapped like a portrait TV.
+
+# ERROR
+## Missing files
+...
+
+# Misc
+## todo
 - redecorate for Perkedel temp week works
 - week strong. vs. Hookx the friendly singing portrait tv robot assistant
 - hey, weren't we supposed to build sTILE instead?
 - add constructive criticism about how unprocedural map loading is unlike other rhythm games
+- abandon this mod when the procedural way of loading everything new (weeks, stages, background, scripts, etc.) has been ready on the upstream or the OG upstream, backport everything there.
+
+<!-- Kade Descriptions -->
+# Kade Engine Descriptions
 
 ![Kade Engine logo](https://user-images.githubusercontent.com/26305836/110529589-4b4eb600-80ce-11eb-9c44-e899118b0bf0.png)
 

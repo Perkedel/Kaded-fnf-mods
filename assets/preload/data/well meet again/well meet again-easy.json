@@ -1,0 +1,16 @@
+{
+    "song": {
+        "player2": "hookx",
+        "player1": "bf",
+        "gfVersion": "gf-ht",
+        "stage": "jakartaFair",
+        "speed": 1,
+        "needsVoices": false,
+        "sectionLengths": [],
+        "song": "Well Meet Again",
+        "notes": [],
+        "bpm": 100,
+        "sections": 0,
+        "validScore": true
+    }
+}

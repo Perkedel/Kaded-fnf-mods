@@ -37,6 +37,10 @@ class DialogueBox extends FlxSpriteGroup
 	//JOELwindows7: heuristic flag for non-pixel level
 	var nonPixel:Bool = false;
 
+	//JOELwindows7: heuristic flag for character that is not default Senpai
+	var customCharPls:Bool = false;
+	var customBfPls:Bool = false;
+
 	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>)
 	{
 		super();
@@ -112,6 +116,20 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
 
 				nonPixel = true;
+			case 'rule the world':
+				hasDialog = true;
+				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
+				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
+				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
+
+				nonPixel = true;
+			case 'well meet again':
+				hasDialog = true;
+				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
+				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
+				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
+
+				nonPixel = true;
 			case 'senpai-midi':
 				trace("please senpai-midi dialog where");
 				hasDialog = true;
@@ -147,14 +165,19 @@ class DialogueBox extends FlxSpriteGroup
 		else
 			trace("You should have dialog man");
 		
-		portraitLeft = new FlxSprite(-20, 40);
-		portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait');
-		portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);
-		portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
-		portraitLeft.updateHitbox();
-		portraitLeft.scrollFactor.set();
-		add(portraitLeft);
-		portraitLeft.visible = false;
+		//JOELwindows7: TODO: heuristic for character in chosen song above.
+		//decommision and instead reinstance per switch case above!
+		if(!customCharPls)
+		{
+			portraitLeft = new FlxSprite(-20, 40);
+			portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait');
+			portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);
+			portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
+			portraitLeft.updateHitbox();
+			portraitLeft.scrollFactor.set();
+			add(portraitLeft);
+			portraitLeft.visible = false;
+		}
 
 		portraitRight = new FlxSprite(0, 40);
 		portraitRight.frames = Paths.getSparrowAtlas('weeb/bfPortrait');

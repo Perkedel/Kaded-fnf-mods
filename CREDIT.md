@@ -51,6 +51,47 @@ thancc for all these resources! without them, everything is impossible.
 - https://www.plogue.com/downloads.html Plogue softwares. get the Sforzando the SFZ player for that FNF Sfz
 - https://youtu.be/MdXhnxgyxC4 another GenoX tutorial how to FNF voice
 - https://kadedev.github.io/Kade-Engine/guides/weeks old way to add week
+- https://youtu.be/ODFOpoXjzaA bbpanzu how to pico voice
+- https://www.fullbucket.de/music/freqshifter.html frequency shifter VST
+- https://youtu.be/7oQP_qdsa-8 this Dive the series episode gave intel about the original creator of Guruku Tersayang song, Melly Goeslaw. published by PT. Aquarius Pustaka Musik
+- https://youtu.be/_iI3Hwi9yxs refer origin animation to Guruku Tersayang
+- https://lmms.io/forum/viewtopic.php?t=5725 how to set tempo automation in LMMS
+- https://youtu.be/1dFJZvr4pA8 another Guruku tersayang reference (outshifted)
+- https://api.haxeflixel.com/flixel/input/gamepad/FlxGamepad.html disappointing! there is no rumble method for gamepad!
+- https://www.heikoplate.de/psruti.html turn any MIDI into Yamaha Musicsoft MIDI
+- https://openmidiproject.osdn.jp/Sekaiju_en.html Sekaiju! make and edit MIDI for real this time.
+- https://psrtutorial.com/util/plate.html PSR tutorial featured PSR UTI
+- https://www.heikoplate.de/psruti.html here's PSR UTI.
+- https://odysee.com/@JOELwindows7:a/GurukuTersayang_BaWaMI:4?r=FKgkgQ5Mr5kWhLj6fG8zZkeMVtj4pLHm you can also try BaWaMi to render MIDI
+- http://misaka.selfip.net/blog/?page_id=84#bawami here's BaWaMi. it is another own unique synth for playing MIDI. it's already distinct sounded from the rest.
+- https://www.selfmadedesigner.com/cropping-inkscape/ how to crop object inkscape
+- https://fridaynightfunkin.fandom.com/ friday night funkin fandom wiki
+- https://fridaynightfunking.fandom.com/ mods fandom wiki
+- https://gamebanana.com/wips/53720 hat kid
+- https://ninja-muffin24.itch.io/friday-night-funkin prototype
+- https://developer.android.com/ndk/guides/standalone_toolchain.html
+- https://gamebanana.com/tuts/13764
+- https://haxeflixel.com/documentation/
+- https://www.electronjs.org/
+- https://kadedev.github.io/Kade-Engine/building
+- https://lime.software/docs/project-files/xml-format/ project.xml format spec
+- https://code.haxe.org/category/beginner/strings.html what de buck i must unheurestically for `StringTools.endsWith()`?!
+- https://getsongbpm.com/tools/audio get the song bpm now
+- https://www.microsoft.com/store/productId/9WZDNCRFHVN5 Windows 10 calculator!!! I need to build multiplication stack of 7 for GF-HT texture atlas positionings.
+- https://haxeflixel.com/documentation/mouse/ how to mouse in HaxeFlixel
+- https://api.haxeflixel.com/flixel/input/touch/FlxTouch.html how to touchscreen in HaxeFlixel
+- https://snippets.haxeflixel.com/input/button/ how to button in HaxeFlixel
+- https://api.haxeflixel.com/flixel/ui/FlxSpriteButton.html how to sprite button in HaxeFlixel
+- https://api.haxeflixel.com/flixel/addons/display/FlxExtendedSprite.html how to extended sprite in HaxeFlixel
+- https://gamefromscratch.com/haxeflixel-tutorial-mouse-input/ the other way around to mouse input against a sprite
+- https://api.haxeflixel.com/flixel/ui/FlxButton.html dump doc
+- https://api.haxeflixel.com/flixel/addons/display/MouseCallback.html dump doc
+- https://api.haxeflixel.com/flixel/addons/display/FlxExtendedSprite.html dump doc
+- https://api.haxeflixel.com/flixel/ui/FlxSpriteButton.html dump doc
+- https://en.wikipedia.org/wiki/Papers,_Please wait. [`Papers, Please`](https://store.steampowered.com/app/239030/Papers_Please/ ) is Haxe too?!??! **WHAT DA FAAAK?!?!??!** [HAXE IS EVERYWHERE](https://imgflip.com/i/5azex9 )!!!
+- `Avengers: Endgame` by Marvel Studios. Thanos's `I used the stones to destroy the stones`.
+- https://store.steampowered.com/app/1089980/The_Henry_Stickmin_Collection/ lmao henry stickmin too Innersloth
+- https://discord.com This is a gamer's chat now should've been used by enterprises (which are not gamer too) as well. They've got alot of easter eggs going on and they're happy about it (which is what's good human do). not like Google, Microsoft, anyone who eventually removed easter eggs, claiming for `Trust and Honesty Policy` poops.
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -76,15 +117,82 @@ use VScode and Github desktop!
 - https://youtu.be/RWf50T52n58 AFI Junior - Guruku Tersayang
 
 # other mods that wins the inclusion (without permission if has CC or uh whatever bruh, otherwise unlikely). Congratulations!
-- https://gamebanana.com/mods/43569 FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
+Note: in Game Banana, mods that did not have license written will set to CC4.0-BY-NC-ND by default (marked by `Warning: presumably no license so default`). We believe that with ND circle legally prevents anyone to yoink such mods without asking permission. However, such statement is vague, due to the gray area like e.g. SF2. in any case, review the details and yoink with caution.
+
+- https://gamebanana.com/mods/43569 (do whatever the fck you want license) FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
+- https://gamebanana.com/tools/7033 (Warning: presumably no license so default) nickham13 BF voice SF2
+- https://github.com/GenoX-Fome/funkin-utau/ GenoX FNF UTAU voices. use for AFI Junior - Guruku Tersayang pls
+- https://www.fullbucket.de/music/freqshifter.html use this for Pico voice or whatever.
+- https://www.heikoplate.de/psruti.html PSR UTI. Used for enchancing MIDI quality into Yamaha Musicsoft MIDI
+- https://odysee.com/@JOELwindows7:a/GurukuTersayang_MIDI:d?r=FKgkgQ5Mr5kWhLj6fG8zZkeMVtj4pLHm the MIDI of Guruku Tersayang. originally by Helly Hilmi (website gone), edited by JOELwindows7 with Sekaiju & then enchanced with PSR UTI
+- https://openmidiproject.osdn.jp/Sekaiju_en.html Sekaiju. Compose and edit MIDI, support almost all MIDI file standard data editing from notes to special data like SysEx.
+- https://github.com/luckydog7/Funkin-android followed almost everything just to make this Perkedel Kaded fnf mod works also on Android
+- https://github.com/ninjamuffin99/Funkin also manually yoink the last code directives where Kade engine didn't think it could've work in Linux and macOS too like Discord RPC stuffs. also add naughtiness according to week 7 update on newgrounds which btw according to [this tankman fact from Darnebolian](https://youtu.be/ZlRPJ8Umt0A?t=201 ) this toggle `naughtiness` does nothing at the moment. so eh heh. whatever okay!
+- https://inkscape.org there's a symbol panel that has all common symbols you can freely use. press `Shift` + `Ctrl` + `Y` or top menu `Object`, `Symbols (Shift + Ctrl + Y)`. there's more symbols too https://inkscape.org/gallery/=symbol/?order=liked . and this one too https://github.com/PanderMusubi/inkscape-open-symbols that I believe we've installed.
+- https://github.com/PanderMusubi/inkscape-open-symbols the symbols collection for Inkscape yay!
+- the Exit sign, arrows, etc. for Jakarta Fair booth, Home theater, etc. in this mod is from AIGA symbol sets. it it's difficult, you can try search bar of that symbol panel: `Exit`. yeah!
+- https://gamebanana.com/tools/7107 Pico sf2 yay finally
+- - https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
+
+# other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
+> Why am I not credited?!
+
+> why my mods got removed?!
+
 - https://gamebanana.com/sounds/52066 (WARNING: has NC, ND) frick vine school class, assembled by Picaro2604. discovered that this kade randomly choose which missNote you can have. 7 8 9 miss note
 - https://gamebanana.com/sounds/51010 (WARNING: has NC, ND) tourettes guy miss note Beskupehn_Espira redistributions. 4 5 6 miss note
 - https://gamebanana.com/sounds/51159 (WARNING: has NC, ND) bruh miss note. MrBruh redistributed it this. 10 11 12 miss note
-- https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
-- https://gamebanana.com/sounds/51838 BABABOOEY! irdk_anymore. miss note 13 14 15
-- https://gamebanana.com/tools/7033 nickham13 BF voice SF2
-- https://github.com/GenoX-Fome/funkin-utau/ GenoX FNF UTAU voices. use for AFI Junior - Guruku Tersayang pls
+- https://gamebanana.com/sounds/51838 (WARNING: has NC, ND) BABABOOEY! irdk_anymore. miss note 13 14 15
+- https://gamebanana.com/mods/44306 (Warning: has NC, ND) Placeholder of week 7 temporarily. (Canceled, due to unforseen and fear of bad circumstances against centralized mod hosting, as well as precaution against ND circled Creative Commons license)
 
+**dislcaimer**: above list are no way meant to insult, defame, or threat authors of the mods listed. Perkedel requires all contributor from all tiers, roles, etc. to be transparent not only what have been yoinked, but also deyoinked assets, as well as the reason behind each deyoinks and removal (also including the foreshadowing which means mods that wish to be yoinked but ND circled license in the way). for those author that got the mod removed, feel free to make change in your licensing in case you disagree with the removal.
+
+If you wish to grant us permission to yoink your mods here, please change your license that at least removes offending circle (such as `No Derivative`). Perkedel do not accept exclusive grant certificate, or even bribe absolutely, due to nature of Perkedel that importance people more than ownself, especially in terms of motto and service (violation like granting exclusive grant either to us or someonw will cause your name blacklisted for particular sector which is fnf mods. your mod will be blacklisted from being yoinked). We require that you in full heart declared whether or not should anyone use your assets, code script, and stuff.
+
+for more detail about our statement regarding the `No Derivative` is death wish, feel free to read here  
+https://gamebanana.com/questions/11159?post=9179454 
+
+# what the peck why there's that one license there? / Have you got permission?
+Okay let me clarify it this Creative Commons licenses here. Let's see what I understand.
+
+any of license available with CC allows me to **yoink** it this to here. now, because there's `BY` (Attribution), I must credit. Of course, I cannot disagree with anything. everyone must know where to download and what the peck title is that.
+
+the `SA` (share alike) is about this. so if I just inserted to my mods here, that doesn't mean anything. **HOWEVER**, if I happened to edit that part with `SA`, I then must also license that particular remix (not whole mods) the same license as the original.
+
+the `NC` (No commercial) is notorious. I think, if this mod contains any asset with `NC`, then this whole mod cannot be deployed to arcade machine. Well, you then have to bring your own this mod there. Because No commercial gain thingy idk.
+
+the `ND` (No Derivative) is death wish. Again **this does not affect entire mod** hopefully. I can only just yoink (because Creative Commons), but I am allowed to remix those particular assets with `ND` at all. Just yoink that's it.
+
+and yeah, that's why I think inserting those mods without permission **should and must be** okay, as long you understand the licenses that had their permissions and restriction in it. Basically, make sure you credit. second, if it has `=` (No Derivative), do not remix that but yoink is okay. third if it has ~~`$`~~ (No commercial), then don't deploy this mod officially in arcade machine (if you have to, then you must remove all of the offending assets with No commecial first, or ask negotiate commercial permission from the authors involved making the assets). fourth, if it has `🔄` (Share Alike) then if you edited the particular asset, this new remix (not the whole mods) must be licensed same as original is (you can keep licensing rest of your mod anything less restrictive).
+
+right, so I assume you didn't put any license into it for those are CC4.0-BY-NC-ND, because if you didn't write it then it uses that default license, CC4.0-BY-NC-ND. idk about you, but maybe it's recommended to have at least a bit of knowledge of license here.
+
+I'm not legal expert at all. I just, not into law games, but concerns it this part of a thing. And c'mon, why we go here? weren't we supposed to make more mods or play more mods already? why bother if someone yoinked your mods beside if they don't credited it?
+
+# wtf gamebanana?! what vagueness is this?!?!
+## Requirement of permission
+https://gamebanana.com/threads/218927 Section 3.7 `No Proof Of Permission`
+
+[![]("https://gamebanana.com/questions/embeddables/11159?type=large")](https://gamebanana.com/questions/11159)
+
+okay, so what I interpret is that, yoinks are not okay at all. is that right? Yeah I get it, but for what license?
+
+you see, all mods who haven't written license will be default to Creative Commons 4.0 Attribution No Commercial No Derivatives (CC4.0-BY-NC-ND). By standard of most part of the earth, you can yoink pictures from the internet even without permission that are licensed Creative Commons to any creation, as long you put credit clearly in the creation description, as stated in `BY` Attribution in this CC.
+
+and sometimes I can find mods licensed seriously, humbly, permissively, free culture license compliants. such as Do whatever the fck you want thingy.. Now what with these? we can just put it in right? yeah we credit of course, even it is public domain.
+
+Yeah, I might become modpack here and there, but we got original contexts in here.
+
+ah peck this poop. let's scrap the test files. just to be safe people.
+
+## Recompile must be Open Source too, but why not the old one too?
+https://gamebanana.com/threads/218927 Section 3.10 `Recompiles`
+
+I may sound like a *karen on the loose that worthy canceling everywhere*. but hear me out:
+
+I believe you should consider enforcing that law on older mods too as well, well eventually, not in instant. Yeah after time elapsed there enforcing for the new mods as of the date stated, then you should consider enforcing that too on older mods.
+
+of course, kindly contact the submitters first. give them time for maybe, a month! no response, withhold. I think that's the good plan idk if not wrong.
 
 # internal extension
 - https://github.com/Perkedel/AfterChurch all inkscape assets

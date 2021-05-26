@@ -11,8 +11,10 @@ import flixel.util.FlxColor;
 import lime.utils.Assets;
 
 
-#if windows
+#if desktop
+#if cpp
 import Discord.DiscordClient;
+#end
 #end
 
 using StringTools;
@@ -37,6 +39,7 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		//JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
 
 		for (i in 0...initSonglist.length)
@@ -53,9 +56,11 @@ class FreeplayState extends MusicBeatState
 			}
 		 */
 
-		 #if windows
+		 #if desktop
+		 #if cpp
 		 // Updating Discord Rich Presence
 		 DiscordClient.changePresence("In the Freeplay Menu", null);
+		 #end
 		 #end
 
 		var isDebug:Bool = false;
@@ -177,9 +182,12 @@ class FreeplayState extends MusicBeatState
 
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
 
-		var upP = controls.UP_P;
-		var downP = controls.DOWN_P;
-		var accepted = controls.ACCEPT;
+		//JOELwindows7: add mouse support in here
+		//huh, how inconsistent. now the keypress bools are syndicated via
+		// each variable. interesting.
+		var upP = controls.UP_P || FlxG.mouse.wheel == 1;
+		var downP = controls.DOWN_P || FlxG.mouse.wheel ==-1;
+		var accepted = controls.ACCEPT || FlxG.mouse.justPressed;
 
 		if (upP)
 		{
@@ -190,12 +198,14 @@ class FreeplayState extends MusicBeatState
 			changeSelection(1);
 		}
 
+		//JOELwindows7: change difficulty with mid click
+		//and except the rest. no variable syndication
 		if (controls.LEFT_P)
 			changeDiff(-1);
-		if (controls.RIGHT_P)
+		if (controls.RIGHT_P || FlxG.mouse.justPressedMiddle)
 			changeDiff(1);
 
-		if (controls.BACK)
+		if (controls.BACK || FlxG.mouse.justPressedRight)
 		{
 			FlxG.switchState(new MainMenuState());
 		}
@@ -242,7 +252,11 @@ class FreeplayState extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		#if !switch
+		#if !mobile
+		#if !neko
 		// NGio.logEvent('Fresh');
+		#end
+		#end
 		#end
 
 		// NGio.logEvent('Fresh');

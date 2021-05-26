@@ -1,7 +1,10 @@
 // this file is for modchart things, this is to declutter playstate.hx
 
 // Lua
-#if windows
+//JOELwindows7: okay, please widen the area of support for macOS and Linux too.
+#if desktop
+#if !neko
+#if !hl
 import flixel.tweens.FlxEase;
 import openfl.filters.ShaderFilter;
 import flixel.tweens.FlxTween;
@@ -761,4 +764,6 @@ class ModchartState
         return new ModchartState();
     }
 }
+#end
+#end
 #end
