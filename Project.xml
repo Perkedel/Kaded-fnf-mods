@@ -110,6 +110,8 @@
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path='LICENSE' rename='LICENSE.txt' />
+	<assets path='CREDIT.md' rename='CREDIT.txt'/>
+	<!-- JOELwindows7: also export credit too as well -->
 	<!-- <template path='mods' /> -->
 	
 	<!-- <assets path="CHANGELOG.md" rename='changelog.txt'/> -->
