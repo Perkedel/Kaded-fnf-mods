@@ -284,7 +284,7 @@ class ChartingState extends MusicBeatState
 		stepperSongVol.name = 'song_instvol';
 
 
-		var hitsounds = new FlxUICheckBox(10, stepperSongVol.y + 35, null, null, "Play hitsounds", 100);
+		var hitsounds = new FlxUICheckBox(10, stepperSongVol.y + 60, null, null, "Play hitsounds", 100);
 		hitsounds.checked = false;
 		hitsounds.callback = function()
 		{
@@ -292,6 +292,22 @@ class ChartingState extends MusicBeatState
 		};
 
 		var stepperSongVolLabel = new FlxText(74, 110, 'Instrumental Volume');
+
+		
+		var shiftNoteDialLabel = new FlxText(10, 245, 'Shift Note FWD by (Section)');
+		var stepperShiftNoteDial:FlxUINumericStepper = new FlxUINumericStepper(10, 260, 1, 0, -1000, 1000, 0);
+		stepperShiftNoteDial.name = 'song_shiftnote';
+		var shiftNoteDialLabel2 = new FlxText(10, 275, 'Shift Note FWD by (Step)');
+		var stepperShiftNoteDialstep:FlxUINumericStepper = new FlxUINumericStepper(10, 290, 1, 0, -1000, 1000, 0);
+		stepperShiftNoteDialstep.name = 'song_shiftnotems';
+		var shiftNoteDialLabel3 = new FlxText(10, 305, 'Shift Note FWD by (ms)');
+		var stepperShiftNoteDialms:FlxUINumericStepper = new FlxUINumericStepper(10, 320, 1, 0, -1000, 1000, 2);
+		stepperShiftNoteDialms.name = 'song_shiftnotems';
+
+		var shiftNoteButton:FlxButton = new FlxButton(10, 335, "Shift", function()
+		{
+			shiftNotes(Std.int(stepperShiftNoteDial.value),Std.int(stepperShiftNoteDialstep.value),Std.int(stepperShiftNoteDialms.value));
+		});
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
 		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('gfVersionList'));
@@ -356,6 +372,13 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(stepperVocalVolLabel);
 		tab_group_song.add(stepperSongVol);
 		tab_group_song.add(stepperSongVolLabel);
+        tab_group_song.add(shiftNoteDialLabel);
+        tab_group_song.add(stepperShiftNoteDial);
+        tab_group_song.add(shiftNoteDialLabel2);
+        tab_group_song.add(stepperShiftNoteDialstep);
+        tab_group_song.add(shiftNoteDialLabel3);
+        tab_group_song.add(stepperShiftNoteDialms);
+        tab_group_song.add(shiftNoteButton);
 		tab_group_song.add(hitsounds);
 
 		var tab_group_assets = new FlxUI(null, UI_box);
@@ -1278,6 +1301,68 @@ class ChartingState extends MusicBeatState
 		updateGrid();
 	}
 
+	private function newSection(lengthInSteps:Int = 16,mustHitSection:Bool = false,altAnim:Bool = true):SwagSection
+		{
+			var sec:SwagSection = {
+				lengthInSteps: lengthInSteps,
+				bpm: _song.bpm,
+				changeBPM: false,
+				mustHitSection: mustHitSection,
+				sectionNotes: [],
+				typeOfSection: 0,
+				altAnim: altAnim
+			};
+
+			return sec;
+		}
+
+	function shiftNotes(measure:Int=0,step:Int=0,ms:Int = 0):Void
+		{
+			var newSong = [];
+			
+			var millisecadd = (((measure*4)+step/4)*(60000/_song.bpm))+ms;
+			var totaladdsection = Std.int((millisecadd/(60000/_song.bpm)/4));
+			trace(millisecadd,totaladdsection);
+			if(millisecadd > 0)
+				{
+					for(i in 0...totaladdsection)
+						{
+							newSong.unshift(newSection());
+						}
+				}
+			for (daSection1 in 0..._song.notes.length)
+				{
+					newSong.push(newSection(16,_song.notes[daSection1].mustHitSection,_song.notes[daSection1].altAnim));
+				}
+	
+			for (daSection in 0...(_song.notes.length))
+			{
+				var aimtosetsection = daSection+Std.int((totaladdsection));
+				if(aimtosetsection<0) aimtosetsection = 0;
+				newSong[aimtosetsection].mustHitSection = _song.notes[daSection].mustHitSection;
+				newSong[aimtosetsection].altAnim = _song.notes[daSection].altAnim;
+				//trace("section "+daSection);
+				for(daNote in 0...(_song.notes[daSection].sectionNotes.length))
+					{	
+						var newtiming = _song.notes[daSection].sectionNotes[daNote][0]+millisecadd;
+						if(newtiming<0)
+						{
+							newtiming = 0;
+						}
+						var futureSection = Math.floor(newtiming/4/(60000/_song.bpm));
+						_song.notes[daSection].sectionNotes[daNote][0] = newtiming;
+						newSong[futureSection].sectionNotes.push(_song.notes[daSection].sectionNotes[daNote]);
+	
+						//newSong.notes[daSection].sectionNotes.remove(_song.notes[daSection].sectionNotes[daNote]);
+					}
+	
+			}
+			//trace("DONE BITCH");
+			_song.notes = newSong;
+			updateGrid();
+			updateSectionUI();
+			updateNoteUI();
+		}
 	private function addNote(?n:Note):Void
 	{
 		var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();

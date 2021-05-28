@@ -235,7 +235,23 @@ class ModchartState
 
 	public static var luaSprites:Map<String,FlxSprite> = [];
 
+	function changeDadCharacter(id:String)
+	{				var olddadx = PlayState.dad.x;
+					var olddady = PlayState.dad.y;
+					PlayState.instance.removeObject(PlayState.dad);
+					PlayState.dad = new Character(olddadx, olddady, id);
+					PlayState.instance.addObject(PlayState.dad);
+					PlayState.instance.iconP2.animation.play(id);
+	}
 
+	function changeBoyfriendCharacter(id:String)
+	{				var oldboyfriendx = PlayState.boyfriend.x;
+					var oldboyfriendy = PlayState.boyfriend.y;
+					PlayState.instance.removeObject(PlayState.boyfriend);
+					PlayState.boyfriend = new Boyfriend(oldboyfriendx, oldboyfriendy, id);
+					PlayState.instance.addObject(PlayState.boyfriend);
+					PlayState.instance.iconP2.animation.play(id);
+	}
 
 	function makeLuaSprite(spritePath:String,toBeCalled:String, drawBehind:Bool)
 	{
@@ -352,6 +368,10 @@ class ModchartState
 				// sprites
 	
 				Lua_helper.add_callback(lua,"makeSprite", makeLuaSprite);
+				
+				Lua_helper.add_callback(lua,"changeDadCharacter", changeDadCharacter);
+
+				Lua_helper.add_callback(lua,"changeBoyfriendCharacter", changeBoyfriendCharacter);
 	
 				Lua_helper.add_callback(lua,"getProperty", getPropertyByName);
 
@@ -367,6 +387,10 @@ class ModchartState
 	
 				Lua_helper.add_callback(lua,"setHudAngle", function (x:Float) {
 					PlayState.instance.camHUD.angle = x;
+				});
+				
+				Lua_helper.add_callback(lua,"setHealth", function (heal:Float) {
+					PlayState.instance.health = heal;
 				});
 
 				Lua_helper.add_callback(lua,"setHudPosition", function (x:Int, y:Int) {
@@ -505,6 +529,10 @@ class ModchartState
 	
 				Lua_helper.add_callback(lua,"setActorX", function(x:Int,id:String) {
 					getActorByName(id).x = x;
+				});
+				
+				Lua_helper.add_callback(lua,"playActorAnimation", function(id:String,anim:String,force:Bool = false,reverse:Bool = false) {
+					getActorByName(id).playAnim(anim, force, reverse);
 				});
 	
 				Lua_helper.add_callback(lua,"setActorAlpha", function(alpha:Float,id:String) {

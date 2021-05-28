@@ -133,7 +133,7 @@ class PlayState extends MusicBeatState
 	private var curSong:String = "";
 
 	private var gfSpeed:Int = 1;
-	private var health:Float = 1;
+	public var health:Float = 1; //making public because sethealth doesnt work without it
 	private var combo:Int = 0;
 	public static var misses:Int = 0;
 	private var accuracy:Float = 0.00;
@@ -151,8 +151,8 @@ class PlayState extends MusicBeatState
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
 
-	private var iconP1:HealthIcon;
-	private var iconP2:HealthIcon;
+	public var iconP1:HealthIcon; //making these public again because i may be stupid
+	public var iconP2:HealthIcon; //what could go wrong?
 	public var camHUD:FlxCamera;
 	private var camGame:FlxCamera;
 
@@ -370,7 +370,7 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('roses-midi/roses-midiDialogue'));
 			case 'thorns-midi':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns-midi/thorns-midiDialogue'));
-		}
+	}
 
 		switch(SONG.stage)
 		{
@@ -428,14 +428,14 @@ class PlayState extends MusicBeatState
 					if(FlxG.save.data.distractions){
 						add(phillyTrain);
 					}
-					
+
 					//JOELwindows7: buddy, you forgot to put the train sound in week3 special folder
 					//No wonder the train cannot come. it missing that sound.
 					//remember, the trains position depends on the sound playback position!
 					trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes','week3'));
 					FlxG.sound.list.add(trainSound);
-					//there, I've copied the train_passes ogg & mp3 into the week3/sounds . let's see
-					//if it works again.
+					//there, I've copied the train_passes ogg & mp3 into the week3/sounds . 
+					//yay it works.
 
 					// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
 
@@ -928,7 +928,7 @@ class PlayState extends MusicBeatState
 					hue.active = false;
 					add(hue);
 				}
-		default:
+			default:
 			{
 					defaultCamZoom = 0.9;
 					curStage = 'stage';
@@ -1046,9 +1046,8 @@ class PlayState extends MusicBeatState
 				dad.y += 100;
 				dad.x -= 150;
 			default:
-				trace("Oh no! it looks like you forgot the position data for Player 2 " + SONG.player2);
-				FlxG.log.add("Forgot position data for Player2 " + SONG.player2);
-				
+				trace("Oh no! it looks like you forgot the offset position data for Player 2 " + SONG.player2);
+				FlxG.log.add("Forgot offset position data for Player2 " + SONG.player2);
 		}
 
 
@@ -1468,14 +1467,14 @@ class PlayState extends MusicBeatState
 										});
 								} else {
 									FlxG.sound.play(Paths.sound('Senpai_Dies'), 1, false, null, true, function()
+									{
+										remove(senpaiEvil);
+										remove(red);
+										FlxG.camera.fade(FlxColor.WHITE, 0.01, true, function()
 										{
-											remove(senpaiEvil);
-											remove(red);
-											FlxG.camera.fade(FlxColor.WHITE, 0.01, true, function()
-											{
-												add(dialogueBox);
-											}, true);
-										});
+											add(dialogueBox);
+										}, true);
+									});
 								}
 								new FlxTimer().start(3.2, function(deadTime:FlxTimer)
 								{
@@ -1574,7 +1573,7 @@ class PlayState extends MusicBeatState
 				midiSuffix = "-" + detectMidiSuffix;
 			} else
 				midiSuffix = "";
-			
+
 			switch (swagCounter)
 
 			{
@@ -1745,7 +1744,7 @@ class PlayState extends MusicBeatState
 		var playerCounter:Int = 0;
 
 		// Per song offset check
-		#if desktop
+		#if windows
 			var songPath = 'assets/data/' + PlayState.SONG.song.toLowerCase() + '/';
 			for(file in sys.FileSystem.readDirectory(songPath))
 			{
@@ -2168,8 +2167,6 @@ class PlayState extends MusicBeatState
 			case 'philly':
 				if (trainMoving)
 				{
-					//JOELwindows7: is update state
-					//trace("lookout trains");
 					trainFrameTiming += elapsed;
 
 					if (trainFrameTiming >= 1 / 24)
@@ -2237,7 +2234,6 @@ class PlayState extends MusicBeatState
 
 		if (health > 2)
 			health = 2;
-
 		if (healthBar.percent < 20)
 			iconP1.animation.curAnim.curFrame = 1;
 		else
@@ -2599,7 +2595,6 @@ class PlayState extends MusicBeatState
 			#end
 			#end
 
-
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
  		if (FlxG.save.data.resetButton)
@@ -2623,7 +2618,8 @@ class PlayState extends MusicBeatState
 					// Game Over doesn't get his own variable because it's only used here
 					DiscordClient.changePresence("GAME OVER -- " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy),"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
 					#end
-					#end		
+					#end
+		
 					// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 				}
 		}
@@ -3307,6 +3303,16 @@ class PlayState extends MusicBeatState
 					controls.UP_R,
 					controls.RIGHT_R
 				];
+				#if desktop
+				#if cpp
+				if (luaModchart != null){
+				if (controls.LEFT_P){luaModchart.executeState('keyPressed',["left"]);};
+				if (controls.DOWN_P){luaModchart.executeState('keyPressed',["down"]);};
+				if (controls.UP_P){luaModchart.executeState('keyPressed',["up"]);};
+				if (controls.RIGHT_P){luaModchart.executeState('keyPressed',["right"]);};
+				};
+				#end
+				#end
 		 
 				// Prevent player input if botplay is on
 				if(FlxG.save.data.botplay)
@@ -3753,8 +3759,6 @@ class PlayState extends MusicBeatState
 	function updateTrainPos():Void
 	{
 		if(FlxG.save.data.distractions){
-			//JOELwindows7: is update state
-			//trace("whoah that's fast train");
 			if (trainSound.time >= 4700)
 				{
 					startedMoving = true;

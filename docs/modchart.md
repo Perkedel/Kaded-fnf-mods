@@ -32,6 +32,10 @@ function stepHit (step)
 	-- do nothing
 end
 
+function keyPressed (key)
+	-- do nothing
+end
+
 print("Mod Chart script loaded :)")
 ```
 
@@ -116,6 +120,7 @@ Current calls to functions include,
 | update  | Elapsed frames |       Gets called every frame (after the song starts)       |
 | stepHit |  Current Step  | Gets called when ever a step hits (steps are in between beats, aka 4 steps are in a beat) |
 | beatHit |  Current Beat  |              Gets called when ever a beat hits              |
+| keyPressed | Key Pressed | Gets called when a key just got pressed (up, down, left, right, accept) |
 
 
 
@@ -407,6 +412,18 @@ Returns the width for the sprite id
 
 Returns the height for the sprite id
 
+##### changeBoyfriendCharacter(string id)
+
+Changes the Boyfriend sprite to another character
+
+##### changeDadCharacter(string id)
+
+Changes the Dad sprite to another character
+
+##### playActorAnimation(string/int id, string anim, bool force, bool reverse)
+
+Plays an animation on a sprite
+
 ### Tweens
 
 *Note, On Complete functions are based by the function name (and they also well get called when the tween completes)*
@@ -434,7 +451,6 @@ Smoothly fade in to an alpha
 ##### tweenFadeOut(string/int id, float toAlpha, float time, string onComplete)
 
 Smoothly fade out to an alpha
-
 
 
 
