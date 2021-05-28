@@ -87,6 +87,9 @@ class DialogueBox extends FlxSpriteGroup
 		switch (PlayState.SONG.song.toLowerCase())
 		{
 			case 'senpai':
+				//JOELwindows7: pls add week 6 library makering.
+				//it seems the lime confused between main weeb and week special weeb folder
+				//or try to remove weeb and add week6 in here
 				hasDialog = true;
 				box.frames = Paths.getSparrowAtlas('weeb/pixelUI/dialogueBox-pixel');
 				box.animation.addByPrefix('normalOpen', 'Text Box Appear', 24, false);

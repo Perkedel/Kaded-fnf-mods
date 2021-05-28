@@ -98,6 +98,9 @@ class PlayState extends MusicBeatState
 
 	var songLength:Float = 0;
 	var kadeEngineWatermark:FlxText;
+	var reuploadWatermark:FlxText; //JOELwindows7: reupload & no credit protection. 
+	//last resort is to have links shared in video, hard coded, hard embedded.
+	//hopefully the "thiefs" got displeased lmao!
 	
 	#if desktop
 	#if cpp
@@ -1256,6 +1259,15 @@ class PlayState extends MusicBeatState
 		// healthBar
 		add(healthBar);
 
+		//JOELwindows7: add reupload watermark
+		//usually, YouTube mod showcase only shows gameplay
+		//and there are some naughty youtubers who did not credit link in description neither comment.
+		reuploadWatermark = new FlxText(healthBarBG.x,healthBarBG.y - 300,0,"Download Last Funkin Moments ($0) https://github.com/Perkedel/kaded-fnf-mods,\nKade Engine ($0) https://github.com/KadeDev/Kade-Engine,\nand vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin", 12);
+		reuploadWatermark.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		reuploadWatermark.scrollFactor.set();
+		add(reuploadWatermark);
+		//follow this example, you must be protected too from those credit-less YouTubers the bastards!
+
 		//JOELwindows7: I add watermark Perkedel Mod
 		// Add Kade Engine watermark
 		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : "") + (Main.perkedelMark ? " Perkedel Mod" : ""), 16);
@@ -1312,6 +1324,7 @@ class PlayState extends MusicBeatState
 			songPosBar.cameras = [camHUD];
 		}
 		kadeEngineWatermark.cameras = [camHUD];
+		reuploadWatermark.cameras = [camHUD];
 		if (loadRep)
 			replayTxt.cameras = [camHUD];
 
@@ -2180,6 +2193,12 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
+		if(curBeat > 8){
+			//JOELwindows7: invisiblize watermark after 8 curBeat
+			//to prevent view obstruction
+			reuploadWatermark.visible = false;
+		}
+
 		scoreTxt.text = Ratings.CalculateRanking(songScore,songScoreDef,nps,maxNPS,accuracy);
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
@@ -2279,7 +2298,6 @@ class PlayState extends MusicBeatState
 			#end
 			#end
 		}
-
 		#end
 
 		if (startingSong)
