@@ -27,6 +27,9 @@ class GameOverSubstate extends MusicBeatSubstate
 			case 'bf-pixel':
 				stageSuffix = '-pixel';
 				daBf = 'bf-pixel-dead';
+			case 'bf-covid':
+				//JOELwindows7: the bf masker torns too aswell!
+				daBf = 'bf-covid';
 			default:
 				daBf = 'bf';
 		}
@@ -51,6 +54,12 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
 		Conductor.changeBPM(100);
 
+		//JOELwindows7: also play the masker tear if daBf is covid version
+		switch(daBf.toLowerCase())
+		{
+			case 'bf-covid':
+				FlxG.sound.play(Paths.sound('paperTear1'));
+		}
 		// FlxG.camera.followLerp = 1;
 		// FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
 		FlxG.camera.scroll.set();

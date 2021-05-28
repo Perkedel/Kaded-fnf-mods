@@ -360,7 +360,7 @@ class Character extends FlxSprite
 			case 'bf-covid':
 				// JOELwindows7: copy paste the bf above, add masker in his face, and mic. also add vaccine injection mark plaster in left arm
 				// TODO install masker and vaccine injection
-				var tex = Paths.getSparrowAtlas('characters/BOYFRIEND');
+				var tex = Paths.getSparrowAtlas('characters/BOYFRIEND-covid');
 				frames = tex;
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);

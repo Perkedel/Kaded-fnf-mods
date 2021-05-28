@@ -1377,7 +1377,9 @@ class ChartingState extends MusicBeatState
 			"song": _song
 		};
 
-		var data:String = Json.stringify(json);
+		//JOELwindows7: make save JSON pretty
+		// https://haxe.org/manual/std-Json-encoding.html
+		var data:String = Json.stringify(json, "\t");
 
 		if ((data != null) && (data.length > 0))
 		{
@@ -1396,6 +1398,8 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
+		//JOELwindows7: trace the success
+		trace("Yay level saved! cool and good");
 	}
 
 	/**
@@ -1407,6 +1411,8 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+		//JOELwindows7: trace cancel
+		trace("nvm! save canceled");
 	}
 
 	/**
@@ -1419,5 +1425,7 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
+		//JOELwindows7: also trace the error
+		trace("Weror! problem saving data");
 	}
 }

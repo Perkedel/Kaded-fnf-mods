@@ -99,6 +99,9 @@ thancc for all these resources! without them, everything is impossible.
 - idk where did I got those weeb sentences & chants. but I've heard them everyday on the event of otaku and weaboos.
 - [Tactical Nuke](https://youtu.be/IXTJlH7g0tw ) from Call of Duty or Modern Warfare something, I forgot
 - https://knowyourmeme.com/memes/meme-man cool and good stonk
+- where is that veggie tales episode about `allow us to introduce ourselves`?
+- the song Gelang Sipatu Gelang
+- https://haxe.org/manual/std-Json-encoding.html how to json in Haxe
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -139,7 +142,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/PanderMusubi/inkscape-open-symbols the symbols collection for Inkscape yay!
 - the Exit sign, arrows, etc. for Jakarta Fair booth, Home theater, etc. in this mod is from AIGA symbol sets. it it's difficult, you can try search bar of that symbol panel: `Exit`. yeah!
 - https://gamebanana.com/tools/7107 Pico sf2 yay finally
-- - https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
+- https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
+- https://freesound.org/people/sphion/sounds/158526/ paper tear situations by sphion
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

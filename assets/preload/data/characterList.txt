@@ -11,6 +11,7 @@ monster-christmas
 bf-christmas
 gf-christmas
 gf-ht
+bf-covid
 monster
 bf-pixel
 senpai
