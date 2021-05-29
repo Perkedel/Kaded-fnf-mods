@@ -322,6 +322,11 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(camHUD);
 
 		FlxCamera.defaultCameras = [camGame];
+		//FlxG.cameras.setDefaultDrawTarget(camGame, true); //JOELwindows7: try the new one
+		//see if it works..
+		//nope. well it works, but
+		// alot of semantics here has to be changed first before hand, so uh. unfortunately
+		//I can't yet.
 
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -1722,7 +1727,7 @@ class PlayState extends MusicBeatState
 		// Song check real quick
 		switch(curSong) //JOELwindows7: not my code, except Rule The World. isn't it better to check insensitive case (toLowerCase())?
 		{
-			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog' | 'Rule The World': allowedToHeadbang = true;
+			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog' | 'Rule The World' | 'Well Meet Again': allowedToHeadbang = true;
 			default: allowedToHeadbang = false;
 		}
 		
@@ -2462,6 +2467,22 @@ class PlayState extends MusicBeatState
 										}
 								} else triggeredAlready = false;
 							}
+						}
+						case 'Well Meet Again':
+						{
+							//JOELwindows7: pls only cheer on beat drop, not on charging up or anything else
+							//TODO: change range of curBeats
+							if((curBeat < 52) ||
+								(curBeat > 80 && curBeat < 148) ||
+								(curBeat > 176 && curBeat < 212) || //shutup, just coincidence. I know, so don't talk it.
+								//Oh Wiro Sableng, Oh ok, I thought. Sorry.
+								(curBeat > 224 && curBeat < 240) ||
+								(curBeat > 256 && curBeat < 304)  //lmao! 1024 curStep = 256 curBeat
+								) 
+								{
+									//copy from the hardcode zoom milfe
+									cheerNow(4,2);
+								}
 						}
 					}
 				}
@@ -3925,6 +3946,21 @@ class PlayState extends MusicBeatState
 			camHUD.zoom += 0.03;
 		}
 
+		//JOELwindows7: HARDCODING FOR WE'LL MEET YOU AGAIN ZOOMS!
+		if (curSong.toLowerCase() == 'well meet again' && FlxG.camera.zoom < 1.35 && curBeat % 4 == 2)
+		{
+			//Reminder: CurBeat = CurStep / 4
+
+			if((curBeat < 52) ||
+				(curBeat > 80 && curBeat < 148) ||
+				(curBeat > 176 && curBeat < 212) || //shutup, just coincidence. I know, so don't talk it.
+				//Oh Wiro Sableng, Oh ok, I thought. Sorry.
+				(curBeat > 224 && curBeat < 240) ||
+				(curBeat > 256 && curBeat < 304)  //lmao! 1024 curStep = 256 curBeat
+				) 
+				camZoomNow(); 
+		}
+
 		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
 		{
 			FlxG.camera.zoom += 0.015;
@@ -4025,6 +4061,24 @@ class PlayState extends MusicBeatState
 				lightningStrikeShit();
 			}
 		}
+	}
+
+	//JOELwindows7: make cam zoom a function pls
+	function camZoomNow() {
+		FlxG.camera.zoom += 0.015;
+		camHUD.zoom += 0.03;
+	}
+
+	//JOELwindows7: make cheer a function
+	function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0){
+		if(curBeat % outOfBeatFractioning == doItOn)
+		{
+			if(!triggeredAlready)
+				{
+					gf.playAnim('cheer');
+					triggeredAlready = true;
+				}
+		} else triggeredAlready = false;
 	}
 
 	var curLight:Int = 0;

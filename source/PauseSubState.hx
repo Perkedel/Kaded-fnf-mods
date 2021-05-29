@@ -250,25 +250,30 @@ class PauseSubState extends MusicBeatSubstate
 		}
 
 		//JOELwindows7: mouse support
-		grpMenuShit.forEach(function(poop:Alphabet){
-			if(FlxG.mouse.overlaps(poop)){
-				//trace("hover over " + Std.string(poop.ID)); //JOELwindows7: temp tracer
-				//alright. it looks like that, the alphabet hover
-				//isn't placed like it was appeared.
-				//must find another way then. how?
-				if(FlxG.mouse.justPressed){
-					trace("click a menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
-					if(poop.ID == curSelected){
-						trace("haveClicked yes");
-						haveClicked = true;
-					} else {
-						//go to clicked menu
-						goToSelection(poop.ID);
-						trace("Go to menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
+		if(FlxG.mouse.visible)
+		{
+			//do something here
+			//only when mouse is visible
+			grpMenuShit.forEach(function(poop:Alphabet){
+				if(FlxG.mouse.overlaps(poop)){
+					//trace("hover over " + Std.string(poop.ID)); //JOELwindows7: temp tracer
+					//alright. it looks like that, the alphabet hover
+					//isn't placed like it was appeared.
+					//must find another way then. how?
+					if(FlxG.mouse.justPressed){
+						trace("click a menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
+						if(poop.ID == curSelected){
+							trace("haveClicked yes");
+							haveClicked = true;
+						} else {
+							//go to clicked menu
+							goToSelection(poop.ID);
+							trace("Go to menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	override function destroy()

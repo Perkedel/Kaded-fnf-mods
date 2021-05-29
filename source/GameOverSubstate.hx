@@ -72,7 +72,8 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 
-		if (controls.ACCEPT)
+		//JOELwindows7: add mouse press
+		if (controls.ACCEPT || FlxG.mouse.justPressed)
 		{
 			endBullshit();
 		}

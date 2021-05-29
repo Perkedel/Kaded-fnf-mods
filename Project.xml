@@ -49,6 +49,11 @@
 
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
+	<!-- JOELwindows7: new folder for Odysee exclusive & stolen / pirated mods exclusive definitions -->
+	<assets path="assets/preload_odysee" rename="assets/preload_odysee" exclude="*.ogg" if="web odysee"/>
+	<assets path="assets/preload_odysee" rename="assets/preload_odysee" exclude="*.mp3" unless="web" if="odysee"/>
+	<assets path="assets/preload_thief" rename="assets/preload_thief" exclude="*.ogg" if="web thief"/>
+	<assets path="assets/preload_thief" rename="assets/preload_thief" exclude="*.mp3" unless="web" if="thief"/>
 
 
 	
@@ -68,6 +73,8 @@
 		<library name="week6"    preload="true" />
 		<library name="week7"    preload="true" />
 		<library name="week5720NG"    preload="true" />
+		<library name="odysee"   preload="true" if="odysee"/>
+		<library name="thief"   preload="true" if="thief"/>
 	</section>
 	
 	<section if="NO_PRELOAD_ALL">
@@ -82,6 +89,8 @@
 		<library name="week6"    preload="false" />
 		<library name="week7"    preload="false" />
 		<library name="week5720NG"    preload="false" />
+		<library name="odysee"   preload="false" if="odysee"/>
+		<library name="thief"   preload="false" if="thief"/>
 	</section>
 	
 	<assets path="assets/songs"    library="songs"    exclude="*.ogg" if="web"/>
@@ -106,6 +115,10 @@
 	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/odysee"    library="odysee"    exclude="*.ogg" if="web odysee"/>
+	<assets path="assets/odysee"    library="odysee"    exclude="*.mp3" unless="web" if="odysee"/>
+	<assets path="assets/thief"    library="thief"    exclude="*.ogg" if="web thief"/>
+	<assets path="assets/thief"    library="thief"    exclude="*.mp3" unless="web" if="thief"/>
 	
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
@@ -195,5 +208,9 @@
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
 	<haxedef name="NG_LOGIN" if="newgrounds" />
+
+	<!-- JOELwindows7: additional howl for LIME project xml here -->
+	<echo value="This is Odysee build" if="odysee"/>
+	<echo value="we have stolen mods in it" if="thief"/>
 	
 </project>

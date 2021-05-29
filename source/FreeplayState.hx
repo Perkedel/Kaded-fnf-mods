@@ -51,6 +51,15 @@ class FreeplayState extends MusicBeatState
 			songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1]));
 		}
 
+		//JOELwindows7: propose odysee and thief song list
+		#if odysee
+		trace("Pls pull Odysee song list");
+		#end
+
+		#if thief
+		trace("Pls pull stolen song list");
+		#end
+
 		/* 
 			if (FlxG.sound.music != null)
 			{
@@ -92,6 +101,7 @@ class FreeplayState extends MusicBeatState
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
+			icon.ID = i;
 
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
@@ -247,34 +257,41 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		//JOELwindows7: mouse support
-		grpSongs.forEach(function(thing:Alphabet){
-			if(FlxG.mouse.overlaps(thing)){
-				if(FlxG.mouse.justPressed){
-					if(thing.ID == curSelected){
-						//run the song
-						haveClicked = true;
-					} else {
-						//go to the song
-						goToSelection(thing.ID);
+		//if Mouse mode is active (detecting by when it's visible now)
+		//do something for mouse
+		if(FlxG.mouse.visible)
+		{
+			//JOELwindows7: mouse support
+			grpSongs.forEach(function(thing:Alphabet){
+				if(FlxG.mouse.overlaps(thing)){
+					if(FlxG.mouse.justPressed){
+						if(thing.ID == curSelected){
+							//run the song
+							haveClicked = true;
+						} else {
+							//go to the song
+							goToSelection(thing.ID);
+						}
 					}
 				}
-			}
-		});
+			});
 
-		//JOELwindows7: same mouse support, for icons too as well!
-		for (i in 0...iconArray.length) {
-			if(FlxG.mouse.overlaps(iconArray[i])){
-				if(FlxG.mouse.justPressed){
-					if(iconArray[i].ID == curSelected){
-						//run the song
-						haveClicked = true;
-					} else {
-						//go to the song
-						goToSelection(iconArray[i].ID);
+			//JOELwindows7: same mouse support, for icons too as well!
+			for (i in 0...iconArray.length) {
+				if(FlxG.mouse.overlaps(iconArray[i])){
+					if(FlxG.mouse.justPressed){
+						if(iconArray[i].ID == curSelected){
+							//run the song
+							haveClicked = true;
+						} else {
+							//go to the song
+							goToSelection(iconArray[i].ID);
+						}
 					}
 				}
 			}
+			//I'm afraid adding more `for` could killl performance here
+			//help!
 		}
 	}
 

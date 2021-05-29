@@ -75,6 +75,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://www.electronjs.org/
 - https://kadedev.github.io/Kade-Engine/building
 - https://lime.software/docs/project-files/xml-format/ project.xml format spec
+- https://lime.software/docs/command-line-tools/basic-commands/ lime command line doc. you can use `-D` then words like `hello` so it becomes `-Dhello` to define hello only right in command line. useful for exclusive version. sorry guys, I've used inspiration from ninja muffin himself. pls don't cancel me, I beg you!
 - https://code.haxe.org/category/beginner/strings.html what de buck i must unheurestically for `StringTools.endsWith()`?!
 - https://getsongbpm.com/tools/audio get the song bpm now
 - https://www.microsoft.com/store/productId/9WZDNCRFHVN5 Windows 10 calculator!!! I need to build multiplication stack of 7 for GF-HT texture atlas positionings.
@@ -102,6 +103,12 @@ thancc for all these resources! without them, everything is impossible.
 - where is that veggie tales episode about `allow us to introduce ourselves`?
 - the song Gelang Sipatu Gelang
 - https://haxe.org/manual/std-Json-encoding.html how to json in Haxe
+- DaniDev the yoink guy of Unity Karlsson.
+- Google LLC with their Android the mobile operating system. General notoriousness about update lag and halts, more old your device is. so you must buy new Android phone just to get new android. has been happening since the 1st time Android entered the world market. hopefully diminish right this now! C'mon, even the worst Linux distro is better than this. (technically, Android is not Linux at all despite its kernel is. it's just another specialized Java operating system, successes Danger OS).
+- LMFAO ft. Laurent Bennet, GoonRock - Party Rock Anthem. Eveyone Shovelin Shufflin.
+- Sonic Eat Lemon meme. Lemon is sour and trigger face squeeze! review & process with discretion before consuming!
+- SiIvaGunner rips and remix of video game songs
+- TripleQ remixered
   
 # in event of git merge conflict
 use VScode and Github desktop!

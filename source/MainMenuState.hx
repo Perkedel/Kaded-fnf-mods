@@ -135,6 +135,8 @@ class MainMenuState extends MusicBeatState
 		reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(reuploadEdgeCase);
 		//Kade, ninja, you should do that too. follow this example!
+		//also somehow at the end of the paragraph above, you must `\n` it at the very end. idk why, but that's the workaround
+		//so the last line of text also shows.
 
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod" : ""), 12);
 		versionShit.scrollFactor.set();
@@ -260,10 +262,12 @@ class MainMenuState extends MusicBeatState
 
 		super.update(elapsed);
 
+		//JOELwindows7: not my code, but this one is important!
+		//do this all time to center the spr every single time!
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			//JOELwindows7: itterate sprite menu items overlaps and click functions
-			if(!selectedSomethin){
+			if(!selectedSomethin && FlxG.mouse.visible && finishedFunnyMove){
 				if(FlxG.mouse.overlaps(spr)){
 					if(curSelected != spr.ID){
 						FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -327,13 +331,16 @@ class MainMenuState extends MusicBeatState
 	//JOELwindows7: go to item for hover mouse
 	//copy from above but the curSelected is set value instead
 	function goToItem(huh:Int = 0){
-		curSelected = huh;
 
-		if (curSelected >= menuItems.length)
-			curSelected = 0;
-		if (curSelected < 0)
-			curSelected = menuItems.length - 1;
+		if(finishedFunnyMove)
+		{
+			curSelected = huh;
 
+			if (curSelected >= menuItems.length)
+				curSelected = 0;
+			if (curSelected < 0)
+				curSelected = menuItems.length - 1;
+		}
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			spr.animation.play('idle');

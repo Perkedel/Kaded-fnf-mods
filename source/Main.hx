@@ -92,6 +92,24 @@ class Main extends Sprite
 		toggleFPS(FlxG.save.data.fps);
 
 		#end
+
+		//JOELwindows7: GameBanana seems notorious.
+		//let's just hide everything that "trashworthy" / "blammworthy"
+		//if we're not in Odysee.
+		//sorry guys, I've used ninja's inspiration (timed exclusive on newgrounds).
+		//pls don't cancel me, I beg you!
+		#if odysee
+		trace("We are in Odysee");
+		#else
+		trace("We are not in Odysee");
+		#end
+
+		//JOELwindows7: steal the mods (including ND without permission)
+		#if thief
+		trace("IT'S YOINK TIME");
+		#else
+		trace("no yoink time.");
+		#end
 	}
 
 	var game:FlxGame;

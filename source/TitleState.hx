@@ -69,6 +69,12 @@ class TitleState extends MusicBeatState
 			sys.FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
 		#end
 
+		#if odysee
+		trace("Odysee lol! we're save now from GameBanana blamms I guess");
+		#else
+		trace("Not Odysee. okeh.. I guess");
+		#end
+
 		@:privateAccess
 		{
 			trace("Loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets (DEFAULT)");
