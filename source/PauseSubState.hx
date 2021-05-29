@@ -92,6 +92,7 @@ class PauseSubState extends MusicBeatSubstate
 			songText.targetY = i;
 			songText.ID = i; //JOELwindows7: ID each menu item to compare with current selected
 			grpMenuShit.add(songText);
+			trace("add menu " + Std.string(songText.ID) + ". " + songText.text); //JOELwindows7: cmon what happened
 		}
 
 		changeSelection();
@@ -118,10 +119,13 @@ class PauseSubState extends MusicBeatSubstate
 		if (upP)
 		{
 			changeSelection(-1);
-   
+			trace("curSelection is " + Std.string(curSelected) + ". " + menuItems[curSelected]); // JOELwindows7: trace cur selection number
+			//trace("well that alphabet is " + grpMenuShit.members[curSelected].ID + ". " + grpMenuShit.members[curSelected].text);
 		}else if (downP)
 		{
 			changeSelection(1);
+			trace("curSelection is " + Std.string(curSelected) + ". " + menuItems[curSelected]);
+			//trace("well that alphabet is " + grpMenuShit.members[curSelected].ID + ". " + grpMenuShit.members[curSelected].text);
 		}
 		
 		#if cpp
@@ -245,15 +249,22 @@ class PauseSubState extends MusicBeatSubstate
 			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
 
+		//JOELwindows7: mouse support
 		grpMenuShit.forEach(function(poop:Alphabet){
 			if(FlxG.mouse.overlaps(poop)){
+				//trace("hover over " + Std.string(poop.ID)); //JOELwindows7: temp tracer
+				//alright. it looks like that, the alphabet hover
+				//isn't placed like it was appeared.
+				//must find another way then. how?
 				if(FlxG.mouse.justPressed){
 					trace("click a menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
 					if(poop.ID == curSelected){
+						trace("haveClicked yes");
 						haveClicked = true;
 					} else {
 						//go to clicked menu
 						goToSelection(poop.ID);
+						trace("Go to menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
 					}
 				}
 			}

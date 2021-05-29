@@ -261,6 +261,21 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 		});
+
+		//JOELwindows7: same mouse support, for icons too as well!
+		for (i in 0...iconArray.length) {
+			if(FlxG.mouse.overlaps(iconArray[i])){
+				if(FlxG.mouse.justPressed){
+					if(iconArray[i].ID == curSelected){
+						//run the song
+						haveClicked = true;
+					} else {
+						//go to the song
+						goToSelection(iconArray[i].ID);
+					}
+				}
+			}
+		}
 	}
 
 	function changeDiff(change:Int = 0)

@@ -1262,10 +1262,11 @@ class PlayState extends MusicBeatState
 		//JOELwindows7: add reupload watermark
 		//usually, YouTube mod showcase only shows gameplay
 		//and there are some naughty youtubers who did not credit link in description neither comment.
-		reuploadWatermark = new FlxText(healthBarBG.x,healthBarBG.y - 300,0,"Download Last Funkin Moments ($0) https://github.com/Perkedel/kaded-fnf-mods,\nKade Engine ($0) https://github.com/KadeDev/Kade-Engine,\nand vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin", 12);
-		reuploadWatermark.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		reuploadWatermark = new FlxText(healthBarBG.x - 10,healthBarBG.y - 250,0,"Download Last Funkin Moments ($0) https://github.com/Perkedel/kaded-fnf-mods,\nKade Engine ($0) https://github.com/KadeDev/Kade-Engine ,\nand vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin\n", 12);
 		reuploadWatermark.scrollFactor.set();
+		reuploadWatermark.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		add(reuploadWatermark);
+		reuploadWatermark.visible = false;
 		//follow this example, you must be protected too from those credit-less YouTubers the bastards!
 
 		//JOELwindows7: I add watermark Perkedel Mod
@@ -1665,6 +1666,11 @@ class PlayState extends MusicBeatState
 
 	function startSong():Void
 	{
+		//JOELwindows7: visiblize the watermark once the song has begun
+		reuploadWatermark.visible = true;
+		//then the Update() function above will invisibilize again
+		//after 8 curBeats.
+
 		startingSong = false;
 		songStarted = true;
 		previousFrameTime = FlxG.game.ticks;

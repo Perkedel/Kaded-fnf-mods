@@ -130,7 +130,7 @@ class MainMenuState extends MusicBeatState
 
 		//JOELwindows7: hard code our download link in case illegally reuploaded no matter what sign given
 		//we also covered both Kade Engine and the vanilla itself
-		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 54, 0, "Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\noriginal Kade Engine at https://github.com/KadeDev/Kade-Engine,\nand vanilla Funkin at https://github.com/ninjamuffin99/Funkin .\n\nplay vanilla Funkin at https://www.newgrounds.com/portal/view/770371", 12);
+		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 72, 0, "Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\noriginal Kade Engine at https://github.com/KadeDev/Kade-Engine,\nand vanilla Funkin at https://github.com/ninjamuffin99/Funkin .\nplay vanilla Funkin at https://www.newgrounds.com/portal/view/770371\n", 12);
 		reuploadEdgeCase.scrollFactor.set();
 		reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(reuploadEdgeCase);
