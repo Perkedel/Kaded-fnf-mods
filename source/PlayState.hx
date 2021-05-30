@@ -2470,14 +2470,10 @@ class PlayState extends MusicBeatState
 						}
 						case 'Well Meet Again':
 						{
-							//JOELwindows7: pls only cheer on beat drop, not on charging up or anything else
-							//TODO: change range of curBeats
-							if((curBeat < 52) ||
-								(curBeat > 80 && curBeat < 148) ||
-								(curBeat > 176 && curBeat < 212) || //shutup, just coincidence. I know, so don't talk it.
-								//Oh Wiro Sableng, Oh ok, I thought. Sorry.
-								(curBeat > 224 && curBeat < 240) ||
-								(curBeat > 256 && curBeat < 304)  //lmao! 1024 curStep = 256 curBeat
+							//JOELwindows7: cheer on the beatdrop yeay
+							if((curBeat > 80 && curBeat < 112) ||
+								(curBeat > 176 && curBeat < 208) || 
+								(curBeat > 272 && curBeat < 308)
 								) 
 								{
 									//copy from the hardcode zoom milfe
