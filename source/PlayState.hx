@@ -186,6 +186,8 @@ class PlayState extends MusicBeatState
 	var bgGirls:BackgroundGirls;
 	var wiggleShit:WiggleEffect = new WiggleEffect();
 
+	var colorableGround:FlxSprite; //JOELwindows7: the colorable sprite thingy
+
 	var talking:Bool = true;
 	var songScore:Int = 0;
 	var songScoreDef:Int = 0;
@@ -774,6 +776,17 @@ class PlayState extends MusicBeatState
 					stageCurtains.scrollFactor.set(1.5, 1.5);
 					stageCurtains.active = false;
 					add(stageCurtains);
+
+					//Now for the colorable ceiling!
+					colorableGround = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'));
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 1.2),Std.int((colorableGround.height * 1.2)));
+					colorableGround.updateHitbox();
+					colorableGround.antialiasing = true;
+					colorableGround.scrollFactor.set(1,1);
+					colorableGround.active = false;
+					colorableGround.color.setRGB(1,1,1,0);
+					add(colorableGround);
+					colorableGround.visible = false;
 				}
 			case 'qmoveph':
 				{
@@ -857,26 +870,26 @@ class PlayState extends MusicBeatState
 					// so, now you can chroma key full green!
 					// heh what the peck man? GREEN is #008000 (dim green)!?? but LIME is #00FF00 (full green)?!? really bro?!
 					// you confused me!!! the true green was supposed to be full green #00FF00 what the peck, Flixel?!
-					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.LIME);
-					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
-					hue.updateHitbox();
-					hue.antialiasing = true;
-					hue.scrollFactor.set(0.1,0.1);
-					hue.active = false;
-					add(hue);
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.LIME);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround.updateHitbox();
+					colorableGround.antialiasing = true;
+					colorableGround.scrollFactor.set(0.1,0.1);
+					colorableGround.active = false;
+					add(colorableGround);
 				}
 			case 'bluechroma':
 				{
 					//JOELwindows7: same as greenscreen but blue. not to be confused with blue screen of death!
 					defaultCamZoom = 0.5;
 					curStage = 'bluechroma';
-					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLUE);
-					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
-					hue.updateHitbox();
-					hue.antialiasing = true;
-					hue.scrollFactor.set(0.1,0.1);
-					hue.active = false;
-					add(hue);
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.BLUE);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround.updateHitbox();
+					colorableGround.antialiasing = true;
+					colorableGround.scrollFactor.set(0.1,0.1);
+					colorableGround.active = false;
+					add(colorableGround);
 				}
 			case 'semple':
 				{
@@ -888,13 +901,13 @@ class PlayState extends MusicBeatState
 					curStage = 'semple';
 					// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
 					// because no camera has the ability to capture way over Pink Semple had.
-					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.MAGENTA);
-					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
-					hue.updateHitbox();
-					hue.antialiasing = true;
-					hue.scrollFactor.set(0.1,0.1);
-					hue.active = false;
-					add(hue);
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.MAGENTA);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround.updateHitbox();
+					colorableGround.antialiasing = true;
+					colorableGround.scrollFactor.set(0.1,0.1);
+					colorableGround.active = false;
+					add(colorableGround);
 				}
 			case 'whitening':
 				{
@@ -902,39 +915,39 @@ class PlayState extends MusicBeatState
 					defaultCamZoom = 0.5;
 					curStage = 'whitening';
 					// JOELwindows7: guys, pls don't blamm me. it's nothing to do. let's assume it's purely coincidental.
-					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
-					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
-					hue.updateHitbox();
-					hue.antialiasing = true;
-					hue.scrollFactor.set(0.1,0.1);
-					hue.active = false;
-					add(hue);
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.WHITE);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround.updateHitbox();
+					colorableGround.antialiasing = true;
+					colorableGround.scrollFactor.set(0.1,0.1);
+					colorableGround.active = false;
+					add(colorableGround);
 				}
 			case 'kuning':
 				{
 					//JOELwindows7: yellow this one out
 					defaultCamZoom = 0.5;
 					curStage = 'kuning';
-					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.YELLOW);
-					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
-					hue.updateHitbox();
-					hue.antialiasing = true;
-					hue.scrollFactor.set(0.1,0.1);
-					hue.active = false;
-					add(hue);
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.YELLOW);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround.updateHitbox();
+					colorableGround.antialiasing = true;
+					colorableGround.scrollFactor.set(0.1,0.1);
+					colorableGround.active = false;
+					add(colorableGround);
 				}
 			case 'blood':
 				{
 					//JOELwindows7: red screen
 					defaultCamZoom = 0.5;
 					curStage = 'blood';
-					var hue:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.RED);
-					hue.setGraphicSize(Std.int(hue.width * 2),Std.int(hue.height * 2));
-					hue.updateHitbox();
-					hue.antialiasing = true;
-					hue.scrollFactor.set(0.1,0.1);
-					hue.active = false;
-					add(hue);
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.RED);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround.updateHitbox();
+					colorableGround.antialiasing = true;
+					colorableGround.scrollFactor.set(0.1,0.1);
+					colorableGround.active = false;
+					add(colorableGround);
 				}
 			default:
 			{
@@ -2462,6 +2475,7 @@ class PlayState extends MusicBeatState
 								{
 									if(!triggeredAlready)
 										{
+											randomizeColoring();
 											gf.playAnim('cheer');
 											triggeredAlready = true;
 										}
@@ -4076,6 +4090,17 @@ class PlayState extends MusicBeatState
 				}
 		} else triggeredAlready = false;
 	}
+
+	//JOELwindows7: randomize the color of the colorableGround
+	function randomizeColoring()
+		{
+			if(!colorableGround.visible)
+				colorableGround.visible = true;
+			if(colorableGround != null){
+				colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+				trace("now colorable color is " + colorableGround.color.toHexString());
+			}
+		}
 
 	var curLight:Int = 0;
 }

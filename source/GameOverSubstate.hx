@@ -30,6 +30,8 @@ class GameOverSubstate extends MusicBeatSubstate
 			case 'bf-covid':
 				//JOELwindows7: the bf masker torns too aswell!
 				daBf = 'bf-covid';
+			case 'hookx':
+				daBf = 'hookx';
 			default:
 				daBf = 'bf';
 		}
@@ -51,7 +53,17 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollow = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y, 1, 1);
 		add(camFollow);
 
-		FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
+		//JOELwindows7: add custom gameover sounds
+		switch(daBf.toLowerCase()){
+			case 'hookx':
+				{
+					FlxG.sound.play(Paths.sound('fnf_loss_sfx-BSoD'));
+				}
+			default:
+				{
+					FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
+				}
+		}
 		Conductor.changeBPM(100);
 
 		//JOELwindows7: also play the masker tear if daBf is covid version

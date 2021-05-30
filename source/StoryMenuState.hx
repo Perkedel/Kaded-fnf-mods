@@ -53,7 +53,6 @@ class StoryMenuState extends MusicBeatState
 		['Cocoa', 'Eggnog', 'Winter Horrorland'],
 		['Senpai', 'Roses', 'Thorns'],
 		['Windfall'],
-		['Senpai-midi','Roses-midi','Thorns-midi']
 	];
 	// JOELwindows7: yeah, so, these hard code edit no longer needed.
 	var curDifficulty:Int = 1;
@@ -69,7 +68,6 @@ class StoryMenuState extends MusicBeatState
 		['parents-christmas', 'bf', 'gf'],
 		['senpai', 'bf', 'gf'],
 		['hookx', 'bf', 'gf'],
-		['senpai', 'bf', 'gf'],
 	];
 
 	var weekNames:Array<String> = [

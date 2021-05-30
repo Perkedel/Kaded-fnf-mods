@@ -108,12 +108,32 @@ thancc for all these resources! without them, everything is impossible.
 - LMFAO ft. Laurent Bennet, GoonRock - Party Rock Anthem. Eveyone Shovelin Shufflin.
 - Sonic Eat Lemon meme. Lemon is sour and trigger face squeeze! review & process with discretion before consuming!
 - SiIvaGunner rips and remix of video game songs
-- TripleQ remixered
+- TripleQ remixered. QqQ!
+- https://gamebanana.com/questions/10300 revealing questions regarding the idea that can't be here due to the fact she's under attack from haters
+- https://gamebanana.com/threads/219274 for summary, the idea got 69420, owner got scronch proposaled, owner got trojan horsed and paniked, etc.
+- https://gamebanana.com/responders/are?post=9181884 Miguel9238's answer regarding is yoinking ND circled reupload & statements for efforts of FNF mods, communication issues, reposts, etc.
   
 # in event of git merge conflict
 use VScode and Github desktop!
+## New
+- cease all works
+- commit and push new commit to your GitHub now.
+- go to conflict solving branch. pull the last commit from main to here.
+- pull from upstream while you're at conflict solving branch
+- see GitHub Desktop. the commit window will popup. open all conflict files in VScode.
+- wait.
+- after blue and green field appear, open comparison to map your changes and the upstream.
+- review, and bring your changed (the green field) to upstream pull (blue field)
+- after you've carefully brought all of them, `accept incoming change`
+- repeat for the rest of the part and files
+- after all conflict solved, `Commit Merge` in GitHub desktop.
+- go back to main branch again.
+- pull the newly solved conflict commits from `conflict solving` branch to `main`.
+- push while you're at `main` now!
 
+## legacyed
 - make sure to backup your last mod commit into a new branch first.
+- pull your latest commit from main to the conflict solving branch
 - try to checkout the new topic branch that conflict with the default branch where you supposed to merge all topic into default. 
 - carefully open Github desktop. the conflict window appears. 
 - resolve the conflict, by click each `open in visual studio code` in each file conflicted. 
@@ -148,9 +168,19 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://inkscape.org there's a symbol panel that has all common symbols you can freely use. press `Shift` + `Ctrl` + `Y` or top menu `Object`, `Symbols (Shift + Ctrl + Y)`. there's more symbols too https://inkscape.org/gallery/=symbol/?order=liked . and this one too https://github.com/PanderMusubi/inkscape-open-symbols that I believe we've installed.
 - https://github.com/PanderMusubi/inkscape-open-symbols the symbols collection for Inkscape yay!
 - the Exit sign, arrows, etc. for Jakarta Fair booth, Home theater, etc. in this mod is from AIGA symbol sets. it it's difficult, you can try search bar of that symbol panel: `Exit`. yeah!
+- suru icon for Restart, Shutdown change OS for Force Majeur BSoD Linux mockup for Hookx lose.
+- ionicons for disc for that change OS button icon Force Maejur mockup
 - https://gamebanana.com/tools/7107 Pico sf2 yay finally
 - https://youtu.be/hr7GyFM7pX4 DairyOrange infamous extra reverb fart! probably origins from uh... ed and eddy? idk help. the fart with extra reverb brahp!!!
 - https://freesound.org/people/sphion/sounds/158526/ paper tear situations by sphion
+- https://freesound.org/people/Leszek_Szary/sounds/133283/ Game over 8 bit. OpenCX Force Majeur crash sound, BSoD Kernel Panik. used for Hookx first loss sfx which is kernel panik crash then this sound once the Force Majeur BIOS substate appeared. When OpenCX Linux distro kernel panik, sometimes the audio can get stuck too which can create funny but also creepy and jumpscare worthy loopstucks. the Force Majeur BIOS meta state will appear, cut the audio buffer immediately, replace the audio output connection back to BIOS, and then play this sound.
+- https://docs.godotengine.org/en/stable/classes/class_@gdscript.html#class-gdscript-method-push-error how to push error in Godot
+- https://godotengine.org/qa/29525/how-to-raise-an-error-with-a-message raise error message in Godot
+- https://godotengine.org/qa/67565/can-someone-explain-breakpoints-in-the-debugger breakpoint Godot
+- https://en.wikipedia.org/wiki/Kernel_panic kernel panic in general
+- https://haxeflixel.com/documentation/flxsprite/ flxSprite
+- https://api.haxeflixel.com/flixel/util/FlxSpriteUtil.html util for flxsprite
+- 
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
@@ -179,7 +209,8 @@ the `SA` (share alike) is about this. so if I just inserted to my mods here, tha
 
 the `NC` (No commercial) is notorious. I think, if this mod contains any asset with `NC`, then this whole mod cannot be deployed to arcade machine. Well, you then have to bring your own this mod there. Because No commercial gain thingy idk.
 
-the `ND` (No Derivative) is death wish. Again **this does not affect entire mod** hopefully. I can only just yoink (because Creative Commons), but I am allowed to remix those particular assets with `ND` at all. Just yoink that's it.
+the `ND` (No Derivative) is death wish. Again **this does not affect entire mod** hopefully. I can only just yoink (because Creative Commons), but I am allowed to remix those particular assets with `ND` at all. Just yoink that's it.  
+EDIT: **NOPE!!! NO YOINKS ALLOWED**. I Think that's all death wish.
 
 and yeah, that's why I think inserting those mods without permission **should and must be** okay, as long you understand the licenses that had their permissions and restriction in it. Basically, make sure you credit. second, if it has `=` (No Derivative), do not remix that but yoink is okay. third if it has ~~`$`~~ (No commercial), then don't deploy this mod officially in arcade machine (if you have to, then you must remove all of the offending assets with No commecial first, or ask negotiate commercial permission from the authors involved making the assets). fourth, if it has `🔄` (Share Alike) then if you edited the particular asset, this new remix (not the whole mods) must be licensed same as original is (you can keep licensing rest of your mod anything less restrictive).
 
@@ -202,6 +233,13 @@ and sometimes I can find mods licensed seriously, humbly, permissively, free cul
 Yeah, I might become modpack here and there, but we got original contexts in here.
 
 ah peck this poop. let's scrap the test files. just to be safe people.
+
+### edit! ND circled Creative Common license
+- https://gamebanana.com/questions/11159?post=9179454
+- https://gamebanana.com/questions/11159?post=9181884
+- https://creativecommons.org/licenses/by-nc-nd/4.0/ 
+
+NOPE! don't yoink that. period. you cannot yoink ND circled mods without asking permission. Transformative content? idk maybe still need permission. yeah just don't take it. find anything else that has no ND circle on it.
 
 ## Recompile must be Open Source too, but why not the old one too?
 https://gamebanana.com/threads/218927 Section 3.10 `Recompiles`
