@@ -8,7 +8,8 @@
         ["Cocoa", "Eggnog", "Winter Horrorland"],
         ["Senpai", "Roses", "Thorns"],
         ["Windfall", "Rule The World", "Well Meet Again"],
-        ["Senpai-midi", "Roses-midi", "Thorns-midi"]
+        ["Senpai-midi", "Roses-midi", "Thorns-midi"],
+        ["433"]
     ],
     "weekUnlocked": [true, true, true, true, true, true, true, true, true, true],
     "weekCharacters": [
@@ -20,7 +21,8 @@
         ["parents-christmas", "bf", "gf"],
         ["senpai", "bf", "gf"],
         ["hookx", "bf", "gf"],
-        ["senpai", "bf", "gf"]
+        ["senpai", "bf", "gf"],
+        ["hookx", "bf", "gf"]
     ],
     "weekNames": [
         "How to Funk",
@@ -31,6 +33,7 @@
         "RED SNOW",
         "Hating Simulator ft. Moawling",
         "TheFatRat songs",
-        "Hating_Simulator_nokia.jar Microemulator"
+        "Hating_Simulator_nokia.jar Microemulator",
+        "Silence is music"
     ]
 }

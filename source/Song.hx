@@ -21,6 +21,9 @@ typedef SwagSong =
 	var noteStyle:String;
 	var stage:String;
 	var validScore:Bool;
+
+	var hasVideo:Bool; //JOELwindows7: mark that this has video
+	var videoPath:String; //JOELwindows7: the video file path
 }
 
 class Song
@@ -36,6 +39,9 @@ class Song
 	public var gfVersion:String = 'gf';
 	public var noteStyle:String = 'normal';
 	public var stage:String = 'stage';
+
+	public var hadVideo:Bool = false;//JOELwindows7: mark that this has video
+	var videoPath:String = ''; //JOELwindows7: the video file path
 
 	public function new(song, notes, bpm)
 	{

@@ -1,5 +1,6 @@
 package;
 
+import openfl.media.Video;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
@@ -124,5 +125,11 @@ class Paths
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
+	}
+
+	//JOELwindows7: add pathers for GrowtopiaFli video cutsceners
+	inline static public function video(key:String, ?library:String)
+	{
+		return getPath('videos/$key.webm', TEXT, library);
 	}
 }

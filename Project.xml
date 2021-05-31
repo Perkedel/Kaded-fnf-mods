@@ -73,6 +73,7 @@
 		<library name="week6"    preload="true" />
 		<library name="week7"    preload="true" />
 		<library name="week5720NG"    preload="true" />
+		<library name="videos"    preload="true" />
 		<library name="odysee"   preload="true" if="odysee"/>
 		<library name="thief"   preload="true" if="thief"/>
 	</section>
@@ -89,6 +90,7 @@
 		<library name="week6"    preload="false" />
 		<library name="week7"    preload="false" />
 		<library name="week5720NG"    preload="false" />
+		<library name="videos"    preload="false" />
 		<library name="odysee"   preload="false" if="odysee"/>
 		<library name="thief"   preload="false" if="thief"/>
 	</section>
@@ -119,6 +121,10 @@
 	<assets path="assets/odysee"    library="odysee"    exclude="*.mp3" unless="web" if="odysee"/>
 	<assets path="assets/thief"    library="thief"    exclude="*.ogg" if="web thief"/>
 	<assets path="assets/thief"    library="thief"    exclude="*.mp3" unless="web" if="thief"/>
+
+	<!-- JOELwindows7: for GrowtopiaFli Video Cutscener -->
+	<assets path="assets/videos" include="*.mp3" if="web"/>
+	<assets path="assets/videos" include="*.ogg" unless="web"/>
 	
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
@@ -159,6 +165,12 @@
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
+
+	<!-- Growtopia's Video Cutscener https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/-->
+	<!-- added by JOELwindows7 -->
+	<haxelib name="actuate" />
+	<haxelib name="extension-webm" if="desktop" />
+	<!-- end Video Cutscener -->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

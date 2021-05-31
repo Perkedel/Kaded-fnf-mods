@@ -12,6 +12,8 @@
         "bpm": 100,
         "sections": 0,
         "validScore": true,
-        "noteStyle": "normal"
+        "noteStyle": "normal",
+        "hasVideo": false,
+        "videoPath": ""
     }
 }

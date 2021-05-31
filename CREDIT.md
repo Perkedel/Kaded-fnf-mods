@@ -112,6 +112,9 @@ thancc for all these resources! without them, everything is impossible.
 - https://gamebanana.com/questions/10300 revealing questions regarding the idea that can't be here due to the fact she's under attack from haters
 - https://gamebanana.com/threads/219274 for summary, the idea got 69420, owner got scronch proposaled, owner got trojan horsed and paniked, etc.
 - https://gamebanana.com/responders/are?post=9181884 Miguel9238's answer regarding is yoinking ND circled reupload & statements for efforts of FNF mods, communication issues, reposts, etc.
+- https://www.youtube.com/watch?v=2B7dqNB6GcE bbpanzu's how to install GrowtopiaFli's Video cutscener
+- https://handbrake.fr/ use Handbrake to convert the video file. Handbrake is free and open source
+- https://knowyourmeme.com/memes/meme-man meme man
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -181,7 +184,11 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://haxeflixel.com/documentation/flxsprite/ flxSprite
 - https://api.haxeflixel.com/flixel/util/FlxSpriteUtil.html util for flxsprite
 - https://freesound.org/people/CGEffex/sounds/99960/ car crash sfx CGeffex. for Blammed game over. idk how to define Blammed content on Newgrounds, but all I know is that to downvote button, you put **broken** star (0 star) in review something like that.
-- https://freesound.org/people/Benboncan/sounds/73581/ infamous trombone sad.
+- https://freesound.org/people/Benboncan/sounds/73581/ Beboncan's infamous sad trombone.
+- https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/ video cutscener for HaxeFlixel OpenFl friday night funkin by GrowtopiaFli. it lets you have cutscene with webm videos.
+- https://en.wikipedia.org/wiki/4%E2%80%B233%E2%80%B3 https://youtu.be/TrlKxV5KWJo John Cage - 4'3" . Actually I did not download the song. it's simple! in Audacity, top menu `Make`, `Silence`, for 4 minutes 33 seconds. that's it. yeah idk but yeah.
+- https://odysee.com/@JOELwindows7:a/succ-reverberations-remake:7?r=FYLo4xpyS1GHsLWfFtZui1wUUV399JPK JOELwindows7 recorded succ in Audacity and then reverbed it. JOELwindows7 also redrew succ with all the compositions in GIMP yeah
+- https://knowyourmeme.com/memes/meme-man all meme man information Special meme fresh.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

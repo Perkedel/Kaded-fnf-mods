@@ -1,0 +1,19 @@
+{
+    "song": {
+        "player2": "hookx",
+        "player1": "bf-covid",
+        "stage": "whitening",
+        "gfVersion": "gf-ht",
+        "speed": 1,
+        "needsVoices": false,
+        "sectionLengths": [],
+        "song": "433",
+        "notes": [],
+        "bpm": 60,
+        "sections": 0,
+        "validScore": true,
+        "noteStyle": "normal",
+        "hasVideo": true,
+        "videoPath": "succ-reverberations-remake"
+    }
+}

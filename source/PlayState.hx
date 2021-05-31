@@ -1762,7 +1762,7 @@ class PlayState extends MusicBeatState
 		// Song check real quick
 		switch(curSong) //JOELwindows7: not my code, except Rule The World. isn't it better to check insensitive case (toLowerCase())?
 		{
-			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog' | 'Rule The World' | 'Well Meet Again': allowedToHeadbang = true;
+			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog' | 'Rule The World' | 'Well Meet Again' | '433': allowedToHeadbang = true;
 			default: allowedToHeadbang = false;
 		}
 		
@@ -2324,6 +2324,7 @@ class PlayState extends MusicBeatState
 			}
 			#end
 			#end
+			#end
 		}
 
 		if (FlxG.keys.justPressed.ZERO)
@@ -2513,6 +2514,18 @@ class PlayState extends MusicBeatState
 									//copy from the hardcode zoom milfe
 									cheerNow(4,2,true);
 								}
+						}
+						case '433':
+						{
+							//JOELwindows7: silence is music lmao
+							//John Cage = 4'33", haha
+							if(curBeat % 4 == 0)
+							{
+								if(!triggeredAlready){
+									randomizeColoring();
+									triggeredAlready = true;
+								}
+							} else triggeredAlready = false;
 						}
 					}
 				}
@@ -3058,7 +3071,11 @@ class PlayState extends MusicBeatState
 					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 					FlxG.sound.music.stop();
 
-					LoadingState.loadAndSwitchState(new PlayState());
+					//JOELwindows7: if has video, then load the video first before going to new playstate!
+					if(PlayState.SONG.hasVideo){
+						FlxG.switchState(new VideoState("assets/videos/" + SONG.videoPath + ".webm", new PlayState(), true));
+					} else
+						LoadingState.loadAndSwitchState(new PlayState());
 				}
 			}
 			else
