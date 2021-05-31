@@ -21,8 +21,8 @@ class OptionsMenu extends MusicBeatState
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
-	var options:Array<OptionCatagory> = [
-		new OptionCatagory("Gameplay", [
+	var options:Array<OptionCategory> = [
+		new OptionCategory("Gameplay", [
 			new DFJKOption(controls),
 			new DownscrollOption("Change the layout of the strumline."),
 			new GhostTapOption("Ghost Tapping is when you tap a direction and it doesn't give you a miss."),
@@ -36,7 +36,7 @@ class OptionsMenu extends MusicBeatState
 			// new OffsetMenu("Get a note offset based off of your inputs!"),
 			new CustomizeGameplay("Drag'n'Drop Gameplay Modules around to your preference")
 		]),
-		new OptionCatagory("Appearance", [
+		new OptionCategory("Appearance", [
 			#if desktop
 			new FullScreenOption("Toggle Fullscreen Mode"),
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
@@ -50,7 +50,7 @@ class OptionsMenu extends MusicBeatState
 			#end
 		]),
 		
-		new OptionCatagory("Misc", [
+		new OptionCategory("Misc", [
 			#if desktop
 			new FPSOption("Toggle the FPS Counter"),
 			new ReplayOption("View replays"),
@@ -72,8 +72,8 @@ class OptionsMenu extends MusicBeatState
 
 	//JOELwindows7: add mouse click flag
 	var haveClicked:Bool = false;
-
-	var currentSelectedCat:OptionCatagory;
+	
+	var currentSelectedCat:OptionCategory;
 	var blackBorder:FlxSprite;
 	override function create()
 	{

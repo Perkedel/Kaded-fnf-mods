@@ -384,7 +384,7 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('roses-midi/roses-midiDialogue'));
 			case 'thorns-midi':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns-midi/thorns-midiDialogue'));
-	}
+		}
 
 		switch(SONG.stage)
 		{
@@ -442,7 +442,7 @@ class PlayState extends MusicBeatState
 					if(FlxG.save.data.distractions){
 						add(phillyTrain);
 					}
-
+					
 					//JOELwindows7: buddy, you forgot to put the train sound in week3 special folder
 					//No wonder the train cannot come. it missing that sound.
 					//remember, the trains position depends on the sound playback position!
@@ -1558,7 +1558,7 @@ class PlayState extends MusicBeatState
 	#if !hl
 	public static var luaModchart:ModchartState = null;
 	#end
-	#end
+	#end 
 	#end
 
 	function startCountdown():Void
@@ -1609,6 +1609,7 @@ class PlayState extends MusicBeatState
 
 			var introAlts:Array<String> = introAssets.get('default');
 			var altSuffix:String = "";
+			//JOELwindows7: detect MIDI suffix
 			var detectMidiSuffix:String = 'midi';
 			var midiSuffix:String = "midi";
 
@@ -1621,6 +1622,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 
+			//JOELwindows7: scan MIDI suffix in the song name
 			if(SONG.song.toLowerCase().endsWith(detectMidiSuffix)){
 				midiSuffix = "-" + detectMidiSuffix;
 			} else
@@ -2134,8 +2136,7 @@ class PlayState extends MusicBeatState
 			camHUD.visible = !camHUD.visible;
 
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		if (executeModchart && luaModchart != null && songStarted)
 		{
 			luaModchart.setVar('songPos',Conductor.songPosition);
@@ -2188,7 +2189,6 @@ class PlayState extends MusicBeatState
 					playerStrums.members[i].visible = p2;
 			}
 		}
-		#end
 		#end
 		#end
 
@@ -2324,7 +2324,6 @@ class PlayState extends MusicBeatState
 			}
 			#end
 			#end
-			#end
 		}
 
 		if (FlxG.keys.justPressed.ZERO)
@@ -2342,6 +2341,7 @@ class PlayState extends MusicBeatState
 			#end
 			#end
 		}
+
 		#end
 
 		if (startingSong)
@@ -2574,7 +2574,7 @@ class PlayState extends MusicBeatState
 				var offsetX = 0;
 				var offsetY = 0;
 				#if desktop
-				#if !neko
+				#if !neko 
 				#if !hl
 				if (luaModchart != null)
 				{
@@ -2587,7 +2587,7 @@ class PlayState extends MusicBeatState
 				camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
 
 				#if desktop
-				#if !neko
+				#if !neko 
 				#if !hl
 				if (luaModchart != null)
 					luaModchart.executeState('playerOneTurn', []);
@@ -2676,7 +2676,7 @@ class PlayState extends MusicBeatState
 		{
 			if(FlxG.keys.justPressed.R)
 				{
-					trace("Pressed self Eik Serkat button");
+					trace("Pressed self Eik Serkat button"); //JOELwindows7: add trace about that
 					boyfriend.stunned = true;
 
 					persistentUpdate = false;
@@ -3379,13 +3379,15 @@ class PlayState extends MusicBeatState
 					controls.RIGHT_R
 				];
 				#if desktop
-				#if cpp
+				#if !neko
+				#if !hl
 				if (luaModchart != null){
 				if (controls.LEFT_P){luaModchart.executeState('keyPressed',["left"]);};
 				if (controls.DOWN_P){luaModchart.executeState('keyPressed',["down"]);};
 				if (controls.UP_P){luaModchart.executeState('keyPressed',["up"]);};
 				if (controls.RIGHT_P){luaModchart.executeState('keyPressed',["right"]);};
 				};
+				#end
 				#end
 				#end
 		 
@@ -3821,7 +3823,7 @@ class PlayState extends MusicBeatState
 
 	function trainStart():Void
 	{
-		trace("Here comes the train choo choo!");
+		trace("Here comes the train choo choo!"); //JOELwindows7: add trace about train started
 		if(FlxG.save.data.distractions){
 		trainMoving = true;
 		if (!trainSound.playing)
@@ -3919,7 +3921,7 @@ class PlayState extends MusicBeatState
 		#if desktop
 		#if cpp
 		// Song duration in a float, useful for the time left feature
-		songLength = FlxG.sound.music.length;
+		songLength = FlxG.sound.music.length; // JOELwindows7: let it available to all?
 
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "Acc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC,true,  songLength - Conductor.songPosition);
@@ -3952,6 +3954,13 @@ class PlayState extends MusicBeatState
 		#end
 		#end
 
+		if (curSong == 'Tutorial' && dad.curCharacter == 'gf') {
+			if (curBeat % 2 == 1 && dad.animOffsets.exists('danceLeft'))
+				dad.playAnim('danceLeft');
+			if (curBeat % 2 == 0 && dad.animOffsets.exists('danceRight'))
+				dad.playAnim('danceRight');
+		}
+
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
 		{
 			if (SONG.notes[Math.floor(curStep / 16)].changeBPM)
@@ -3963,7 +3972,7 @@ class PlayState extends MusicBeatState
 			// Conductor.changeBPM(SONG.bpm);
 
 			// Dad doesnt interupt his own notes
-			if (SONG.notes[Math.floor(curStep / 16)].mustHitSection)
+			if (SONG.notes[Math.floor(curStep / 16)].mustHitSection && dad.curCharacter != 'gf')
 				dad.dance();
 		}
 		// FlxG.log.add('change bpm' + SONG.notes[Std.int(curStep / 16)].changeBPM);
@@ -4061,7 +4070,7 @@ class PlayState extends MusicBeatState
 	
 					if (curBeat % 4 == 0)
 					{
-						trace("change light pls");
+						trace("change light pls"); //JOELwindows7: add trace about light change
 						phillyCityLights.forEach(function(light:FlxSprite)
 						{
 							light.visible = false;
@@ -4078,7 +4087,7 @@ class PlayState extends MusicBeatState
 				if (curBeat % 8 == 4 && FlxG.random.bool(30) && !trainMoving && trainCooldown > 8)
 				{
 					if(FlxG.save.data.distractions){
-						trace("Hey look train!");
+						trace("Hey look train!"); //JOELwindows7: add trace about initiate train passing
 						trainCooldown = FlxG.random.int(-4, 0);
 						trainStart();
 					}
@@ -4132,7 +4141,7 @@ class PlayState extends MusicBeatState
 				colorableGround.color = originalColor;
 			} else colorableGround.visible = false;
 	}
-
+	
 	var curLight:Int = 0; //JOELwindows7: not my code. hey, Ninja! you should've white light like I do above
 	//and randomize the color. look at randomizeColoring() above!
 }

@@ -29,10 +29,8 @@ import lime.app.Application;
 import openfl.Assets;
 
 #if desktop
-#if !neko
-#if !hl
+#if cpp
 import Discord.DiscordClient;
-#end
 #end
 #end
 
@@ -69,8 +67,9 @@ class TitleState extends MusicBeatState
 			sys.FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
 		#end
 
+		//JOELwindows7: add Odysee titler
 		#if odysee
-		trace("Odysee lol! we're save now from GameBanana blamms I guess");
+		trace("Odysee lol!");
 		#else
 		trace("Not Odysee. okeh.. I guess");
 		#end
@@ -104,8 +103,10 @@ class TitleState extends MusicBeatState
 		#if ng
 		#if !mobile
 		#if !neko
+		#if !hl
 		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
 		trace('NEWGROUNDS LOL');
+		#end
 		#end
 		#end
 		#end
@@ -242,6 +243,7 @@ class TitleState extends MusicBeatState
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = true;
 
+		//JOELwindows7: odysee spriter
 		odyseeSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('odysee_Logo_Transparent_White_Text'));
 		add(odyseeSpr);
 		odyseeSpr.visible = false;
@@ -250,6 +252,7 @@ class TitleState extends MusicBeatState
 		odyseeSpr.screenCenter(X);
 		odyseeSpr.antialiasing = true;
 
+		//JOELwindows7: Perkedel spriter
 		perkedelSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('Perkedel_Logo_Typeborder'));
 		add(perkedelSpr);
 		perkedelSpr.visible = false;
@@ -260,9 +263,7 @@ class TitleState extends MusicBeatState
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
-		//JOELwindows7: don't invisiblize the mouse until a gamepad or keyboard being pressed on it. idk..
 		FlxG.mouse.visible = false;
-		//nvm. title don't need cursor.
 
 		if (initialized)
 			skipIntro();
@@ -291,11 +292,6 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		//JOELwindows7: make mouse visible when moved.
-		// if(FlxG.mouse.justMoved)
-		// 	FlxG.mouse.visible = true;
-		//nvm. you just press enter or click in here.
-
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
@@ -343,11 +339,13 @@ class TitleState extends MusicBeatState
 			#if !switch
 			#if !mobile
 			#if !neko
+			#if !hl
 			NGio.unlockMedal(60960);
 
 			// If it's Friday according to da clock
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
+			#end
 			#end
 			#end
 			#end
@@ -366,9 +364,8 @@ class TitleState extends MusicBeatState
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				// Get current version of Kade Engine
-
-				//var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/master/version.downloadMe");
-				var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/patchnotes/version.downloadMe");
+				
+				var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/master/version.downloadMe");
 				var returnedData:Array<String> = [];
 				
 				http.onData = function (data:String)
