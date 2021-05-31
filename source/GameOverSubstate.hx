@@ -22,6 +22,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		var daStage = PlayState.curStage;
 		var daBf:String = '';
+		var daSong:String = PlayState.SONG.song; //damn, I couldn't access that. I change the publicity to public man!
 		switch (PlayState.SONG.player1)
 		{
 			case 'bf-pixel':
@@ -41,6 +42,25 @@ class GameOverSubstate extends MusicBeatSubstate
 			detectMidiSuffix = "-midi";
 		} else {
 			detectMidiSuffix = "";
+		}
+
+		//JOELwindows7: checks depending on song
+		switch(daSong.toLowerCase()){
+			case 'tutorial':
+				{
+					//Noob failure lmao
+					FlxG.sound.play(Paths.soundRandom('GF_', 1, 2));
+					trace("WHAT? failure in Tutorial? XD hahahhahaha wtf person?!");
+				}
+			case 'blammed':
+				{
+					trace("haha lol you blammed!");
+					FlxG.sound.play(Paths.sound('carCrash0'));
+				}
+			default:
+				{
+
+				}
 		}
 
 		super();
@@ -67,6 +87,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		Conductor.changeBPM(100);
 
 		//JOELwindows7: also play the masker tear if daBf is covid version
+		//checks depending on character to play additional sound
 		switch(daBf.toLowerCase())
 		{
 			case 'bf-covid':
@@ -129,6 +150,10 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	function endBullshit():Void
 	{
+		var daStage = PlayState.curStage;
+		var daBf:String = '';
+		var daSong:String = PlayState.SONG.song;
+
 		if (!isEnding)
 		{
 			isEnding = true;
@@ -136,6 +161,29 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.sound.music.stop();
 			//JOELwindows7: yess! the MIDI version detection.
 			FlxG.sound.play(Paths.music('gameOverEnd' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
+
+			//JOELwindows7: context detections scheme like above first loss
+			switch(daBf){
+				default:
+					{
+
+					}
+			}
+
+			switch(daSong.toLowerCase()){
+				default:
+					{
+
+					}
+			}
+
+			switch(daStage){
+				default:
+					{
+
+					}
+			}
+
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()

@@ -180,7 +180,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://en.wikipedia.org/wiki/Kernel_panic kernel panic in general
 - https://haxeflixel.com/documentation/flxsprite/ flxSprite
 - https://api.haxeflixel.com/flixel/util/FlxSpriteUtil.html util for flxsprite
-- 
+- https://freesound.org/people/CGEffex/sounds/99960/ car crash sfx CGeffex. for Blammed game over. idk how to define Blammed content on Newgrounds, but all I know is that to downvote button, you put **broken** star (0 star) in review something like that.
+- https://freesound.org/people/Benboncan/sounds/73581/ infamous trombone sad.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

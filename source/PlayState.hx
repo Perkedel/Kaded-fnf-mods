@@ -133,7 +133,8 @@ class PlayState extends MusicBeatState
 	public static var cpuStrums:FlxTypedGroup<FlxSprite> = null;
 
 	private var camZooming:Bool = false;
-	private var curSong:String = "";
+	public var curSong:String = ""; //JOELwindows7: people, why not make the cur status public here?
+	//won't be it useful if we can utilize the status and decide depending on that condition?
 
 	private var gfSpeed:Int = 1;
 	public var health:Float = 1; //making public because sethealth doesnt work without it
@@ -187,6 +188,9 @@ class PlayState extends MusicBeatState
 	var wiggleShit:WiggleEffect = new WiggleEffect();
 
 	var colorableGround:FlxSprite; //JOELwindows7: the colorable sprite thingy
+	var originalColor:FlxColor = FlxColor.WHITE; //JOELwindows7: store the original color for chroma screen and RGB lightings
+	var isChromaScreen:Bool = false; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
+	//if chroma screen, then don't invisiblize, instead turn it back to original color!
 
 	var talking:Bool = true;
 	var songScore:Int = 0;
@@ -786,7 +790,9 @@ class PlayState extends MusicBeatState
 					colorableGround.active = false;
 					colorableGround.color.setRGB(1,1,1,0);
 					add(colorableGround);
-					colorableGround.visible = false;
+					isChromaScreen = false; //the ceiling is RGB light!
+					originalColor = colorableGround.color; //store the default color!
+					colorableGround.visible = false; //Hide the RGB light first before begin!
 				}
 			case 'qmoveph':
 				{
@@ -870,26 +876,30 @@ class PlayState extends MusicBeatState
 					// so, now you can chroma key full green!
 					// heh what the peck man? GREEN is #008000 (dim green)!?? but LIME is #00FF00 (full green)?!? really bro?!
 					// you confused me!!! the true green was supposed to be full green #00FF00 what the peck, Flixel?!
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.LIME);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
 					colorableGround.updateHitbox();
 					colorableGround.antialiasing = true;
 					colorableGround.scrollFactor.set(0.1,0.1);
 					colorableGround.active = false;
 					add(colorableGround);
+					originalColor = colorableGround.color; //store the original color first!
+					isChromaScreen = true; //The background is chroma screen
 				}
 			case 'bluechroma':
 				{
 					//JOELwindows7: same as greenscreen but blue. not to be confused with blue screen of death!
 					defaultCamZoom = 0.5;
 					curStage = 'bluechroma';
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.BLUE);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.BLUE);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
 					colorableGround.updateHitbox();
 					colorableGround.antialiasing = true;
 					colorableGround.scrollFactor.set(0.1,0.1);
 					colorableGround.active = false;
 					add(colorableGround);
+					originalColor = colorableGround.color; //store the original color first!
+					isChromaScreen = true; //The background is chroma screen
 				}
 			case 'semple':
 				{
@@ -901,53 +911,63 @@ class PlayState extends MusicBeatState
 					curStage = 'semple';
 					// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
 					// because no camera has the ability to capture way over Pink Semple had.
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.MAGENTA);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.MAGENTA);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
 					colorableGround.updateHitbox();
 					colorableGround.antialiasing = true;
 					colorableGround.scrollFactor.set(0.1,0.1);
 					colorableGround.active = false;
 					add(colorableGround);
+					originalColor = colorableGround.color; //store the original color first!
+					isChromaScreen = true; //The background is chroma screen
 				}
 			case 'whitening':
 				{
 					//JOELwindows7: This looks familiar. oh no.
+					//anyway. USE THIS SCREEN IF YOU WANT TO CHANGE COLOR with FULL RGB!
+					//BEST SCREEN FOR FULL RGB COLOR!!!
 					defaultCamZoom = 0.5;
 					curStage = 'whitening';
 					// JOELwindows7: guys, pls don't blamm me. it's nothing to do. let's assume it's purely coincidental.
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.WHITE);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.WHITE);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
 					colorableGround.updateHitbox();
 					colorableGround.antialiasing = true;
 					colorableGround.scrollFactor.set(0.1,0.1);
 					colorableGround.active = false;
 					add(colorableGround);
+					originalColor = colorableGround.color; //store the original color first!
+					isChromaScreen = true; //The background is chroma screen
 				}
 			case 'kuning':
 				{
 					//JOELwindows7: yellow this one out
 					defaultCamZoom = 0.5;
 					curStage = 'kuning';
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.YELLOW);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.YELLOW);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
 					colorableGround.updateHitbox();
 					colorableGround.antialiasing = true;
 					colorableGround.scrollFactor.set(0.1,0.1);
 					colorableGround.active = false;
 					add(colorableGround);
+					originalColor = colorableGround.color; //store the original color first!
+					isChromaScreen = true; //The background is chroma screen
 				}
 			case 'blood':
 				{
 					//JOELwindows7: red screen
 					defaultCamZoom = 0.5;
 					curStage = 'blood';
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 20, FlxG.height * 20, FlxColor.RED);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 20),Std.int(colorableGround.height * 20));
+					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.RED);
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
 					colorableGround.updateHitbox();
 					colorableGround.antialiasing = true;
 					colorableGround.scrollFactor.set(0.1,0.1);
 					colorableGround.active = false;
 					add(colorableGround);
+					originalColor = colorableGround.color; //store the original color first!
+					isChromaScreen = true; //The background is chroma screen
 				}
 			default:
 			{
@@ -2491,7 +2511,7 @@ class PlayState extends MusicBeatState
 								) 
 								{
 									//copy from the hardcode zoom milfe
-									cheerNow(4,2);
+									cheerNow(4,2,true);
 								}
 						}
 					}
@@ -4080,11 +4100,13 @@ class PlayState extends MusicBeatState
 	}
 
 	//JOELwindows7: make cheer a function
-	function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0){
+	function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
 		if(curBeat % outOfBeatFractioning == doItOn)
 		{
 			if(!triggeredAlready)
 				{
+					if(randomizeColor)
+						randomizeColoring();
 					gf.playAnim('cheer');
 					triggeredAlready = true;
 				}
@@ -4093,14 +4115,24 @@ class PlayState extends MusicBeatState
 
 	//JOELwindows7: randomize the color of the colorableGround
 	function randomizeColoring()
-		{
+	{
+		
+		if(colorableGround != null){
 			if(!colorableGround.visible)
 				colorableGround.visible = true;
-			if(colorableGround != null){
-				colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
-				trace("now colorable color is " + colorableGround.color.toHexString());
-			}
+			colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+			trace("now colorable color is " + colorableGround.color.toHexString());
 		}
+	}
 
-	var curLight:Int = 0;
+	//JOELwindows7: To hide coloring incase you don't need it anymore
+	function hideColoring() {
+		if(colorableGround != null)
+			if(isChromaScreen){
+				colorableGround.color = originalColor;
+			} else colorableGround.visible = false;
+	}
+
+	var curLight:Int = 0; //JOELwindows7: not my code. hey, Ninja! you should've white light like I do above
+	//and randomize the color. look at randomizeColoring() above!
 }
