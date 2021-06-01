@@ -15,16 +15,18 @@ We have:
   - Hookx the friendly karaoke robot. it's a portrait TV that can walk! it can also swivel its head 90 degrees!
   - Home Theater, while Girlfriend was busy looking for fashion or whatever physical distancing occassion needed, this Home theater is here. it has a modular landscape TV (which the screen and the computer (called TV evolution box thingy) are separatable), Sondkart GF-100 Soundbar, and a furniture to hold the TV evolution box and the soundbar.
   - **Boyfriend COVID-19 edition!** Boyfriend follows health protocol by **wearing mask** because he is outside. (bruh, he should've also been complying that on his home state lmao, but eh, COVID-19 is "*dead*" (technically no. they're already endemic unfortunately), humanity has reached peak herd immunity anyway, yeah but still) (but brother, bf's first week was on like 2020, and then subsequent was around 2021, oh no! and North America (US & probably Canada) had their worst time period during the peak rise of COVID-19!!!). Yeah just wear mask anyway when going out idk what comes here.
-- **All without replacing weeks, stages, or even skin at all!** the vanilla assets and stuff still remains intact! (the week 7 is missing placeholder ~~(High effort Ugh)~~ and the original week 7 exclusive embargo is still ongoing as of 23/05/2021, Kickstarter ended, please don't break promise about timed, okay!)
+- **All without replacing weeks, stages, or even skin at all!** the vanilla assets and stuff still remains intact! (the week 7 is missing ~~placeholder (High effort Ugh)~~ and the original week 7 exclusive embargo is still ongoing as of 23 May 2021, Kickstarter ended, please don't break promise about timed, okay!)
 - `BETA` ways to load weeks!!! with `weekList.json` file (located in `Assets/data/weekList.json`), you can edit the variable right away without needing to recompile entire game. finally! add weeks without recompile! more procedural loadings to come. (Pls fix week loader so we don't have to hard code, I guess it's done, idk)
 - **Fresh**ly Forked from Kade Engine with love yay!
+- **VIDEO CUTSCENER!!!** You can insert video in your song!!! thancc @GrowtopiaFli for the system. Available for both the start and end of each song, each difficulty!!! wow!!!! you can e.g. have different video even on each difficulty!!! ***no way!!!*** this is what should've been.
 - idk what next?
+- CODE LICENSED GNU GPL v3 instead of some sort of *Open Source but proprietarism-allowing* licenses. ASSETS (only for Perkedel originals like Week Strong, Week 4'33") Licensed CC4.0-BY-SA as shown in GameBanana Page!!! yoinkers, **you can steal this (the original Perkedel week ones yess) but pls credit!** oh, better be higher quality than ever pls, not just mere reupload, yeah serious. and of course, Share Alike remember? yess!! OPEN SOURCE BOTH MODS & ASSETS, for real.
 
 <!-- (Unmarketed) We also have some yoinks from other mods without permission. Checkout [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) at section `other mods that wins the inclusion`. Yes, even we are *stealing* quote on quote, we always make sure mod page link url are always credited, along with their names of whom submited them. -->
 
 check [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) for stuffs involved during making it this mod
 
-enjoy the last drop of funkin before everything went.
+enjoy the last drops of funkin before everything went. went, I can't say this. you don't want to hear this.
 
 # Today's Update!
 ## Week Strong! vs. Hookx the friendly Karaoke robot!
@@ -41,6 +43,9 @@ Well, it's not the live person he met but another robot instead. Why not try tho
 ...
 
 # Misc
+## some nice articles
+[![]("https://gamebanana.com/tuts/embeddables/14079?type=large")](https://gamebanana.com/tuts/14079)
+
 ## todo
 - redecorate for Perkedel temp week works
 - week strong. vs. Hookx the friendly singing portrait tv robot assistant

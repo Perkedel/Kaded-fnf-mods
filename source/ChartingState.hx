@@ -120,6 +120,8 @@ class ChartingState extends MusicBeatState
 				validScore: false,
 				hasVideo: false,
 				videoPath: '',
+				hasEpilogueVideo: false,
+				epilogueVideoPath: '',
 			};
 		}
 

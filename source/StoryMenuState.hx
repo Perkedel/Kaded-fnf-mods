@@ -417,11 +417,7 @@ class StoryMenuState extends MusicBeatState
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				//JOELwindows7: check if the song has video files
-				if(PlayState.SONG.hasVideo){
-					FlxG.sound.music.stop(); //stop the music first just in case.
-					FlxG.switchState(new VideoState("assets/videos/" + PlayState.SONG.videoPath + ".webm", new PlayState(), true));
-				} else
-					LoadingState.loadAndSwitchState(new PlayState(), true);
+				LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? new VideoState("assets/videos/" + PlayState.SONG.videoPath + ".webm", new PlayState()) : new PlayState(), true);
 			});
 		}
 	}

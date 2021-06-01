@@ -10,15 +10,21 @@ hard coded stuff going on!!!
 
 that will cause mods mostly asset replacement if don't want compile
 
+right, the fact that this game was started as a jam, Ludum Dare. Yes. with Jam, new idea comes up and who know that would worth further development post jam. However, with requirement to think fast, everything in the end will be rushed (because of course it has to be at least playable to some extent at the end of the jam). the mechanism will lack useful features that is very essential to people out there.
+
 ### Apache License
 don't let them fork into proprietary! protect the freedom!! use GNU GPL v3 instead
+
+edit: now they change license to custom made. explicitly says that you must open source your mods. Although so, he has no specific which part that should be. You see, that in a game, there is Code and Assets. We already able to assume that Code is obviously must be open source. but how about the assets? We're afraid that they decided to close source the assets but the code.
 
 ## Destructive
 
 ### FULL ASS GAME that is not $0?! wtf?
-kickstarter link pls
+[kickstarter link pls](https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game)
 
 but instead he said that the eventual rollout from the Full ass to the free version?! idk...
+
+hmph we are afraid for the worst. what if week7 came only to the full version? well I hope that's timed again, so eventually rolls out to free version.
 
 todo: why though wtf you betrayed us?
 

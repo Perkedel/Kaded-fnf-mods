@@ -1300,12 +1300,16 @@ class PlayState extends MusicBeatState
 		//JOELwindows7: add reupload watermark
 		//usually, YouTube mod showcase only shows gameplay
 		//and there are some naughty youtubers who did not credit link in description neither comment.
-		reuploadWatermark = new FlxText(healthBarBG.x - 10,healthBarBG.y - 250,0,"Download Last Funkin Moments ($0) https://github.com/Perkedel/kaded-fnf-mods,\nKade Engine ($0) https://github.com/KadeDev/Kade-Engine ,\nand vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin\n", 12);
+		reuploadWatermark = new FlxText((FlxG.width/2) - 100,(FlxG.height/2) + 50,0,"Download Last Funkin Moments ($0) https://github.com/Perkedel/kaded-fnf-mods,\nKade Engine ($0) https://github.com/KadeDev/Kade-Engine ,\nand vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin\n", 12);
+		reuploadWatermark.setPosition((FlxG.width/2) - (reuploadWatermark.width / 2),(FlxG.height/2) + 50); //Ah damn. the pivot of all Haxe Object is top left! 
+		//right, let's just work this all around anyway.
+		//there I got it. hopefully it's centered.
 		reuploadWatermark.scrollFactor.set();
 		reuploadWatermark.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		add(reuploadWatermark);
 		reuploadWatermark.visible = false;
 		//follow this example, you must be protected too from those credit-less YouTubers the bastards!
+		//We anchored the watermark dead center, just 50 px down abit.
 
 		//JOELwindows7: I add watermark Perkedel Mod
 		// Add Kade Engine watermark
@@ -3008,7 +3012,9 @@ class PlayState extends MusicBeatState
 					transIn = FlxTransitionableState.defaultTransIn;
 					transOut = FlxTransitionableState.defaultTransOut;
 
-					FlxG.switchState(new StoryMenuState());
+					//JOELwindows7: check epilogue and play if it has one
+					FlxG.switchState(SONG.hasEpilogueVideo? new VideoState("assets/videos/" + SONG.epilogueVideoPath + ".webm", new StoryMenuState()) : new StoryMenuState());
+					//complicated! oh MY GOD!
 
 					#if desktop
 					#if !neko
@@ -3068,14 +3074,24 @@ class PlayState extends MusicBeatState
 					FlxTransitionableState.skipNextTransOut = true;
 					prevCamFollow = camFollow;
 
+					//JOELwindows7: wait wwiat atiw! remember the epilogue path first before go to the next song!
+					var hasEpilogueVideo:Bool = SONG.hasEpilogueVideo;
+					var epilogueVideoPath:String = SONG.epilogueVideoPath;
+					//Okay you can now change the song.
+
 					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 					FlxG.sound.music.stop();
 
 					//JOELwindows7: if has video, then load the video first before going to new playstate!
-					if(PlayState.SONG.hasVideo){
-						FlxG.switchState(new VideoState("assets/videos/" + SONG.videoPath + ".webm", new PlayState(), true));
-					} else
-						LoadingState.loadAndSwitchState(new PlayState());
+					//LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					LoadingState.loadAndSwitchState(
+						hasEpilogueVideo?
+						(new VideoState("assets/videos/" + epilogueVideoPath + ".webm", 
+							(SONG.hasVideo ? new VideoState("assets/videos/" + SONG.videoPath + ".webm", new PlayState()) : new PlayState() )
+						))
+						: (SONG.hasVideo ? new VideoState("assets/videos/" + SONG.videoPath + ".webm", new PlayState()) : new PlayState() )
+					);
+					//JOELwindows7: oh God, so complicated. I hope it works!
 				}
 			}
 			else

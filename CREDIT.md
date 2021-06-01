@@ -111,10 +111,21 @@ thancc for all these resources! without them, everything is impossible.
 - TripleQ remixered. QqQ!
 - https://gamebanana.com/questions/10300 revealing questions regarding the idea that can't be here due to the fact she's under attack from haters
 - https://gamebanana.com/threads/219274 for summary, the idea got 69420, owner got scronch proposaled, owner got trojan horsed and paniked, etc.
-- https://gamebanana.com/responders/are?post=9181884 Miguel9238's answer regarding is yoinking ND circled reupload & statements for efforts of FNF mods, communication issues, reposts, etc.
+- https://gamebanana.com/responders/are?post=9181884 Miguel9238's answer regarding is yoinking ND circled reupload & statements for efforts of FNF mods, communication issues, reposts, etc. Also the `On Second Thought` cliche cycles of game mod community.
 - https://www.youtube.com/watch?v=2B7dqNB6GcE bbpanzu's how to install GrowtopiaFli's Video cutscener
 - https://handbrake.fr/ use Handbrake to convert the video file. Handbrake is free and open source
 - https://knowyourmeme.com/memes/meme-man meme man
+- Wiro Sableng. Pendekar Kapak Naga Geni 212
+- Britney Spear's song of `You're toxic`, TOXIC. yes. literally fandom comes again. Ah peck here we go again. Kids unmoderated by parents, even the mature form one too as well. bla bla bla!
+- GTA: San Andreas intro meme
+- American's culture of Gender Reveal Party and what side effect may happen, why it's genderically racist and selectiveod, etc. etc.
+- https://www.lifewire.com/bash-for-loop-examples-2200575 how to for loop in shell script
+- https://stackoverflow.com/a/12152669/9079640 how to cut file extension from a file name in shell script
+- https://uly.me/ffmpeg-convert-mp3-to-ogg/ how to convert audio to ogg with ffmpeg
+- https://bytefreaks.net/gnulinux/bash/ffmpeg-extract-audio-from-mp4-to-ogg extract audio with ffmpeg
+- https://superuser.com/a/1121597/1036816 doc dump
+- https://thethemefoundry.com/blog/convert-mp4-to-webm/ doc dump
+- https://linuxconfig.org/how-to-test-for-installed-package-using-shell-script-on-ubuntu-and-debian check installed packages in linux
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -159,7 +170,7 @@ use VScode and Github desktop!
 # other mods that wins the inclusion (without permission if has CC or uh whatever bruh, otherwise unlikely). Congratulations!
 Note: in Game Banana, mods that did not have license written will set to CC4.0-BY-NC-ND by default (marked by `Warning: presumably no license so default`). We believe that with ND circle legally prevents anyone to yoink such mods without asking permission. However, such statement is vague, due to the gray area like e.g. SF2. in any case, review the details and yoink with caution.
 
-- https://gamebanana.com/mods/43569 (do whatever the fck you want license) FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
+- https://gamebanana.com/mods/43569 (you can edit mod but pls credit author) FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
 - https://gamebanana.com/tools/7033 (Warning: presumably no license so default) nickham13 BF voice SF2
 - https://github.com/GenoX-Fome/funkin-utau/ GenoX FNF UTAU voices. use for AFI Junior - Guruku Tersayang pls
 - https://www.fullbucket.de/music/freqshifter.html use this for Pico voice or whatever.

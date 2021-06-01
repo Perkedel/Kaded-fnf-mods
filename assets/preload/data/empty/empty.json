@@ -14,6 +14,8 @@
         "validScore": true,
         "noteStyle": "normal",
         "hasVideo": false,
-        "videoPath": ""
+        "videoPath": "",
+        "hasEpilogueVideo": false,
+        "epilogueVideoPath": ""
     }
 }
