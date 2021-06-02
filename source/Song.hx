@@ -26,6 +26,11 @@ typedef SwagSong =
 	var videoPath:String; //JOELwindows7: the video file path
 	var hasEpilogueVideo:Bool; //JOELwindows7: mark that this has Epilogue video
 	var epilogueVideoPath:String; //JOELwindows7: the epilogue video file path;
+	
+	var hasDialogueChat:Bool; //JOELwindows7: mark that this has Dialogue chat
+	var hasEpilogueChat:Bool; //JOELwindows7: mark that this has Epologue chat
+	var dialogueChatPath:String; //JOELwindows7: the dialogue chat file path
+	var epilogueChatPath:String; //JOELwindows7: the epilogue chat file path
 }
 
 class Song
@@ -46,6 +51,11 @@ class Song
 	public var videoPath:String = ''; //JOELwindows7: the video file path
 	public var hasEpilogueVideo:Bool = false; //JOELwindows7: mark that this has Epilogue video
 	public var epilogueVideoPath:String = ''; //JOELwindows7: the epilogue video file path;
+
+	public var hasDialogueChat:Bool; //JOELwindows7: mark that this has Dialogue chat
+	public var hasEpilogueChat:Bool; //JOELwindows7: mark that this has Epologue chat
+	public var dialogueChatPath:String; //JOELwindows7: the dialogue chat file path
+	public var epilogueChatPath:String; //JOELwindows7: the epilogue chat file path
 
 	public function new(song, notes, bpm)
 	{

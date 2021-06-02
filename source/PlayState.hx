@@ -93,6 +93,11 @@ class PlayState extends MusicBeatState
 
 	var halloweenLevel:Bool = false;
 
+	//JOELwindows7: global backgrounder. to prioritize add() in order after all variable has been filled with instances
+	var bgAll:FlxSprite;
+	var stageFrontAll:FlxSprite;
+	var stageCurtainAll:FlxSprite;
+
 	//JOELwindows7: numbers of Missnote sfx! load from text file, how many Miss notes you had?
 	var numOfMissNoteSfx:Int = 3;
 
@@ -165,7 +170,12 @@ class PlayState extends MusicBeatState
 	var notesHitArray:Array<Date> = [];
 	var currentFrames:Int = 0;
 
+	//JOELwindows7: oh c'mon. why would not globalize both dialoguebox start and end class?
+	public var doof:DialogueBox;
+	public var eoof:DialogueBox;
+
 	public var dialogue:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
+	public var epilogue:Array<String> = ['dad:oh no I lose', 'bf: beep boop baaa hey!']; //JOELwindows7: same dialoguer but for after song done
 
 	var halloweenBG:FlxSprite;
 	var isHalloween:Bool = false;
@@ -385,6 +395,12 @@ class PlayState extends MusicBeatState
 			case 'thorns-midi':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns-midi/thorns-midiDialogue'));
 		}
+
+		//JOELwinodws7: Epilogue shit
+		epilogue = CoolUtil.coolTextFile(Paths.txt( (SONG.hasEpilogueChat && SONG.epilogueChatPath != null && SONG.epilogueChatPath != '') ? 
+			'${SONG.song}/${SONG.epilogueChatPath}Epilogue'
+		: 'null/null.txt'));
+		//see, as simple as that
 
 		switch(SONG.stage)
 		{
@@ -773,14 +789,6 @@ class PlayState extends MusicBeatState
 					stageFront.active = false;
 					add(stageFront);
 
-					var stageCurtains:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgRearSpeakers'));
-					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2),Std.int(stageFront.height * 1.2));
-					stageCurtains.updateHitbox();
-					stageCurtains.antialiasing = true;
-					stageCurtains.scrollFactor.set(1.5, 1.5);
-					stageCurtains.active = false;
-					add(stageCurtains);
-
 					//Now for the colorable ceiling!
 					colorableGround = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'));
 					colorableGround.setGraphicSize(Std.int(colorableGround.width * 1.2),Std.int((colorableGround.height * 1.2)));
@@ -793,6 +801,15 @@ class PlayState extends MusicBeatState
 					isChromaScreen = false; //the ceiling is RGB light!
 					originalColor = colorableGround.color; //store the default color!
 					colorableGround.visible = false; //Hide the RGB light first before begin!
+
+					//now back to final closest to the camera.
+					var stageCurtains:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgRearSpeakers'));
+					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2),Std.int(stageFront.height * 1.2));
+					stageCurtains.updateHitbox();
+					stageCurtains.antialiasing = true;
+					stageCurtains.scrollFactor.set(1.5, 1.5);
+					stageCurtains.active = false;
+					add(stageCurtains);
 				}
 			case 'qmoveph':
 				{
@@ -1212,11 +1229,14 @@ class PlayState extends MusicBeatState
 			// FlxG.watch.addQuick('Queued',inputsQueued);
 		}
 
-		var doof:DialogueBox = new DialogueBox(false, dialogue);
+		doof = new DialogueBox(false, dialogue); //JOELwindows7: make it global, pls!
+		eoof = new DialogueBox(false, epilogue); //JOELwinodws7: epilogue box too!
 		// doof.x += 70;
 		// doof.y = FlxG.height * 0.5;
 		doof.scrollFactor.set();
 		doof.finishThing = startCountdown;
+		eoof.scrollFactor.set(); //JOELwindows7: also set scroll factor too for epilogue box!
+		eoof.finishThing = endSong; //JOELwindows7: ahh, now I get it. the callable variable is filled right here. okay! I though..
 
 		Conductor.songPosition = -5000;
 		
@@ -1380,6 +1400,8 @@ class PlayState extends MusicBeatState
 		
 		if (isStoryMode)
 		{
+			//JOELwindows7: not my code this switch is. but hey, pls obsolesence partially it this.
+			//turn it into just add effect.
 			switch (curSong.toLowerCase())
 			{
 				//JOELwindows7: the JSON file for that winter horrorland also removes the dash!
@@ -1437,6 +1459,8 @@ class PlayState extends MusicBeatState
 					trace("No School Intro info in isStoryMode for " + curSong + ". start coundown anyway");
 					startCountdown();
 			}
+
+			//JOELwindows7: and this is where to scan dialogue instead.
 		}
 		else
 		{
@@ -1550,6 +1574,40 @@ class PlayState extends MusicBeatState
 				remove(black);
 			}
 		});
+	}
+
+	//JOELwindows7: schoolOutro thingy before endSong function in case
+	//it had end dialogue a.k.a. Epilogue
+	//inspired from above dialogue launcher School intro
+	function schoolOutro(?dialogueBox:DialogueBox):Void
+	{
+		//First, mute the music and vocals. like endSong.
+		//also disable the pause to prevent accident pause by press enter which also moves the dialogue.
+		canPause = false;
+		FlxG.sound.music.volume = 0;
+		vocals.volume = 0;
+
+		//Pay attention for the pre-dialogue effect show like in Rose, senpai got mad thingy
+		switch(SONG.song.toLowerCase()){
+			default:
+				{
+
+				}
+		}
+
+		if(dialogueBox != null){
+			inCutscene = true;
+			
+			//omg what?
+			switch(SONG.song.toLowerCase())
+			{
+				default:
+					add(dialogueBox);
+			}
+		} else endSong();
+
+		//it looks like the finishThing variable calling means call the function who called it again. right?
+		//so it then fell to the empty dialog.
 	}
 
 	var startTimer:FlxTimer;
@@ -1725,7 +1783,8 @@ class PlayState extends MusicBeatState
 			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
 		}
 
-		FlxG.sound.music.onComplete = endSong;
+		//FlxG.sound.music.onComplete = endSong;
+		FlxG.sound.music.onComplete = checkEpilogueChat; //JOELwindows7: now instead pls check the epilogue chat!
 		vocals.play();
 
 		// Song duration in a float, useful for the time left feature
@@ -2952,6 +3011,15 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
 		#end
+	}
+
+	//JOELwindows7: check if the song should display epilogue chat once the song has finished.
+	function checkEpilogueChat():Void
+	{
+		//if song has epilogue chat then do this
+		if(SONG.hasEpilogueChat && (isStoryMode)){
+			schoolOutro(eoof);
+		} else endSong();
 	}
 
 	function endSong():Void

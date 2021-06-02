@@ -20,11 +20,11 @@ We have:
 - **Fresh**ly Forked from Kade Engine with love yay!
 - **VIDEO CUTSCENER!!!** You can insert video in your song!!! thancc @GrowtopiaFli for the system. Available for both the start and end of each song, each difficulty!!! wow!!!! you can e.g. have different video even on each difficulty!!! ***no way!!!*** this is what should've been.
 - idk what next?
-- CODE LICENSED GNU GPL v3 instead of some sort of *Open Source but proprietarism-allowing* licenses. ASSETS (only for Perkedel originals like Week Strong, Week 4'33") Licensed CC4.0-BY-SA as shown in GameBanana Page!!! yoinkers, **you can steal this (the original Perkedel week ones yess) but pls credit!** oh, better be higher quality than ever pls, not just mere reupload, yeah serious. and of course, Share Alike remember? yess!! OPEN SOURCE BOTH MODS & ASSETS, for real.
+- CODE LICENSED GNU GPL v3 instead of some sort of *Open Source but proprietarism-allowing-forking* licenses. ASSETS (only for Perkedel originals like Week Strong, Week 4'33") Licensed CC4.0-BY-SA as shown in GameBanana Page!!! yoinkers, **you can steal this (the original Perkedel week ones yess) but pls credit!** oh, better be higher quality than ever pls, not just mere reupload, yeah serious. and of course, Share Alike remember? yess!! OPEN SOURCE BOTH MODS & ASSETS, for real (The FLA, SVG, PSD, KRA, XM, BLEND, FBX, anything! all format). Yes, it's a great privillege that KadeEngine (and FNF formerly but still compliant) is licensed Apache (the one that is Android). This license allow forker to change license, don't know to where ups or down, but basically we can enforce more here yeah. Ah yess, finally. License that is not absolutely restrictive at all.
 
 <!-- (Unmarketed) We also have some yoinks from other mods without permission. Checkout [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) at section `other mods that wins the inclusion`. Yes, even we are *stealing* quote on quote, we always make sure mod page link url are always credited, along with their names of whom submited them. -->
 
-check [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) for stuffs involved during making it this mod
+check out [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) for stuffs involved during making of it this mod
 
 enjoy the last drops of funkin before everything went. went, I can't say this. you don't want to hear this.
 
@@ -37,6 +37,8 @@ Boyfriend decided to go on to the opposite side of the world *to prove that he i
 Jakarta Fair finally opens again after the gruelling cruelty of coronavirus has finally defeated. Boyfriend and families went to Jakarta fair for mere curiosity and who knows find someone that would compete with him. It had alot of stuffs, so they separate a while to look for interesting stuffs around the fair. Girlfriend will search for fashions, while Boyfriend looks for technologies. He found one of the megabooth that has sophisticated walking minibooth in it, Van Elektronische (Perkedel Technologies). He entered one of the booth and encountered Hookx, the friendly Karaoke robot.
 
 Well, it's not the live person he met but another robot instead. Why not try though? I think Hookx got something interesting. So then Boyfriend proceed interacting with that robot that shapped like a portrait TV.
+
+BONUS WEEK! 4'33" . John Cage - 4'33" did made a composition. and it's silent. just that. that's it. yes.
 
 # ERROR
 ## Missing files
@@ -52,6 +54,9 @@ Well, it's not the live person he met but another robot instead. Why not try tho
 - hey, weren't we supposed to build sTILE instead?
 - add constructive criticism about how unprocedural map loading is unlike other rhythm games
 - abandon this mod when the procedural way of loading everything new (weeks, stages, background, scripts, etc.) has been ready on the upstream or the OG upstream, backport everything there.
+
+## studio
+We have studio in GameBanana https://gamebanana.com/studios/35672 . Just to seize the opportunity before anyone impersonate our brand, as well as to contain and collects our mods in GameBanana yay.
 
 <!-- Kade Descriptions -->
 # Kade Engine Descriptions

@@ -1351,7 +1351,7 @@
         "validScore": true,
         "sections": 0,
         "stage": "jakartaFair",
-        "speed": 1,
+        "speed": 1.5,
         "bpm": 102
     }
 }

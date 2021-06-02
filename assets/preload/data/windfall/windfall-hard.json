@@ -2074,6 +2074,10 @@
         "stage": "jakartaFair",
         "needsVoices": false,
         "bpm": 102,
-        "speed": 2
+        "speed": 2,
+        "hasDialogueChat": true,
+        "hasEpilogueChat": false,
+        "dialogueChatPath": "windfall",
+        "epilogueChatPath": ""
     }
 }

@@ -16,6 +16,10 @@
         "hasVideo": false,
         "videoPath": "",
         "hasEpilogueVideo": false,
-        "epilogueVideoPath": ""
+        "epilogueVideoPath": "",
+        "hasDialogueChat": false,
+        "hasEpilogueChat": false,
+        "dialogueChatPath": "empty",
+        "epilogueChatPath": "empty"
     }
 }
