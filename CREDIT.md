@@ -127,6 +127,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://thethemefoundry.com/blog/convert-mp4-to-webm/ doc dump
 - https://linuxconfig.org/how-to-test-for-installed-package-using-shell-script-on-ubuntu-and-debian check installed packages in linux
 - https://www.rapidtables.com/code/linux/linux-current-directory.html how to `pwd`. echo the current working directory
+- https://en.wikipedia.org/wiki/General_MIDI General MIDI reference. use this for attention to detail in the SeaNothing's MIDI cover of week6
   
 # in event of git merge conflict
 use VScode and Github desktop!

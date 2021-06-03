@@ -128,7 +128,7 @@ class Main extends Sprite
 		#if odysee
 		trace("We are in Odysee");
 		#else
-		trace("We are not in Odysee");
+		trace("We are not in Odysee. are we? or forgot Odysee define compile.. idk");
 		#end
 
 		//JOELwindows7: steal the mods (including ND without permission)

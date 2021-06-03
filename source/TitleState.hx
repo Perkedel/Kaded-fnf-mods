@@ -71,7 +71,7 @@ class TitleState extends MusicBeatState
 		#if odysee
 		trace("Odysee lol!");
 		#else
-		trace("Not Odysee. okeh.. I guess");
+		trace("Not Odysee. okeh.. I guess. Or perhaps yes, just forgot the Odysee definition?");
 		#end
 
 		@:privateAccess
