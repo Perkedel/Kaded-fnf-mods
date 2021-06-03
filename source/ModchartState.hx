@@ -2,6 +2,7 @@
 
 // Lua
 //JOELwindows7: okay, please widen the area of support for macOS and Linux too.
+import flixel.input.actions.FlxAction;
 #if desktop
 #if !neko
 #if !hl
@@ -362,6 +363,11 @@ class ModchartState
 				setVar("mustHit", false);
 
 				setVar("strumLineY", PlayState.instance.strumLine.y);
+
+				//JOELwindows7: mirror the variables here!
+				setVar("originalColor", PlayState.instance.originalColor);
+				setVar("isChromaScreen", PlayState.instance.isChromaScreen);
+				//end mirror variables
 				
 				// callbacks
 	
@@ -768,6 +774,88 @@ class ModchartState
 				});*/
 
 				// default strums
+
+				//JOELwindows7: more special functions
+				Lua_helper.add_callback(lua, "cheerNow", function(ooutOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
+					PlayState.instance.cheerNow(ooutOfBeatFractioning,doItOn,randomizeColor);
+				});
+
+				Lua_helper.add_callback(lua, "prepareColorableBg", function(
+					useImage:Bool = false, 
+					positionX:Float = -500, positionY:Float = -500, 
+					imagePath:String = '', animated:Bool = false,
+					color:String = "WHITE",
+					width:Int = 1, height:Int = 1, 
+					upscaleX:Int = 1, upscaleY:Int = 1, 
+					antialiasing:Bool = true,
+					scrollFactorX:Float = .5, scrollFactorY:Float = .5,
+					active:Bool = false, callNow:Bool = true, unique:Bool = false
+				){
+					PlayState.instance.prepareColorableBg(
+						useImage,
+						positionX,positionY,
+						imagePath,animated,
+						FlxColor.fromString(color),
+						width,height,
+						upscaleX,upscaleY,
+						antialiasing,
+						scrollFactorX,scrollFactorY,
+						active,callNow,unique
+					);
+					//HOOF! so complicated!
+					//idk man who will use this. but just in case you would like to reset spawn
+					//a graphics here, you can use this.
+					//and this is NOT RECOMMENDED to be used at all
+					//because loading new image or generate graphic has lags on it.
+					//Just don't touch this.
+				});
+
+				Lua_helper.add_callback(lua, "randomizeColoring", function(){
+					PlayState.instance.randomizeColoring();
+					//ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
+					//and you, Haxe Language Server laggs on purpose
+					//hence I blinded & mistyped!!! C'MON!!!! REALLY??!?!
+				});
+
+				Lua_helper.add_callback(lua, "chooseColoringColor", function(color:String = "WHITE"){
+					PlayState.instance.chooseColoringColor(FlxColor.fromString(color));
+					//hmm, I am afraid using raw FlxColor data doing won't work.
+					//You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
+					//so, maybe you should use the.. string version?
+					//so here it is. the FlxCOlor.fromString() is magic. it can understand 0x000000, #FFFFFFFF, or even Name!!! wow!!
+				});
+
+				Lua_helper.add_callback(lua, "camZoomNow", function(){
+					PlayState.instance.camZoomNow();
+				});
+
+				Lua_helper.add_callback(lua, "trainStart", function () {
+					//Manually start the train right from the modchart anyway.
+					PlayState.instance.trainStart();
+				});
+
+				Lua_helper.add_callback(lua, "trainReset", function(){
+					//Also reset the train from modchart as well
+					PlayState.instance.trainReset();
+				});
+
+				Lua_helper.add_callback(lua, "lightningStrikeHit", function(){
+					//Now you can abuse the lightning lol!!!
+					PlayState.instance.lightningStrikeShit();
+				}); //what the heck, Haxe Language server? you didn't quickly tell me
+				//That I missed semicolon? what cause of all these lags?
+
+				Lua_helper.add_callback(lua, "fastCarDrive", function(){
+					//haha fast car go brrrrr!!!
+					PlayState.instance.fastCarDrive();
+				});
+
+				Lua_helper.add_callback(lua, "resetFastCar", function(){
+					//reset da cars! now!!
+					PlayState.instance.resetFastCar();
+				});
+				//end more special functions
+				//So you don't have to hard code your cool effects.
 
 				for (i in 0...PlayState.strumLineNotes.length) {
 					var member = PlayState.strumLineNotes.members[i];

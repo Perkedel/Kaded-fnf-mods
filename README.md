@@ -1,5 +1,9 @@
 ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png )
 [Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
+
+[![Build status](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)
+
+
 # Last Funkin Moments
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
@@ -19,6 +23,8 @@ We have:
 - `BETA` ways to load weeks!!! with `weekList.json` file (located in `Assets/data/weekList.json`), you can edit the variable right away without needing to recompile entire game. finally! add weeks without recompile! more procedural loadings to come. (Pls fix week loader so we don't have to hard code, I guess it's done, idk)
 - **Fresh**ly Forked from Kade Engine with love yay!
 - **VIDEO CUTSCENER!!!** You can insert video in your song!!! thancc @GrowtopiaFli for the system. Available for both the start and end of each song, each difficulty!!! wow!!!! you can e.g. have different video even on each difficulty!!! ***no way!!!*** this is what should've been.
+- **CHANGES IN DEFAULT STAGE!!!** Now reinstalled stage light. but that's not all, **we also have added the light bloom on it as well!!!** hey, it even change color too on demand, such as every cheer!!! whoah!!!!
+- **NEW LUA MODCHART FUNCTIONS!!!**. We mirrored our special functions for the lua modchart too aswell. We got Cheer Now, Cam Zoom in, Set Colorable Background color, randomize the color, and more. FINALLY!!! We're getting closer to obsolette the hard coding! yeah!
 - idk what next?
 - CODE LICENSED GNU GPL v3 instead of some sort of *Open Source but proprietarism-allowing-forking* licenses. ASSETS (only for Perkedel originals like Week Strong, Week 4'33") Licensed CC4.0-BY-SA as shown in GameBanana Page!!! yoinkers, **you can steal this (the original Perkedel week ones yess) but pls credit!** oh, better be higher quality than ever pls, not just mere reupload, yeah serious. and of course, Share Alike remember? yess!! OPEN SOURCE BOTH MODS & ASSETS, for real (The FLA, SVG, PSD, KRA, XM, BLEND, FBX, anything! all format). Yes, it's a great privillege that KadeEngine (and FNF formerly but still compliant) is licensed Apache (the one that is Android). This license allow forker to change license, don't know to where ups or down, but basically we can enforce more here yeah. Ah yess, finally. License that is not absolutely restrictive at all.
 

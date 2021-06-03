@@ -94,9 +94,9 @@ class PlayState extends MusicBeatState
 	var halloweenLevel:Bool = false;
 
 	//JOELwindows7: global backgrounder. to prioritize add() in order after all variable has been filled with instances
-	var bgAll:FlxSprite;
-	var stageFrontAll:FlxSprite;
-	var stageCurtainAll:FlxSprite;
+	var bgAll:Array<FlxSprite>;
+	var stageFrontAll:Array<FlxSprite>;
+	var stageCurtainAll:Array<FlxSprite>;
 
 	//JOELwindows7: numbers of Missnote sfx! load from text file, how many Miss notes you had?
 	var numOfMissNoteSfx:Int = 3;
@@ -197,10 +197,15 @@ class PlayState extends MusicBeatState
 	var bgGirls:BackgroundGirls;
 	var wiggleShit:WiggleEffect = new WiggleEffect();
 
-	var colorableGround:FlxSprite; //JOELwindows7: the colorable sprite thingy
-	var originalColor:FlxColor = FlxColor.WHITE; //JOELwindows7: store the original color for chroma screen and RGB lightings
-	var isChromaScreen:Bool = false; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
+	public var colorableGround:FlxSprite; //JOELwindows7: the colorable sprite thingy
+	public var originalColor:FlxColor = FlxColor.WHITE; //JOELwindows7: store the original color for chroma screen and RGB lightings
+	public var isChromaScreen:Bool = false; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
 	//if chroma screen, then don't invisiblize, instead turn it back to original color!
+
+	//JOELwindows7: arraying them seems won't work at all. so let's make them separateroid instead.
+	public var MulticolorableGround:Array<FlxSprite>; //JOELwindows7: the colorable sprite thingy
+	public var MultiOriginalColor:Array<FlxColor> = [FlxColor.WHITE]; //JOELwindows7: store the original color for chroma screen and RGB lightings
+	public var MultiIsChromaScreen:Array<Bool> = [false]; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
 
 	var talking:Bool = true;
 	var songScore:Int = 0;
@@ -394,6 +399,8 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('roses-midi/roses-midiDialogue'));
 			case 'thorns-midi':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns-midi/thorns-midiDialogue'));
+			default:
+				dialogue = ['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
 		}
 
 		//JOELwinodws7: Epilogue shit
@@ -402,7 +409,7 @@ class PlayState extends MusicBeatState
 			SONG.epilogueChatPath != ''
 			) ? 
 			CoolUtil.coolTextFile(Paths.txt('${SONG.song.toLowerCase()}/${SONG.epilogueChatPath}Epilogue')):
-			['dad: undefined', 'bf:nullswag'];
+			['dad: undefined defeat', 'bf:nullswag'];
 		//see, as simple as that
 
 		switch(SONG.stage)
@@ -751,6 +758,27 @@ class PlayState extends MusicBeatState
 						stageFront.scrollFactor.set(0.9, 0.9);
 						stageFront.active = false;
 						add(stageFront);
+
+						//JOELwindows7: reinstall stage light and this time, I added bloom yay!
+						var stageLight:FlxSprite = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light'));
+						stageLight.setGraphicSize(Std.int(stageLight.width * 1), Std.int(stageLight.height * 1));
+						stageLight.updateHitbox();
+						stageLight.antialiasing = true;
+						stageLight.scrollFactor.set(1.3,1.3);
+						stageLight.active = false;
+
+						//JOELwindows7: here's the bloom of that lighting
+						colorableGround = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light_bloom'));
+						colorableGround.setGraphicSize(Std.int(colorableGround.width * 2),Std.int(colorableGround.height * 2));
+						colorableGround.updateHitbox();
+						colorableGround.antialiasing = true;
+						colorableGround.scrollFactor.set(1.3,1.3);
+						colorableGround.active = false;
+
+						//JOELwindows7: make sure order is correct
+						add(colorableGround);
+						add(stageLight);
+						colorableGround.visible = false; //initially off for performer safety.
 	
 						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
 						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
@@ -1006,6 +1034,27 @@ class PlayState extends MusicBeatState
 					stageFront.scrollFactor.set(0.9, 0.9);
 					stageFront.active = false;
 					add(stageFront);
+
+					//JOELwindows7: reinstall stage light and this time, I added bloom yay!
+					var stageLight:FlxSprite = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light'));
+					stageLight.setGraphicSize(Std.int(stageLight.width * 1), Std.int(stageLight.height * 1));
+					stageLight.updateHitbox();
+					stageLight.antialiasing = true;
+					stageLight.scrollFactor.set(1.3,1.3);
+					stageLight.active = false;
+
+					//JOELwindows7: here's the bloom of that lighting
+					colorableGround = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light_bloom'));
+					colorableGround.setGraphicSize(Std.int(colorableGround.width * 2),Std.int(colorableGround.height * 2));
+					colorableGround.updateHitbox();
+					colorableGround.antialiasing = true;
+					colorableGround.scrollFactor.set(1.3,1.3);
+					colorableGround.active = false;
+
+					//JOELwindows7: make sure order is correct
+					add(colorableGround);
+					add(stageLight);
+					colorableGround.visible = false; //initially off for performer safety
 
 					var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
 					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
@@ -1584,6 +1633,8 @@ class PlayState extends MusicBeatState
 	//inspired from above dialogue launcher School intro
 	function schoolOutro(?dialogueBox:DialogueBox):Void
 	{
+		healthBar.visible = false;
+
 		//First, mute the music and vocals. like endSong.
 		//also disable the pause to prevent accident pause by press enter which also moves the dialogue.
 		canPause = false;
@@ -2258,6 +2309,11 @@ class PlayState extends MusicBeatState
 				if (i <= playerStrums.length)
 					playerStrums.members[i].visible = p2;
 			}
+
+			//JOELwindows7: okay I think this is a good place to constantly update variable
+			//that must be updated. idk.
+			luaModchart.setVar("originalColor", originalColor);
+			luaModchart.setVar("isChromaScreen", isChromaScreen);
 		}
 		#end
 		#end
@@ -2492,6 +2548,7 @@ class PlayState extends MusicBeatState
 								{
 									if(!triggeredAlready)
 									{
+										randomizeColoring(); //JOELwindows7: change the stage light color!
 										gf.playAnim('cheer');
 										triggeredAlready = true;
 									}
@@ -2576,14 +2633,15 @@ class PlayState extends MusicBeatState
 						case 'Well Meet Again':
 						{
 							//JOELwindows7: cheer on the beatdrop yeay
-							if((curBeat > 80 && curBeat < 112) ||
-								(curBeat > 176 && curBeat < 208) || 
-								(curBeat > 272 && curBeat < 308)
-								) 
-								{
-									//copy from the hardcode zoom milfe
-									cheerNow(4,2,true);
-								}
+							if(!inCutscene && curBeat < 307) // make sure do this only when not in cutscene, & song still going
+								if((curBeat > 80 && curBeat < 112) ||
+									(curBeat > 176 && curBeat < 208) || 
+									(curBeat > 272 && curBeat < 308)
+									) 
+									{
+										//copy from the hardcode zoom milfe
+										cheerNow(4,2,true);
+									}
 						}
 						case '433':
 						{
@@ -3899,7 +3957,8 @@ class PlayState extends MusicBeatState
 
 	var fastCarCanDrive:Bool = true;
 
-	function resetFastCar():Void
+	//JOELwindows7: make public for lua modchart
+	public function resetFastCar():Void
 	{
 		if(FlxG.save.data.distractions){
 			fastCar.x = -12600;
@@ -3909,7 +3968,8 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function fastCarDrive()
+	//JOELwindows7: make public for lua modchart
+	public function fastCarDrive()
 	{
 		if(FlxG.save.data.distractions){
 			FlxG.sound.play(Paths.soundRandom('carPass', 0, 1), 0.7);
@@ -3930,7 +3990,8 @@ class PlayState extends MusicBeatState
 	var trainFinishing:Bool = false;
 	var trainCooldown:Int = 0;
 
-	function trainStart():Void
+	//JOELwindows7: make public for lua modchart
+	public function trainStart():Void
 	{
 		trace("Here comes the train choo choo!"); //JOELwindows7: add trace about train started
 		if(FlxG.save.data.distractions){
@@ -3971,7 +4032,8 @@ class PlayState extends MusicBeatState
 
 	}
 
-	function trainReset():Void
+	//JOELwindows7: make public for lua modchart
+	public function trainReset():Void
 	{
 		if(FlxG.save.data.distractions){
 			trace("train passes bye train");
@@ -3986,7 +4048,8 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function lightningStrikeShit():Void
+	//JOELwindows7: make public for lua modchart
+	public function lightningStrikeShit():Void
 	{
 		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
 		halloweenBG.animation.play('lightning');
@@ -4095,8 +4158,9 @@ class PlayState extends MusicBeatState
 		}
 
 		//JOELwindows7: HARDCODING FOR WE'LL MEET YOU AGAIN ZOOMS!
-		if (curSong.toLowerCase() == 'well meet again' && FlxG.camera.zoom < 1.35 && curBeat % 4 == 2)
+		if (curSong.toLowerCase() == 'well meet again' && FlxG.camera.zoom < 1.35 && curBeat % 4 == 2 && curBeat < 307 && !inCutscene)
 		{
+			//the song is we'll meet again, camera not yet zoomed, when strum is in middle of bar, less than song length, not during cutscene
 			//Reminder: CurBeat = CurStep / 4
 
 			if((curBeat < 52) ||
@@ -4210,16 +4274,18 @@ class PlayState extends MusicBeatState
 				lightningStrikeShit();
 			}
 		}
+		//JOELwindows7: above is not my code. but idea!
+		// for Gravis Ultrasound demo, RAIN.MID. you can manually lightning strike as the beat almost drop.
 	}
 
 	//JOELwindows7: make cam zoom a function pls
-	function camZoomNow() {
+	public function camZoomNow() {
 		FlxG.camera.zoom += 0.015;
 		camHUD.zoom += 0.03;
 	}
 
 	//JOELwindows7: make cheer a function
-	function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
+	public function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
 		if(curBeat % outOfBeatFractioning == doItOn)
 		{
 			if(!triggeredAlready)
@@ -4232,10 +4298,36 @@ class PlayState extends MusicBeatState
 		} else triggeredAlready = false;
 	}
 
-	//JOELwindows7: randomize the color of the colorableGround
-	function randomizeColoring()
+	//JOELwindows7: prepare Colorable bg
+	public function prepareColorableBg(useImage:Bool = false, 
+		positionX:Null<Float> = -500, positionY:Null<Float> = -500, 
+		?imagePath:String = '', ?animated:Bool = false,
+		color:Null<FlxColor> = FlxColor.WHITE,
+		width:Int = 1, height:Int = 1, 
+		upscaleX:Int = 1, upscaleY:Int = 1, 
+		antialiasing:Bool = true,
+		scrollFactorX:Float = .5, scrollFactorY:Float = .5,
+		active:Bool = false, callNow:Bool = true, ?unique:Bool = false)
 	{
-		
+
+		colorableGround = 
+			useImage?
+				new FlxSprite(positionX, positionY).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'), animated, width, height, unique):
+				new FlxSprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME)
+				;
+		colorableGround.setGraphicSize(Std.int(colorableGround.width * upscaleX),Std.int(colorableGround.height * upscaleY));
+		colorableGround.updateHitbox();
+		colorableGround.antialiasing = antialiasing;
+		colorableGround.scrollFactor.set(scrollFactorX,scrollFactorY);
+		colorableGround.active = active;
+		if(callNow)
+			add(colorableGround);
+		originalColor = colorableGround.color;
+	}
+
+	//JOELwindows7: randomize the color of the colorableGround
+	public function randomizeColoring()
+	{	
 		if(colorableGround != null){
 			if(!colorableGround.visible)
 				colorableGround.visible = true;
@@ -4244,8 +4336,19 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	//JOELwindows7: copy above, but this let you choose color
+	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE)
+	{
+		if(colorableGround != null){
+			if(!colorableGround.visible)
+				colorableGround.visible = true;
+			colorableGround.color = color;
+			trace("now colorable color is " + colorableGround.color.toHexString());
+		}
+	}
+
 	//JOELwindows7: To hide coloring incase you don't need it anymore
-	function hideColoring() {
+	public function hideColoring() {
 		if(colorableGround != null)
 			if(isChromaScreen){
 				colorableGround.color = originalColor;

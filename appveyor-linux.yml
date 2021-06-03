@@ -1,5 +1,5 @@
 version: '{build}'
-image: Ubuntu2004
+image: Ubuntu
 environment:
   global:
     HAXELIB_ROOT: /home/appveyor/haxelib
@@ -30,14 +30,16 @@ install:
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
   - haxelib install linc_luajit
   - haxelib list
-  - cd /home/appveyor/projects/kade-engine-linux
+  - pwd
+  - ls
+  - cd /home/appveyor/projects/kaded-fnf-mods-linux
 
 build_script:
   - haxelib run lime build linux
 
 after_build:
-  - tar -cvf funkin-ke.tar -C /home/appveyor/projects/kade-engine-linux/export/release/linux/bin .
+  - tar -cvf last-funkin-moments.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin .
 
 artifacts:
-- path: funkin-ke.tar
+- path: last-funkin-moments.tar
   name: Linux build
