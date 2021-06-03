@@ -31,7 +31,7 @@ install:
   - haxelib install linc_luajit
   - haxelib install actuate
   - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
-  - haxelib run lime rebuild extension-webm linux
+  # - haxelib run lime rebuild extension-webm linux
   - haxelib list
   - pwd
   - ls
