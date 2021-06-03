@@ -397,9 +397,12 @@ class PlayState extends MusicBeatState
 		}
 
 		//JOELwinodws7: Epilogue shit
-		epilogue = CoolUtil.coolTextFile(Paths.txt( (SONG.hasEpilogueChat && SONG.epilogueChatPath != null && SONG.epilogueChatPath != '') ? 
-			'${SONG.song}/${SONG.epilogueChatPath}Epilogue'
-		: 'null/null.txt'));
+		epilogue = (SONG.hasEpilogueChat &&
+			SONG.epilogueChatPath != null &&
+			SONG.epilogueChatPath != ''
+			) ? 
+			CoolUtil.coolTextFile(Paths.txt('${SONG.song.toLowerCase()}/${SONG.epilogueChatPath}Epilogue')):
+			['dad: undefined', 'bf:nullswag'];
 		//see, as simple as that
 
 		switch(SONG.stage)
@@ -1586,6 +1589,10 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
+
+		//Stop the music and vocal too
+		//FlxG.sound.music.stop();
+		//vocals.stop();
 
 		//Pay attention for the pre-dialogue effect show like in Rose, senpai got mad thingy
 		switch(SONG.song.toLowerCase()){
@@ -3016,6 +3023,7 @@ class PlayState extends MusicBeatState
 	//JOELwindows7: check if the song should display epilogue chat once the song has finished.
 	function checkEpilogueChat():Void
 	{
+
 		//if song has epilogue chat then do this
 		if(SONG.hasEpilogueChat && (isStoryMode)){
 			schoolOutro(eoof);
@@ -4101,8 +4109,9 @@ class PlayState extends MusicBeatState
 				camZoomNow(); 
 		}
 
-		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
+		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0 && !inCutscene)
 		{
+			//JOELwindows7: only do this when not in cutscene!
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.03;
 		}
