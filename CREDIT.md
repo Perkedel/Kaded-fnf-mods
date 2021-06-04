@@ -130,6 +130,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://en.wikipedia.org/wiki/General_MIDI General MIDI reference. use this for attention to detail in the SeaNothing's MIDI cover of week6
 - https://stackoverflow.com/a/54082790/9079640 why not werk Linux because `/usr/include/stdint.h:26:10: fatal error: bits/libc-header-start.h: No such file or directory #include <bits/libc-header-start.h>` pls help
 - https://askubuntu.com/a/106092/64076 install `gcc-multilib` to also have 32bit libraries. that webm extension rebuilding involves 32 bit binaries too!
+- https://stackoverflow.com/a/14391677/9079640 do this too, `g++` multilib as well.
   
 # in event of git merge conflict
 use VScode and Github desktop!
