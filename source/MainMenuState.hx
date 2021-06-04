@@ -50,9 +50,12 @@ class MainMenuState extends MusicBeatState
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
+	public static var larutMalam:String = ""; //JOELwindows7: Last Funkin Nightly mark
 
 	public static var kadeEngineVer:String = "1.4.2" + nightly;
 	public static var gameVer:String = "0.2.7.1";
+	public static var lastFunkinMomentVer:String = "2021.06.0"; //JOELwindows7: last funkin moments version
+	public static var yourModVer:String = "0.0.0.0"; //JOELwindows7: your own mod version
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -139,7 +142,7 @@ class MainMenuState extends MusicBeatState
 		//also somehow at the end of the paragraph above, you must `\n` it at the very end. idk why, but that's the workaround
 		//so the last line of text also shows.
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod" : ""), 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod v" + lastFunkinMomentVer : ""), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);

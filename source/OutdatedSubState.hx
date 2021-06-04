@@ -13,9 +13,18 @@ import lime.app.Application;
 class OutdatedSubState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
+	public static var tinggalkanState:Bool = false;
 
 	public static var needVer:String = "IDFK LOL";
+	public static var needVerLast:String = "ENTAHLAH WKWKWK"; //JOELwindows7: last funkin moment need ver
 	public static var currChanges:String = "dk";
+	public static var perubahanApaSaja:String = "tau";
+	public static var whichAreaOutdated:Int = 0; //JOELwindows7: which fork is outdated?
+	/*
+		0. Kade Engine
+		1. Last Funkin Moment
+		2. Your mod here
+	*/
 	
 	private var bgColors:Array<String> = [
 		'#314d7f',
@@ -58,7 +67,37 @@ class OutdatedSubState extends MusicBeatState
 		txt.borderStyle = FlxTextBorderStyle.OUTLINE;
 		txt.screenCenter();
 		add(txt);
-		
+
+		var teks:FlxText = new FlxText(0, 0, FlxG.width,
+			"Your Last Funkin Moment is outdated!\nYou are on "
+			+ MainMenuState.lastFunkinMomentVer
+			+ "\nwhile the most recent version is " + needVerLast + "."
+			+ "\n\nWhat's new:\n\n"
+			+ perubahanApaSaja
+			+ "\n& more changes and bugfixes in the full changelog"
+			+ "\n\nPress Space to view the full changelog and update\nor ESCAPE to ignore this", 
+			32);
+		teks.setFormat("VCR OSD Mono", 32, FlxColor.fromRGB(200, 200, 200), CENTER);
+		teks.borderColor = FlxColor.BLACK;
+		teks.borderSize = 3;
+		teks.borderStyle = FlxTextBorderStyle.OUTLINE;
+		teks.screenCenter();
+		add(teks);
+
+		txt.visible = false;
+		teks.visible = false;
+
+		switch(whichAreaOutdated){
+			case 0:
+				txt.visible = true;
+			case 1:
+				teks.visible = true;
+			case 2:
+				trace("visible teks your mod");
+			default:
+				trace("what the");
+		}
+
 		FlxTween.color(bg, 2, bg.color, FlxColor.fromString(bgColors[colorRotation]));
 		FlxTween.angle(kadeLogo, kadeLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
 		
@@ -90,7 +129,17 @@ class OutdatedSubState extends MusicBeatState
 		}
 		if (controls.BACK)
 		{
-			leftState = true;
+			switch(whichAreaOutdated){
+
+				case 0:
+					leftState = true;
+				case 1:
+					tinggalkanState = true;
+				case 2:
+					trace("your mod");
+				default:
+					trace("wait what?");
+			}
 			FlxG.switchState(new MainMenuState());
 		}
 		super.update(elapsed);

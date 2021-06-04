@@ -392,6 +392,40 @@ class TitleState extends MusicBeatState
 				
 				http.request();
 			});
+
+			//JOELwindows7: Last Funkin Moments outdated marks
+			//copy from above
+			//TODO: outdated marks
+			new FlxTimer().start(2, function(tmr:FlxTimer){
+				//Get the current version of Last Funkin Moments
+				var http = new haxe.Http("https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/master/versionLastFunkin.downloadMe");
+				var returnedData:Array<String> = [];
+				
+				http.onData = function (data:String)
+				{
+					returnedData[0] = data.substring(0, data.indexOf(';'));
+					returnedData[1] = data.substring(data.indexOf('-'), data.length);
+				  	if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState && MainMenuState.larutMalam == "")
+					{
+						trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
+						OutdatedSubState.needVer = returnedData[0];
+						OutdatedSubState.currChanges = returnedData[1];
+						FlxG.switchState(new OutdatedSubState());
+					}
+					else
+					{
+						FlxG.switchState(new MainMenuState());
+					}
+				}
+				
+				http.onError = function (error) {
+				  trace('error: $error');
+				  FlxG.switchState(new MainMenuState()); // fail but we go anyway
+				}
+				
+				http.request();
+			});
+
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
