@@ -13,7 +13,7 @@ jobs:
             sudo apt-get update
             sudo apt-get -y install wget zip unzip
       - run:
-          name: setup Haxe and libraries
+          name: setup Haxe and libraries and built them all
           environment:
             HAXELIB_ROOT: ~/haxelib
             HAXE_INSTALLDIR: $HOME/haxe
@@ -46,32 +46,47 @@ jobs:
             haxelib install actuate
             haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
             haxelib list
-      - run:
-          name: Rebuild GrowtopiaFli video cutsceners
-          command: |
+            pwd
+            ls
+            echo ha hi ha hu huha
             haxelib run lime rebuild extension-webm linux
-      - run:
-          name: Just build this game already Linux
-          command: |
             cd ~/projects/kaded-fnf-mods
             haxelib run lime build linux
             tar -cvf last-funkin-moments-linux.tar -C ~/projects/kaded-fnf-mods/export/release/linux/bin
-      - run:
-          name: Just build this game already Windows
-          command: |
-            cd ~/projects/kaded-fnf-mods
-            haxelib run lime build windows
-            zip -r last-funkin-moments-windows.zip ~/projects/kaded-fnf-mods/export/release/windows/bin
-      - run:
-          name: Just build this game already macOS
-          command: |
-            cd ~/projects/kaded-fnf-mods
-            haxelib run lime build mac
-            tar -cvf last-funkin-moments-mac.tar -C ~/projects/kaded-fnf-mods/export/release/macos/bin
-      - run:
-          name: Just build this game already HTML5
-          command: |
-            cd ~/projects/kaded-fnf-mods
             haxelib run lime build html5
             tar -cvf last-funkin-moments-html5.tar -C ~/projects/kaded-fnf-mods/export/release/html5/bin
+            haxelib run lime build windows
+            zip -r last-funkin-moments-windows.zip ~/projects/kaded-fnf-mods/export/release/windows/bin
+            haxelib run lime build mac
+            tar -cvf last-funkin-moments-mac.tar -C ~/projects/kaded-fnf-mods/export/release/macos/bin
+
+      # - run:
+      #     name: Rebuild GrowtopiaFli video cutsceners
+      #     command: |
+      #       haxelib run lime rebuild extension-webm linux
+      # - run:
+      #     name: Just build this game already Linux
+      #     command: |
+      #       cd ~/projects/kaded-fnf-mods
+      #       haxelib run lime build linux
+      #       tar -cvf last-funkin-moments-linux.tar -C ~/projects/kaded-fnf-mods/export/release/linux/bin
+      # - run:
+      #     name: Just build this game already Windows
+      #     command: |
+      #       cd ~/projects/kaded-fnf-mods
+      #       haxelib run lime build windows
+      #       zip -r last-funkin-moments-windows.zip ~/projects/kaded-fnf-mods/export/release/windows/bin
+      # - run:
+      #     name: Just build this game already macOS
+      #     command: |
+      #       cd ~/projects/kaded-fnf-mods
+      #       haxelib run lime build mac
+      #       tar -cvf last-funkin-moments-mac.tar -C ~/projects/kaded-fnf-mods/export/release/macos/bin
+      # - run:
+      #     name: Just build this game already HTML5
+      #     command: |
+      #       cd ~/projects/kaded-fnf-mods
+      #       haxelib run lime build html5
+      #       tar -cvf last-funkin-moments-html5.tar -C ~/projects/kaded-fnf-mods/export/release/html5/bin
+      # ########## unfortunately that each run did not recognize each other
 
