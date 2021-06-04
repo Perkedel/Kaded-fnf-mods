@@ -31,12 +31,12 @@ install:
   - haxelib install linc_luajit
   - haxelib install actuate
   - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
-  # - haxelib run lime rebuild extension-webm mac
   - haxelib list
   - pwd
   - cd /Users/appveyor/projects/kaded-fnf-mods-macos
 
 build_script:
+  - haxelib run lime rebuild extension-webm mac
   - haxelib run lime build mac
 
 after_build:
