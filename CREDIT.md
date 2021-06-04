@@ -128,6 +128,8 @@ thancc for all these resources! without them, everything is impossible.
 - https://linuxconfig.org/how-to-test-for-installed-package-using-shell-script-on-ubuntu-and-debian check installed packages in linux
 - https://www.rapidtables.com/code/linux/linux-current-directory.html how to `pwd`. echo the current working directory
 - https://en.wikipedia.org/wiki/General_MIDI General MIDI reference. use this for attention to detail in the SeaNothing's MIDI cover of week6
+- https://stackoverflow.com/a/54082790/9079640 why not werk Linux because `/usr/include/stdint.h:26:10: fatal error: bits/libc-header-start.h: No such file or directory #include <bits/libc-header-start.h>` pls help
+- https://askubuntu.com/a/106092/64076 install `gcc-multilib` to also have 32bit libraries. that webm extension rebuilding involves 32 bit binaries too!
   
 # in event of git merge conflict
 use VScode and Github desktop!

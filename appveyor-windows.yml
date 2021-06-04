@@ -20,8 +20,8 @@ install:
   - haxelib install lime 7.9.0
   - haxelib install openfl
   - haxelib install flixel
-  - haxelib run lime setup flixel
-  - haxelib run lime setup
+  - haxelib run lime setup flixel -y
+  - haxelib run lime setup -y
   - haxelib install flixel-tools
   # haxelib run flixel-tools setup -y # Can't do this since it asks [y/n] even with -y argument! Stupid
   - haxelib install flixel-addons
@@ -45,5 +45,5 @@ build_script:
 
 artifacts:
   - path: export/release/windows/bin
-    name: Windows release
+    name: last-funkin-moments-windows
     type: zip

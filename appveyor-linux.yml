@@ -10,6 +10,7 @@ install:
   - sudo add-apt-repository ppa:haxe/releases -y
   - sudo apt update
   - sudo apt install build-essential -y
+  - sudo apt-get install gcc-multilib -y
   - sudo apt install neko tar -y
   - wget https://github.com/HaxeFoundation/haxe/releases/download/4.1.5/haxe-4.1.5-linux64.tar.gz
   - mkdir $HAXE_INSTALLDIR
@@ -19,8 +20,8 @@ install:
   - haxelib install lime 7.9.0
   - haxelib install openfl
   - haxelib install flixel
-  - haxelib run lime setup flixel
-  - haxelib run lime setup
+  - haxelib run lime setup flixel -y
+  - haxelib run lime setup -y
   - haxelib install flixel-tools
   - haxelib install flixel-addons
   - haxelib install flixel-ui

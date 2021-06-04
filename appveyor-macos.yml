@@ -18,8 +18,8 @@ install:
   - haxelib install lime 7.9.0
   - haxelib install openfl
   - haxelib install flixel
-  - haxelib run lime setup flixel
-  - haxelib run lime setup
+  - haxelib run lime setup flixel -y
+  - haxelib run lime setup -y
   - haxelib install flixel-tools
   - haxelib install flixel-addons
   - haxelib install flixel-ui
