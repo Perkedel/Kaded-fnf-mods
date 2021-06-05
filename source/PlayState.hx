@@ -400,15 +400,20 @@ class PlayState extends MusicBeatState
 			case 'thorns-midi':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns-midi/thorns-midiDialogue'));
 			default:
-				dialogue = ['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
+				//JOELwindows7: make dialog loading things went procedural!
+				dialogue = (SONG.hasDialogueChat &&
+					FileSystem.exists(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Dialogue'))
+				)? 
+				CoolUtil.coolTextFile(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Dialogue')):
+				['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
+				//Okay, do for the rest above!
 		}
 
 		//JOELwinodws7: Epilogue shit
 		epilogue = (SONG.hasEpilogueChat &&
-			SONG.epilogueChatPath != null &&
-			SONG.epilogueChatPath != ''
+				FileSystem.exists(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Epilogue'))
 			) ? 
-			CoolUtil.coolTextFile(Paths.txt('${SONG.song.toLowerCase()}/${SONG.epilogueChatPath}Epilogue')):
+			CoolUtil.coolTextFile(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Epilogue')):
 			['dad: undefined defeat', 'bf:nullswag'];
 		//see, as simple as that
 
@@ -1385,7 +1390,7 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: I add watermark Perkedel Mod
 		// Add Kade Engine watermark
-		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : "") + (Main.perkedelMark ? " Perkedel Mod" + MainMenuState.lastFunkinMomentVer : ""), 16);
+		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : "") + (Main.perkedelMark ? " LFM " + MainMenuState.lastFunkinMomentVer : ""), 16);
 		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		kadeEngineWatermark.scrollFactor.set();
 		add(kadeEngineWatermark);
@@ -1674,11 +1679,9 @@ class PlayState extends MusicBeatState
 	var luaWiggles:Array<WiggleEffect> = [];
 
 	#if desktop
-	#if !neko
-	#if !hl
+	#if cpp
 	public static var luaModchart:ModchartState = null;
 	#end
-	#end 
 	#end
 
 	function startCountdown():Void
@@ -1690,14 +1693,12 @@ class PlayState extends MusicBeatState
 
 
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		if (executeModchart)
 		{
 			luaModchart = ModchartState.createModchartState();
 			luaModchart.executeState('start',[PlayState.SONG.song]);
 		}
-		#end
 		#end
 		#end
 
@@ -2395,14 +2396,12 @@ class PlayState extends MusicBeatState
 			#end
 			FlxG.switchState(new ChartingState());
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
-			#end
 			#end
 			#end
 		}
@@ -2441,14 +2440,12 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.switchState(new AnimationDebug(SONG.player2));
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
-			#end
 			#end
 			#end
 		}
@@ -2457,14 +2454,12 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.switchState(new AnimationDebug(SONG.player1));
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			if (luaModchart != null)
 			{
 				luaModchart.die();
 				luaModchart = null;
 			}
-			#end
 			#end
 			#end
 		}
@@ -2660,11 +2655,9 @@ class PlayState extends MusicBeatState
 			}
 			
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			if (luaModchart != null)
 				luaModchart.setVar("mustHit",PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection);
-			#end
 			#end
 			#end
 
@@ -2673,8 +2666,7 @@ class PlayState extends MusicBeatState
 				var offsetX = 0;
 				var offsetY = 0;
 				#if desktop
-				#if !neko
-				#if !hl
+				#if cpp
 				if (luaModchart != null)
 				{
 					offsetX = luaModchart.getVar("followXOffset", "float");
@@ -2682,14 +2674,11 @@ class PlayState extends MusicBeatState
 				}
 				#end
 				#end
-				#end
 				camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
 				#if desktop
-				#if !neko
-				#if !hl
+				#if cpp
 				if (luaModchart != null)
 					luaModchart.executeState('playerTwoTurn', []);
-				#end
 				#end
 				#end
 				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
@@ -2715,8 +2704,7 @@ class PlayState extends MusicBeatState
 				var offsetX = 0;
 				var offsetY = 0;
 				#if desktop
-				#if !neko 
-				#if !hl
+				#if cpp
 				if (luaModchart != null)
 				{
 					offsetX = luaModchart.getVar("followXOffset", "float");
@@ -2724,15 +2712,12 @@ class PlayState extends MusicBeatState
 				}
 				#end
 				#end
-				#end
 				camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
 
 				#if desktop
-				#if !neko 
-				#if !hl
+				#if cpp
 				if (luaModchart != null)
 					luaModchart.executeState('playerOneTurn', []);
-				#end
 				#end
 				#end
 
@@ -2983,11 +2968,9 @@ class PlayState extends MusicBeatState
 						}
 	
 						#if desktop
-						#if !neko
-						#if !hl
+						#if cpp
 						if (luaModchart != null)
 							luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
-						#end
 						#end
 						#end
 
@@ -3103,14 +3086,12 @@ class PlayState extends MusicBeatState
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
 
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		if (luaModchart != null)
 		{
 			luaModchart.die();
 			luaModchart = null;
 		}
-		#end
 		#end
 		#end
 
@@ -3151,14 +3132,12 @@ class PlayState extends MusicBeatState
 					//complicated! oh MY GOD!
 
 					#if desktop
-					#if !neko
-					#if !hl
+					#if cpp
 					if (luaModchart != null)
 					{
 						luaModchart.die();
 						luaModchart = null;
 					}
-					#end
 					#end
 					#end
 
@@ -3546,15 +3525,13 @@ class PlayState extends MusicBeatState
 					controls.RIGHT_R
 				];
 				#if desktop
-				#if !neko
-				#if !hl
+				#if cpp
 				if (luaModchart != null){
 				if (controls.LEFT_P){luaModchart.executeState('keyPressed',["left"]);};
 				if (controls.DOWN_P){luaModchart.executeState('keyPressed',["down"]);};
 				if (controls.UP_P){luaModchart.executeState('keyPressed',["up"]);};
 				if (controls.RIGHT_P){luaModchart.executeState('keyPressed',["right"]);};
 				};
-				#end
 				#end
 				#end
 		 
@@ -3768,14 +3745,11 @@ class PlayState extends MusicBeatState
 			}
 
 			#if desktop
-			#if !neko
-			#if !hl
+			#if cpp
 			if (luaModchart != null)
 				luaModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
 			#end
 			#end
-			#end
-
 
 			updateAccuracy();
 		}
@@ -3923,13 +3897,12 @@ class PlayState extends MusicBeatState
 					}
 		
 					#if desktop
-					#if !neko
-					#if !hl
+					#if cpp
 					if (luaModchart != null)
 						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
 					#end
 					#end
-					#end
+
 
 
 					if(!loadRep && note.mustPress)
@@ -4070,14 +4043,12 @@ class PlayState extends MusicBeatState
 		}
 
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		if (executeModchart && luaModchart != null)
 		{
 			luaModchart.setVar('curStep',curStep);
 			luaModchart.executeState('stepHit',[curStep]);
 		}
-		#end
 		#end
 		#end
 
@@ -4115,14 +4086,12 @@ class PlayState extends MusicBeatState
 		}
 
 		#if desktop
-		#if !neko
-		#if !hl
+		#if cpp
 		if (executeModchart && luaModchart != null)
 		{
 			luaModchart.setVar('curBeat',curBeat);
 			luaModchart.executeState('beatHit',[curBeat]);
 		}
-		#end
 		#end
 		#end
 

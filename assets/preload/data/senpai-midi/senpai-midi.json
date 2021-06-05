@@ -866,6 +866,7 @@
         "sections": 0,
         "speed": 1.2,
         "bpm": 144,
-        "noteStyle": "pixel"
+        "noteStyle": "pixel",
+        "hasDialogueChat": true
     }
 }

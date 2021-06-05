@@ -131,6 +131,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://stackoverflow.com/a/54082790/9079640 why not werk Linux because `/usr/include/stdint.h:26:10: fatal error: bits/libc-header-start.h: No such file or directory #include <bits/libc-header-start.h>` pls help
 - https://askubuntu.com/a/106092/64076 install `gcc-multilib` to also have 32bit libraries. that webm extension rebuilding involves 32 bit binaries too!
 - https://stackoverflow.com/a/14391677/9079640 do this too, `g++` multilib as well.
+- https://lib.haxe.org/p/linc_luajit/ lua in haxe
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -205,6 +206,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://en.wikipedia.org/wiki/4%E2%80%B233%E2%80%B3 https://youtu.be/TrlKxV5KWJo John Cage - 4'3" . Actually I did not download the song. it's simple! in Audacity, top menu `Make`, `Silence`, for 4 minutes 33 seconds. that's it. yeah idk but yeah.
 - https://odysee.com/@JOELwindows7:a/succ-reverberations-remake:7?r=FYLo4xpyS1GHsLWfFtZui1wUUV399JPK JOELwindows7 recorded succ in Audacity and then reverbed it. JOELwindows7 also redrew succ with all the compositions in GIMP yeah
 - https://knowyourmeme.com/memes/meme-man all meme man information Special meme fresh.
+- https://calver.org/ Use the calendar versioning system! let's see if that works. For us, our scheme will be **`YYYY.0M.MINOR.MICRO`** idk. I believe just to track the time when this was released.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

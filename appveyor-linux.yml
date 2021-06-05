@@ -40,6 +40,7 @@ install:
 
 build_script:
   - haxelib run lime rebuild extension-webm linux
+  - haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?
   - haxelib run lime build linux
 
 after_build:

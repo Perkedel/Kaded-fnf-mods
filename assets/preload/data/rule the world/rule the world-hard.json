@@ -1352,6 +1352,7 @@
         "sections": 0,
         "stage": "jakartaFair",
         "speed": 3,
-        "bpm": 102
+        "bpm": 102,
+        "hasDialogueChat": true
     }
 }

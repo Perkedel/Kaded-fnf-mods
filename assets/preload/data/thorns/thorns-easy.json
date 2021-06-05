@@ -693,6 +693,7 @@
         "bpm": 190,
         "speed": 1.1,
         "hasEpilogueVideo": true,
-        "epilogueVideoPath": "after-week6"
+        "epilogueVideoPath": "after-week6",
+        "hasDialogueChat": true
     }
 }

@@ -50,6 +50,7 @@ jobs:
             ls
             echo ha hi ha hu huha
             haxelib run lime rebuild extension-webm linux
+            haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?
             cd ~/projects/kaded-fnf-mods
             haxelib run lime build linux
             tar -cvf last-funkin-moments-linux.tar -C ~/projects/kaded-fnf-mods/export/release/linux/bin

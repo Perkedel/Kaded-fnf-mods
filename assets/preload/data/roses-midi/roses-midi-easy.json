@@ -646,6 +646,7 @@
         "validScore": true,
         "noteStyle": "pixel",
         "bpm": 120,
-        "speed": 1.2
+        "speed": 1.2,
+        "hasDialogueChat": true
     }
 }

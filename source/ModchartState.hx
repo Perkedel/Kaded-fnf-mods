@@ -4,8 +4,8 @@
 //JOELwindows7: okay, please widen the area of support for macOS and Linux too.
 import flixel.input.actions.FlxAction;
 #if desktop
-#if !neko
-#if !hl
+#if cpp //LuaJit only works for C++ 
+//https://lib.haxe.org/p/linc_luajit/
 import flixel.tweens.FlxEase;
 import openfl.filters.ShaderFilter;
 import flixel.tweens.FlxTween;
@@ -890,6 +890,5 @@ class ModchartState
         return new ModchartState();
     }
 }
-#end
 #end
 #end
