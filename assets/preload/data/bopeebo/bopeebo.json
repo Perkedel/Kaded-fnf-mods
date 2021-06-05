@@ -317,6 +317,7 @@
         }, { "lengthInSteps": 16, "bpm": 100, "changeBPM": false, "mustHitSection": true, "sectionNotes": [], "typeOfSection": 0 }, { "lengthInSteps": 16, "bpm": 100, "changeBPM": false, "mustHitSection": true, "sectionNotes": [], "typeOfSection": 0, "altAnim": false }],
         "bpm": 100,
         "sections": 0,
-        "validScore": true
+        "validScore": true,
+        "allowedToHeadbang": true
     }
 }

@@ -4675,7 +4675,6 @@
         "bpm": 96,
         "hasDialogueChat": true,
         "hasEpilogueChat": true,
-        "dialogueChatPath": "well meet again",
-        "epilogueChatPath": "well meet again"
+        "allowedToHeadbang": true
     }
 }

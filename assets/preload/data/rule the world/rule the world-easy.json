@@ -1353,6 +1353,7 @@
         "stage": "jakartaFair",
         "speed": 1,
         "bpm": 102,
-        "hasDialogueChat": true
+        "hasDialogueChat": true,
+        "allowedToHeadbang": true
     }
 }

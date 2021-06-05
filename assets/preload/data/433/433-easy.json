@@ -635,6 +635,7 @@
         "validScore": true,
         "speed": 1,
         "bpm": 60,
-        "noteStyle": "normal"
+        "noteStyle": "normal",
+        "allowedToHeadbang": true
     }
 }

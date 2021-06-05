@@ -18,6 +18,7 @@
         "hasEpilogueVideo": false,
         "epilogueVideoPath": "",
         "hasDialogueChat": false,
-        "hasEpilogueChat": false
+        "hasEpilogueChat": false,
+        "allowedToHeadbang": false
     }
 }

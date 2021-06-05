@@ -2076,8 +2076,6 @@
         "bpm": 102,
         "speed": 1,
         "hasDialogueChat": true,
-        "hasEpilogueChat": false,
-        "dialogueChatPath": "windfall",
-        "epilogueChatPath": ""
+        "hasEpilogueChat": false
     }
 }

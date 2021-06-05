@@ -124,8 +124,7 @@ class ChartingState extends MusicBeatState
 				epilogueVideoPath: '',
 				hasDialogueChat: false,
 				hasEpilogueChat: false,
-				dialogueChatPath: 'empty',
-				epilogueChatPath: 'empty',
+				allowedToHeadbang: false,
 			};
 		}
 

@@ -29,8 +29,9 @@ typedef SwagSong =
 	
 	var hasDialogueChat:Bool; //JOELwindows7: mark that this has Dialogue chat
 	var hasEpilogueChat:Bool; //JOELwindows7: mark that this has Epologue chat
-	var dialogueChatPath:String; //JOELwindows7: the dialogue chat file path
-	var epilogueChatPath:String; //JOELwindows7: the epilogue chat file path
+
+	var allowedToHeadbang:Bool; //JOELwindows7: mark whether heys, color change, etc.
+	//be allowed at certain moments in time
 }
 
 class Song
@@ -52,10 +53,11 @@ class Song
 	public var hasEpilogueVideo:Bool = false; //JOELwindows7: mark that this has Epilogue video
 	public var epilogueVideoPath:String = ''; //JOELwindows7: the epilogue video file path;
 
-	public var hasDialogueChat:Bool; //JOELwindows7: mark that this has Dialogue chat
-	public var hasEpilogueChat:Bool; //JOELwindows7: mark that this has Epologue chat
-	public var dialogueChatPath:String; //JOELwindows7: the dialogue chat file path
-	public var epilogueChatPath:String; //JOELwindows7: the epilogue chat file path
+	public var hasDialogueChat:Bool = false; //JOELwindows7: mark that this has Dialogue chat
+	public var hasEpilogueChat:Bool = false; //JOELwindows7: mark that this has Epologue chat
+
+	public var allowedToHeadbang:Bool = false; //JOELwindows7: mark whether heys, color change, etc.
+	//be allowed at certain moments in time
 
 	public function new(song, notes, bpm)
 	{

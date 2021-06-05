@@ -637,6 +637,7 @@
         "needsVoices": true,
         "validScore": true,
         "bpm": 165,
-        "speed": 1.5
+        "speed": 1.5,
+        "allowedToHeadbang": true
     }
 }

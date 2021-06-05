@@ -633,8 +633,9 @@
         "stage": "whitening",
         "sections": 0,
         "validScore": true,
-        "speed": 3,
+        "speed": 2,
         "bpm": 60,
-        "noteStyle": "normal"
+        "noteStyle": "normal",
+        "allowedToHeadbang": true
     }
 }

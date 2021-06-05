@@ -1479,7 +1479,7 @@ class PlayState extends MusicBeatState
 				case 'thorns':
 					schoolIntro(doof);
 				default:
-					if(SONG.song.hasDialogueChat){
+					if(SONG.hasDialogueChat){
 						schoolIntro(doof);
 					} else {
 						trace("No School Intro info in isStoryMode for " + curSong + ". start coundown anyway");
@@ -1854,7 +1854,8 @@ class PlayState extends MusicBeatState
 		switch(curSong) //JOELwindows7: not my code, except Rule The World. isn't it better to check insensitive case (toLowerCase())?
 		{
 			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog' | 'Rule The World' | 'Well Meet Again' | '433': allowedToHeadbang = true;
-			default: allowedToHeadbang = false; //JOELwindows7: TODO, add headbang allow with chart JSON
+			default: allowedToHeadbang = SONG.allowedToHeadbang; //JOELwindows7: define by the JSON chart instead
+			//use "allowedToHeadbang": true to your JSON chart (per difficulty) to enable headbangs.
 		}
 		
 		#if desktop
