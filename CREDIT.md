@@ -132,6 +132,8 @@ thancc for all these resources! without them, everything is impossible.
 - https://askubuntu.com/a/106092/64076 install `gcc-multilib` to also have 32bit libraries. that webm extension rebuilding involves 32 bit binaries too!
 - https://stackoverflow.com/a/14391677/9079640 do this too, `g++` multilib as well.
 - https://lib.haxe.org/p/linc_luajit/ lua in haxe
+- https://adventuretime.fandom.com/wiki/Shoko Shoko. turns out that she was the past life of Finn. idk why Pendleton the Universe owner did this. Use this for intro text about i-win profile picture
+- https://www.youtube.com/channel/UCTjWonllhdoO70SxGvd4Taw i-win's former profile picture was Shoko with Demonetized eyes. nowadays, still shoko but with funky silly glasses eyes and mouth with funky silly witch hat.
   
 # in event of git merge conflict
 use VScode and Github desktop!
