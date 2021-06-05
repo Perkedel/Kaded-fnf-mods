@@ -274,12 +274,6 @@ class PlayState extends MusicBeatState
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
 		#end
-		#if neko
-		executeModchart = false; // JOELwindows7: FORCE disable for neko targets just to be safe
-		#end
-		#if hl
-		executeModchart = false;
-		#end
 
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(PlayState.SONG.song.toLowerCase() + "/modchart"));
 
@@ -386,19 +380,6 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('roses/rosesDialogue'));
 			case 'thorns':
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
-			case 'windfall':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('windfall/windfallDialogue'));
-			case 'rule the world':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('rule the world/rule the worldDialogue'));
-			case 'well meet again':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('well meet again/well meet againDialogue'));
-			case 'senpai-midi':
-				trace("Playstate pls load senpai-midi dialogue");
-				dialogue = CoolUtil.coolTextFile(Paths.txt('senpai-midi/senpai-midiDialogue'));
-			case 'roses-midi':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('roses-midi/roses-midiDialogue'));
-			case 'thorns-midi':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns-midi/thorns-midiDialogue'));
 			default:
 				//JOELwindows7: make dialog loading things went procedural!
 				dialogue = (SONG.hasDialogueChat &&
@@ -473,7 +454,7 @@ class PlayState extends MusicBeatState
 					if(FlxG.save.data.distractions){
 						add(phillyTrain);
 					}
-					
+
 					//JOELwindows7: buddy, you forgot to put the train sound in week3 special folder
 					//No wonder the train cannot come. it missing that sound.
 					//remember, the trains position depends on the sound playback position!
@@ -1390,7 +1371,7 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: I add watermark Perkedel Mod
 		// Add Kade Engine watermark
-		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : "") + (Main.perkedelMark ? " LFM " + MainMenuState.lastFunkinMomentVer : ""), 16);
+		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : "") + (Main.perkedelMark ? " | LFM " + MainMenuState.lastFunkinMomentVer : ""), 16);
 		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		kadeEngineWatermark.scrollFactor.set();
 		add(kadeEngineWatermark);
@@ -1497,27 +1478,15 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'thorns':
 					schoolIntro(doof);
-				case 'senpai-midi':
-					//JOELwindows7: Oh God. why. no wonder it didn't appear. what the peck?!
-					schoolIntro(doof);
-				case 'roses-midi':
-					FlxG.sound.play(Paths.sound('ANGRY-midi'));
-					schoolIntro(doof);
-				case 'thorns-midi':
-					schoolIntro(doof);
-				case 'windfall':
-					//startCountdown();
-					schoolIntro(doof);
-				case 'rule the world':
-					schoolIntro(doof);
-				case 'well meet again':
-					schoolIntro(doof);
 				default:
-					trace("No School Intro info in isStoryMode for " + curSong + ". start coundown anyway");
-					startCountdown();
+					if(SONG.song.hasDialogueChat){
+						schoolIntro(doof);
+					} else {
+						trace("No School Intro info in isStoryMode for " + curSong + ". start coundown anyway");
+						startCountdown();
+					}
 			}
-
-			//JOELwindows7: and this is where to scan dialogue instead.
+			//JOELwindows7: done the add scan dialogue
 		}
 		else
 		{
@@ -1885,7 +1854,7 @@ class PlayState extends MusicBeatState
 		switch(curSong) //JOELwindows7: not my code, except Rule The World. isn't it better to check insensitive case (toLowerCase())?
 		{
 			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog' | 'Rule The World' | 'Well Meet Again' | '433': allowedToHeadbang = true;
-			default: allowedToHeadbang = false;
+			default: allowedToHeadbang = false; //JOELwindows7: TODO, add headbang allow with chart JSON
 		}
 		
 		#if desktop
@@ -2856,72 +2825,73 @@ class PlayState extends MusicBeatState
 					}
 					
 					if (!daNote.modifiedByLua)
-					{
-						if (FlxG.save.data.downscroll)
 						{
-							if (daNote.mustPress)
-								daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y + 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? SONG.speed : FlxG.save.data.scrollSpeed, 2));
-							else
-								daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y + 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? SONG.speed : FlxG.save.data.scrollSpeed, 2));
-							if(daNote.isSustainNote)
+							if (FlxG.save.data.downscroll)
 							{
-								// Remember = minus makes notes go up, plus makes them go down
-								if(daNote.animation.curAnim.name.endsWith('end') && daNote.prevNote != null)
-									daNote.y += daNote.prevNote.height;
+								if (daNote.mustPress)
+									daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y + 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? SONG.speed : FlxG.save.data.scrollSpeed, 2));
 								else
-									daNote.y += daNote.height / 2;
-
-								// If not in botplay, only clip sustain notes when properly hit, botplay gets to clip it everytime
-								if(!FlxG.save.data.botplay)
+									daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y + 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? SONG.speed : FlxG.save.data.scrollSpeed, 2));
+								if(daNote.isSustainNote)
 								{
-									if((!daNote.mustPress || daNote.wasGoodHit || daNote.prevNote.wasGoodHit && !daNote.canBeHit) && daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= (strumLine.y + Note.swagWidth / 2))
+									// Remember = minus makes notes go up, plus makes them go down
+									if(daNote.animation.curAnim.name.endsWith('end') && daNote.prevNote != null)
+										daNote.y += daNote.prevNote.height;
+									else
+										daNote.y += daNote.height / 2;
+	
+									// If not in botplay, only clip sustain notes when properly hit, botplay gets to clip it everytime
+									if(!FlxG.save.data.botplay)
 									{
-										// Clip to strumline
+										if((!daNote.mustPress || daNote.wasGoodHit || daNote.prevNote.wasGoodHit && !daNote.canBeHit) && daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= (strumLine.y + Note.swagWidth / 2))
+										{
+											// Clip to strumline
+											var swagRect = new FlxRect(0, 0, daNote.frameWidth * 2, daNote.frameHeight * 2);
+											swagRect.height = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y + Note.swagWidth / 2 - daNote.y) / daNote.scale.y;
+											swagRect.y = daNote.frameHeight - swagRect.height;
+	
+											daNote.clipRect = swagRect;
+										}
+									}else {
 										var swagRect = new FlxRect(0, 0, daNote.frameWidth * 2, daNote.frameHeight * 2);
 										swagRect.height = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y + Note.swagWidth / 2 - daNote.y) / daNote.scale.y;
 										swagRect.y = daNote.frameHeight - swagRect.height;
-
+	
 										daNote.clipRect = swagRect;
 									}
-								}else {
-									var swagRect = new FlxRect(0, 0, daNote.frameWidth * 2, daNote.frameHeight * 2);
-									swagRect.height = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y + Note.swagWidth / 2 - daNote.y) / daNote.scale.y;
-									swagRect.y = daNote.frameHeight - swagRect.height;
-
-									daNote.clipRect = swagRect;
 								}
-							}
-						}else
-						{
-							if (daNote.mustPress)
-								daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y - 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? SONG.speed : FlxG.save.data.scrollSpeed, 2));
-							else
-								daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y - 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? SONG.speed : FlxG.save.data.scrollSpeed, 2));
-							if(daNote.isSustainNote)
+							}else
 							{
-								daNote.y -= daNote.height / 2;
-
-								if(!FlxG.save.data.botplay)
+								if (daNote.mustPress)
+									daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y - 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? SONG.speed : FlxG.save.data.scrollSpeed, 2));
+								else
+									daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y - 0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? SONG.speed : FlxG.save.data.scrollSpeed, 2));
+								if(daNote.isSustainNote)
 								{
-									if((!daNote.mustPress || daNote.wasGoodHit || daNote.prevNote.wasGoodHit && !daNote.canBeHit) && daNote.y + daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2))
+									daNote.y -= daNote.height / 2;
+	
+									if(!FlxG.save.data.botplay)
 									{
-										// Clip to strumline
+										if((!daNote.mustPress || daNote.wasGoodHit || daNote.prevNote.wasGoodHit && !daNote.canBeHit) && daNote.y + daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2))
+										{
+											// Clip to strumline
+											var swagRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
+											swagRect.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y + Note.swagWidth / 2 - daNote.y) / daNote.scale.y;
+											swagRect.height -= swagRect.y;
+	
+											daNote.clipRect = swagRect;
+										}
+									}else {
 										var swagRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
 										swagRect.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y + Note.swagWidth / 2 - daNote.y) / daNote.scale.y;
 										swagRect.height -= swagRect.y;
-
+	
 										daNote.clipRect = swagRect;
 									}
-								}else {
-									var swagRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
-									swagRect.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y + Note.swagWidth / 2 - daNote.y) / daNote.scale.y;
-									swagRect.height -= swagRect.y;
-
-									daNote.clipRect = swagRect;
 								}
 							}
 						}
-					}
+		
 	
 					if (!daNote.mustPress && daNote.wasGoodHit)
 					{
@@ -2981,6 +2951,7 @@ class PlayState extends MusicBeatState
 	
 						daNote.active = false;
 
+
 						daNote.kill();
 						notes.remove(daNote, true);
 						daNote.destroy();
@@ -3015,27 +2986,24 @@ class PlayState extends MusicBeatState
 	
 					if ((daNote.mustPress && daNote.tooLate && !FlxG.save.data.downscroll || daNote.mustPress && daNote.tooLate && FlxG.save.data.downscroll) && daNote.mustPress)
 					{
-						if (daNote.isSustainNote && daNote.wasGoodHit)
-						{
+							if (daNote.isSustainNote && daNote.wasGoodHit)
+							{
+								daNote.kill();
+								notes.remove(daNote, true);
+							}
+							else
+							{
+								health -= 0.075;
+								vocals.volume = 0;
+								if (theFunne)
+									noteMiss(daNote.noteData, daNote);
+							}
+		
+							daNote.visible = false;
 							daNote.kill();
 							notes.remove(daNote, true);
-							daNote.destroy();
 						}
-						else
-						{
-							health -= 0.075;
-							vocals.volume = 0;
-							if (theFunne)
-								noteMiss(daNote.noteData, daNote);
-						}
-	
-						daNote.active = false;
-						daNote.visible = false;
-	
-						daNote.kill();
-						notes.remove(daNote, true);
-						daNote.destroy();
-					}
+					
 				});
 			}
 
@@ -3641,7 +3609,7 @@ class PlayState extends MusicBeatState
 
 					if(dontCheck && possibleNotes.length > 0 && FlxG.save.data.ghost && !FlxG.save.data.botplay)
 					{
-						if (mashViolations > 4)
+						if (mashViolations > 8)
 						{
 							trace('mash violations ' + mashViolations);
 							scoreTxt.color = FlxColor.RED;
@@ -3750,6 +3718,7 @@ class PlayState extends MusicBeatState
 				luaModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
 			#end
 			#end
+
 
 			updateAccuracy();
 		}
@@ -3904,7 +3873,6 @@ class PlayState extends MusicBeatState
 					#end
 
 
-
 					if(!loadRep && note.mustPress)
 						saveNotes.push(HelperFunctions.truncateFloat(note.strumTime, 2));
 					
@@ -3929,7 +3897,7 @@ class PlayState extends MusicBeatState
 		
 
 	var fastCarCanDrive:Bool = true;
-
+	
 	//JOELwindows7: make public for lua modchart
 	public function resetFastCar():Void
 	{
@@ -4128,19 +4096,19 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: HARDCODING FOR WE'LL MEET YOU AGAIN ZOOMS!
 		if (curSong.toLowerCase() == 'well meet again' && FlxG.camera.zoom < 1.35 && curBeat % 4 == 2 && curBeat < 307 && !inCutscene)
-		{
-			//the song is we'll meet again, camera not yet zoomed, when strum is in middle of bar, less than song length, not during cutscene
-			//Reminder: CurBeat = CurStep / 4
-
-			if((curBeat < 52) ||
-				(curBeat > 80 && curBeat < 148) ||
-				(curBeat > 176 && curBeat < 212) || //shutup, just coincidence. I know, so don't talk it.
-				//Oh Wiro Sableng, Oh ok, I thought. Sorry.
-				(curBeat > 224 && curBeat < 240) ||
-				(curBeat > 256 && curBeat < 304)  //lmao! 1024 curStep = 256 curBeat
-				) 
-				camZoomNow(); 
-		}
+			{
+				//the song is we'll meet again, camera not yet zoomed, when strum is in middle of bar, less than song length, not during cutscene
+				//Reminder: CurBeat = CurStep / 4
+	
+				if((curBeat < 52) ||
+					(curBeat > 80 && curBeat < 148) ||
+					(curBeat > 176 && curBeat < 212) || //shutup, just coincidence. I know, so don't talk it.
+					//Oh Wiro Sableng, Oh ok, I thought. Sorry.
+					(curBeat > 224 && curBeat < 240) ||
+					(curBeat > 256 && curBeat < 304)  //lmao! 1024 curStep = 256 curBeat
+					) 
+					camZoomNow(); 
+			}
 
 		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0 && !inCutscene)
 		{
@@ -4248,82 +4216,82 @@ class PlayState extends MusicBeatState
 	}
 
 	//JOELwindows7: make cam zoom a function pls
-	public function camZoomNow() {
-		FlxG.camera.zoom += 0.015;
-		camHUD.zoom += 0.03;
-	}
-
-	//JOELwindows7: make cheer a function
-	public function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
-		if(curBeat % outOfBeatFractioning == doItOn)
-		{
-			if(!triggeredAlready)
-				{
-					if(randomizeColor)
-						randomizeColoring();
-					gf.playAnim('cheer');
-					triggeredAlready = true;
-				}
-		} else triggeredAlready = false;
-	}
-
-	//JOELwindows7: prepare Colorable bg
-	public function prepareColorableBg(useImage:Bool = false, 
-		positionX:Null<Float> = -500, positionY:Null<Float> = -500, 
-		?imagePath:String = '', ?animated:Bool = false,
-		color:Null<FlxColor> = FlxColor.WHITE,
-		width:Int = 1, height:Int = 1, 
-		upscaleX:Int = 1, upscaleY:Int = 1, 
-		antialiasing:Bool = true,
-		scrollFactorX:Float = .5, scrollFactorY:Float = .5,
-		active:Bool = false, callNow:Bool = true, ?unique:Bool = false)
-	{
-
-		colorableGround = 
-			useImage?
-				new FlxSprite(positionX, positionY).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'), animated, width, height, unique):
-				new FlxSprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME)
-				;
-		colorableGround.setGraphicSize(Std.int(colorableGround.width * upscaleX),Std.int(colorableGround.height * upscaleY));
-		colorableGround.updateHitbox();
-		colorableGround.antialiasing = antialiasing;
-		colorableGround.scrollFactor.set(scrollFactorX,scrollFactorY);
-		colorableGround.active = active;
-		if(callNow)
-			add(colorableGround);
-		originalColor = colorableGround.color;
-	}
-
-	//JOELwindows7: randomize the color of the colorableGround
-	public function randomizeColoring()
-	{	
-		if(colorableGround != null){
-			if(!colorableGround.visible)
-				colorableGround.visible = true;
-			colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
-			trace("now colorable color is " + colorableGround.color.toHexString());
+		public function camZoomNow() {
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.03;
 		}
-	}
-
-	//JOELwindows7: copy above, but this let you choose color
-	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE)
-	{
-		if(colorableGround != null){
-			if(!colorableGround.visible)
-				colorableGround.visible = true;
-			colorableGround.color = color;
-			trace("now colorable color is " + colorableGround.color.toHexString());
-		}
-	}
-
-	//JOELwindows7: To hide coloring incase you don't need it anymore
-	public function hideColoring() {
-		if(colorableGround != null)
-			if(isChromaScreen){
-				colorableGround.color = originalColor;
-			} else colorableGround.visible = false;
-	}
 	
+		//JOELwindows7: make cheer a function
+		public function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
+			if(curBeat % outOfBeatFractioning == doItOn)
+			{
+				if(!triggeredAlready)
+					{
+						if(randomizeColor)
+							randomizeColoring();
+						gf.playAnim('cheer');
+						triggeredAlready = true;
+					}
+			} else triggeredAlready = false;
+		}
+	
+		//JOELwindows7: prepare Colorable bg
+		public function prepareColorableBg(useImage:Bool = false, 
+			positionX:Null<Float> = -500, positionY:Null<Float> = -500, 
+			?imagePath:String = '', ?animated:Bool = false,
+			color:Null<FlxColor> = FlxColor.WHITE,
+			width:Int = 1, height:Int = 1, 
+			upscaleX:Int = 1, upscaleY:Int = 1, 
+			antialiasing:Bool = true,
+			scrollFactorX:Float = .5, scrollFactorY:Float = .5,
+			active:Bool = false, callNow:Bool = true, ?unique:Bool = false)
+		{
+	
+			colorableGround = 
+				useImage?
+					new FlxSprite(positionX, positionY).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'), animated, width, height, unique):
+					new FlxSprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME)
+					;
+			colorableGround.setGraphicSize(Std.int(colorableGround.width * upscaleX),Std.int(colorableGround.height * upscaleY));
+			colorableGround.updateHitbox();
+			colorableGround.antialiasing = antialiasing;
+			colorableGround.scrollFactor.set(scrollFactorX,scrollFactorY);
+			colorableGround.active = active;
+			if(callNow)
+				add(colorableGround);
+			originalColor = colorableGround.color;
+		}
+	
+		//JOELwindows7: randomize the color of the colorableGround
+		public function randomizeColoring()
+		{	
+			if(colorableGround != null){
+				if(!colorableGround.visible)
+					colorableGround.visible = true;
+				colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+				trace("now colorable color is " + colorableGround.color.toHexString());
+			}
+		}
+	
+		//JOELwindows7: copy above, but this let you choose color
+		public function chooseColoringColor(color:FlxColor = FlxColor.WHITE)
+		{
+			if(colorableGround != null){
+				if(!colorableGround.visible)
+					colorableGround.visible = true;
+				colorableGround.color = color;
+				trace("now colorable color is " + colorableGround.color.toHexString());
+			}
+		}
+	
+		//JOELwindows7: To hide coloring incase you don't need it anymore
+		public function hideColoring() {
+			if(colorableGround != null)
+				if(isChromaScreen){
+					colorableGround.color = originalColor;
+				} else colorableGround.visible = false;
+		}
+
 	var curLight:Int = 0; //JOELwindows7: not my code. hey, Ninja! you should've white light like I do above
 	//and randomize the color. look at randomizeColoring() above!
 }

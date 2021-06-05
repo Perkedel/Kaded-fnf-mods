@@ -18,6 +18,8 @@ import lime.utils.Assets;
 
 class OptionsMenu extends MusicBeatState
 {
+	public static var instance:OptionsMenu;
+
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
@@ -66,6 +68,8 @@ class OptionsMenu extends MusicBeatState
 		
 	];
 
+	public var acceptInput:Bool = true;
+
 	private var currentDescription:String = "";
 	private var grpControls:FlxTypedGroup<Alphabet>;
 	public static var versionShit:FlxText;
@@ -77,6 +81,7 @@ class OptionsMenu extends MusicBeatState
 	var blackBorder:FlxSprite;
 	override function create()
 	{
+		instance = this;
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat"));
 
 		menuBG.color = 0xFFea71fd;
@@ -141,11 +146,12 @@ class OptionsMenu extends MusicBeatState
 			}
 			//peck this I'm tired! plns work lol
 		}
-		
 
+		if (acceptInput)
+		{
 			//JOELwindows7: right click to go back, I guess.
 			//incase gamers get mad, smash keyboard, no longer working?
-			if ((controls.BACK || FlxG.mouse.justPressedRight) && !isCat)
+			if ((controls.BACK || FlxG.mouse.justPressedRight)&& !isCat)
 				FlxG.switchState(new MainMenuState());
 			else if (controls.BACK || FlxG.mouse.justPressedRight)
 			{
@@ -259,6 +265,7 @@ class OptionsMenu extends MusicBeatState
 				}
 				haveClicked=false;
 			}
+		}
 		FlxG.save.flush();
 
 		//JOELwindows7: query every single menu category and each items
