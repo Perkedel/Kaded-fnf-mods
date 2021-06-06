@@ -138,8 +138,7 @@ class PlayState extends MusicBeatState
 	public static var cpuStrums:FlxTypedGroup<FlxSprite> = null;
 
 	private var camZooming:Bool = false;
-	public var curSong:String = ""; //JOELwindows7: people, why not make the cur status public here?
-	//won't be it useful if we can utilize the status and decide depending on that condition?
+	private var curSong:String = "";
 
 	private var gfSpeed:Int = 1;
 	public var health:Float = 1; //making public because sethealth doesnt work without it
@@ -320,7 +319,7 @@ class PlayState extends MusicBeatState
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC);
 		#end
 		#end
-
+		
 		//JOELwindows7: load the num missnote sfx file and interpret!
 		// inspire the loader from FreeplayState.hx or OH ChartingState.hx. look at those dropdowns
 		// that lists characters, stages, etc.
@@ -1187,65 +1186,65 @@ class PlayState extends MusicBeatState
 				boyfriend.y += 220;
 				gf.x += 180;
 				gf.y += 300;
-				case 'jakartaFair':
-					boyfriend.x += 250;
-					dad.x -= 100;
-					gf.x -= 100;
-					gf.y -= 50;
-				case 'qmoveph':
-					boyfriend.x += 300;
-					dad.x -= 200;
-				case 'cruelThesis':
-					boyfriend.x += 300;
-					boyfriend.y += 50;
-					dad.x -= 200;
-					dad.y += 50;
-				case 'lapanganParalax':
-					boyfriend.x += 200;
-					dad.x -= 100;
-				case 'blank':
-					boyfriend.x += 500;
-					dad.x -= 400;
-					gf.y -= 100;
-				case 'greenscreen':
-					// JOELwindows7: copy my blank above to here bellow.
-					// so to further make it easier to separate somehow in the meme editing.. idk
-					boyfriend.x += 500;
-					dad.x -= 400;
-					gf.y -= 100;
-				case 'bluechroma':
-					// JOELwindows7: in case you need blue chroma as well..
-					boyfriend.x += 500;
-					dad.x -= 400;
-					gf.y -= 100;
-			case 'semple':
-				// JOELwindows7: Stuart Semple's Pinkest pink!!!
-				// Do not play if you are any related to Anish Kapoor both DNA / blood and professional field
-				// Penalty applies to all Kapoor starting from Anish Kapoor, inherits, and friends that within his idea, unless they decided
-				// to betray Kapoor monopolism proprietarism so penalty terminates starting from that traitor to friends within traitor's opposition and inherits.
-				// Penalties for mentioned defendants are demonetized from Dasandim UBI free Kvz program, etc.
-				// anyway, so uh, we need HDR to brightestly pinkest pink.
+			case 'jakartaFair':
+				boyfriend.x += 250;
+				dad.x -= 100;
+				gf.x -= 100;
+				gf.y -= 50;
+			case 'qmoveph':
+				boyfriend.x += 300;
+				dad.x -= 200;
+			case 'cruelThesis':
+				boyfriend.x += 300;
+				boyfriend.y += 50;
+				dad.x -= 200;
+				dad.y += 50;
+			case 'lapanganParalax':
+				boyfriend.x += 200;
+				dad.x -= 100;
+			case 'blank':
 				boyfriend.x += 500;
 				dad.x -= 400;
 				gf.y -= 100;
-			case 'whitening':
-				// JOELwindows7: don't use light mode! it will burn your eyes!
+			case 'greenscreen':
+				// JOELwindows7: copy my blank above to here bellow.
+				// so to further make it easier to separate somehow in the meme editing.. idk
 				boyfriend.x += 500;
 				dad.x -= 400;
 				gf.y -= 100;
-			case 'kuning':
-				// JOELwindows7: Yellow day!
+			case 'bluechroma':
+				// JOELwindows7: in case you need blue chroma as well..
 				boyfriend.x += 500;
 				dad.x -= 400;
 				gf.y -= 100;
-			case 'blood':
-				// JOELwindows7: Red screen!
-				boyfriend.x += 500;
-				dad.x -= 400;
-				gf.y -= 100;
-			default: 
-				trace("Hey uh, we missing the stage offset information for stage " + curStage + " guys.");
-				FlxG.log.add("Missing stage offset positioning for " + curStage);
+		case 'semple':
+			// JOELwindows7: Stuart Semple's Pinkest pink!!!
+			// Do not play if you are any related to Anish Kapoor both DNA / blood and professional field
+			// Penalty applies to all Kapoor starting from Anish Kapoor, inherits, and friends that within his idea, unless they decided
+			// to betray Kapoor monopolism proprietarism so penalty terminates starting from that traitor to friends within traitor's opposition and inherits.
+			// Penalties for mentioned defendants are demonetized from Dasandim UBI free Kvz program, etc.
+			// anyway, so uh, we need HDR to brightestly pinkest pink.
+			boyfriend.x += 500;
+			dad.x -= 400;
+			gf.y -= 100;
+		case 'whitening':
+			// JOELwindows7: don't use light mode! it will burn your eyes!
+			boyfriend.x += 500;
+			dad.x -= 400;
+			gf.y -= 100;
+		case 'kuning':
+			// JOELwindows7: Yellow day!
+			boyfriend.x += 500;
+			dad.x -= 400;
+			gf.y -= 100;
+		case 'blood':
+			// JOELwindows7: Red screen!
+			boyfriend.x += 500;
+			dad.x -= 400;
+			gf.y -= 100;
+		default: 
+			trace("Hey uh, we missing the stage offset information for stage " + curStage + " guys.");
+			FlxG.log.add("Missing stage offset positioning for " + curStage);
 		}
 
 		add(gf);
@@ -1292,7 +1291,14 @@ class PlayState extends MusicBeatState
 
 		// startCountdown();
 
+		if (SONG.song == null)
+			trace('song is null???');
+		else
+			trace('song looks gucci');
+
 		generateSong(SONG.song);
+
+		trace('generated');
 
 		// add(strumLine);
 
@@ -1436,12 +1442,14 @@ class PlayState extends MusicBeatState
 		// cameras = [FlxG.cameras.list[1]];
 		startingSong = true;
 		
+		trace('starting');
+
 		if (isStoryMode)
 		{
 			//JOELwindows7: not my code this switch is. but hey, pls obsolesence partially it this.
 			//turn it into just add effect.
 			switch (curSong.toLowerCase())
-			{	
+			{
 				//JOELwindows7: the JSON file for that winter horrorland also removes the dash!
 				case "winter horrorland":
 					var blackScreen:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
@@ -1479,6 +1487,7 @@ class PlayState extends MusicBeatState
 				case 'thorns':
 					schoolIntro(doof);
 				default:
+					//JOELwindows7: Heuristic for using JSON chart instead
 					if(SONG.hasDialogueChat){
 						schoolIntro(doof);
 					} else {
@@ -1486,7 +1495,6 @@ class PlayState extends MusicBeatState
 						startCountdown();
 					}
 			}
-			//JOELwindows7: done the add scan dialogue
 		}
 		else
 		{
@@ -1882,6 +1890,8 @@ class PlayState extends MusicBeatState
 		else
 			vocals = new FlxSound();
 
+		trace('loaded vocals');
+
 		FlxG.sound.list.add(vocals);
 
 		notes = new FlxTypedGroup<Note>();
@@ -1897,7 +1907,7 @@ class PlayState extends MusicBeatState
 		// Per song offset check
 		#if desktop
 		#if cpp
-			var songPath = 'assets/data/' + PlayState.SONG.song.toLowerCase() + '/';
+			var songPath = 'assets/data/' + StringTools.replace(PlayState.SONG.song," ", "-").toLowerCase() + '/';
 			for(file in sys.FileSystem.readDirectory(songPath))
 			{
 				var path = haxe.io.Path.join([songPath, file]);
@@ -3037,13 +3047,13 @@ class PlayState extends MusicBeatState
 
 	//JOELwindows7: check if the song should display epilogue chat once the song has finished.
 	function checkEpilogueChat():Void
-		{
-	
-			//if song has epilogue chat then do this
-			if(SONG.hasEpilogueChat && (isStoryMode)){
-				schoolOutro(eoof);
-			} else endSong();
-		}
+	{
+
+		//if song has epilogue chat then do this
+		if(SONG.hasEpilogueChat && (isStoryMode)){
+			schoolOutro(eoof);
+		} else endSong();
+	}
 
 	function endSong():Void
 	{
@@ -3903,7 +3913,7 @@ class PlayState extends MusicBeatState
 		
 
 	var fastCarCanDrive:Bool = true;
-	
+
 	//JOELwindows7: make public for lua modchart
 	public function resetFastCar():Void
 	{
@@ -3983,7 +3993,7 @@ class PlayState extends MusicBeatState
 	public function trainReset():Void
 	{
 		if(FlxG.save.data.distractions){
-			trace("train passes bye train");
+			trace("train passes bye train"); //JOELwindows7: trace train reset
 			gf.playAnim('hairFall');
 			phillyTrain.x = FlxG.width + 200;
 			trainMoving = false;
@@ -4203,6 +4213,7 @@ class PlayState extends MusicBeatState
 						trainStart();
 					}
 				}
+			
 		}
 
 		if (isHalloween && FlxG.random.bool(10) && curBeat > lightningStrikeBeat + lightningOffset)
