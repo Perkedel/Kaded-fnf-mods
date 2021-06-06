@@ -54,6 +54,10 @@ BONUS WEEK! 4'33" . John Cage - 4'33" did made a composition. and it's silent. j
 ## some nice articles
 [![]("https://gamebanana.com/tuts/embeddables/14079?type=large")](https://gamebanana.com/tuts/14079)
 
+## My Miku (Miku Expo 2021)
+http://paint.mikuexpo.com/studio.php?id=57afdd4ffe146803efca580c79002680
+http://paint.mikuexpo.com/studio.php?id=57afdd4ffe146803efca580c79002680
+
 ## todo
 - redecorate for Perkedel temp week works
 - week strong. vs. Hookx the friendly singing portrait tv robot assistant
