@@ -60,7 +60,7 @@ import Discord.DiscordClient;
 #end
 #end
 //JOELwindows7: hey, I changed the directive to think for other desktop OSes as well.
-#if desktop
+#if sys
 import Sys;
 import sys.FileSystem;
 #end
@@ -392,10 +392,10 @@ class PlayState extends MusicBeatState
 
 		//JOELwinodws7: Epilogue shit
 		epilogue = (SONG.hasEpilogueChat &&
-				FileSystem.exists(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Epilogue'))
-			) ? 
-			CoolUtil.coolTextFile(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Epilogue')):
-			['dad: undefined defeat', 'bf:nullswag'];
+			FileSystem.exists(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Epilogue'))
+		) ? 
+		CoolUtil.coolTextFile(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Epilogue')):
+		['dad: undefined defeat', 'bf:nullswag'];
 		//see, as simple as that
 
 		switch(SONG.stage)
@@ -1040,7 +1040,7 @@ class PlayState extends MusicBeatState
 					//JOELwindows7: make sure order is correct
 					add(colorableGround);
 					add(stageLight);
-					colorableGround.visible = false; //initially off for performer safety
+					colorableGround.visible = false; //initially off for performer safety.
 
 					var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
 					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
@@ -1187,37 +1187,37 @@ class PlayState extends MusicBeatState
 				boyfriend.y += 220;
 				gf.x += 180;
 				gf.y += 300;
-			case 'jakartaFair':
-				boyfriend.x += 250;
-				dad.x -= 100;
-				gf.x -= 100;
-				gf.y -= 50;
-			case 'qmoveph':
-				boyfriend.x += 300;
-				dad.x -= 200;
-			case 'cruelThesis':
-				boyfriend.x += 300;
-				boyfriend.y += 50;
-				dad.x -= 200;
-				dad.y += 50;
-			case 'lapanganParalax':
-				boyfriend.x += 200;
-				dad.x -= 100;
-			case 'blank':
-				boyfriend.x += 500;
-				dad.x -= 400;
-				gf.y -= 100;
-			case 'greenscreen':
-				// JOELwindows7: copy my blank above to here bellow.
-				// so to further make it easier to separate somehow in the meme editing.. idk
-				boyfriend.x += 500;
-				dad.x -= 400;
-				gf.y -= 100;
-			case 'bluechroma':
-				// JOELwindows7: in case you need blue chroma as well..
-				boyfriend.x += 500;
-				dad.x -= 400;
-				gf.y -= 100;
+				case 'jakartaFair':
+					boyfriend.x += 250;
+					dad.x -= 100;
+					gf.x -= 100;
+					gf.y -= 50;
+				case 'qmoveph':
+					boyfriend.x += 300;
+					dad.x -= 200;
+				case 'cruelThesis':
+					boyfriend.x += 300;
+					boyfriend.y += 50;
+					dad.x -= 200;
+					dad.y += 50;
+				case 'lapanganParalax':
+					boyfriend.x += 200;
+					dad.x -= 100;
+				case 'blank':
+					boyfriend.x += 500;
+					dad.x -= 400;
+					gf.y -= 100;
+				case 'greenscreen':
+					// JOELwindows7: copy my blank above to here bellow.
+					// so to further make it easier to separate somehow in the meme editing.. idk
+					boyfriend.x += 500;
+					dad.x -= 400;
+					gf.y -= 100;
+				case 'bluechroma':
+					// JOELwindows7: in case you need blue chroma as well..
+					boyfriend.x += 500;
+					dad.x -= 400;
+					gf.y -= 100;
 			case 'semple':
 				// JOELwindows7: Stuart Semple's Pinkest pink!!!
 				// Do not play if you are any related to Anish Kapoor both DNA / blood and professional field
@@ -1441,7 +1441,7 @@ class PlayState extends MusicBeatState
 			//JOELwindows7: not my code this switch is. but hey, pls obsolesence partially it this.
 			//turn it into just add effect.
 			switch (curSong.toLowerCase())
-			{
+			{	
 				//JOELwindows7: the JSON file for that winter horrorland also removes the dash!
 				case "winter horrorland":
 					var blackScreen:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
@@ -1851,9 +1851,9 @@ class PlayState extends MusicBeatState
 		}
 		
 		// Song check real quick
-		switch(curSong) //JOELwindows7: not my code, except Rule The World. isn't it better to check insensitive case (toLowerCase())?
+		switch(curSong)
 		{
-			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog' | 'Rule The World' | 'Well Meet Again' | '433': allowedToHeadbang = true;
+			case 'Bopeebo' | 'Philly' | 'Blammed' | 'Cocoa' | 'Eggnog': allowedToHeadbang = true;
 			default: allowedToHeadbang = SONG.allowedToHeadbang; //JOELwindows7: define by the JSON chart instead
 			//use "allowedToHeadbang": true to your JSON chart (per difficulty) to enable headbangs.
 		}
@@ -1895,7 +1895,8 @@ class PlayState extends MusicBeatState
 		var playerCounter:Int = 0;
 
 		// Per song offset check
-		#if windows
+		#if desktop
+		#if cpp
 			var songPath = 'assets/data/' + PlayState.SONG.song.toLowerCase() + '/';
 			for(file in sys.FileSystem.readDirectory(songPath))
 			{
@@ -1913,6 +1914,7 @@ class PlayState extends MusicBeatState
 					}
 				}
 			}
+		#end
 		#end
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 		for (section in noteData)
@@ -2341,6 +2343,9 @@ class PlayState extends MusicBeatState
 		}
 
 		scoreTxt.text = Ratings.CalculateRanking(songScore,songScoreDef,nps,maxNPS,accuracy);
+		if (!FlxG.save.data.accuracyDisplay)
+			scoreTxt.text = "Score: " + songScore;
+
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
@@ -3032,13 +3037,13 @@ class PlayState extends MusicBeatState
 
 	//JOELwindows7: check if the song should display epilogue chat once the song has finished.
 	function checkEpilogueChat():Void
-	{
-
-		//if song has epilogue chat then do this
-		if(SONG.hasEpilogueChat && (isStoryMode)){
-			schoolOutro(eoof);
-		} else endSong();
-	}
+		{
+	
+			//if song has epilogue chat then do this
+			if(SONG.hasEpilogueChat && (isStoryMode)){
+				schoolOutro(eoof);
+			} else endSong();
+		}
 
 	function endSong():Void
 	{
@@ -3937,9 +3942,9 @@ class PlayState extends MusicBeatState
 	{
 		trace("Here comes the train choo choo!"); //JOELwindows7: add trace about train started
 		if(FlxG.save.data.distractions){
-		trainMoving = true;
-		if (!trainSound.playing)
-			trainSound.play(true);
+			trainMoving = true;
+			if (!trainSound.playing)
+				trainSound.play(true);
 		}
 	}
 
@@ -4003,6 +4008,8 @@ class PlayState extends MusicBeatState
 		gf.playAnim('scared', true);
 	}
 
+	var danced:Bool = false;
+
 	override function stepHit()
 	{
 		super.stepHit();
@@ -4021,10 +4028,6 @@ class PlayState extends MusicBeatState
 		#end
 		#end
 
-		if (dad.curCharacter == 'spooky' && curStep % 4 == 2)
-		{
-			// dad.dance();
-		}
 
 
 		// yes this updates every step.
@@ -4033,7 +4036,7 @@ class PlayState extends MusicBeatState
 		#if desktop
 		#if cpp
 		// Song duration in a float, useful for the time left feature
-		songLength = FlxG.sound.music.length; // JOELwindows7: let it available to all?
+		songLength = FlxG.sound.music.length;
 
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText + " " + SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), "Acc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: " + misses  , iconRPC,true,  songLength - Conductor.songPosition);
@@ -4097,19 +4100,19 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: HARDCODING FOR WE'LL MEET YOU AGAIN ZOOMS!
 		if (curSong.toLowerCase() == 'well meet again' && FlxG.camera.zoom < 1.35 && curBeat % 4 == 2 && curBeat < 307 && !inCutscene)
-			{
-				//the song is we'll meet again, camera not yet zoomed, when strum is in middle of bar, less than song length, not during cutscene
-				//Reminder: CurBeat = CurStep / 4
-	
-				if((curBeat < 52) ||
-					(curBeat > 80 && curBeat < 148) ||
-					(curBeat > 176 && curBeat < 212) || //shutup, just coincidence. I know, so don't talk it.
-					//Oh Wiro Sableng, Oh ok, I thought. Sorry.
-					(curBeat > 224 && curBeat < 240) ||
-					(curBeat > 256 && curBeat < 304)  //lmao! 1024 curStep = 256 curBeat
-					) 
-					camZoomNow(); 
-			}
+		{
+			//the song is we'll meet again, camera not yet zoomed, when strum is in middle of bar, less than song length, not during cutscene
+			//Reminder: CurBeat = CurStep / 4
+
+			if((curBeat < 52) ||
+				(curBeat > 80 && curBeat < 148) ||
+				(curBeat > 176 && curBeat < 212) || //shutup, just coincidence. I know, so don't talk it.
+				//Oh Wiro Sableng, Oh ok, I thought. Sorry.
+				(curBeat > 224 && curBeat < 240) ||
+				(curBeat > 256 && curBeat < 304)  //lmao! 1024 curStep = 256 curBeat
+				) 
+				camZoomNow(); 
+		}
 
 		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0 && !inCutscene)
 		{
@@ -4134,10 +4137,6 @@ class PlayState extends MusicBeatState
 			boyfriend.playAnim('idle');
 		}
 		
-		if (!dad.animation.curAnim.name.startsWith("sing"))
-		{
-			dad.dance();
-		}
 
 		if (curBeat % 8 == 7 && curSong == 'Bopeebo')
 		{
@@ -4217,81 +4216,81 @@ class PlayState extends MusicBeatState
 	}
 
 	//JOELwindows7: make cam zoom a function pls
-		public function camZoomNow() {
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.03;
-		}
-	
-		//JOELwindows7: make cheer a function
-		public function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
-			if(curBeat % outOfBeatFractioning == doItOn)
-			{
-				if(!triggeredAlready)
-					{
-						if(randomizeColor)
-							randomizeColoring();
-						gf.playAnim('cheer');
-						triggeredAlready = true;
-					}
-			} else triggeredAlready = false;
-		}
-	
-		//JOELwindows7: prepare Colorable bg
-		public function prepareColorableBg(useImage:Bool = false, 
-			positionX:Null<Float> = -500, positionY:Null<Float> = -500, 
-			?imagePath:String = '', ?animated:Bool = false,
-			color:Null<FlxColor> = FlxColor.WHITE,
-			width:Int = 1, height:Int = 1, 
-			upscaleX:Int = 1, upscaleY:Int = 1, 
-			antialiasing:Bool = true,
-			scrollFactorX:Float = .5, scrollFactorY:Float = .5,
-			active:Bool = false, callNow:Bool = true, ?unique:Bool = false)
+	public function camZoomNow() {
+		FlxG.camera.zoom += 0.015;
+		camHUD.zoom += 0.03;
+	}
+
+	//JOELwindows7: make cheer a function
+	public function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
+		if(curBeat % outOfBeatFractioning == doItOn)
 		{
-	
-			colorableGround = 
-				useImage?
-					new FlxSprite(positionX, positionY).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'), animated, width, height, unique):
-					new FlxSprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME)
-					;
-			colorableGround.setGraphicSize(Std.int(colorableGround.width * upscaleX),Std.int(colorableGround.height * upscaleY));
-			colorableGround.updateHitbox();
-			colorableGround.antialiasing = antialiasing;
-			colorableGround.scrollFactor.set(scrollFactorX,scrollFactorY);
-			colorableGround.active = active;
-			if(callNow)
-				add(colorableGround);
-			originalColor = colorableGround.color;
+			if(!triggeredAlready)
+				{
+					if(randomizeColor)
+						randomizeColoring();
+					gf.playAnim('cheer');
+					triggeredAlready = true;
+				}
+		} else triggeredAlready = false;
+	}
+
+	//JOELwindows7: prepare Colorable bg
+	public function prepareColorableBg(useImage:Bool = false, 
+		positionX:Null<Float> = -500, positionY:Null<Float> = -500, 
+		?imagePath:String = '', ?animated:Bool = false,
+		color:Null<FlxColor> = FlxColor.WHITE,
+		width:Int = 1, height:Int = 1, 
+		upscaleX:Int = 1, upscaleY:Int = 1, 
+		antialiasing:Bool = true,
+		scrollFactorX:Float = .5, scrollFactorY:Float = .5,
+		active:Bool = false, callNow:Bool = true, ?unique:Bool = false)
+	{
+
+		colorableGround = 
+			useImage?
+				new FlxSprite(positionX, positionY).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'), animated, width, height, unique):
+				new FlxSprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME)
+				;
+		colorableGround.setGraphicSize(Std.int(colorableGround.width * upscaleX),Std.int(colorableGround.height * upscaleY));
+		colorableGround.updateHitbox();
+		colorableGround.antialiasing = antialiasing;
+		colorableGround.scrollFactor.set(scrollFactorX,scrollFactorY);
+		colorableGround.active = active;
+		if(callNow)
+			add(colorableGround);
+		originalColor = colorableGround.color;
+	}
+
+	//JOELwindows7: randomize the color of the colorableGround
+	public function randomizeColoring()
+	{	
+		if(colorableGround != null){
+			if(!colorableGround.visible)
+				colorableGround.visible = true;
+			colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+			trace("now colorable color is " + colorableGround.color.toHexString());
 		}
-	
-		//JOELwindows7: randomize the color of the colorableGround
-		public function randomizeColoring()
-		{	
-			if(colorableGround != null){
-				if(!colorableGround.visible)
-					colorableGround.visible = true;
-				colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
-				trace("now colorable color is " + colorableGround.color.toHexString());
-			}
+	}
+
+	//JOELwindows7: copy above, but this let you choose color
+	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE)
+	{
+		if(colorableGround != null){
+			if(!colorableGround.visible)
+				colorableGround.visible = true;
+			colorableGround.color = color;
+			trace("now colorable color is " + colorableGround.color.toHexString());
 		}
-	
-		//JOELwindows7: copy above, but this let you choose color
-		public function chooseColoringColor(color:FlxColor = FlxColor.WHITE)
-		{
-			if(colorableGround != null){
-				if(!colorableGround.visible)
-					colorableGround.visible = true;
-				colorableGround.color = color;
-				trace("now colorable color is " + colorableGround.color.toHexString());
-			}
-		}
-	
-		//JOELwindows7: To hide coloring incase you don't need it anymore
-		public function hideColoring() {
-			if(colorableGround != null)
-				if(isChromaScreen){
-					colorableGround.color = originalColor;
-				} else colorableGround.visible = false;
-		}
+	}
+
+	//JOELwindows7: To hide coloring incase you don't need it anymore
+	public function hideColoring() {
+		if(colorableGround != null)
+			if(isChromaScreen){
+				colorableGround.color = originalColor;
+			} else colorableGround.visible = false;
+	}
 
 	var curLight:Int = 0; //JOELwindows7: not my code. hey, Ninja! you should've white light like I do above
 	//and randomize the color. look at randomizeColoring() above!
