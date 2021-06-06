@@ -36,7 +36,9 @@ install:
   - cd /Users/appveyor/projects/kaded-fnf-mods-macos
 
 build_script:
+  - haxelib run lime rebuild discord_rpc mac
   - haxelib run lime rebuild extension-webm mac
+  - haxelib run lime rebuild linc_luajit mac # JOELwindows7: because it seems it only had windows?
   - haxelib run lime build mac
 
 after_build:

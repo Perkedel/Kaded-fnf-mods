@@ -84,8 +84,27 @@ class OutdatedSubState extends MusicBeatState
 		teks.screenCenter();
 		add(teks);
 
+		var mitsake:FlxText = new FlxText(0, 0, FlxG.width,
+			"Your Last Funkin Moment is outdated!\nYou are on "
+			+ "wait a minute.\n"
+			+ "who told you to go here?\n"
+			+ "Oh, you have mod of a mod of a mod outdated?\n"
+			+ "well, buddy, we have no idea what you're talking about. sorry.\n"
+			+ "we only know if Kade Engine or Last Funkin Moments outdated.\n"
+			+ "well if you are not sure, check the Odysee page or GameBanana\n"
+			+ "page of your mod and compare if there's something new and updated there.\n"
+			+ "thancc.",
+			32);
+		mitsake.setFormat("VCR OSD Mono", 32, FlxColor.fromRGB(200, 200, 200), CENTER);
+		mitsake.borderColor = FlxColor.BLACK;
+		mitsake.borderSize = 3;
+		mitsake.borderStyle = FlxTextBorderStyle.OUTLINE;
+		mitsake.screenCenter();
+		add(mitsake);
+
 		txt.visible = false;
 		teks.visible = false;
+		mitsake.visible = false;
 
 		switch(whichAreaOutdated){
 			case 0:
@@ -93,8 +112,10 @@ class OutdatedSubState extends MusicBeatState
 			case 1:
 				teks.visible = true;
 			case 2:
+				mitsake.visible = false;
 				trace("visible teks your mod");
 			default:
+				mitsake.visible = false;
 				trace("what the");
 		}
 
@@ -125,7 +146,16 @@ class OutdatedSubState extends MusicBeatState
 	{
 		if (controls.ACCEPT)
 		{
-			fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
+			//JOELwindows7: accepted, go to which area should be updated
+			switch(whichAreaOutdated){
+				case 0:
+					fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
+				case 1:
+					fancyOpenURL("https://odysee.com/@JOELwindows7/LFM-changelog-" + needVer);
+				default:
+					fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
+			}
+			
 		}
 		if (controls.BACK)
 		{

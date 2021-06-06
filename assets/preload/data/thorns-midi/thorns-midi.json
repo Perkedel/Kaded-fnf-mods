@@ -1138,6 +1138,8 @@
         "noteStyle": "pixel",
         "bpm": 190,
         "speed": 1.3,
-        "hasDialogueChat": true
+        "hasDialogueChat": true,
+        "hasEpilogueVideo": true,
+        "epilogueVideoPath": "credit-week6-midi"
     }
 }

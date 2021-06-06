@@ -395,7 +395,6 @@ class TitleState extends MusicBeatState
 
 			//JOELwindows7: Last Funkin Moments outdated marks
 			//copy from above
-			//TODO: outdated marks
 			new FlxTimer().start(2, function(tmr:FlxTimer){
 				//Get the current version of Last Funkin Moments
 				var http = new haxe.Http("https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/master/versionLastFunkin.downloadMe");
@@ -405,11 +404,12 @@ class TitleState extends MusicBeatState
 				{
 					returnedData[0] = data.substring(0, data.indexOf(';'));
 					returnedData[1] = data.substring(data.indexOf('-'), data.length);
-				  	if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState && MainMenuState.larutMalam == "")
+				  	if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.tinggalkanState && MainMenuState.larutMalam == "")
 					{
+						OutdatedSubState.whichAreaOutdated = 1; //mark that LFM one is outdated
 						trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
-						OutdatedSubState.needVer = returnedData[0];
-						OutdatedSubState.currChanges = returnedData[1];
+						OutdatedSubState.needVerLast = returnedData[0];
+						OutdatedSubState.perubahanApaSaja = returnedData[1];
 						FlxG.switchState(new OutdatedSubState());
 					}
 					else

@@ -52,7 +52,7 @@ class StoryMenuState extends MusicBeatState
 		['Satin Panties', "High", "Milf"],
 		['Cocoa', 'Eggnog', 'Winter Horrorland'],
 		['Senpai', 'Roses', 'Thorns'],
-		['Windfall'],
+		['Windfall','Rule The World', 'Well Meet Again'],
 	];
 	// JOELwindows7: yeah, so, these hard code edit no longer needed.
 	var curDifficulty:Int = 1;

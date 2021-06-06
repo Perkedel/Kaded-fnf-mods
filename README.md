@@ -25,6 +25,10 @@ We have:
 - **VIDEO CUTSCENER!!!** You can insert video in your song!!! thancc @GrowtopiaFli for the system. Available for both the start and end of each song, each difficulty!!! wow!!!! you can e.g. have different video even on each difficulty!!! ***no way!!!*** this is what should've been.
 - **CHANGES IN DEFAULT STAGE!!!** Now reinstalled stage light. but that's not all, **we also have added the light bloom on it as well!!!** hey, it even change color too on demand, such as every cheer!!! whoah!!!!
 - **NEW LUA MODCHART FUNCTIONS!!!**. We mirrored our special functions for the lua modchart too aswell. We got Cheer Now, Cam Zoom in, Set Colorable Background color, randomize the color, and more. FINALLY!!! We're getting closer to obsolette the hard coding! yeah!
+- **Define Headbang permission in the chart!!!** this `allowedToHeadbang` variable that controls permission to `hey`, `cheers`, `nganguk / shake head`, etc. is now available for JSON chart!!! Now, you can set this each difficulty yay!
+- **Define whether this song has dialog, in the chart!!!** you can now adjust `hasDialogueChat` (before song begin) & `hasEpilogueChat` (after song finish) to enable whether should this dialogue show. and also **IT WILL ALSO LOAD THE DIALOGUE AND EPILOGUE CHAT FILE FOR YOU!!!** WHOAH!!! that includes the video as well.
+- **More Lua functions!!!** we have mirrored some or most of the special functions found in `Playstate` class, to Lua modchart. now you can go brrr with those function, mwuahahahahahaa!!! we also mirrored the variables too as well.
+- 
 - idk what next?
 - CODE LICENSED GNU GPL v3 instead of some sort of *Open Source but proprietarism-allowing-forking* licenses. ASSETS (only for Perkedel originals like Week Strong, Week 4'33") Licensed CC4.0-BY-SA as shown in GameBanana Page!!! yoinkers, **you can steal this (the original Perkedel week ones yess) but pls credit!** oh, better be higher quality than ever pls, not just mere reupload, yeah serious (okay irony prevention. if your mod has any quality changes except this mod you yoinked which means you just yoink my mod (because no idea what to mod in Last Funkin Moment right now), but you did made other enhancement (your original mod, quality change internal and external), that's completely fine.). and of course, Share Alike remember? yess!! OPEN SOURCE BOTH MODS & ASSETS, for real (The FLA, SVG, PSD, KRA, XM, BLEND, FBX, anything! all format). Yes, it's a great privillege that KadeEngine (and FNF formerly but still compliant) is licensed Apache (the one that is Android). This license allow forker to change license, don't know to where ups or down, but basically we can enforce more here yeah. Ah yess, finally. License that is not absolutely restrictive at all.
 
@@ -43,8 +47,18 @@ Boyfriend decided to go on to the opposite side of the world *to prove that he i
 Jakarta Fair finally opens again after the gruelling cruelty of coronavirus has finally defeated. Boyfriend and families went to Jakarta fair for mere curiosity and who knows find someone that would compete with him. It had alot of stuffs, so they separate a while to look for interesting stuffs around the fair. Girlfriend will search for fashions, while Boyfriend looks for technologies. He found one of the megabooth that has sophisticated walking minibooth in it, Van Elektronische (Perkedel Technologies). He entered one of the booth and encountered Hookx, the friendly Karaoke robot.
 
 Well, it's not the live person he met but another robot instead. Why not try though? I think Hookx got something interesting. So then Boyfriend proceed interacting with that robot that shapped like a portrait TV.
+### Features TheFatRat songs, Jakarta Fair, references, and more!
+Windfall, Rule The World, & We'll meet again
 
-BONUS WEEK! 4'33" . John Cage - 4'33" did made a composition. and it's silent. just that. that's it. yes.
+- https://linktr.ee/TheFatRat
+- [TheFatRat - Windfall](https://lnk.to/thefatratwindfall ) (*Tasty Records*)
+- [TheFatRat & AleXa - Rule The World](https://lnk.to/thefatratruletheworld )
+- [TheFatRat & Laura Brehm - We'll meet again](https://lnk.to/wellmeetagain )
+
+BONUS WEEK! 4'33" . John Cage - 4'33" . John Cage did made a composition. and it's silent. just that. that's it. yes.
+
+# Credits
+as always, credits to all stuff involved will be on [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) thancc
 
 # ERROR
 ## Missing files

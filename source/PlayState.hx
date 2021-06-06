@@ -382,20 +382,21 @@ class PlayState extends MusicBeatState
 			default:
 				//JOELwindows7: make dialog loading things went procedural!
 				dialogue = (SONG.hasDialogueChat &&
-					FileSystem.exists(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Dialogue'))
+					FileSystem.exists(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Dialogue'))
 				)? 
-				CoolUtil.coolTextFile(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Dialogue')):
+				CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Dialogue')):
 				['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
 				//Okay, do for the rest above!
 		}
 
 		//JOELwinodws7: Epilogue shit
 		epilogue = (SONG.hasEpilogueChat &&
-			FileSystem.exists(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Epilogue'))
+			FileSystem.exists(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Epilogue'))
 		) ? 
-		CoolUtil.coolTextFile(Paths.txt('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Epilogue')):
+		CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Epilogue')):
 		['dad: undefined defeat', 'bf:nullswag'];
 		//see, as simple as that
+		//NEW: conform the dash is space like in FreeplayState.hx loadings
 
 		switch(SONG.stage)
 		{
@@ -1451,6 +1452,8 @@ class PlayState extends MusicBeatState
 			switch (curSong.toLowerCase())
 			{
 				//JOELwindows7: the JSON file for that winter horrorland also removes the dash!
+				//oh, finally the upstream changed it already 
+				// https://github.com/KadeDev/Kade-Engine/pull/710
 				case "winter horrorland":
 					var blackScreen:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 					add(blackScreen);
@@ -1615,7 +1618,11 @@ class PlayState extends MusicBeatState
 	//inspired from above dialogue launcher School intro
 	function schoolOutro(?dialogueBox:DialogueBox):Void
 	{
+		//first, hide these botom bars and their icosn
 		healthBar.visible = false;
+		healthBarBG.visible = false;
+		iconP1.visible = false;
+		iconP2.visible = false;
 
 		//First, mute the music and vocals. like endSong.
 		//also disable the pause to prevent accident pause by press enter which also moves the dialogue.
@@ -3176,7 +3183,9 @@ class PlayState extends MusicBeatState
 					var epilogueVideoPath:String = SONG.epilogueVideoPath;
 					//Okay you can now change the song.
 
-					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+					//PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+					PlayState.SONG = Song.loadFromJson(StringTools.replace(PlayState.storyPlaylist[0]," ", "-").toLowerCase() + difficulty, StringTools.replace(PlayState.storyPlaylist[0]," ", "-").toLowerCase());
+					//JOELwindows7: conform the story mode oid based on dash is space like StoryMenuState.hx
 					FlxG.sound.music.stop();
 
 					//JOELwindows7: if has video, then load the video first before going to new playstate!
