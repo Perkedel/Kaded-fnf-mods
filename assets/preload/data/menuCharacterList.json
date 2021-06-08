@@ -1,0 +1,93 @@
+{
+    "MenuCharacters": [{
+        "name": "bf",
+        "x": 0,
+        "y": -20,
+        "scale": 1.0,
+        "flipped": true,
+        "prefixName": "BF idle dance white",
+        "looped": true,
+        "fps": 24
+    }, {
+        "name": "bfConfirm",
+        "x": 0,
+        "y": -20,
+        "scale": 1.0,
+        "flipped": true,
+        "prefixName": "BF HEY!!!",
+        "looped": true,
+        "fps": 24
+    }, {
+        "name": "gf",
+        "x": 50,
+        "y": 80,
+        "scale": 1.5,
+        "flipped": true,
+        "prefixName": "GF Dancing Beat WHITE",
+        "looped": true,
+        "fps": 24
+    }, {
+        "name": "dad",
+        "x": -15,
+        "y": 130,
+        "scale": 1.5,
+        "flipped": false,
+        "prefixName": "Dad idle dance BLACK LINE",
+        "looped": true,
+        "fps": 24
+    }, {
+        "name": "spooky",
+        "x": 20,
+        "y": 30,
+        "scale": 1.0,
+        "flipped": false,
+        "prefixName": "spooky dance idle BLACK LINES",
+        "looped": true,
+        "fps": 24
+    }, {
+        "name": "pico",
+        "x": 0,
+        "y": 0,
+        "scale": 1.0,
+        "flipped": true,
+        "prefixName": "Pico Idle Dance",
+        "looped": true,
+        "fps": 24
+    }, {
+        "name": "mom",
+        "x": -30,
+        "y": 140,
+        "scale": 0.85,
+        "flipped": false,
+        "prefixName": "Mom Idle BLACK LINES",
+        "looped": true,
+        "fps": 24
+    }, {
+        "name": "parents-christmas",
+        "x": 100,
+        "y": 130,
+        "scale": 1.8,
+        "flipped": false,
+        "prefixName": "Parent Christmas Idle",
+        "looped": true,
+        "fps": 24
+    }, {
+        "name": "senpai",
+        "x": -40,
+        "y": -45,
+        "scale": 1.4,
+        "flipped": false,
+        "prefixName": "SENPAI idle Black Lines",
+        "looped": true,
+        "fps": 24
+    }, {
+        "name": "hookx",
+        "x": 0,
+        "y": 100,
+        "scale": 1.2,
+        "flipped": false,
+        "prefixName": "Hookx idle dance JERRY RIG",
+        "looped": true,
+        "fps": 24
+    }]
+}
