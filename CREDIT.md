@@ -136,6 +136,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://www.youtube.com/channel/UCTjWonllhdoO70SxGvd4Taw i-win's former profile picture was Shoko with Demonetized eyes. nowadays, still shoko but with funky silly glasses eyes and mouth with funky silly witch hat.
 - typical Japanese `let's go`, *`Yoss, ikuzo!`*. make Senpai MIDI weabooer in song Senpai-midi SeaNothing MIDI cover. That's because MIDI was invented from Japan (as seen from https://en.wikipedia.org/wiki/Comparison_of_MIDI_standards) and their enthusiasm are curated right there to this day (e.g. https://openmidiproject.osdn.jp/index_en.html from Japan, who made Sekaiju the MIDI editor for everyone to crazily make and compose their dream MIDI) (also [German](https://yamahamusicfsoft.com ) too (Yep, Yamaha built special division called Musicsoft in Europe. They got MIDISPOT too as well), such as [PSRUTI by Heikoplate](https://www.heikoplate.de/psruti.html ) from Germany, a MIDI metadata editor allowing you to *Yamaha Musicsoftify* any MIDI possible).
 - in https://odysee.com, the like button is `Flame` and dislike button is `Slime`. hmm what this coincidence with GameBanana `Burn` (green) stamp? obviously not, I guess.. idk.
+- https://youtu.be/4r4j4R8b2bM yet another tutorial from BrightFyre. how to mod Kade Engine
   
 # in event of git merge conflict
 use VScode and Github desktop!

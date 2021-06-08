@@ -7,7 +7,17 @@
 # Last Funkin Moments
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
-We have:
+## Download NOW
+- Odysee
+  - [Win64](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows:c?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
+- GameBanana https://gamebanana.com/mods/293257
+- NexusMods https://www.nexusmods.com/fridaynightfunkin/mods/247 
+
+If your antivirus went **sus**, they're dumb! None of these file are impostor, the antivirus is. vote that!  
+I mean, if the antivirus thought that file is `malicious`, it's false positive. Ignore that, it's safe.  
+if you don't trust it, check around the source code and its libraries referred.
+
+## We have:
 - Week Strong! vs. Hookx the friendly karaoke robot! ft. 3 TheFatRat Songs: Windfall, Rule The World, We'll meet again
 - new **UNIQUE** stages (which unfortunately are also hard code too):
   - Jakarta Fair. inside one of the walking mini booth in the Van Elektronische booth
@@ -40,6 +50,10 @@ enjoy the last drops of funkin before everything went. went, I can't say this. y
 
 # Today's Update!
 ## Week Strong! vs. Hookx the friendly Karaoke robot!
+[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/week-strong-new-added-2.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/week-strong-new-added-2.png )
+[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/hookx-dancing-here.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/hookx-dancing-here.png )
+[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/new-unique-song-thumb.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/new-unique-song-thumb.png )
+
 After the coronavirus pandemic seems regressing day by day as many vaccines clouter finally reaches family level, Boyfriend, Girlfriend, Pico, and families got their vaccines and all people can finally travel freely to all countries. The humanity once again gained victory in herd immunity. But what shall they do?
 
 Boyfriend decided to go on to the opposite side of the world *to prove that he is the best rapper all around the world* (actually no, they're just bored after finding somebody to compete against, so..). well, turns out, that opposite side of the world isn't much edge of the world, infact that's where JOELwindows7 comes from, Indonesia. He heard from news that *the largest expo in Southeast Asia is going to open* at Jakarta. So then he invited all his friends and families to fly to Jakarta, Indonesia.
@@ -69,8 +83,8 @@ as always, credits to all stuff involved will be on [`CREDIT.md`](https://github
 [![]("https://gamebanana.com/tuts/embeddables/14079?type=large")](https://gamebanana.com/tuts/14079)
 
 ## My Miku (Miku Expo 2021)
-http://paint.mikuexpo.com/studio.php?id=57afdd4ffe146803efca580c79002680
-http://paint.mikuexpo.com/studio.php?id=57afdd4ffe146803efca580c79002680
+- http://paint.mikuexpo.com/studio.php?id=57afdd4ffe146803efca580c79002680 Hoyheid
+- http://paint.mikuexpo.com/studio.php?id=39c96c01e2f6d5574f7c4afca74785e2 Genos Miku
 
 ## todo
 - redecorate for Perkedel temp week works
