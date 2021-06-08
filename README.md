@@ -87,8 +87,8 @@ as always, credits to all stuff involved will be on [`CREDIT.md`](https://github
 - http://paint.mikuexpo.com/studio.php?id=39c96c01e2f6d5574f7c4afca74785e2 Genos Miku
 
 ## todo
-- redecorate for Perkedel temp week works
-- week strong. vs. Hookx the friendly singing portrait tv robot assistant
+- ~~redecorate for Perkedel temp week works~~
+- ~~week strong. vs. Hookx the friendly singing portrait tv robot assistant~~
 - hey, weren't we supposed to build sTILE instead?
 - add constructive criticism about how unprocedural map loading is unlike other rhythm games
 - abandon this mod when the procedural way of loading everything new (weeks, stages, background, scripts, etc.) has been ready on the upstream or the OG upstream, backport everything there.
