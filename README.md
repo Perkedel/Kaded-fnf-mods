@@ -1,9 +1,6 @@
 ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png )
 [Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
 
-[![Build status](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)
-
-
 # Last Funkin Moments
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
@@ -16,6 +13,11 @@ collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 If your antivirus went **sus**, they're dumb! None of these file are impostor, the antivirus is. vote that!  
 I mean, if the antivirus thought that file is `malicious`, it's false positive. Ignore that, it's safe.  
 if you don't trust it, check around the source code and its libraries referred.
+
+## Status
+- Linux [![Build status Linux](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)  
+- Windows [![Build status Windows](https://ci.appveyor.com/api/projects/status/6m6urhdk0hx9esci?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windows)
+- macOS [![Build status macOS](https://ci.appveyor.com/api/projects/status/61pl7ba9rgu375pn?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-macos)
 
 ## We have:
 - Week Strong! vs. Hookx the friendly karaoke robot! ft. 3 TheFatRat Songs: Windfall, Rule The World, We'll meet again
