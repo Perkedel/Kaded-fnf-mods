@@ -8,6 +8,7 @@ assignees: ''
 ---
 
 #### Please check for duplicates, similar issues or closed issues with the same problem, as well performing simple troubleshooting steps (such as deleting the export folder if it's an issue with compiling, reinstalling Kade Engine) before submitting an issue.
+##### oh also, you should issue from https://github.com/KadeDev/Kade-Engine instead if the issue is mainly from the Kade Engine itself. otherwise, go ahead.
 
 ### If you are playing a downloaded version of the game, what operating system are you using?
 Windows (`x86`), Windows (`x86_64`), Linux, or macOS? Specify below.

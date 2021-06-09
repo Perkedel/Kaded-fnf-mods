@@ -1,4 +1,6 @@
 {
+    "ProgramUsed": "Visual Studio Code",
+    "generatedBy": "manually",
     "song": {
         "player2": "dad",
         "player1": "bf",
@@ -19,6 +21,13 @@
         "epilogueVideoPath": "",
         "hasDialogueChat": false,
         "hasEpilogueChat": false,
-        "allowedToHeadbang": false
+        "allowedToHeadbang": false,
+        "isHey": false,
+        "isCheer": true,
+        "isSpooky": true,
+        "isMoody": true,
+        "cutsceneType": "none",
+        "uiType": "normal",
+        "preferredNoteAmount": 4
     }
 }

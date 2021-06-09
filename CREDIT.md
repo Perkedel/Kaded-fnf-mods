@@ -212,6 +212,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://odysee.com/@JOELwindows7:a/succ-reverberations-remake:7?r=FYLo4xpyS1GHsLWfFtZui1wUUV399JPK JOELwindows7 recorded succ in Audacity and then reverbed it. JOELwindows7 also redrew succ with all the compositions in GIMP yeah
 - https://knowyourmeme.com/memes/meme-man all meme man information Special meme fresh.
 - https://calver.org/ Use the calendar versioning system! let's see if that works. For us, our scheme will be **`YYYY.0M.MINOR.MICRO`** idk. I believe just to track the time when this was released.
+- https://gamebanana.com/mods/44208 FNF Modding plus. Chart JSON parameter added here and the compatibility now is being added.
+- https://gamebanana.com/tools/7158 FunkinVortex. inspire the Modding Plus specific chart JSON parameters here and there!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

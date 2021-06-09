@@ -65,12 +65,12 @@ jobs:
       #     name: Rebuild GrowtopiaFli video cutsceners
       #     command: |
       #       haxelib run lime rebuild extension-webm linux
-      # - run:
-      #     name: Just build this game already Linux
-      #     command: |
-      #       cd ~/projects/kaded-fnf-mods
-      #       haxelib run lime build linux
-      #       tar -cvf last-funkin-moments-linux.tar -C ~/projects/kaded-fnf-mods/export/release/linux/bin
+      - run:
+          name: Just build this game already Linux
+          command: |
+            cd ~/projects/kaded-fnf-mods
+            haxelib run lime build linux
+            tar -cvf last-funkin-moments-linux.tar -C ~/projects/kaded-fnf-mods/export/release/linux/bin
       # - run:
       #     name: Just build this game already Windows
       #     command: |
@@ -83,11 +83,11 @@ jobs:
       #       cd ~/projects/kaded-fnf-mods
       #       haxelib run lime build mac
       #       tar -cvf last-funkin-moments-mac.tar -C ~/projects/kaded-fnf-mods/export/release/macos/bin
-      # - run:
-      #     name: Just build this game already HTML5
-      #     command: |
-      #       cd ~/projects/kaded-fnf-mods
-      #       haxelib run lime build html5
-      #       tar -cvf last-funkin-moments-html5.tar -C ~/projects/kaded-fnf-mods/export/release/html5/bin
-      # ########## unfortunately that each run did not recognize each other
+      - run:
+          name: Just build this game already HTML5
+          command: |
+            cd ~/projects/kaded-fnf-mods
+            haxelib run lime build html5
+            tar -cvf last-funkin-moments-html5.tar -C ~/projects/kaded-fnf-mods/export/release/html5/bin
+      ########## unfortunately that each run did not recognize each other
 
