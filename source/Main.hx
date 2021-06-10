@@ -1,5 +1,6 @@
 package;
 
+import com.player03.android6.Permissions;
 import openfl.display.BlendMode;
 import openfl.text.TextFormat;
 import openfl.display.Application;
@@ -12,6 +13,7 @@ import openfl.Lib;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import lime.system.JNI;
 
 class Main extends Sprite
 {
@@ -30,6 +32,9 @@ class Main extends Sprite
 	public static var chosenMarkNum:Int = 0;
 	//JOELwindows7: Please no demonic reference about Mark of what the peck!
 
+	//JOELwindows7: the Android Permission pls help
+	//public static var androidPermissioner:Permission
+
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void
@@ -43,6 +48,23 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+
+		//JOELwindows7: pecking ask permission on Android 6 and forth
+		var askPermNum:Int = 0;
+		var timeoutPermNum:Int = 10;
+		while(!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE) ||
+			 !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE)){
+			Permissions.requestPermissions([
+				Permissions.WRITE_EXTERNAL_STORAGE,
+				Permissions.READ_EXTERNAL_STORAGE,
+			]);
+
+			//count how many attempts. if after timeout num still not work, peck this poop
+			//I gave up!
+			trace("Num of Attempt ask permissions: " + Std.string(askPermNum));
+			askPermNum++;
+			if(askPermNum > timeoutPermNum) break;
+		}
 
 		if (stage != null)
 		{

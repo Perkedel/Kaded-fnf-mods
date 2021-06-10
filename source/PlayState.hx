@@ -381,20 +381,34 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			default:
 				//JOELwindows7: make dialog loading things went procedural!
+				#if sys
 				dialogue = (SONG.hasDialogueChat &&
 					FileSystem.exists(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Dialogue'))
 				)? 
 				CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Dialogue')):
 				['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
+				#else
+				dialogue = (SONG.hasDialogueChat 
+				)? 
+				CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Dialogue')):
+				['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
+				#end
 				//Okay, do for the rest above!
 		}
 
 		//JOELwinodws7: Epilogue shit
+		#if sys
 		epilogue = (SONG.hasEpilogueChat &&
 			FileSystem.exists(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Epilogue'))
 		) ? 
 		CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Epilogue')):
 		['dad: undefined defeat', 'bf:nullswag'];
+		#else
+		epilogue = (SONG.hasEpilogueChat
+		) ? 
+		CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Epilogue')):
+		['dad: undefined defeat', 'bf:nullswag'];
+		#end
 		//see, as simple as that
 		//NEW: conform the dash is space like in FreeplayState.hx loadings
 

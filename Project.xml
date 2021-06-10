@@ -15,6 +15,14 @@
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
 
+	<!-- JOELwindows7: the Launch Image -->
+	<launchImage path="art/launchImage.png" />
+	<launchStoryboard path="art/launchImage.png" />
+
+	<!-- JOELwindows7: from that luckydog, don't know what's this define for -->
+	<!-- https://github.com/luckydog7/Funkin-android/blob/master/Project.xml -->
+	<define name="mobileC" if="mobile" />
+
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
@@ -54,8 +62,6 @@
 	<assets path="assets/preload_odysee" rename="assets/preload_odysee" exclude="*.mp3" unless="web" if="odysee"/>
 	<assets path="assets/preload_thief" rename="assets/preload_thief" exclude="*.ogg" if="web thief"/>
 	<assets path="assets/preload_thief" rename="assets/preload_thief" exclude="*.mp3" unless="web" if="thief"/>
-
-
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web || neko || hl" />
@@ -156,7 +162,8 @@
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="desktop cpp" unless="neko || hl"/>
-	<haxelib name="linc_luajit" if="desktop" unless="neko || hl"/>
+	<haxelib name="linc_luajit" if="desktop cpp" unless="neko || hl"/>
+	
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
@@ -171,6 +178,10 @@
 	<haxelib name="actuate" />
 	<haxelib name="extension-webm" if="desktop" />
 	<!-- end Video Cutscener -->
+
+	<!-- Android permissioning -->
+	<!-- added by JOELwindows7 -->
+	<haxelib name="android6permissions"/>
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -215,7 +226,10 @@
 	<icon path="art/icon128.png" size='128'/>
 	<icon path="art/icon256.png" size='256'/>
 	<icon path="art/icon512.png" size='512'/>
-	<icon path="art/iconOG.png" />
+	<!-- <icon path="art/iconOG.png" /> -->
+
+	<!-- JOELwindows7: own custom icons -->
+	<icon path="LastFunkinMomentsLogo.png" />
 
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
@@ -224,5 +238,20 @@
 	<!-- JOELwindows7: additional howl for LIME project xml here -->
 	<echo value="This is Odysee build" if="odysee"/>
 	<echo value="we have stolen mods in it" if="thief"/>
+
+	<!-- JOELwindows7: Android settings -->
+	<android install-location="preferExternal" />
+
+	<!-- JOELwindows7: make this KitKat -->
+	<!-- <android target-sdk-version="17" /> -->
+
+	<!-- JOELwindows7: Android permissions -->
+	<!-- https://stackoverflow.com/a/53485243/9079640 -->
+	<android permission="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<android permission="android.permission.ACCESS_NETWORK_STATE"/>
+	<!-- <android permission="android.permission.INTERNET"/> -->
+	<!-- <android permission="android.permission.WAKE_LOCK"/> -->
+	<android permission="android.permission.VIBRATE"/>
+	<android permission="android.permission.READ_EXTERNAL_STORAGE"/>
 	
 </project>

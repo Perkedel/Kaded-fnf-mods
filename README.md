@@ -2,6 +2,7 @@
 [Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
 
 # Last Funkin Moments
+![](https://github.com/Perkedel/kaded-fnf-mods/raw/stable/LastFunkinMomentsLogo.png)
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
 ## Download NOW
@@ -9,6 +10,7 @@ collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
   - [Win64](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows:c?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
 - GameBanana https://gamebanana.com/mods/293257
 - NexusMods https://www.nexusmods.com/fridaynightfunkin/mods/247 
+- Itch.io https://joelwindows7.itch.io/last-funkin-moments
 
 If your antivirus went **sus**, they're dumb! None of these file are impostor, the antivirus is. vote that!  
 I mean, if the antivirus thought that file is `malicious`, it's false positive. Ignore that, it's safe.  

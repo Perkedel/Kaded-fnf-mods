@@ -9,15 +9,20 @@ install:
   # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
   - ps: Set-Service wuauserv -StartupType Manual
   # Install the neko chocolatey package (https://chocolatey.org/packages/neko)
-  - cinst neko --version 2.3.0 -y
+  - cinst neko -y
   # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
-  - cinst haxe --version 4.1.5 -y
+  - cinst haxe -y
+  # JOELwindows7: Install the wget and stuffs
+  # - cinst wget -y # downloader
+  - cinst butler -y # upload to itch io
+  # - cinst zip -y # zip it
+  # - cinst unzip -y # unzip it
   - RefreshEnv
   # Setup haxelib
   - mkdir "%HAXELIB_ROOT%"
   - haxelib setup "%HAXELIB_ROOT%"
   # Install project dependencies
-  - haxelib install lime 7.9.0
+  - haxelib install lime
   - haxelib install openfl
   - haxelib install flixel
   - haxelib run lime setup flixel -y
@@ -35,15 +40,34 @@ install:
   - haxelib install linc_luajit
   - haxelib install actuate
   - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  # JOELwindows7: Android permissioner
+  - haxelib install android6permissions
+  - haxelib install androidhx
   - haxelib list
 
 # No tests idk lol
 build_script:
+  - dir
   - haxelib run lime rebuild extension-webm windows
   - haxelib run lime build windows
-  # haxelib run lime build linux
+  - haxelib run lime build windows -32 -D32bit
+  - haxelib run lime build html5
+  # haxelib run lime build linux # doesnt work if host OS is not same as that desktop OS
+
+after_build:
+  - dir
+  # JOELwindows7: upload to itch
+  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push C:\Users\appveyor\projects\export\release\windows\bin joelwindows7/last-funkin-moments:win64-appveyor; fi
+  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push C:\Users\appveyor\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor; fi
+  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push C:\Users\appveyor\projects\export\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor; fi
 
 artifacts:
   - path: export/release/windows/bin
     name: last-funkin-moments-windows
+    type: zip
+  - path: export/32bit/windows/bin
+    name: last-funkin-moments-windows32
+    type: zip
+  - path: export/release/html5/bin
+    name: last-funkin-moments-html5
     type: zip

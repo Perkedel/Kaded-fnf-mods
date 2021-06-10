@@ -137,6 +137,23 @@ thancc for all these resources! without them, everything is impossible.
 - typical Japanese `let's go`, *`Yoss, ikuzo!`*. make Senpai MIDI weabooer in song Senpai-midi SeaNothing MIDI cover. That's because MIDI was invented from Japan (as seen from https://en.wikipedia.org/wiki/Comparison_of_MIDI_standards) and their enthusiasm are curated right there to this day (e.g. https://openmidiproject.osdn.jp/index_en.html from Japan, who made Sekaiju the MIDI editor for everyone to crazily make and compose their dream MIDI) (also [German](https://yamahamusicfsoft.com ) too (Yep, Yamaha built special division called Musicsoft in Europe. They got MIDISPOT too as well), such as [PSRUTI by Heikoplate](https://www.heikoplate.de/psruti.html ) from Germany, a MIDI metadata editor allowing you to *Yamaha Musicsoftify* any MIDI possible).
 - in https://odysee.com, the like button is `Flame` and dislike button is `Slime`. hmm what this coincidence with GameBanana `Burn` (green) stamp? obviously not, I guess.. idk.
 - https://youtu.be/4r4j4R8b2bM yet another tutorial from BrightFyre. how to mod Kade Engine
+- https://gamebanana.com/tuts/13810 how to compile FNF
+- https://www.techk47.com/android-app-permissions-list/ list of Android permission
+- https://developer.android.com/guide/topics/permissions/overview android permission overview
+- https://github.com/ralphpina/Android-Permissions-Manager Android raw permission manager
+- https://stackoverflow.com/a/53485243/9079640 add these to project.xml
+- https://haxeflixel.com/documentation/android/ android haxeflixel
+- https://lib.haxe.org/p/newgrounds/ newgrounds lib
+- https://github.com/haxorplatform/androidhx android haxe template project
+- https://lib.haxe.org/p/android6permissions android 6 permission checker for haxe
+- https://stackoverflow.com/questions/67662809/android-access-external-storage-files-android-10-11 doc dump
+- https://community.openfl.org/t/customizing-androidmanifest-xml/8508 doc dump
+- https://lib.haxe.org/p/android6permissions/0.1.1/releasenotes doc dump
+- https://formulae.brew.sh/cask/butler install butler for mac CI
+- https://haxe.org/ always update haxe
+- https://broth.itch.ovh/ install butler for CI
+- https://itch.io/docs/butler/installing.html install butler
+- 
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -214,6 +231,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://calver.org/ Use the calendar versioning system! let's see if that works. For us, our scheme will be **`YYYY.0M.MINOR.MICRO`** idk. I believe just to track the time when this was released.
 - https://gamebanana.com/mods/44208 FNF Modding plus. Chart JSON parameter added here and the compatibility now is being added.
 - https://gamebanana.com/tools/7158 FunkinVortex. inspire the Modding Plus specific chart JSON parameters here and there!
+- https://github.com/haxorplatform/androidhx android haxe template project. attempted android porting faile
+- https://lib.haxe.org/p/android6permissions android 6 permission checker for haxe. attempted android porting faile
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
@@ -284,5 +303,5 @@ I believe you should consider enforcing that law on older mods too as well, well
 of course, kindly contact the submitters first. give them time for maybe, a month! no response, withhold. I think that's the good plan idk if not wrong.
 
 # internal extension
-- https://github.com/Perkedel/AfterChurch all inkscape assets
-- https://github.com/Pekedel/HexagonEngine logo inkscape assets
+- https://github.com/Perkedel/After-Church all inkscape assets
+- https://github.com/Perkedel/HexagonEngine logo inkscape assets
