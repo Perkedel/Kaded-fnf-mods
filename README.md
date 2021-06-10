@@ -2,7 +2,7 @@
 [Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
 
 # Last Funkin Moments
-![](https://github.com/Perkedel/kaded-fnf-mods/raw/stable/LastFunkinMomentsLogo.png)
+
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
 ## Download NOW
@@ -99,6 +99,8 @@ as always, credits to all stuff involved will be on [`CREDIT.md`](https://github
 
 ## studio
 We have studio in GameBanana https://gamebanana.com/studios/35672 . Just to seize the opportunity before anyone impersonate our brand, as well as to contain and collects our mods in GameBanana yay.
+
+![](https://github.com/Perkedel/kaded-fnf-mods/raw/stable/LastFunkinMomentsLogo.png)
 
 <!-- Kade Descriptions -->
 # Kade Engine Descriptions
