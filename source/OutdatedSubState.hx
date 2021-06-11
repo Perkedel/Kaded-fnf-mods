@@ -174,7 +174,7 @@ class OutdatedSubState extends MusicBeatState
 				case 0:
 					fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
 				case 1:
-					fancyOpenURL("https://odysee.com/@JOELwindows7/LFM-changelog-" + needVer);
+					fancyOpenURL("https://odysee.com/@JOELwindows7/LFM-changelog-" + needVerLast);
 				default:
 					fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
 			}
