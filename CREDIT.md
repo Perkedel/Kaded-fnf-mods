@@ -153,7 +153,11 @@ thancc for all these resources! without them, everything is impossible.
 - https://haxe.org/ always update haxe
 - https://broth.itch.ovh/ install butler for CI
 - https://itch.io/docs/butler/installing.html install butler
-- 
+- Fubuki the Hololive VTuber. the `A Pisang` moment when hit by weight in Fall Guys game
+- BTS - Butter . Remember, there are always impostors among us. those toxic fans, and haters. like Criminal undercover. Yeah you, who said `Plastic`, come here. you are Crossbanned. You are going to Crossban school Class Severe.
+- Crossban School scholarship tier: Essential (Kindergarten), Mild (Primary), Average (Junior High), Severe (Senior High), Fatal (College)
+- Crossban School purpose types: Normal (mandatory school), Light Criminal (Prison), Medium Criminal (Punishments), Heavy Criminal (Resets)
+- umm that's all I can think about. may need changes.
   
 # in event of git merge conflict
 use VScode and Github desktop!

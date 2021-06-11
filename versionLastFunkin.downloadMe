@@ -1,2 +1,5 @@
-2021.06.0;
-- This is technically 1st release bruh
+2021.06.2;
+- Bring fixes from that Kade Engine 1.5.2 such as Song name compatibilities
+- Proposed new stage for View of the World
+- more intro texts idk man
+- convert most audio to mp3 for html5 compatibility

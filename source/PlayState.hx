@@ -276,6 +276,7 @@ class PlayState extends MusicBeatState
 		#else
 		executeModchart = false; // JOELwindows7: FORCE disable for non sys targets
 		#end
+		#end
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
 		#end

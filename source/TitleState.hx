@@ -397,7 +397,7 @@ class TitleState extends MusicBeatState
 			//copy from above
 			new FlxTimer().start(2, function(tmr:FlxTimer){
 				//Get the current version of Last Funkin Moments
-				var http = new haxe.Http("https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/master/versionLastFunkin.downloadMe");
+				var http = new haxe.Http("https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe");
 				var returnedData:Array<String> = [];
 				
 				http.onData = function (data:String)
@@ -407,7 +407,7 @@ class TitleState extends MusicBeatState
 				  	if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.tinggalkanState && MainMenuState.larutMalam == "")
 					{
 						OutdatedSubState.whichAreaOutdated = 1; //mark that LFM one is outdated
-						trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
+						trace('LFM outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
 						OutdatedSubState.needVerLast = returnedData[0];
 						OutdatedSubState.perubahanApaSaja = returnedData[1];
 						FlxG.switchState(new OutdatedSubState());

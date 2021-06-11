@@ -50,6 +50,17 @@ class OutdatedSubState extends MusicBeatState
 		kadeLogo.y -= 180;
 		kadeLogo.alpha = 0.8;
 		add(kadeLogo);
+		kadeLogo.visible = false; //JOELwindows7: wait check which case first
+
+		//JOELwindows7: our LFM logo here pls
+		var lfmLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.image('LastFunkinMomentsLogo'));
+		lfmLogo.scale.y = 0.1;
+		lfmLogo.scale.x = 0.1;
+		lfmLogo.x -= lfmLogo.frameHeight;
+		lfmLogo.y -= 180;
+		lfmLogo.alpha = .8;
+		add(lfmLogo);
+		lfmLogo.visible = false; //JOELwindows7: wait check which case first
 		
 		var txt:FlxText = new FlxText(0, 0, FlxG.width,
 			"Your Kade Engine is outdated!\nYou are on "
@@ -107,20 +118,24 @@ class OutdatedSubState extends MusicBeatState
 		mitsake.visible = false;
 
 		switch(whichAreaOutdated){
-			case 0:
+			case 0: //Kade Engine
+				kadeLogo.visible = true;
 				txt.visible = true;
-			case 1:
+			case 1: //Last Funkin Moment
+				lfmLogo.visible = true;
 				teks.visible = true;
-			case 2:
+			case 2: //Your mod
 				mitsake.visible = false;
 				trace("visible teks your mod");
-			default:
+			default: //wtf
 				mitsake.visible = false;
 				trace("what the");
 		}
 
 		FlxTween.color(bg, 2, bg.color, FlxColor.fromString(bgColors[colorRotation]));
 		FlxTween.angle(kadeLogo, kadeLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
+		//JOELwindows7: also do that for LFM logo
+		FlxTween.angle(lfmLogo, lfmLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
 		
 		new FlxTimer().start(2, function(tmr:FlxTimer)
 		{
@@ -133,12 +148,20 @@ class OutdatedSubState extends MusicBeatState
 		{
 			if(kadeLogo.angle == -10) FlxTween.angle(kadeLogo, kadeLogo.angle, 10, 2, {ease: FlxEase.quartInOut});
 			else FlxTween.angle(kadeLogo, kadeLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
+
+			//JOELwindows7: the LFM logo swing too
+			if(lfmLogo.angle == -10) FlxTween.angle(lfmLogo, lfmLogo.angle, 10, 2, {ease: FlxEase.quartInOut});
+			else FlxTween.angle(lfmLogo, lfmLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
 		}, 0);
 		
 		new FlxTimer().start(0.8, function(tmr:FlxTimer)
 		{
 			if(kadeLogo.alpha == 0.8) FlxTween.tween(kadeLogo, {alpha: 1}, 0.8, {ease: FlxEase.quartInOut});
 			else FlxTween.tween(kadeLogo, {alpha: 0.8}, 0.8, {ease: FlxEase.quartInOut});
+
+			//JOELwindows7: the LFM logo breathe the alpha too
+			if(lfmLogo.alpha == 0.8) FlxTween.tween(lfmLogo, {alpha: 1}, 0.8, {ease: FlxEase.quartInOut});
+			else FlxTween.tween(lfmLogo, {alpha: 0.8}, 0.8, {ease: FlxEase.quartInOut});
 		}, 0);
 	}
 
@@ -161,13 +184,13 @@ class OutdatedSubState extends MusicBeatState
 		{
 			switch(whichAreaOutdated){
 
-				case 0:
+				case 0: //Kade Engine
 					leftState = true;
-				case 1:
+				case 1: //Last Funkin Moment
 					tinggalkanState = true;
-				case 2:
+				case 2: //Your mod
 					trace("your mod");
-				default:
+				default: //wtf
 					trace("wait what?");
 			}
 			FlxG.switchState(new MainMenuState());
