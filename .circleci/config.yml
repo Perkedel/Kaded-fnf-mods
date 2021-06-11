@@ -15,8 +15,8 @@ jobs:
       - run:
           name: setup Haxe and libraries and built them all
           environment:
-            HAXELIB_ROOT: ~/haxelib
-            HAXE_INSTALLDIR: ~/haxe
+            HAXELIB_ROOT: /home/circleci/haxelib
+            HAXE_INSTALLDIR: /home/circleci/haxe
           command: |
             cd ~
             sudo add-apt-repository ppa:haxe/releases -y
@@ -28,6 +28,8 @@ jobs:
             mkdir -p $HAXE_INSTALLDIR
             tar -xf haxe-4.2.2-linux64.tar.gz -C $HAXE_INSTALLDIR
             export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20210514141333_a2f4ba9
+            ls
+            pwd
             mkdir -p $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
             haxelib install lime
             haxelib install openfl
