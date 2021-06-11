@@ -46,9 +46,8 @@ build_script:
   - haxelib run lime build mac
 
 after_build:
-  - hdiutil create /Users/appveyor/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/appveyor/projects/kaded-fnf-mods-macos/export/release/mac/bin"
+  - hdiutil create /Users/appveyor/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/appveyor/projects/kaded-fnf-mods-macos/export/release/macos/bin"
   - hdiutil convert /Users/appveyor/temp.dmg -format UDZO -o /Users/appveyor/last-funkin-moments-macOS.dmg
-  # - gtar -cvf last-funkin-moments-macOS.tar -C /Users/appveyor/projects/kade-engine-macos/export/release/macos/bin .
   # JOELwindows7: upload to itch
   - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push /Users/appveyor/last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-appveyor; fi
 
