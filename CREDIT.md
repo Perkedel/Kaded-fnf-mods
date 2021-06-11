@@ -160,6 +160,10 @@ thancc for all these resources! without them, everything is impossible.
 - umm that's all I can think about. may need changes.
 - https://youtu.be/y9I-N0J__ng Kiryo Coco will graduate with her final stream at 1st July. https://www.youtube.com/watch?v=6Q-fX1E6B_s&t=0s here's the original stream that announce it. Stay strong, everyone, Kiryu Coco, yeah.
 - True & the Kingdom. a Kids show, True and her cat... uh... wait what's his name? help!
+- Oh this Pretty cool bianos, WAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!! https://youtu.be/OUypHVSBbqs with original ad from Japanese Nintendo https://youtu.be/MBr10rC-0K8
+- GameBanana bad luck, this mod did not immediately ripe. other mods (even terrible ones) somehow got ripe after just a day or two. and others even already months of gruelling updates never ripes at all.
+- https://knowyourmeme.com/memes/bananas-rotat-e-bananamp4 Bananas rotat e . Tumblr post https://shrekyourself.tumblr.com/post/67116150608 . original banana rotate donkey kong https://www.youtube.com/watch?v=o6BsxnBI7Ng .
+- 
   
 # in event of git merge conflict
 use VScode and Github desktop!
