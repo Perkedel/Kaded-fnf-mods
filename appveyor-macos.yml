@@ -44,12 +44,13 @@ build_script:
   - haxelib run lime rebuild extension-webm mac
   - haxelib run lime rebuild linc_luajit mac # JOELwindows7: because it seems it only had windows?
   - haxelib run lime build mac
-
 after_build:
+  - hdiutil create /Users/appveyor/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/appveyor/projects/kaded-fnf-mods-macos/export/release/mac/bin"
+  - hdiutil convert /Users/appveyor/temp.dmg -format UDZO -o /Users/appveyor/last-funkin-moments-macOS.dmg
   # - gtar -cvf last-funkin-moments-macOS.tar -C /Users/appveyor/projects/kade-engine-macos/export/release/macos/bin .
   # JOELwindows7: upload to itch
-  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push /Users/appveyor/projects/kade-engine-macos/export/release/macos/bin joelwindows7/last-funkin-moments:macOS-appveyor; fi
+  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push /Users/appveyor/last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-appveyor; fi
 
 artifacts:
-- path: last-funkin-moments.app
-  name: macOS build idk
+- path: "/Users/appveyor/last-funkin-moments-macOS.dmg"
+  name: Last Funkin Moments for macOS

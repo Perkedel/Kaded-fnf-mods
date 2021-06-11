@@ -65,6 +65,6 @@ after_build:
 
 artifacts:
 - path: last-funkin-moments.tar
-  name: Linux build
+  name: Last Funkin Moments for Linux
 - path: last-funkin-moments-32bit.tar
-  name: Linux Build 32Bit
+  name: Last Funkin Moments for Linux 32Bit
