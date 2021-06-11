@@ -46,10 +46,10 @@ build_script:
   - haxelib run lime build mac
 
 after_build:
-  - gtar -cvf last-funkin-moments-macOS.tar -C /Users/appveyor/projects/kade-engine-macos/export/release/macos/bin .
+  # - gtar -cvf last-funkin-moments-macOS.tar -C /Users/appveyor/projects/kade-engine-macos/export/release/macos/bin .
   # JOELwindows7: upload to itch
   - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push /Users/appveyor/projects/kade-engine-macos/export/release/macos/bin joelwindows7/last-funkin-moments:macOS-appveyor; fi
 
 artifacts:
-- path: last-funkin-moments-macOS.tar
+- path: last-funkin-moments.app
   name: macOS build idk
