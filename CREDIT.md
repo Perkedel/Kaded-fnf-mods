@@ -243,6 +243,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://gamebanana.com/tools/7158 FunkinVortex. inspire the Modding Plus specific chart JSON parameters here and there!
 - https://github.com/haxorplatform/androidhx android haxe template project. attempted android porting faile
 - https://lib.haxe.org/p/android6permissions android 6 permission checker for haxe. attempted android porting faile
+- https://gamebanana.com/mods/294044 Summer Beach. (wait until he finished first before remake remaster!)
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
