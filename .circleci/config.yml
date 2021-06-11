@@ -58,7 +58,7 @@ jobs:
             echo ha hi ha hu huha
             haxelib run lime rebuild extension-webm linux
             haxelib run lime rebuild linc_luajit linux
-            cd ~/projects/kaded-fnf-mods
+            cd ~/project/kaded-fnf-mods
 
       # - run:
       #     name: Rebuild GrowtopiaFli video cutsceners
@@ -70,10 +70,10 @@ jobs:
             cd ~/projects/kaded-fnf-mods
             haxelib run lime build linux
             haxelib run lime build linux -32 -D32bit
-            tar -cvf last-funkin-moments.tar -C ~/projects/kaded-fnf-mods/export/release/linux/bin .
-            tar -cvf last-funkin-moments-32bit.tar -C ~/projects/kaded-fnf-mods/export/32bit/linux/bin .
-            if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/projects/kaded-fnf-mods/export/release/linux/bin joelwindows7/last-funkin-moments:linux-circleCI; fi
-            if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/projects/kaded-fnf-mods/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-circleCI; fi
+            tar -cvf last-funkin-moments.tar -C ~/project/kaded-fnf-mods/export/release/linux/bin .
+            tar -cvf last-funkin-moments-32bit.tar -C ~/project/kaded-fnf-mods/export/32bit/linux/bin .
+            if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/project/kaded-fnf-mods/export/release/linux/bin joelwindows7/last-funkin-moments:linux-circleCI; fi
+            if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/project/kaded-fnf-mods/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-circleCI; fi
       # - run:
       #     name: Just build this game already Windows
       #     command: |
@@ -89,8 +89,8 @@ jobs:
       - run:
           name: Just build this game already HTML5
           command: |
-            cd ~/projects/kaded-fnf-mods
+            cd ~/project/kaded-fnf-mods
             haxelib run lime build html5
-            tar -cvf last-funkin-moments-html5.tar -C ~/projects/kaded-fnf-mods/export/release/html5/bin
+            tar -cvf last-funkin-moments-html5.tar -C ~/project/kaded-fnf-mods/export/release/html5/bin
       ########## unfortunately that each run did not recognize each other
 
