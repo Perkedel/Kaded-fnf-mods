@@ -22,6 +22,28 @@ if you don't trust it, check around the source code and its libraries referred.
 - macOS [![Build status macOS](https://ci.appveyor.com/api/projects/status/61pl7ba9rgu375pn?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-macos)
 
 ## We have:
+Tons. check each today's update what has added yay.
+
+<!-- (Unmarketed) We also have some yoinks from other mods without permission. Checkout [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) at section `other mods that wins the inclusion`. Yes, even we are *stealing* quote on quote, we always make sure mod page link url are always credited, along with their names of whom submited them. -->
+
+check out [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) for stuffs involved during making of it this mod
+
+enjoy the last drops of funkin before everything went. went, I can't say this. you don't want to hear this.
+
+# Today's Update!
+## Week Strong! vs. Hookx the friendly Karaoke robot!
+[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/week-strong-new-added-2.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/week-strong-new-added-2.png )
+[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/hookx-dancing-here.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/hookx-dancing-here.png )
+[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/new-unique-song-thumb.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/new-unique-song-thumb.png )
+
+After the coronavirus pandemic seems regressing day by day as many vaccines clouter finally reaches family level, Boyfriend, Girlfriend, Pico, and families got their vaccines and all people can finally travel freely to all countries. The humanity once again gained victory in herd immunity. But what shall they do?
+
+Boyfriend decided to go on to the opposite side of the world *to prove that he is the best rapper all around the world* (actually no, they're just bored after finding somebody to compete against, so..). well, turns out, that opposite side of the world isn't much edge of the world, infact that's where JOELwindows7 comes from, Indonesia. He heard from news that *the largest expo in Southeast Asia is going to open* at Jakarta. So then he invited all his friends and families to fly to Jakarta, Indonesia.
+
+Jakarta Fair finally opens again after the gruelling cruelty of coronavirus has finally defeated. Boyfriend and families went to Jakarta fair for mere curiosity and who knows find someone that would compete with him. It had alot of stuffs, so they separate a while to look for interesting stuffs around the fair. Girlfriend will search for fashions, while Boyfriend looks for technologies. He found one of the megabooth that has sophisticated walking minibooth in it, Van Elektronische (Perkedel Technologies). He entered one of the booth and encountered Hookx, the friendly Karaoke robot.
+
+Well, it's not the live person he met but another robot instead. Why not try though? I think Hookx got something interesting. So then Boyfriend proceed interacting with that robot that shapped like a portrait TV.
+### Today we got
 - Week Strong! vs. Hookx the friendly karaoke robot! ft. 3 TheFatRat Songs: Windfall, Rule The World, We'll meet again
 - new **UNIQUE** stages (which unfortunately are also hard code too):
   - Jakarta Fair. inside one of the walking mini booth in the Van Elektronische booth
@@ -46,25 +68,6 @@ if you don't trust it, check around the source code and its libraries referred.
 - idk what next?
 - CODE LICENSED GNU GPL v3 instead of some sort of *Open Source but proprietarism-allowing-forking* licenses. ASSETS (only for Perkedel originals like Week Strong, Week 4'33") Licensed CC4.0-BY-SA as shown in GameBanana Page!!! yoinkers, **you can steal this (the original Perkedel week ones yess) but pls credit!** oh, better be higher quality than ever pls, not just mere reupload, yeah serious (okay irony prevention. if your mod has any quality changes except this mod you yoinked which means you just yoink my mod (because no idea what to mod in Last Funkin Moment right now), but you did made other enhancement (your original mod, quality change internal and external), that's completely fine.). and of course, Share Alike remember? yess!! OPEN SOURCE BOTH MODS & ASSETS, for real (The FLA, SVG, PSD, KRA, XM, BLEND, FBX, anything! all format). Yes, it's a great privillege that KadeEngine (and FNF formerly but still compliant) is licensed Apache (the one that is Android). This license allow forker to change license, don't know to where ups or down, but basically we can enforce more here yeah. Ah yess, finally. License that is not absolutely restrictive at all.
 
-<!-- (Unmarketed) We also have some yoinks from other mods without permission. Checkout [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) at section `other mods that wins the inclusion`. Yes, even we are *stealing* quote on quote, we always make sure mod page link url are always credited, along with their names of whom submited them. -->
-
-check out [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) for stuffs involved during making of it this mod
-
-enjoy the last drops of funkin before everything went. went, I can't say this. you don't want to hear this.
-
-# Today's Update!
-## Week Strong! vs. Hookx the friendly Karaoke robot!
-[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/week-strong-new-added-2.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/week-strong-new-added-2.png )
-[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/hookx-dancing-here.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/hookx-dancing-here.png )
-[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/new-unique-song-thumb.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/new-unique-song-thumb.png )
-
-After the coronavirus pandemic seems regressing day by day as many vaccines clouter finally reaches family level, Boyfriend, Girlfriend, Pico, and families got their vaccines and all people can finally travel freely to all countries. The humanity once again gained victory in herd immunity. But what shall they do?
-
-Boyfriend decided to go on to the opposite side of the world *to prove that he is the best rapper all around the world* (actually no, they're just bored after finding somebody to compete against, so..). well, turns out, that opposite side of the world isn't much edge of the world, infact that's where JOELwindows7 comes from, Indonesia. He heard from news that *the largest expo in Southeast Asia is going to open* at Jakarta. So then he invited all his friends and families to fly to Jakarta, Indonesia.
-
-Jakarta Fair finally opens again after the gruelling cruelty of coronavirus has finally defeated. Boyfriend and families went to Jakarta fair for mere curiosity and who knows find someone that would compete with him. It had alot of stuffs, so they separate a while to look for interesting stuffs around the fair. Girlfriend will search for fashions, while Boyfriend looks for technologies. He found one of the megabooth that has sophisticated walking minibooth in it, Van Elektronische (Perkedel Technologies). He entered one of the booth and encountered Hookx, the friendly Karaoke robot.
-
-Well, it's not the live person he met but another robot instead. Why not try though? I think Hookx got something interesting. So then Boyfriend proceed interacting with that robot that shapped like a portrait TV.
 ### Features TheFatRat songs, Jakarta Fair, references, and more!
 Windfall, Rule The World, & We'll meet again
 

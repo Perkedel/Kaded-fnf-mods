@@ -9,8 +9,9 @@ import flash.display.Sprite;
 import flash.Lib;
 import flixel.FlxG;
  
-@:bitmap("art/preloaderArt.png") class LogoImage extends BitmapData { }
- 
+//@:bitmap("art/preloaderArt.png") class LogoImage extends BitmapData { }
+@:bitmap("art/LaunchImage.png") class LogoImage extends BitmapData { } //JOELwindows7: use this LFM launch image
+
 class Preloader extends FlxBasePreloader
 {
     public function new(MinDisplayTime:Float=3, ?AllowedURLs:Array<String>) 

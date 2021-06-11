@@ -262,4 +262,15 @@ class KeyBindMenu extends FlxSubState
         if (curSelected < 0)
             curSelected = 3;
     }
+
+    //JOELwindows7: go to item for mouse
+    function goToItem(_amount:Int = 0)
+        {
+            curSelected = _amount;
+                    
+            if (curSelected > 3)
+                curSelected = 0;
+            if (curSelected < 0)
+                curSelected = 3;
+        }
 }

@@ -1752,7 +1752,7 @@ class PlayState extends MusicBeatState
 			}
 
 			//JOELwindows7: scan MIDI suffix in the song name
-			if(songLowercase.endsWith(detectMidiSuffix)){
+			if(songLowercase.contains(detectMidiSuffix.trim())){
 				midiSuffix = detectMidiSuffix;
 			} else
 				midiSuffix = "";

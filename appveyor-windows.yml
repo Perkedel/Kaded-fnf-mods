@@ -57,9 +57,9 @@ build_script:
 after_build:
   - dir
   # JOELwindows7: upload to itch
-  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push C:\Users\appveyor\projects\export\release\windows\bin joelwindows7/last-funkin-moments:win64-appveyor; fi
-  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push C:\Users\appveyor\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor; fi
-  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push C:\Users\appveyor\projects\export\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor; fi
+  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\release\windows\bin joelwindows7/last-funkin-moments:win64-appveyor; fi
+  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor; fi
+  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor; fi
 
 artifacts:
   - path: export/release/windows/bin

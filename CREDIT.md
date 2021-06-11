@@ -158,6 +158,8 @@ thancc for all these resources! without them, everything is impossible.
 - Crossban School scholarship tier: Essential (Kindergarten), Mild (Primary), Average (Junior High), Severe (Senior High), Fatal (College)
 - Crossban School purpose types: Normal (mandatory school), Light Criminal (Prison), Medium Criminal (Punishments), Heavy Criminal (Resets)
 - umm that's all I can think about. may need changes.
+- https://youtu.be/y9I-N0J__ng Kiryo Coco will retire with her final stream at 1st July. https://www.youtube.com/watch?v=6Q-fX1E6B_s&t=0s here's the original stream that announce it. Stay strong, everyone, Kiryu Coco, yeah.
+- True & the Kingdom. a Kids show, True and her cat... uh... wait what's his name? help!
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -242,6 +244,10 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 > Why am I not credited?!
 
 > why my mods got removed?!
+
+> whew, he stopped stealing.
+
+*sarcasm intended*
 
 - https://gamebanana.com/sounds/52066 (WARNING: has NC, ND) frick vine school class, assembled by Picaro2604. discovered that this kade randomly choose which missNote you can have. 7 8 9 miss note
 - https://gamebanana.com/sounds/51010 (WARNING: has NC, ND) tourettes guy miss note Beskupehn_Espira redistributions. 4 5 6 miss note

@@ -7,6 +7,7 @@
 # https://superuser.com/a/1121597/1036816
 # https://uly.me/ffmpeg-convert-mp3-to-ogg/
 # https://bytefreaks.net/gnulinux/bash/ffmpeg-extract-audio-from-mp4-to-ogg
+# https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/
 # JOELwindows7: count all frames in each video file
 
 # check ffmpeg
