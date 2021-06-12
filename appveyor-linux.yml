@@ -4,6 +4,7 @@ environment:
   global:
     HAXELIB_ROOT: /home/appveyor/haxelib
     HAXE_INSTALLDIR: /home/appveyor/haxe
+    BUTLER_DIR: /home/appveyor/
 
 install:
   - cd /home/appveyor
@@ -60,8 +61,11 @@ after_build:
   - tar -cvf last-funkin-moments.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin .
   - tar -cvf last-funkin-moments-32bit.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin .
   # JOELwindows7: upload to itch
-  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin joelwindows7/last-funkin-moments:linux-appveyor; fi
-  - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor; fi
+  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin joelwindows7/last-funkin-moments:linux-appveyor; fi
+  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor; fi
+  # wtf appveyor did not expect git
+  - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin joelwindows7/last-funkin-moments:linux-appveyor
+  - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor
 
 artifacts:
 - path: last-funkin-moments.tar
