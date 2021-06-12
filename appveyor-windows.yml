@@ -61,9 +61,9 @@ after_build:
   # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push C:\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor; fi
   # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push C:\projects\export\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor; fi
   # wtf, appveyor did not expect Git
-  - butler push C:\projects\export\release\windows\bin joelwindows7/last-funkin-moments:win64-appveyor
-  # - butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor
-  # - butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor
+  - butler push C:\projects\kaded-fnf-mods-windows\export\release\windows\bin joelwindows7/last-funkin-moments:win64-appveyor
+  # - butler push C:\projects\kaded-fnf-mods-windows\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor
+  # - butler push C:\projects\kaded-fnf-mods-windows\projects\export\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor
 
 artifacts:
   - path: export/release/windows/bin
