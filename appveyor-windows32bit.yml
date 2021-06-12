@@ -49,29 +49,17 @@ install:
 build_script:
   - dir
   - haxelib run lime rebuild extension-webm windows
-  - haxelib run lime build windows
-  # - haxelib run lime build windows -32 -D32bit
-  # - haxelib run lime build html5
+  - haxelib run lime build windows -32 -D32bit
   # haxelib run lime build linux # doesnt work if host OS is not same as that desktop OS
 
 after_build:
   - dir
   # JOELwindows7: upload to itch
-  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\release\windows\bin joelwindows7/last-funkin-moments:win64-appveyor; fi
-  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor; fi
-  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor; fi
+  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push C:\Users\appveyor\kaded-fnf-mods-windows32\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor; fi
   # wtf, appveyor did not expect Git
-  - butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\release\windows\bin joelwindows7/last-funkin-moments:win64-appveyor
-  # - butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor
-  # - butler push C:\Users\appveyor\kaded-fnf-mods-windows\projects\export\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor
+  - butler push C:\Users\appveyor\kaded-fnf-mods-windows32\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor
 
 artifacts:
-  - path: export/release/windows/bin
-    name: last-funkin-moments-windows
+  - path: export/32bit/windows/bin
+    name: last-funkin-moments-windows32
     type: zip
-  # - path: export/32bit/windows/bin
-  #   name: last-funkin-moments-windows32
-  #   type: zip
-  # - path: export/release/html5/bin
-  #   name: last-funkin-moments-html5
-  #   type: zip

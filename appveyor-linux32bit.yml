@@ -45,31 +45,25 @@ install:
   # see where we are, what contents are now, and then go into the project.
   - pwd
   - ls
-  - cd /home/appveyor/projects/kaded-fnf-mods-linux
+  - cd /home/appveyor/projects/kaded-fnf-mods-linux32
 
 build_script:
-  - cd /home/appveyor/projects/kaded-fnf-mods-linux
+  - cd /home/appveyor/projects/kaded-fnf-mods-linux32
   - haxelib run lime rebuild discord_rpc linux
   - haxelib run lime rebuild extension-webm linux
   - haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?
-  - haxelib run lime build linux
   - haxelib run lime build linux -32 -D32bit
 
 after_build:
   - cd ~
   - pwd
   - ls
-  - tar -cvf last-funkin-moments.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin .
-  # - tar -cvf last-funkin-moments-32bit.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin .
+  - tar -cvf last-funkin-moments-32bit.tar -C /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin .
   # JOELwindows7: upload to itch
-  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin joelwindows7/last-funkin-moments:linux-appveyor; fi
-  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor; fi
+  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor; fi
   # wtf appveyor did not expect git
-  - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin joelwindows7/last-funkin-moments:linux-appveyor
-  # - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor
+  - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor
 
 artifacts:
-- path: last-funkin-moments.tar
-  name: Last Funkin Moments for Linux
-# - path: last-funkin-moments-32bit.tar
-#   name: Last Funkin Moments for Linux 32Bit
+- path: last-funkin-moments-32bit.tar
+  name: Last Funkin Moments for Linux 32Bit
