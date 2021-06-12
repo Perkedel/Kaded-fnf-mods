@@ -42,7 +42,7 @@ install:
   - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
-  - haxelib install androidhx
+  # - haxelib install androidhx
   - haxelib list
 
 # No tests idk lol

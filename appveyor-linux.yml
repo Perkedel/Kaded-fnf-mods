@@ -36,7 +36,7 @@ install:
   - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
-  - haxelib install androidhx
+  # - haxelib install androidhx
   - haxelib list
   # JOELwindows7: okay now the butler
   - wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
@@ -48,6 +48,7 @@ install:
   - cd /home/appveyor/projects/kaded-fnf-mods-linux
 
 build_script:
+  - cd /home/appveyor/projects/kaded-fnf-mods-linux
   - haxelib run lime rebuild discord_rpc linux
   - haxelib run lime rebuild extension-webm linux
   - haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?
