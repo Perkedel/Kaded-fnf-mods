@@ -55,9 +55,9 @@ build_script:
 after_build:
   - dir
   # JOELwindows7: upload to itch
-  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push C:\Users\appveyor\kaded-fnf-mods-windows32\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor; fi
+  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push C:\projects\kaded-fnf-mods-windows32\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor; fi
   # wtf, appveyor did not expect Git
-  - butler push C:\Users\appveyor\kaded-fnf-mods-windows32\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor
+  - butler push C:\projects\kaded-fnf-mods-windows32\projects\export\32bit\windows\bin joelwindows7/last-funkin-moments:win32-appveyor
 
 artifacts:
   - path: export/32bit/windows/bin
