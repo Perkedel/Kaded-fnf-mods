@@ -1,5 +1,7 @@
 package;
 
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -34,9 +36,6 @@ class FreeplayState extends MusicBeatState
 	private var curPlaying:Bool = false;
 
 	private var iconArray:Array<HealthIcon> = [];
-
-	//JOELwindows7: add mouse click flag
-	var haveClicked:Bool = false;
 
 	override function create()
 	{
@@ -86,6 +85,12 @@ class FreeplayState extends MusicBeatState
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
+
+		//JOELwindows7: back button
+		addBackButton(20,FlxG.height);
+		//JOELwindows7: and difficulty button
+		addLeftButton(FlxG.width-350,-100);
+		addRightButton(FlxG.width-100,-100);
 
 		for (i in 0...songs.length)
 		{
@@ -154,6 +159,11 @@ class FreeplayState extends MusicBeatState
 		 */
 
 		super.create();
+
+		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7 also tween back button!
+		FlxTween.tween(leftButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7 also tween left button!
+		FlxTween.tween(rightButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7 also tween right button!
+
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String)
@@ -210,14 +220,23 @@ class FreeplayState extends MusicBeatState
 
 		//JOELwindows7: change difficulty with mid click
 		//and except the rest. no variable syndication
-		if (controls.LEFT_P)
+		//NOW with touch screen support with arrow key top right!
+		if (controls.LEFT_P || haveLefted)
+		{
 			changeDiff(-1);
-		if (controls.RIGHT_P || FlxG.mouse.justPressedMiddle)
+			haveLefted = false;
+		}
+		if (controls.RIGHT_P || FlxG.mouse.justPressedMiddle || haveRighted)
+		{
 			changeDiff(1);
+			haveRighted = false;
+		}
 
-		if (controls.BACK || FlxG.mouse.justPressedRight)
+		if (controls.BACK || haveBacked)
 		{
 			FlxG.switchState(new MainMenuState());
+
+			haveBacked = false;
 		}
 
 		if (accepted)
@@ -275,9 +294,14 @@ class FreeplayState extends MusicBeatState
 		//do something for mouse
 		if(FlxG.mouse.visible)
 		{
+			var givThing:Bool = false;
+			var givIcon:Bool = false;
+
 			//JOELwindows7: mouse support
 			grpSongs.forEach(function(thing:Alphabet){
-				if(FlxG.mouse.overlaps(thing)){
+				if(FlxG.mouse.overlaps(thing) && !FlxG.mouse.overlaps(backButton)
+					&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
+					givThing = true;
 					if(FlxG.mouse.justPressed){
 						if(thing.ID == curSelected){
 							//run the song
@@ -288,11 +312,15 @@ class FreeplayState extends MusicBeatState
 						}
 					}
 				}
+
+				
 			});
 
 			//JOELwindows7: same mouse support, for icons too as well!
 			for (i in 0...iconArray.length) {
-				if(FlxG.mouse.overlaps(iconArray[i])){
+				if(FlxG.mouse.overlaps(iconArray[i]) && !FlxG.mouse.overlaps(backButton)
+					&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
+					givIcon = true;
 					if(FlxG.mouse.justPressed){
 						if(iconArray[i].ID == curSelected){
 							//run the song
@@ -306,6 +334,28 @@ class FreeplayState extends MusicBeatState
 			}
 			//I'm afraid adding more `for` could killl performance here
 			//help!
+
+			//Back buttoner
+			if(FlxG.mouse.overlaps(backButton) && !givThing && !givIcon){
+				if(FlxG.mouse.justPressed)
+					if(!haveBacked){
+						haveBacked = true;
+					}
+			}
+
+			//Diff Buttoner
+			if(FlxG.mouse.overlaps(leftButton) && !givThing && !givIcon){
+				if(FlxG.mouse.justPressed)
+					if(!haveLefted){
+						haveLefted = true;
+					}
+			}
+			if(FlxG.mouse.overlaps(rightButton) && !givThing && !givIcon){
+				if(FlxG.mouse.justPressed)
+					if(!haveRighted){
+						haveRighted = true;
+					}
+			}
 		}
 	}
 

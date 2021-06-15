@@ -1,6 +1,5 @@
 {
-    "funkin": {
-        "songName": "empty",
-        "bpm": 100
-    }
+    "songName": "empty",
+    "bpm": 100,
+    "lyrics": []
 }

@@ -129,13 +129,34 @@ class Ratings
         return "sick";
     }
 
-    public static function CalculateRanking(score:Int,scoreDef:Int,nps:Int,maxNPS:Int,accuracy:Float):String
+    public static function judgeHeartBeat(heartBeat:Int, heartTier:Int){
+        var classify:String = "Nrml";
+        switch(heartTier){
+            case 0:
+                classify = "Nrml";
+            case 1:
+                classify = "Fast";
+            case 2:
+                classify = "Rcing";
+            case 3:
+                classify = "Poundn";
+        }
+
+        return Std.string(heartBeat) + " BPM (" + classify + ")";
+    }
+
+    public static function CalculateRanking(score:Int,scoreDef:Int,nps:Int,maxNPS:Int,accuracy:Float,hR:Int, hTier:Int):String
     {
         return 
         (FlxG.save.data.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ")" + (!FlxG.save.data.botplay ? " | " : "") : "") + (!FlxG.save.data.botplay ?	// NPS Toggle
         "Score:" + (Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score) + 									// Score
         " | Combo Breaks:" + PlayState.misses + 																				// Misses/Combo Breaks
         " | Accuracy:" + (FlxG.save.data.botplay ? "N/A" : HelperFunctions.truncateFloat(accuracy, 2) + " %") +  				// Accuracy
-        " | " + GenerateLetterRank(accuracy) : ""); 																			// Letter Rank
+        " | " + GenerateLetterRank(accuracy)                                                                                    // Letter Rank
+        : 
+        ""  
+        ) +                                                                            
+        (" | HR: " + judgeHeartBeat(hR,hTier))                                                                                  // JOELwindows7: in game heartbeat rate; 																			
+        ;
     }
 }

@@ -1,5 +1,7 @@
 package;
 
+import flixel.input.actions.FlxAction.FlxActionAnalog;
+import DokiDoki;
 import flixel.input.keyboard.FlxKey;
 import haxe.Exception;
 import openfl.geom.Matrix;
@@ -71,6 +73,8 @@ class PlayState extends MusicBeatState
 
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
+	public static var HEART:SwagHeart; //JOELwindows7: heartbeat spec
+	public static var HEARTS:HeartList; //JOELwindows7: list of heart specs
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
@@ -104,6 +108,17 @@ class PlayState extends MusicBeatState
 	var reuploadWatermark:FlxText; //JOELwindows7: reupload & no credit protection. 
 	//last resort is to have links shared in video, hard coded, hard embedded.
 	//hopefully the "thiefs" got displeased lmao!
+
+	//JOELwindows7: Doki doki dance thingie
+	public var heartRate:Int = 70;
+	public var minHR:Int = 70;
+	public var maxHR:Int = 220;
+	public var heartTierIsRightNow:Int = 0;
+	public var heartTierBoundaries:Array<Int> = [90, 120, 150, 200]; // tier when bellow each number
+	public var successionAdrenalAdd:Array<Int> = [4, 3, 2, 1];
+	public var fearShockAdd:Array<Int> = [10, 8, 7, 5];
+	public var relaxMinusPerBeat:Array<Int> = [1, 2, 4, 7];
+	var slowedAlready:Bool = false;
 	
 	#if windows
 	// Discord RPC variables
@@ -331,6 +346,9 @@ class PlayState extends MusicBeatState
 		// yeah I know, for future use we array this.
 		var initMissSfx = CoolUtil.coolTextFile(Paths.txt('numbersOfMissSfx'));
 		numOfMissNoteSfx = Std.parseInt(initMissSfx[0]);
+
+		//JOELwindows7: init the heartbeat system
+		startHeartBeat();
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -2373,13 +2391,16 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
+		//JOELwindows7: update heartbeat moments
+		updateHeartbeat();
+
 		if(curBeat > 8){
 			//JOELwindows7: invisiblize watermark after 8 curBeat
 			//to prevent view obstruction
 			reuploadWatermark.visible = false;
 		}
 
-		scoreTxt.text = Ratings.CalculateRanking(songScore,songScoreDef,nps,maxNPS,accuracy);
+		scoreTxt.text = Ratings.CalculateRanking(songScore,songScoreDef,nps,maxNPS,accuracy,heartRate,heartTierIsRightNow);
 		if (!FlxG.save.data.accuracyDisplay)
 			scoreTxt.text = "Score: " + songScore;
 
@@ -3199,6 +3220,8 @@ class PlayState extends MusicBeatState
 					//PlayState.SONG = Song.loadFromJson(nextSongLowercase + difficulty, PlayState.storyPlaylist[0]);
 					PlayState.SONG = Song.loadFromJson(nextSongLowercase + difficulty, nextSongLowercase);
 					//JOELwindows7: conform the story mode oid based on dash is space like StoryMenuState.hx
+					// also load heartspec
+					PlayState.HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
 					FlxG.sound.music.stop();
 
 					//JOELwindows7: if has video, then load the video first before going to new playstate!
@@ -3934,6 +3957,9 @@ class PlayState extends MusicBeatState
 					note.kill();
 					notes.remove(note, true);
 					note.destroy();
+
+					//JOELwindows7: successfully step, add adrenaline heartbeat fass
+					successfullyStep();
 					
 					updateAccuracy();
 				}
@@ -4044,6 +4070,9 @@ class PlayState extends MusicBeatState
 
 		boyfriend.playAnim('scared', true);
 		gf.playAnim('scared', true);
+
+		//JOELwindows7: shock fear Heartbeat jumps
+		increaseHR(fearShockAdd[heartTierIsRightNow]);
 	}
 
 	var danced:Bool = false;
@@ -4330,6 +4359,77 @@ class PlayState extends MusicBeatState
 			if(isChromaScreen){
 				colorableGround.color = originalColor;
 			} else colorableGround.visible = false;
+	}
+
+	//JOELwindows7: manage heartbeat moments
+	function startHeartBeat(){
+		HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
+		var chooseIndex = 0;
+		switch(SONG.player1){
+            case 'bf': chooseIndex = 0;
+            case 'gf': chooseIndex = 1;
+            default: chooseIndex = 0;
+        }
+		heartTierIsRightNow = 0;
+		HEART = HEARTS.heartSpecs[chooseIndex];
+		heartRate = HEART.initHR;
+		minHR = HEART.minHR;
+		maxHR = HEART.maxHR;
+		successionAdrenalAdd = HEART.successionAdrenalAdd;
+		fearShockAdd = HEART.fearShockAdd;
+		relaxMinusPerBeat = HEART.relaxMinusPerBeat;
+		heartTierBoundaries = HEART.heartTierBoundaries;
+	}
+	function updateHeartbeat(){
+		//update the tier status
+		if(heartRate > heartTierBoundaries[heartTierIsRightNow]){
+
+		}
+
+		if(curBeat % 4 == 0){
+			//Relax heartbeat
+			if(!slowedAlready)
+			{
+				increaseHR(-relaxMinusPerBeat[heartTierIsRightNow]);
+				slowedAlready = true;
+			}
+		} else slowedAlready = false;
+	}
+	function successfullyStep(){
+		increaseHR(successionAdrenalAdd[heartTierIsRightNow]);
+	}
+	function checkWhichHeartTierWent(giveHB:Int){
+		// if(giveHB > heartTierBoundaries[heartTierIsRightNow] && giveHB < heartTierBoundaries[heartTierIsRightNow+1]){
+		// 	heartTierIsRightNow++;
+		// } else if (giveHB > heartTierBoundaries[heartTierIsRightNow+1]){
+
+		// }
+
+		//Hard code bcause logic brainstorm is haarde
+		if (giveHB < heartTierBoundaries[0])
+			heartTierIsRightNow = 0;
+		else if(giveHB >= heartTierBoundaries[0] && giveHB < heartTierBoundaries[1])
+			heartTierIsRightNow = 1;
+		else if(giveHB >= heartTierBoundaries[1] && giveHB < heartTierBoundaries[2])
+			heartTierIsRightNow = 2;
+		else if(giveHB >= heartTierBoundaries[2] && giveHB < heartTierBoundaries[3])
+			heartTierIsRightNow = 3;
+		else if(giveHB >= heartTierBoundaries[3]){
+			//uhhh, idk..
+		}
+	}
+	public function increaseHR(forHowMuch:Int = 0){
+		heartRate += forHowMuch;
+
+		if(heartRate > maxHR){
+			heartRate = maxHR;
+		}
+		if (heartRate < minHR){
+			heartRate = minHR;
+		}
+
+		//update the tier status
+		checkWhichHeartTierWent(heartRate);
 	}
 
 	var curLight:Int = 0; //JOELwindows7: not my code. hey, Ninja! you should've white light like I do above

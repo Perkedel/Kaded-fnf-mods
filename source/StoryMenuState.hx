@@ -96,9 +96,6 @@ class StoryMenuState extends MusicBeatState
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
-	//JOELwindows7: add mouse click flag
-	var haveClicked:Bool = false;
-
 	override function create()
 	{
 		//JOELwindows7: Do the work for the weeklist pls!
@@ -243,6 +240,9 @@ class StoryMenuState extends MusicBeatState
 
 		trace("Line 165");
 
+		//JOELwindows7: add back button now
+		addBackButton(10,Std.int((FlxG.height/2)+40),.25);
+
 		super.create();
 	}
 
@@ -326,11 +326,13 @@ class StoryMenuState extends MusicBeatState
 			} 
 		}
 
-		if ((controls.BACK || FlxG.mouse.justPressedRight) && !movedBack && !selectedWeek)
+		if ((controls.BACK || haveBacked) && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
 			FlxG.switchState(new MainMenuState());
+
+			haveBacked = false;
 		}
 
 		super.update(elapsed);
@@ -338,7 +340,7 @@ class StoryMenuState extends MusicBeatState
 		//JOELwindows7: mouse support
 		grpWeekText.forEach(function(item:MenuItem){
 			if(!selectedWeek){
-				if(FlxG.mouse.overlaps(item)){
+				if(FlxG.mouse.overlaps(item) && !FlxG.mouse.overlaps(backButton)){
 					if(FlxG.mouse.justPressed){
 						if(item.ID == curWeek){
 							haveClicked = true;
@@ -348,6 +350,14 @@ class StoryMenuState extends MusicBeatState
 						}
 					}
 				}
+			}
+
+			//back Buttoning
+			if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(item)){
+				if(FlxG.mouse.justPressed)
+					if(!haveBacked){
+						haveBacked = true;
+					}
 			}
 		});
 		

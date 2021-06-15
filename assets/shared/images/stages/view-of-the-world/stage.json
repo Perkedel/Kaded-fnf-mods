@@ -1,0 +1,16 @@
+{
+    "stage": {
+        "name": "View Of The World",
+        "bg": "view-of-the-world-StageBackNoStar",
+        "stageFront": "view-of-the-world-StageFront",
+        "stageCurtain": "view-of-the-world-StageCurtain",
+        "colorableBg": "view-of-the-world-JustStars",
+        "images": [
+            "view-of-the-world-StageBackNoStar",
+            "view-of-the-world-StageFront",
+            "view-of-the-world-StageCurtain",
+            "view-of-the-world-JustStars"
+        ],
+        "order": [3, 0, 1, 2]
+    }
+}

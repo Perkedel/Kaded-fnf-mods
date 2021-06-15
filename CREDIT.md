@@ -163,7 +163,12 @@ thancc for all these resources! without them, everything is impossible.
 - Oh this Pretty cool bianos, WAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!! https://youtu.be/OUypHVSBbqs with original ad from Japanese Nintendo https://youtu.be/MBr10rC-0K8
 - GameBanana bad luck, this mod did not immediately ripe. other mods (even terrible ones) somehow got ripe after just a day or two. and others even already months of gruelling updates never ripes at all.
 - https://knowyourmeme.com/memes/bananas-rotat-e-bananamp4 Bananas rotat e . Tumblr post https://shrekyourself.tumblr.com/post/67116150608 . original banana rotate donkey kong https://www.youtube.com/watch?v=o6BsxnBI7Ng .
-- 
+- https://www.deviantart.com/sinon51788/art/BETA-Doki-Doki-Dance-407943715 Inspiration for case of uh, Heartbeat Cardiophile gameplay system. like e.g. bf or gf heartbeat, gets faster as they play etc etc.
+- https://www.deviantart.com/hokoj/art/Inner-Song-874196129 Hokoj drew GF xray view the beating heart lub dub
+- https://gamebanana.com/mods/44515 (Warning has NC, ND) inspire the parameters like artist, lyric, etc.
+- https://github.com/UncertainProd/FnF-Spritesheet-and-XML-Maker Source code sprite sheet maker
+- https://gamebanana.com/tools/7136 Sprite sheet xml generator
+- Jokowi, 7th and 8th President of Indonesia. quotes of `Ya ndak tahu, kok tanya saya?`.
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -244,6 +249,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/haxorplatform/androidhx android haxe template project. attempted android porting faile
 - https://lib.haxe.org/p/android6permissions android 6 permission checker for haxe. attempted android porting faile
 - https://gamebanana.com/mods/294044 Summer Beach. (wait until he finished first before remake remaster!)
+- https://tunebat.com/Info/Super-Mario-Main-Theme-Super-Mario-Bros/4FkhUEKaSHerpzdoq3qneS MArio song BPM is
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

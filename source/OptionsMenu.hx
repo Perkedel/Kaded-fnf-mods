@@ -73,9 +73,6 @@ class OptionsMenu extends MusicBeatState
 	private var currentDescription:String = "";
 	private var grpControls:FlxTypedGroup<Alphabet>;
 	public static var versionShit:FlxText;
-
-	//JOELwindows7: add mouse click flag
-	var haveClicked:Bool = false;
 	
 	var currentSelectedCat:OptionCategory;
 	var blackBorder:FlxSprite;
@@ -93,6 +90,10 @@ class OptionsMenu extends MusicBeatState
 
 		grpControls = new FlxTypedGroup<Alphabet>();
 		add(grpControls);
+
+		addBackButton(20,FlxG.height);
+		addLeftButton(FlxG.width-400,FlxG.height);
+		addRightButton(FlxG.width-200,FlxG.height);
 
 		for (i in 0...options.length)
 		{
@@ -119,6 +120,9 @@ class OptionsMenu extends MusicBeatState
 
 		FlxTween.tween(versionShit,{y: FlxG.height - 18},2,{ease: FlxEase.elasticInOut});
 		FlxTween.tween(blackBorder,{y: FlxG.height - 18},2, {ease: FlxEase.elasticInOut});
+		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left right button
+		FlxTween.tween(rightButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: yeah.
 
 		super.create();
 	}
@@ -151,9 +155,12 @@ class OptionsMenu extends MusicBeatState
 		{
 			//JOELwindows7: right click to go back, I guess.
 			//incase gamers get mad, smash keyboard, no longer working?
-			if ((controls.BACK || FlxG.mouse.justPressedRight)&& !isCat)
+			if ((controls.BACK || haveBacked)&& !isCat)
+			{
 				FlxG.switchState(new MainMenuState());
-			else if (controls.BACK || FlxG.mouse.justPressedRight)
+				haveBacked = false;
+			}
+			else if (controls.BACK || haveBacked)
 			{
 				isCat = false;
 				grpControls.clear();
@@ -167,6 +174,7 @@ class OptionsMenu extends MusicBeatState
 						// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 					}
 				curSelected = 0;
+				haveBacked = false;
 			}
 			//JOELwindows7: idk how to mouse on option menu
 			if (controls.UP_P || FlxG.mouse.wheel == 1)
@@ -181,17 +189,29 @@ class OptionsMenu extends MusicBeatState
 				{
 					if (FlxG.keys.pressed.SHIFT)
 						{
-							if (FlxG.keys.pressed.RIGHT)
+							if (FlxG.keys.pressed.RIGHT || haveRighted)
+							{
 								currentSelectedCat.getOptions()[curSelected].right();
-							if (FlxG.keys.pressed.LEFT)
+								haveRighted = false;
+							}
+							if (FlxG.keys.pressed.LEFT || haveLefted)
+							{
 								currentSelectedCat.getOptions()[curSelected].left();
+								haveLefted = false;
+							}
 						}
 					else
 					{
-						if (FlxG.keys.justPressed.RIGHT)
+						if (FlxG.keys.justPressed.RIGHT || haveRighted)
+						{
 							currentSelectedCat.getOptions()[curSelected].right();
-						if (FlxG.keys.justPressed.LEFT)
+							haveRighted = false;
+						}
+						if (FlxG.keys.justPressed.LEFT || haveLefted)
+						{
 							currentSelectedCat.getOptions()[curSelected].left();
+							haveLefted = false;
+						}
 					}
 				}
 				else
@@ -199,15 +219,27 @@ class OptionsMenu extends MusicBeatState
 
 					if (FlxG.keys.pressed.SHIFT)
 					{
-						if (FlxG.keys.justPressed.RIGHT)
+						if (FlxG.keys.justPressed.RIGHT || haveRighted)
+						{
 							FlxG.save.data.offset += 0.1;
-						else if (FlxG.keys.justPressed.LEFT)
+							haveRighted = false;
+						}
+						else if (FlxG.keys.justPressed.LEFT || haveLefted)
+						{
 							FlxG.save.data.offset -= 0.1;
+							haveLefted = false;
+						}
 					}
-					else if (FlxG.keys.pressed.RIGHT)
+					else if (FlxG.keys.pressed.RIGHT || haveRighted)
+					{
 						FlxG.save.data.offset += 0.1;
-					else if (FlxG.keys.pressed.LEFT)
+						haveRighted = false;
+					}
+					else if (FlxG.keys.pressed.LEFT || haveLefted)
+					{
 						FlxG.save.data.offset -= 0.1;
+						haveLefted = false;
+					}
 					
 				
 				}
@@ -220,15 +252,27 @@ class OptionsMenu extends MusicBeatState
 			{
 				if (FlxG.keys.pressed.SHIFT)
 					{
-						if (FlxG.keys.justPressed.RIGHT)
+						if (FlxG.keys.justPressed.RIGHT || haveRighted)
+						{
 							FlxG.save.data.offset += 0.1;
-						else if (FlxG.keys.justPressed.LEFT)
+							haveRighted = false;
+						}
+						else if (FlxG.keys.justPressed.LEFT || haveLefted)
+						{
 							FlxG.save.data.offset -= 0.1;
+							haveLefted = false;
+						}
 					}
-					else if (FlxG.keys.pressed.RIGHT)
+					else if (FlxG.keys.pressed.RIGHT || haveRighted)
+					{
 						FlxG.save.data.offset += 0.1;
-					else if (FlxG.keys.pressed.LEFT)
+						haveRighted = false;
+					}
+					else if (FlxG.keys.pressed.LEFT || haveLefted)
+					{
 						FlxG.save.data.offset -= 0.1;
+						haveLefted = false;
+					}
 			}
 		
 
@@ -271,7 +315,8 @@ class OptionsMenu extends MusicBeatState
 		//JOELwindows7: query every single menu category and each items
 		//inspire this from MainMenuState like before!
 		grpControls.forEach(function(alphabet:Alphabet){
-			if(FlxG.mouse.overlaps(alphabet)){
+			if(FlxG.mouse.overlaps(alphabet) && !FlxG.mouse.overlaps(backButton)
+				&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
 				if(FlxG.mouse.justPressed){
 					if(alphabet.ID == curSelected){
 						haveClicked = true;
@@ -280,7 +325,32 @@ class OptionsMenu extends MusicBeatState
 					}
 				}
 			}
+
+			//JOELwindows7: back button for no keyboard
+			if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(alphabet)){
+				if(FlxG.mouse.justPressed){
+					if(!haveBacked){
+						haveBacked = true;
+					}
+				}
+			}
+			if(FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(alphabet)){
+				if(FlxG.mouse.justPressed){
+					if(!haveLefted){
+						haveLefted = true;
+					}
+				}
+			}
+			if(FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(alphabet)){
+				if(FlxG.mouse.justPressed){
+					if(!haveRighted){
+						haveRighted = true;
+					}
+				}
+			}
 		});
+
+		
 	}
 
 	var isSettingControl:Bool = false;

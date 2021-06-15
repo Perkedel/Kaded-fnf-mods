@@ -35,7 +35,6 @@ class MainMenuState extends MusicBeatState
 	var curSelected:Int = 0;
 	//JOELwindows7: which clicked & have they clicked.
 	var curClicked:Int = 0;
-	var haveClicked:Bool = false;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
@@ -63,11 +62,11 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		#if desktop
-		#if cpp
+		
+
+		#if windows
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
-		#end
 		#end
 
 		if (!FlxG.sound.music.playing)
@@ -106,6 +105,11 @@ class MainMenuState extends MusicBeatState
 
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 
+		//JOELwindows7: add back button
+		addBackButton(10, FlxG.height + 100);
+		//backButton.screenCenter(X);
+		backButton.scrollFactor.set();
+
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, FlxG.height * 1.6);
@@ -119,13 +123,26 @@ class MainMenuState extends MusicBeatState
 			menuItem.scrollFactor.set();
 			menuItem.antialiasing = true;
 			if (firstStart)
+			{
 				FlxTween.tween(menuItem,{y: 60 + (i * 160)},1 + (i * 0.25) ,{ease: FlxEase.expoInOut, onComplete: function(flxTween:FlxTween) 
 					{ 
 						finishedFunnyMove = true; 
 						changeItem();
 					}});
+				
+			}
 			else
+			{
 				menuItem.y = 60 + (i * 160);
+				
+			}
+		}
+
+		//JOELwindows7: back button swiaush
+		if(firstStart){
+			FlxTween.tween(backButton,{y: FlxG.height - 150},{ease: FlxEase.expoInOut});
+		} else {
+			backButton.y = FlxG.height - 150;
 		}
 
 		firstStart = false;
@@ -201,9 +218,11 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
-			if (controls.BACK || FlxG.mouse.justPressedRight)
+			if (controls.BACK || haveBacked)
 			{
 				FlxG.switchState(new TitleState());
+
+				haveBacked = false;
 			}
 
 			if (controls.ACCEPT || haveClicked)
@@ -252,6 +271,11 @@ class MainMenuState extends MusicBeatState
 							}
 						}
 					});
+
+					//JOELwindows7: also for the back button fade
+					FlxTween.tween(backButton,{alpha:0},1.3,{ease:FlxEase.quadOut, onComplete: function(twn:FlxTween){
+						backButton.kill();
+					}});
 				}
 				//JOELwindows7: have clicked refalsing after done.
 				haveClicked = false;
@@ -268,7 +292,7 @@ class MainMenuState extends MusicBeatState
 		{
 			//JOELwindows7: itterate sprite menu items overlaps and click functions
 			if(!selectedSomethin && FlxG.mouse.visible && finishedFunnyMove){
-				if(FlxG.mouse.overlaps(spr)){
+				if(FlxG.mouse.overlaps(spr) && !FlxG.mouse.overlaps(backButton)){
 					if(curSelected != spr.ID){
 						FlxG.sound.play(Paths.sound('scrollMenu'));
 						goToItem(spr.ID);
@@ -276,6 +300,14 @@ class MainMenuState extends MusicBeatState
 					if(FlxG.mouse.justPressed){
 						trace("mouse clicked on " + Std.string(curSelected) + ". " + optionShit[curSelected]);
 						haveClicked = true;
+					}
+				}
+
+				if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(spr)){
+					if(FlxG.mouse.justPressed){
+						if(!haveBacked) {
+							haveBacked = true;
+						}
 					}
 				}
 			}

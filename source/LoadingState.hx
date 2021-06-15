@@ -26,6 +26,7 @@ class LoadingState extends MusicBeatState
 	var logo:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft = false;
+	var hourGlass:FlxSprite; //JOELwindows7: animated gravity hourglass Piskel
 	
 	function new(target:FlxState, stopMusic:Bool)
 	{
@@ -52,6 +53,13 @@ class LoadingState extends MusicBeatState
 		gfDance.antialiasing = true;
 		add(gfDance);
 		add(logo);
+
+		hourGlass = new FlxSprite(10, FlxG.height-10);
+		hourGlass.frames = Paths.getSparrowAtlas('Gravity-HourGlass');
+		hourGlass.animation.addByPrefix('working', 'Gravity-HourGlass idle', 24);
+		hourGlass.animation.play('working');
+		hourGlass.updateHitbox();
+		add(hourGlass);
 		
 		initSongsManifest().onComplete
 		(
