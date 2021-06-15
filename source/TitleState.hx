@@ -22,16 +22,16 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 #if !mobile
 #if !neko
+#if !hl
 import io.newgrounds.NG;
+#end
 #end
 #end
 import lime.app.Application;
 import openfl.Assets;
 
-#if desktop
-#if cpp
+#if windows
 import Discord.DiscordClient;
-#end
 #end
 
 #if cpp
@@ -49,8 +49,8 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
-	var perkedelSpr:FlxSprite;
-	var odyseeSpr:FlxSprite;
+	var perkedelSpr:FlxSprite; //JOELwindows7: the Perkedel Logo
+	var odyseeSpr:FlxSprite; //JOELwindows7: the Odysee Logo
 
 	var curWacky:Array<String> = [];
 
@@ -81,15 +81,13 @@ class TitleState extends MusicBeatState
 		
 		PlayerSettings.init();
 
-		#if desktop
-		#if cpp
+		#if windows
 		DiscordClient.initialize();
 
 		Application.current.onExit.add (function (exitCode) {
 			DiscordClient.shutdown();
 		 });
 		 
-		#end
 		#end
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
@@ -186,14 +184,25 @@ class TitleState extends MusicBeatState
 		// bg.updateHitbox();
 		add(bg);
 
-		logoBl = new FlxSprite(-150, -100);
-		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
-		logoBl.antialiasing = true;
-		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
-		logoBl.animation.play('bump');
-		logoBl.updateHitbox();
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
+		if(Main.watermarks) {
+			logoBl = new FlxSprite(-150, -100);
+			logoBl.frames = Paths.getSparrowAtlas('KadeEngineLogoBumpin');
+			logoBl.antialiasing = true;
+			logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
+			logoBl.animation.play('bump');
+			logoBl.updateHitbox();
+			// logoBl.screenCenter();
+			// logoBl.color = FlxColor.BLACK;
+		} else {
+			logoBl = new FlxSprite(-150, -100);
+			logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+			logoBl.antialiasing = true;
+			logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
+			logoBl.animation.play('bump');
+			logoBl.updateHitbox();
+			// logoBl.screenCenter();
+			// logoBl.color = FlxColor.BLACK;
+		}
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
@@ -425,7 +434,6 @@ class TitleState extends MusicBeatState
 				
 				http.request();
 			});
-
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
