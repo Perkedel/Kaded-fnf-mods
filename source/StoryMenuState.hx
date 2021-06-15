@@ -18,10 +18,8 @@ import haxe.Json;
 import haxe.format.JsonParser;
 
 //JOELwindows7: hey, I changed all discord rpc to only available to desktop, except neko and hashlink.
-#if desktop
-#if cpp
+#if windows
 import Discord.DiscordClient;
-#end
 #end
 
 using StringTools;
@@ -121,11 +119,9 @@ class StoryMenuState extends MusicBeatState
 		weekNames = initWeekJson.weekNames;
 
 
-		#if desktop
-		#if cpp
+		#if windows
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
-		#end
 		#end
 
 		transIn = FlxTransitionableState.defaultTransIn;
