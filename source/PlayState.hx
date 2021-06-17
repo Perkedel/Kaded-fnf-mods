@@ -285,12 +285,10 @@ class PlayState extends MusicBeatState
 				case 'philly-nice': songLowercase = 'philly';
 			}
 		
-		#if windows
-		#if sys
+		#if (windows && sys)
 		executeModchart = FileSystem.exists(Paths.lua(songLowercase  + "/modchart"));
 		#else
-		executeModchart = false; // JOELwindows7: FORCE disable for non sys targets
-		#end
+		executeModchart = false; // JOELwindows7: FORCE disable for non sys && windows targets
 		#end
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
@@ -404,7 +402,7 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			default:
 				//JOELwindows7: make dialog loading things went procedural!
-				#if sys
+				#if (sys && !mobile)
 				dialogue = (SONG.hasDialogueChat &&
 					FileSystem.exists(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Dialogue'))
 				)? 
@@ -420,7 +418,7 @@ class PlayState extends MusicBeatState
 		}
 
 		//JOELwinodws7: Epilogue shit
-		#if sys
+		#if (sys && !mobile)
 		epilogue = (SONG.hasEpilogueChat &&
 			FileSystem.exists(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Epilogue'))
 		) ? 
@@ -1344,6 +1342,8 @@ class PlayState extends MusicBeatState
 
 		camFollow.setPosition(camPos.x, camPos.y);
 
+		trace("cam follow set"); //JOELwindows7: trace now
+
 		if (prevCamFollow != null)
 		{
 			camFollow = prevCamFollow;
@@ -1352,10 +1352,14 @@ class PlayState extends MusicBeatState
 
 		add(camFollow);
 
+		trace("add cam follow");
+
 		FlxG.camera.follow(camFollow, LOCKON, 0.04 * (30 / (cast (Lib.current.getChildAt(0), Main)).getFPS()));
 		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
+
+		trace("set cam FlxG");
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
@@ -1398,6 +1402,8 @@ class PlayState extends MusicBeatState
 		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		// healthBar
 		add(healthBar);
+
+		trace("add HP bar"); //JOELwindows7: where the heck crash source?! android
 
 		//JOELwindows7: add reupload watermark
 		//usually, YouTube mod showcase only shows gameplay
@@ -1463,6 +1469,7 @@ class PlayState extends MusicBeatState
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
+		eoof.cameras = [camHUD]; //JOELwindows7: stick the epilogue to camera
 		if (FlxG.save.data.songPosition)
 		{
 			songPosBG.cameras = [camHUD];
@@ -1958,7 +1965,7 @@ class PlayState extends MusicBeatState
 				case 'philly-nice': songLowercase = 'philly';
 			}
 		// Per song offset check
-		#if sys
+		#if (sys && windows) //JOELwindows7: make this work if there is sys & is Windows
 			var songPath = 'assets/data/' + songLowercase + '/';
 			
 			for(file in sys.FileSystem.readDirectory(songPath))
@@ -3163,12 +3170,8 @@ class PlayState extends MusicBeatState
 
 					if (SONG.validScore)
 					{	
-						#if !mobile
-						#if !switch
-						#if !neko
+						#if newgrounds
 						NGio.unlockMedal(60961);
-						#end
-						#end
 						#end
 						Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 					}

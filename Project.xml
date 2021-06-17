@@ -35,8 +35,9 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true"/>
+	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/>
 	<!-- JOELwindows7: make it resizable due to Samsung Dex just in case -->
+	<!-- um nvm. also luckydog7 force it 720p -->
 
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
@@ -166,8 +167,8 @@
 	<haxelib name="newgrounds" unless='mobile'/>
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="polymod"/>
-	<haxelib name="discord_rpc" if="desktop cpp" unless="neko || hl"/>
-	<haxelib name="linc_luajit" if="desktop cpp" unless="neko || hl"/>
+	<haxelib name="discord_rpc" if="cpp" unless="neko || hl || mobile"/>
+	<haxelib name="linc_luajit" if="cpp" unless="neko || hl || mobile"/>
 	
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
@@ -182,6 +183,9 @@
 	<!-- added by JOELwindows7 -->
 	<haxelib name="actuate" />
 	<haxelib name="extension-webm" if="desktop" />
+
+	<!-- the luckydog7 added this since the video plays in a webview -->
+	<!-- <haxelib name="extension-webview"/> -->
 	<!-- end Video Cutscener -->
 
 	<!-- Android permissioning -->

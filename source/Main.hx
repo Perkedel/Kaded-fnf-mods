@@ -52,7 +52,7 @@ class Main extends Sprite
 		super();
 
 		//JOELwindows7: pecking ask permission on Android 6 and forth
-		#if !debug
+		#if android
 		var askPermNum:Int = 0;
 		var timeoutPermNum:Int = 10;
 		while(!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE) ||

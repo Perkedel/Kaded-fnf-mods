@@ -1,5 +1,4 @@
-#if !mobile
-#if !neko
+#if newgrounds
 // JOELwindows7: if not mobile was from https://github.com/luckydog7/Funkin-android/blob/master/source/NGio.hx
 package;
 
@@ -201,5 +200,4 @@ class NGio
 		}
 	}
 }
-#end
 #end

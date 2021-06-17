@@ -20,12 +20,8 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-#if !mobile
-#if !neko
-#if !hl
+#if newgrounds
 import io.newgrounds.NG;
-#end
-#end
 #end
 import lime.app.Application;
 import openfl.Assets;
@@ -58,15 +54,24 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		//JOELwindows7: luckydog7 added this, maybe to prevent absolute quit by back button.
+		// https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx
+		// https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
+		#end
 
 		#if polymod
 		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
 		#end
 		
-		#if sys
+		#if (sys && !mobile) //JOELwindows7: title state in trickster android luckydog7
 		if (!sys.FileSystem.exists(Sys.getCwd() + "/assets/replays"))
 			sys.FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
 		#end
+		//Since we do not have the ability to spawn ask permission in Android somehow (despite our best effort), 
+		//we disabled create directory of replay. man that's disappointing.
+		//we need help for creating dir and file in Android!
 
 		//JOELwindows7: add Odysee titler
 		#if odysee
@@ -327,9 +332,11 @@ class TitleState extends MusicBeatState
 		#end
 
 		//JOELwindows7: add mouse click to press enter
+		#if !mobile
 		if(FlxG.mouse.justPressed){
 			pressedEnter = true;
 		}
+		#end
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
@@ -346,17 +353,13 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
+			#if newgrounds
 			#if !switch
-			#if !mobile
-			#if !neko
-			#if !hl
 			NGio.unlockMedal(60960);
 
 			// If it's Friday according to da clock
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
-			#end
-			#end
 			#end
 			#end
 
@@ -374,7 +377,9 @@ class TitleState extends MusicBeatState
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				// Get current version of Kade Engine
-				
+				//JOELwindows7: do this if not mobile since in there this doesn't work
+				//according to the luckydog7 and mods that don't care update
+				#if !mobile
 				var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/master/version.downloadMe");
 				var returnedData:Array<String> = [];
 				
@@ -401,12 +406,18 @@ class TitleState extends MusicBeatState
 				}
 				
 				http.request();
+				#else
+				//see bellow update (LFM update check) check else
+				//it already done go to menu for me.
+				#end
 			});
 
 			//JOELwindows7: Last Funkin Moments outdated marks
 			//copy from above
 			new FlxTimer().start(2, function(tmr:FlxTimer){
 				//Get the current version of Last Funkin Moments
+
+				#if !mobile
 				var http = new haxe.Http("https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe");
 				var returnedData:Array<String> = [];
 				
@@ -434,6 +445,9 @@ class TitleState extends MusicBeatState
 				}
 				
 				http.request();
+				#else
+				FlxG.switchState(new MainMenuState()); //Just pecking go to menu already!
+				#end
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}

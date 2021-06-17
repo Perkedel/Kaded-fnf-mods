@@ -32,6 +32,9 @@ thancc for all these resources! without them, everything is impossible.
 - https://groups.google.com/g/haxeflixel/c/Le1VeL4WQlY where is the Haxe save data located?
 - https://github.com/luckydog7/Funkin-android android FNF
 - https://github.com/luckydog7/Funkin-android/blob/master/source/NGio.hx don't define the code if not android
+- https://github.com/luckydog7/trickster/ Tricky mod android. Follow how the Kade was ported to Android!
+- https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx example changes in Kade Android luckydog7
+- https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088 I mean, look at this.
 - https://gamejolt.com/games/fnfandroid/593952 android FNF
 - https://developer.android.com/ndk/downloads?hl=fi android NDK
 - https://mcpedl.com/friday-night-funkin-add-on/ minecraft bedrock addon of fnf
