@@ -1,6 +1,8 @@
 package;
 
+#if !debug
 import com.player03.android6.Permissions;
+#end
 import openfl.display.BlendMode;
 import openfl.text.TextFormat;
 import openfl.display.Application;
@@ -50,6 +52,7 @@ class Main extends Sprite
 		super();
 
 		//JOELwindows7: pecking ask permission on Android 6 and forth
+		#if !debug
 		var askPermNum:Int = 0;
 		var timeoutPermNum:Int = 10;
 		while(!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE) ||
@@ -65,6 +68,8 @@ class Main extends Sprite
 			askPermNum++;
 			if(askPermNum > timeoutPermNum) break;
 		}
+		#end
+		//wtf, it doesn't work if Debug situation?! I don't get it!
 
 		if (stage != null)
 		{

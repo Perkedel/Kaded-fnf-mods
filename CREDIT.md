@@ -250,6 +250,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://lib.haxe.org/p/android6permissions android 6 permission checker for haxe. attempted android porting faile
 - https://gamebanana.com/mods/294044 Summer Beach. (wait until he finished first before remake remaster!)
 - https://tunebat.com/Info/Super-Mario-Main-Theme-Super-Mario-Bros/4FkhUEKaSHerpzdoq3qneS MArio song BPM is
+- https://gamebanana.com/tuts/13798 Comprehensive Modding tutorial for vanilla FNF
+- https://odysee.com/@OdyseeHelp:b/odyseepresskit:b?r=4jRC3d5tDF9DhZzAnEqaArPdyCH2MAyy Odysee press kit
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

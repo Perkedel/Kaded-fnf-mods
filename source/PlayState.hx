@@ -2761,6 +2761,11 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("beatShit", curBeat);
 		FlxG.watch.addQuick("stepShit", curStep);
 
+		//JOELwindows7: add more watches too
+		FlxG.watch.addQuick("tempoShit", Conductor.bpm);
+		FlxG.watch.addQuick("shinzouRateShit", heartRate);
+		FlxG.watch.addQuick("songPositionShit", Conductor.songPosition);
+
 		if (curSong == 'Fresh')
 		{
 			switch (curBeat)
