@@ -54,7 +54,7 @@ class LoadingState extends MusicBeatState
 		add(gfDance);
 		add(logo);
 
-		hourGlass = new FlxSprite(10, FlxG.height-10);
+		hourGlass = new FlxSprite(10, FlxG.height-700);
 		hourGlass.frames = Paths.getSparrowAtlas('Gravity-HourGlass');
 		hourGlass.animation.addByPrefix('working', 'Gravity-HourGlass idle', 24);
 		hourGlass.animation.play('working');

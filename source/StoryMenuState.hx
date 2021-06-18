@@ -1,5 +1,6 @@
 package;
 
+import MusicBeatState.SwagWeeks;
 import lime.utils.Assets;
 import flixel.input.actions.FlxActionManager.ActionSetJson;
 import flixel.FlxG;
@@ -24,14 +25,7 @@ import Discord.DiscordClient;
 
 using StringTools;
 
-//JOELwindows7: let's inspire from Song.hx. 
-//here's the typedef for Json file of weekList yess.
-typedef SwagWeeks = {
-	var weekData:Array<Dynamic>;
-	var weekUnlocked:Array<Bool>;
-	var weekCharacters:Array<Dynamic>;
-	var weekNames:Array<String>;
-} 
+
 
 class StoryMenuState extends MusicBeatState
 {

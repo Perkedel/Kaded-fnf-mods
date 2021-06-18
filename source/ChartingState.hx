@@ -1515,8 +1515,9 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
-		//JOELwindows7: trace the success
+		//JOELwindows7: trace the success & sound it
 		trace("Yay level saved! cool and good");
+		FlxG.sound.play(Paths.sound("saveSuccess"));
 	}
 
 	/**
@@ -1542,7 +1543,8 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
-		//JOELwindows7: also trace the error
+		//JOELwindows7: also trace the error & sound it
 		trace("Weror! problem saving data");
+		FlxG.sound.play(Paths.sound('cancelMenu'));
 	}
 }

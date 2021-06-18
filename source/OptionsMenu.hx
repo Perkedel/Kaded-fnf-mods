@@ -63,7 +63,8 @@ class OptionsMenu extends MusicBeatState
 			//new ChooseWatermark("Choose your favourite watermark to be shown in the engine"),
 			new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),
-			new BotPlay("Showcase your charts and mods with autoplay.")
+			new BotPlay("Showcase your charts and mods with autoplay."),
+			new ExportSaveToJson("Export save backup into JSON format")
 		])
 		
 	];
@@ -125,6 +126,8 @@ class OptionsMenu extends MusicBeatState
 		FlxTween.tween(rightButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: yeah.
 
 		super.create();
+
+		
 	}
 
 	var isCat:Bool = false;

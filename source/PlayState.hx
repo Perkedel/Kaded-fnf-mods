@@ -263,7 +263,12 @@ class PlayState extends MusicBeatState
 		instance = this;
 		
 		if (FlxG.save.data.fpsCap > 290)
+		{
+			//JOELwindows7: android issue. cast lib current technic crash
+			#if !mobile
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(800);
+			#end
+		}
 		
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
@@ -1354,7 +1359,20 @@ class PlayState extends MusicBeatState
 
 		trace("add cam follow");
 
+		#if !mobile
+		//JOELwindows7: issue with Android version, this function crash!
 		FlxG.camera.follow(camFollow, LOCKON, 0.04 * (30 / (cast (Lib.current.getChildAt(0), Main)).getFPS()));
+		#else
+		FlxG.camera.follow(camFollow, LOCKON, 0.008);
+		//use trickset .008
+		//JOELwindows7: from Klavier & Verwex
+		// https://github.com/KlavierGayming/FNF-Micd-Up-Mobile/blob/main/source/PlayState.hx
+		/*camera lockon/follow tutorial:
+		0.01 - Real fucking slow
+		0.04 - Normal 60Fps speed
+		0.10 - 90 Fps speed
+		0.16 - Micd up speed*/
+		#end
 		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
@@ -1404,6 +1422,8 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 
 		trace("add HP bar"); //JOELwindows7: where the heck crash source?! android
+
+		
 
 		//JOELwindows7: add reupload watermark
 		//usually, YouTube mod showcase only shows gameplay
@@ -1461,6 +1481,10 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
+		//JOELwindows7: install pause button
+		addPauseButton(Std.int((FlxG.width/2)-(100)), 80);
+		trace("install pause button");
+
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
@@ -1470,6 +1494,7 @@ class PlayState extends MusicBeatState
 		scoreTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 		eoof.cameras = [camHUD]; //JOELwindows7: stick the epilogue to camera
+		pauseButton.cameras = [camHUD]; //JOELwindows7: stick the pause button to camera
 		if (FlxG.save.data.songPosition)
 		{
 			songPosBG.cameras = [camHUD];
@@ -1704,6 +1729,7 @@ class PlayState extends MusicBeatState
 	}
 
 	var startTimer:FlxTimer;
+	var fakeTimer:FlxTimer; //JOELwindows7: for fake timing stuff like fake countdown somthing
 	var perfectMode:Bool = false;
 
 	var luaWiggles:Array<WiggleEffect> = [];
@@ -2277,6 +2303,7 @@ class PlayState extends MusicBeatState
 
 	private var paused:Bool = false;
 	var startedCountdown:Bool = false;
+	var startedFakeCounting:Bool = false; //JOELwindows7: oh fake countdown
 	var canPause:Bool = true;
 	var nps:Int = 0;
 	var maxNPS:Int = 0;
@@ -2411,7 +2438,9 @@ class PlayState extends MusicBeatState
 		if (!FlxG.save.data.accuracyDisplay)
 			scoreTxt.text = "Score: " + songScore;
 
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
+		//JOELwindows7: add luckydog7 if pressed back button on Android
+		//also add mouse click pause button
+		if ((FlxG.keys.justPressed.ENTER || havePausened #if android || FlxG.android.justReleased.BACK #end) && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -2425,6 +2454,8 @@ class PlayState extends MusicBeatState
 			}
 			else
 				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+
+			havePausened = false;
 		}
 
 		if (FlxG.keys.justPressed.SEVEN)
@@ -3074,6 +3105,25 @@ class PlayState extends MusicBeatState
 		if (!inCutscene)
 			keyShit();
 
+		//JOELwindows7: pause btton on screen
+		if(FlxG.mouse.overlaps(pauseButton) && startedCountdown && canPause){
+			if(FlxG.mouse.justPressed){
+				if(!havePausened){
+					havePausened = true;
+				}
+			}
+		}
+		//JOELwindows7: check Pausability
+		if(startedCountdown && canPause){
+			if(pauseButton != null){
+				pauseButton.visible = true;
+			}
+		} else {
+			if(pauseButton != null){
+				pauseButton.visible = false;
+			}
+		}
+
 
 		#if debug
 		if (FlxG.keys.justPressed.ONE)
@@ -3093,18 +3143,31 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
+		trace("end the song pls"); //JOELwindows7: trace now
 		if (!loadRep)
+		{
+			trace("save replay");
 			rep.SaveReplay(saveNotes);
+		}
 		else
 		{
+			trace("load replay true");
 			FlxG.save.data.botplay = false;
 			FlxG.save.data.scrollSpeed = 1;
 			FlxG.save.data.downscroll = false;
 		}
+		trace("managed replaye zests");
 
 		if (FlxG.save.data.fpsCap > 290)
+		{
+			trace("return the FPS cap");
+			//JOELwindows7: issue with Android version. cast lib current technic crash it
+			#if !mobile
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
+			#end
+		}
 
+		trace("unload mod chart");
 		#if windows
 		if (luaModchart != null)
 		{
@@ -3113,6 +3176,7 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
+		trace("clearing scenes");
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
@@ -3130,6 +3194,7 @@ class PlayState extends MusicBeatState
 			Highscore.saveScore(songHighscore, Math.round(songScore), storyDifficulty);
 			#end
 		}
+		trace("saved score now!");
 
 		if (offsetTesting)
 		{
@@ -4438,6 +4503,141 @@ class PlayState extends MusicBeatState
 
 		//update the tier status
 		checkWhichHeartTierWent(heartRate);
+	}
+
+	//JOELwindows7: fake countdowns! also countups too!
+	public function startFakeCountdown(silent:Bool = false, invisible:Bool = false, reverse:Bool = false){
+		//JOELwindows7: install songLowercaser and its heurestic for specific songs bellow
+		// pre lowercasing the song name (create)
+		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+			switch (songLowercase) {
+				case 'dad-battle': songLowercase = 'dadbattle';
+				case 'philly-nice': songLowercase = 'philly';
+			}
+		
+		startedFakeCounting = true;
+		
+		var swagCounter:Int = 0;
+
+		fakeTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer){
+			var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
+			introAssets.set('default', ['ready', "set", "go"]);
+			introAssets.set('school', [
+				'weeb/pixelUI/ready-pixel',
+				'weeb/pixelUI/set-pixel',
+				'weeb/pixelUI/date-pixel'
+			]);
+			introAssets.set('schoolEvil', [
+				'weeb/pixelUI/ready-pixel',
+				'weeb/pixelUI/set-pixel',
+				'weeb/pixelUI/date-pixel'
+			]);
+
+			var introAlts:Array<String> = introAssets.get('default');
+			var altSuffix:String = "";
+			//JOELwindows7: detect MIDI suffix
+			var detectMidiSuffix:String = '-midi';
+			var midiSuffix:String = "midi";
+
+			for (value in introAssets.keys())
+			{
+				if (value == curStage)
+				{
+					introAlts = introAssets.get(value);
+					altSuffix = '-pixel';
+				}
+			}
+
+			//JOELwindows7: scan MIDI suffix in the song name
+			if(songLowercase.contains(detectMidiSuffix.trim())){
+				midiSuffix = detectMidiSuffix;
+			} else
+				midiSuffix = "";
+			
+			switch(swagCounter){
+				case 0:
+					if(!silent)
+						if(!reverse)
+							FlxG.sound.play(Paths.sound('intro3' + altSuffix + midiSuffix), 0.6);
+						else
+						{
+							FlxG.sound.play(Paths.sound('intro1' + altSuffix + midiSuffix), 0.6);
+						}
+				case 1:
+					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
+					ready.scrollFactor.set();
+					ready.updateHitbox();
+
+					if (curStage.startsWith('school'))
+						ready.setGraphicSize(Std.int(ready.width * daPixelZoom));
+
+					ready.screenCenter();
+					add(ready);
+					if(invisible) ready.visible = false;
+					FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+						ease: FlxEase.cubeInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							ready.destroy();
+						}
+					});
+					if(!silent)
+						FlxG.sound.play(Paths.sound('intro2' + altSuffix + midiSuffix), 0.6);
+				case 2:
+					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
+					set.scrollFactor.set();
+					
+					if (curStage.startsWith('school'))
+						set.setGraphicSize(Std.int(set.width * daPixelZoom));
+
+					set.screenCenter();
+					add(set);
+					if(invisible) set.visible = false;
+					FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+						ease: FlxEase.cubeInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							set.destroy();
+						}
+					});
+					if(!silent)
+						if(!reverse){
+							FlxG.sound.play(Paths.sound('intro1' + altSuffix + midiSuffix), 0.6);
+						} else {
+							FlxG.sound.play(Paths.sound('intro3' + altSuffix + midiSuffix), 0.6);
+						}
+				case 3:
+					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
+					go.scrollFactor.set();
+
+					if (curStage.startsWith('school'))
+						go.setGraphicSize(Std.int(go.width * daPixelZoom));
+
+					go.updateHitbox();
+
+					go.screenCenter();
+					add(go);
+					if(invisible) go.visible = false;
+					FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+						ease: FlxEase.cubeInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							go.destroy();
+						}
+					});
+					if(!silent)
+						if(!reverse){
+							FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
+						} else {
+							FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
+						}
+				case 4:
+					//JOELwindows7: just add trace for fun
+					trace("fake count down finished");
+					startedFakeCounting = false; //JOELwindows7: reset the lock
+			}
+			swagCounter += 1;
+		}, 5);
 	}
 
 	var curLight:Int = 0; //JOELwindows7: not my code. hey, Ninja! you should've white light like I do above

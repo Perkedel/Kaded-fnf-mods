@@ -35,6 +35,8 @@ thancc for all these resources! without them, everything is impossible.
 - https://github.com/luckydog7/trickster/ Tricky mod android. Follow how the Kade was ported to Android!
 - https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx example changes in Kade Android luckydog7
 - https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088 I mean, look at this.
+- https://github.com/KlavierGayming/FNF-Micd-Up-Mobile Klavier Gaming ported Mic'd up to Android
+- https://github.com/KlavierGayming/FNF-Micd-Up-Mobile/blob/main/source/PlayState.hx look at example, the camera lerp is manually set. android version cannot refer the get FPS from Main with these complicated values, and it will crash if it touches this call.
 - https://gamejolt.com/games/fnfandroid/593952 android FNF
 - https://developer.android.com/ndk/downloads?hl=fi android NDK
 - https://mcpedl.com/friday-night-funkin-add-on/ minecraft bedrock addon of fnf
@@ -255,6 +257,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://tunebat.com/Info/Super-Mario-Main-Theme-Super-Mario-Bros/4FkhUEKaSHerpzdoq3qneS MArio song BPM is
 - https://gamebanana.com/tuts/13798 Comprehensive Modding tutorial for vanilla FNF
 - https://odysee.com/@OdyseeHelp:b/odyseepresskit:b?r=4jRC3d5tDF9DhZzAnEqaArPdyCH2MAyy Odysee press kit
+- https://freesound.org/people/dersuperanton/sounds/166690/ printer printed a paper sound. for Save complete in any ocassions.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

@@ -1,5 +1,11 @@
 package;
 
+import openfl.net.FileFilter;
+import lime.ui.FileDialogType;
+import haxe.Json;
+import openfl.events.IOErrorEvent;
+import openfl.events.Event;
+import openfl.net.FileReference;
 import lime.app.Application;
 import lime.system.DisplayMode;
 import flixel.util.FlxColor;
@@ -7,6 +13,8 @@ import Controls.KeyboardScheme;
 import flixel.FlxG;
 import openfl.display.FPS;
 import openfl.Lib;
+
+using StringTools;
 
 class OptionCategory
 {
@@ -363,11 +371,18 @@ class FPSCapOption extends Option
 		if (FlxG.save.data.fpsCap >= 290)
 		{
 			FlxG.save.data.fpsCap = 290;
+			//JOELwindows7: Issue with Android, this static refering way crash
+			#if !mobile
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
+			#end
 		}
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap + 10;
+
+		//JOELwindows7: this gotta be a bug from the core Haxe itself right?
+		#if !mobile
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		#end
 
 		return true;
 	}
@@ -379,7 +394,11 @@ class FPSCapOption extends Option
 			FlxG.save.data.fpsCap = Application.current.window.displayMode.refreshRate;
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap - 10;
+		
+		//JOELwindows7: what an inconvenience. I expect it works on android too!
+		#if !mobile
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		#end
 		return true;
 	}
 
@@ -775,4 +794,159 @@ class NaughtinessOption extends Option {
 	
 	private override function updateDisplay():String
 		return "Naughtiness " + (FlxG.save.data.naughtiness ? "on" : "off");
+}
+
+//JOELwindows7: export setting data to JSON
+class ExportSaveToJson extends Option{
+	var _file:FileReference;
+	//copy over form ChartingState.hx, where JSON file is saved at.
+
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.flush();
+
+		//JOELwindows7: make save JSON pretty
+		// https://haxe.org/manual/std-Json-encoding.html
+		var data:String = Json.stringify(FlxG.save.data,"\t");
+
+		if ((data != null) && (data.length > 0))
+		{
+			_file = new FileReference();
+			_file.addEventListener(Event.COMPLETE, onSaveComplete);
+			_file.addEventListener(Event.CANCEL, onSaveCancel);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file.save(data.trim(), "FunkinSettings" + ".json");
+		}
+
+		return true;
+	}
+
+	private override function updateDisplay():String
+		return "Export save data to JSON";
+
+	function onSaveComplete(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.notice("Successfully saved BACKUP DATA.");
+		//JOELwindows7: trace the success
+		trace("Yay data backup saved! cool and good");
+		FlxG.sound.play(Paths.sound("saveSuccess"));
+	}
+
+	/**
+	 * Called when the save file dialog is cancelled.
+	 */
+	function onSaveCancel(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		//JOELwindows7: trace cancel
+		trace("nvm! save canceled");
+		FlxG.sound.play(Paths.sound('cancelMenu'));
+	}
+
+	/**
+	 * Called if there is an error while saving the gameplay recording.
+	 */
+	function onSaveError(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.error("Problem saving backup data");
+		//JOELwindows7: also trace the error
+		trace("Weror! problem saving backup data");
+		FlxG.sound.play(Paths.sound('cancelMenu'));
+	}
+}
+
+//JOELwindows7: also the import JSON save BACKUP
+class ImportSaveFromJSON extends Option {
+	var _file:FileReference;
+	//copy over form ChartingState.hx, where JSON file is saved at.
+
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+		{
+			FlxG.save.flush();
+	
+			//JOELwindows7: make save JSON pretty
+			// https://haxe.org/manual/std-Json-encoding.html
+			var data;
+	
+			_file = new FileReference();
+			_file.addEventListener(Event.COMPLETE, onLoadComplete);
+			_file.addEventListener(Event.CANCEL, onLoadCancel);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+
+			if(_file.browse([new FileFilter("JSON file", "json")])){
+				_file.load();
+				data = Json.parse(cast _file.data);
+
+				//FlxG.save.data = data;
+			}
+
+			return true;
+		}
+
+	private override function updateDisplay():String
+		return "Import save data from JSON";
+
+	function onLoadComplete(_):Void
+		{
+			_file.removeEventListener(Event.COMPLETE, onLoadComplete);
+			_file.removeEventListener(Event.CANCEL, onLoadCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+			_file = null;
+			FlxG.log.notice("Successfully loaded BACKUP DATA.");
+			//JOELwindows7: trace the success
+			trace("Yay data backup saved! cool and good");
+			// FlxG.sound.play(Paths.sound("saveSuccess"));
+		}
+	
+		/**
+		 * Called when the save file dialog is cancelled.
+		 */
+		function onLoadCancel(_):Void
+		{
+			_file.removeEventListener(Event.COMPLETE, onLoadComplete);
+			_file.removeEventListener(Event.CANCEL, onLoadCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+			_file = null;
+			//JOELwindows7: trace cancel
+			trace("nvm! load canceled");
+			FlxG.sound.play(Paths.sound('cancelMenu'));
+		}
+	
+		/**
+		 * Called if there is an error while saving the gameplay recording.
+		 */
+		function onLoadError(_):Void
+		{
+			_file.removeEventListener(Event.COMPLETE, onLoadComplete);
+			_file.removeEventListener(Event.CANCEL, onLoadCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+			_file = null;
+			FlxG.log.error("Problem loading backup data");
+			//JOELwindows7: also trace the error
+			trace("Weror! problem loading backup data");
+			FlxG.sound.play(Paths.sound('cancelMenu'));
+		}
 }

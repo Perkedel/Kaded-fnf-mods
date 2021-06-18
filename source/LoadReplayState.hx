@@ -1,5 +1,9 @@
 package;
 
+import haxe.Json;
+import MusicBeatState;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import Controls.KeyboardScheme;
 import Controls.Control;
 import flash.text.TextField;
@@ -16,8 +20,12 @@ import lime.utils.Assets;
 import sys.io.File;
 #end
 
+using StringTools;
+
 class LoadReplayState extends MusicBeatState
 {
+	var initWeekJson:SwagWeeks; //JOELwindows7: week JSON
+
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
@@ -39,6 +47,13 @@ class LoadReplayState extends MusicBeatState
 
         controlsStrings.sort(Reflect.compare);
 
+		//JOELwindows7: procedural week adder
+		initWeekJson = loadFromJson('weekList');
+		for(i in 1...initWeekJson.weekData.length){
+			addWeek(initWeekJson.weekData[i],i,initWeekJson.weekCharacters[i]);
+		}
+
+		/*
         addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
         addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky']);
         addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico']);
@@ -47,6 +62,12 @@ class LoadReplayState extends MusicBeatState
         addWeek(['Cocoa', 'Eggnog', 'Winter-Horrorland'], 5, ['parents-christmas', 'parents-christmas', 'monster-christmas']);
         
         addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
+		
+		//JOELwindows7: whoah add own week again, what?
+		addWeek(["Windfall", "Rule The World", "Well Meet Again"], 7, ["hookx", "bf", "gf"]);
+        addWeek(["Senpai-midi", "Roses-midi", "Thorns-midi"], 8, ['senpai', 'senpai', 'spirit']);
+        addWeek(["433"], 9, ["hookx", "bf", "gf"]);
+		*/
 
 
         for(i in 0...controlsStrings.length)
@@ -74,6 +95,7 @@ class LoadReplayState extends MusicBeatState
 		{
 				var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, controlsStrings[i], true, false);
 				controlLabel.isMenuItem = true;
+				controlLabel.ID = i; //JOELwindows7: ID each file
 				controlLabel.targetY = i;
 				grpControls.add(controlLabel);
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
@@ -91,8 +113,13 @@ class LoadReplayState extends MusicBeatState
 		poggerDetails.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(poggerDetails);
 
+		//JOELwindows7: add back button
+		addBackButton(20,FlxG.height);
+
 		changeSelection(0);
 
+		FlxTween.tween(backButton,{y:FlxG.height - 120},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
+		
 		super.create();
 	}
 
@@ -133,16 +160,20 @@ class LoadReplayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-			if (controls.BACK)
+			if (controls.BACK || haveBacked)
+			{
 				FlxG.switchState(new OptionsMenu());
+				haveBacked = false; //JOELwindows7: now click back button
+			}
 			if (controls.UP_P)
 				changeSelection(-1);
 			if (controls.DOWN_P)
 				changeSelection(1);
 		
 
-			if (controls.ACCEPT && grpControls.members[curSelected].text != "No Replays...")
+			if ((controls.ACCEPT || haveClicked) && grpControls.members[curSelected].text != "No Replays...")
 			{
+				//JOELwindows7: install mouse support
                 trace('loading ' + actualNames[curSelected]);
                 PlayState.rep = Replay.LoadReplay(actualNames[curSelected]);
 
@@ -155,7 +186,31 @@ class LoadReplayState extends MusicBeatState
                 PlayState.storyDifficulty = PlayState.rep.replay.songDiff;
                 PlayState.storyWeek = getWeekNumbFromSong(PlayState.rep.replay.songName);
                 LoadingState.loadAndSwitchState(new PlayState());
+
+				haveClicked = false;
 			}
+
+			//JOELwindows7: copy from option menu back there
+			grpControls.forEach(function(alphabet:Alphabet){
+				if(FlxG.mouse.overlaps(alphabet) && !FlxG.mouse.overlaps(backButton)){
+					if(FlxG.mouse.justPressed){
+						if(alphabet.ID == curSelected){
+							haveClicked = true;
+						} else {
+							goToSelection(alphabet.ID);
+						}
+					}
+				}
+	
+				//JOELwindows7: back button for no keyboard
+				if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(alphabet)){
+					if(FlxG.mouse.justPressed){
+						if(!haveBacked){
+							haveBacked = true;
+						}
+					}
+				}
+			});
 	}
 
 	var isSettingControl:Bool = false;
@@ -201,5 +256,70 @@ class LoadReplayState extends MusicBeatState
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+	}
+
+	//JOELwindows7: mouse support go to item
+	function goToSelection(change:Int = 0)
+	{
+		#if !switch
+		#if !mobile
+		#if !neko
+		// NGio.logEvent('Fresh');
+		#end
+		#end
+		#end
+		
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+		curSelected = change;
+
+		if (curSelected < 0)
+			curSelected = grpControls.length - 1;
+		if (curSelected >= grpControls.length)
+			curSelected = 0;
+
+		var rep:Replay = Replay.LoadReplay(actualNames[curSelected]);
+
+		poggerDetails.text = "Replay Details - \nDate Created: " + rep.replay.timestamp + "\nSong: " + rep.replay.songName + "\nReplay Version: " + (rep.replay.replayGameVer != Replay.version ? "OUTDATED" : "Latest");
+
+		// selector.y = (70 * curSelected) + 30;
+
+		var bullShit:Int = 0;
+
+		for (item in grpControls.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			item.alpha = 0.6;
+			// item.setGraphicSize(Std.int(item.width * 0.8));
+
+			if (item.targetY == 0)
+			{
+				item.alpha = 1;
+				// item.setGraphicSize(Std.int(item.width));
+			}
+		}
+	}
+
+	//JOELwindows7: Okay so, cleanup Json? and then parse? okeh
+	// yeah I know, I copied from Song.hx. for this one, the weekList.json isn't anywhere in special folder
+	// but root of asset/data . that's all... idk
+	public static function loadFromJson(jsonInput:String):SwagWeeks{
+		var rawJson = Assets.getText(Paths.json(jsonInput)).trim();
+		trace("load weeklist Json");
+
+		while (!rawJson.endsWith("}")){
+			//JOELwindows7: okay also going through bullshit cleaning what the peck strange
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+		return parseJSONshit(rawJson);
+	}
+	//JOELwindows7: lol!literally copy from Song.hx minus the 
+	//changing valid score which SwagWeeks typedef doesn't have, idk..
+	public static function parseJSONshit(rawJson:String):SwagWeeks
+	{
+		var swagShit:SwagWeeks = cast Json.parse(rawJson);
+		return swagShit;
 	}
 }

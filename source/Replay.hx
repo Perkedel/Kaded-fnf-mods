@@ -65,10 +65,13 @@ class Replay
             "replayGameVer": version
         };
 
-        var data:String = Json.stringify(json);
+        var data:String = Json.stringify(json, "\t"); //JOELwindows7: use "\t" replacer to make JSON beautiful
 
-        #if sys
+        #if (sys && !mobile)
         File.saveContent("assets/replays/replay-" + PlayState.SONG.song + "-time" + Date.now().getTime() + ".kadeReplay", data);
+        #else
+        //JOELwindows7: trouble with Android version
+        trace("WERROR: File save replay fail, sys functions is crashing in Android");
         #end
     }
 

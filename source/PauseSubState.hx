@@ -89,6 +89,8 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 			songText.isMenuItem = true;
+			songText.scrollFactor.set(); //JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
+			songText.updateHitbox();
 			songText.targetY = i;
 			songText.ID = i; //JOELwindows7: ID each menu item to compare with current selected
 			grpMenuShit.add(songText);
