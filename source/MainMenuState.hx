@@ -15,17 +15,13 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-#if !mobile
-#if !neko
+#if newgrounds
 import io.newgrounds.NG;
-#end
 #end
 import lime.app.Application;
 
-#if desktop
-#if cpp
+#if (windows && cpp)
 import Discord.DiscordClient;
-#end
 #end
 
 using StringTools;
@@ -64,7 +60,7 @@ class MainMenuState extends MusicBeatState
 	{
 		
 
-		#if windows
+		#if (windows && cpp)
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end

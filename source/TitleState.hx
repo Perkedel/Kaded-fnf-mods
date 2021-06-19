@@ -26,7 +26,7 @@ import io.newgrounds.NG;
 import lime.app.Application;
 import openfl.Assets;
 
-#if windows
+#if (windows && cpp)
 import Discord.DiscordClient;
 #end
 
@@ -87,7 +87,7 @@ class TitleState extends MusicBeatState
 		
 		PlayerSettings.init();
 
-		#if windows
+		#if (windows && cpp)
 		DiscordClient.initialize();
 
 		Application.current.onExit.add (function (exitCode) {
@@ -191,14 +191,26 @@ class TitleState extends MusicBeatState
 		add(bg);
 
 		if(Main.watermarks) {
-			logoBl = new FlxSprite(-150, -100);
-			logoBl.frames = Paths.getSparrowAtlas('KadeEngineLogoBumpin');
-			logoBl.antialiasing = true;
-			logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
-			logoBl.animation.play('bump');
-			logoBl.updateHitbox();
-			// logoBl.screenCenter();
-			// logoBl.color = FlxColor.BLACK;
+			if(Main.perkedelMark){
+				logoBl = new FlxSprite(-150, -100);
+				logoBl.frames = Paths.getSparrowAtlas('LFMLogoBumpin');
+				logoBl.antialiasing = true;
+				logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
+				logoBl.animation.play('bump');
+				logoBl.updateHitbox();
+				// logoBl.screenCenter();
+				// logoBl.color = FlxColor.BLACK;
+			} else
+			{
+				logoBl = new FlxSprite(-150, -100);
+				logoBl.frames = Paths.getSparrowAtlas('KadeEngineLogoBumpin');
+				logoBl.antialiasing = true;
+				logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
+				logoBl.animation.play('bump');
+				logoBl.updateHitbox();
+				// logoBl.screenCenter();
+				// logoBl.color = FlxColor.BLACK;
+			}
 		} else {
 			logoBl = new FlxSprite(-150, -100);
 			logoBl.frames = Paths.getSparrowAtlas('logoBumpin');

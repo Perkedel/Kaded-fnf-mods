@@ -165,9 +165,9 @@ class LoadReplayState extends MusicBeatState
 				FlxG.switchState(new OptionsMenu());
 				haveBacked = false; //JOELwindows7: now click back button
 			}
-			if (controls.UP_P)
+			if (controls.UP_P || FlxG.mouse.wheel == 1)
 				changeSelection(-1);
-			if (controls.DOWN_P)
+			if (controls.DOWN_P || FlxG.mouse.wheel == -1)
 				changeSelection(1);
 		
 
@@ -218,10 +218,8 @@ class LoadReplayState extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		#if !switch
-		#if !mobile
-		#if !neko
+		#if newgrounds
 		// NGio.logEvent('Fresh');
-		#end
 		#end
 		#end
 		
@@ -262,10 +260,8 @@ class LoadReplayState extends MusicBeatState
 	function goToSelection(change:Int = 0)
 	{
 		#if !switch
-		#if !mobile
-		#if !neko
+		#if newgrounds
 		// NGio.logEvent('Fresh');
-		#end
 		#end
 		#end
 		

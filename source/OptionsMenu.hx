@@ -361,10 +361,8 @@ class OptionsMenu extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		#if !switch
-		#if !mobile
-		#if !neko
+		#if newgrounds
 		// NGio.logEvent("Fresh");
-		#end
 		#end
 		#end
 		
@@ -413,10 +411,8 @@ class OptionsMenu extends MusicBeatState
 	//JOELwindows7: copy from above but this time set the selection number
 	function goToSelection(change:Int = 0){
 		#if !switch
-		#if !mobile
-		#if !neko
+		#if newgrounds
 		// NGio.logEvent("Fresh");
-		#end
 		#end
 		#end
 		

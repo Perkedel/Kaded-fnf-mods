@@ -1,12 +1,8 @@
 package;
 
 import openfl.Lib;
-#if desktop
-#if !neko
-#if !hl
+#if (windows && cpp)
 import llua.Lua;
-#end
-#end
 #end
 import Controls.Control;
 import flixel.FlxG;
@@ -89,8 +85,8 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 			songText.isMenuItem = true;
-			songText.scrollFactor.set(); //JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
 			songText.updateHitbox();
+			songText.scrollFactor.set(); //JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
 			songText.targetY = i;
 			songText.ID = i; //JOELwindows7: ID each menu item to compare with current selected
 			grpMenuShit.add(songText);
@@ -150,6 +146,7 @@ class PauseSubState extends MusicBeatSubstate
 						var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 						songText.isMenuItem = true;
 						songText.targetY = i;
+						songText.scrollFactor.set(); //JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
 						songText.ID = i; //JOELwindows7: add ID to compare with curSelected
 						grpMenuShit.add(songText);
 					}
@@ -176,6 +173,7 @@ class PauseSubState extends MusicBeatSubstate
 						var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 						songText.isMenuItem = true;
 						songText.targetY = i;
+						songText.scrollFactor.set(); //JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
 						songText.ID = i; //JOELwindows7: add ID to compare with curSelected
 						grpMenuShit.add(songText);
 					}
@@ -209,16 +207,12 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.save.data.downscroll = false;
 					}
 					PlayState.loadRep = false;
-					#if desktop
-					#if !neko
-					#if !hl
+					#if (windows && cpp)
 					if (PlayState.luaModchart != null)
 					{
 						PlayState.luaModchart.die();
 						PlayState.luaModchart = null;
 					}
-					#end
-					#end
 					#end
 					if (FlxG.save.data.fpsCap > 290)
 						(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);

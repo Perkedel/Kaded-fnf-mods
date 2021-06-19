@@ -2076,6 +2076,7 @@
         "bpm": 102,
         "speed": 1,
         "hasDialogueChat": true,
-        "hasEpilogueChat": false
+        "hasEpilogueChat": false,
+        "noteStyle": "saubo"
     }
 }

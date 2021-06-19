@@ -1354,6 +1354,7 @@
         "speed": 3,
         "bpm": 102,
         "hasDialogueChat": true,
-        "allowedToHeadbang": true
+        "allowedToHeadbang": true,
+        "noteStyle": "saubo"
     }
 }

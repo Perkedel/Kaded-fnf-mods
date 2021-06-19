@@ -3,7 +3,7 @@ package;
 import haxe.Json;
 import lime.utils.Assets;
 import flixel.FlxSprite;
-#if windows
+#if (windows && cpp)
 import Discord.DiscordClient;
 #end
 import flixel.tweens.FlxTween;
@@ -48,6 +48,7 @@ class MusicBeatState extends FlxUIState
 	private var haveDowned = false;
 	private var haveRighted = false;
 	private var havePausened = false;
+	private var haveDebugSevened = false;
 
 	var backButton:FlxSprite; //JOELwindows7: the back button here
 	var leftButton:FlxSprite; //JOELwindows7: the left button here

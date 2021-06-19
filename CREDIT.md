@@ -174,6 +174,10 @@ thancc for all these resources! without them, everything is impossible.
 - https://github.com/UncertainProd/FnF-Spritesheet-and-XML-Maker Source code sprite sheet maker
 - https://gamebanana.com/tools/7136 Sprite sheet xml generator
 - Jokowi, 7th and 8th President of Indonesia. quotes of `Ya ndak tahu, kok tanya saya?`.
+- https://haxeflixel.com/documentation/debugger/ debugge the haxeflixel thingie
+- https://haxeflixel.com/documentation/haxeflixel-conditionals/ compiler conditionals
+- https://haxeflixel.com/documentation/game-development-tools/ tools you can use
+- https://gamebanana.com/mods/296629 Unity remade of FNF in 24 hours
   
 # in event of git merge conflict
 use VScode and Github desktop!
