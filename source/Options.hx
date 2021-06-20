@@ -304,8 +304,8 @@ class Judgement extends Option
 
 	override function getValue():String {
 		return "Safe Frames: " + Conductor.safeFrames +
-		" - SIK: " + HelperFunctions.truncateFloat(45 * Conductor.timeScale, 0) +
-		"ms GD: " + HelperFunctions.truncateFloat(90 * Conductor.timeScale, 0) +
+		" - SIK: " + HelperFunctions.truncateFloat(22 * Conductor.timeScale, 0) +
+		"ms GD: " + HelperFunctions.truncateFloat(45 * Conductor.timeScale, 0) +
 		"ms BD: " + HelperFunctions.truncateFloat(135 * Conductor.timeScale, 0) + 
 		"ms SHT: " + HelperFunctions.truncateFloat(155 * Conductor.timeScale, 0) +
 		"ms TOTAL: " + HelperFunctions.truncateFloat(Conductor.safeZoneOffset,0) + "ms";
@@ -346,6 +346,27 @@ class FPSOption extends Option
 	}
 }
 
+class ScoreScreen extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.scoreScreen = !FlxG.save.data.scoreScreen;
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return (FlxG.save.data.scoreScreen ? "Show Score Screen" : "No Score Screen");
+	}
+}
+
+
 
 
 class FPSCapOption extends Option
@@ -378,11 +399,10 @@ class FPSCapOption extends Option
 		}
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap + 10;
-
 		//JOELwindows7: this gotta be a bug from the core Haxe itself right?
 		#if !mobile
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-		#end
+		#end 
 
 		return true;
 	}
@@ -394,7 +414,6 @@ class FPSCapOption extends Option
 			FlxG.save.data.fpsCap = Application.current.window.displayMode.refreshRate;
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap - 10;
-		
 		//JOELwindows7: what an inconvenience. I expect it works on android too!
 		#if !mobile
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
@@ -543,30 +562,6 @@ class AccuracyDOption extends Option
 	}
 }
 
-//JOELwindows7: pls don't forget full screen mode!
-//Rediscovered press F in title state to toggle full screen?!?!
-class FullScreenOption extends Option{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-	
-	public override function press():Bool
-	{
-		FlxG.fullscreen = !FlxG.fullscreen;
-		trace("fullscreen is now " + Std.string(FlxG.fullscreen));
-		FlxG.save.data.fullscreen = FlxG.fullscreen;
-		display = updateDisplay();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		return "Screen mode " + (FlxG.fullscreen ? "Fullscreen" : "Windowed");
-	}
-}
-
 class CustomizeGameplay extends Option
 {
 	public function new(desc:String)
@@ -608,102 +603,6 @@ class WatermarkOption extends Option
 	{
 		return "Watermarks " + (Main.watermarks ? "on" : "off");
 	}
-}
-
-//JOELwindows7: copy paste the toggle from above to here
-class OdyseemarkOption extends Option
-{
-	public function new(desc:String)
-		{
-			super();
-			description = desc;
-		}
-	
-		public override function press():Bool
-		{
-			Main.odyseeMark = !Main.odyseeMark;
-			FlxG.save.data.odyseeMark = Main.odyseeMark;
-			trace("Odysee watermark: " + FlxG.save.data.odyseeMark);
-			display = updateDisplay();
-			return true;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "Odysee Watermarks " + (Main.odyseeMark ? "on" : "off");
-		}
-}
-
-//JOELwindows7: again do the same. change the purpose option target yeay
-class PerkedelmarkOption extends Option
-{
-	public function new(desc:String)
-		{
-			super();
-			description = desc;
-		}
-	
-		public override function press():Bool
-		{
-			Main.perkedelMark = !Main.perkedelMark;
-			FlxG.save.data.perkedelMark = Main.perkedelMark;
-			trace("Perkedel watermark: " + FlxG.save.data.perkedelMark);
-			display = updateDisplay();
-			return true;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "Perkedel Watermarks " + (Main.perkedelMark ? "on" : "off");
-		}
-}
-
-//JOELwindows7: okay. we got to think ahead. there will be many watermarkers so we need to scroll choose the left right.
-//here we go!
-class ChooseWatermark extends Option
-{
-	//JOELwindows7: copy from Scroll speed option!
-	public function new(desc:String)
-		{
-			super();
-			description = desc;
-			acceptValues = true;
-		}
-
-		//Hey, add your watermark id here
-		var availableWatermark =[
-			'odysee',
-			'pekedel',
-		];
-
-		//Then add the path where it goes
-		var watermarkPath =[
-
-		];
-	
-		public override function press():Bool
-		{
-			return false;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "Chosen Watermark " + Main.chosenMark;
-		}
-	
-		override function right():Bool {
-			Main.chosenMarkNum ++;
-			Main.chosenMark = availableWatermark[Main.chosenMarkNum];
-			display = updateDisplay();
-			return true;
-		}
-	
-		override function left():Bool {
-			Main.chosenMarkNum --;
-			Main.chosenMark = availableWatermark[Main.chosenMarkNum];
-			display = updateDisplay();
-			return true;
-		}
 }
 
 class OffsetMenu extends Option
@@ -752,6 +651,26 @@ class BotPlay extends Option
 	
 	private override function updateDisplay():String
 		return "BotPlay " + (FlxG.save.data.botplay ? "on" : "off");
+}
+
+class CamZoomOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		FlxG.save.data.camzoom = !FlxG.save.data.camzoom;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Camera Zoom " + (!FlxG.save.data.camzoom ? "off" : "on");
+	}
 }
 
 //JOELwindows7: for future use in case it is necessary
@@ -948,5 +867,125 @@ class ImportSaveFromJSON extends Option {
 			//JOELwindows7: also trace the error
 			trace("Weror! problem loading backup data");
 			FlxG.sound.play(Paths.sound('cancelMenu'));
+		}
+}
+
+//JOELwindows7: pls don't forget full screen mode!
+//Rediscovered press F in title state to toggle full screen?!?!
+class FullScreenOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	
+	public override function press():Bool
+	{
+		FlxG.fullscreen = !FlxG.fullscreen;
+		trace("fullscreen is now " + Std.string(FlxG.fullscreen));
+		FlxG.save.data.fullscreen = FlxG.fullscreen;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Screen mode " + (FlxG.fullscreen ? "Fullscreen" : "Windowed");
+	}
+}
+
+//JOELwindows7: copy paste the toggle from above to here
+class OdyseemarkOption extends Option
+{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			Main.odyseeMark = !Main.odyseeMark;
+			FlxG.save.data.odyseeMark = Main.odyseeMark;
+			trace("Odysee watermark: " + FlxG.save.data.odyseeMark);
+			display = updateDisplay();
+			return true;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Odysee Watermarks " + (Main.odyseeMark ? "on" : "off");
+		}
+}
+
+//JOELwindows7: again do the same. change the purpose option target yeay
+class PerkedelmarkOption extends Option
+{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			Main.perkedelMark = !Main.perkedelMark;
+			FlxG.save.data.perkedelMark = Main.perkedelMark;
+			trace("Perkedel watermark: " + FlxG.save.data.perkedelMark);
+			display = updateDisplay();
+			return true;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Perkedel Watermarks " + (Main.perkedelMark ? "on" : "off");
+		}
+}
+
+//JOELwindows7: okay. we got to think ahead. there will be many watermarkers so we need to scroll choose the left right.
+//here we go!
+class ChooseWatermark extends Option
+{
+	//JOELwindows7: copy from Scroll speed option!
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+			acceptValues = true;
+		}
+
+		//Hey, add your watermark id here
+		var availableWatermark =[
+			'odysee',
+			'pekedel',
+		];
+
+		//Then add the path where it goes
+		var watermarkPath =[
+
+		];
+	
+		public override function press():Bool
+		{
+			return false;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Chosen Watermark " + Main.chosenMark;
+		}
+	
+		override function right():Bool {
+			Main.chosenMarkNum ++;
+			Main.chosenMark = availableWatermark[Main.chosenMarkNum];
+			display = updateDisplay();
+			return true;
+		}
+	
+		override function left():Bool {
+			Main.chosenMarkNum --;
+			Main.chosenMark = availableWatermark[Main.chosenMarkNum];
+			display = updateDisplay();
+			return true;
 		}
 }

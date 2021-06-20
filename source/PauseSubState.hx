@@ -36,6 +36,13 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		super();
 
+		if (PlayState.instance.useVideo)
+		{
+			menuItems.remove("Resume");
+			if (GlobalVideo.get().playing)
+				GlobalVideo.get().pause();
+		}
+
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
@@ -105,14 +112,23 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		//JOELwindows7: add mouse control in pause menu too
+		if (PlayState.instance.useVideo)
+			menuItems.remove('Resume');
+
 		var upP = controls.UP_P || FlxG.mouse.wheel == 1;
 		var downP = controls.DOWN_P || FlxG.mouse.wheel == -1;
 		var leftP = controls.LEFT_P;
 		var rightP = controls.RIGHT_P;
 		var accepted = controls.ACCEPT || haveClicked;
 		var oldOffset:Float = 0;
-		var songPath = 'assets/data/' + PlayState.SONG.song.toLowerCase() + '/';
+
+		// pre lowercasing the song name (update)
+		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+		switch (songLowercase) {
+			case 'dad-battle': songLowercase = 'dadbattle';
+			case 'philly-nice': songLowercase = 'philly';
+		}
+		var songPath = 'assets/data/' + songLowercase + '/';
 
 		if (upP)
 		{
@@ -198,8 +214,20 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 				case "Restart Song":
 					FlxG.mouse.visible = false; //JOELwindows7: just in case
+					if (PlayState.instance.useVideo)
+					{
+						GlobalVideo.get().stop();
+						PlayState.instance.remove(PlayState.instance.videoSprite);
+						PlayState.instance.removedVideo = true;
+					}
 					FlxG.resetState();
 				case "Exit to menu":
+					if (PlayState.instance.useVideo)
+					{
+						GlobalVideo.get().stop();
+						PlayState.instance.remove(PlayState.instance.videoSprite);
+						PlayState.instance.removedVideo = true;
+					}
 					if(PlayState.loadRep)
 					{
 						FlxG.save.data.botplay = false;

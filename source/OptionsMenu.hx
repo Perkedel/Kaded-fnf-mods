@@ -40,15 +40,14 @@ class OptionsMenu extends MusicBeatState
 		]),
 		new OptionCategory("Appearance", [
 			new FullScreenOption("Toggle Fullscreen Mode"),
-			#if desktop
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
+			new CamZoomOption("Toggle the camera zoom in-game."),
+			#if desktop
 			new RainbowFPSOption("Make the FPS Counter Rainbow"),
 			new AccuracyOption("Display accuracy information."),
 			new NPSDisplayOption("Shows your current Notes Per Second."),
 			new SongPositionOption("Show the songs current position (as a bar)"),
 			new CpuStrums("CPU's strumline lights up when a note hits it."),
-			#else
-			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.")
 			#end
 		]),
 		
@@ -60,11 +59,10 @@ class OptionsMenu extends MusicBeatState
 			new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), //JOELwindows7: make this Odysee exclusive pls. how!
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 			new WatermarkOption("Enable and disable all watermarks from the engine."),
-			//new ChooseWatermark("Choose your favourite watermark to be shown in the engine"),
 			new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),
 			new BotPlay("Showcase your charts and mods with autoplay."),
-			new ExportSaveToJson("Export save backup into JSON format")
+			new ScoreScreen("Show the score screen after the end of a song")
 		])
 		
 	];
@@ -168,15 +166,17 @@ class OptionsMenu extends MusicBeatState
 				isCat = false;
 				grpControls.clear();
 				for (i in 0...options.length)
-					{
-						var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true, false);
-						controlLabel.isMenuItem = true;
-						controlLabel.targetY = i;
-						controlLabel.ID = i; //add the ID too for compare curSelected like Main Menu
-						grpControls.add(controlLabel);
-						// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-					}
+				{
+					var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true, false);
+					controlLabel.isMenuItem = true;
+					controlLabel.targetY = i;
+					grpControls.add(controlLabel);
+					// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+				}
+				
 				curSelected = 0;
+				
+				changeSelection(curSelected);
 				haveBacked = false;
 			}
 			//JOELwindows7: idk how to mouse on option menu
@@ -187,7 +187,6 @@ class OptionsMenu extends MusicBeatState
 			
 			if (isCat)
 			{
-				
 				if (currentSelectedCat.getOptions()[curSelected].getAccept())
 				{
 					if (FlxG.keys.pressed.SHIFT)
@@ -219,7 +218,6 @@ class OptionsMenu extends MusicBeatState
 				}
 				else
 				{
-
 					if (FlxG.keys.pressed.SHIFT)
 					{
 						if (FlxG.keys.justPressed.RIGHT || haveRighted)
@@ -244,7 +242,7 @@ class OptionsMenu extends MusicBeatState
 						haveLefted = false;
 					}
 					
-				
+					versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
 				}
 				if (currentSelectedCat.getOptions()[curSelected].getAccept())
 					versionShit.text =  currentSelectedCat.getOptions()[curSelected].getValue() + " - Description - " + currentDescription;
@@ -254,28 +252,30 @@ class OptionsMenu extends MusicBeatState
 			else
 			{
 				if (FlxG.keys.pressed.SHIFT)
-					{
-						if (FlxG.keys.justPressed.RIGHT || haveRighted)
-						{
-							FlxG.save.data.offset += 0.1;
-							haveRighted = false;
-						}
-						else if (FlxG.keys.justPressed.LEFT || haveLefted)
-						{
-							FlxG.save.data.offset -= 0.1;
-							haveLefted = false;
-						}
-					}
-					else if (FlxG.keys.pressed.RIGHT || haveRighted)
+				{
+					if (FlxG.keys.justPressed.RIGHT || haveRighted)
 					{
 						FlxG.save.data.offset += 0.1;
 						haveRighted = false;
 					}
-					else if (FlxG.keys.pressed.LEFT || haveLefted)
+					else if (FlxG.keys.justPressed.LEFT || haveLefted)
 					{
 						FlxG.save.data.offset -= 0.1;
 						haveLefted = false;
 					}
+				}
+				else if (FlxG.keys.pressed.RIGHT || haveRighted)
+				{
+					FlxG.save.data.offset += 0.1;
+					haveRighted = false;
+				}
+				else if (FlxG.keys.pressed.LEFT || haveLefted)
+				{
+					FlxG.save.data.offset -= 0.1;
+					haveLefted = false;
+				}
+				
+				versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
 			}
 		
 
@@ -310,6 +310,8 @@ class OptionsMenu extends MusicBeatState
 						}
 					curSelected = 0;
 				}
+				
+				changeSelection(curSelected);
 				haveClicked=false;
 			}
 		}

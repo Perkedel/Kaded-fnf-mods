@@ -102,7 +102,7 @@ class LoadReplayState extends MusicBeatState
 		}
 
 
-		versionShit = new FlxText(5, FlxG.height - 34, 0, "Replay Loader (ESCAPE TO GO BACK)\nNOTICE!!!! Replays are in a beta stage, and they are probably not 100% correct. expect misses and other stuff that isn't there!", 12);
+		versionShit = new FlxText(5, FlxG.height - 34, 0, "Replay Loader (ESCAPE TO GO BACK)\nNOTICE!!!! Replays are in a beta stage, and they are probably not 100% correct. expect misses and other stuff that isn't there!\n", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -129,7 +129,7 @@ class LoadReplayState extends MusicBeatState
         for (i in 0...songs.length)
         {
             var pog:FreeplayState.SongMetadata = songs[i];
-            if (pog.songName.toLowerCase() == songName)
+            if (pog.songName == songName)
                 week = pog.week;
         }
         return week;
@@ -179,15 +179,33 @@ class LoadReplayState extends MusicBeatState
 
                 PlayState.loadRep = true;
 
-                var poop:String = Highscore.formatSong(PlayState.rep.replay.songName.toLowerCase(), PlayState.rep.replay.songDiff);
+				if (PlayState.rep.replay.replayGameVer == Replay.version)
+				{
 
-				PlayState.SONG = Song.loadFromJson(poop, PlayState.rep.replay.songName.toLowerCase());
-                PlayState.isStoryMode = false;
-                PlayState.storyDifficulty = PlayState.rep.replay.songDiff;
-                PlayState.storyWeek = getWeekNumbFromSong(PlayState.rep.replay.songName);
-                LoadingState.loadAndSwitchState(new PlayState());
+					// adjusting the song name to be compatible
+					var songFormat = StringTools.replace(PlayState.rep.replay.songName, " ", "-");
+					switch (songFormat) {
+						case 'Dad-Battle': songFormat = 'Dadbattle';
+						case 'Philly-Nice': songFormat = 'Philly';
+						// Replay v1.0 support
+						case 'dad-battle': songFormat = 'Dadbattle';
+						case 'philly-nice': songFormat = 'Philly';
+					}
 
-				haveClicked = false;
+					var poop:String = Highscore.formatSong(songFormat, PlayState.rep.replay.songDiff);
+
+					PlayState.SONG = Song.loadFromJson(poop, PlayState.rep.replay.songName);
+					PlayState.isStoryMode = false;
+					PlayState.storyDifficulty = PlayState.rep.replay.songDiff;
+					PlayState.storyWeek = getWeekNumbFromSong(PlayState.rep.replay.songName);
+					LoadingState.loadAndSwitchState(new PlayState());
+				}
+				else
+				{
+					PlayState.rep = null;
+					PlayState.loadRep = false;
+				}
+				haveClicked = false; //JOELwindows7: have clicked thingy
 			}
 
 			//JOELwindows7: copy from option menu back there
@@ -234,7 +252,7 @@ class LoadReplayState extends MusicBeatState
 
 		var rep:Replay = Replay.LoadReplay(actualNames[curSelected]);
 
-		poggerDetails.text = "Replay Details - \nDate Created: " + rep.replay.timestamp + "\nSong: " + rep.replay.songName + "\nReplay Version: " + (rep.replay.replayGameVer != Replay.version ? "OUTDATED" : "Latest");
+		poggerDetails.text = "Replay Details - \nDate Created: " + rep.replay.timestamp + "\nSong: " + rep.replay.songName + "\nReplay Version: " + rep.replay.replayGameVer + ' (' + (rep.replay.replayGameVer != Replay.version ? "OUTDATED not useable!" : "Latest") + ')\n';
 
 		// selector.y = (70 * curSelected) + 30;
 
