@@ -27,6 +27,7 @@ class Caching extends MusicBeatState
 
     var text:FlxText;
     var kadeLogo:FlxSprite;
+    var lFMLogo:FlxSprite; //JOELwindows7: LFM logo
 
 	override function create()
 	{
@@ -48,8 +49,17 @@ class Caching extends MusicBeatState
 
         kadeLogo.alpha = 0;
 
+        //JOELwindows7: LFM logo
+        lFMLogo = new FlxSprite(FlxG.width / 2, (FlxG.height / 2)+270).loadGraphic(Paths.image('art/LFMicon128'));
+        lFMLogo.x -= lFMLogo.width / 2;
+        lFMLogo.y -= lFMLogo.height / 2;
+        lFMLogo.alpha = 0;
+
+
         add(kadeLogo);
         add(text);
+        add(lFMLogo);
+
 
         trace('starting caching..');
         
@@ -71,6 +81,7 @@ class Caching extends MusicBeatState
             var alpha = HelperFunctions.truncateFloat(done / toBeDone * 100,2) / 100;
             kadeLogo.alpha = alpha;
             text.alpha = alpha;
+            lFMLogo.alpha = alpha;
             text.text = "Loading... (" + done + "/" + toBeDone + ")";
         }
 

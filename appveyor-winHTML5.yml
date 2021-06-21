@@ -39,7 +39,8 @@ install:
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
   - haxelib install linc_luajit
   - haxelib install actuate
-  - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  - haxelib git extension-webm https://github.com/KadeDev/extension-webm
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
   # - haxelib install androidhx
@@ -50,7 +51,6 @@ build_script:
   - dir
   - haxelib run lime rebuild extension-webm windows
   - haxelib run lime build html5
-  # haxelib run lime build linux # doesnt work if host OS is not same as that desktop OS
 
 after_build:
   - dir

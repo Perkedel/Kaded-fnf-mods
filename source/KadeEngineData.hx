@@ -61,14 +61,20 @@ class KadeEngineData
 		if (FlxG.save.data.watermark == null)
 			FlxG.save.data.watermark = true;
 
+		//JOELwindows7: odysee watermark
 		if (FlxG.save.data.odyseeMark == null)
 			FlxG.save.data.odyseeMark = true;
 
+		//JOELwindows7: Perkedel watermark
 		if (FlxG.save.data.perkedelMark == null)
 			FlxG.save.data.perkedelMark = true;
 
+		//JOELwindows7: naughtiness option
 		if (FlxG.save.data.naughtiness == null)
 			FlxG.save.data.naughtiness = true;
+
+		if (FlxG.save.data.cardiophile == null)
+			FlxG.save.data.cardiophile = true;
 
 		if (FlxG.save.data.ghost == null)
 			FlxG.save.data.ghost = true;
@@ -110,6 +116,11 @@ class KadeEngineData
 		Main.perkedelMark = FlxG.save.data.perkedelMark;
 		FlxG.fullscreen = FlxG.save.data.fullscreen;
 
+		trace("set FPS stuff from setting"); //JOELwindows7: trace this for android crashsures
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		#if !mobile
+		(cast (Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
+		#end //JOELwindows7: nvm, don't do that!
+		trace("successfully set FPS settings"); //JOELwindows7: see if Android version crash!
 	}
 }

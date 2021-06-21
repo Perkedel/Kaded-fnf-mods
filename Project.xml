@@ -35,8 +35,9 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="true"/>
+	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/>
 	<!-- JOELwindows7: make it resizable due to Samsung Dex just in case -->
+	<!-- do not make it resizable! it will look silly on big screen! especially gameplay!!! -->
 	<!-- also luckydog7 force it 720p -->
 
 	<!--Switch-specific-->
@@ -184,8 +185,9 @@
 
 	<!-- Growtopia's Video Cutscener https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/-->
 	<!-- added by JOELwindows7 -->
-	<haxelib name="actuate" />
-	<haxelib name="extension-webm" if="desktop" />
+	<!-- <haxelib name="actuate" />
+	<haxelib name="extension-webm" if="desktop" /> -->
+	<!-- Already cannon by Kade himself -->
 
 	<!-- the luckydog7 added this since the video plays in a webview -->
 	<!-- <haxelib name="extension-webview"/> -->

@@ -35,7 +35,7 @@ install:
   - haxelib run lime rebuild extension-webm linux
   - haxelib install linc_luajit
   - haxelib install actuate
-  - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
   # - haxelib install androidhx
@@ -51,9 +51,9 @@ install:
 
 build_script:
   - cd /home/appveyor/projects/kaded-fnf-mods-linux
-  - haxelib run lime rebuild discord_rpc linux
-  - haxelib run lime rebuild extension-webm linux
-  - haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?
+  # - haxelib run lime rebuild discord_rpc linux
+  # - haxelib run lime rebuild extension-webm linux
+  # - haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?
   - haxelib run lime build linux
   - haxelib run lime build linux -32 -D32bit
 

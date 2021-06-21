@@ -18,7 +18,9 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+#if newgrounds
 import io.newgrounds.NG;
+#end
 import lime.app.Application;
 import lime.utils.Assets;
 import flixel.math.FlxMath;
@@ -176,7 +178,7 @@ class ResultsScreen extends FlxSubState
         }
         // keybinds
 
-        if (FlxG.keys.justPressed.ENTER)
+        if (FlxG.keys.justPressed.ENTER || FlxG.mouse.justPressed) //JOELwindows7: install mouse support
         {
             music.fadeOut(0.3);
             

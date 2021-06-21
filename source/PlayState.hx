@@ -2,7 +2,9 @@ package;
 
 import flixel.input.actions.FlxAction.FlxActionAnalog;
 import DokiDoki;
+#if cpp
 import webm.WebmPlayer;
+#end
 import flixel.input.keyboard.FlxKey;
 import haxe.Exception;
 import openfl.geom.Matrix;
@@ -4048,12 +4050,13 @@ class PlayState extends MusicBeatState
 			public function backgroundVideo(source:String) // for background videos
 				{
 					useVideo = true;
-			
+					#if desktop
 					FlxG.stage.window.onFocusOut.add(focusOut);
 					FlxG.stage.window.onFocusIn.add(focusIn);
 
 					var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
-					WebmPlayer.SKIP_STEP_LIMIT = 90;
+					
+					WebmPlayer.SKIP_STEP_LIMIT = 90; //JOELwindows7: the static access only works if the variable is static
 					var str1:String = "WEBM SHIT"; 
 					webmHandler = new WebmHandler();
 					webmHandler.source(ourSource);
@@ -4097,6 +4100,10 @@ class PlayState extends MusicBeatState
 						webmHandler.pause();
 					else
 						webmHandler.resume();
+					
+					#else
+					//JOELwindows7: doesn't work in HTML5
+					#end
 				}
 
 	function noteMiss(direction:Int = 1, daNote:Note):Void

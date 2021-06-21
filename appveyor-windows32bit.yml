@@ -39,7 +39,8 @@ install:
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
   - haxelib install linc_luajit
   - haxelib install actuate
-  - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  - haxelib git extension-webm https://github.com/KadeDev/extension-webm
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
   # - haxelib install androidhx

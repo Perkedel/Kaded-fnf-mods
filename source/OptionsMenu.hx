@@ -56,13 +56,15 @@ class OptionsMenu extends MusicBeatState
 			new FPSOption("Toggle the FPS Counter"),
 			new ReplayOption("View replays"),
 			#end
+			new CardiophileOption("Toggle heartbeat features that contains doki-doki stuffs"),
 			new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), //JOELwindows7: make this Odysee exclusive pls. how!
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 			new WatermarkOption("Enable and disable all watermarks from the engine."),
 			new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),
 			new BotPlay("Showcase your charts and mods with autoplay."),
-			new ScoreScreen("Show the score screen after the end of a song")
+			new ScoreScreen("Show the score screen after the end of a song"),
+			new ExportSaveToJson("BETA! Export entire save data into JSON file")
 		])
 		
 	];
@@ -170,13 +172,14 @@ class OptionsMenu extends MusicBeatState
 					var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true, false);
 					controlLabel.isMenuItem = true;
 					controlLabel.targetY = i;
+					controlLabel.ID = i; //add the ID too for compare curSelected like Main Menu
 					grpControls.add(controlLabel);
 					// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 				}
 				
 				curSelected = 0;
 				
-				changeSelection(curSelected);
+				changeSelection(curSelected); //JOELwindows7: funny, this is not necessary. it jumps for num of cur selected
 				haveBacked = false;
 			}
 			//JOELwindows7: idk how to mouse on option menu
@@ -311,7 +314,8 @@ class OptionsMenu extends MusicBeatState
 					curSelected = 0;
 				}
 				
-				changeSelection(curSelected);
+				//curSelected = 0; //JOELwindows7; perhaps you may not move?
+				//changeSelection(curSelected);
 				haveClicked=false;
 			}
 		}

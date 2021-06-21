@@ -29,9 +29,6 @@ class PauseSubState extends MusicBeatSubstate
 	
 	var offsetChanged:Bool = false;
 
-	//JOELwindows7: mouse click flag
-	var haveClicked:Bool = false;
-
 	public function new(x:Float, y:Float)
 	{
 		super();
@@ -92,7 +89,7 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 			songText.isMenuItem = true;
-			songText.updateHitbox();
+			//songText.updateHitbox(); //JOELwindows7: not necessary, this can mess touch mouse support
 			songText.scrollFactor.set(); //JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
 			songText.targetY = i;
 			songText.ID = i; //JOELwindows7: ID each menu item to compare with current selected
@@ -103,6 +100,21 @@ class PauseSubState extends MusicBeatSubstate
 		changeSelection();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+
+		//JOELwindows7: button desu
+		addBackButton(20,FlxG.height);
+		addLeftButton(FlxG.width-400,FlxG.height);
+		addRightButton(FlxG.width-200,FlxG.height);
+
+		backButton.visible = false; //JOELwindows7: oops that backButton ESC not work here. choose resume instead!
+		#if !desktop //JOELwindows7: hide the offset adjustment key to prevent people pressing it
+		leftButton.visible = false;
+		rightButton.visible = false;
+		#end //and then crash the game because again, file writing doesn't work in Android currently
+
+		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left right button
+		FlxTween.tween(rightButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: yeah.
 	}
 
 	override function update(elapsed:Float)
@@ -117,8 +129,8 @@ class PauseSubState extends MusicBeatSubstate
 
 		var upP = controls.UP_P || FlxG.mouse.wheel == 1;
 		var downP = controls.DOWN_P || FlxG.mouse.wheel == -1;
-		var leftP = controls.LEFT_P;
-		var rightP = controls.RIGHT_P;
+		var leftP = controls.LEFT_P || haveLefted;
+		var rightP = controls.RIGHT_P || haveRighted;
 		var accepted = controls.ACCEPT || haveClicked;
 		var oldOffset:Float = 0;
 
@@ -172,6 +184,7 @@ class PauseSubState extends MusicBeatSubstate
 					cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 					offsetChanged = true;
 				}
+			haveLefted = false;
 			}else if (rightP)
 			{
 				oldOffset = PlayState.songOffset;
@@ -199,6 +212,7 @@ class PauseSubState extends MusicBeatSubstate
 					cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 					offsetChanged = true;
 				}
+			haveRighted = false;
 			}
 		#end
 
@@ -279,7 +293,8 @@ class PauseSubState extends MusicBeatSubstate
 			//do something here
 			//only when mouse is visible
 			grpMenuShit.forEach(function(poop:Alphabet){
-				if(FlxG.mouse.overlaps(poop)){
+				if(FlxG.mouse.overlaps(poop) && !FlxG.mouse.overlaps(backButton)
+					&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
 					//trace("hover over " + Std.string(poop.ID)); //JOELwindows7: temp tracer
 					//alright. it looks like that, the alphabet hover
 					//isn't placed like it was appeared.
@@ -293,6 +308,29 @@ class PauseSubState extends MusicBeatSubstate
 							//go to clicked menu
 							goToSelection(poop.ID);
 							trace("Go to menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
+						}
+					}
+				}
+
+				//JOELwindows7: back button for no keyboard
+				if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(poop)){
+					if(FlxG.mouse.justPressed){
+						if(!haveBacked){
+							haveBacked = true;
+						}
+					}
+				}
+				if(FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(poop)){
+					if(FlxG.mouse.justPressed){
+						if(!haveLefted){
+							haveLefted = true;
+						}
+					}
+				}
+				if(FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(poop)){
+					if(FlxG.mouse.justPressed){
+						if(!haveRighted){
+							haveRighted = true;
 						}
 					}
 				}

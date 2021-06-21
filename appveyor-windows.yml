@@ -41,7 +41,7 @@ install:
   - haxelib run lime rebuild extension-webm windows
   - haxelib install linc_luajit
   - haxelib install actuate
-  - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
   # - haxelib install androidhx
@@ -50,7 +50,7 @@ install:
 # No tests idk lol
 build_script:
   - dir
-  - haxelib run lime rebuild extension-webm windows
+  # - haxelib run lime rebuild extension-webm windows
   - haxelib run lime build windows
   # - haxelib run lime build windows -32 -D32bit
   # - haxelib run lime build html5

@@ -357,6 +357,7 @@ class ScoreScreen extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.scoreScreen = !FlxG.save.data.scoreScreen;
+		display = updateDisplay(); //JOELwindows7: you need this!
 		return true;
 	}
 
@@ -747,7 +748,7 @@ class ExportSaveToJson extends Option{
 	}
 
 	private override function updateDisplay():String
-		return "Export save data to JSON";
+		return "Export save data to JSON (BETA)";
 
 	function onSaveComplete(_):Void
 	{
@@ -898,48 +899,48 @@ class FullScreenOption extends Option{
 class OdyseemarkOption extends Option
 {
 	public function new(desc:String)
-		{
-			super();
-			description = desc;
-		}
-	
-		public override function press():Bool
-		{
-			Main.odyseeMark = !Main.odyseeMark;
-			FlxG.save.data.odyseeMark = Main.odyseeMark;
-			trace("Odysee watermark: " + FlxG.save.data.odyseeMark);
-			display = updateDisplay();
-			return true;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "Odysee Watermarks " + (Main.odyseeMark ? "on" : "off");
-		}
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		Main.odyseeMark = !Main.odyseeMark;
+		FlxG.save.data.odyseeMark = Main.odyseeMark;
+		trace("Odysee watermark: " + FlxG.save.data.odyseeMark);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Odysee Watermarks " + (Main.odyseeMark ? "on" : "off");
+	}
 }
 
 //JOELwindows7: again do the same. change the purpose option target yeay
 class PerkedelmarkOption extends Option
 {
 	public function new(desc:String)
-		{
-			super();
-			description = desc;
-		}
-	
-		public override function press():Bool
-		{
-			Main.perkedelMark = !Main.perkedelMark;
-			FlxG.save.data.perkedelMark = Main.perkedelMark;
-			trace("Perkedel watermark: " + FlxG.save.data.perkedelMark);
-			display = updateDisplay();
-			return true;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "Perkedel Watermarks " + (Main.perkedelMark ? "on" : "off");
-		}
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		Main.perkedelMark = !Main.perkedelMark;
+		FlxG.save.data.perkedelMark = Main.perkedelMark;
+		trace("Perkedel watermark: " + FlxG.save.data.perkedelMark);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Perkedel Watermarks " + (Main.perkedelMark ? "on" : "off");
+	}
 }
 
 //JOELwindows7: okay. we got to think ahead. there will be many watermarkers so we need to scroll choose the left right.
@@ -988,4 +989,25 @@ class ChooseWatermark extends Option
 			display = updateDisplay();
 			return true;
 		}
+}
+
+//JOELwindows7: Cardiophille options! enable heartbeat fetish features
+class CardiophileOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	
+	public override function press():Bool
+	{
+		FlxG.save.data.cardiophile = !FlxG.save.data.cardiophile;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Cardiophile " + (FlxG.save.data.cardiophile ? "ON" : "OFF");
+	}
 }

@@ -164,7 +164,7 @@ class Ratings
          " | Accuracy:" + (PlayStateChangeables.botPlay && !PlayState.loadRep ? "N/A" : HelperFunctions.truncateFloat(accuracy, 2) + " %") +  				// 	Accuracy
          " | " + GenerateLetterRank(accuracy) 																		            // 	Letter Rank
          : "") : "") +
-         (" | HR: " + judgeHeartBeat(hR,hTier))                                                                                  // JOELwindows7: in game heartbeat rate
+         (FlxG.save.data.cardiophile? " | HR: " + judgeHeartBeat(hR,hTier) : "")                                                // JOELwindows7: in game heartbeat rate
          ;
     }
 }

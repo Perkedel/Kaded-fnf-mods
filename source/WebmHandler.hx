@@ -8,7 +8,7 @@ import webm.*;
 
 class WebmHandler
 {
-	#if (desktop && cpp)
+	#if desktop
 	public var webm:WebmPlayer;
 	public var vidPath:String = "";
 	public var io:WebmIo;
@@ -165,5 +165,96 @@ class WebmHandler
 	{
 	trace("THIS IS ANDROID! or some shit...");
 	}
+
+	//JOELwindows7: You must give dummy functions to prevent compilation faile
+	public function source(?vPath:String):Void
+	{
+		
+	}
+	public function makePlayer():Void
+	{
+
+	}
+
+	public var stopped:Bool = false;
+	public var restarted:Bool = false;
+	public var played:Bool = false;
+	public var ended:Bool = false;
+	public var paused:Bool = false;
+
+	public function update(elapsed:Float)
+	{
+
+	}
+	public function updatePlayer():Void
+	{
+
+	}
+	public function restart():Void
+	{
+
+	}
+	public function play():Void
+	{
+
+	}
+	public function stop():Void
+	{
+
+	}
+	public function pause():Void
+	{
+
+	}
+	public function resume():Void
+	{
+
+	}
+	public function togglePause():Void
+	{
+		// if (paused)
+		// {
+		// 	resume();
+		// } else {
+		// 	pause();
+		// }
+	}
+	public function clearPause():Void
+	{
+
+	}
+	public function onRestart():Void
+	{
+
+	}
+	public function onStop():Void
+	{
+
+	}
+	public function onPlay():Void
+	{
+
+	}
+	public function onEnd():Void
+	{
+
+	}
+	public function show():Void
+	{
+
+	}
+	public function hide():Void
+	{
+
+	}
+	public function unalpha():Void
+	{
+
+	}
+	public function alpha():Void
+	{
+
+	}
+	//JOELwindows7: that's all hopefully
 	#end
 }

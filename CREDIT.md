@@ -178,6 +178,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://haxeflixel.com/documentation/haxeflixel-conditionals/ compiler conditionals
 - https://haxeflixel.com/documentation/game-development-tools/ tools you can use
 - https://gamebanana.com/mods/296629 Unity remade of FNF in 24 hours
+- Shaggy mod dreidel reference 
   
 # in event of git merge conflict
 use VScode and Github desktop!

@@ -1,5 +1,7 @@
 package;
 
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSubState;
@@ -99,6 +101,15 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.target = null;
 
 		bf.playAnim('firstDeath');
+
+		//JOELwindows7: back button to surrender
+		addBackButton(20,FlxG.height+30);
+		backButton.scrollFactor.set();
+		backButton.alpha = 0;
+		//FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
+
+		//JOELwindows7: make mouse cursor visible
+		FlxG.mouse.visible = true;
 	}
 
 	override function update(elapsed:Float)
@@ -106,12 +117,14 @@ class GameOverSubstate extends MusicBeatSubstate
 		super.update(elapsed);
 
 		//JOELwindows7: add mouse press
-		if (controls.ACCEPT || FlxG.mouse.justPressed)
+		if (controls.ACCEPT || haveClicked)
 		{
 			endBullshit();
+
+			haveClicked = false; //JOELwindows7: the mouse support improvement
 		}
 
-		if (controls.BACK)
+		if (controls.BACK || haveBacked)
 		{
 			FlxG.sound.music.stop();
 
@@ -120,6 +133,8 @@ class GameOverSubstate extends MusicBeatSubstate
 			else
 				FlxG.switchState(new FreeplayState());
 			PlayState.loadRep = false;
+
+			haveBacked = false;
 		}
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
@@ -131,11 +146,23 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			//JOELwindows7: yess! the MIDI version detection.
 			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
+			FlxTween.tween(backButton,{y:FlxG.height - 100, alpha: 1},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
 		}
 
 		if (FlxG.sound.music.playing)
 		{
 			Conductor.songPosition = FlxG.sound.music.time;
+		}
+
+		//JOELwindows7: you must click bf to accept
+		if(FlxG.mouse.overlaps(bf)){
+			if(FlxG.mouse.justPressed){
+				haveClicked = true;
+			}
+		} else if(FlxG.mouse.overlaps(backButton)){
+			if(FlxG.mouse.justPressed){
+				haveBacked = true;
+			}
 		}
 	}
 
