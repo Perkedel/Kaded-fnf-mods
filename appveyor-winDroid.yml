@@ -4,9 +4,9 @@ version: "{build}"
 environment:
   global:
     HAXELIB_ROOT: C:\projects\haxelib
-    ANDROID_SDK_LOC: C:\android_sdk
-    ANDROID_NDK_ROOT_LOC: C:\android_ndk
-    ANDROID_CMD_LOC: C:\android_cmd
+    ANDROID_SDK_LOC: C:\projects\android_sdk
+    ANDROID_NDK_ROOT_LOC: C:\projects\android_ndk
+    ANDROID_CMD_LOC: C:\projects\android_cmd
 
 install:
   # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
@@ -53,18 +53,17 @@ install:
   - wget -q O android_cmd.zip https://dl.google.com/android/repository/commandlinetools-win-7302050_latest.zip
   - wget -q O android_sdk.zip https://dl.google.com/android/repository/platform-tools-latest-windows.zip
   - msiexec /i openJDK.msi INSTALLLEVEL=1 INSTALLDIR="c:\Program Files\AdoptOpenJDK\" /quiet
-  - unzip .\android_ndk.zip $ANDROID_NDK_ROOT_LOC
-  - unzip .\android_cmd.zip C:\android_sdk\
-  - unzip .\android_sdk.zip $ANDROID_SDK_LOC
+  - unzip .\android_ndk.zip "%ANDROID_NDK_ROOT_LOC%"
+  - unzip .\android_cmd.zip "C:\projects\android_sdk\"
+  - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   - haxelib list
 
 # No tests idk lol
 build_script:
   - dir
-  - 
-  - C:\android_sdk\cmdline-tools\bin\sdkmanager.bat "platform-tools" "platforms;android-19" "build-tools"
-  - haxelib run lime config ANDROID_SDK $ANDROID_SDK_LOC
-  - haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_ROOT_LOC
+  - C:\projects\android_sdk\cmdline-tools\bin\sdkmanager.bat "platform-tools" "platforms;android-19" "build-tools"
+  - haxelib run lime config ANDROID_SDK "%ANDROID_SDK_LOC%"
+  - haxelib run lime config ANDROID_NDK_ROOT "%ANDROID_NDK_ROOT_LOC%"
   - haxelib run lime config JAVA_HOME C:\Program Files\AdoptOpenJDK\jdk-8.0.292.10-hotspot
   # - haxelib run lime rebuild extension-webm windows
   - haxelib run lime build android
@@ -73,7 +72,7 @@ after_build:
   - dir
   # JOELwindows7: upload to itch
   # wtf, appveyor did not expect Git
-  - butler push "C:\projects\kaded-fnf-mods-windows\export\release\android\bin\app\build\output\apk\Last Funkin Moments-debug.apk" joelwindows7/last-funkin-moments:android-appveyor
+  - butler push "C:\projects\kaded-fnf-mods-winDroid\export\release\android\bin\app\build\output\apk\Last Funkin Moments-debug.apk" joelwindows7/last-funkin-moments:android-appveyor
 
 artifacts:
   - path: export\release\android\bin\app\build\output\apk\Last Funkin Moments-debug.apk
