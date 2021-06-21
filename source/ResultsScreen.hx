@@ -54,9 +54,10 @@ class ResultsScreen extends FlxSubState
     public static var handoverVideoPath:String;
 
     public function new(tellHasVideo:Bool = false, tellVideoPath:String = "assets/videos/null.webm"){
+        super();
         //JOELwindows7: there may be epilogue cutscene
-        this.handoverHasVideo = tellHasVideo;
-        this.handoverVideoPath = tellVideoPath;
+        handoverHasVideo = tellHasVideo;
+        handoverVideoPath = tellVideoPath;
     }
 
 	override function create()
