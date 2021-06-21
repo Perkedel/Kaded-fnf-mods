@@ -1,5 +1,8 @@
 package;
 
+import openfl.net.FileReference;
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
 import lime.app.Application;
 import lime.system.DisplayMode;
 import flixel.util.FlxColor;
