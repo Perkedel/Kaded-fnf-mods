@@ -7,7 +7,12 @@ collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
 ## Download NOW
 - Odysee
+  - [Linux x64](https://odysee.com/@JOELwindows7:a/last-funkin-moments:b?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
+  - [Linux 32 bit](https://odysee.com/@JOELwindows7:a/last-funkin-32bit )
   - [Win64](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows:c?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
+  - [Win32](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows32 )
+  - [macOS](https://odysee.com/@JOELwindows7:a/last-funkin-moments-macOS)
+  - [Android](https://odysee.com/@JOELwindows7:a/last-funkin-moments-android )
 - GameBanana https://gamebanana.com/mods/293257
 - NexusMods https://www.nexusmods.com/fridaynightfunkin/mods/247 
 - Itch.io https://joelwindows7.itch.io/last-funkin-moments
