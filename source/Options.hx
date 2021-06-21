@@ -1,11 +1,5 @@
 package;
 
-import openfl.net.FileFilter;
-import lime.ui.FileDialogType;
-import haxe.Json;
-import openfl.events.IOErrorEvent;
-import openfl.events.Event;
-import openfl.net.FileReference;
 import lime.app.Application;
 import lime.system.DisplayMode;
 import flixel.util.FlxColor;
@@ -13,8 +7,6 @@ import Controls.KeyboardScheme;
 import flixel.FlxG;
 import openfl.display.FPS;
 import openfl.Lib;
-
-using StringTools;
 
 class OptionCategory
 {
@@ -269,6 +261,27 @@ class FlashingLightsOption extends Option
 	}
 }
 
+class ShowInput extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		FlxG.save.data.inputShow = !FlxG.save.data.inputShow;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return (FlxG.save.data.inputShow ? "Extended Score Info" : "Minimalized Info");
+	}
+}
+
+
 class Judgement extends Option
 {
 	
@@ -299,7 +312,7 @@ class Judgement extends Option
 		FlxG.save.data.frames = Conductor.safeFrames;
 
 		Conductor.recalculateTimings();
-		return true;
+		return false;
 	}
 
 	override function getValue():String {
@@ -357,7 +370,7 @@ class ScoreScreen extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.scoreScreen = !FlxG.save.data.scoreScreen;
-		display = updateDisplay(); //JOELwindows7: you need this!
+		display = updateDisplay();
 		return true;
 	}
 
@@ -393,17 +406,11 @@ class FPSCapOption extends Option
 		if (FlxG.save.data.fpsCap >= 290)
 		{
 			FlxG.save.data.fpsCap = 290;
-			//JOELwindows7: Issue with Android, this static refering way crash
-			#if !mobile
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
-			#end
 		}
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap + 10;
-		//JOELwindows7: this gotta be a bug from the core Haxe itself right?
-		#if !mobile
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-		#end 
 
 		return true;
 	}
@@ -415,10 +422,7 @@ class FPSCapOption extends Option
 			FlxG.save.data.fpsCap = Application.current.window.displayMode.refreshRate;
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap - 10;
-		//JOELwindows7: what an inconvenience. I expect it works on android too!
-		#if !mobile
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-		#end
 		return true;
 	}
 

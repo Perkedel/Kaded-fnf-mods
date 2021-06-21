@@ -64,6 +64,7 @@ class OptionsMenu extends MusicBeatState
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),
 			new BotPlay("Showcase your charts and mods with autoplay."),
 			new ScoreScreen("Show the score screen after the end of a song"),
+			new ShowInput("Display every single input in the score screen."),
 			new ExportSaveToJson("BETA! Export entire save data into JSON file")
 		])
 		
@@ -290,11 +291,8 @@ class OptionsMenu extends MusicBeatState
 				if (isCat)
 				{
 					if (currentSelectedCat.getOptions()[curSelected].press()) {
-						grpControls.remove(grpControls.members[curSelected]);
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, currentSelectedCat.getOptions()[curSelected].getDisplay(), true, false);
-						ctrl.isMenuItem = true;
-						ctrl.ID = curSelected;
-						grpControls.add(ctrl);
+						grpControls.members[curSelected].reType(currentSelectedCat.getOptions()[curSelected].getDisplay());
+						trace(currentSelectedCat.getOptions()[curSelected].getDisplay());
 					}
 				}
 				else
@@ -314,9 +312,9 @@ class OptionsMenu extends MusicBeatState
 					curSelected = 0;
 				}
 				
-				//curSelected = 0; //JOELwindows7; perhaps you may not move?
-				//changeSelection(curSelected);
-				haveClicked=false;
+				changeSelection();
+
+				haveClicked=false; //JOELwindows7: mouse supports
 			}
 		}
 		FlxG.save.flush();

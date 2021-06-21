@@ -1,7 +1,9 @@
 package;
 
+import Replay.Ana;
+import Replay.Analysis;
 import flixel.input.actions.FlxAction.FlxActionAnalog;
-import DokiDoki;
+import DokiDoki; //JOELwindows7: the heartbeat stuff
 #if cpp
 import webm.WebmPlayer;
 #end
@@ -112,7 +114,7 @@ class PlayState extends MusicBeatState
 	var reuploadWatermark:FlxText; //JOELwindows7: reupload & no credit protection. 
 	//last resort is to have links shared in video, hard coded, hard embedded.
 	//hopefully the "thiefs" got displeased lmao!
-	
+
 	//JOELwindows7: Doki doki dance thingie
 	public var heartRate:Int = 70;
 	public var minHR:Int = 70;
@@ -123,7 +125,7 @@ class PlayState extends MusicBeatState
 	public var fearShockAdd:Array<Int> = [10, 8, 7, 5];
 	public var relaxMinusPerBeat:Array<Int> = [1, 2, 4, 7];
 	var slowedAlready:Bool = false;
-
+	
 	#if (windows && cpp)
 	// Discord RPC variables
 	var storyDifficultyText:String = "";
@@ -256,6 +258,8 @@ class PlayState extends MusicBeatState
 	private var botPlayState:FlxText;
 	// Replay shit
 	private var saveNotes:Array<Dynamic> = [];
+	private var saveJudge:Array<String> = [];
+	private var replayAna:Analysis = new Analysis(); // replay analysis
 
 	public static var highestCombo:Int = 0;
 
@@ -310,7 +314,7 @@ class PlayState extends MusicBeatState
 		
 		removedVideo = false;
 
-		#if (windows && sys && cpp)
+		#if (windows && sys)
 		executeModchart = FileSystem.exists(Paths.lua(songLowercase  + "/modchart"));
 		#else
 		executeModchart = false; // JOELwindows7: FORCE disable for non sys && windows targets
@@ -323,15 +327,7 @@ class PlayState extends MusicBeatState
 
 		#if (windows && cpp)
 		// Making difficulty text for Discord Rich Presence.
-		switch (storyDifficulty)
-		{
-			case 0:
-				storyDifficultyText = "Easy";
-			case 1:
-				storyDifficultyText = "Normal";
-			case 2:
-				storyDifficultyText = "Hard";
-		}
+		storyDifficultyText = CoolUtil.difficultyFromInt(storyDifficulty);
 
 		iconRPC = SONG.player2;
 
@@ -372,6 +368,7 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: init the heartbeat system
 		startHeartBeat();
+
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -1449,7 +1446,7 @@ class PlayState extends MusicBeatState
 				songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
 				add(songPosBar);
 	
-				var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - 20,songPosBG.y,0,SONG.song, 16);
+				var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.song.length * 5),songPosBG.y,0,SONG.song, 16);
 				if (PlayStateChangeables.useDownscroll)
 					songName.y -= 3;
 				songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
@@ -1474,8 +1471,6 @@ class PlayState extends MusicBeatState
 
 		trace("add HP bar"); //JOELwindows7: where the heck crash source?! android
 
-		
-
 		//JOELwindows7: add reupload watermark
 		//usually, YouTube mod showcase only shows gameplay
 		//and there are some naughty youtubers who did not credit link in description neither comment.
@@ -1492,7 +1487,7 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: I add watermark Perkedel Mod
 		// Add Kade Engine watermark
-		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + (storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : "") + (Main.perkedelMark ? " | LFM " + MainMenuState.lastFunkinMomentVer : ""), 16);
+		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " " + CoolUtil.difficultyFromInt(storyDifficulty) + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : "") + (Main.perkedelMark ? " | LFM " + MainMenuState.lastFunkinMomentVer : ""), 16);
 		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		kadeEngineWatermark.scrollFactor.set();
 		add(kadeEngineWatermark);
@@ -1823,7 +1818,7 @@ class PlayState extends MusicBeatState
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
-
+		
 		// pre lowercasing the song name (startCountdown)
 		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
 		switch (songLowercase) {
@@ -1889,7 +1884,7 @@ class PlayState extends MusicBeatState
 
 			{
 				case 0:
-					FlxG.sound.play(Paths.sound('intro3' + altSuffix  + midiSuffix), 0.6);
+					FlxG.sound.play(Paths.sound('intro3' + altSuffix + midiSuffix), 0.6);
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
 					ready.scrollFactor.set();
@@ -1907,7 +1902,7 @@ class PlayState extends MusicBeatState
 							ready.destroy();
 						}
 					});
-					FlxG.sound.play(Paths.sound('intro2' + altSuffix  + midiSuffix), 0.6);
+					FlxG.sound.play(Paths.sound('intro2' + altSuffix + midiSuffix), 0.6);
 				case 2:
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 					set.scrollFactor.set();
@@ -1924,7 +1919,7 @@ class PlayState extends MusicBeatState
 							set.destroy();
 						}
 					});
-					FlxG.sound.play(Paths.sound('intro1' + altSuffix  + midiSuffix), 0.6);
+					FlxG.sound.play(Paths.sound('intro1' + altSuffix + midiSuffix), 0.6);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 					go.scrollFactor.set();
@@ -1943,7 +1938,7 @@ class PlayState extends MusicBeatState
 							go.destroy();
 						}
 					});
-					FlxG.sound.play(Paths.sound('introGo' + altSuffix  + midiSuffix), 0.6);
+					FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
 				case 4:
 					//JOELwindows7: just add trace for fun
 					trace("Run the song now!");
@@ -1967,7 +1962,7 @@ class PlayState extends MusicBeatState
 		reuploadWatermark.visible = true;
 		//then the Update() function above will invisibilize again
 		//after 8 curBeats.
-
+		
 		startingSong = false;
 		songStarted = true;
 		previousFrameTime = FlxG.game.ticks;
@@ -2005,7 +2000,7 @@ class PlayState extends MusicBeatState
 			songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
 			add(songPosBar);
 
-			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - 20,songPosBG.y,0,SONG.song, 16);
+			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.song.length * 5),songPosBG.y,0,SONG.song, 16);
 			if (PlayStateChangeables.useDownscroll)
 				songName.y -= 3;
 			songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
@@ -2065,7 +2060,7 @@ class PlayState extends MusicBeatState
 		var playerCounter:Int = 0;
 
 		// Per song offset check
-		#if (windows && cpp) //JOELwindows7: make this work if there is sys & is Windows
+		#if (windows && sys) //JOELwindows7: make this work if there is sys & is Windows
 			// pre lowercasing the song name (generateSong)
 			var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
 				switch (songLowercase) {
@@ -2653,7 +2648,7 @@ class PlayState extends MusicBeatState
 			FlxG.switchState(new Charting()); */
 
 		#if debug
-		if (FlxG.keys.justPressed.EIGHT)
+		if (FlxG.keys.justPressed.SIX)
 		{
 			if (useVideo)
 				{
@@ -2962,6 +2957,7 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("tempoShit", Conductor.bpm);
 		FlxG.watch.addQuick("shinzouRateShit", heartRate);
 		FlxG.watch.addQuick("songPositionShit", Conductor.songPosition);
+
 
 		if (curSong == 'Fresh')
 		{
@@ -3329,7 +3325,7 @@ class PlayState extends MusicBeatState
 			campaignMisses = misses;
 
 		if (!loadRep)
-			rep.SaveReplay(saveNotes);
+			rep.SaveReplay(saveNotes, saveJudge, replayAna);
 		else
 		{
 			PlayStateChangeables.botPlay = false;
@@ -3338,11 +3334,13 @@ class PlayState extends MusicBeatState
 		}
 
 		if (FlxG.save.data.fpsCap > 290)
+		{
 			trace("return the FPS cap");
 			//JOELwindows7: issue with Android version. cast lib current technic crash it
 			#if !mobile
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
 			#end
+		}
 
 		trace("unload mod chart");
 		#if (windows && cpp)
@@ -3353,7 +3351,7 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		trace("clearing gameplay");
+		trace("clearing gameplay"); //JOELwindows7: you trace
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
@@ -3402,7 +3400,7 @@ class PlayState extends MusicBeatState
 					vocals.stop();
 					if (FlxG.save.data.scoreScreen)
 						//JOELwindows7: check epilogue and play if it has one
-						openSubState(new ResultsScreen());
+						openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo? "assets/videos/" + SONG.epilogueVideoPath + ".webm" : "assets/videos/null.webm"));
 					else
 					{
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -3473,7 +3471,7 @@ class PlayState extends MusicBeatState
 					// also load heartspec
 					PlayState.HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
 					FlxG.sound.music.stop();
-
+					
 					//JOELwindows7: if has video, then load the video first before going to new playstate!
 					//LoadingState.loadAndSwitchState(new PlayState()); //Legacy
 					LoadingState.loadAndSwitchState(
@@ -3499,7 +3497,7 @@ class PlayState extends MusicBeatState
 				if (FlxG.save.data.scoreScreen)
 					openSubState(new ResultsScreen());
 				else
-					FlxG.switchState(new PlayState());
+					FlxG.switchState(new FreeplayState());
 			}
 		}
 	}
@@ -3832,6 +3830,7 @@ class PlayState extends MusicBeatState
 				};
 				#end
 		 
+				
 				// Prevent player input if botplay is on
 				if(PlayStateChangeables.botPlay)
 				{
@@ -3839,6 +3838,13 @@ class PlayState extends MusicBeatState
 					pressArray = [false, false, false, false];
 					releaseArray = [false, false, false, false];
 				} 
+
+				var anas:Array<Ana> = [null,null,null,null];
+
+				for (i in 0...pressArray.length)
+					if (pressArray[i])
+						anas[i] = new Ana(Conductor.songPosition, null, false, "miss", i);
+
 				// HOLDS, check for sustain notes
 				if (holdArray.contains(true) && /*!boyfriend.stunned && */ generatedMusic)
 				{
@@ -3865,30 +3871,9 @@ class PlayState extends MusicBeatState
 						{
 							if (!directionsAccounted[daNote.noteData])
 							{
-								if (directionList.contains(daNote.noteData))
-								{
-									directionsAccounted[daNote.noteData] = true;
-									for (coolNote in possibleNotes)
-									{
-										if (coolNote.noteData == daNote.noteData && Math.abs(daNote.strumTime - coolNote.strumTime) < 10)
-										{ // if it's the same note twice at < 10ms distance, just delete it
-											// EXCEPT u cant delete it in this loop cuz it fucks with the collection lol
-											dumbNotes.push(daNote);
-											break;
-										}
-										else if (coolNote.noteData == daNote.noteData && daNote.strumTime < coolNote.strumTime)
-										{ // if daNote is earlier than existing note (coolNote), replace
-											possibleNotes.remove(coolNote);
-											possibleNotes.push(daNote);
-											break;
-										}
-									}
-								}
-								else
-								{
-									possibleNotes.push(daNote);
-									directionList.push(daNote.noteData);
-								}
+								directionsAccounted[daNote.noteData] = true;
+								possibleNotes.push(daNote);
+								directionList.push(daNote.noteData);
 							}
 						}
 					});
@@ -3902,18 +3887,10 @@ class PlayState extends MusicBeatState
 					}
 		 
 					possibleNotes.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
-		 
-					var dontCheck = false;
-
-					for (i in 0...pressArray.length)
-					{
-						if (pressArray[i] && !directionList.contains(i))
-							dontCheck = true;
-					}
 
 					if (perfectMode)
 						goodNoteHit(possibleNotes[0]);
-					else if (possibleNotes.length > 0 && !dontCheck)
+					else if (possibleNotes.length > 0)
 					{
 						if (!FlxG.save.data.ghost)
 						{
@@ -3930,6 +3907,10 @@ class PlayState extends MusicBeatState
 								if (mashViolations != 0)
 									mashViolations--;
 								scoreTxt.color = FlxColor.WHITE;
+								var noteDiff:Float = -(coolNote.strumTime - Conductor.songPosition);
+								anas[coolNote.noteData].hit = true;
+								anas[coolNote.noteData].hitJudge = Ratings.CalculateRating(noteDiff, Math.floor((PlayStateChangeables.safeFrames / 60) * 1000));
+								anas[coolNote.noteData].nearestNote = [coolNote.strumTime,coolNote.noteData,coolNote.sustainLength];
 								goodNoteHit(coolNote);
 							}
 						}
@@ -3941,19 +3922,12 @@ class PlayState extends MusicBeatState
 									noteMiss(shit, null);
 						}
 
-					if(dontCheck && possibleNotes.length > 0 && FlxG.save.data.ghost && !PlayStateChangeables.botPlay)
-					{
-						if (mashViolations > 8)
-						{
-							trace('mash violations ' + mashViolations);
-							scoreTxt.color = FlxColor.RED;
-							noteMiss(0,null);
-						}
-						else
-							mashViolations++;
-					}
-
 				}
+
+				if (!loadRep)
+					for (i in anas)
+						if (i != null)
+							replayAna.anaArray.push(i); // put em all there
 				
 				notes.forEachAlive(function(daNote:Note)
 				{
@@ -4017,6 +3991,17 @@ class PlayState extends MusicBeatState
 					return null;
 				}
 
+			public function findByTimeIndex(time:Float):Int
+				{
+					for (i in 0...rep.replay.songNotes.length)
+					{
+						//trace('checking ' + Math.round(i[0]) + ' against ' + Math.round(time));
+						if (rep.replay.songNotes[i][0] == time)
+							return i;
+					}
+					return -1;
+				}
+
 			public var fuckingVolume:Float = 1;
 			public var useVideo = false;
 
@@ -4055,7 +4040,6 @@ class PlayState extends MusicBeatState
 					FlxG.stage.window.onFocusIn.add(focusIn);
 
 					var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
-					
 					WebmPlayer.SKIP_STEP_LIMIT = 90; //JOELwindows7: the static access only works if the variable is static
 					var str1:String = "WEBM SHIT"; 
 					webmHandler = new WebmHandler();
@@ -4100,7 +4084,7 @@ class PlayState extends MusicBeatState
 						webmHandler.pause();
 					else
 						webmHandler.resume();
-					
+
 					#else
 					//JOELwindows7: doesn't work in HTML5
 					#end
@@ -4126,11 +4110,17 @@ class PlayState extends MusicBeatState
 			if (daNote != null)
 			{
 				if (!loadRep)
+				{
 					saveNotes.push([daNote.strumTime,0,direction,166 * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166]);
+					saveJudge.push("miss");
+				}
 			}
 			else
 				if (!loadRep)
+				{
 					saveNotes.push([Conductor.songPosition,0,direction,166 * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166]);
+					saveJudge.push("miss");
+				}
 
 			//var noteDiff:Float = Math.abs(daNote.strumTime - Conductor.songPosition);
 			//var wife:Float = EtternaFunctions.wife3(noteDiff, FlxG.save.data.etternaMode ? 1 : 1.7);
@@ -4273,9 +4263,12 @@ class PlayState extends MusicBeatState
 				var noteDiff:Float = -(note.strumTime - Conductor.songPosition);
 
 				if(loadRep)
+				{
 					noteDiff = findByTime(note.strumTime)[3];
-
-				note.rating = Ratings.CalculateRating(noteDiff);
+					note.rating = rep.replay.songJudgements[findByTimeIndex(note.strumTime)];
+				}
+				else
+					note.rating = Ratings.CalculateRating(noteDiff);
 
 				if (note.rating == "miss")
 					return;	
@@ -4327,6 +4320,7 @@ class PlayState extends MusicBeatState
 							array[1] = -1;
 						trace('pushing ' + array[0]);
 						saveNotes.push(array);
+						saveJudge.push(note.rating);
 					}
 					
 					playerStrums.forEach(function(spr:FlxSprite)
@@ -4353,7 +4347,7 @@ class PlayState extends MusicBeatState
 		
 
 	var fastCarCanDrive:Bool = true;
-
+	
 	//JOELwindows7: make public for lua modchart
 	public function resetFastCar():Void
 	{
@@ -4456,7 +4450,7 @@ class PlayState extends MusicBeatState
 
 		boyfriend.playAnim('scared', true);
 		gf.playAnim('scared', true);
-		
+
 		//JOELwindows7: shock fear Heartbeat jumps
 		increaseHR(fearShockAdd[heartTierIsRightNow]);
 	}
@@ -4671,6 +4665,9 @@ class PlayState extends MusicBeatState
 		//JOELwindows7: above is not my code. but idea!
 		// for Gravis Ultrasound demo, RAIN.MID. you can manually lightning strike as the beat almost drop.
 	}
+
+	var curLight:Int = 0; //JOELwindows7: not my code. hey, Ninja! you should've white light like I do above
+	//and randomize the color. look at randomizeColoring() above!
 
 	//JOELwindows7: make cam zoom a function pls
 	public function camZoomNow() {
@@ -4954,7 +4951,4 @@ class PlayState extends MusicBeatState
 			swagCounter += 1;
 		}, 5);
 	}
-
-	var curLight:Int = 0; //JOELwindows7: not my code. hey, Ninja! you should've white light like I do above
-	//and randomize the color. look at randomizeColoring() above!
 }
