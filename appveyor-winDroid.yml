@@ -41,7 +41,7 @@ install:
   - haxelib git polymod https://github.com/larsiusprime/polymod.git
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
   - haxelib git extension-webm https://github.com/KadeDev/extension-webm
-  - haxelib run lime rebuild extension-webm windows
+  - haxelib run lime rebuild extension-webm android
   - haxelib install linc_luajit
   - haxelib install actuate
   # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
@@ -61,25 +61,24 @@ install:
 # No tests idk lol
 build_script:
   - dir
-  - C:\android_cmd\cmdline-tools\bin\sdkmanager.bat "platform-tools" "platforms;android-19" "build-tools" --sdk_root=$ANDROID_SDK_LOC
+  - 
+  - C:\android_sdk\cmdline-tools\bin\sdkmanager.bat "platform-tools" "platforms;android-19" "build-tools"
   - haxelib run lime config ANDROID_SDK $ANDROID_SDK_LOC
   - haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_ROOT_LOC
+  - haxelib run lime config JAVA_HOME C:\Program Files\AdoptOpenJDK\jdk-8.0.292.10-hotspot
   # - haxelib run lime rebuild extension-webm windows
-  - haxelib run lime build windows
-  # - haxelib run lime build windows -32 -D32bit
-  # - haxelib run lime build html5
-  # haxelib run lime build linux # doesnt work if host OS is not same as that desktop OS
+  - haxelib run lime build android
 
 after_build:
   - dir
   # JOELwindows7: upload to itch
   # wtf, appveyor did not expect Git
-  - butler push C:\projects\kaded-fnf-mods-windows\export\release\windows\bin joelwindows7/last-funkin-moments:win64-appveyor
+  - butler push "C:\projects\kaded-fnf-mods-windows\export\release\android\bin\app\build\output\apk\Last Funkin Moments-debug.apk" joelwindows7/last-funkin-moments:android-appveyor
 
 artifacts:
-  - path: export/release/windows/bin
-    name: last-funkin-moments-windows
-    type: zip
+  - path: export\release\android\bin\app\build\output\apk\Last Funkin Moments-debug.apk
+    name: last-funkin-moments-android
+    # type: zip
   # - path: export/32bit/windows/bin
   #   name: last-funkin-moments-windows32
   #   type: zip
