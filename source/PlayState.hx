@@ -65,7 +65,7 @@ import openfl.filters.ShaderFilter;
 import Discord.DiscordClient;
 #end
 //JOELwindows7: hey, I changed the directive to think for other desktop OSes as well. nvm it doesnt work
-#if (windows && sys)
+#if (sys)
 import Sys;
 import sys.FileSystem;
 #end
