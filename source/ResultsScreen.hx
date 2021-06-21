@@ -50,6 +50,15 @@ class ResultsScreen extends FlxSubState
     public var ranking:String;
     public var accuracy:String;
 
+    public static var handoverHasVideo:Bool = false;
+    public static var handoverVideoPath:String;
+
+    public function new(tellHasVideo:Bool = false, tellVideoPath:String = "assets/videos/null.webm"){
+        //JOELwindows7: there may be epilogue cutscene
+        this.handoverHasVideo = tellHasVideo;
+        this.handoverVideoPath = tellVideoPath;
+    }
+
 	override function create()
 	{	
         background = new FlxSprite(0,0).makeGraphic(FlxG.width,FlxG.height,FlxColor.BLACK);
@@ -184,7 +193,7 @@ class ResultsScreen extends FlxSubState
             if (PlayState.isStoryMode)
             {
                 FlxG.sound.playMusic(Paths.music('freakyMenu'));
-                FlxG.switchState(new MainMenuState());
+                FlxG.switchState(handoverHasVideo? new VideoState(handoverVideoPath, new MainMenuState()) : new MainMenuState()); //JOELwindows7: here epilogue cutscenes
             }
             else
                 FlxG.switchState(new FreeplayState());

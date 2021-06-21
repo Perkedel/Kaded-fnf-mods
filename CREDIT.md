@@ -179,6 +179,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://haxeflixel.com/documentation/game-development-tools/ tools you can use
 - https://gamebanana.com/mods/296629 Unity remade of FNF in 24 hours
 - Shaggy mod dreidel reference 
+- https://adoptopenjdk.net/installation.html?variant=openjdk8&jvmVariant=hotspot how to install OpenJDK in CI
   
 # in event of git merge conflict
 use VScode and Github desktop!
