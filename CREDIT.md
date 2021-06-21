@@ -180,6 +180,11 @@ thancc for all these resources! without them, everything is impossible.
 - https://gamebanana.com/mods/296629 Unity remade of FNF in 24 hours
 - Shaggy mod dreidel reference 
 - https://adoptopenjdk.net/installation.html?variant=openjdk8&jvmVariant=hotspot how to install OpenJDK in CI
+- https://developer.android.com/ndk/downloads/older_releases?hl=fi ndk dump
+- https://developer.android.com/studio?gclsrc=ds&gclsrc=ds&gclid=CIvgmfb-qPECFQqEjgodu5oMsg#downloads android studio manager sdk
+- https://developer.android.com/studio/command-line/sdkmanager doc dump
+- https://adoptopenjdk.net/ OpenJDK binaries
+- 
   
 # in event of git merge conflict
 use VScode and Github desktop!
