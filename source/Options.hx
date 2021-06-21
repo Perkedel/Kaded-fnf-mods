@@ -1,5 +1,7 @@
 package;
 
+import openfl.net.FileFilter;
+import haxe.Json;
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
@@ -10,6 +12,8 @@ import Controls.KeyboardScheme;
 import flixel.FlxG;
 import openfl.display.FPS;
 import openfl.Lib;
+
+using StringTools;
 
 class OptionCategory
 {
