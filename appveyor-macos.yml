@@ -53,7 +53,7 @@ after_build:
   # JOELwindows7: upload to itch
   # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push /Users/appveyor/last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-appveyor; fi
   # wtf appveyor did not expect git
-  - /Applications/Butler.app push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-appveyor # stop being funny, mac! it's the command!!!
+  - /Applications/Butler.app/butler push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-appveyor # stop being funny, mac! it's the command!!!
 
 artifacts:
 - path: last-funkin-moments-macOS.dmg

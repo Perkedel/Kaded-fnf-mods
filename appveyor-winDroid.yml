@@ -32,7 +32,7 @@ install:
   # - wget O android_cmd.zip https://dl.google.com/android/repository/commandlinetools-win-7302050_latest.zip
   # - wget O android_sdk.zip https://dl.google.com/android/repository/platform-tools-latest-windows.zip
   # - msiexec /i openJDK.msi INSTALLLEVEL=1 INSTALLDIR="c:\Program Files\AdoptOpenJDK\" /quiet
-  - unzip .\android_ndk.zip "%ANDROID_NDK_ROOT_LOC%"
+  - unzip .\android_ndk.zip -l -d "%ANDROID_NDK_ROOT_LOC%"
   # - unzip .\android_cmd.zip "C:\projects\android_sdk\"
   # - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   # Install project dependencies
