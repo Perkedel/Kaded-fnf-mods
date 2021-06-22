@@ -66,5 +66,5 @@ after_build:
   - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor
 
 artifacts:
-- path: last-funkin-moments-32bit.tar
+- path: /home/appveyor/last-funkin-moments-32bit.tar
   name: Last Funkin Moments for Linux 32Bit
