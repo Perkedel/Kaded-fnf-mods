@@ -192,6 +192,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://gamebanana.com/tuts/13653 compile fnf ah 
 - https://gamebanana.com/tuts/13810 ah compile fnf
 - https://androidsdkmanager.azurewebsites.net/Buildtools 3rd party android sdk download link collections. this yoinked almost every essential dl.google.com links!!
+- https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/move windows cmd `move` command how
   
 # in event of git merge conflict
 use VScode and Github desktop!
