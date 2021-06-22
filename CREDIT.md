@@ -184,7 +184,10 @@ thancc for all these resources! without them, everything is impossible.
 - https://developer.android.com/studio?gclsrc=ds&gclsrc=ds&gclid=CIvgmfb-qPECFQqEjgodu5oMsg#downloads android studio manager sdk
 - https://developer.android.com/studio/command-line/sdkmanager doc dump
 - https://adoptopenjdk.net/ OpenJDK binaries
-- 
+- https://support.google.com/analytics/answer/9539598?hl=en how to tracking ID GOogle
+- https://support.google.com/analytics/answer/10269537 make UA  
+- https://www.whatconverts.com/help/docs/integrations/google-analytics/where-do-i-find-my-google-analytics-tracking-id/ doc dump
+- https://analyticshelp.io/blog/google-analytics-property-tracking-id/ doc dump
   
 # in event of git merge conflict
 use VScode and Github desktop!
