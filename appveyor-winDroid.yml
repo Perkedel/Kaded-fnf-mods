@@ -6,7 +6,7 @@ environment:
     HAXELIB_ROOT: C:\projects\haxelib
     ANDROID_SDK_LOC: C:\Android\android-sdk
     ANDROID_NDK_ROOT_LOC: C:\Android
-    ANDROID_CMD_LOC: C:\projects\android_cmd
+    ANDROID_CMD_LOC: C:\projects\android-cmd
 
 install:
   # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
@@ -52,7 +52,7 @@ install:
   - haxelib git polymod https://github.com/larsiusprime/polymod.git
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
   - haxelib git extension-webm https://github.com/KadeDev/extension-webm
-  - C:\projects\android_sdk\cmdline-tools\bin\sdkmanager.bat "platform-tools" "platforms;android-19" "build-tools"
+  - C:\projects\android-sdk\cmdline-tools\bin\sdkmanager.bat "platform-tools" "platforms;android-19" "build-tools"
   - haxelib run lime config ANDROID_SDK "%ANDROID_SDK_LOC%"
   - haxelib run lime config ANDROID_NDK_ROOT "%ANDROID_NDK_ROOT_LOC%\android-ndk-r15c"
   - haxelib run lime config ANDROID_SETUP true
