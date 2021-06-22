@@ -5,7 +5,7 @@ environment:
   global:
     HAXELIB_ROOT: C:\projects\haxelib
     ANDROID_SDK_LOC: C:\Android\android-sdk'
-    ANDROID_NDK_ROOT_LOC: C:\Android\android-ndk-r15c
+    ANDROID_NDK_ROOT_LOC: C:\Android\android-ndk-r16b
     ANDROID_CMD_LOC: C:\projects\android_cmd
 
 install:
@@ -21,7 +21,7 @@ install:
   # - cinst zip -y # zip it
   # - cinst unzip -y # unzip it
   - cinst android-sdk -y
-  - cinst android-ndk 15.3 -y
+  - cinst android-ndk --version=16.2 -y # JOELwindows7: are you pecking serious? you don't have 15.3 15c?!?!? wtf?!??!
   - RefreshEnv
   # Setup haxelib
   - mkdir "%HAXELIB_ROOT%"
