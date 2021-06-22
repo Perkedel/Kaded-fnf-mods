@@ -1,0 +1,3 @@
+seriously though. this needs revamp. you should not expect that special week folder exist everytime.
+it's super tedious having to make folder, and make something that git would consider it exist like this file here.
+c'mon. you gotta be better here!
