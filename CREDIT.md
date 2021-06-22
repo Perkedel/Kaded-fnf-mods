@@ -191,6 +191,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://gamebanana.com/tuts/13876 how to extend dialogue into like FNF restored
 - https://gamebanana.com/tuts/13653 compile fnf ah 
 - https://gamebanana.com/tuts/13810 ah compile fnf
+- https://androidsdkmanager.azurewebsites.net/Buildtools 3rd party android sdk download link collections. this yoinked almost every essential dl.google.com links!!
   
 # in event of git merge conflict
 use VScode and Github desktop!
