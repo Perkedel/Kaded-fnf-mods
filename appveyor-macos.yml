@@ -45,7 +45,7 @@ build_script:
   # - haxelib run lime rebuild discord_rpc macos
   # - haxelib run lime rebuild extension-webm macos
   # - haxelib run lime rebuild linc_luajit macos # JOELwindows7: because it seems it only had windows?
-  - haxelib run lime build mac
+  - haxelib run lime build macos
 
 after_build:
   - hdiutil create /Users/appveyor/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/appveyor/projects/kaded-fnf-mods-macos/export/release/macos/bin"
