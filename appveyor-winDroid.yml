@@ -21,7 +21,8 @@ install:
   # - cinst zip -y # zip it
   # - cinst unzip -y # unzip it
   - cinst android-sdk -y
-  # - cinst android-ndk --version=16.2 -y # JOELwindows7: are you pecking serious? you don't have 15.3 15c?!?!? wtf?!??!
+  - cinst android-ndk --version=16.2 -y # JOELwindows7: are you pecking serious? you don't have 15.3 15c?!?!? wtf?!??!
+  - cinst adb -y
   - RefreshEnv
   # Setup haxelib
   - mkdir "%HAXELIB_ROOT%"
