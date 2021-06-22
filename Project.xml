@@ -80,6 +80,10 @@
 		<library name="week5"    preload="true" />
 		<library name="week6"    preload="true" />
 		<library name="week7"    preload="true" />
+		<library name="week8"    preload="true" />
+		<library name="week9"    preload="true" />
+		<library name="week10"    preload="true" />
+		<library name="week11"    preload="true" />
 		<library name="week5720NG"    preload="true" />
 		<library name="videos"    preload="true" />
 		<library name="odysee"   preload="true" if="odysee"/>
@@ -97,6 +101,10 @@
 		<library name="week5"    preload="false" />
 		<library name="week6"    preload="false" />
 		<library name="week7"    preload="false" />
+		<library name="week8"    preload="false" />
+		<library name="week9"    preload="false" />
+		<library name="week10"    preload="false" />
+		<library name="week11"    preload="false" />
 		<library name="week5720NG"    preload="false" />
 		<library name="videos"    preload="false" />
 		<library name="odysee"   preload="false" if="odysee"/>
@@ -123,6 +131,14 @@
 	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/week7"    library="week7"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/week8"    library="week7"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week8"    library="week7"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/week9"    library="week7"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week9"    library="week7"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/week10"    library="week7"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week10"    library="week7"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/week11"    library="week7"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week11"    library="week7"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/odysee"    library="odysee"    exclude="*.ogg" if="web odysee"/>
