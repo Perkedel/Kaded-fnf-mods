@@ -193,6 +193,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://gamebanana.com/tuts/13810 ah compile fnf
 - https://androidsdkmanager.azurewebsites.net/Buildtools 3rd party android sdk download link collections. this yoinked almost every essential dl.google.com links!!
 - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/move windows cmd `move` command how
+- https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/mkdir `mkdir` in windows
   
 # in event of git merge conflict
 use VScode and Github desktop!

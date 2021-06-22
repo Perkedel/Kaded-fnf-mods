@@ -36,6 +36,7 @@ install:
   - wget -q -O android_platforms.zip https://dl.google.com/android/repository/android-19_r04.zip
   - wget -q -O android_platform-tools.zip https://dl.google.com/android/repository/platform-tools_r31.0.2-windows.zip
   # - msiexec /i openJDK.msi INSTALLLEVEL=1 INSTALLDIR="c:\Program Files\AdoptOpenJDK\" /quiet
+  - mkdir tempExtract\build-tools
   - unzip .\android_ndk.zip -d "%ANDROID_NDK_ROOT_LOC%"
   - unzip .\android_cmd.zip -d "%ANDROID_SDK_LOC%"
   - unzip .\android_build-tools.zip -d .\tempExtract\build-tools
