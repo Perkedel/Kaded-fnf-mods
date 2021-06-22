@@ -52,7 +52,7 @@ install:
   - haxelib git polymod https://github.com/larsiusprime/polymod.git
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
   - haxelib git extension-webm https://github.com/KadeDev/extension-webm
-  - C:\Android\android-sdk\cmdline-tools\bin\sdkmanager.bat "platform-tools" "platforms;android-19" "build-tools" --sdk_root="%ANDROID_SDK_LOC%"
+  - C:\Android\android-sdk\cmdline-tools\bin\sdkmanager.bat "platform-tools" "platforms;android-19" "build-tools;31.0.0-rc5" --sdk_root="%ANDROID_SDK_LOC%"
   - haxelib run lime config ANDROID_SDK "%ANDROID_SDK_LOC%"
   - haxelib run lime config ANDROID_NDK_ROOT "%ANDROID_NDK_ROOT_LOC%\android-ndk-r15c"
   - haxelib run lime config ANDROID_SETUP true
