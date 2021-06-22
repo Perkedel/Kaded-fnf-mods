@@ -10,7 +10,10 @@ install:
   - brew install neko
   - brew install gnu-tar
   - brew install wget
-  - brew install butler
+  # - brew install --cask butler # wait a minute. this isn't the butler we ask for
+  # - brew install --cask itch
+  - wget -q -O butler.zip https://broth.itch.ovh/butler/darwin-amd64/LATEST/archive/default
+  - unzip ./butler.zip
   - wget "https://github.com/HaxeFoundation/haxe/releases/download/4.2.2/haxe-4.2.2-osx.tar.gz"
   - mkdir $HAXE_INSTALLDIR
   - tar -xf haxe-4.2.2-osx.tar.gz -C $HAXE_INSTALLDIR
@@ -53,7 +56,7 @@ after_build:
   # JOELwindows7: upload to itch
   # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push /Users/appveyor/last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-appveyor; fi
   # wtf appveyor did not expect git
-  - /Applications/Butler.app/butler push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-appveyor # stop being funny, mac! it's the command!!!
+  - /Users/appveyor/butler push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-appveyor # stop being funny, mac! it's the command!!!
 
 artifacts:
 - path: last-funkin-moments-macOS.dmg

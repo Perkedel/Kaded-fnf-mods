@@ -27,10 +27,10 @@ install:
   - mkdir "%HAXELIB_ROOT%"
   - haxelib setup "%HAXELIB_ROOT%"
   # android things
-  # - wget O openJDK.msi https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_windows_hotspot_8u292b10.msi
-  - wget -O android_ndk.zip https://dl.google.com/android/repository/android-ndk-r15c-windows-x86_64.zip?hl=fi
-  # - wget O android_cmd.zip https://dl.google.com/android/repository/commandlinetools-win-7302050_latest.zip
-  # - wget O android_sdk.zip https://dl.google.com/android/repository/platform-tools-latest-windows.zip
+  # - wget -O openJDK.msi https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_x64_windows_hotspot_8u292b10.msi
+  - wget -q -O android_ndk.zip https://dl.google.com/android/repository/android-ndk-r15c-windows-x86_64.zip?hl=fi
+  # - wget -O android_cmd.zip https://dl.google.com/android/repository/commandlinetools-win-7302050_latest.zip
+  # - wget -O android_sdk.zip https://dl.google.com/android/repository/platform-tools-latest-windows.zip
   # - msiexec /i openJDK.msi INSTALLLEVEL=1 INSTALLDIR="c:\Program Files\AdoptOpenJDK\" /quiet
   - unzip .\android_ndk.zip list -d "%ANDROID_NDK_ROOT_LOC%"
   # - unzip .\android_cmd.zip "C:\projects\android_sdk\"
