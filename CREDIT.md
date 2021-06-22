@@ -188,6 +188,9 @@ thancc for all these resources! without them, everything is impossible.
 - https://support.google.com/analytics/answer/10269537 make UA  
 - https://www.whatconverts.com/help/docs/integrations/google-analytics/where-do-i-find-my-google-analytics-tracking-id/ doc dump
 - https://analyticshelp.io/blog/google-analytics-property-tracking-id/ doc dump
+- https://gamebanana.com/tuts/13876 how to extend dialogue into like FNF restored
+- https://gamebanana.com/tuts/13653 compile fnf ah 
+- https://gamebanana.com/tuts/13810 ah compile fnf
   
 # in event of git merge conflict
 use VScode and Github desktop!
