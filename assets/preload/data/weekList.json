@@ -9,9 +9,10 @@
         ["Senpai", "Roses", "Thorns"],
         ["Windfall", "Rule The World", "Well Meet Again"],
         ["Senpai-midi", "Roses-midi", "Thorns-midi"],
-        ["433"]
+        ["433"],
+        ["surround-testoid"]
     ],
-    "weekUnlocked": [true, true, true, true, true, true, true, true, true, true],
+    "weekUnlocked": [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true],
     "weekCharacters": [
         ["", "bf", "gf"],
         ["dad", "bf", "gf"],
@@ -22,6 +23,7 @@
         ["senpai", "bf", "gf"],
         ["hookx", "bf", "gf"],
         ["senpai", "bf", "gf"],
+        ["hookx", "bf", "gf"],
         ["hookx", "bf", "gf"]
     ],
     "weekNames": [
@@ -34,6 +36,7 @@
         "Hating Simulator ft. Moawling",
         "TheFatRat songs",
         "Hating_Simulator_nokia.jar Microemulator",
-        "Silence is music"
+        "Silence is music",
+        "True 7.1 Surround Sound attempted"
     ]
 }
