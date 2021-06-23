@@ -194,6 +194,8 @@ thancc for all these resources! without them, everything is impossible.
 - https://androidsdkmanager.azurewebsites.net/Buildtools 3rd party android sdk download link collections. this yoinked almost every essential dl.google.com links!!
 - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/move windows cmd `move` command how
 - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/mkdir `mkdir` in windows
+- Disney & Pixar - Luca (2021). references like `Silencio, Bruno!`. `Bruno` (not to be confused with Bruno Mars) means a voice in your head that demotivates you from doing things that takes courages.
+- Davie504. a YouTuber from Italy, is a bassist. loves Acoustic Bass and slap it like Slap bASS.
   
 # in event of git merge conflict
 use VScode and Github desktop!
