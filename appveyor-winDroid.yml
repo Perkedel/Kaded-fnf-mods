@@ -41,7 +41,7 @@ install:
   - unzip .\android_cmd.zip -d "%ANDROID_SDK_LOC%"
   - unzip .\android_build-tools.zip -d .\tempExtract\build-tools
   - unzip .\android_platforms.zip -d "%ANDROID_SDK_LOC%"
-  - unzip .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%" -n
+  - unzip -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%" 
   - move .\tempExtract\build-tools\* "%ANDROID_SDK_LOC%\build-tools" -y
   # - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   # Install project dependencies
