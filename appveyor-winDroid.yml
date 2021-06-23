@@ -17,7 +17,7 @@ install:
   - cinst haxe -y
   # JOELwindows7: Install the wget and stuffs
   - cinst wget -y # downloader
-  - cinst butler -y # upload to itch io
+  - cinst butler -y # upload to itch io 
   # - cinst zip -y # zip it
   # - cinst unzip -y # unzip it
   - cinst android-sdk -y
@@ -42,7 +42,7 @@ install:
   - unzip .\android_build-tools.zip -d .\tempExtract\build-tools
   - unzip .\android_platforms.zip -d "%ANDROID_SDK_LOC%"
   - unzip -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%" 
-  - move .\tempExtract\build-tools\* "%ANDROID_SDK_LOC%\build-tools" -Confirm
+  - move -Path .\tempExtract\build-tools\* -Destination "%ANDROID_SDK_LOC%\build-tools" -Confirm
   # - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   # Install project dependencies
   - haxelib install lime
