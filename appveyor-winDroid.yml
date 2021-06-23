@@ -42,8 +42,8 @@ install:
   - unzip .\android_build-tools.zip -d .\tempExtract\build-tools
   - unzip .\android_platforms.zip -d "%ANDROID_SDK_LOC%"
   - unzip -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%" 
-  # - move -Path .\tempExtract\build-tools\* -Destination "%ANDROID_SDK_LOC%\build-tools" -Force
-  - Get-ChildItem -Path ".\tempExtract\build-tools\*" -Recurse | Move-Item -Destination "%ANDROID_SDK_LOC%\build-tools" -Force
+  - move -Path .\tempExtract\build-tools\* -Destination "%ANDROID_SDK_LOC%\build-tools" -Force
+  # - Get-ChildItem -Path ".\tempExtract\build-tools\*" -Recurse | mv -Destination "%ANDROID_SDK_LOC%\build-tools" -Force
   # - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   # Install project dependencies
   - haxelib install lime
