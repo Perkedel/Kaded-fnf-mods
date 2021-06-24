@@ -197,6 +197,10 @@ thancc for all these resources! without them, everything is impossible.
 - Disney & Pixar - Luca (2021). references like `Silencio, Bruno!`. `Bruno` (not to be confused with Bruno Mars) means a voice in your head that demotivates you from doing things that takes courages.
 - Davie504. a YouTuber from Italy, is a bassist. loves Acoustic Bass and slap it like Slap bASS.
 - ParashockX. a YouTuber. if you find this credit, the video ends. famous for using The Green Orbs - At the Parade for video ends song.
+- https://www.tutorialspoint.com/lua/if_else_statement_in_lua.htm I need to rewarm my Lua script expertise, back into the good old days of Principia Bithack AB golden age.
+- https://snowkit.github.io/linc/ linc libraries for Haxe
+- the LuaJIT version last time is still 2.1.0-beta2
+- https://lib.haxe.org/p/markdown/ markdown to HTML converter library haxe
   
 # in event of git merge conflict
 use VScode and Github desktop!

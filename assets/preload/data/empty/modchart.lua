@@ -1,4 +1,5 @@
 -- Documentation at: https://kadedev.github.io/Kade-Engine/modchart
+-- https://github.com/KadeDev/Kade-Engine/wiki
 -- templated by JOELwindows7, with yoinks from that documentation
 
 function start(song)
@@ -15,6 +16,10 @@ end
 
 function stepHit(beat)
 
+end
+
+function keyPressed(key)
+    
 end
 
 print("Mod Chart script loaded :)")
