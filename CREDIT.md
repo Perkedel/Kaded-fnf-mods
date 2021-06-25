@@ -285,7 +285,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://gamebanana.com/tuts/13798 Comprehensive Modding tutorial for vanilla FNF
 - https://odysee.com/@OdyseeHelp:b/odyseepresskit:b?r=4jRC3d5tDF9DhZzAnEqaArPdyCH2MAyy Odysee press kit
 - https://freesound.org/people/dersuperanton/sounds/166690/ printer printed a paper sound. for Save complete in any ocassions.
-- https://gamebanana.com/tools/7094 (Warning: has NC, ND) proposed the compatibility in the export project.xml for that tool. we will provide the weekset so you just copye that stuff over from here to that tool if you'd like to try with it or vice versa I think idk. proposed `weeks` folder for future use.
+- https://gamebanana.com/tools/7094 (Warning: has NC, ND) proposed the compatibility in the export project.xml for that tool. we will provide the weekset so you just copye that stuff over from here to that tool if you'd like to try with it or vice versa I think idk. proposed `weeks` folder for future use. Ne_Eo Kade Modding Tool
 - https://gamebanana.com/mods/54803 (Warning: has NC, ND) NoLime. just inspire the vibin style and hue gradient it accordingly. No yoinks from that one for now. okay, the color is different, I think I got this on my own, so no color mimic either.
 - https://www.fontspace.com/azonix-font-f30718 (Freeware, Personal & Commercial Use) for some asset names like week Jingle Punks YouTube Audio Library.
 - https://docs.microsoft.com/en-us/typography/font-list/kristen-itc uhhh, it's a Windows included font, idk. for name like The Green Orbs. a musician of YouTube Audio Library famous for their children oriented lullabies.
