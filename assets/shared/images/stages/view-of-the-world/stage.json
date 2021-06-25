@@ -5,12 +5,34 @@
         "stageFront": "view-of-the-world-StageFront",
         "stageCurtain": "view-of-the-world-StageCurtain",
         "colorableBg": "view-of-the-world-JustStars",
+        "customBg0": "",
+        "customBg1": "",
+        "customBg2": "",
+        "customBg3": "",
+        "customBg4": "",
+        "customBg5": "",
+        "customBg6": "",
+        "customBg7": "",
+        "customBg8": "",
+        "customBg9": "",
+        "useImagesMethodic": false,
         "images": [
             "view-of-the-world-StageBackNoStar",
             "view-of-the-world-StageFront",
             "view-of-the-world-StageCurtain",
             "view-of-the-world-JustStars"
         ],
-        "order": [3, 0, 1, 2]
+        "whichImageAreColorable": [3],
+        "order": [3, 0, 1, 2],
+        "initInvisible": [false, false, false, false],
+        "isHalloween": false,
+        "halloweenLevel": false,
+        "isXML": [false, false, false, false],
+        "prefixXMLNames": [
+            "EarthSphere IDLE",
+            "Brawler IDLE",
+            "Brawler Curtain",
+            "stars IDLE"
+        ]
     }
 }

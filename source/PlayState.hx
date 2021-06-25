@@ -470,6 +470,7 @@ class PlayState extends MusicBeatState
 			}
 		} else {stageCheck = SONG.stage;}
 
+		//JOELwindows7: TODO, perhaps you should do switchover from here. SONG.useCustomStage:Bool
 		switch(stageCheck)
 		{
 			case 'halloween': 
@@ -1077,6 +1078,7 @@ class PlayState extends MusicBeatState
 				}
 			default:
 			{
+					//JOELwindows7: TODO, switchover if Song wants Custom Stage, SONG.useCustomStage:Bool thingy
 					defaultCamZoom = 0.9;
 					curStage = 'stage';
 					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
