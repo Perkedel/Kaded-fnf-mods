@@ -1827,6 +1827,7 @@ class PlayState extends MusicBeatState
 
 	#if ((windows || linux) && sys && cpp)
 	public static var luaModchart:ModchartState = null;
+	public static var stageScript:ModchartState = null;
 	#end
 
 	function startCountdown():Void
@@ -2671,7 +2672,7 @@ class PlayState extends MusicBeatState
 			reuploadWatermark.visible = false;
 		}
 
-		scoreTxt.text = Ratings.CalculateRanking(songScore,songScoreDef,nps,maxNPS,accuracy);
+		scoreTxt.text = Ratings.CalculateRanking(songScore,songScoreDef,nps,maxNPS,accuracy,heartRate,heartTierIsRightNow);
 
 		var lengthInPx = scoreTxt.textField.length * scoreTxt.frameHeight; // bad way but does more or less a better job
 

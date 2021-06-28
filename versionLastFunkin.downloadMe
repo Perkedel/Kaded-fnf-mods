@@ -1,6 +1,8 @@
-2021.06.3;
-- Bring fixes from that Kade Engine 1.5.3
-- Add buttons on menu for Touch Screen and mouse
-- Kade made GWebDev cutscenner cannon
-- Saubo noteskin! this new noteskin applies to all Perkedel weeks. you can use this too if you want.
-- Also Kade made some sort of Video Sprite. perhaps very useful for GF HT
+2021.07.154;
+- Kade Engine 1.5.4
+- Week Meta
+- (Kade) better gamepad support
+- (Kade) keybind won't affect main menu anymore
+- (Kade) proposed Stepmania step file supports
+- Stage Chart JSON & Stage Lua Scripts
+- Experimental in 4'33" song. try press gameplay arrows

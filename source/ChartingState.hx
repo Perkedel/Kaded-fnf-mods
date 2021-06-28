@@ -125,6 +125,7 @@ class ChartingState extends MusicBeatState
 				hasDialogueChat: false,
 				hasEpilogueChat: false,
 				allowedToHeadbang: false,
+				useCustomStage:false,
 			};
 		}
 

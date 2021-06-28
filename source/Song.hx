@@ -31,6 +31,7 @@ typedef SwagSong =
 	var hasEpilogueChat:Bool; //JOELwindows7: mark that this has Epologue chat
 
 	var allowedToHeadbang:Bool; //JOELwindows7: mark whether heys, color change, etc.
+	var useCustomStage:Bool; //JOELwindows7: should use custom stage?
 	//be allowed at certain moments in time
 }
 
@@ -57,6 +58,7 @@ class Song
 	public var hasEpilogueChat:Bool = false; //JOELwindows7: mark that this has Epologue chat
 
 	public var allowedToHeadbang:Bool = false; //JOELwindows7: mark whether heys, color change, etc.
+	public var useCustomStage:Bool; //JOELwindows7: should use custom stage?
 	//be allowed at certain moments in time
 
 	public function new(song, notes, bpm)
