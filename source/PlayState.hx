@@ -5125,7 +5125,7 @@ class PlayState extends MusicBeatState
 					if(customStage.backgroundImages[i].isXML){
 
 					} else {
-						anBgThing.loadGraphic(Paths.image(""));
+						anBgThing.loadGraphic(Paths.image("stages/" + SONG.stage + "/"));
 					}
 				}
 			}
