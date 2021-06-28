@@ -4,6 +4,7 @@
     "song": {
         "player2": "dad",
         "player1": "bf",
+        "useCustomStage": false,
         "stage": "stage",
         "gfVersion": "gf",
         "speed": 1,
