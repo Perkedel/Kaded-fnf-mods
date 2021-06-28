@@ -201,6 +201,7 @@ thancc for all these resources! without them, everything is impossible.
 - https://snowkit.github.io/linc/ linc libraries for Haxe
 - the LuaJIT version last time is still 2.1.0-beta2
 - https://lib.haxe.org/p/markdown/ markdown to HTML converter library haxe
+- https://snippets.haxeflixel.com/groups/typed-group/ how to FlxTypedGroup
   
 # in event of git merge conflict
 use VScode and Github desktop!
