@@ -110,14 +110,13 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-		#if (!mobile && sys) //JOELwindows7: remember! it doesn't work in Android!
+		#if (cpp && sys) //JOELwindows7: remember! it doesn't work in Android!
 		initialState = Caching;
-		#else
-		initialState = TitleState; //JOELwindows7: nope, Caching still crashes in Android.
-		#end
-		
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
-
+		#else
+		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		#end
+		//JOELwindows7: nope, Caching still crashes in Android.
 		addChild(game);
 
 		//GrowtopiaFli's Video Cutscener

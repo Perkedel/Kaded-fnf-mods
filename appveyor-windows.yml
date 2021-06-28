@@ -23,6 +23,7 @@ install:
   - haxelib setup "%HAXELIB_ROOT%"
   # Install project dependencies
   - haxelib install lime
+  - RefreshEnv
   - haxelib install openfl
   - haxelib install flixel
   - haxelib run lime setup flixel -y

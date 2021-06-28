@@ -94,7 +94,7 @@ class ResultsScreen extends FlxSubState
         comboText.scrollFactor.set();
         add(comboText);
 
-        contText = new FlxText(FlxG.width - 475,FlxG.height + 50,0,'Press ENTER to continue.');
+        contText = new FlxText(FlxG.width - 475,FlxG.height + 50,0,'Press ${KeyBinds.gamepad ? 'A' : 'ENTER'} to continue.');
         contText.size = 28;
         contText.setBorderStyle(FlxTextBorderStyle.OUTLINE,FlxColor.BLACK,4,1);
         contText.color = FlxColor.WHITE;
@@ -184,12 +184,23 @@ class ResultsScreen extends FlxSubState
 
         // keybinds
 
-        if (FlxG.keys.justPressed.ENTER || FlxG.mouse.justPressed) //JOELwindows7: install mouse support
+        if (PlayerSettings.player1.controls.ACCEPT || FlxG.mouse.justPressed) //JOELwindows7: install mouse support
         {
             music.fadeOut(0.3);
             
             PlayState.loadRep = false;
             PlayState.rep = null;
+
+			var songHighscore = StringTools.replace(PlayState.SONG.song, " ", "-");
+			switch (songHighscore) {
+				case 'Dad-Battle': songHighscore = 'Dadbattle';
+				case 'Philly-Nice': songHighscore = 'Philly';
+			}
+
+			#if !switch
+			Highscore.saveScore(songHighscore, Math.round(PlayState.instance.songScore), PlayState.storyDifficulty);
+			Highscore.saveCombo(songHighscore, Ratings.GenerateLetterRank(PlayState.instance.accuracy),PlayState.storyDifficulty);
+			#end
 
             if (PlayState.isStoryMode)
             {
@@ -198,12 +209,6 @@ class ResultsScreen extends FlxSubState
             }
             else
                 FlxG.switchState(new FreeplayState());
-        }
-
-        if (FlxG.keys.justPressed.EIGHT)
-        {
-            graph.showInput = !graph.showInput;
-            graph.update();
         }
 
         if (FlxG.keys.justPressed.F1)
@@ -222,6 +227,17 @@ class ResultsScreen extends FlxSubState
                 case 'philly-nice': songFormat = 'Philly';
             }
 
+			var songHighscore = StringTools.replace(PlayState.SONG.song, " ", "-");
+			switch (songHighscore) {
+				case 'Dad-Battle': songHighscore = 'Dadbattle';
+				case 'Philly-Nice': songHighscore = 'Philly';
+			}
+
+			#if !switch
+			Highscore.saveScore(songHighscore, Math.round(PlayState.instance.songScore), PlayState.storyDifficulty);
+			Highscore.saveCombo(songHighscore, Ratings.GenerateLetterRank(PlayState.instance.accuracy),PlayState.storyDifficulty);
+			#end
+
             var poop:String = Highscore.formatSong(songFormat, PlayState.rep.replay.songDiff);
 
             music.fadeOut(0.3);
@@ -238,6 +254,17 @@ class ResultsScreen extends FlxSubState
             PlayState.rep = null;
 
             PlayState.loadRep = false;
+
+			var songHighscore = StringTools.replace(PlayState.SONG.song, " ", "-");
+			switch (songHighscore) {
+				case 'Dad-Battle': songHighscore = 'Dadbattle';
+				case 'Philly-Nice': songHighscore = 'Philly';
+			}
+
+			#if !switch
+			Highscore.saveScore(songHighscore, Math.round(PlayState.instance.songScore), PlayState.storyDifficulty);
+			Highscore.saveCombo(songHighscore, Ratings.GenerateLetterRank(PlayState.instance.accuracy),PlayState.storyDifficulty);
+			#end
 
             var songFormat = StringTools.replace(PlayState.SONG.song, " ", "-");
             switch (songFormat) {

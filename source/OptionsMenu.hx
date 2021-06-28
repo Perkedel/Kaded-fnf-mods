@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.gamepad.FlxGamepad;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import openfl.Lib;
@@ -62,10 +63,11 @@ class OptionsMenu extends MusicBeatState
 			new WatermarkOption("Enable and disable all watermarks from the engine."),
 			new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),
-			new BotPlay("Showcase your charts and mods with autoplay."),
 			new ScoreScreen("Show the score screen after the end of a song"),
 			new ShowInput("Display every single input in the score screen."),
-			new ExportSaveToJson("BETA! Export entire save data into JSON file")
+			new Optimization("No backgrounds, no characters, centered notes, no player 2."),
+			new ExportSaveToJson("BETA! Export entire save data into JSON file"),
+			new BotPlay("Showcase your charts and mods with autoplay."),
 		])
 		
 	];
@@ -183,10 +185,27 @@ class OptionsMenu extends MusicBeatState
 				changeSelection(curSelected); //JOELwindows7: funny, this is not necessary. it jumps for num of cur selected
 				haveBacked = false;
 			}
+
+			var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+
+			if (gamepad != null)
+			{
+				if (gamepad.justPressed.DPAD_UP)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					changeSelection(-1);
+				}
+				if (gamepad.justPressed.DPAD_DOWN)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					changeSelection(1);
+				}
+			}
+			
 			//JOELwindows7: idk how to mouse on option menu
-			if (controls.UP_P || FlxG.mouse.wheel == 1)
+			if (FlxG.keys.justPressed.UP || FlxG.mouse.wheel == 1)
 				changeSelection(-1);
-			if (controls.DOWN_P || FlxG.mouse.wheel == -1)
+			if (FlxG.keys.justPressed.DOWN || FlxG.mouse.wheel == -1)
 				changeSelection(1);
 			
 			if (isCat)

@@ -11,10 +11,9 @@ install:
   - sudo add-apt-repository ppa:haxe/releases -y
   - sudo apt update
   - sudo apt install build-essential -y
-  - sudo apt-get install gcc-multilib g++-multilib -y
-  - sudo apt install neko tar -y
+  - sudo apt install neko tar gcc-multilib g++-multilib -y
   - wget https://github.com/HaxeFoundation/haxe/releases/download/4.2.2/haxe-4.2.2-linux64.tar.gz
-  - mkdir -p $HAXE_INSTALLDIR
+  - mkdir $HAXE_INSTALLDIR
   - tar -xf haxe-4.2.2-linux64.tar.gz -C $HAXE_INSTALLDIR
   - export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20210514141333_a2f4ba9
   - mkdir $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT

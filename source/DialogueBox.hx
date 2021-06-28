@@ -285,7 +285,7 @@ class DialogueBox extends FlxSpriteGroup
 		}
 
 		//JOELwindows7: add mouse click t continue
-		if ((FlxG.keys.justPressed.ANY || FlxG.mouse.justPressed) && dialogueStarted == true)
+		if ((PlayerSettings.player1.controls.ACCEPT || FlxG.mouse.justPressed) && dialogueStarted == true)
 		{
 			remove(dialogue);
 				

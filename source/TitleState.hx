@@ -1,5 +1,8 @@
 package;
 
+#if sys
+import smTools.SMFile;
+#end
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -30,7 +33,7 @@ import openfl.Assets;
 import Discord.DiscordClient;
 #end
 
-#if cpp
+#if (cpp && sys)
 import sys.thread.Thread;
 #end
 
@@ -98,6 +101,8 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
+		trace('hello');
+
 		// DEBUG BULLSHIT
 
 		super.create();
@@ -105,20 +110,17 @@ class TitleState extends MusicBeatState
 		// NGio.noLogin(APIStuff.API);
 
 		#if ng
-		#if !mobile
-		#if !neko
-		#if !hl
 		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
 		trace('NEWGROUNDS LOL');
-		#end
-		#end
-		#end
 		#end
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		KadeEngineData.initSave();
 
+		// var file:SMFile = SMFile.loadFile("file.sm");
+		// this was testing things
+		
 		Highscore.load();
 
 		if (FlxG.save.data.weekUnlocked != null)
@@ -331,7 +333,7 @@ class TitleState extends MusicBeatState
 			FlxG.save.flush(); // JOELwindows7: from OptionMenu.hx it constantly save data.
 		}
 
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
+		var pressedEnter:Bool = controls.ACCEPT;
 
 		#if mobile
 		for (touch in FlxG.touches.list)
@@ -344,24 +346,12 @@ class TitleState extends MusicBeatState
 		#end
 
 		//JOELwindows7: add mouse click to press enter
-		#if !mobile
 		if(FlxG.mouse.justPressed){
 			pressedEnter = true;
 		}
-		#end
-
-		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
-
-		if (gamepad != null)
-		{
-			if (gamepad.justPressed.START)
-				pressedEnter = true;
-
-			#if switch
-			if (gamepad.justPressed.B)
-				pressedEnter = true;
-			#end
-		}
+		//Well sure enough guys. on my Samsung Galaxy S since Dex support
+		//the mouse and touch is different. you need this ON all the time in case
+		//somebody uses mouse in Android device.
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{

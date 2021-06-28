@@ -2,6 +2,7 @@ package;
 
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.input.gamepad.FlxGamepad;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -211,9 +212,31 @@ class FreeplayState extends MusicBeatState
 		//JOELwindows7: add mouse support in here
 		//huh, how inconsistent. now the keypress bools are syndicated via
 		// each variable. interesting.
-		var upP = controls.UP_P || FlxG.mouse.wheel == 1;
-		var downP = controls.DOWN_P || FlxG.mouse.wheel ==-1;
+		var upP = FlxG.keys.justPressed.UP || FlxG.mouse.wheel == 1;
+		var downP = FlxG.keys.justPressed.DOWN || FlxG.mouse.wheel ==-1;
 		var accepted = controls.ACCEPT || haveClicked;
+
+		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+
+		if (gamepad != null)
+		{
+			if (gamepad.justPressed.DPAD_UP)
+			{
+				changeSelection(-1);
+			}
+			if (gamepad.justPressed.DPAD_DOWN)
+			{
+				changeSelection(1);
+			}
+			if (gamepad.justPressed.DPAD_LEFT)
+			{
+				changeDiff(-1);
+			}
+			if (gamepad.justPressed.DPAD_RIGHT)
+			{
+				changeDiff(1);
+			}
+		}
 
 		if (upP)
 		{
@@ -224,15 +247,12 @@ class FreeplayState extends MusicBeatState
 			changeSelection(1);
 		}
 
-		//JOELwindows7: change difficulty with mid click
-		//and except the rest. no variable syndication
-		//NOW with touch screen support with arrow key top right!
-		if (controls.LEFT_P || haveLefted)
+		if (FlxG.keys.justPressed.LEFT || haveLefted)
 		{
 			changeDiff(-1);
 			haveLefted = false;
 		}
-		if (controls.RIGHT_P || FlxG.mouse.justPressedMiddle || haveRighted)
+		if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
 		{
 			changeDiff(1);
 			haveRighted = false;

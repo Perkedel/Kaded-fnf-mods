@@ -3,6 +3,7 @@ package;
 import MusicBeatState.SwagWeeks;
 import lime.utils.Assets;
 import flixel.input.actions.FlxActionManager.ActionSetJson;
+import flixel.input.gamepad.FlxGamepad;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
@@ -263,13 +264,45 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!selectedWeek)
 			{
+				var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+
+				if (gamepad != null)
+				{
+					if (gamepad.justPressed.DPAD_UP)
+					{
+						changeWeek(-1);
+					}
+					if (gamepad.justPressed.DPAD_DOWN)
+					{
+						changeWeek(1);
+					}
+
+					if (gamepad.pressed.DPAD_RIGHT)
+						rightArrow.animation.play('press')
+					else
+						rightArrow.animation.play('idle');
+					if (gamepad.pressed.DPAD_LEFT)
+						leftArrow.animation.play('press');
+					else
+						leftArrow.animation.play('idle');
+
+					if (gamepad.justPressed.DPAD_RIGHT)
+					{
+						changeDifficulty(1);
+					}
+					if (gamepad.justPressed.DPAD_LEFT)
+					{
+						changeDifficulty(-1);
+					}
+				}
+
 				//JOELwindows7: add the mouse support here too as well
-				if (controls.UP_P || FlxG.mouse.wheel == 1)
+				if (FlxG.keys.justPressed.UP || FlxG.mouse.wheel == 1)
 				{
 					changeWeek(-1);
 				}
 
-				if (controls.DOWN_P || FlxG.mouse.wheel == -1)
+				if (FlxG.keys.justPressed.DOWN || FlxG.mouse.wheel == -1)
 				{
 					changeWeek(1);
 				}
