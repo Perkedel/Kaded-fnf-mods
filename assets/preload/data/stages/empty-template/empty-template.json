@@ -38,7 +38,10 @@
             "graphic": "null",
             "generateMode": true,
             "position": [0, 0],
-            "size": [128, 128]
+            "size": [128, 128],
+            "scrollFactor": [0, 0],
+            "colorable": false,
+            "antialiasing": true
         }],
         "whichImageAreColorable": [3],
         "order": [3, 0, 1, 2],

@@ -5118,22 +5118,29 @@ class PlayState extends MusicBeatState
 	function spawnStageImages(daData:SwagStage){
 		if(bgALL != null){
 			for(i in 0...customStage.backgroundImages.length){
+				var dataBg:SwagBackground = customStage.backgroundImages[i];
 				var anBgThing:FlxSprite = new FlxSprite();
-				if(customStage.backgroundImages[i].generateMode){
-
+				if(dataBg.generateMode){
+					anBGThing.makeGraphic(dataBg.size[0],dataBg.size[1],FlxColor.fromString(dataBg.initColor));
 				} else {
-					if(customStage.backgroundImages[i].isXML){
-
+					if(dataBg.isXML){
+						
 					} else {
-						anBgThing.loadGraphic(Paths.image("stages/" + SONG.stage + "/"));
+						anBgThing.loadGraphic(Paths.image("stages/" + SONG.stage + "/" + dataBg.graphic));
 					}
 				}
+				anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
+
+				bgAll.add(anBgThing);
+				anBGThing.scrollFactor.set(dataBg.scrollFactor[0],dataBg.scrollFactor[1]);
 			}
 		}
 	}
 
 	function startStageScript(){
+		if(executeStageScript){
 
+		}
 	}
 
 	function initDaCustomStage(stageJsonPath:String){

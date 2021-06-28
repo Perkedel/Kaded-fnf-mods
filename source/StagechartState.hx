@@ -45,6 +45,7 @@ typedef SwagBackground = {
     var size:Array<Int>;
     var initColor:String;
     var initInvisible;
+    var antialiasing;
 }
 
 typedef SwagStage = {
@@ -92,6 +93,7 @@ class StageChart
             initColor: 'white',
             initInvisible:false,
             useCustomScript:false,
+            antialiasing = true;
         }
     ], isHalloween:Bool = false){
         this.name = name;
