@@ -29,6 +29,7 @@ import lime.media.AudioManager;
 import openfl.Lib;
 import Section.SwagSection;
 import Song.SwagSong;
+import StagechartState;
 import WiggleEffect.WiggleEffectType;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -83,6 +84,7 @@ class PlayState extends MusicBeatState
 
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
+	public static var customStage:SwagStage;
 	public static var HEART:SwagHeart; //JOELwindows7: heartbeat spec
 	public static var HEARTS:HeartList; //JOELwindows7: list of heart specs
 	public static var isStoryMode:Bool = false;
@@ -204,6 +206,8 @@ class PlayState extends MusicBeatState
 	var halloweenBG:FlxSprite;
 	var isHalloween:Bool = false;
 
+	var useStageScript:Bool = false; //JOELwindows7: flag to start try the stage Lua script
+
 	var phillyCityLights:FlxTypedGroup<FlxSprite>;
 	var phillyTrain:FlxSprite;
 	var trainSound:FlxSound;
@@ -269,6 +273,7 @@ class PlayState extends MusicBeatState
 	public static var highestCombo:Int = 0;
 
 	private var executeModchart = false;
+	private var executeStageScript = false; //JOELwindows7: for stage lua scripter
 
 	// API stuff
 	
@@ -316,6 +321,8 @@ class PlayState extends MusicBeatState
 			case 'dad-battle': songLowercase = 'dadbattle';
 			case 'philly-nice': songLowercase = 'philly';
 		}
+
+		//JOELwindows7:
 		
 		removedVideo = false;
 
@@ -323,14 +330,19 @@ class PlayState extends MusicBeatState
 		executeModchart = FileSystem.exists(Paths.lua(songLowercase  + "/modchart"));
 		if (executeModchart)
 			PlayStateChangeables.Optimize = false;
+
+		
 		#else
 		executeModchart = false; // JOELwindows7: FORCE disable for non sys && windows targets
+		executeStageScript = false; 
 		#end
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
+		executeStageScript = false; //JOELwindows7: this too
 		#end
 
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(songLowercase + "/modchart"));
+		trace('stage script: ' + executeStageScript + " - " + Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript")); //JOELwindows7: check too
 
 		#if (windows && cpp)
 		// Making difficulty text for Discord Rich Presence.
@@ -479,661 +491,666 @@ class PlayState extends MusicBeatState
 		if (!PlayStateChangeables.Optimize)
 		{
 		
-		//JOELwindows7: TODO, perhaps you should do switchover from here. SONG.useCustomStage:Bool
-		switch(stageCheck)
-		{
-			case 'halloween': 
+			if(SONG.useCustomStage)
 			{
-				curStage = 'spooky';
-				halloweenLevel = true;
-
-				var hallowTex = Paths.getSparrowAtlas('halloween_bg','week2');
-
-				halloweenBG = new FlxSprite(-200, -100);
-				halloweenBG.frames = hallowTex;
-				halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
-				halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
-				halloweenBG.animation.play('idle');
-				halloweenBG.antialiasing = true;
-				add(halloweenBG);
-
-				isHalloween = true;
-			}
-			case 'philly': 
+				//JOELwindows7: Here's the switchover!
+				initDaCustomStage(SONG.stage);
+			} else {			
+				switch(stageCheck)
+				{
+					case 'halloween': 
 					{
-					curStage = 'philly';
+						curStage = 'spooky';
+						halloweenLevel = true;
 
-					var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('philly/sky', 'week3'));
-					bg.scrollFactor.set(0.1, 0.1);
-					add(bg);
+						var hallowTex = Paths.getSparrowAtlas('halloween_bg','week2');
 
-					var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.image('philly/city', 'week3'));
-					city.scrollFactor.set(0.3, 0.3);
-					city.setGraphicSize(Std.int(city.width * 0.85));
-					city.updateHitbox();
-					add(city);
+						halloweenBG = new FlxSprite(-200, -100);
+						halloweenBG.frames = hallowTex;
+						halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
+						halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
+						halloweenBG.animation.play('idle');
+						halloweenBG.antialiasing = true;
+						add(halloweenBG);
 
-					phillyCityLights = new FlxTypedGroup<FlxSprite>();
-					if(FlxG.save.data.distractions){
-						add(phillyCityLights);
+						isHalloween = true;
 					}
+					case 'philly': 
+							{
+							curStage = 'philly';
 
-					for (i in 0...5)
-					{
-							var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.image('philly/win' + i, 'week3'));
-							light.scrollFactor.set(0.3, 0.3);
-							light.visible = false;
-							light.setGraphicSize(Std.int(light.width * 0.85));
-							light.updateHitbox();
-							light.antialiasing = true;
-							phillyCityLights.add(light);
-					}
-
-					var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.image('philly/behindTrain','week3'));
-					add(streetBehind);
-
-					phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.image('philly/train','week3'));
-					if(FlxG.save.data.distractions){
-						add(phillyTrain);
-					}
-
-					//JOELwindows7: buddy, you forgot to put the train sound in week3 special folder
-					//No wonder the train cannot come. it missing that sound.
-					//remember, the trains position depends on the sound playback position!
-					trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes','week3'));
-					FlxG.sound.list.add(trainSound);
-					//there, I've copied the train_passes ogg & mp3 into the week3/sounds . 
-					//yay it works.
-
-					// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
-
-					var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.image('philly/street','week3'));
-					add(street);
-			}
-			case 'limo':
-			{
-					curStage = 'limo';
-					defaultCamZoom = 0.90;
-
-					var skyBG:FlxSprite = new FlxSprite(-120, -50).loadGraphic(Paths.image('limo/limoSunset','week4'));
-					skyBG.scrollFactor.set(0.1, 0.1);
-					add(skyBG);
-
-					var bgLimo:FlxSprite = new FlxSprite(-200, 480);
-					bgLimo.frames = Paths.getSparrowAtlas('limo/bgLimo','week4');
-					bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
-					bgLimo.animation.play('drive');
-					bgLimo.scrollFactor.set(0.4, 0.4);
-					add(bgLimo);
-					if(FlxG.save.data.distractions){
-						grpLimoDancers = new FlxTypedGroup<BackgroundDancer>();
-						add(grpLimoDancers);
-	
-						for (i in 0...5)
-						{
-								var dancer:BackgroundDancer = new BackgroundDancer((370 * i) + 130, bgLimo.y - 400);
-								dancer.scrollFactor.set(0.4, 0.4);
-								grpLimoDancers.add(dancer);
-						}
-					}
-
-					var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay','week4'));
-					overlayShit.alpha = 0.5;
-					// add(overlayShit);
-
-					// var shaderBullshit = new BlendModeEffect(new OverlayShader(), FlxColor.RED);
-
-					// FlxG.camera.setFilters([new ShaderFilter(cast shaderBullshit.shader)]);
-
-					// overlayShit.shader = shaderBullshit;
-
-					var limoTex = Paths.getSparrowAtlas('limo/limoDrive','week4');
-
-					limo = new FlxSprite(-120, 550);
-					limo.frames = limoTex;
-					limo.animation.addByPrefix('drive', "Limo stage", 24);
-					limo.animation.play('drive');
-					limo.antialiasing = true;
-
-					fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.image('limo/fastCarLol','week4'));
-					// add(limo);
-			}
-			case 'mall':
-			{
-					curStage = 'mall';
-
-					defaultCamZoom = 0.80;
-
-					var bg:FlxSprite = new FlxSprite(-1000, -500).loadGraphic(Paths.image('christmas/bgWalls','week5'));
-					bg.antialiasing = true;
-					bg.scrollFactor.set(0.2, 0.2);
-					bg.active = false;
-					bg.setGraphicSize(Std.int(bg.width * 0.8));
-					bg.updateHitbox();
-					add(bg);
-
-					upperBoppers = new FlxSprite(-240, -90);
-					upperBoppers.frames = Paths.getSparrowAtlas('christmas/upperBop','week5');
-					upperBoppers.animation.addByPrefix('bop', "Upper Crowd Bob", 24, false);
-					upperBoppers.antialiasing = true;
-					upperBoppers.scrollFactor.set(0.33, 0.33);
-					upperBoppers.setGraphicSize(Std.int(upperBoppers.width * 0.85));
-					upperBoppers.updateHitbox();
-					if(FlxG.save.data.distractions){
-						add(upperBoppers);
-					}
-
-
-					var bgEscalator:FlxSprite = new FlxSprite(-1100, -600).loadGraphic(Paths.image('christmas/bgEscalator','week5'));
-					bgEscalator.antialiasing = true;
-					bgEscalator.scrollFactor.set(0.3, 0.3);
-					bgEscalator.active = false;
-					bgEscalator.setGraphicSize(Std.int(bgEscalator.width * 0.9));
-					bgEscalator.updateHitbox();
-					add(bgEscalator);
-
-					var tree:FlxSprite = new FlxSprite(370, -250).loadGraphic(Paths.image('christmas/christmasTree','week5'));
-					tree.antialiasing = true;
-					tree.scrollFactor.set(0.40, 0.40);
-					add(tree);
-
-					bottomBoppers = new FlxSprite(-300, 140);
-					bottomBoppers.frames = Paths.getSparrowAtlas('christmas/bottomBop','week5');
-					bottomBoppers.animation.addByPrefix('bop', 'Bottom Level Boppers', 24, false);
-					bottomBoppers.antialiasing = true;
-					bottomBoppers.scrollFactor.set(0.9, 0.9);
-					bottomBoppers.setGraphicSize(Std.int(bottomBoppers.width * 1));
-					bottomBoppers.updateHitbox();
-					if(FlxG.save.data.distractions){
-						add(bottomBoppers);
-					}
-
-
-					var fgSnow:FlxSprite = new FlxSprite(-600, 700).loadGraphic(Paths.image('christmas/fgSnow','week5'));
-					fgSnow.active = false;
-					fgSnow.antialiasing = true;
-					add(fgSnow);
-
-					santa = new FlxSprite(-840, 150);
-					santa.frames = Paths.getSparrowAtlas('christmas/santa','week5');
-					santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
-					santa.antialiasing = true;
-					if(FlxG.save.data.distractions){
-						add(santa);
-					}
-			}
-			case 'mallEvil':
-			{
-					curStage = 'mallEvil';
-					var bg:FlxSprite = new FlxSprite(-400, -500).loadGraphic(Paths.image('christmas/evilBG','week5'));
-					bg.antialiasing = true;
-					bg.scrollFactor.set(0.2, 0.2);
-					bg.active = false;
-					bg.setGraphicSize(Std.int(bg.width * 0.8));
-					bg.updateHitbox();
-					add(bg);
-
-					var evilTree:FlxSprite = new FlxSprite(300, -300).loadGraphic(Paths.image('christmas/evilTree','week5'));
-					evilTree.antialiasing = true;
-					evilTree.scrollFactor.set(0.2, 0.2);
-					add(evilTree);
-
-					var evilSnow:FlxSprite = new FlxSprite(-200, 700).loadGraphic(Paths.image("christmas/evilSnow",'week5'));
-						evilSnow.antialiasing = true;
-					add(evilSnow);
-					}
-			case 'school':
-			{
-					curStage = 'school';
-
-					// defaultCamZoom = 0.9;
-
-					var bgSky = new FlxSprite().loadGraphic(Paths.image('weeb/weebSky','week6'));
-					bgSky.scrollFactor.set(0.1, 0.1);
-					add(bgSky);
-
-					var repositionShit = -200;
-
-					var bgSchool:FlxSprite = new FlxSprite(repositionShit, 0).loadGraphic(Paths.image('weeb/weebSchool','week6'));
-					bgSchool.scrollFactor.set(0.6, 0.90);
-					add(bgSchool);
-
-					var bgStreet:FlxSprite = new FlxSprite(repositionShit).loadGraphic(Paths.image('weeb/weebStreet','week6'));
-					bgStreet.scrollFactor.set(0.95, 0.95);
-					add(bgStreet);
-
-					var fgTrees:FlxSprite = new FlxSprite(repositionShit + 170, 130).loadGraphic(Paths.image('weeb/weebTreesBack','week6'));
-					fgTrees.scrollFactor.set(0.9, 0.9);
-					add(fgTrees);
-
-					var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -800);
-					var treetex = Paths.getPackerAtlas('weeb/weebTrees','week6');
-					bgTrees.frames = treetex;
-					bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
-					bgTrees.animation.play('treeLoop');
-					bgTrees.scrollFactor.set(0.85, 0.85);
-					add(bgTrees);
-
-					var treeLeaves:FlxSprite = new FlxSprite(repositionShit, -40);
-					treeLeaves.frames = Paths.getSparrowAtlas('weeb/petals','week6');
-					treeLeaves.animation.addByPrefix('leaves', 'PETALS ALL', 24, true);
-					treeLeaves.animation.play('leaves');
-					treeLeaves.scrollFactor.set(0.85, 0.85);
-					add(treeLeaves);
-
-					var widShit = Std.int(bgSky.width * 6);
-
-					bgSky.setGraphicSize(widShit);
-					bgSchool.setGraphicSize(widShit);
-					bgStreet.setGraphicSize(widShit);
-					bgTrees.setGraphicSize(Std.int(widShit * 1.4));
-					fgTrees.setGraphicSize(Std.int(widShit * 0.8));
-					treeLeaves.setGraphicSize(widShit);
-
-					fgTrees.updateHitbox();
-					bgSky.updateHitbox();
-					bgSchool.updateHitbox();
-					bgStreet.updateHitbox();
-					bgTrees.updateHitbox();
-					treeLeaves.updateHitbox();
-
-					bgGirls = new BackgroundGirls(-100, 190);
-					bgGirls.scrollFactor.set(0.9, 0.9);
-
-					if (songLowercase == 'roses' || songLowercase == 'roses-midi')
-						{
-							if(FlxG.save.data.distractions){
-								bgGirls.getScared();
-							}
-						}
-
-					bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
-					bgGirls.updateHitbox();
-					if(FlxG.save.data.distractions){
-						add(bgGirls);
-					}
-			}
-			case 'schoolEvil':
-			{
-					curStage = 'schoolEvil';
-
-					var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
-					var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
-
-					var posX = 400;
-					var posY = 200;
-
-					var bg:FlxSprite = new FlxSprite(posX, posY);
-					bg.frames = Paths.getSparrowAtlas('weeb/animatedEvilSchool','week6');
-					bg.animation.addByPrefix('idle', 'background 2', 24);
-					bg.animation.play('idle');
-					bg.scrollFactor.set(0.8, 0.9);
-					bg.scale.set(6, 6);
-					add(bg);
-
-					/* 
-							var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
-							bg.scale.set(6, 6);
-							// bg.setGraphicSize(Std.int(bg.width * 6));
-							// bg.updateHitbox();
+							var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('philly/sky', 'week3'));
+							bg.scrollFactor.set(0.1, 0.1);
 							add(bg);
-							var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
-							fg.scale.set(6, 6);
-							// fg.setGraphicSize(Std.int(fg.width * 6));
-							// fg.updateHitbox();
-							add(fg);
-							wiggleShit.effectType = WiggleEffectType.DREAMY;
-							wiggleShit.waveAmplitude = 0.01;
-							wiggleShit.waveFrequency = 60;
-							wiggleShit.waveSpeed = 0.8;
-						*/
 
-					// bg.shader = wiggleShit.shader;
-					// fg.shader = wiggleShit.shader;
+							var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.image('philly/city', 'week3'));
+							city.scrollFactor.set(0.3, 0.3);
+							city.setGraphicSize(Std.int(city.width * 0.85));
+							city.updateHitbox();
+							add(city);
 
-					/* 
-								var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
-								var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
-								// Using scale since setGraphicSize() doesnt work???
-								waveSprite.scale.set(6, 6);
-								waveSpriteFG.scale.set(6, 6);
-								waveSprite.setPosition(posX, posY);
-								waveSpriteFG.setPosition(posX, posY);
-								waveSprite.scrollFactor.set(0.7, 0.8);
-								waveSpriteFG.scrollFactor.set(0.9, 0.8);
-								// waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
-								// waveSprite.updateHitbox();
-								// waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
-								// waveSpriteFG.updateHitbox();
-								add(waveSprite);
-								add(waveSpriteFG);
-						*/
+							phillyCityLights = new FlxTypedGroup<FlxSprite>();
+							if(FlxG.save.data.distractions){
+								add(phillyCityLights);
+							}
+
+							for (i in 0...5)
+							{
+									var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.image('philly/win' + i, 'week3'));
+									light.scrollFactor.set(0.3, 0.3);
+									light.visible = false;
+									light.setGraphicSize(Std.int(light.width * 0.85));
+									light.updateHitbox();
+									light.antialiasing = true;
+									phillyCityLights.add(light);
+							}
+
+							var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.image('philly/behindTrain','week3'));
+							add(streetBehind);
+
+							phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.image('philly/train','week3'));
+							if(FlxG.save.data.distractions){
+								add(phillyTrain);
+							}
+
+							//JOELwindows7: buddy, you forgot to put the train sound in week3 special folder
+							//No wonder the train cannot come. it missing that sound.
+							//remember, the trains position depends on the sound playback position!
+							trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes','week3'));
+							FlxG.sound.list.add(trainSound);
+							//there, I've copied the train_passes ogg & mp3 into the week3/sounds . 
+							//yay it works.
+
+							// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
+
+							var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.image('philly/street','week3'));
+							add(street);
+					}
+					case 'limo':
+					{
+							curStage = 'limo';
+							defaultCamZoom = 0.90;
+
+							var skyBG:FlxSprite = new FlxSprite(-120, -50).loadGraphic(Paths.image('limo/limoSunset','week4'));
+							skyBG.scrollFactor.set(0.1, 0.1);
+							add(skyBG);
+
+							var bgLimo:FlxSprite = new FlxSprite(-200, 480);
+							bgLimo.frames = Paths.getSparrowAtlas('limo/bgLimo','week4');
+							bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
+							bgLimo.animation.play('drive');
+							bgLimo.scrollFactor.set(0.4, 0.4);
+							add(bgLimo);
+							if(FlxG.save.data.distractions){
+								grpLimoDancers = new FlxTypedGroup<BackgroundDancer>();
+								add(grpLimoDancers);
+			
+								for (i in 0...5)
+								{
+										var dancer:BackgroundDancer = new BackgroundDancer((370 * i) + 130, bgLimo.y - 400);
+										dancer.scrollFactor.set(0.4, 0.4);
+										grpLimoDancers.add(dancer);
+								}
+							}
+
+							var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay','week4'));
+							overlayShit.alpha = 0.5;
+							// add(overlayShit);
+
+							// var shaderBullshit = new BlendModeEffect(new OverlayShader(), FlxColor.RED);
+
+							// FlxG.camera.setFilters([new ShaderFilter(cast shaderBullshit.shader)]);
+
+							// overlayShit.shader = shaderBullshit;
+
+							var limoTex = Paths.getSparrowAtlas('limo/limoDrive','week4');
+
+							limo = new FlxSprite(-120, 550);
+							limo.frames = limoTex;
+							limo.animation.addByPrefix('drive', "Limo stage", 24);
+							limo.animation.play('drive');
+							limo.antialiasing = true;
+
+							fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.image('limo/fastCarLol','week4'));
+							// add(limo);
+					}
+					case 'mall':
+					{
+							curStage = 'mall';
+
+							defaultCamZoom = 0.80;
+
+							var bg:FlxSprite = new FlxSprite(-1000, -500).loadGraphic(Paths.image('christmas/bgWalls','week5'));
+							bg.antialiasing = true;
+							bg.scrollFactor.set(0.2, 0.2);
+							bg.active = false;
+							bg.setGraphicSize(Std.int(bg.width * 0.8));
+							bg.updateHitbox();
+							add(bg);
+
+							upperBoppers = new FlxSprite(-240, -90);
+							upperBoppers.frames = Paths.getSparrowAtlas('christmas/upperBop','week5');
+							upperBoppers.animation.addByPrefix('bop', "Upper Crowd Bob", 24, false);
+							upperBoppers.antialiasing = true;
+							upperBoppers.scrollFactor.set(0.33, 0.33);
+							upperBoppers.setGraphicSize(Std.int(upperBoppers.width * 0.85));
+							upperBoppers.updateHitbox();
+							if(FlxG.save.data.distractions){
+								add(upperBoppers);
+							}
+
+
+							var bgEscalator:FlxSprite = new FlxSprite(-1100, -600).loadGraphic(Paths.image('christmas/bgEscalator','week5'));
+							bgEscalator.antialiasing = true;
+							bgEscalator.scrollFactor.set(0.3, 0.3);
+							bgEscalator.active = false;
+							bgEscalator.setGraphicSize(Std.int(bgEscalator.width * 0.9));
+							bgEscalator.updateHitbox();
+							add(bgEscalator);
+
+							var tree:FlxSprite = new FlxSprite(370, -250).loadGraphic(Paths.image('christmas/christmasTree','week5'));
+							tree.antialiasing = true;
+							tree.scrollFactor.set(0.40, 0.40);
+							add(tree);
+
+							bottomBoppers = new FlxSprite(-300, 140);
+							bottomBoppers.frames = Paths.getSparrowAtlas('christmas/bottomBop','week5');
+							bottomBoppers.animation.addByPrefix('bop', 'Bottom Level Boppers', 24, false);
+							bottomBoppers.antialiasing = true;
+							bottomBoppers.scrollFactor.set(0.9, 0.9);
+							bottomBoppers.setGraphicSize(Std.int(bottomBoppers.width * 1));
+							bottomBoppers.updateHitbox();
+							if(FlxG.save.data.distractions){
+								add(bottomBoppers);
+							}
+
+
+							var fgSnow:FlxSprite = new FlxSprite(-600, 700).loadGraphic(Paths.image('christmas/fgSnow','week5'));
+							fgSnow.active = false;
+							fgSnow.antialiasing = true;
+							add(fgSnow);
+
+							santa = new FlxSprite(-840, 150);
+							santa.frames = Paths.getSparrowAtlas('christmas/santa','week5');
+							santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
+							santa.antialiasing = true;
+							if(FlxG.save.data.distractions){
+								add(santa);
+							}
+					}
+					case 'mallEvil':
+					{
+							curStage = 'mallEvil';
+							var bg:FlxSprite = new FlxSprite(-400, -500).loadGraphic(Paths.image('christmas/evilBG','week5'));
+							bg.antialiasing = true;
+							bg.scrollFactor.set(0.2, 0.2);
+							bg.active = false;
+							bg.setGraphicSize(Std.int(bg.width * 0.8));
+							bg.updateHitbox();
+							add(bg);
+
+							var evilTree:FlxSprite = new FlxSprite(300, -300).loadGraphic(Paths.image('christmas/evilTree','week5'));
+							evilTree.antialiasing = true;
+							evilTree.scrollFactor.set(0.2, 0.2);
+							add(evilTree);
+
+							var evilSnow:FlxSprite = new FlxSprite(-200, 700).loadGraphic(Paths.image("christmas/evilSnow",'week5'));
+								evilSnow.antialiasing = true;
+							add(evilSnow);
+							}
+					case 'school':
+					{
+							curStage = 'school';
+
+							// defaultCamZoom = 0.9;
+
+							var bgSky = new FlxSprite().loadGraphic(Paths.image('weeb/weebSky','week6'));
+							bgSky.scrollFactor.set(0.1, 0.1);
+							add(bgSky);
+
+							var repositionShit = -200;
+
+							var bgSchool:FlxSprite = new FlxSprite(repositionShit, 0).loadGraphic(Paths.image('weeb/weebSchool','week6'));
+							bgSchool.scrollFactor.set(0.6, 0.90);
+							add(bgSchool);
+
+							var bgStreet:FlxSprite = new FlxSprite(repositionShit).loadGraphic(Paths.image('weeb/weebStreet','week6'));
+							bgStreet.scrollFactor.set(0.95, 0.95);
+							add(bgStreet);
+
+							var fgTrees:FlxSprite = new FlxSprite(repositionShit + 170, 130).loadGraphic(Paths.image('weeb/weebTreesBack','week6'));
+							fgTrees.scrollFactor.set(0.9, 0.9);
+							add(fgTrees);
+
+							var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -800);
+							var treetex = Paths.getPackerAtlas('weeb/weebTrees','week6');
+							bgTrees.frames = treetex;
+							bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
+							bgTrees.animation.play('treeLoop');
+							bgTrees.scrollFactor.set(0.85, 0.85);
+							add(bgTrees);
+
+							var treeLeaves:FlxSprite = new FlxSprite(repositionShit, -40);
+							treeLeaves.frames = Paths.getSparrowAtlas('weeb/petals','week6');
+							treeLeaves.animation.addByPrefix('leaves', 'PETALS ALL', 24, true);
+							treeLeaves.animation.play('leaves');
+							treeLeaves.scrollFactor.set(0.85, 0.85);
+							add(treeLeaves);
+
+							var widShit = Std.int(bgSky.width * 6);
+
+							bgSky.setGraphicSize(widShit);
+							bgSchool.setGraphicSize(widShit);
+							bgStreet.setGraphicSize(widShit);
+							bgTrees.setGraphicSize(Std.int(widShit * 1.4));
+							fgTrees.setGraphicSize(Std.int(widShit * 0.8));
+							treeLeaves.setGraphicSize(widShit);
+
+							fgTrees.updateHitbox();
+							bgSky.updateHitbox();
+							bgSchool.updateHitbox();
+							bgStreet.updateHitbox();
+							bgTrees.updateHitbox();
+							treeLeaves.updateHitbox();
+
+							bgGirls = new BackgroundGirls(-100, 190);
+							bgGirls.scrollFactor.set(0.9, 0.9);
+
+							if (songLowercase == 'roses' || songLowercase == 'roses-midi')
+								{
+									if(FlxG.save.data.distractions){
+										bgGirls.getScared();
+									}
+								}
+
+							bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
+							bgGirls.updateHitbox();
+							if(FlxG.save.data.distractions){
+								add(bgGirls);
+							}
+					}
+					case 'schoolEvil':
+					{
+							curStage = 'schoolEvil';
+
+							var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
+							var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
+
+							var posX = 400;
+							var posY = 200;
+
+							var bg:FlxSprite = new FlxSprite(posX, posY);
+							bg.frames = Paths.getSparrowAtlas('weeb/animatedEvilSchool','week6');
+							bg.animation.addByPrefix('idle', 'background 2', 24);
+							bg.animation.play('idle');
+							bg.scrollFactor.set(0.8, 0.9);
+							bg.scale.set(6, 6);
+							add(bg);
+
+							/* 
+									var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
+									bg.scale.set(6, 6);
+									// bg.setGraphicSize(Std.int(bg.width * 6));
+									// bg.updateHitbox();
+									add(bg);
+									var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
+									fg.scale.set(6, 6);
+									// fg.setGraphicSize(Std.int(fg.width * 6));
+									// fg.updateHitbox();
+									add(fg);
+									wiggleShit.effectType = WiggleEffectType.DREAMY;
+									wiggleShit.waveAmplitude = 0.01;
+									wiggleShit.waveFrequency = 60;
+									wiggleShit.waveSpeed = 0.8;
+								*/
+
+							// bg.shader = wiggleShit.shader;
+							// fg.shader = wiggleShit.shader;
+
+							/* 
+										var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
+										var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
+										// Using scale since setGraphicSize() doesnt work???
+										waveSprite.scale.set(6, 6);
+										waveSpriteFG.scale.set(6, 6);
+										waveSprite.setPosition(posX, posY);
+										waveSpriteFG.setPosition(posX, posY);
+										waveSprite.scrollFactor.set(0.7, 0.8);
+										waveSpriteFG.scrollFactor.set(0.9, 0.8);
+										// waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
+										// waveSprite.updateHitbox();
+										// waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
+										// waveSpriteFG.updateHitbox();
+										add(waveSprite);
+										add(waveSpriteFG);
+								*/
+					}
+					case 'stage':
+						{
+								defaultCamZoom = 0.9;
+								curStage = 'stage';
+								var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
+								bg.antialiasing = true;
+								bg.scrollFactor.set(0.9, 0.9);
+								bg.active = false;
+								add(bg);
+			
+								var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
+								stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+								stageFront.updateHitbox();
+								stageFront.antialiasing = true;
+								stageFront.scrollFactor.set(0.9, 0.9);
+								stageFront.active = false;
+								add(stageFront);
+
+								//JOELwindows7: reinstall stage light and this time, I added bloom yay!
+								var stageLight:FlxSprite = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light'));
+								stageLight.setGraphicSize(Std.int(stageLight.width * 1), Std.int(stageLight.height * 1));
+								stageLight.updateHitbox();
+								stageLight.antialiasing = true;
+								stageLight.scrollFactor.set(1.3,1.3);
+								stageLight.active = false;
+
+								//JOELwindows7: here's the bloom of that lighting
+								colorableGround = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light_bloom'));
+								colorableGround.setGraphicSize(Std.int(colorableGround.width * 2),Std.int(colorableGround.height * 2));
+								colorableGround.updateHitbox();
+								colorableGround.antialiasing = true;
+								colorableGround.scrollFactor.set(1.3,1.3);
+								colorableGround.active = false;
+
+								//JOELwindows7: make sure order is correct
+								add(colorableGround);
+								add(stageLight);
+								colorableGround.visible = false; //initially off for performer safety.
+			
+								var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
+								stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+								stageCurtains.updateHitbox();
+								stageCurtains.antialiasing = true;
+								stageCurtains.scrollFactor.set(1.3, 1.3);
+								stageCurtains.active = false;
+			
+								add(stageCurtains);
+						}
+					case 'jakartaFair':
+						{
+							//JOELwindows7:
+							/*
+							Jakarta fair, ayo ke Jakarta Fair
+							Ajang arena pameran dan hiburan
+
+							ayo kita pergi kesana, rekreasi sekaligus berbelanja
+							belanja terlengkap di Jakarta fair...
+
+							ayo kita, ke Jakarta fair. ayo kita ke Jakarta fair. Kemayoran!!!
+							*/
+							defaultCamZoom = 0.9;
+							curStage = 'jakartaFair';
+							var bgActualOffset_x = -150;
+							var bgActualOffset_y = -100;
+							var bg:FlxSprite = new FlxSprite(bgActualOffset_x + -500, bgActualOffset_y + -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgBehindALL'));
+							bg.setGraphicSize(Std.int(bg.width * 1.2),Std.int(bg.height * 1.2));
+							bg.antialiasing = true;
+							bg.scrollFactor.set(.9, .9);
+							bg.active = false;
+							add(bg);
+
+							var stageFront:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgInsideBooth'));
+							stageFront.setGraphicSize(Std.int(stageFront.width * 1.2),Std.int(stageFront.height * 1.2));
+							stageFront.updateHitbox();
+							stageFront.antialiasing = true;
+							stageFront.scrollFactor.set(1, 1);
+							stageFront.active = false;
+							add(stageFront);
+
+							//Now for the colorable ceiling!
+							colorableGround = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'));
+							colorableGround.setGraphicSize(Std.int(colorableGround.width * 1.2),Std.int((colorableGround.height * 1.2)));
+							colorableGround.updateHitbox();
+							colorableGround.antialiasing = true;
+							colorableGround.scrollFactor.set(1,1);
+							colorableGround.active = false;
+							colorableGround.color.setRGB(1,1,1,0);
+							add(colorableGround);
+							isChromaScreen = false; //the ceiling is RGB light!
+							originalColor = colorableGround.color; //store the default color!
+							colorableGround.visible = false; //Hide the RGB light first before begin!
+
+							//now back to final closest to the camera.
+							var stageCurtains:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgRearSpeakers'));
+							stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2),Std.int(stageFront.height * 1.2));
+							stageCurtains.updateHitbox();
+							stageCurtains.antialiasing = true;
+							stageCurtains.scrollFactor.set(1.5, 1.5);
+							stageCurtains.active = false;
+							add(stageCurtains);
+						}
+					case 'qmoveph':
+						{
+							defaultCamZoom = 0.9;
+							curStage = 'qmoveph';
+							var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('qmoveph/DefaultBackground'));
+							bg.setGraphicSize(Std.int(bg.width *1.1), Std.int(bg.height * 1.1));
+							bg.antialiasing = true;
+							bg.scrollFactor.set(0.9, 0.9);
+							bg.active = false;
+							add(bg);
+						}
+					case 'cruelThesis':
+						{
+							//JOELwindows7: LOL Van Elektronishe with Cruel Angel Thesis lol Evangelion
+							defaultCamZoom = 0.9;
+							curStage = 'cruelThesis';
+							var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('VanElektronische/VanElektronische_corpThesis'));
+							bg.setGraphicSize(Std.int(bg.width *1.2), Std.int(bg.height * 1.2));
+							bg.antialiasing = true;
+							bg.scrollFactor.set(0.9, 0.9);
+							bg.active = false;
+							add(bg);
+						}
+					case 'lapanganParalax':
+						{
+							defaultCamZoom = 0.9;
+							curStage = 'lapanganParalax';
+							var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Bekgron'));
+							bg.setGraphicSize(Std.int(bg.width * 1.2), Std.int(bg.height * 1.2));
+							bg.antialiasing = true;
+							bg.scrollFactor.set(0.3, 0.3);
+							bg.active = false;
+							add(bg);
+
+							var bg2:FlxSprite = new FlxSprite(-200, -150).loadGraphic(Paths.image('lapanganParalax/Betwaangron'));
+							bg2.setGraphicSize(Std.int(bg2.width * 1.2), Std.int(bg2.height * 1.2));
+							bg2.antialiasing = true;
+							bg2.scrollFactor.set(0.5, 0.5);
+							bg2.active = false;
+							add(bg2);
+
+							var bg3:FlxSprite = new FlxSprite(-200, -50).loadGraphic(Paths.image('lapanganParalax/Betweengron'));
+							bg3.setGraphicSize(Std.int(bg3.width * 1.2), Std.int(bg3.height * 1.2));
+							bg3.antialiasing = true;
+							bg3.scrollFactor.set(0.7, 0.7);
+							bg3.active = false;
+							add(bg3);
+
+							var stageFront:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Midgron'));
+							stageFront.setGraphicSize(Std.int(stageFront.width * 1.2), Std.int(stageFront.height * 1.2));
+							stageFront.updateHitbox();
+							stageFront.antialiasing = true;
+							stageFront.scrollFactor.set(0.9, 0.9);
+							stageFront.active = false;
+							add(stageFront);
+
+							var stageCurtains:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Forgron'));
+							stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2), Std.int(stageCurtains.height * 1.2));
+							stageCurtains.updateHitbox();
+							stageCurtains.antialiasing = true;
+							stageCurtains.scrollFactor.set(1.3, 1.3);
+							stageCurtains.active = false;
+							add(stageCurtains);
+						}
+					case 'blank':
+						{
+							defaultCamZoom = 0.5;
+							curStage = 'blank';
+							// JOELwindows7: Just blank. nothing.
+							// chroma key color is #000000 . well, it's hard, yes, 
+							// so if you need chroma key, you should green screen instead.
+						}
+					case 'greenscreen':
+						{
+							defaultCamZoom = 0.5;
+							curStage = 'greenscreen';
+							//JOELwindows7: turns out you can generate graphic with Make Graphic! 
+							// it is even there on the FlxSprite construction wow!
+							// read function of `schoolIntro`. there's a variable called `red` which is the FlxSprite of full red.
+							// so, now you can chroma key full green!
+							// heh what the peck man? GREEN is #008000 (dim green)!?? but LIME is #00FF00 (full green)?!? really bro?!
+							// you confused me!!! the true green was supposed to be full green #00FF00 what the peck, Flixel?!
+							colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
+							colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+							colorableGround.updateHitbox();
+							colorableGround.antialiasing = true;
+							colorableGround.scrollFactor.set(0.1,0.1);
+							colorableGround.active = false;
+							add(colorableGround);
+							originalColor = colorableGround.color; //store the original color first!
+							isChromaScreen = true; //The background is chroma screen
+						}
+					case 'bluechroma':
+						{
+							//JOELwindows7: same as greenscreen but blue. not to be confused with blue screen of death!
+							defaultCamZoom = 0.5;
+							curStage = 'bluechroma';
+							colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.BLUE);
+							colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+							colorableGround.updateHitbox();
+							colorableGround.antialiasing = true;
+							colorableGround.scrollFactor.set(0.1,0.1);
+							colorableGround.active = false;
+							add(colorableGround);
+							originalColor = colorableGround.color; //store the original color first!
+							isChromaScreen = true; //The background is chroma screen
+						}
+					case 'semple':
+						{
+							//JOELwindows7: Stuart Semple is multidisciplinary Bristish artist! A painter, and more.
+							// He is famous for the pinkest color you've ever seen.
+							// https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple
+							// and peck Anish Kapoor.
+							defaultCamZoom = 0.5;
+							curStage = 'semple';
+							// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
+							// because no camera has the ability to capture way over Pink Semple had.
+							colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.MAGENTA);
+							colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+							colorableGround.updateHitbox();
+							colorableGround.antialiasing = true;
+							colorableGround.scrollFactor.set(0.1,0.1);
+							colorableGround.active = false;
+							add(colorableGround);
+							originalColor = colorableGround.color; //store the original color first!
+							isChromaScreen = true; //The background is chroma screen
+						}
+					case 'whitening':
+						{
+							//JOELwindows7: This looks familiar. oh no.
+							//anyway. USE THIS SCREEN IF YOU WANT TO CHANGE COLOR with FULL RGB!
+							//BEST SCREEN FOR FULL RGB COLOR!!!
+							defaultCamZoom = 0.5;
+							curStage = 'whitening';
+							// JOELwindows7: guys, pls don't blamm me. it's nothing to do. let's assume it's purely coincidental.
+							colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.WHITE);
+							colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+							colorableGround.updateHitbox();
+							colorableGround.antialiasing = true;
+							colorableGround.scrollFactor.set(0.1,0.1);
+							colorableGround.active = false;
+							add(colorableGround);
+							originalColor = colorableGround.color; //store the original color first!
+							isChromaScreen = true; //The background is chroma screen
+						}
+					case 'kuning':
+						{
+							//JOELwindows7: yellow this one out
+							defaultCamZoom = 0.5;
+							curStage = 'kuning';
+							colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.YELLOW);
+							colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+							colorableGround.updateHitbox();
+							colorableGround.antialiasing = true;
+							colorableGround.scrollFactor.set(0.1,0.1);
+							colorableGround.active = false;
+							add(colorableGround);
+							originalColor = colorableGround.color; //store the original color first!
+							isChromaScreen = true; //The background is chroma screen
+						}
+					case 'blood':
+						{
+							//JOELwindows7: red screen
+							defaultCamZoom = 0.5;
+							curStage = 'blood';
+							colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.RED);
+							colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+							colorableGround.updateHitbox();
+							colorableGround.antialiasing = true;
+							colorableGround.scrollFactor.set(0.1,0.1);
+							colorableGround.active = false;
+							add(colorableGround);
+							originalColor = colorableGround.color; //store the original color first!
+							isChromaScreen = true; //The background is chroma screen
+						}
+					default:
+					{
+							defaultCamZoom = 0.9;
+							curStage = 'stage';
+							var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
+							bg.antialiasing = true;
+							bg.scrollFactor.set(0.9, 0.9);
+							bg.active = false;
+							add(bg);
+
+							var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
+							stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+							stageFront.updateHitbox();
+							stageFront.antialiasing = true;
+							stageFront.scrollFactor.set(0.9, 0.9);
+							stageFront.active = false;
+							add(stageFront);
+
+							//JOELwindows7: reinstall stage light and this time, I added bloom yay!
+							var stageLight:FlxSprite = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light'));
+							stageLight.setGraphicSize(Std.int(stageLight.width * 1), Std.int(stageLight.height * 1));
+							stageLight.updateHitbox();
+							stageLight.antialiasing = true;
+							stageLight.scrollFactor.set(1.3,1.3);
+							stageLight.active = false;
+
+							//JOELwindows7: here's the bloom of that lighting
+							colorableGround = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light_bloom'));
+							colorableGround.setGraphicSize(Std.int(colorableGround.width * 2),Std.int(colorableGround.height * 2));
+							colorableGround.updateHitbox();
+							colorableGround.antialiasing = true;
+							colorableGround.scrollFactor.set(1.3,1.3);
+							colorableGround.active = false;
+
+							//JOELwindows7: make sure order is correct
+							add(colorableGround);
+							add(stageLight);
+							colorableGround.visible = false; //initially off for performer safety.
+
+							var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
+							stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+							stageCurtains.updateHitbox();
+							stageCurtains.antialiasing = true;
+							stageCurtains.scrollFactor.set(1.3, 1.3);
+							stageCurtains.active = false;
+
+							add(stageCurtains);
+					}
+				}
 			}
-			case 'stage':
-				{
-						defaultCamZoom = 0.9;
-						curStage = 'stage';
-						var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
-						bg.antialiasing = true;
-						bg.scrollFactor.set(0.9, 0.9);
-						bg.active = false;
-						add(bg);
-	
-						var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
-						stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-						stageFront.updateHitbox();
-						stageFront.antialiasing = true;
-						stageFront.scrollFactor.set(0.9, 0.9);
-						stageFront.active = false;
-						add(stageFront);
-
-						//JOELwindows7: reinstall stage light and this time, I added bloom yay!
-						var stageLight:FlxSprite = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light'));
-						stageLight.setGraphicSize(Std.int(stageLight.width * 1), Std.int(stageLight.height * 1));
-						stageLight.updateHitbox();
-						stageLight.antialiasing = true;
-						stageLight.scrollFactor.set(1.3,1.3);
-						stageLight.active = false;
-
-						//JOELwindows7: here's the bloom of that lighting
-						colorableGround = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light_bloom'));
-						colorableGround.setGraphicSize(Std.int(colorableGround.width * 2),Std.int(colorableGround.height * 2));
-						colorableGround.updateHitbox();
-						colorableGround.antialiasing = true;
-						colorableGround.scrollFactor.set(1.3,1.3);
-						colorableGround.active = false;
-
-						//JOELwindows7: make sure order is correct
-						add(colorableGround);
-						add(stageLight);
-						colorableGround.visible = false; //initially off for performer safety.
-	
-						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
-						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-						stageCurtains.updateHitbox();
-						stageCurtains.antialiasing = true;
-						stageCurtains.scrollFactor.set(1.3, 1.3);
-						stageCurtains.active = false;
-	
-						add(stageCurtains);
-				}
-			case 'jakartaFair':
-				{
-					//JOELwindows7:
-					/*
-					Jakarta fair, ayo ke Jakarta Fair
-					Ajang arena pameran dan hiburan
-
-					ayo kita pergi kesana, rekreasi sekaligus berbelanja
-					belanja terlengkap di Jakarta fair...
-
-					ayo kita, ke Jakarta fair. ayo kita ke Jakarta fair. Kemayoran!!!
-					*/
-					defaultCamZoom = 0.9;
-					curStage = 'jakartaFair';
-					var bgActualOffset_x = -150;
-					var bgActualOffset_y = -100;
-					var bg:FlxSprite = new FlxSprite(bgActualOffset_x + -500, bgActualOffset_y + -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgBehindALL'));
-					bg.setGraphicSize(Std.int(bg.width * 1.2),Std.int(bg.height * 1.2));
-					bg.antialiasing = true;
-					bg.scrollFactor.set(.9, .9);
-					bg.active = false;
-					add(bg);
-
-					var stageFront:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgInsideBooth'));
-					stageFront.setGraphicSize(Std.int(stageFront.width * 1.2),Std.int(stageFront.height * 1.2));
-					stageFront.updateHitbox();
-					stageFront.antialiasing = true;
-					stageFront.scrollFactor.set(1, 1);
-					stageFront.active = false;
-					add(stageFront);
-
-					//Now for the colorable ceiling!
-					colorableGround = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'));
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 1.2),Std.int((colorableGround.height * 1.2)));
-					colorableGround.updateHitbox();
-					colorableGround.antialiasing = true;
-					colorableGround.scrollFactor.set(1,1);
-					colorableGround.active = false;
-					colorableGround.color.setRGB(1,1,1,0);
-					add(colorableGround);
-					isChromaScreen = false; //the ceiling is RGB light!
-					originalColor = colorableGround.color; //store the default color!
-					colorableGround.visible = false; //Hide the RGB light first before begin!
-
-					//now back to final closest to the camera.
-					var stageCurtains:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgRearSpeakers'));
-					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2),Std.int(stageFront.height * 1.2));
-					stageCurtains.updateHitbox();
-					stageCurtains.antialiasing = true;
-					stageCurtains.scrollFactor.set(1.5, 1.5);
-					stageCurtains.active = false;
-					add(stageCurtains);
-				}
-			case 'qmoveph':
-				{
-					defaultCamZoom = 0.9;
-					curStage = 'qmoveph';
-					var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('qmoveph/DefaultBackground'));
-					bg.setGraphicSize(Std.int(bg.width *1.1), Std.int(bg.height * 1.1));
-					bg.antialiasing = true;
-					bg.scrollFactor.set(0.9, 0.9);
-					bg.active = false;
-					add(bg);
-				}
-			case 'cruelThesis':
-				{
-					//JOELwindows7: LOL Van Elektronishe with Cruel Angel Thesis lol Evangelion
-					defaultCamZoom = 0.9;
-					curStage = 'cruelThesis';
-					var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('VanElektronische/VanElektronische_corpThesis'));
-					bg.setGraphicSize(Std.int(bg.width *1.2), Std.int(bg.height * 1.2));
-					bg.antialiasing = true;
-					bg.scrollFactor.set(0.9, 0.9);
-					bg.active = false;
-					add(bg);
-				}
-			case 'lapanganParalax':
-				{
-					defaultCamZoom = 0.9;
-					curStage = 'lapanganParalax';
-					var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Bekgron'));
-					bg.setGraphicSize(Std.int(bg.width * 1.2), Std.int(bg.height * 1.2));
-					bg.antialiasing = true;
-					bg.scrollFactor.set(0.3, 0.3);
-					bg.active = false;
-					add(bg);
-
-					var bg2:FlxSprite = new FlxSprite(-200, -150).loadGraphic(Paths.image('lapanganParalax/Betwaangron'));
-					bg2.setGraphicSize(Std.int(bg2.width * 1.2), Std.int(bg2.height * 1.2));
-					bg2.antialiasing = true;
-					bg2.scrollFactor.set(0.5, 0.5);
-					bg2.active = false;
-					add(bg2);
-
-					var bg3:FlxSprite = new FlxSprite(-200, -50).loadGraphic(Paths.image('lapanganParalax/Betweengron'));
-					bg3.setGraphicSize(Std.int(bg3.width * 1.2), Std.int(bg3.height * 1.2));
-					bg3.antialiasing = true;
-					bg3.scrollFactor.set(0.7, 0.7);
-					bg3.active = false;
-					add(bg3);
-
-					var stageFront:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Midgron'));
-					stageFront.setGraphicSize(Std.int(stageFront.width * 1.2), Std.int(stageFront.height * 1.2));
-					stageFront.updateHitbox();
-					stageFront.antialiasing = true;
-					stageFront.scrollFactor.set(0.9, 0.9);
-					stageFront.active = false;
-					add(stageFront);
-
-					var stageCurtains:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Forgron'));
-					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2), Std.int(stageCurtains.height * 1.2));
-					stageCurtains.updateHitbox();
-					stageCurtains.antialiasing = true;
-					stageCurtains.scrollFactor.set(1.3, 1.3);
-					stageCurtains.active = false;
-					add(stageCurtains);
-				}
-			case 'blank':
-				{
-					defaultCamZoom = 0.5;
-					curStage = 'blank';
-					// JOELwindows7: Just blank. nothing.
-					// chroma key color is #000000 . well, it's hard, yes, 
-					// so if you need chroma key, you should green screen instead.
-				}
-			case 'greenscreen':
-				{
-					defaultCamZoom = 0.5;
-					curStage = 'greenscreen';
-					//JOELwindows7: turns out you can generate graphic with Make Graphic! 
-					// it is even there on the FlxSprite construction wow!
-					// read function of `schoolIntro`. there's a variable called `red` which is the FlxSprite of full red.
-					// so, now you can chroma key full green!
-					// heh what the peck man? GREEN is #008000 (dim green)!?? but LIME is #00FF00 (full green)?!? really bro?!
-					// you confused me!!! the true green was supposed to be full green #00FF00 what the peck, Flixel?!
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
-					colorableGround.updateHitbox();
-					colorableGround.antialiasing = true;
-					colorableGround.scrollFactor.set(0.1,0.1);
-					colorableGround.active = false;
-					add(colorableGround);
-					originalColor = colorableGround.color; //store the original color first!
-					isChromaScreen = true; //The background is chroma screen
-				}
-			case 'bluechroma':
-				{
-					//JOELwindows7: same as greenscreen but blue. not to be confused with blue screen of death!
-					defaultCamZoom = 0.5;
-					curStage = 'bluechroma';
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.BLUE);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
-					colorableGround.updateHitbox();
-					colorableGround.antialiasing = true;
-					colorableGround.scrollFactor.set(0.1,0.1);
-					colorableGround.active = false;
-					add(colorableGround);
-					originalColor = colorableGround.color; //store the original color first!
-					isChromaScreen = true; //The background is chroma screen
-				}
-			case 'semple':
-				{
-					//JOELwindows7: Stuart Semple is multidisciplinary Bristish artist! A painter, and more.
-					// He is famous for the pinkest color you've ever seen.
-					// https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple
-					// and peck Anish Kapoor.
-					defaultCamZoom = 0.5;
-					curStage = 'semple';
-					// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
-					// because no camera has the ability to capture way over Pink Semple had.
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.MAGENTA);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
-					colorableGround.updateHitbox();
-					colorableGround.antialiasing = true;
-					colorableGround.scrollFactor.set(0.1,0.1);
-					colorableGround.active = false;
-					add(colorableGround);
-					originalColor = colorableGround.color; //store the original color first!
-					isChromaScreen = true; //The background is chroma screen
-				}
-			case 'whitening':
-				{
-					//JOELwindows7: This looks familiar. oh no.
-					//anyway. USE THIS SCREEN IF YOU WANT TO CHANGE COLOR with FULL RGB!
-					//BEST SCREEN FOR FULL RGB COLOR!!!
-					defaultCamZoom = 0.5;
-					curStage = 'whitening';
-					// JOELwindows7: guys, pls don't blamm me. it's nothing to do. let's assume it's purely coincidental.
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.WHITE);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
-					colorableGround.updateHitbox();
-					colorableGround.antialiasing = true;
-					colorableGround.scrollFactor.set(0.1,0.1);
-					colorableGround.active = false;
-					add(colorableGround);
-					originalColor = colorableGround.color; //store the original color first!
-					isChromaScreen = true; //The background is chroma screen
-				}
-			case 'kuning':
-				{
-					//JOELwindows7: yellow this one out
-					defaultCamZoom = 0.5;
-					curStage = 'kuning';
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.YELLOW);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
-					colorableGround.updateHitbox();
-					colorableGround.antialiasing = true;
-					colorableGround.scrollFactor.set(0.1,0.1);
-					colorableGround.active = false;
-					add(colorableGround);
-					originalColor = colorableGround.color; //store the original color first!
-					isChromaScreen = true; //The background is chroma screen
-				}
-			case 'blood':
-				{
-					//JOELwindows7: red screen
-					defaultCamZoom = 0.5;
-					curStage = 'blood';
-					colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.RED);
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
-					colorableGround.updateHitbox();
-					colorableGround.antialiasing = true;
-					colorableGround.scrollFactor.set(0.1,0.1);
-					colorableGround.active = false;
-					add(colorableGround);
-					originalColor = colorableGround.color; //store the original color first!
-					isChromaScreen = true; //The background is chroma screen
-				}
-			default:
-			{
-					defaultCamZoom = 0.9;
-					curStage = 'stage';
-					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
-					bg.antialiasing = true;
-					bg.scrollFactor.set(0.9, 0.9);
-					bg.active = false;
-					add(bg);
-
-					var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
-					stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-					stageFront.updateHitbox();
-					stageFront.antialiasing = true;
-					stageFront.scrollFactor.set(0.9, 0.9);
-					stageFront.active = false;
-					add(stageFront);
-
-					//JOELwindows7: reinstall stage light and this time, I added bloom yay!
-					var stageLight:FlxSprite = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light'));
-					stageLight.setGraphicSize(Std.int(stageLight.width * 1), Std.int(stageLight.height * 1));
-					stageLight.updateHitbox();
-					stageLight.antialiasing = true;
-					stageLight.scrollFactor.set(1.3,1.3);
-					stageLight.active = false;
-
-					//JOELwindows7: here's the bloom of that lighting
-					colorableGround = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light_bloom'));
-					colorableGround.setGraphicSize(Std.int(colorableGround.width * 2),Std.int(colorableGround.height * 2));
-					colorableGround.updateHitbox();
-					colorableGround.antialiasing = true;
-					colorableGround.scrollFactor.set(1.3,1.3);
-					colorableGround.active = false;
-
-					//JOELwindows7: make sure order is correct
-					add(colorableGround);
-					add(stageLight);
-					colorableGround.visible = false; //initially off for performer safety.
-
-					var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
-					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-					stageCurtains.updateHitbox();
-					stageCurtains.antialiasing = true;
-					stageCurtains.scrollFactor.set(1.3, 1.3);
-					stageCurtains.active = false;
-
-					add(stageCurtains);
-			}
-		}
 		}
 		//defaults if no gf was found in chart
 		var gfCheck:String = 'gf';
@@ -1848,6 +1865,10 @@ class PlayState extends MusicBeatState
 		{
 			luaModchart = ModchartState.createModchartState();
 			luaModchart.executeState('start',[songLowercase]);
+		}
+		if (executeStageScript)
+		{
+			
 		}
 		#end
 
@@ -5078,5 +5099,61 @@ class PlayState extends MusicBeatState
 			}
 			swagCounter += 1;
 		}, 5);
+	}
+
+	//JOELwindows7: the compatibility conversion case
+	public function toCompatCase(daString:String){
+		return StringTools.replace(daString, " ", "-").toLowerCase();
+	}
+
+	//JOELwindows7: init stagefile
+	function loadStageFile(path:String){
+		customStage = StagechartState.load(path);
+		if(customStage != null){
+			useStageScript = customStage.useCustomScript;
+			isHalloween = customStage.isHalloween;
+		}
+	}
+
+	function spawnStageImages(daData:SwagStage){
+		if(bgALL != null){
+			for(i in 0...customStage.backgroundImages.length){
+				var anBgThing:FlxSprite = new FlxSprite();
+				if(customStage.backgroundImages[i].generateMode){
+
+				} else {
+					if(customStage.backgroundImages[i].isXML){
+
+					} else {
+						anBgThing.loadGraphic(Paths.image(""));
+					}
+				}
+			}
+		}
+	}
+
+	function startStageScript(){
+
+	}
+
+	function initDaCustomStage(stageJsonPath:String){
+		loadCustomStage(SONG.stage);
+		bgAll = new FlxTypedGroup<FlxSprite>();
+		add(bgAll);
+		#if ((windows || linux) && sys)
+		if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+			executeStageScript = FileSystem.exists(Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
+		#else
+			executeStageScript = false;
+		#end
+		#if !cpp
+			executeStageScript = false;
+		#end
+
+		if(executeStageScript){
+
+		} else {
+			spawnStageImages(customStage);
+		}
 	}
 }

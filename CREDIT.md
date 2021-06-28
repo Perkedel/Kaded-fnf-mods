@@ -202,6 +202,7 @@ thancc for all these resources! without them, everything is impossible.
 - the LuaJIT version last time is still 2.1.0-beta2
 - https://lib.haxe.org/p/markdown/ markdown to HTML converter library haxe
 - https://snippets.haxeflixel.com/groups/typed-group/ how to FlxTypedGroup
+- https://haxe.org/manual/types-enum-instance.html how to enum in HaxeFlixel
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -290,6 +291,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://gamebanana.com/mods/54803 (Warning: has NC, ND) NoLime. just inspire the vibin style and hue gradient it accordingly. No yoinks from that one for now. okay, the color is different, I think I got this on my own, so no color mimic either.
 - https://www.fontspace.com/azonix-font-f30718 (Freeware, Personal & Commercial Use) for some asset names like week Jingle Punks YouTube Audio Library.
 - https://docs.microsoft.com/en-us/typography/font-list/kristen-itc uhhh, it's a Windows included font, idk. for name like The Green Orbs. a musician of YouTube Audio Library famous for their children oriented lullabies.
+- https://youtu.be/xmxmVQS-T-Y Madbrine yoinked test chart JSON from week7. (Permission being asked, awaiting answer. Previous somebody's engagement mostly returns `YES`)
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

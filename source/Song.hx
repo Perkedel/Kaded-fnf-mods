@@ -58,7 +58,7 @@ class Song
 	public var hasEpilogueChat:Bool = false; //JOELwindows7: mark that this has Epologue chat
 
 	public var allowedToHeadbang:Bool = false; //JOELwindows7: mark whether heys, color change, etc.
-	public var useCustomStage:Bool; //JOELwindows7: should use custom stage?
+	public var useCustomStage:Bool = false; //JOELwindows7: should use custom stage?
 	//be allowed at certain moments in time
 
 	public function new(song, notes, bpm)
@@ -110,7 +110,7 @@ class Song
 
 	public static function parseJSONshit(rawJson:String):SwagSong
 	{
-		var swagShit:SwagSong = cast Json.parse(rawJson).song;
+		var swagShit:SwagSong = cast Json.parse(rawJson).stage;
 		swagShit.validScore = true;
 		return swagShit;
 	}

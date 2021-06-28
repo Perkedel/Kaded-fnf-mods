@@ -16,10 +16,10 @@
         "customBg7": "",
         "customBg8": "",
         "customBg9": "",
-        "bgScrollFactor": 1,
-        "stageFrontScrollFactor": 1,
-        "stageCurtainScrollFactor": 1,
-        "colorableBgScrollFactor": 1,
+        "bgScrollFactor": [1, 1],
+        "stageFrontScrollFactor": [1, 1],
+        "stageCurtainScrollFactor": [1, 1],
+        "colorableBgScrollFactor": [1, 1],
         "useImagesMethodic": false,
         "images": [
             "view-of-the-world-StageBackNoStar",
@@ -28,11 +28,18 @@
             "view-of-the-world-JustStars"
         ],
         "imagesScrollFactor": [
-            1,
-            1,
-            1,
-            1
+            [1, 1],
+            [1, 1],
+            [1, 1],
+            [1, 1]
         ],
+        "backgroundImages": [{
+            "callName": "bg",
+            "graphic": "null",
+            "generateMode": true,
+            "position": [0, 0],
+            "size": [128, 128]
+        }],
         "whichImageAreColorable": [3],
         "order": [3, 0, 1, 2],
         "initInvisible": [false, false, false, false],
