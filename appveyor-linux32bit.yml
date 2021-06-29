@@ -30,10 +30,10 @@ install:
   - haxelib git faxe https://github.com/uhrobots/faxe
   - haxelib git polymod https://github.com/larsiusprime/polymod.git
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+  - haxelib git extension-webm https://github.com/KadeDev/extension-webm
+  - haxelib run lime rebuild extension-webm linux
   - haxelib install linc_luajit
   - haxelib install actuate
-  # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
-  - haxelib git extension-webm https://github.com/KadeDev/extension-webm
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
   # - haxelib install androidhx
@@ -50,20 +50,23 @@ install:
 build_script:
   - cd /home/appveyor/projects/kaded-fnf-mods-linux32
   # - haxelib run lime rebuild discord_rpc linux
-  - haxelib run lime rebuild extension-webm linux
   # - haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?
-  - haxelib run lime build linux -32 -D32bit
+  # - haxelib run lime build linux -32 -D32bit
+  - haxelib run lime build rpi
 
 after_build:
   - cd ~
   - pwd
   - ls
-  - tar -cvf last-funkin-moments-32bit.tar -C /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin .
+  # - tar -cvf last-funkin-moments-32bit.tar -C /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin .
   # JOELwindows7: upload to itch
   # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor; fi
   # wtf appveyor did not expect git
-  - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor
+  # - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor
+  - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux32/export/release/linux/bin joelwindows7/last-funkin-moments:linuxRPi-appveyor
 
 artifacts:
-- path: /home/appveyor/last-funkin-moments-32bit.tar
-  name: Last Funkin Moments for Linux 32Bit
+# - path: /home/appveyor/last-funkin-moments-32bit.tar
+#   name: Last Funkin Moments for Linux 32Bit
+- path: /home/appveyor/last-funkin-moments-RPi.tar
+  name: Last Funkin Moments for Linux Raspberry Pi

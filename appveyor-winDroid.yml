@@ -48,6 +48,7 @@ install:
   # - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   # Install project dependencies
   - haxelib install lime
+  - RefreshEnv
   - haxelib install openfl
   - haxelib install flixel
   - haxelib run lime setup flixel -y

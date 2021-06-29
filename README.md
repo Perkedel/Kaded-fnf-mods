@@ -23,7 +23,11 @@ if you don't trust it, check around the source code and its libraries referred.
 
 ## Status
 - Linux [![Build status Linux](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)  
+- Linux ~~32 Bit~~Raspberry Pi [![Build status](https://ci.appveyor.com/api/projects/status/ou9xo42n9cwce9bt?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux32)
 - Windows [![Build status Windows](https://ci.appveyor.com/api/projects/status/6m6urhdk0hx9esci?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windows)
+- Windows 32 Bit [![Build status](https://ci.appveyor.com/api/projects/status/4h3d2rswie08ndj2?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windows32)
+- Android (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/wkicycueho8xtb7h?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windroid)
+- HTML5 (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/ngwvliwkacsu0nly?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-winhtml5)
 - macOS [![Build status macOS](https://ci.appveyor.com/api/projects/status/61pl7ba9rgu375pn?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-macos)
 
 ## We have:
@@ -36,7 +40,13 @@ check out [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/C
 enjoy the last drops of funkin before everything went. went, I can't say this. you don't want to hear this.
 
 # Today's Update!
-## Week Strong! vs. Hookx the friendly Karaoke robot!
+## 2021.07 Week Meta! Hookx again, but we are waiting for someone.
+Hookx invited bf and gf again to a landscape view of mountain with a dead tree bark. They're waiting for someone.
+### Today's update we got
+- Week Meta. using internal UI musics. Getting Freaky, Game Over, Breakfast, Classic Menu song, and TEST.
+- Amfrost stage where the Week Meta takes place! it got mountain view over there, a dead tree bark, and sandy ground.
+- GF wears masker too!!! even demons respects health protocol, don't you people be ashamed by her?
+## 2021.06 Week Strong! vs. Hookx the friendly Karaoke robot!
 [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/week-strong-new-added-2.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/week-strong-new-added-2.png )
 [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/hookx-dancing-here.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/hookx-dancing-here.png )
 [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/new-unique-song-thumb.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/new-unique-song-thumb.png )
