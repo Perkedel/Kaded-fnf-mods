@@ -75,7 +75,7 @@ typedef SwagStage = {
     var isHalloween:Bool;
     //var halloweenLevel:Bool;
 
-    var defaultZoom:Float;
+    var defaultCamZoom:Float;
 
     var bfPosition:Array<Float>;
     var gfPosition:Array<Float>;
@@ -93,7 +93,7 @@ class StageChart
     public var backgroundImages:Array<SwagBackground>;
     public var isHalloween:Bool = false;
 
-    public var defaultZoom:Float = 0.9;
+    public var defaultCamZoom:Float = 0.9;
 
     public var bfPosition:Array<Float> = [500,0];
     public var gfPosition:Array<Float> = [0, 100];

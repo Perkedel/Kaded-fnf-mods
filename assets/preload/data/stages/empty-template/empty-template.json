@@ -12,19 +12,19 @@
             "prefixXMLName": "idle",
             "frameRate": 24,
             "mirrored": false,
-            "position": [0, 0],
-            "scrollFactor": [0, 0],
+            "position": [-1750, -1000],
+            "scrollFactor": [0.9, 0.9],
             "size": [128, 128],
-            "scale": [1, 1],
+            "scale": [2.25, 2.25],
             "colorable": false,
             "initColor": "white",
             "initVisible": true,
             "antialiasing": true
         }],
         "isHalloween": false,
-        "defaultZoom": 0.9,
-        "bfPosition": [300, 0],
-        "gfPosition": [0, 100],
+        "defaultCamZoom": 0.5,
+        "bfPosition": [500, 0],
+        "gfPosition": [0, -100],
         "dadPosition": [-500, 0]
     }
 }

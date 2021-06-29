@@ -203,6 +203,13 @@ thancc for all these resources! without them, everything is impossible.
 - https://lib.haxe.org/p/markdown/ markdown to HTML converter library haxe
 - https://snippets.haxeflixel.com/groups/typed-group/ how to FlxTypedGroup
 - https://haxe.org/manual/types-enum-instance.html how to enum in HaxeFlixel
+- https://haxeflixel.com/documentation/keyboard/ keyboard controlo
+- https://api.haxeflixel.com/flixel/input/keyboard/FlxKeyList.html keylist
+- https://api.haxeflixel.com/flixel/group/FlxTypedGroup.html again typed group
+- https://snippets.haxeflixel.com/groups/typed-group/ yeah
+- https://haxe.org/manual/types-enum-instance.html enum instance
+- https://haxeflixel.com/documentation/flxsprite/ flxsprite
+- https://api.haxeflixel.com/flixel/util/FlxColor.html flxcolor
   
 # in event of git merge conflict
 use VScode and Github desktop!

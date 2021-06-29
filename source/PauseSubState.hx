@@ -90,10 +90,10 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 			songText.isMenuItem = true;
-			//songText.updateHitbox(); //JOELwindows7: not necessary, this can mess touch mouse support
 			songText.scrollFactor.set(); //JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
 			songText.targetY = i;
 			songText.ID = i; //JOELwindows7: ID each menu item to compare with current selected
+			//songText.updateHitbox(); //JOELwindows7: not necessary, this can mess touch mouse support
 			grpMenuShit.add(songText);
 			trace("add menu " + Std.string(songText.ID) + ". " + songText.text); //JOELwindows7: cmon what happened
 		}
@@ -106,6 +106,9 @@ class PauseSubState extends MusicBeatSubstate
 		addBackButton(20,FlxG.height);
 		addLeftButton(FlxG.width-400,FlxG.height);
 		addRightButton(FlxG.width-200,FlxG.height);
+		addUpButton(FlxG.width,Std.int(FlxG.height/2)-200);
+		addAcceptButton(FlxG.width,Std.int(FlxG.height/2));
+		addDownButton(FlxG.width,Std.int(FlxG.height/2)+200);
 
 		backButton.visible = false; //JOELwindows7: oops that backButton ESC not work here. choose resume instead!
 		#if !desktop //JOELwindows7: hide the offset adjustment key to prevent people pressing it
@@ -113,9 +116,13 @@ class PauseSubState extends MusicBeatSubstate
 		rightButton.visible = false;
 		#end //and then crash the game because again, file writing doesn't work in Android currently
 
+		//JOELwindows7: tweenenied.
 		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
 		FlxTween.tween(leftButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left right button
 		FlxTween.tween(rightButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: yeah.
+		FlxTween.tween(upButton,{x:FlxG.width - 100},2,{ease: FlxEase.elasticInOut});
+		FlxTween.tween(acceptButton,{x:FlxG.width - 100},2,{ease: FlxEase.elasticInOut});
+		FlxTween.tween(downButton,{x:FlxG.width - 100},2,{ease: FlxEase.elasticInOut});
 	}
 
 	override function update(elapsed:Float)
@@ -152,16 +159,20 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		var songPath = 'assets/data/' + songLowercase + '/';
 
-		if (controls.UP_P || upPcontroller || FlxG.mouse.wheel == 1) //JOELwindows7: scroll up
+		if (controls.UP_P || upPcontroller || FlxG.mouse.wheel == 1 || haveUpped) //JOELwindows7: scroll up
 		{
 			changeSelection(-1);
 			//trace("curSelection is " + Std.string(curSelected) + ". " + menuItems[curSelected]); // JOELwindows7: trace cur selection number
+
+			haveUpped = false;
 		}
-		else if (controls.DOWN_P || downPcontroller || FlxG.mouse.wheel == -1) //JOELwindows7: scroll down
+		else if (controls.DOWN_P || downPcontroller || FlxG.mouse.wheel == -1 || haveDowned) //JOELwindows7: scroll down
 		{
 			changeSelection(1);
 			trace("curSelection is " + Std.string(curSelected) + ". " + menuItems[curSelected]);
 			//trace("well that alphabet is " + grpMenuShit.members[curSelected].ID + ". " + grpMenuShit.members[curSelected].text);
+			
+			haveDowned = false;
 		}
 		
 		#if cpp
@@ -304,7 +315,7 @@ class PauseSubState extends MusicBeatSubstate
 			//do something here
 			//only when mouse is visible
 			grpMenuShit.forEach(function(poop:Alphabet){
-				if(FlxG.mouse.overlaps(poop) && !FlxG.mouse.overlaps(backButton)
+				if(FlxG.mouse.overlaps(poop) /*&& !FlxG.mouse.overlaps(backButton)*/
 					&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
 					//trace("hover over " + Std.string(poop.ID)); //JOELwindows7: temp tracer
 					//alright. it looks like that, the alphabet hover
@@ -345,7 +356,26 @@ class PauseSubState extends MusicBeatSubstate
 						}
 					}
 				}
+
+				//JOELwindows7: last measure if none of the click pause menu work at all somehow.
+				if(FlxG.mouse.overlaps(acceptButton) && !FlxG.mouse.overlaps(poop)){
+					if(FlxG.mouse.justPressed){
+						haveClicked = true;
+					}
+				}
+				if(FlxG.mouse.overlaps(upButton) && !FlxG.mouse.overlaps(poop)){
+					if(FlxG.mouse.justPressed){
+						haveUpped = true;
+					}
+				}
+				if(FlxG.mouse.overlaps(downButton) && !FlxG.mouse.overlaps(poop)){
+					if(FlxG.mouse.justPressed){
+						haveDowned = true;
+					}
+				}
 			});
+
+			
 		}
 	}
 

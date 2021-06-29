@@ -237,6 +237,7 @@ class PlayState extends MusicBeatState
 	public var multicolorableGround:FlxTypedGroup<FlxSprite>; //JOELwindows7: the colorable sprite thingy
 	public var multiOriginalColor:Array<FlxColor> = [FlxColor.WHITE]; //JOELwindows7: store the original color for chroma screen and RGB lightings
 	public var multiIsChromaScreen:Array<Bool> = [false]; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
+	public var multiColorable:Array<Bool> = [false];
 
 	var talking:Bool = true;
 	public var songScore:Int = 0;
@@ -4928,9 +4929,12 @@ class PlayState extends MusicBeatState
 				trace("now bg " + Std.string(bgAll.members[toWhichBg].ID) + " color is " + colorableGround.color.toHexString());
 			} else
 				bgAll.forEach(function(theBg:FlxSprite){
-					theBg.visible = true;
-					theBg.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
-					trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+					if(multiColorable[theBg.ID])
+					{
+						theBg.visible = true;
+						theBg.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+						trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+					}
 				});
 	}
 
@@ -4952,9 +4956,11 @@ class PlayState extends MusicBeatState
 				trace("now bg " + Std.string(bgAll.members[toWhichBg].ID) + " color is " + colorableGround.color.toHexString());
 			} else {
 				bgAll.forEach(function(theBg:FlxSprite){
-					theBg.visible = true;
-					theBg.color = color;
-					trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+					if(multiColorable[theBg.ID]){
+						theBg.visible = true;
+						theBg.color = color;
+						trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+					}
 				});
 			}
 		}
@@ -5200,23 +5206,25 @@ class PlayState extends MusicBeatState
 		if(bgAll != null){
 			for(i in 0...customStage.backgroundImages.length){
 				var dataBg:SwagBackground = customStage.backgroundImages[i];
-				var anBgThing:FlxSprite = new FlxSprite();
-				anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
+				var anBgThing:FlxSprite = new FlxSprite(dataBg.position[0],dataBg.position[1]);
+				multiColorable[i] = dataBg.colorable;
+				trace("spawning bg " + dataBg.callName);
 				if(dataBg.generateMode){
 					anBgThing.makeGraphic(Std.int(dataBg.size[0]),Std.int(dataBg.size[1]),FlxColor.fromString(dataBg.initColor));
 					multiIsChromaScreen[i] = true;
 				} else {
 					if(dataBg.isXML){
-						anBgThing.frames = Paths.getSparrowAtlas("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(dataBg.graphic));
+						anBgThing.frames = Paths.getSparrowAtlas("stage/" + toCompatCase(SONG.stage) + "/" + dataBg.graphic);
 						anBgThing.animation.addByPrefix(dataBg.frameXMLName,dataBg.prefixXMLName,dataBg.frameRate,dataBg.mirrored);
 					} else {
-						anBgThing.loadGraphic(Paths.image("stages/" + toCompatCase(SONG.stage) + "/" + toCompatCase(dataBg.graphic)));
+						anBgThing.loadGraphic(Paths.image("stages/" + toCompatCase(SONG.stage) + "/" + dataBg.graphic));
 					}
 					anBgThing.setGraphicSize(Std.int(anBgThing.width * dataBg.scale[0]),Std.int(anBgThing.height * dataBg.scale[1]));
 					if(dataBg.colorable){
 						anBgThing.color = FlxColor.fromString(dataBg.initColor);
 					}
 				}
+				//anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
 				anBgThing.active = dataBg.active;
 				anBgThing.antialiasing = dataBg.antialiasing;
 				anBgThing.scrollFactor.set(dataBg.scrollFactor[0],dataBg.scrollFactor[1]);
@@ -5259,6 +5267,7 @@ class PlayState extends MusicBeatState
 
 		if(customStage != null)
 		{
+			defaultCamZoom = customStage.defaultCamZoom;
 			halloweenLevel = customStage.isHalloween;
 			bgAll = new FlxTypedGroup<FlxSprite>();
 			add(bgAll);
@@ -5284,11 +5293,15 @@ class PlayState extends MusicBeatState
 
 	//JOELwindows7: offset characters
 	function repositionThingsInStage(whatStage:String){
-		boyfriend.x += customStage.bfPosition[0];
-		boyfriend.y += customStage.bfPosition[1];
-		gf.x += customStage.gfPosition[0];
-		gf.y += customStage.gfPosition[1];
-		dad.x += customStage.dadPosition[0];
-		dad.y += customStage.dadPosition[1];
+		trace("use Custom Stage Positioners");
+		if(customStage != null)
+		{
+			boyfriend.x += customStage.bfPosition[0];
+			boyfriend.y += customStage.bfPosition[1];
+			gf.x += customStage.gfPosition[0];
+			gf.y += customStage.gfPosition[1];
+			dad.x += customStage.dadPosition[0];
+			dad.y += customStage.dadPosition[1];
+		}
 	}
 }

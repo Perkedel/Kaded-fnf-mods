@@ -28,6 +28,7 @@ class MusicBeatSubstate extends FlxSubState
 	var upButton:FlxSprite; //JOELwindows7: the up button here
 	var downButton:FlxSprite; //JOELwindows7: the down button here
 	var pauseButton:FlxSprite; //JOELwindows7: the pause button here
+	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
 
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
@@ -129,5 +130,13 @@ class MusicBeatSubstate extends FlxSubState
 		pauseButton.updateHitbox();
 		pauseButton.antialiasing = true;
 		add(pauseButton);
+	}
+	private function addAcceptButton(x:Int=1280,y:Int=360,scale:Float=.5){
+		acceptButton = new FlxSprite(x, y).loadGraphic(Paths.image('acceptButton'));
+		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale),Std.int(acceptButton.height * scale));
+		acceptButton.scrollFactor.set();
+		acceptButton.updateHitbox();
+		acceptButton.antialiasing = true;
+		add(acceptButton);
 	}
 }
