@@ -352,7 +352,7 @@ class ModchartState
 
     // LUA SHIT
 
-    function new()
+    function new(rawMode:Bool = false, path:String = "") //JOELwindows7: make lua stageont.
     {
         		trace('opening a lua state (because we are cool :))');
 				lua = LuaL.newstate();
@@ -370,7 +370,13 @@ class ModchartState
 					case 'philly-nice': songLowercase = 'philly';
 				}
 
-				var result = LuaL.dofile(lua, Paths.lua(songLowercase + "/modchart")); // execute le file
+				var result;
+
+				if(rawMode){
+					//JOELwindows7: execute le other file
+					result = LuaL.dofile(lua, Paths.lua(path));
+				} else
+					result = LuaL.dofile(lua, Paths.lua(songLowercase + "/modchart")); // execute le file
 	
 				if (result != 0)
 				{
@@ -1000,9 +1006,10 @@ class ModchartState
         return Lua.tostring(lua,callLua(name, args));
     }
 
-    public static function createModchartState():ModchartState
+	//JOELwindows7: raw mode pls!
+    public static function createModchartState(rawMode:Bool = false, path:String = ""):ModchartState
     {
-        return new ModchartState();
+        return new ModchartState(rawMode,path);
     }
 }
 #end

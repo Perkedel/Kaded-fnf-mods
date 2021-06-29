@@ -3,13 +3,13 @@
 
 -- when the state has just loaded, do this background
 function loaded(song)
-
+    print("\nStage: " .. stage)
 end
 
--- when the countdown finished and song start
+-- when the countdown started
 function start(song)
     print("Song: " .. song .. " @ " .. bpm .. " downscroll: " .. downscroll)
-    print("\nStage: " .. stage)
+    
 end
 
 function update(elapsed)
@@ -20,12 +20,36 @@ function beatHit(beat)
 
 end
 
-function stepHit(beat)
+function stepHit(step)
 
 end
 
 function keyPressed(key)
     
+end
+
+function playerOneTurn()
+
+end
+
+function playerTwoTurn()
+
+end
+
+function playerOneSing(note, position)
+
+end
+
+function playerTwoSing(note, position)
+
+end
+
+function playerOneMiss(note, position)
+
+end
+
+function playerTwoMiss(note, position)
+
 end
 
 print("Stage Chart script loaded! :) cool and good.")

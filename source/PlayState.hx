@@ -30,6 +30,8 @@ import openfl.Lib;
 import Section.SwagSection;
 import Song.SwagSong;
 import StagechartState;
+import StagechartState.SwagStage;
+import StagechartState.SwagBackground;
 import WiggleEffect.WiggleEffectType;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -112,6 +114,7 @@ class PlayState extends MusicBeatState
 	var bgAll:FlxTypedGroup<FlxSprite>;
 	var stageFrontAll:FlxTypedGroup<FlxSprite>;
 	var stageCurtainAll:FlxTypedGroup<FlxSprite>;
+	var trailAll:FlxTypedGroup<FlxTrail>;
 
 	//JOELwindows7: numbers of Missnote sfx! load from text file, how many Miss notes you had?
 	var numOfMissNoteSfx:Int = 3;
@@ -231,9 +234,9 @@ class PlayState extends MusicBeatState
 	//if chroma screen, then don't invisiblize, instead turn it back to original color!
 
 	//JOELwindows7: arraying them seems won't work at all. so let's make them separateroid instead.
-	public var MulticolorableGround:FlxTypedGroup<FlxSprite>; //JOELwindows7: the colorable sprite thingy
-	public var MultiOriginalColor:Array<FlxColor> = [FlxColor.WHITE]; //JOELwindows7: store the original color for chroma screen and RGB lightings
-	public var MultiIsChromaScreen:Array<Bool> = [false]; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
+	public var multicolorableGround:FlxTypedGroup<FlxSprite>; //JOELwindows7: the colorable sprite thingy
+	public var multiOriginalColor:Array<FlxColor> = [FlxColor.WHITE]; //JOELwindows7: store the original color for chroma screen and RGB lightings
+	public var multiIsChromaScreen:Array<Bool> = [false]; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
 
 	var talking:Bool = true;
 	public var songScore:Int = 0;
@@ -330,8 +333,6 @@ class PlayState extends MusicBeatState
 		executeModchart = FileSystem.exists(Paths.lua(songLowercase  + "/modchart"));
 		if (executeModchart)
 			PlayStateChangeables.Optimize = false;
-
-		
 		#else
 		executeModchart = false; // JOELwindows7: FORCE disable for non sys && windows targets
 		executeStageScript = false; 
@@ -342,7 +343,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(songLowercase + "/modchart"));
-		trace('stage script: ' + executeStageScript + " - " + Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript")); //JOELwindows7: check too
+		//
 
 		#if (windows && cpp)
 		// Making difficulty text for Discord Rich Presence.
@@ -1354,9 +1355,13 @@ class PlayState extends MusicBeatState
 				boyfriend.x += 500;
 				dad.x -= 400;
 				gf.y -= 100;
-			default: 
-				trace("Hey uh, we missing the stage offset information for stage " + curStage + " guys.");
-				FlxG.log.add("Missing stage offset positioning for " + curStage);
+			default:
+				if(SONG.useCustomStage){
+					repositionThingsInStage(curStage);
+				} else {
+					trace("Hey uh, we missing the stage offset information for stage " + curStage + " guys.");
+					FlxG.log.add("Missing stage offset positioning for " + curStage);
+				}
 		}
 
 		if (!PlayStateChangeables.Optimize)
@@ -1866,9 +1871,9 @@ class PlayState extends MusicBeatState
 			luaModchart = ModchartState.createModchartState();
 			luaModchart.executeState('start',[songLowercase]);
 		}
-		if (executeStageScript)
+		if (executeStageScript && stageScript != null)
 		{
-			
+			stageScript.executeState('start',[songLowercase]);
 		}
 		#end
 
@@ -2637,6 +2642,16 @@ class PlayState extends MusicBeatState
 			luaModchart.setVar("isChromaScreen", isChromaScreen);
 		}
 
+		//JOELwindows7: for the stagescript
+		if(executeStageScript && stageScript != null && songStarted){
+			stageScript.setVar('songPos',Conductor.songPosition);
+			stageScript.setVar('hudZoom', camHUD.zoom);
+			stageScript.setVar('cameraZoom',FlxG.camera.zoom);
+			stageScript.executeState('update', [elapsed]);
+
+			stageScript.setVar("originalColor", originalColor);
+			stageScript.setVar("isChromaScreen", isChromaScreen);
+		}
 		#end
 
 		// reverse iterate to remove oldest notes first and not invalidate the iteration
@@ -3016,11 +3031,14 @@ class PlayState extends MusicBeatState
 					offsetX = luaModchart.getVar("followXOffset", "float");
 					offsetY = luaModchart.getVar("followYOffset", "float");
 				}
+
 				#end
 				camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
 				#if ((windows || linux) && sys && cpp)
 				if (luaModchart != null)
 					luaModchart.executeState('playerTwoTurn', []);
+				if (stageScript != null)
+					stageScript.executeState('playerTwoTurn',[]);
 				#end
 				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
 
@@ -3056,6 +3074,8 @@ class PlayState extends MusicBeatState
 				#if ((windows || linux) && sys && cpp)
 				if (luaModchart != null)
 					luaModchart.executeState('playerOneTurn', []);
+				if (stageScript != null)
+					stageScript.executeState('playerOneTurn', []);
 				#end
 
 				switch (curStage)
@@ -3309,6 +3329,8 @@ class PlayState extends MusicBeatState
 						#if ((windows || linux) && sys && cpp)
 						if (luaModchart != null)
 							luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+						if (stageScript != null)
+							stageScript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
 						#end
 
 						dad.holdTimer = 0;
@@ -3961,7 +3983,20 @@ class PlayState extends MusicBeatState
 				if (controls.DOWN_P){luaModchart.executeState('keyPressed',["down"]);};
 				if (controls.UP_P){luaModchart.executeState('keyPressed',["up"]);};
 				if (controls.RIGHT_P){luaModchart.executeState('keyPressed',["right"]);};
+
+				//JOELwindows7: any keypresings here
+				if (FlxG.keys.pressed){luaModChart.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
 				};
+
+				//JOELwindows7: stage script keypressings
+				if (stageScript != null){
+					if (controls.LEFT_P){stageScript.executeState('keyPressed',["left"]);};
+					if (controls.DOWN_P){stageScript.executeState('keyPressed',["down"]);};
+					if (controls.UP_P){stageScript.executeState('keyPressed',["up"]);};
+					if (controls.RIGHT_P){stageScript.executeState('keyPressed',["right"]);};
+					
+					if (FlxG.keys.pressed){stageScript.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
+					};
 				#end
 		 
 				
@@ -4300,6 +4335,8 @@ class PlayState extends MusicBeatState
 			#if ((windows || linux) && sys && cpp)
 			if (luaModchart != null)
 				luaModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
+			if (stageScript != null)
+				stageScript.executeState('playerOneMiss', [direction, Conductor.songPosition]);
 			#end
 
 
@@ -4460,6 +4497,8 @@ class PlayState extends MusicBeatState
 					#if ((windows || linux) && sys && cpp)
 					if (luaModchart != null)
 						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+					if (stageScript != null)
+						stageScript.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
 					#end
 
 
@@ -4620,6 +4659,10 @@ class PlayState extends MusicBeatState
 			luaModchart.setVar('curStep',curStep);
 			luaModchart.executeState('stepHit',[curStep]);
 		}
+		if (executeStageScript && stageScript != null){
+			stageScript.setVar('curStep',curStep);
+			stageScript.executeState('stepHit',[curStep]);
+		}
 		#end
 
 		// yes this updates every step.
@@ -4660,6 +4703,10 @@ class PlayState extends MusicBeatState
 		{
 			luaModchart.setVar('curBeat',curBeat);
 			luaModchart.executeState('beatHit',[curBeat]);
+		}
+		if (executeStageScript && stageScript != null){
+			stageScript.setVar('curBeat',curBeat);
+			stageScript.executeState('beatHit',[curBeat]);
 		}
 		#end
 
@@ -4866,7 +4913,7 @@ class PlayState extends MusicBeatState
 	}
 
 	//JOELwindows7: randomize the color of the colorableGround
-	public function randomizeColoring()
+	public function randomizeColoring(justOne:Bool = false, toWhichBg:Int = 0)
 	{	
 		if(colorableGround != null){
 			if(!colorableGround.visible)
@@ -4874,10 +4921,21 @@ class PlayState extends MusicBeatState
 			colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
 			trace("now colorable color is " + colorableGround.color.toHexString());
 		}
+		if(bgAll != null)
+			if(justOne){
+				bgAll.members[toWhichBg].visible = true;
+				bgAll.members[toWhichBg].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+				trace("now bg " + Std.string(bgAll.members[toWhichBg].ID) + " color is " + colorableGround.color.toHexString());
+			} else
+				bgAll.forEach(function(theBg:FlxSprite){
+					theBg.visible = true;
+					theBg.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+					trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+				});
 	}
 
 	//JOELwindows7: copy above, but this let you choose color
-	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE)
+	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE, justOne:Bool = true, toWhichBg:Int = 0)
 	{
 		if(colorableGround != null){
 			if(!colorableGround.visible)
@@ -4885,14 +4943,37 @@ class PlayState extends MusicBeatState
 			colorableGround.color = color;
 			trace("now colorable color is " + colorableGround.color.toHexString());
 		}
+		if(bgAll != null)
+		{
+			if(justOne)
+			{
+				bgAll.members[toWhichBg].visible = true;
+				bgAll.members[toWhichBg].color = color;
+				trace("now bg " + Std.string(bgAll.members[toWhichBg].ID) + " color is " + colorableGround.color.toHexString());
+			} else {
+				bgAll.forEach(function(theBg:FlxSprite){
+					theBg.visible = true;
+					theBg.color = color;
+					trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+				});
+			}
+		}
 	}
 
 	//JOELwindows7: To hide coloring incase you don't need it anymore
-	public function hideColoring() {
+	public function hideColoring(justOne:Bool = false, toWhichBg:Int = 0) {
 		if(colorableGround != null)
 			if(isChromaScreen){
 				colorableGround.color = originalColor;
 			} else colorableGround.visible = false;
+		if(bgAll != null)
+			if(justOne){
+				bgAll.members[toWhichBg].color = multiOriginalColor[toWhichBg];
+				bgAll.members[toWhichBg].visible = false;
+			} else
+				bgAll.forEach(function(theBg:FlxSprite){
+					theBg.color = multiOriginalColor[theBg.ID];
+				});
 	}
 
 	//JOELwindows7: manage heartbeat moments
@@ -5108,45 +5189,77 @@ class PlayState extends MusicBeatState
 
 	//JOELwindows7: init stagefile
 	function loadStageFile(path:String){
-		customStage = StagechartState.load(path);
+		customStage = StageChart.loadFromJson(path);
 		if(customStage != null){
-			useStageScript = customStage.useCustomScript;
+			useStageScript = customStage.useStageScript;
 			isHalloween = customStage.isHalloween;
 		}
 	}
 
 	function spawnStageImages(daData:SwagStage){
-		if(bgALL != null){
+		if(bgAll != null){
 			for(i in 0...customStage.backgroundImages.length){
 				var dataBg:SwagBackground = customStage.backgroundImages[i];
 				var anBgThing:FlxSprite = new FlxSprite();
+				anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
 				if(dataBg.generateMode){
-					anBGThing.makeGraphic(dataBg.size[0],dataBg.size[1],FlxColor.fromString(dataBg.initColor));
+					anBgThing.makeGraphic(Std.int(dataBg.size[0]),Std.int(dataBg.size[1]),FlxColor.fromString(dataBg.initColor));
+					multiIsChromaScreen[i] = true;
 				} else {
 					if(dataBg.isXML){
-						
+						anBgThing.frames = Paths.getSparrowAtlas("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(dataBg.graphic));
+						anBgThing.animation.addByPrefix(dataBg.frameXMLName,dataBg.prefixXMLName,dataBg.frameRate,dataBg.mirrored);
 					} else {
-						anBgThing.loadGraphic(Paths.image("stages/" + SONG.stage + "/" + dataBg.graphic));
+						anBgThing.loadGraphic(Paths.image("stages/" + toCompatCase(SONG.stage) + "/" + toCompatCase(dataBg.graphic)));
+					}
+					anBgThing.setGraphicSize(Std.int(anBgThing.width * dataBg.scale[0]),Std.int(anBgThing.height * dataBg.scale[1]));
+					if(dataBg.colorable){
+						anBgThing.color = FlxColor.fromString(dataBg.initColor);
 					}
 				}
-				anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
+				anBgThing.active = dataBg.active;
+				anBgThing.antialiasing = dataBg.antialiasing;
+				anBgThing.scrollFactor.set(dataBg.scrollFactor[0],dataBg.scrollFactor[1]);
+				anBgThing.ID = i;
+				anBgThing.updateHitbox();
+				multiOriginalColor[i] = anBgThing.color;
 
 				bgAll.add(anBgThing);
-				anBGThing.scrollFactor.set(dataBg.scrollFactor[0],dataBg.scrollFactor[1]);
+				anBgThing.visible = dataBg.initVisible;
+
+				if(trailAll != null){
+					if(dataBg.hasTrail){
+						var trailing = new FlxTrail(anBgThing, null, 4, 24, 0.3, 0.069);
+						trailing.ID = i;
+						trailAll.add(trailing);
+					}
+				}
 			}
 		}
 	}
 
-	function startStageScript(){
+	//JOELwindows7: when stage is using Lua script
+	function spawnStageScript(daPath:String){
 		if(executeStageScript){
+			trace('stage script: ' + executeStageScript + " - " + Paths.lua(daPath)); //JOELwindows7: check too
 
+			stageScript = ModchartState.createModchartState(true,daPath);
+			stageScript.executeState('loaded',[toCompatCase(SONG.stage)]);
+
+			stageScript.setVar("originalColors", multiOriginalColor);
+			stageScript.setVar("areChromaScreen", multiIsChromaScreen);
 		}
 	}
 
+	//JOELwindows7: core starting point for custom stage
 	function initDaCustomStage(stageJsonPath:String){
-		loadCustomStage(SONG.stage);
+		trace("Lets init da json stage " + stageJsonPath);
+		curStage = SONG.stage;
+		loadStageFile("stages/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage));
 		bgAll = new FlxTypedGroup<FlxSprite>();
 		add(bgAll);
+		trailAll = new FlxTypedGroup<FlxTrail>();
+		add(trailAll);
 		#if ((windows || linux) && sys)
 		if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
 			executeStageScript = FileSystem.exists(Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
@@ -5158,9 +5271,19 @@ class PlayState extends MusicBeatState
 		#end
 
 		if(executeStageScript){
-
+			spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
 		} else {
 			spawnStageImages(customStage);
 		}
+	}
+
+	//JOELwindows7: offset characters
+	function repositionThingsInStage(whatStage:String){
+		boyfriend.x += customStage.bfPosition[0];
+		boyfriend.y += customStage.bfPosition[1];
+		gf.x += customStage.gfPosition[0];
+		gf.y += customStage.gfPosition[1];
+		dad.x += customStage.dadPosition[0];
+		dad.y += customStage.dadPosition[1];
 	}
 }

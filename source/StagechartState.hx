@@ -31,22 +31,28 @@ import lime.utils.Assets;
 using StringTools;
 
 //JOELwindows7: inspire from Song.hx
-enum BackgroundMode {GRAPHIC, MAKE};
+// enum BackgroundMode {GRAPHIC; MAKE;}
 
 typedef SwagBackground = {
     var callName:String;
     var generateMode:Bool;
     var graphic:String;
-    var isXML;
-    var prefixXMLName;
+    var active:Bool;
+    var isXML:Bool;
+    var frameXMLName:String;
+    var prefixXMLName:String;
+    var frameRate:Int;
+    var mirrored:Bool;
     var position:Array<Float>;
-    var scrollFactor:Array<float>;
+    var scrollFactor:Array<Float>;
+    var size:Array<Float>;
+    var scale:Array<Float>;
     var colorable:Bool;
-    var size:Array<Int>;
     var initColor:String;
-    var initInvisible;
-    var antialiasing;
-}
+    var initVisible:Bool;
+    var antialiasing:Bool;
+    var hasTrail:Bool;
+};
 
 typedef SwagStage = {
     var name:String;
@@ -65,12 +71,20 @@ typedef SwagStage = {
     var useImagesMethodic:Bool;
     */
     var useStageScript:Bool;
-
     var backgroundImages:Array<SwagBackground>;
-
     var isHalloween:Bool;
     //var halloweenLevel:Bool;
-}
+
+    var defaultZoom:Float;
+
+    var bfPosition:Array<Float>;
+    var gfPosition:Array<Float>;
+    var dadPosition:Array<Float>;
+
+    var bfHasTrail:Bool;
+    var gfHasTrail:Bool;
+    var dadPosition:Bool;
+};
 
 class StageChart
 {
@@ -79,23 +93,13 @@ class StageChart
     public var backgroundImages:Array<SwagBackground>;
     public var isHalloween:Bool = false;
 
-    public new(name:String = "anStage", backgroundImages:Array<SwagBackground>  = [
-        {
-            callName: 'anBackground',
-            graphic:'null' ,
-            isXML:false,
-            prefixXMLName:'idle';
-            generateMode:true,
-            position: [0,0],
-            scrollFactor: [0,0],
-            colorable: false,
-            size: [128, 128],
-            initColor: 'white',
-            initInvisible:false,
-            useCustomScript:false,
-            antialiasing = true;
-        }
-    ], isHalloween:Bool = false){
+    public var defaultZoom:Float = 0.9;
+
+    public var bfPosition:Array<Float> = [500,0];
+    public var gfPosition:Array<Float> = [0, 100];
+    public var dadPosition:Array<Float> = [-300,0];
+
+    public function new(name:String = "anStage", backgroundImages:Array<SwagBackground>, isHalloween:Bool = false){
         this.name = name;
         this.backgroundImages = backgroundImages;
         this.isHalloween = isHalloween;
