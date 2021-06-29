@@ -4,9 +4,9 @@
         "useStageScript": false,
         "backgroundImages": [{
             "callName": "bg",
-            "generateMode": true,
+            "generateMode": false,
             "active": false,
-            "graphic": "null",
+            "graphic": "empty-template-testBg",
             "isXML": false,
             "frameXMLName": "anBg",
             "prefixXMLName": "idle",

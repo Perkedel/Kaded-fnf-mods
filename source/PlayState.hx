@@ -491,7 +491,7 @@ class PlayState extends MusicBeatState
 
 		if (!PlayStateChangeables.Optimize)
 		{
-		
+			trace("Load da stage here ya"); //JOELwindows7: wtf happened
 			if(SONG.useCustomStage)
 			{
 				//JOELwindows7: Here's the switchover!
@@ -3985,7 +3985,7 @@ class PlayState extends MusicBeatState
 				if (controls.RIGHT_P){luaModchart.executeState('keyPressed',["right"]);};
 
 				//JOELwindows7: any keypresings here
-				if (FlxG.keys.pressed){luaModChart.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
+				//if (FlxG.keys.pressed){luaModChart.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
 				};
 
 				//JOELwindows7: stage script keypressings
@@ -3995,7 +3995,7 @@ class PlayState extends MusicBeatState
 					if (controls.UP_P){stageScript.executeState('keyPressed',["up"]);};
 					if (controls.RIGHT_P){stageScript.executeState('keyPressed',["right"]);};
 					
-					if (FlxG.keys.pressed){stageScript.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
+					//if (FlxG.keys.pressed){stageScript.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
 					};
 				#end
 		 
@@ -5256,24 +5256,29 @@ class PlayState extends MusicBeatState
 		trace("Lets init da json stage " + stageJsonPath);
 		curStage = SONG.stage;
 		loadStageFile("stages/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage));
-		bgAll = new FlxTypedGroup<FlxSprite>();
-		add(bgAll);
-		trailAll = new FlxTypedGroup<FlxTrail>();
-		add(trailAll);
-		#if ((windows || linux) && sys)
-		if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
-			executeStageScript = FileSystem.exists(Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
-		#else
-			executeStageScript = false;
-		#end
-		#if !cpp
-			executeStageScript = false;
-		#end
 
-		if(executeStageScript){
-			spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
-		} else {
-			spawnStageImages(customStage);
+		if(customStage != null)
+		{
+			halloweenLevel = customStage.isHalloween;
+			bgAll = new FlxTypedGroup<FlxSprite>();
+			add(bgAll);
+			trailAll = new FlxTypedGroup<FlxTrail>();
+			add(trailAll);
+			#if ((windows || linux) && sys)
+			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+				executeStageScript = FileSystem.exists(Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
+			#else
+				executeStageScript = false;
+			#end
+			#if !cpp
+				executeStageScript = false;
+			#end
+
+			if(executeStageScript){
+				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+			} else {
+				spawnStageImages(customStage);
+			}
 		}
 	}
 

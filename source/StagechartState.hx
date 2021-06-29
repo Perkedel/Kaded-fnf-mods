@@ -83,7 +83,7 @@ typedef SwagStage = {
 
     var bfHasTrail:Bool;
     var gfHasTrail:Bool;
-    var dadPosition:Bool;
+    var dadHasTrail:Bool;
 };
 
 class StageChart
@@ -140,7 +140,7 @@ class StageChart
 
     public static function parseJSONshit(rawJson:String):SwagStage
     {
-        var swagShit:SwagStage = cast Json.parse(rawJson).song;
+        var swagShit:SwagStage = cast Json.parse(rawJson).stage;
         return swagShit;
     }
 }

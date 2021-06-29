@@ -72,7 +72,6 @@ class StoryMenuState extends MusicBeatState
 		"RED SNOW",
 		"Hating Simulator ft. Moawling",
 		"TheFatRat songs",
-		"Hating_Simulator_nokia.jar Microemulator",
 	];
 
 	var txtWeekTitle:FlxText;

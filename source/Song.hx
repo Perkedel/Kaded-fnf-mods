@@ -82,9 +82,11 @@ class Song
 		trace('loading ' + folderLowercase + '/' + jsonInput.toLowerCase());
 
 		var rawJson = Assets.getText(Paths.json(folderLowercase + '/' + jsonInput.toLowerCase())).trim();
+		trace('loaded raw JSON');
 
 		while (!rawJson.endsWith("}"))
 		{
+			trace("clearing bullshits");
 			rawJson = rawJson.substr(0, rawJson.length - 1);
 			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
@@ -104,14 +106,15 @@ class Song
 				daNotes = songData.notes;
 				daSong = songData.song;
 				daBpm = songData.bpm; */
-
+		trace("now parse that JSON");
 		return parseJSONshit(rawJson);
 	}
 
 	public static function parseJSONshit(rawJson:String):SwagSong
 	{
-		var swagShit:SwagSong = cast Json.parse(rawJson).stage;
+		var swagShit:SwagSong = cast Json.parse(rawJson).songs;
 		swagShit.validScore = true;
+		trace("parsened"); //JOELwindows7: wtf happening.
 		return swagShit;
 	}
 }

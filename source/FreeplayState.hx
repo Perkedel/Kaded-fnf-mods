@@ -283,6 +283,7 @@ class FreeplayState extends MusicBeatState
 			trace(poop);
 			
 			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName);
+			trace("Loaded Song into Playstate"); //JOELwindows7: what hapened
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyWeek = songs[curSelected].week;
