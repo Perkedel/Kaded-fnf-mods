@@ -112,7 +112,7 @@ class Song
 
 	public static function parseJSONshit(rawJson:String):SwagSong
 	{
-		var swagShit:SwagSong = cast Json.parse(rawJson).songs;
+		var swagShit:SwagSong = cast Json.parse(rawJson).song;
 		swagShit.validScore = true;
 		trace("parsened"); //JOELwindows7: wtf happening.
 		return swagShit;
