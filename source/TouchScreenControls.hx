@@ -1,3 +1,9 @@
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.frames.FlxFrame;
+import flixel.graphics.frames.FlxTileFrames;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
+import flixel.system.FlxAssets;
 import flixel.ui.FlxVirtualPad;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
@@ -43,7 +49,7 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
         super();
 
         _hitbox = new TouchScreenControls(howManyButtons, initVisible);
-        //add(_hitbox);
+        add(_hitbox);
     }
 }
 
@@ -55,6 +61,8 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
  *  6 = Shaggy .008% power
  *  8 = DDR double
  *  9 = Shaggy God eater
+ * 
+ *  steal from https://github.com/luckydog7/Funkin-android/blob/master/source/ui/Hitbox.hx
  * 
  * @author JOELwindows7
  * 
@@ -76,6 +84,10 @@ class TouchScreenControls extends FlxSpriteGroup{
         this.howManyButtons = howManyButtons;
         this.initVisible = initVisible;
         super();
+
+        var hitbox_hint:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image('hitbox/hitbox_hint'));
+		hitbox_hint.alpha = 0.2;
+		add(hitbox_hint);
         
         hitbox = new FlxSpriteGroup();
         hitbox.scrollFactor.set();
@@ -85,28 +97,32 @@ class TouchScreenControls extends FlxSpriteGroup{
     }
 
     // inspire it from https://github.com/luckydog7/Funkin-android/blob/master/source/ui/Hitbox.hx
-    public function addDeezButton(positionX:Float = 0, positionY:Float = 0, sizeX:Float, sizeY:Float, handoverGraphic:FlxGraphic, index:Int = 0){
+    public function addDeezButton(positionX:Float = 0, positionY:Float = 0, sizeX:Float, sizeY:Float, handoverGraphic:FlxGraphic, index:Int = 0, framestring:String = ""){
         var button = new FlxButton(positionX, positionY);
-        var graphic:FlxGraphic = FlxGraphic.fromRectangle(
-            Std.int(sizeX != 0? sizeX : FlxG.width/howManyButtons),
-            Std.int(sizeY != 0? sizeY : FlxG.height),
-            colorSchemes[index]);
+        trace("load frame deez button");
+        var frames = Paths.getSparrowAtlas("hitbox/hitbox","shared");
+        // var graphic:FlxGraphic = FlxGraphic.fromRectangle(
+        //     Std.int(sizeX != 0? sizeX : FlxG.width/howManyButtons),
+        //     Std.int(sizeY != 0? sizeY : FlxG.height),
+        //     colorSchemes[index]);
         //var graphic:FlxGraphic = handoverGraphic;
+        trace("inject frames to graphic deez button");
+        var graphic:FlxGraphic = FlxGraphic.fromFrame(frames.getByName(framestring));
 
         //button.loadGraphic(handoverGraphic != null? handoverGraphic : graphic);
-        button.loadGraphic(handoverGraphic);
-        button.alpha = 0.2;
+        button.loadGraphic(graphic);
+        button.alpha = 0;
 
         button.onDown.callback = function (){
-			FlxTween.num(0.2, 0.75, .075, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
+			FlxTween.num(0, 0.75, .075, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
 		};
 
 		button.onUp.callback = function (){
-			FlxTween.num(0.75, 0.2, .1, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
+			FlxTween.num(0.75, 0, .1, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
 		}
 		
 		button.onOut.callback = function (){
-			FlxTween.num(button.alpha, 0.2, .2, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
+			FlxTween.num(button.alpha, 0, .2, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
 		}
 
         return button;
@@ -127,10 +143,10 @@ class TouchScreenControls extends FlxSpriteGroup{
             colorSchemes[0]
         );
 
-        hitbox.add(add(buttonLeft = addDeezButton(0*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,0)));
-        hitbox.add(add(buttonDown = addDeezButton(1*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,1)));
-        hitbox.add(add(buttonUp = addDeezButton(2*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,2)));
-        hitbox.add(add(buttonRight = addDeezButton(3*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,3)));
+        hitbox.add(add(buttonLeft = addDeezButton(0*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,0, "left")));
+        hitbox.add(add(buttonDown = addDeezButton(1*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,1, "down")));
+        hitbox.add(add(buttonUp = addDeezButton(2*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,2, "up")));
+        hitbox.add(add(buttonRight = addDeezButton(3*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,3, "right")));
     }
 
     public function initDoseButtons(spriteMode:Bool = false){
