@@ -1,5 +1,6 @@
 package;
 
+import TouchScreenControls;
 import openfl.ui.KeyLocation;
 import openfl.events.Event;
 import haxe.EnumTools;
@@ -1575,13 +1576,6 @@ class PlayState extends MusicBeatState
 		addPauseButton(Std.int((FlxG.width/2)-(128/2)), 80);
 		trace("install pause button");
 
-		//JOELwindows7: install touchscreen buttons
-		if(FlxG.save.data.useTouchScreenButtons){
-			trace("Installing touchscreen buttons...");
-			addTouchScreenButtons(4, false);
-			trace("Installed touchscreen buttons");
-		}
-
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
@@ -1592,7 +1586,7 @@ class PlayState extends MusicBeatState
 		doof.cameras = [camHUD];
 		eoof.cameras = [camHUD]; //JOELwindows7: stick the epilogue to camera
 		pauseButton.cameras = [camHUD]; //JOELwindows7: stick the pause button to camera
-		touchscreenButtons.cameras = [camHUD]; //JOELwindows7: stick the touchscreen buttons to camera
+		//touchscreenButtons.cameras = [camHUD]; //JOELwindows7: stick the touchscreen buttons to camera
 		if (FlxG.save.data.songPosition)
 		{
 			songPosBG.cameras = [camHUD];
@@ -1602,6 +1596,31 @@ class PlayState extends MusicBeatState
 		reuploadWatermark.cameras = [camHUD]; //JOELwindows7: stick the reupload watermark to camera
 		if (loadRep)
 			replayTxt.cameras = [camHUD];
+
+		//JOELwindows7: install touchscreen buttons
+		if(FlxG.save.data.useTouchScreenButtons){
+			trace("Installing touchscreen buttons...");
+			//addTouchScreenButtons(4, false);
+			trace("Installed touchscreen buttons");
+			//onScreenGameplayButtons.cameras = [camHUD];
+
+			//manually brute force wtf not work
+			trace("init the touchscreen buttons");
+			onScreenGameplayButtons = new OnScreenGameplayButtons(4, false);
+			controls.installTouchScreenGameplays(onScreenGameplayButtons._hitbox,4);
+			trackedinputs = controls.trackedinputs;
+			controls.trackedinputs = [];
+
+			trace("setting dedicated touchscreen buttons camera");
+			var camControl = new FlxCamera();
+			FlxG.cameras.add(camControl);
+			camControl.bgColor.alpha = 0;
+			onScreenGameplayButtons.cameras = [camControl];
+
+			onScreenGameplayButtons.visible = false;
+			
+			add(onScreenGameplayButtons);
+		}
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1995,8 +2014,15 @@ class PlayState extends MusicBeatState
 				case 4:
 					//JOELwindows7: just add trace for fun
 					trace("Run the song now!");
+					//JOELwindows7: now visiblize the touchscreen buttons
+					/*
 					if(touchscreenButtons != null){
 						touchscreenButtons.visible = true;
+					}
+					*/
+					if(onScreenGameplayButtons != null){
+						trace("visible touchscreen buttons");
+						onScreenGameplayButtons.visible = true;
 					}
 			}
 
@@ -2514,8 +2540,13 @@ class PlayState extends MusicBeatState
 				startTimer.active = false;
 
 			//JOELwindows7: inviblize buttoneings
+			/*
 			if(touchscreenButtons != null){
 				touchscreenButtons.visible = false;
+			}
+			*/
+			if(onScreenGameplayButtons != null){
+				onScreenGameplayButtons.visible = false;
 			}
 		}
 
@@ -2547,8 +2578,13 @@ class PlayState extends MusicBeatState
 			#end
 
 			//JOELwindows7: revisiblize touchscreen buttons
+			/*
 			if(touchscreenButtons != null){
 				touchscreenButtons.visible = true;
+			}
+			*/
+			if(onScreenGameplayButtons != null){
+				onScreenGameplayButtons.visible = true;
 			}
 		}
 

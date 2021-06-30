@@ -279,11 +279,22 @@ class Controls extends FlxActionSet
 		action.add(input);
 	}
 
+	//JOELwindows7: okeh set action buttonings
+	// https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
 	public function installTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4){
+		/*
+		inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonLeft, state));
+		inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonDown, state));
+		inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonUp, state));
+		inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonRight, state));
+		*/
+
+		/*
 		inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[0], state));
 		inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[1], state));
 		inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[2], state));
 		inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[3], state));
+		*/
 	}
 
 	override function update()

@@ -2,8 +2,9 @@
 The following are documents of permission proves for those who requires such.
 
 - TheFatRat https://linktr.ee/TheFatRat . e.g. https://youtu.be/OJdG8wsU8cw . look at description. Last seen by 12 June 2021 1:47 AM WIB . [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/anPermissonTheFatRat.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/anPermissonTheFatRat.png )
-- Week 6 But MIDI https://gamebanana.com/mods/43569  .  You can edit mod, but pls credit . see License side bar. Last seen by 12 June 2021 1:49 AM WIB . [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/you%20can%20edit%20mod%20week%206%20but%20midi.png )]https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/you%20can%20edit%20mod%20week%206%20but%20midi.png )
+- Week 6 But MIDI https://gamebanana.com/mods/43569  .  You can edit mod, but pls credit . see License side bar. Last seen by 12 June 2021 1:49 AM WIB . [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/you%20can%20edit%20mod%20week%206%20but%20midi.png )![](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/you%20can%20edit%20mod%20week%206%20but%20midi.png )
 - Madbrine. ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/anTestMadbrinPermissionNoLongerReply.png ) from https://youtu.be/xmxmVQS-T-Y . Madbrine yoinked test.ogg charts from the week7 update. we're still waiting for his reply, but previously he said yes to that guy over there. See pinned comment of that video! 
+- luckydog7. https://github.com/luckydog7/Funkin-android. ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/Permission-luckydog7-funkin-android.png) ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/Permission-luckydog7-funkin-android_usePatent_akaYoink.png ) we decided to just yoink the touchscreen buttons rather than to reinvent the wheel.
 
 # Status of Permission Recipience. Is Perkedel accepting exclusive permission grant right now? 
 ## Active

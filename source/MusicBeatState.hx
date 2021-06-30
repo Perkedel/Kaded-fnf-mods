@@ -1,5 +1,9 @@
 package;
 
+import flixel.FlxCamera;
+import flixel.ui.FlxVirtualPad;
+import flixel.input.actions.FlxActionInput;
+import TouchScreenControls;
 import haxe.Json;
 import lime.utils.Assets;
 import flixel.FlxSprite;
@@ -57,7 +61,13 @@ class MusicBeatState extends FlxUIState
 	var downButton:FlxSprite; //JOELwindows7: the down button here
 	var pauseButton:FlxSprite; //JOELwindows7: the pause button here
 	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
-	var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
+	//var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
+	var onScreenGameplayButtons:OnScreenGameplayButtons; //JOELwindows7: the touchscreen buttons here
+
+	//JOELwindows7: touchscreen button stuffs
+	// https://github.com/luckydog7/Funkin-android/blob/master/source/MusicBeatState.hx
+	var _virtualpad:FlxVirtualPad;
+	var trackedinputs:Array<FlxActionInput> = [];
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
@@ -238,8 +248,26 @@ class MusicBeatState extends FlxUIState
 		add(acceptButton);
 	}
 	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false){
+		/*
 		touchscreenButtons = new TouchScreenControls(howManyButtons, initVisible);
 		touchscreenButtons.initDoseButtons();
 		add(touchscreenButtons);
+		*/
+
+		trace("init the touchscreen buttons");
+		onScreenGameplayButtons = new OnScreenGameplayButtons(howManyButtons, initVisible);
+		controls.installTouchScreenGameplays(onScreenGameplayButtons._hitbox,howManyButtons);
+		trackedinputs = controls.trackedinputs;
+		controls.trackedinputs = [];
+
+		trace("setting dedicated touchscreen buttons camera");
+		var camControl = new FlxCamera();
+		FlxG.cameras.add(camControl);
+		camControl.bgColor.alpha = 0;
+		onScreenGameplayButtons.cameras = [camControl];
+
+		onScreenGameplayButtons.visible = initVisible;
+		
+		add(onScreenGameplayButtons);
 	}
 }
