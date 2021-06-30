@@ -57,6 +57,7 @@ class MusicBeatState extends FlxUIState
 	var downButton:FlxSprite; //JOELwindows7: the down button here
 	var pauseButton:FlxSprite; //JOELwindows7: the pause button here
 	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
+	var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
@@ -235,5 +236,10 @@ class MusicBeatState extends FlxUIState
 		acceptButton.updateHitbox();
 		acceptButton.antialiasing = true;
 		add(acceptButton);
+	}
+	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false){
+		touchscreenButtons = new TouchScreenControls(howManyButtons, initVisible);
+		touchscreenButtons.initDoseButtons();
+		add(touchscreenButtons);
 	}
 }

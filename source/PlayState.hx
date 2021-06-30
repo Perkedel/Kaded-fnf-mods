@@ -1575,6 +1575,13 @@ class PlayState extends MusicBeatState
 		addPauseButton(Std.int((FlxG.width/2)-(128/2)), 80);
 		trace("install pause button");
 
+		//JOELwindows7: install touchscreen buttons
+		if(FlxG.save.data.useTouchScreenButtons){
+			trace("Installing touchscreen buttons...");
+			addTouchScreenButtons(4, false);
+			trace("Installed touchscreen buttons");
+		}
+
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
@@ -1585,6 +1592,7 @@ class PlayState extends MusicBeatState
 		doof.cameras = [camHUD];
 		eoof.cameras = [camHUD]; //JOELwindows7: stick the epilogue to camera
 		pauseButton.cameras = [camHUD]; //JOELwindows7: stick the pause button to camera
+		touchscreenButtons.cameras = [camHUD]; //JOELwindows7: stick the touchscreen buttons to camera
 		if (FlxG.save.data.songPosition)
 		{
 			songPosBG.cameras = [camHUD];
@@ -1987,6 +1995,9 @@ class PlayState extends MusicBeatState
 				case 4:
 					//JOELwindows7: just add trace for fun
 					trace("Run the song now!");
+					if(touchscreenButtons != null){
+						touchscreenButtons.visible = true;
+					}
 			}
 
 			swagCounter += 1;
@@ -2501,6 +2512,11 @@ class PlayState extends MusicBeatState
 			#end
 			if (!startTimer.finished)
 				startTimer.active = false;
+
+			//JOELwindows7: inviblize buttoneings
+			if(touchscreenButtons != null){
+				touchscreenButtons.visible = false;
+			}
 		}
 
 		super.openSubState(SubState);
@@ -2529,6 +2545,11 @@ class PlayState extends MusicBeatState
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), iconRPC);
 			}
 			#end
+
+			//JOELwindows7: revisiblize touchscreen buttons
+			if(touchscreenButtons != null){
+				touchscreenButtons.visible = true;
+			}
 		}
 
 		super.closeSubState();
@@ -5189,7 +5210,7 @@ class PlayState extends MusicBeatState
 	}
 
 	//JOELwindows7: the compatibility conversion case
-	public function toCompatCase(daString:String){
+	public function toCompatCase(daString:String):String{
 		return StringTools.replace(daString, " ", "-").toLowerCase();
 	}
 

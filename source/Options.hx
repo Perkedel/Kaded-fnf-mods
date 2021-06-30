@@ -1043,3 +1043,24 @@ class CardiophileOption extends Option{
 		return "Cardiophile " + (FlxG.save.data.cardiophile ? "ON" : "OFF");
 	}
 }
+
+//JOELwindows7: touchscreen buttons options
+class UseTouchScreenButtons extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.useTouchScreenButtons = !FlxG.save.data.useTouchScreenButtons;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return (FlxG.save.data.useTouchScreenButtons ? "Use Touch Screen Buttons" : "No Touch Screen Buttons");
+	}
+}

@@ -91,6 +91,7 @@ class PauseSubState extends MusicBeatSubstate
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 			songText.isMenuItem = true;
 			songText.scrollFactor.set(); //JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
+			//JOELwindows7: where the peck is zoom factor?!?
 			songText.targetY = i;
 			songText.ID = i; //JOELwindows7: ID each menu item to compare with current selected
 			//songText.updateHitbox(); //JOELwindows7: not necessary, this can mess touch mouse support

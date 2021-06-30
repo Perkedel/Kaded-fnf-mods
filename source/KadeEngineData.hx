@@ -112,6 +112,10 @@ class KadeEngineData
 
 		if (FlxG.save.data.optimize == null)
 			FlxG.save.data.optimize = false;
+
+		//JOELwindows7: Touch screened button
+		if (FlxG.save.data.useTouchScreenButtons == null)
+			FlxG.save.data.useTouchScreenButtons = false;
 		
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 		
