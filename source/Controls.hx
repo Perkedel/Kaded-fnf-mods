@@ -1,5 +1,6 @@
 package;
 
+import flixel.ui.FlxButton;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.FlxG;
 import flixel.input.FlxInput;
@@ -266,6 +267,24 @@ class Controls extends FlxActionSet
 		setKeyboardScheme(scheme, false);
 	}
 	#end
+
+	//JOELwindows7: attempted to install things touchscreen
+	// inspire it from https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
+	public var trackedinputs:Array<FlxActionInput> = [];
+
+	public function installActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState ){
+		var input = new FlxActionInputDigitalIFlxInput(thing, state);
+		trackedinputs.push(input);
+
+		action.add(input);
+	}
+
+	public function installTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4){
+		inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[0], state));
+		inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[1], state));
+		inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[2], state));
+		inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[3], state));
+	}
 
 	override function update()
 	{
