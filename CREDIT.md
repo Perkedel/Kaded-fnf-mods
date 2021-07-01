@@ -210,6 +210,22 @@ thancc for all these resources! without them, everything is impossible.
 - https://haxe.org/manual/types-enum-instance.html enum instance
 - https://haxeflixel.com/documentation/flxsprite/ flxsprite
 - https://api.haxeflixel.com/flixel/util/FlxColor.html flxcolor
+- document dumps again
+- https://haxeflixel.com/documentation/flxgroup/ FlxTypedGroup of FlxBasic. prettymuch basically the array of Flx objects
+- https://api.haxeflixel.com/flixel/group/FlxSpriteGroup.html a.k.a. FlxTypedGroup of FlxSprite
+- https://api.haxeflixel.com/flixel/ui/FlxBar.html flx meter bar HP bar
+- https://api.haxeflixel.com/flixel/FlxG.html system object
+- https://api.haxeflixel.com/flixel/input/touch/FlxTouchManager.html touchscreen
+- https://api.haxeflixel.com/flixel/input/FlxSwipe.html touch swipe
+- https://api.haxeflixel.com/flixel/ui/FlxVirtualPad.html virtual pad
+- https://api.haxeflixel.com/flixel/ui/FlxActionMode.html action mode for the virtual pad
+- https://api.haxeflixel.com/flixel/ui/FlxDPadMode.html dpad mode for the virtual pad
+- https://snippets.haxeflixel.com/input/keyboard/ keyboard how to
+- https://snippets.haxeflixel.com/input/ what input examples
+- https://gamebanana.com/threads/219778 avoid reuploading sky mod for the time being. I think, that's indefinite. Oh, speaking of browsing Git commit history, that's what I did. I turn back to time, and take everything Sky as all as I can. Assets, Codes, Projects, everything I know it would have one. May come back later if I missed anything. ssssshh, don't tell bbpanzu! if he know this he'll turn back in time and force push this alternate timeline like if Sky never been existed. wait a minute. uh oh! peck!
+- https://youtu.be/7awd-y_DTQY PEAR & https://twitter.com/gothmei/status/1309307834677571585 gothmei. peck, the tweet is gone. there is no preservation in twitter after all. We lost the little pogchamp voice. oh wait, PEAR still has it!
+- https://haxeflixel.com/documentation/flxtween/ how to tween
+- https://youtu.be/u1DKR9cOxnM Funkin modder direct trailer
   
 # in event of git merge conflict
 use VScode and Github desktop!

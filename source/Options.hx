@@ -1064,3 +1064,72 @@ class UseTouchScreenButtons extends Option{
 		return (FlxG.save.data.useTouchScreenButtons ? "Use Touch Screen Buttons" : "No Touch Screen Buttons");
 	}
 }
+
+class SelectTouchScreenButtons extends Option{
+	var max=4;
+
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptValues = true;
+	}
+
+	public override function press():Bool{
+		return false;
+	}
+
+	override function right():Bool{
+		changeModes(1);
+		return true;
+	}
+
+	override function left():Bool{
+		changeModes(-1);
+		return true;
+	}
+
+	function changeModes(number:Int = 0, isMoveTo:Bool = false) {
+		var cur:Int = Std.int(FlxG.save.data.selectTouchScreenButtons);
+		if(isMoveTo){
+			cur = number;
+		} else {
+			cur += number;
+		}
+		if(cur>max)
+			cur = 0;
+		else if(cur<0)
+			cur = max;
+		FlxG.save.data.selectTouchScreenButtons = cur;
+
+		display = updateDisplay();
+	}
+
+	function sayTheThing():String{
+		switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
+			case 0:
+				return "OFF";
+			case 1:
+				return "Hitbox";
+			case 2:
+				return "Virtual Pad Left";
+			case 3:
+				return "Virtual Pad Right";
+			case 4:
+				return "Virtual Pad Both";
+			case 5:
+				return "Virtual Pad Custom";
+			default:
+				return "???";
+		}
+	}
+
+	override function getValue():String {
+		return "Current Touchscreen Button: " + sayTheThing();
+	}
+
+	private override function updateDisplay():String
+	{		
+		return ("Touchscreen button type " + sayTheThing());
+	}
+}

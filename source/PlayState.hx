@@ -1534,7 +1534,7 @@ class PlayState extends MusicBeatState
 		if (PlayStateChangeables.useDownscroll)
 			kadeEngineWatermark.y = FlxG.height * 0.9 + 45;
 
-		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
+		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 30, 0, "", 20); //JOELwindows7: move this up a bit due to elongated texts
 
 		scoreTxt.screenCenter(X);
 
@@ -1600,11 +1600,12 @@ class PlayState extends MusicBeatState
 		//JOELwindows7: install touchscreen buttons
 		if(FlxG.save.data.useTouchScreenButtons){
 			trace("Installing touchscreen buttons...");
-			//addTouchScreenButtons(4, false);
+			addTouchScreenButtons(4, false);
 			trace("Installed touchscreen buttons");
 			//onScreenGameplayButtons.cameras = [camHUD];
 
 			//manually brute force wtf not work
+			/*
 			trace("init the touchscreen buttons");
 			onScreenGameplayButtons = new OnScreenGameplayButtons(4, false);
 			controls.installTouchScreenGameplays(onScreenGameplayButtons._hitbox,4);
@@ -1620,6 +1621,7 @@ class PlayState extends MusicBeatState
 			onScreenGameplayButtons.visible = false;
 			
 			add(onScreenGameplayButtons);
+			*/
 		}
 
 		// if (SONG.song == 'South')
@@ -1884,6 +1886,13 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = false;
 
+		//JOELwindows7:visiblize buttons
+		if(onScreenGameplayButtons != null){
+			trace("visible touchscreen buttons");
+			onScreenGameplayButtons.visible = true;
+			onScreenGameplayButtons.alpha = 0;
+		}
+
 		generateStaticArrows(0);
 		generateStaticArrows(1);
 
@@ -2011,9 +2020,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
-				case 4:
-					//JOELwindows7: just add trace for fun
-					trace("Run the song now!");
+
 					//JOELwindows7: now visiblize the touchscreen buttons
 					/*
 					if(touchscreenButtons != null){
@@ -2021,9 +2028,12 @@ class PlayState extends MusicBeatState
 					}
 					*/
 					if(onScreenGameplayButtons != null){
-						trace("visible touchscreen buttons");
-						onScreenGameplayButtons.visible = true;
+						//and add cool animations
+						FlxTween.tween(onScreenGameplayButtons,{alpha:1}, 1, {ease:FlxEase.circInOut});
 					}
+				case 4:
+					//JOELwindows7: just add trace for fun
+					trace("Run the song now!");
 			}
 
 			swagCounter += 1;
@@ -3513,7 +3523,13 @@ class PlayState extends MusicBeatState
 	//JOELwindows7: check if the song should display epilogue chat once the song has finished.
 	function checkEpilogueChat():Void
 	{
-
+		//fade and hide the touchscreen button
+		if(onScreenGameplayButtons != null){
+			FlxTween.tween(onScreenGameplayButtons,{alpha:0}, 1, {ease:FlxEase.circInOut, onComplete: function(tween:FlxTween){
+				onScreenGameplayButtons.visible = false;
+				onScreenGameplayButtons.destroy();
+			}});
+		}
 		//if song has epilogue chat then do this
 		if(SONG.hasEpilogueChat && (isStoryMode)){
 			schoolOutro(eoof);

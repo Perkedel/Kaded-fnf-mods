@@ -1,5 +1,6 @@
 package;
 
+import flixel.ui.FlxVirtualPad;
 import flixel.ui.FlxButton;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.FlxG;
@@ -268,19 +269,30 @@ class Controls extends FlxActionSet
 	}
 	#end
 
-	//JOELwindows7: attempted to install things touchscreen
-	// inspire it from https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
+	// JOELwindows7: read function bellow
 	public var trackedinputs:Array<FlxActionInput> = [];
 
+	/**
+	 * JOELwindows7: attempted to install things touchscreen.
+	 * add the Button for that onscreen gameplay buttons.
+	 * inspire it from https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
+	 * @param action 
+	 * @param thing 
+	 * @param state 
+	 */
 	public function installActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState ){
 		var input = new FlxActionInputDigitalIFlxInput(thing, state);
 		trackedinputs.push(input);
 
 		action.add(input);
 	}
-
-	//JOELwindows7: okeh set action buttonings
-	// https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
+ 
+	/**
+	 * JOELwindows7: okeh set action buttonings, Hitbox version
+	 * https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
+	 * @param handoverTouchscreenButtons give the instance of Hitbox
+	 * @param howManyButtons How many are the buttons? is this DDR, or Shaggy time again?
+	 */
 	public function installTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4){
 		/*
 		inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonLeft, state));
@@ -295,6 +307,68 @@ class Controls extends FlxActionSet
 		inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[2], state));
 		inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[3], state));
 		*/
+	}
+
+	//
+	/**
+	 * JOELwindows7: yeah this one too
+	 * https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
+	 * @param virtualPad hand the virtualpad instance
+	 * @param DPad Which Dpad type you'd like to have?
+	 * @param Action Which Action button do you want? A, B, X, Y? or C?
+	 */
+	public function setVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode, ?isGameplay:Bool = false) {
+		//Safety feature of it the handover optional variable value isn't given.
+		if (DPad == null)
+			DPad = NONE;
+		if (Action == null)
+			Action = NONE;
+		
+		//Now onto the action!
+		switch (DPad)
+		{
+			case UP_DOWN:
+				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
+				inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonDown, state));
+			case LEFT_RIGHT:
+				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
+				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonRight, state));
+			case UP_LEFT_RIGHT:
+				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
+				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
+				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonRight, state));
+			case FULL: //We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
+				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
+				inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonDown, state));
+				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
+				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonRight, state));
+			case NONE:
+				trace("No DPAD");
+		}
+
+		switch (Action)
+		{
+			case A:
+				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
+			case A_B:
+				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
+				inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
+			case A_B_C:
+				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
+				inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
+			case A_B_X_Y:
+				if(isGameplay){
+					inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonX, state));
+					inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonY, state));
+					inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
+					inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
+				} else {
+					inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
+					inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
+				}
+			case NONE:
+				trace("No Action button");
+		}
 	}
 
 	override function update()

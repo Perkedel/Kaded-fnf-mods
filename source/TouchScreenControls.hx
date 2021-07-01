@@ -19,13 +19,17 @@ import flixel.group.FlxGroup;
 /**
  * Control Group enums from that luckydog7
  * https://github.com/luckydog7/Funkin-android/blob/master/source/ui/Mobilecontrols.hx
+ * 
+ * Oh I just shifted it around so yeah.
+ * @author JOELwindows7
  */
 enum ControlsGroup {
+	KEYBOARD;
+	HITBOX;
 	VIRTUALPAD_RIGHT;
 	VIRTUALPAD_LEFT;
-	KEYBOARD;
+    VIRTUALPAD_BOTH;
 	VIRTUALPAD_CUSTOM;
-	HITBOX;
 }
 
 /**
@@ -48,8 +52,60 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
         this.initVisible = initVisible;
         super();
 
-        _hitbox = new TouchScreenControls(howManyButtons, initVisible);
-        add(_hitbox);
+        trace("TouchScreenControls type " + Std.string(FlxG.save.data.selectTouchScreenButtons));
+
+        switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
+            case 0:
+                trace("No touch screen buttons");
+            case 1:
+                _hitbox = new TouchScreenControls(howManyButtons, initVisible);
+                add(_hitbox);
+            default:
+                trace("no special case found, using init virtualpad instead");
+                initVirtualPad(Std.int(FlxG.save.data.selectTouchScreenButtons));
+        }
+    }
+
+    function initVirtualPad(vpadMode:Int) 
+    {
+        switch (vpadMode)
+        {
+            case 0:
+                //Keyboard only
+                trace("nothing to init");
+            case 1:
+                //Hitboxe
+                trace("that's a hitbox. go get your friend");
+            case 2:
+                //Left
+                _virtualPad = new FlxVirtualPad(FULL, NONE);
+            case 3:
+                //Right
+                _virtualPad = new FlxVirtualPad(NONE, A_B_X_Y);
+            case 4:
+                //Both
+                _virtualPad = new FlxVirtualPad(FULL, A_B_X_Y);
+            case 5:
+                //Custom
+            default:
+                trace("unknown what virtual pad to init, bro!");
+        }
+        
+        if(_virtualPad != null){
+            _virtualPad.alpha = 0.75;
+            add(_virtualPad);	
+        } else {
+            trace("no virtual pad thingy available");
+        }
+    }
+
+    override public function destroy(){
+        super.destroy();
+
+        if(_hitbox != null)
+            _hitbox.destroy();
+        if(_virtualPad != null)
+            _virtualPad.destroy();
     }
 }
 
@@ -212,5 +268,9 @@ class TouchScreenControls extends FlxSpriteGroup{
         super.destroy();
 
         daButtoners.clear();
+        buttonLeft = null;
+        buttonDown = null;
+        buttonUp = null;
+        buttonRight = null;
     }
 }
