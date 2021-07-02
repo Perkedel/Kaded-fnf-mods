@@ -222,10 +222,12 @@ thancc for all these resources! without them, everything is impossible.
 - https://api.haxeflixel.com/flixel/ui/FlxDPadMode.html dpad mode for the virtual pad
 - https://snippets.haxeflixel.com/input/keyboard/ keyboard how to
 - https://snippets.haxeflixel.com/input/ what input examples
-- https://gamebanana.com/threads/219778 avoid reuploading sky mod for the time being. I think, that's indefinite. Oh, speaking of browsing Git commit history, that's what I did. I turn back to time, and take everything Sky as all as I can. Assets, Codes, Projects, everything I know it would have one. May come back later if I missed anything. ssssshh, don't tell bbpanzu! if he know this he'll turn back in time and force push this alternate timeline like if Sky never been existed. wait a minute. uh oh! peck!
+- https://gamebanana.com/threads/219778 avoid reuploading sky mod for the time being. I think, that's indefinite. Oh, speaking of browsing Git commit history, that's what I did. I turn back to time, right before the removal of Sky mod, and take everything Sky as all as I can. Assets, Codes, Projects, everything I know it would have one. May come back later if I missed anything. ssssshh, don't tell bbpanzu! if he know this he'll turn back in time and force push this alternate timeline like if Sky never been existed. wait a minute. uh oh! peck!
 - https://youtu.be/7awd-y_DTQY PEAR & https://twitter.com/gothmei/status/1309307834677571585 gothmei. peck, the tweet is gone. there is no preservation in twitter after all. We lost the little pogchamp voice. oh wait, PEAR still has it!
 - https://haxeflixel.com/documentation/flxtween/ how to tween
-- https://youtu.be/u1DKR9cOxnM Funkin modder direct trailer
+- https://youtu.be/u1DKR9cOxnM Funkin modder direct trailer 
+- https://www.tutorialspoint.com/lua/lua_logical_operators.htm lua logical operators like `and` `or` etc.
+- https://github.com/ktravis/haxe-hardware the android hardware access library. only supports Android.
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -277,7 +279,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://www.heikoplate.de/psruti.html PSR UTI. Used for enchancing MIDI quality into Yamaha Musicsoft MIDI
 - https://odysee.com/@JOELwindows7:a/GurukuTersayang_MIDI:d?r=FKgkgQ5Mr5kWhLj6fG8zZkeMVtj4pLHm the MIDI of Guruku Tersayang. originally by Helly Hilmi (website gone), edited by JOELwindows7 with Sekaiju & then enchanced with PSR UTI
 - https://openmidiproject.osdn.jp/Sekaiju_en.html Sekaiju. Compose and edit MIDI, support almost all MIDI file standard data editing from notes to special data like SysEx.
-- https://github.com/luckydog7/Funkin-android followed almost everything just to make this Perkedel Kaded fnf mod works also on Android
+- https://gamebanana.com/mods/300796 (Warning: has NC, ND) https://github.com/luckydog7/Funkin-android luckydog7. followed almost everything just to make this Perkedel Kaded fnf mod works also on Android
 - https://github.com/ninjamuffin99/Funkin also manually yoink the last code directives where Kade engine didn't think it could've work in Linux and macOS too like Discord RPC stuffs. also add naughtiness according to week 7 update on newgrounds which btw according to [this tankman fact from Darnebolian](https://youtu.be/ZlRPJ8Umt0A?t=201 ) this toggle `naughtiness` does nothing at the moment. so eh heh. whatever okay!
 - https://inkscape.org there's a symbol panel that has all common symbols you can freely use. press `Shift` + `Ctrl` + `Y` or top menu `Object`, `Symbols (Shift + Ctrl + Y)`. there's more symbols too https://inkscape.org/gallery/=symbol/?order=liked . and this one too https://github.com/PanderMusubi/inkscape-open-symbols that I believe we've installed.
 - https://github.com/PanderMusubi/inkscape-open-symbols the symbols collection for Inkscape yay!
@@ -315,6 +317,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://www.fontspace.com/azonix-font-f30718 (Freeware, Personal & Commercial Use) for some asset names like week Jingle Punks YouTube Audio Library.
 - https://docs.microsoft.com/en-us/typography/font-list/kristen-itc uhhh, it's a Windows included font, idk. for name like The Green Orbs. a musician of YouTube Audio Library famous for their children oriented lullabies.
 - https://youtu.be/xmxmVQS-T-Y Madbrine yoinked test chart JSON from week7. (Permission being asked, awaiting answer. Previous somebody's engagement mostly returns `YES`)
+- https://github.com/ktravis/haxe-hardware ktravis. use this to access Android hardware stuffs. Only compatible with Android according to its readme, section project.xml formula, that it only allows this available if rendering to Android apk. Yes, you can access vibration with this. btw, I got this from Ninja's previous source codes that had the commercial engagement, and uh, it's 69420. I also bought that, for research purpose. No, not going to refund it.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
@@ -333,7 +336,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 
 **dislcaimer**: above list are no way meant to insult, defame, or threat authors of the mods listed. Perkedel requires all contributor from all tiers, roles, etc. to be transparent not only what have been yoinked, but also deyoinked assets, as well as the reason behind each deyoinks and removal (also including the foreshadowing which means mods that wish to be yoinked but ND circled license in the way). for those author that got the mod removed, feel free to make change in your licensing in case you disagree with the removal.
 
-If you wish to grant us permission to yoink your mods here, please change your license that at least removes offending circle (such as `No Derivative`). Perkedel do not accept exclusive grant certificate, or even bribe absolutely, due to nature of Perkedel that importance people more than ownself, especially in terms of motto and service (violation like granting exclusive grant either to us or someonw will cause your name blacklisted for particular sector which is fnf mods. your mod will be blacklisted from being yoinked). We require that you in full heart declared whether or not should anyone use your assets, code script, and stuff.
+~~If you wish to grant us permission to yoink your mods here, please change your license that at least removes offending circle (such as `No Derivative`). Perkedel do not accept exclusive grant certificate, or even bribe absolutely, due to nature of Perkedel that importance people more than ownself, especially in terms of motto and service (violation like granting exclusive grant either to us or someonw will cause your name blacklisted for particular sector which is fnf mods. your mod will be blacklisted from being yoinked). We require that you in full heart declared whether or not should anyone use your assets, code script, and stuff.~~ Permission asking directive is active. read `PERMISSION.md` for more info.
 
 for more detail about our statement regarding the `No Derivative` is death wish, feel free to read here  
 https://gamebanana.com/questions/11159?post=9179454 

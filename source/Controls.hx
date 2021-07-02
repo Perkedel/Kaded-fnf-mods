@@ -13,6 +13,10 @@ import flixel.input.actions.FlxActionSet;
 import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
+//import haxe.hardware.Hardware;
+#if android
+import Hardware;
+#end
 
 #if (haxe >= "4.0.0")
 enum abstract Action(String) to String from String
@@ -286,6 +290,10 @@ class Controls extends FlxActionSet
 
 		action.add(input);
 	}
+
+	public function uninstallActionButtonings(){
+		trackedinputs = [];
+	}
  
 	/**
 	 * JOELwindows7: okeh set action buttonings, Hitbox version
@@ -369,6 +377,17 @@ class Controls extends FlxActionSet
 			case NONE:
 				trace("No Action button");
 		}
+	}
+
+	/**
+	 * Vibrate Controller or Device for the time
+	 * @param duration how long is vibration in milisecond
+	 * @param player which gamepad it should vibrates
+	 */
+	public static function vibrate(player:Int = 0,duration:Float = 100){
+		#if android
+		Hardware.vibrate(Std.int(duration));
+		#end
 	}
 
 	override function update()

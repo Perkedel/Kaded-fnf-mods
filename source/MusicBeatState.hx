@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.FlxEase;
 import flixel.FlxCamera;
 import flixel.ui.FlxVirtualPad;
 import flixel.input.actions.FlxActionInput;
@@ -62,7 +63,7 @@ class MusicBeatState extends FlxUIState
 	var pauseButton:FlxSprite; //JOELwindows7: the pause button here
 	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
 	//var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
-	var onScreenGameplayButtons:OnScreenGameplayButtons; //JOELwindows7: the touchscreen buttons here
+	public var onScreenGameplayButtons:OnScreenGameplayButtons; //JOELwindows7: the touchscreen buttons here
 
 	//JOELwindows7: touchscreen button stuffs
 	// https://github.com/luckydog7/Funkin-android/blob/master/source/MusicBeatState.hx
@@ -287,5 +288,27 @@ class MusicBeatState extends FlxUIState
 		onScreenGameplayButtons.visible = initVisible;
 		
 		add(onScreenGameplayButtons);
+	}
+	public function removeTouchScreenButtons(){
+		if(onScreenGameplayButtons != null){
+			/*
+			FlxTween.tween(onScreenGameplayButtons,{alpha:0}, 1, {ease:FlxEase.circInOut, onComplete: function(tween:FlxTween){
+				onScreenGameplayButtons.visible = false;
+				trackedinputs = [];
+				onScreenGameplayButtons.destroy();
+			}});
+			*/
+			FlxTween.num(onScreenGameplayButtons.alpha,0,1,
+				{ease:FlxEase.circInOut, 
+					onComplete: function(tween:FlxTween){
+						onScreenGameplayButtons.visible = false;
+						trackedinputs = [];
+						onScreenGameplayButtons.destroy();
+					}
+				}, 
+				function (a:Float) { 
+					onScreenGameplayButtons.alpha = a; 
+			});
+		}
 	}
 }

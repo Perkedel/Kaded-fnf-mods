@@ -1,1 +1,1 @@
-- https://github.com/luckydog7/Funkin-android yoink this luckydog7 android port
+- https://github.com/luckydog7/Funkin-android yoink this luckydog7 android port. actually all but the xml is now replaced with our theme, saubo.

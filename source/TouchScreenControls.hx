@@ -1,3 +1,4 @@
+import flixel.util.FlxDestroyUtil;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.frames.FlxFrame;
 import flixel.graphics.frames.FlxTileFrames;
@@ -101,11 +102,13 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
 
     override public function destroy(){
         super.destroy();
-
+        trace("destroy touchscreen buttons");
         if(_hitbox != null)
-            _hitbox.destroy();
+            _hitbox = FlxDestroyUtil.destroy(_hitbox);
+        trace("destroyeneding");
         if(_virtualPad != null)
-            _virtualPad.destroy();
+            _virtualPad = FlxDestroyUtil.destroy(_virtualPad);
+        trace("ratatatatatatata!");
     }
 }
 
@@ -180,6 +183,7 @@ class TouchScreenControls extends FlxSpriteGroup{
 		button.onOut.callback = function (){
 			FlxTween.num(button.alpha, 0, .2, {ease: FlxEase.circInOut}, function (a:Float) { button.alpha = a; });
 		}
+        button.alpha = 0;
 
         return button;
     }
@@ -267,10 +271,12 @@ class TouchScreenControls extends FlxSpriteGroup{
     override public function destroy():Void{
         super.destroy();
 
-        daButtoners.clear();
-        buttonLeft = null;
-        buttonDown = null;
-        buttonUp = null;
-        buttonRight = null;
+        trace("destroy hitbox");
+        if(daButtoners != null)
+            daButtoners.clear();
+        buttonLeft = FlxDestroyUtil.destroy(buttonLeft);
+        buttonDown = FlxDestroyUtil.destroy(buttonDown);
+        buttonUp = FlxDestroyUtil.destroy(buttonUp);
+        buttonRight = FlxDestroyUtil.destroy(buttonRight);
     }
 }

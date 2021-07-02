@@ -1,5 +1,6 @@
 package;
 
+import Controls;
 import TouchScreenControls;
 import openfl.ui.KeyLocation;
 import openfl.events.Event;
@@ -1603,25 +1604,6 @@ class PlayState extends MusicBeatState
 			addTouchScreenButtons(4, false);
 			trace("Installed touchscreen buttons");
 			//onScreenGameplayButtons.cameras = [camHUD];
-
-			//manually brute force wtf not work
-			/*
-			trace("init the touchscreen buttons");
-			onScreenGameplayButtons = new OnScreenGameplayButtons(4, false);
-			controls.installTouchScreenGameplays(onScreenGameplayButtons._hitbox,4);
-			trackedinputs = controls.trackedinputs;
-			controls.trackedinputs = [];
-
-			trace("setting dedicated touchscreen buttons camera");
-			var camControl = new FlxCamera();
-			FlxG.cameras.add(camControl);
-			camControl.bgColor.alpha = 0;
-			onScreenGameplayButtons.cameras = [camControl];
-
-			onScreenGameplayButtons.visible = false;
-			
-			add(onScreenGameplayButtons);
-			*/
 		}
 
 		// if (SONG.song == 'South')
@@ -1889,8 +1871,8 @@ class PlayState extends MusicBeatState
 		//JOELwindows7:visiblize buttons
 		if(onScreenGameplayButtons != null){
 			trace("visible touchscreen buttons");
-			onScreenGameplayButtons.visible = true;
-			onScreenGameplayButtons.alpha = 0;
+			//onScreenGameplayButtons.visible = true;
+			//onScreenGameplayButtons.alpha = 0;
 		}
 
 		generateStaticArrows(0);
@@ -2028,8 +2010,19 @@ class PlayState extends MusicBeatState
 					}
 					*/
 					if(onScreenGameplayButtons != null){
+						onScreenGameplayButtons.visible = true;
 						//and add cool animations
-						FlxTween.tween(onScreenGameplayButtons,{alpha:1}, 1, {ease:FlxEase.circInOut});
+						//FlxTween.tween(onScreenGameplayButtons,{alpha:1}, 1, {ease:FlxEase.circInOut});
+						//try luckydog7's renditions
+						//well, apparently, adjusting parent's alpha also affects all children's alpha
+						//inside it. right, where the peck is self modulate alpha?!??!!?
+						/*
+						FlxTween.num(onScreenGameplayButtons.alpha, 1, 1, 
+							{ease: FlxEase.circInOut}, 
+							function (a:Float) { 
+								onScreenGameplayButtons.alpha = a; 
+							});
+						*/
 					}
 				case 4:
 					//JOELwindows7: just add trace for fun
@@ -3524,12 +3517,7 @@ class PlayState extends MusicBeatState
 	function checkEpilogueChat():Void
 	{
 		//fade and hide the touchscreen button
-		if(onScreenGameplayButtons != null){
-			FlxTween.tween(onScreenGameplayButtons,{alpha:0}, 1, {ease:FlxEase.circInOut, onComplete: function(tween:FlxTween){
-				onScreenGameplayButtons.visible = false;
-				onScreenGameplayButtons.destroy();
-			}});
-		}
+		removeTouchScreenButtons();
 		//if song has epilogue chat then do this
 		if(SONG.hasEpilogueChat && (isStoryMode)){
 			schoolOutro(eoof);
@@ -4295,7 +4283,7 @@ class PlayState extends MusicBeatState
 
 			public function backgroundVideo(source:String) // for background videos
 				{
-					#if cpp
+					#if (cpp && !mobile)
 					useVideo = true;
 			
 					FlxG.stage.window.onFocusOut.add(focusOut);
@@ -4815,6 +4803,9 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.camera.zoom += 0.015;
 				camHUD.zoom += 0.03;
+
+				//JOELwindows7: add vibrations!
+				Controls.vibrate(0, 500);
 			}
 
 			//JOELwindows7: HARDCODING FOR WE'LL MEET YOU AGAIN ZOOMS!
@@ -4940,19 +4931,22 @@ class PlayState extends MusicBeatState
 	//and randomize the color. look at randomizeColoring() above!
 
 	//JOELwindows7: make cam zoom a function pls
-	public function camZoomNow() {
-		FlxG.camera.zoom += 0.015;
-		camHUD.zoom += 0.03;
+	public function camZoomNow(howMuchZoom:Float = .015, howMuchZoomHUD:Float = .03, maxZoom:Float = 1.35) {
+		if(FlxG.camera.zoom < maxZoom)
+		{
+			FlxG.camera.zoom += howMuchZoom;
+			camHUD.zoom += howMuchZoomHUD;
+		}
 	}
 
 	//JOELwindows7: make cheer a function
-	public function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
+	public function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false, justOne:Bool = false, toWhichBg:Int = 0){
 		if(curBeat % outOfBeatFractioning == doItOn)
 		{
 			if(!triggeredAlready)
 				{
 					if(randomizeColor)
-						randomizeColoring();
+						randomizeColoring(justOne, toWhichBg);
 					gf.playAnim('cheer');
 					triggeredAlready = true;
 				}
@@ -4990,8 +4984,7 @@ class PlayState extends MusicBeatState
 	public function randomizeColoring(justOne:Bool = false, toWhichBg:Int = 0)
 	{	
 		if(colorableGround != null){
-			if(!colorableGround.visible)
-				colorableGround.visible = true;
+			colorableGround.visible = true;
 			colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
 			trace("now colorable color is " + colorableGround.color.toHexString());
 		}
@@ -5015,8 +5008,7 @@ class PlayState extends MusicBeatState
 	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE, justOne:Bool = true, toWhichBg:Int = 0)
 	{
 		if(colorableGround != null){
-			if(!colorableGround.visible)
-				colorableGround.visible = true;
+			colorableGround.visible = true;
 			colorableGround.color = color;
 			trace("now colorable color is " + colorableGround.color.toHexString());
 		}
@@ -5048,10 +5040,13 @@ class PlayState extends MusicBeatState
 		if(bgAll != null)
 			if(justOne){
 				bgAll.members[toWhichBg].color = multiOriginalColor[toWhichBg];
-				bgAll.members[toWhichBg].visible = false;
+				if(multiIsChromaScreen[toWhichBg])
+					bgAll.members[toWhichBg].visible = false;
 			} else
 				bgAll.forEach(function(theBg:FlxSprite){
 					theBg.color = multiOriginalColor[theBg.ID];
+					if(multiIsChromaScreen[theBg.ID])
+						theBg.visible = false;
 				});
 	}
 
@@ -5321,6 +5316,7 @@ class PlayState extends MusicBeatState
 
 	//JOELwindows7: when stage is using Lua script
 	function spawnStageScript(daPath:String){
+		#if ((windows || linux) && sys && cpp)
 		if(executeStageScript){
 			trace('stage script: ' + executeStageScript + " - " + Paths.lua(daPath)); //JOELwindows7: check too
 
@@ -5330,6 +5326,7 @@ class PlayState extends MusicBeatState
 			stageScript.setVar("originalColors", multiOriginalColor);
 			stageScript.setVar("areChromaScreen", multiIsChromaScreen);
 		}
+		#end
 	}
 
 	//JOELwindows7: core starting point for custom stage
@@ -5356,11 +5353,13 @@ class PlayState extends MusicBeatState
 				executeStageScript = false;
 			#end
 
+			#if ((windows || linux) && sys && cpp)
 			if(executeStageScript){
 				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
 			} else {
 				spawnStageImages(customStage);
 			}
+			#end
 		}
 	}
 

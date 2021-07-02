@@ -3,6 +3,7 @@
 // Lua
 //JOELwindows7: okay, please widen the area of support for macOS and Linux too.
 //dang failed. I guess we go back to only Windows..
+import Controls;
 import openfl.display3D.textures.VideoTexture;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -425,6 +426,7 @@ class ModchartState
 				setVar("strumLineY", PlayState.instance.strumLine.y);
 
 				//JOELwindows7: mirror the variables here!
+				//Colored bg
 				setVar("originalColor", PlayState.instance.originalColor);
 				setVar("isChromaScreen", PlayState.instance.isChromaScreen);
 				//end mirror variables
@@ -907,8 +909,8 @@ class ModchartState
 				// default strums
 
 				//JOELwindows7: more special functions
-				Lua_helper.add_callback(lua, "cheerNow", function(ooutOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
-					PlayState.instance.cheerNow(ooutOfBeatFractioning,doItOn,randomizeColor);
+				Lua_helper.add_callback(lua, "cheerNow", function(ooutOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false, justOne:Bool = false, toWhichBg:Int = 0){
+					PlayState.instance.cheerNow(ooutOfBeatFractioning,doItOn,randomizeColor,justOne,toWhichBg);
 				});
 
 				Lua_helper.add_callback(lua, "prepareColorableBg", function(
@@ -941,23 +943,29 @@ class ModchartState
 					//Just don't touch this.
 				});
 
-				Lua_helper.add_callback(lua, "randomizeColoring", function(){
-					PlayState.instance.randomizeColoring();
+				Lua_helper.add_callback(lua, "randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
+					PlayState.instance.randomizeColoring(justOne, toWhichBg);
 					//ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
 					//and you, Haxe Language Server laggs on purpose
 					//hence I blinded & mistyped!!! C'MON!!!! REALLY??!?!
 				});
 
-				Lua_helper.add_callback(lua, "chooseColoringColor", function(color:String = "WHITE"){
-					PlayState.instance.chooseColoringColor(FlxColor.fromString(color));
+				Lua_helper.add_callback(lua, "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0){
+					PlayState.instance.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
 					//hmm, I am afraid using raw FlxColor data doing won't work.
 					//You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
 					//so, maybe you should use the.. string version?
 					//so here it is. the FlxCOlor.fromString() is magic. it can understand 0x000000, #FFFFFFFF, or even Name!!! wow!!
 				});
 
-				Lua_helper.add_callback(lua, "camZoomNow", function(){
-					PlayState.instance.camZoomNow();
+				Lua_helper.add_callback(lua,"hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
+					PlayState.instance.hideColoring(justOne,toWhichBg);
+					//hide the colorings
+				});
+
+				Lua_helper.add_callback(lua, "camZoomNow", function(howMuchZoom:Float = .015, howMuchZoomHUD:Float = .03, maxZoom:Float = 1.35){
+					PlayState.instance.camZoomNow(howMuchZoom, howMuchZoomHUD, maxZoom);
+					//zoom the cam now
 				});
 
 				Lua_helper.add_callback(lua, "trainStart", function () {
@@ -984,6 +992,11 @@ class ModchartState
 				Lua_helper.add_callback(lua, "resetFastCar", function(){
 					//reset da cars! now!!
 					PlayState.instance.resetFastCar();
+				});
+
+				Lua_helper.add_callback(lua, "vibrate", function(player:Int = 0, duration:Float = 100){
+					//vibration, sensation, okeh self explanatory. lol TheFatRat - Electrified
+					Controls.vibrate(player,duration);
 				});
 				//end more special functions
 				//So you don't have to hard code your cool effects.

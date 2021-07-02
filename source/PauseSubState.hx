@@ -279,6 +279,10 @@ class PauseSubState extends MusicBeatSubstate
 						PlayState.luaModchart = null;
 					}
 					#end
+					//JOELwindows7: the controller destroy
+					if (PlayState.instance.onScreenGameplayButtons != null){
+						PlayState.instance.removeTouchScreenButtons();
+					}
 					if (FlxG.save.data.fpsCap > 290)
 						(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
 					
