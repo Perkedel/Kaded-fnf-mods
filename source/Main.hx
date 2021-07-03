@@ -110,7 +110,7 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-		#if (cpp && sys) //JOELwindows7: remember! it doesn't work in Android!
+		#if (cpp && sys && !mobile) //JOELwindows7: remember! it doesn't work in Android!
 		initialState = Caching;
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		#else

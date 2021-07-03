@@ -4805,7 +4805,7 @@ class PlayState extends MusicBeatState
 				camHUD.zoom += 0.03;
 
 				//JOELwindows7: add vibrations!
-				Controls.vibrate(0, 500);
+				Controls.vibrate(0, 300);
 			}
 
 			//JOELwindows7: HARDCODING FOR WE'LL MEET YOU AGAIN ZOOMS!

@@ -228,6 +228,11 @@ thancc for all these resources! without them, everything is impossible.
 - https://youtu.be/u1DKR9cOxnM Funkin modder direct trailer 
 - https://www.tutorialspoint.com/lua/lua_logical_operators.htm lua logical operators like `and` `or` etc.
 - https://github.com/ktravis/haxe-hardware the android hardware access library. only supports Android.
+- https://github.com/ktravis/haxe-hardware/pull/2 the pull request for that 2021 update
+- https://github.com/Perkedel/haxe-hardware here's my version.
+- https://haxe.org/manual/target-cpp-defines.html HXCPP definitions
+- https://luajit.org/install.html save this. might be useful one day
+- https://github.com/AndreiRudenko/linc_luajit use this instead of mainstream haxelib. this has Linux64 library binary on it.
   
 # in event of git merge conflict
 use VScode and Github desktop!

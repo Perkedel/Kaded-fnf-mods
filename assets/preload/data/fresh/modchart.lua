@@ -32,7 +32,7 @@ end
 
 function playerOneSing(note, position)
     print("P1 sing " .. note .. " at " .. position)
-    if (curBeat > 0 and curBeat < 16) or (curBeat > 144) then
+    if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
         if(flashing) then
             colorizeColorablebyKey(note,false,0)
         end
@@ -43,13 +43,13 @@ end
 
 function playerTwoSing(note, position)
     print("P2 sing " .. note .. " at " .. position)
-    if (curBeat > 0 and curBeat < 16) or (curBeat > 144) then
+    if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
         if(flashing) then
             colorizeColorablebyKey(note,false,0)
         end
         if(distractions) then
             camZoomNow(0.015, 0.03, 1.35)
-            vibrate(0, 500)
+            vibrate(0, 200)
         end
     else
         hideColoring(false, 0)

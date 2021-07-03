@@ -385,9 +385,12 @@ class Controls extends FlxActionSet
 	 * @param player which gamepad it should vibrates
 	 */
 	public static function vibrate(player:Int = 0,duration:Float = 100){
-		#if android
-		Hardware.vibrate(Std.int(duration));
-		#end
+		//JOELwindows7: yess vibration go BRRR
+		if(FlxG.save.data.vibration){
+			#if android
+			Hardware.vibrate(Std.int(duration));
+			#end
+		}
 	}
 
 	override function update()

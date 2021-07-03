@@ -1133,3 +1133,24 @@ class SelectTouchScreenButtons extends Option{
 		return ("Touchscreen button type " + sayTheThing());
 	}
 }
+
+class VibrationOptions extends Option{
+
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.vibration = !FlxG.save.data.vibration;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{		
+		return "Vibration " + (FlxG.save.data.vibration ? "ON" : "OFF");
+	}
+}

@@ -119,6 +119,10 @@ class KadeEngineData
 
 		if (FlxG.save.data.selectTouchScreenButtons == null)
 			FlxG.save.data.useTouchScreenButtons == 0;
+
+		//JOELwindows7: Vibrations
+		if (FlxG.save.data.vibration == null)
+			FlxG.save.data.vibration = true;
 		
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 		
