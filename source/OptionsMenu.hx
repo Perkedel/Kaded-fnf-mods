@@ -62,6 +62,7 @@ class OptionsMenu extends MusicBeatState
 			new CardiophileOption("Toggle heartbeat features that contains doki-doki stuffs"),
 			new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), //JOELwindows7: make this Odysee exclusive pls. how!
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
+			new VibrationOption("Toggle Vibration that let your gamepade / device vibrates."),
 			new WatermarkOption("Enable and disable all watermarks from the engine."),
 			new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),

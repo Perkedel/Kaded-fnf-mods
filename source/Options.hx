@@ -1134,7 +1134,7 @@ class SelectTouchScreenButtons extends Option{
 	}
 }
 
-class VibrationOptions extends Option{
+class VibrationOption extends Option{
 
 	public function new(desc:String)
 	{

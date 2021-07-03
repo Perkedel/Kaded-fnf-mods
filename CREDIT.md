@@ -232,7 +232,9 @@ thancc for all these resources! without them, everything is impossible.
 - https://github.com/Perkedel/haxe-hardware here's my version.
 - https://haxe.org/manual/target-cpp-defines.html HXCPP definitions
 - https://luajit.org/install.html save this. might be useful one day
+- https://luajit.org/download.html install LuaJIT source code itself
 - https://github.com/AndreiRudenko/linc_luajit use this instead of mainstream haxelib. this has Linux64 library binary on it.
+- https://www.msys2.org/ the POSIX terminal thingy for Windows. easy MinGW environment.
   
 # in event of git merge conflict
 use VScode and Github desktop!
