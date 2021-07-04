@@ -6,6 +6,11 @@ The following are documents of permission proves for those who requires such.
 - Madbrine. ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/anTestMadbrinPermissionNoLongerReply.png ) from https://youtu.be/xmxmVQS-T-Y . Madbrine yoinked test.ogg charts from the week7 update. we're still waiting for his reply, but previously he said yes to that guy over there. See pinned comment of that video! 
 - luckydog7. https://github.com/luckydog7/Funkin-android. ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/Permission-luckydog7-funkin-android.png) ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/Permission-luckydog7-funkin-android_usePatent_akaYoink.png ) we decided to just yoink the touchscreen buttons rather than to reinvent the wheel. oh, also the hitbox images too and stuffs related to mobile / touchscreen control. wait a minute, where the ppeck did you got those week 7 assets? Verwex???
 
+# Open Source Licenses
+- https://github.com/ninjamuffin99/Funkin ninja_muffin99. [`if u make mods, open source them, lol!`](https://github.com/ninjamuffin99/Funkin/blob/master/LICENSE ), formerly Apache-2.0, before 16 May 2021.
+- https://github.com/KadeDev/Kade-Engine KadeDev. [Apache-2.0](https://github.com/KadeDev/Kade-Engine/blob/stable/LICENSE ).
+- https://github.com/Perkedel/HexagonEngine Perkedel Technologies. [GNU GPL v3](https://github.com/Perkedel/HexagonEngine/blob/master/LICENSE ).
+
 # Status of Permission Recipience. Is Perkedel accepting exclusive permission grant right now? 
 ## Active
 
