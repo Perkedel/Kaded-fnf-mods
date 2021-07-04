@@ -330,6 +330,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://docs.microsoft.com/en-us/typography/font-list/kristen-itc uhhh, it's a Windows included font, idk. for name like The Green Orbs. a musician of YouTube Audio Library famous for their children oriented lullabies.
 - https://youtu.be/xmxmVQS-T-Y Madbrine yoinked test chart JSON from week7. (Permission being asked, awaiting answer. Previous somebody's engagement mostly returns `YES`)
 - https://github.com/ktravis/haxe-hardware ktravis. use this to access Android hardware stuffs. Only compatible with Android according to its readme, section project.xml formula, that it only allows this available if rendering to Android apk. Yes, you can access vibration with this. btw, I got this from Ninja's previous source codes that had the commercial engagement, and uh, it's 69420. I also bought that, for research purpose. No, not going to refund it.
+- https://lib.haxe.org/p/ki-filesystem ki. use ki's filesystemer because internal sys filesystem doesn't work in Android
+- https://lib.haxe.org/p/haxe-files vegardit. um okay. how about this one?
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

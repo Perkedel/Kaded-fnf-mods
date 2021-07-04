@@ -193,7 +193,7 @@
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="cpp" unless="neko || hl || mobile"/>
-	<haxelib name="linc_luajit" if="cpp" unless="neko || hl || mobile"/>
+	<haxelib name="linc_luajit" if="cpp" unless="neko || hl"/>
 	
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
@@ -224,6 +224,13 @@
 	<!-- Android permissioning -->
 	<!-- added by JOELwindows7 -->
 	<haxelib name="android6permissions"/>
+
+	<!-- JOELwindows7: ki's filesytemer because internal sys filesystem doesn't work in Android -->
+	<!-- <haxelib name="ki-filesystem"/> -->
+	<!-- not updated anymore, I guess, it's error here. Unknown identifier : getModificationDate -->
+
+	<!-- JOELwindows7: vegardid filesystemer -->
+	<haxelib name="haxe-files"/>
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

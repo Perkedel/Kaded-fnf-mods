@@ -71,7 +71,7 @@ install:
   - haxelib run lime config JAVA_HOME C:\Program Files\Java\jdk1.8.0_211
   - haxelib run lime rebuild extension-webm android
   # - haxelib install linc_luajit
-  - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git # has Linux library finally
+  - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
   - haxelib install actuate
   # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
   # JOELwindows7: Android permissioner

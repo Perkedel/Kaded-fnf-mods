@@ -33,7 +33,7 @@ install:
   - haxelib git extension-webm https://github.com/KadeDev/extension-webm
   - haxelib run lime rebuild extension-webm linux
   # - haxelib install linc_luajit
-  - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git # has Linux library finally
+  - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
   - haxelib install actuate
   # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
   # JOELwindows7: Android permissioner
