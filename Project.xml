@@ -179,6 +179,8 @@
 	<haxelib name="flixel" />
 	<haxedev set='webgl' />
 	<!-- <haxelib name="openfl" /> -->
+	<!-- JOELwindows7: manually hxcpp it just in case -->
+	<haxedev name="hxcpp" if="cpp"/>
 
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
@@ -193,7 +195,7 @@
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="cpp" unless="neko || hl || mobile"/>
-	<haxelib name="linc_luajit" if="cpp" unless="neko || hl"/>
+	<haxelib name="linc_luajit" if="cpp" unless="neko || hl || mobile"/>
 	
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->

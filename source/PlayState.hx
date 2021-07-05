@@ -1874,7 +1874,7 @@ class PlayState extends MusicBeatState
 
 	var luaWiggles:Array<WiggleEffect> = [];
 
-	#if ((windows || linux || android) && cpp)
+	#if ((windows || linux) && cpp)
 	public static var luaModchart:ModchartState = null;
 	public static var stageScript:ModchartState = null;
 	#end
@@ -1899,7 +1899,7 @@ class PlayState extends MusicBeatState
 			case 'dad-battle': songLowercase = 'dadbattle';
 			case 'philly-nice': songLowercase = 'philly';
 		}
-		#if ((windows || linux || android) && cpp)
+		#if ((windows || linux) && cpp)
 		if (executeModchart)
 		{
 			luaModchart = ModchartState.createModchartState();
@@ -2659,7 +2659,7 @@ class PlayState extends MusicBeatState
 
 
 		
-		#if ((windows || linux || android) && cpp)
+		#if ((windows || linux) && cpp)
 		if (executeModchart && luaModchart != null && songStarted)
 		{
 			luaModchart.setVar('songPos',Conductor.songPosition);
@@ -2826,7 +2826,7 @@ class PlayState extends MusicBeatState
 			#end
 			FlxG.switchState(new ChartingState());
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN,handleInput);
-			#if ((windows || linux || android) && cpp)
+			#if ((windows || linux) && cpp)
 			if (luaModchart != null)
 			{
 				luaModchart.die();
@@ -2884,7 +2884,7 @@ class PlayState extends MusicBeatState
 
 			FlxG.switchState(new AnimationDebug(SONG.player2));
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN,handleInput);
-			#if ((windows || linux || android) && cpp)
+			#if ((windows || linux) && cpp)
 			if (luaModchart != null)
 			{
 				luaModchart.die();
@@ -2901,7 +2901,7 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.switchState(new AnimationDebug(SONG.player1));
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN,handleInput);
-			#if ((windows || linux || android) && cpp)
+			#if ((windows || linux) && cpp)
 			if (luaModchart != null)
 			{
 				luaModchart.die();
@@ -3104,7 +3104,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 			
-			#if ((windows || linux || android) && cpp)
+			#if ((windows || linux) && cpp)
 			if (luaModchart != null)
 				luaModchart.setVar("mustHit",PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection);
 			if (stageScript != null)
@@ -3115,7 +3115,7 @@ class PlayState extends MusicBeatState
 			{
 				var offsetX = 0;
 				var offsetY = 0;
-				#if ((windows || linux || android) && cpp)
+				#if ((windows || linux) && cpp)
 				if (luaModchart != null)
 				{
 					offsetX = luaModchart.getVar("followXOffset", "float");
@@ -3124,7 +3124,7 @@ class PlayState extends MusicBeatState
 
 				#end
 				camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
-				#if ((windows || linux || android) && cpp)
+				#if ((windows || linux) && cpp)
 				if (luaModchart != null)
 					luaModchart.executeState('playerTwoTurn', []);
 				if (stageScript != null)
@@ -3152,7 +3152,7 @@ class PlayState extends MusicBeatState
 			{
 				var offsetX = 0;
 				var offsetY = 0;
-				#if ((windows || linux || android) && cpp)
+				#if ((windows || linux) && cpp)
 				if (luaModchart != null)
 				{
 					offsetX = luaModchart.getVar("followXOffset", "float");
@@ -3161,7 +3161,7 @@ class PlayState extends MusicBeatState
 				#end
 				camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
 
-				#if ((windows || linux || android) && cpp)
+				#if ((windows || linux) && cpp)
 				if (luaModchart != null)
 					luaModchart.executeState('playerOneTurn', []);
 				if (stageScript != null)
@@ -3416,7 +3416,7 @@ class PlayState extends MusicBeatState
 							});
 						}
 	
-						#if ((windows || linux || android) && cpp)
+						#if ((windows || linux) && cpp)
 						if (luaModchart != null)
 							luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
 						if (stageScript != null)
@@ -3587,7 +3587,7 @@ class PlayState extends MusicBeatState
 
 		trace("unload mod chart");
 
-		#if ((windows || linux || android) && cpp)
+		#if ((windows || linux) && cpp)
 		if (luaModchart != null)
 		{
 			luaModchart.die();
@@ -3658,7 +3658,7 @@ class PlayState extends MusicBeatState
 						//JOELwindows7: complicated! oh MY GOD!
 					}
 
-					#if ((windows || linux || android) && cpp)
+					#if ((windows || linux) && cpp)
 					if (luaModchart != null)
 					{
 						luaModchart.die();
@@ -4078,7 +4078,7 @@ class PlayState extends MusicBeatState
 					controls.UP_R,
 					controls.RIGHT_R
 				];
-				#if ((windows || linux || android) && cpp)
+				#if ((windows || linux) && cpp)
 				if (luaModchart != null){
 				if (controls.LEFT_P){luaModchart.executeState('keyPressed',["left"]);};
 				if (controls.DOWN_P){luaModchart.executeState('keyPressed',["down"]);};
@@ -4421,6 +4421,9 @@ class PlayState extends MusicBeatState
 			// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
 			// FlxG.log.add('played imss note');
 
+			//JOELwindows7: vibrate the miss
+			Controls.vibrate(0,50);
+
 			switch (direction)
 			{
 				case 0:
@@ -4433,7 +4436,7 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('singRIGHTmiss', true);
 			}
 
-			#if ((windows || linux || android) && cpp)
+			#if ((windows || linux) && cpp)
 			if (luaModchart != null)
 				luaModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
 			if (stageScript != null)
@@ -4595,7 +4598,7 @@ class PlayState extends MusicBeatState
 							boyfriend.playAnim('singLEFT', true);
 					}
 		
-					#if ((windows || linux || android) && cpp)
+					#if ((windows || linux) && cpp)
 					if (luaModchart != null)
 						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
 					if (stageScript != null)
@@ -4742,6 +4745,9 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: shock fear Heartbeat jumps
 		increaseHR(fearShockAdd[heartTierIsRightNow]);
+
+		//JOELwindows7: vibrate controllers
+		Controls.vibrate(0,100);
 	}
 
 	var danced:Bool = false;
@@ -4754,7 +4760,7 @@ class PlayState extends MusicBeatState
 			resyncVocals();
 		}
 
-		#if ((windows || linux || android) && cpp)
+		#if ((windows || linux) && cpp)
 		if (executeModchart && luaModchart != null)
 		{
 			luaModchart.setVar('curStep',curStep);
@@ -4799,7 +4805,7 @@ class PlayState extends MusicBeatState
 			notes.sort(FlxSort.byY, (PlayStateChangeables.useDownscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING));
 		}
 
-		#if ((windows || linux || android) && cpp)
+		#if ((windows || linux) && cpp)
 		if (executeModchart && luaModchart != null)
 		{
 			luaModchart.setVar('curBeat',curBeat);
@@ -5355,7 +5361,7 @@ class PlayState extends MusicBeatState
 
 	//JOELwindows7: when stage is using Lua script
 	function spawnStageScript(daPath:String){
-		#if ((windows || linux || android) && cpp)
+		#if ((windows || linux) && cpp)
 		if(executeStageScript){
 			trace('stage script: ' + executeStageScript + " - " + Paths.lua(daPath)); //JOELwindows7: check too
 
@@ -5399,7 +5405,7 @@ class PlayState extends MusicBeatState
 				executeStageScript = false;
 			#end
 
-			#if ((windows || linux || android) && cpp)
+			#if ((windows || linux) && cpp)
 			if(executeStageScript){
 				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
 			} else {

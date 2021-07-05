@@ -29,6 +29,8 @@ class MusicBeatSubstate extends FlxSubState
 	var downButton:FlxSprite; //JOELwindows7: the down button here
 	var pauseButton:FlxSprite; //JOELwindows7: the pause button here
 	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
+	var retryButton:FlxSprite; //JOELwindows7: the retry button here
+	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
 
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
@@ -138,5 +140,21 @@ class MusicBeatSubstate extends FlxSubState
 		acceptButton.updateHitbox();
 		acceptButton.antialiasing = true;
 		add(acceptButton);
+	}
+	private function addRetryButton(x:Int = 500, y:Int =500, scale:Float=.5){
+		retryButton = new FlxSprite(x, y).loadGraphic(Paths.image('retryButton'));
+		retryButton.setGraphicSize(Std.int(retryButton.width * scale),Std.int(retryButton.height * scale));
+		retryButton.scrollFactor.set();
+		retryButton.updateHitbox();
+		retryButton.antialiasing = true;
+		add(retryButton);
+	}
+	private function addViewReplayButton(x:Int = 500, y:Int =500, scale:Float=.5){
+		viewReplayButton = new FlxSprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
+		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale),Std.int(viewReplayButton.height * scale));
+		viewReplayButton.scrollFactor.set();
+		viewReplayButton.updateHitbox();
+		viewReplayButton.antialiasing = true;
+		add(viewReplayButton);
 	}
 }

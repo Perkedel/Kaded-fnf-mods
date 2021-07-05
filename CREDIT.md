@@ -238,6 +238,10 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://luajit.org/download.html install LuaJIT source code itself
 - https://github.com/AndreiRudenko/linc_luajit use this instead of mainstream haxelib. this has Linux64 library binary on it.
 - https://www.msys2.org/ the POSIX terminal thingy for Windows. easy MinGW environment.
+- manually copy the `hxcpp.h` from your haxe instalation here `C:\HaxeToolkit\haxe\lib\hxcpp\4,2,1\include\hxcpp.h` to `C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\export\release\android\obj\obj\android-v7\__pch\haxe\hxcpp.h`. repeat for other android architectures.
+- https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/ManualUploades/android_luajit_attempt_werrored%20(1).png faile the attempt to start Android with LuaJIT. pls help.
+- https://vcpkg.io/en/packages.html. also don't forget to includePath the entire vcpkg repo folder `<vcpkg>\**` stuff like that. download it here https://vcpkg.io/en/getting-started.html. from Microsoft
+- 
   
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -332,6 +336,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/ktravis/haxe-hardware ktravis. use this to access Android hardware stuffs. Only compatible with Android according to its readme, section project.xml formula, that it only allows this available if rendering to Android apk. Yes, you can access vibration with this. btw, I got this from Ninja's previous source codes that had the commercial engagement, and uh, it's 69420. I also bought that, for research purpose. No, not going to refund it.
 - https://lib.haxe.org/p/ki-filesystem ki. use ki's filesystemer because internal sys filesystem doesn't work in Android
 - https://lib.haxe.org/p/haxe-files vegardit. um okay. how about this one?
+- https://github.com/JOELwindows7/linc_luajit JOELwindows7. I modded this appending luckydog7's android attempted (https://githubc.com/luckydog7/linc_luajit ). apparently android does not work. but hey, I have added Linux Raspberry Pi supports too. not tested yet. upstream by Andrei Rudenko https://github.com/AndreiRudenko/linc_luajit .
+- 
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
