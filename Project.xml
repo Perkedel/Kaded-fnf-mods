@@ -234,6 +234,11 @@
 	<!-- JOELwindows7: vegardid filesystemer -->
 	<haxelib name="haxe-files"/>
 
+	<!-- JOELwindows7: used by BulbyVR with Modding+ for modchart instead of Lua. -->
+	<haxelib name="hscript"/>
+	<haxelib name="hscript-ex"/>
+	<!-- install hscript-ex with `haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex`-->
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->

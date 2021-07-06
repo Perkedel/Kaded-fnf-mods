@@ -62,6 +62,17 @@ class Paths
 		return getPath('data/$key.lua', TEXT, library);
 	}
 
+	/**
+	 * Path to an hscript file
+	 * @author JOELwindows7
+	 * @param key 
+	 * @param library 
+	 */
+	inline static public function hscript(key:String,?library:String)
+	{
+		return getPath('data/$key.hscript', TEXT, library);
+	}
+
 	inline static public function luaImage(key:String, ?library:String)
 	{
 		return getPath('data/$key.png', IMAGE, library);

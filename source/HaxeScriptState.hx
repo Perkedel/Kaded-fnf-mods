@@ -1,0 +1,1220 @@
+//package;
+
+import flixel.system.frontEnds.WatchFrontEnd;
+import flixel.system.frontEnds.LogFrontEnd;
+import hscript.*;
+import hx.files.*;
+import Controls;
+import openfl.display3D.textures.VideoTexture;
+import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.tweens.FlxEase;
+import openfl.filters.ShaderFilter;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
+import openfl.geom.Matrix;
+import openfl.display.BitmapData;
+import lime.app.Application;
+import flixel.FlxSprite;
+import llua.Convert;
+import llua.Lua;
+import llua.State;
+import llua.LuaL;
+import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import lime.utils.Assets;
+
+/**
+ * Modchart state but it's Haxe script. Also no need recompile. you can modchart with Haxe language.
+ * alternative against Kade Engine's LuaJIT modchart. provided due to LuaJIT incompatibility for some platform.
+ * inspired from BulbyVR's Modding+ https://github.com/TheDrawingCoder-Gamer/Funkin
+ * using https://lib.haxe.org/p/hscript/ & https://github.com/ianharrigan/hscript-ex
+ * @author JOELwindows7
+ * @see https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PlayState.hx
+ */
+class HaxeScriptState {
+    public var script:String = ""; //Content of the hscript file
+    var parser:ParserEx = new ParserEx();
+    var prog;
+    var interp:InterpEx = createInterp();
+    var hscriptState:Map<String,InterpEx>;
+    //var instancering;
+
+    //Some other variables
+    public static var hscriptSprite:Map<String,FlxSprite> = [];
+
+    /**
+     * Instance HaxeScriptState.
+     * @param rawMode 
+     * @param path 
+     * @param className 
+     */
+    function new(rawMode:Bool = false, path:String = "", useHaxe:String = "",className:String = "HaxeMod"){
+        trace("open hscript state because we are cool");
+        initHaxeScriptState(rawMode,path,useHaxe,className);
+    }
+
+    /**
+     * Set variable's value into something.
+     * @author JOELwindows7
+     * @param var_name which variable?
+     * @param object what value be filled with?
+     */
+    public function setVar(var_name : String, object : Dynamic){
+        if(interp != null)
+            interp.variables.set(var_name,object);
+        else
+        {
+            interp = createInterp();
+            setVar(var_name,object);
+        }
+    }
+
+    /**
+     * same as setVar, for compatibility I guess
+     * @param var_name 
+     * @param object 
+     */
+    public function addCallback(var_name:String,object:Dynamic){
+        setVar(var_name,object);
+    }
+
+    public function executeState(name:String,args:Array<Dynamic>, useHaxe:String){
+        // if function doesn't exist
+		if (!hscriptStates.get(usehaxe).variables.exists(func_name)) {
+			trace("Function doesn't exist, silently skipping...");
+			return;
+		}
+		var method = hscriptStates.get(usehaxe).variables.get(func_name);
+		switch(args.length) {
+			case 0:
+				method();
+			case 1:
+				method(args[0]);
+		}
+    }
+
+    function resetHaxeScriptState(soft:Bool = false){
+        if(soft)
+        {
+            if(parser == null) parser = new ParserEx();
+            if(interp == null) interp = createInterp();
+            return;
+        }
+        parser = new ParserEx();
+        interp = createInterp();
+    }
+
+    function fillInScripts(rawMode:bool = false, path:String = ""){
+        // Pre lowecase song files
+        var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+            switch (songLowercase) {
+                case 'dad-battle': songLowercase = 'dadbattle';
+                case 'philly-nice': songLowercase = 'philly';
+            }
+        
+        script = Assets.getText(Paths.hscript(rawMode? path : songLowercase + "/modchart")).trim();
+        prog = parser.parseString(script);
+    }
+
+    /**
+     * Create instance of a class in the hscript
+     * @author JOELwindows7
+     * @param className 
+     * @param args 
+     * @param addModule 
+     */
+    public function createScriptClassInstance(className:String, args:Array<Dynamic> = null, addModule:String){
+        if(interp != null)
+            if(addModule != null && addModule != "") interp.addModule(addModule);
+            return interp.createScriptClassInstance(className, args);
+        else
+        {
+            interp = createInterp();
+            return createScriptClassInstance(className, args, addModule);
+        }
+    }
+
+    function initHaxeScriptState(rawMode:Bool = false, path:String = "", useHaxe:String = "",className:String = ""){
+        //start by init core stuffs.
+        resetHaxeScriptState();
+
+        //var p = Path.of(Paths.hscript(path));
+        //trace("opening the hscript of " + p.getAbsolutePath() + "\nisExist " + p.exists());
+        //var f = p.toFile();
+        //script = p.exists()? f.readAsString(): "";
+
+        fillInScripts(rawMode, path);
+        
+        // Syndicate all vars here boys!
+        // Peck this. let's just yoink BulbyVR's modchart inits and stuffs
+        // https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PlayState.hx
+        // https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PluginManager.hx
+        // now with copy from ModChartState.hx
+        setVar("difficulty", PlayState.storyDifficulty);
+        setVar("bpm", Conductor.bpm);
+        setVar("scrollspeed", FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed : PlayState.SONG.speed);
+        setVar("fpsCap", FlxG.save.data.fpsCap);
+        setVar("downscroll", FlxG.save.data.downscroll);
+        setVar("flashing", FlxG.save.data.flashing);
+        setVar("distractions", FlxG.save.data.distractions);
+
+        setVar("curStep", 0);
+        setVar("curBeat", 0);
+        setVar("crochet", Conductor.stepCrochet);
+        setVar("safeZoneOffset", Conductor.safeZoneOffset);
+
+        setVar("hudZoom", PlayState.instance.camHUD.zoom);
+        setVar("cameraZoom", FlxG.camera.zoom);
+
+        setVar("cameraAngle", FlxG.camera.angle);
+        setVar("camHudAngle", PlayState.instance.camHUD.angle);
+
+        setVar("followXOffset",0);
+        setVar("followYOffset",0);
+
+        setVar("showOnlyStrums", false);
+        setVar("strumLine1Visible", true);
+        setVar("strumLine2Visible", true);
+
+        setVar("screenWidth",FlxG.width);
+        setVar("screenHeight",FlxG.height);
+        setVar("windowWidth",FlxG.width);
+        setVar("windowHeight",FlxG.height);
+        setVar("hudWidth", PlayState.instance.camHUD.width);
+        setVar("hudHeight", PlayState.instance.camHUD.height);
+
+        setVar("mustHit", false);
+
+        setVar("strumLineY", PlayState.instance.strumLine.y);
+
+        //JOELwindows7: BulbyVR's special stuffs
+        setVar("add", PlayState.instance.add);
+        setVar("remove", PlayState.instance.remove);
+        setVar("insert", PlayState.instance.insert);
+        setVar("setDefaultZoom", function(zoom) {PlayState.instance.defaultCamZoom = zoom;});
+        setVar("removeSprite", function(sprite) {
+			remove(sprite);
+		});
+        setVar("instancePluginClass", createScriptClassInstance);
+
+        // Callbacks heres, Kade Engine like
+        //Sprites
+        addCallback("makeSprite", makeHscriptSprite);
+        addCallback("changeDadCharacter", changeDadCharacte);
+        addCallback("changeBoyfriendCharacter", changeBoyfriendCharacter);
+        addCallback("getProperty", getPropertyByName);
+        //addCallback("makeAnimatedSprite", makeAnimatedLuaSprite); //KadeDev says it's in development right now.
+        addCallback("destroySprite", function(id:String) {
+            var sprite = luaSprites.get(id);
+            if (sprite == null)
+                return false;
+            PlayState.instance.removeObject(sprite);
+            return true;
+        });
+
+        //HUD / Camera
+        addCallback("initBackgroundVideo", function(videoName:String) {
+            trace('playing assets/videos/' + videoName + '.webm');
+            PlayState.instance.backgroundVideo("assets/videos/" + videoName + ".webm");
+        });
+        addCallback("pauseVideo", function() {
+            if (!GlobalVideo.get().paused)
+                GlobalVideo.get().pause();
+        });
+        addCallback("resumeVideo", function() {
+            if (GlobalVideo.get().paused)
+                GlobalVideo.get().pause();
+        });
+        addCallback("restartVideo", function() {
+            GlobalVideo.get().restart();
+        });
+        addCallback("getVideoSpriteX", function() {
+            return PlayState.instance.videoSprite.x;
+        });
+        addCallback("getVideoSpriteY", function() {
+            return PlayState.instance.videoSprite.y;
+        });
+        addCallback("setVideoSpritePos", function(x:Int,y:Int) {
+            PlayState.instance.videoSprite.setPosition(x,y);
+        });
+        addCallback("setVideoSpriteScale", function(scale:Float) {
+            PlayState.instance.videoSprite.setGraphicSize(Std.int(PlayState.instance.videoSprite.width * scale));
+        });
+        addCallback("setHudAngle", function (x:Float) {
+            PlayState.instance.camHUD.angle = x;
+        });
+        addCallback("setHealth", function (heal:Float) {
+            PlayState.instance.health = heal;
+        });
+        addCallback("setHudPosition", function (x:Int, y:Int) {
+            PlayState.instance.camHUD.x = x;
+            PlayState.instance.camHUD.y = y;
+        });
+        addCallback("getHudX", function () {
+            return PlayState.instance.camHUD.x;
+        });
+        addCallback("getHudY", function () {
+            return PlayState.instance.camHUD.y;
+        });
+        addCallback("setCamPosition", function (x:Int, y:Int) {
+            FlxG.camera.x = x;
+            FlxG.camera.y = y;
+        });
+        addCallback("getCameraX", function () {
+            return FlxG.camera.x;
+        });
+        addCallback("getCameraY", function () {
+            return FlxG.camera.y;
+        });
+        addCallback("setCamZoom", function(zoomAmount:Float) {
+            FlxG.camera.zoom = zoomAmount;
+        });
+        addCallback("setHudZoom", function(zoomAmount:Float) {
+            PlayState.instance.camHUD.zoom = zoomAmount;
+        });
+
+        //Strumline
+        addCallback("setStrumlineY", function(y:Float)
+        {
+            PlayState.instance.strumLine.y = y;
+        });
+
+        //Actors
+        addCallback("getRenderedNotes", function() {
+            return PlayState.instance.notes.length;
+        });
+        addCallback("getRenderedNoteX", function(id:Int) {
+            return PlayState.instance.notes.members[id].x;
+        });
+        addCallback("getRenderedNoteY", function(id:Int) {
+            return PlayState.instance.notes.members[id].y;
+        });
+
+        addCallback("getRenderedNoteType", function(id:Int) {
+            return PlayState.instance.notes.members[id].noteData;
+        });
+
+        addCallback("isSustain", function(id:Int) {
+            return PlayState.instance.notes.members[id].isSustainNote;
+        });
+
+        addCallback("isParentSustain", function(id:Int) {
+            return PlayState.instance.notes.members[id].prevNote.isSustainNote;
+        });
+
+        
+        addCallback("getRenderedNoteParentX", function(id:Int) {
+            return PlayState.instance.notes.members[id].prevNote.x;
+        });
+
+        addCallback("getRenderedNoteParentY", function(id:Int) {
+            return PlayState.instance.notes.members[id].prevNote.y;
+        });
+
+        addCallback("getRenderedNoteHit", function(id:Int) {
+            return PlayState.instance.notes.members[id].mustPress;
+        });
+
+        addCallback("getRenderedNoteCalcX", function(id:Int) {
+            if (PlayState.instance.notes.members[id].mustPress)
+                return PlayState.playerStrums.members[Math.floor(Math.abs(PlayState.instance.notes.members[id].noteData))].x;
+            return PlayState.strumLineNotes.members[Math.floor(Math.abs(PlayState.instance.notes.members[id].noteData))].x;
+        });
+
+        addCallback("anyNotes", function() {
+            return PlayState.instance.notes.members.length != 0;
+        });
+
+        addCallback("getRenderedNoteStrumtime", function(id:Int) {
+            return PlayState.instance.notes.members[id].strumTime;
+        });
+
+        addCallback("getRenderedNoteScaleX", function(id:Int) {
+            return PlayState.instance.notes.members[id].scale.x;
+        });
+
+        addCallback("setRenderedNotePos", function(x:Float,y:Float, id:Int) {
+            if (PlayState.instance.notes.members[id] == null)
+                throw('error! you cannot set a rendered notes position when it doesnt exist! ID: ' + id);
+            else
+            {
+                PlayState.instance.notes.members[id].modifiedByLua = true;
+                PlayState.instance.notes.members[id].x = x;
+                PlayState.instance.notes.members[id].y = y;
+            }
+        });
+
+        addCallback("setRenderedNoteAlpha", function(alpha:Float, id:Int) {
+            PlayState.instance.notes.members[id].modifiedByLua = true;
+            PlayState.instance.notes.members[id].alpha = alpha;
+        });
+
+        addCallback("setRenderedNoteScale", function(scale:Float, id:Int) {
+            PlayState.instance.notes.members[id].modifiedByLua = true;
+            PlayState.instance.notes.members[id].setGraphicSize(Std.int(PlayState.instance.notes.members[id].width * scale));
+        });
+
+        addCallback("setRenderedNoteScale", function(scaleX:Int, scaleY:Int, id:Int) {
+            PlayState.instance.notes.members[id].modifiedByLua = true;
+            PlayState.instance.notes.members[id].setGraphicSize(scaleX,scaleY);
+        });
+
+        addCallback("getRenderedNoteWidth", function(id:Int) {
+            return PlayState.instance.notes.members[id].width;
+        });
+
+
+        addCallback("setRenderedNoteAngle", function(angle:Float, id:Int) {
+            PlayState.instance.notes.members[id].modifiedByLua = true;
+            PlayState.instance.notes.members[id].angle = angle;
+        });
+
+        addCallback("setActorX", function(x:Int,id:String) {
+            getActorByName(id).x = x;
+        });
+        
+        addCallback("setActorAccelerationX", function(x:Int,id:String) {
+            getActorByName(id).acceleration.x = x;
+        });
+        
+        addCallback("setActorDragX", function(x:Int,id:String) {
+            getActorByName(id).drag.x = x;
+        });
+        
+        addCallback("setActorVelocityX", function(x:Int,id:String) {
+            getActorByName(id).velocity.x = x;
+        });
+        
+        addCallback("playActorAnimation", function(id:String,anim:String,force:Bool = false,reverse:Bool = false) {
+            getActorByName(id).playAnim(anim, force, reverse);
+        });
+
+        addCallback("setActorAlpha", function(alpha:Float,id:String) {
+            getActorByName(id).alpha = alpha;
+        });
+
+        addCallback("setActorY", function(y:Int,id:String) {
+            getActorByName(id).y = y;
+        });
+
+        addCallback("setActorAccelerationY", function(y:Int,id:String) {
+            getActorByName(id).acceleration.y = y;
+        });
+        
+        addCallback("setActorDragY", function(y:Int,id:String) {
+            getActorByName(id).drag.y = y;
+        });
+        
+        addCallback("setActorVelocityY", function(y:Int,id:String) {
+            getActorByName(id).velocity.y = y;
+        });
+        
+        addCallback("setActorAngle", function(angle:Int,id:String) {
+            getActorByName(id).angle = angle;
+        });
+
+        addCallback("setActorScale", function(scale:Float,id:String) {
+            getActorByName(id).setGraphicSize(Std.int(getActorByName(id).width * scale));
+        });
+        
+        addCallback( "setActorScaleXY", function(scaleX:Float, scaleY:Float, id:String)
+        {
+            getActorByName(id).setGraphicSize(Std.int(getActorByName(id).width * scaleX), Std.int(getActorByName(id).height * scaleY));
+        });
+
+        addCallback( "setActorFlipX", function(flip:Bool, id:String)
+        {
+            getActorByName(id).flipX = flip;
+        });
+
+        addCallback( "setActorFlipY", function(flip:Bool, id:String)
+        {
+            getActorByName(id).flipY = flip;
+        });
+
+        addCallback("getActorWidth", function (id:String) {
+            return getActorByName(id).width;
+        });
+
+        addCallback("getActorHeight", function (id:String) {
+            return getActorByName(id).height;
+        });
+
+        addCallback("getActorAlpha", function(id:String) {
+            return getActorByName(id).alpha;
+        });
+
+        addCallback("getActorAngle", function(id:String) {
+            return getActorByName(id).angle;
+        });
+
+        addCallback("getActorX", function (id:String) {
+            return getActorByName(id).x;
+        });
+
+        addCallback("getActorY", function (id:String) {
+            return getActorByName(id).y;
+        });
+
+        addCallback("setWindowPos",function(x:Int,y:Int) {
+            Application.current.window.x = x;
+            Application.current.window.y = y;
+        });
+
+        addCallback("getWindowX",function() {
+            return Application.current.window.x;
+        });
+
+        addCallback("getWindowY",function() {
+            return Application.current.window.y;
+        });
+
+        addCallback("resizeWindow",function(Width:Int,Height:Int) {
+            Application.current.window.resize(Width,Height);
+        });
+        
+        addCallback("getScreenWidth",function() {
+            return Application.current.window.display.currentMode.width;
+        });
+
+        addCallback("getScreenHeight",function() {
+            return Application.current.window.display.currentMode.height;
+        });
+
+        addCallback("getWindowWidth",function() {
+            return Application.current.window.width;
+        });
+
+        addCallback("getWindowHeight",function() {
+            return Application.current.window.height;
+        });
+
+        // tweens
+        addCallback("tweenCameraPos", function(toX:Int, toY:Int, time:Float, onComplete:String) {
+            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenCameraAngle", function(toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenCameraZoom", function(toZoom:Float, time:Float, onComplete:String) {
+            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenHudPos", function(toX:Int, toY:Int, time:Float, onComplete:String) {
+            FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+                        
+        addCallback("tweenHudAngle", function(toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(PlayState.instance.camHUD, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenHudZoom", function(toZoom:Float, time:Float, onComplete:String) {
+            FlxTween.tween(PlayState.instance.camHUD, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenPos", function(id:String, toX:Int, toY:Int, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenPosXAngle", function(id:String, toX:Int, toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenPosYAngle", function(id:String, toY:Int, toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenAngle", function(id:String, toAngle:Int, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenCameraPosOut", function(toX:Int, toY:Int, time:Float, onComplete:String) {
+            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+                        
+        addCallback("tweenCameraAngleOut", function(toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenCameraZoomOut", function(toZoom:Float, time:Float, onComplete:String) {
+            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenHudPosOut", function(toX:Int, toY:Int, time:Float, onComplete:String) {
+            FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+                        
+        addCallback("tweenHudAngleOut", function(toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(PlayState.instance.camHUD, {angle:toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenHudZoomOut", function(toZoom:Float, time:Float, onComplete:String) {
+            FlxTween.tween(PlayState.instance.camHUD, {zoom:toZoom}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenPosOut", function(id:String, toX:Int, toY:Int, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenPosXAngleOut", function(id:String, toX:Int, toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenPosYAngleOut", function(id:String, toY:Int, toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenAngleOut", function(id:String, toAngle:Int, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenCameraPosIn", function(toX:Int, toY:Int, time:Float, onComplete:String) {
+            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+                        
+        addCallback("tweenCameraAngleIn", function(toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenCameraZoomIn", function(toZoom:Float, time:Float, onComplete:String) {
+            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenHudPosIn", function(toX:Int, toY:Int, time:Float, onComplete:String) {
+            FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+                        
+        addCallback("tweenHudAngleIn", function(toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(PlayState.instance.camHUD, {angle:toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenHudZoomIn", function(toZoom:Float, time:Float, onComplete:String) {
+            FlxTween.tween(PlayState.instance.camHUD, {zoom:toZoom}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+        });
+
+        addCallback("tweenPosIn", function(id:String, toX:Int, toY:Int, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenPosXAngleIn", function(id:String, toX:Int, toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenPosYAngleIn", function(id:String, toY:Int, toAngle:Float, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenAngleIn", function(id:String, toAngle:Int, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenFadeIn", function(id:String, toAlpha:Float, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {ease: FlxEase.circIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        addCallback("tweenFadeOut", function(id:String, toAlpha:Float, time:Float, onComplete:String) {
+            FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {ease: FlxEase.circOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+        });
+
+        //Shaders
+        /*addCallback("createShader", function(frag:String,vert:String) {
+            var shader:LuaShader = new LuaShader(frag,vert);
+
+            trace(shader.glFragmentSource);
+
+            shaders.push(shader);
+            // if theres 1 shader we want to say theres 0 since 0 index and length returns a 1 index.
+            return shaders.length == 1 ? 0 : shaders.length;
+        });
+
+        
+        addCallback("setFilterHud", function(shaderIndex:Int) {
+            PlayState.instance.camHUD.setFilters([new ShaderFilter(shaders[shaderIndex])]);
+        });
+
+        addCallback("setFilterCam", function(shaderIndex:Int) {
+            FlxG.camera.setFilters([new ShaderFilter(shaders[shaderIndex])]);
+        });*/
+
+        //Special JOELwindows7
+        addCallback( "cheerNow", function(ooutOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false, justOne:Bool = false, toWhichBg:Int = 0){
+            PlayState.instance.cheerNow(ooutOfBeatFractioning,doItOn,randomizeColor,justOne,toWhichBg);
+        });
+
+        addCallback( "prepareColorableBg", function(
+            useImage:Bool = false, 
+            positionX:Float = -500, positionY:Float = -500, 
+            imagePath:String = '', animated:Bool = false,
+            color:String = "WHITE",
+            width:Int = 1, height:Int = 1, 
+            upscaleX:Int = 1, upscaleY:Int = 1, 
+            antialiasing:Bool = true,
+            scrollFactorX:Float = .5, scrollFactorY:Float = .5,
+            active:Bool = false, callNow:Bool = true, unique:Bool = false
+        ){
+            PlayState.instance.prepareColorableBg(
+                useImage,
+                positionX,positionY,
+                imagePath,animated,
+                FlxColor.fromString(color),
+                width,height,
+                upscaleX,upscaleY,
+                antialiasing,
+                scrollFactorX,scrollFactorY,
+                active,callNow,unique
+            );
+            //HOOF! so complicated!
+            //idk man who will use this. but just in case you would like to reset spawn
+            //a graphics here, you can use this.
+            //and this is NOT RECOMMENDED to be used at all
+            //because loading new image or generate graphic has lags on it.
+            //Just don't touch this.
+        });
+
+        addCallback( "randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
+            PlayState.instance.randomizeColoring(justOne, toWhichBg);
+            //ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
+            //and you, Haxe Language Server laggs on purpose
+            //hence I blinded & mistyped!!! C'MON!!!! REALLY??!?!
+        });
+
+        addCallback( "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0){
+            PlayState.instance.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
+            //hmm, I am afraid using raw FlxColor data doing won't work.
+            //You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
+            //so, maybe you should use the.. string version?
+            //so here it is. the FlxCOlor.fromString() is magic. it can understand 0x000000, #FFFFFFFF, or even Name!!! wow!!
+        });
+
+        addCallback("hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
+            PlayState.instance.hideColoring(justOne,toWhichBg);
+            //hide the colorings
+        });
+
+        addCallback( "camZoomNow", function(howMuchZoom:Float = .015, howMuchZoomHUD:Float = .03, maxZoom:Float = 1.35){
+            PlayState.instance.camZoomNow(howMuchZoom, howMuchZoomHUD, maxZoom);
+            //zoom the cam now
+        });
+
+        addCallback( "trainStart", function () {
+            //Manually start the train right from the modchart anyway.
+            PlayState.instance.trainStart();
+        });
+
+        addCallback( "trainReset", function(){
+            //Also reset the train from modchart as well
+            PlayState.instance.trainReset();
+        });
+
+        addCallback( "lightningStrikeHit", function(){
+            //Now you can abuse the lightning lol!!!
+            PlayState.instance.lightningStrikeShit();
+        }); //what the heck, Haxe Language server? you didn't quickly tell me
+        //That I missed semicolon? what cause of all these lags?
+
+        addCallback( "fastCarDrive", function(){
+            //haha fast car go brrrrr!!!
+            PlayState.instance.fastCarDrive();
+        });
+
+        addCallback( "resetFastCar", function(){
+            //reset da cars! now!!
+            PlayState.instance.resetFastCar();
+        });
+
+        addCallback( "vibrate", function(player:Int = 0, duration:Float = 100){
+            //vibration, sensation, okeh self explanatory. lol TheFatRat - Electrified
+            Controls.vibrate(player,duration);
+        });
+        //end more special functions
+        //So you don't have to hard code your cool effects.
+
+        //Default Strums
+        for (i in 0...PlayState.strumLineNotes.length) {
+            var member = PlayState.strumLineNotes.members[i];
+            trace(PlayState.strumLineNotes.members[i].x + " " + PlayState.strumLineNotes.members[i].y + " " + PlayState.strumLineNotes.members[i].angle + " | strum" + i);
+            //setVar("strum" + i + "X", Math.floor(member.x));
+            setVar("defaultStrum" + i + "X", Math.floor(member.x));
+            //setVar("strum" + i + "Y", Math.floor(member.y));
+            setVar("defaultStrum" + i + "Y", Math.floor(member.y));
+            //setVar("strum" + i + "Angle", Math.floor(member.angle));
+            setVar("defaultStrum" + i + "Angle", Math.floor(member.angle));
+            trace("Adding strum" + i);
+        }
+        
+        //set hscriptState
+        hscriptState.set(useHaxe,interp);
+
+        //call loaded once the file just loaded
+        executeState("loaded", [PlayState.SONG.song], useHaxe);
+        
+        //interp.addModule(script);
+        //instancering:HaxeModBase = interp.createScriptClassInstance(className);
+
+        trace("Hscript loaded");
+    }
+
+    /**
+     * Init haxe but register module version
+     * @param rawMode 
+     * @param path 
+     * @param className 
+     */
+    public function registerModule(rawMode:Bool = false, path:String = "", className:String = ""){
+        resetHaxeScriptState(true);
+        prog = parser.parseModule(script);
+        trace("register stuffs");
+        interp.registerModule(prog);
+        trace("stuffs registered");
+    }
+
+    /**
+     * build the interp with all essential stuffs injected for the hscript's referencings
+     * steal from BulbyVR lol
+     * @author JOELwindows7
+     * @see https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PluginManager.hx
+     * @return InterpEx() the prebuilt InterpEx instance
+     */
+    function createInterp():InterpEx(){
+        var reterp:InterpEx = new InterpEx();
+
+        reterp.variables.set("Conductor", Conductor);
+        reterp.variables.set("FlxSprite", DynamicSprite);
+        reterp.variables.set("FlxSound", DynamicSound);
+        reterp.variables.set("FlxAtlasFrames", DynamicSprite.DynamicAtlasFrames);
+        reterp.variables.set("FlxGroup", flixel.group.FlxGroup);
+        reterp.variables.set("FlxAngle", flixel.math.FlxAngle);
+        reterp.variables.set("FlxMath", flixel.math.FlxMath);
+        reterp.variables.set("TitleState", TitleState);
+        reterp.variables.set("makeRangeArray", CoolUtil.numberArray);
+
+        reterp.variables.set("FlxG", HscriptGlobals);
+        reterp.variables.set("FlxTimer", flixel.util.FlxTimer);
+        reterp.variables.set("FlxTween", flixel.tweens.FlxTween);
+        reterp.variables.set("Std", Std);
+        reterp.variables.set("StringTools", StringTools);
+        reterp.variables.set("MetroSprite",MetroSprite);
+        reterp.variables.set("FlxTrail", FlxTrail);
+        reterp.variables.set("FlxEase", FlxEase);
+        reterp.variables.set("Reflect", Reflect);
+        reterp.variables.set("Character", Character);
+        reterp.variables.set("OptionsHandler", OptionsHandler);
+
+        #if debug
+        reterp.variables.set("debug", true);
+        #else
+        reterp.variables.set("debug", false);
+        #end
+
+        return reterp;
+    }
+
+    //Bonus stuffs
+
+    function getPropertyByName(id:String)
+    {
+        return Reflect.field(PlayState.instance,id);
+    }
+
+    function makeHscriptSprite(spritePath:String,toBeCalled:String, drawBehind:Bool){
+        // pre lowercasing the song name (makeLuaSprite)
+		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+		switch (songLowercase) {
+			case 'dad-battle': songLowercase = 'dadbattle';
+			case 'philly-nice': songLowercase = 'philly';
+		}
+
+        var data:BitmapData = BitmapData.fromFile(Paths.luaImage(songLowercase + "/" + spritePath));
+
+		var sprite:FlxSprite = new FlxSprite(0,0);
+		var imgWidth:Float = FlxG.width / data.width;
+		var imgHeight:Float = FlxG.height / data.height;
+		var scale:Float = imgWidth <= imgHeight ? imgWidth : imgHeight;
+
+		// Cap the scale at x1
+		if (scale > 1)
+			scale = 1;
+
+		sprite.makeGraphic(Std.int(data.width * scale),Std.int(data.width * scale),FlxColor.TRANSPARENT);
+
+		var data2:BitmapData = sprite.pixels.clone();
+		var matrix:Matrix = new Matrix();
+		matrix.identity();
+		matrix.scale(scale, scale);
+		data2.fillRect(data2.rect, FlxColor.TRANSPARENT);
+		data2.draw(data, matrix, null, null, null, true);
+		sprite.pixels = data2;
+
+        hscriptSprite.set(toBeCalled,sprite);
+        // and I quote:
+		// shitty layering but it works!
+        @:privateAccess
+        {
+            if (drawBehind)
+            {
+                PlayState.instance.removeObject(PlayState.gf);
+                PlayState.instance.removeObject(PlayState.boyfriend);
+                PlayState.instance.removeObject(PlayState.dad);
+            }
+            PlayState.instance.addObject(sprite);
+            if (drawBehind)
+            {
+                PlayState.instance.addObject(PlayState.gf);
+                PlayState.instance.addObject(PlayState.boyfriend);
+                PlayState.instance.addObject(PlayState.dad);
+            }
+        }
+        return toBeCalled;
+    }
+
+    function makeAnimatedHscriptSprite(spritePath:String,names:Array<String>,prefixes:Array<String>,startAnim:String, id:String){
+        // pre lowercasing the song name (makeAnimatedLuaSprite)
+		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+		switch (songLowercase) {
+			case 'dad-battle': songLowercase = 'dadbattle';
+			case 'philly-nice': songLowercase = 'philly';
+		}
+
+        var data:BitmapData = BitmapData.fromFile(Paths.luaImage(songLowercase + '/' + spritePath));
+
+        var sprite:FlxSprite = new FlxSprite(0,0);
+
+		sprite.frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data), Sys.getCwd() + "assets/data/" + songLowercase + "/" + spritePath + ".xml");
+
+		trace(sprite.frames.frames.length);
+
+		for (p in 0...names.length)
+		{
+			var i = names[p];
+			var ii = prefixes[p];
+			sprite.animation.addByPrefix(i,ii,24,false);
+		}
+
+        hscriptSprite.set(id,sprite);
+
+        PlayState.instance.addObject(sprite);
+
+		sprite.animation.play(startAnim);
+		return id;
+    }
+
+    function changeDadCharacter(id:String)
+    {				
+        var olddadx = PlayState.dad.x;
+        var olddady = PlayState.dad.y;
+        PlayState.instance.removeObject(PlayState.dad);
+        PlayState.dad = new Character(olddadx, olddady, id);
+        PlayState.instance.addObject(PlayState.dad);
+        PlayState.instance.iconP2.animation.play(id);
+    }
+
+    function changeBoyfriendCharacter(id:String)
+    {				
+        var oldboyfriendx = PlayState.boyfriend.x;
+        var oldboyfriendy = PlayState.boyfriend.y;
+        PlayState.instance.removeObject(PlayState.boyfriend);
+        PlayState.boyfriend = new Boyfriend(oldboyfriendx, oldboyfriendy, id);
+        PlayState.instance.addObject(PlayState.boyfriend);
+        PlayState.instance.iconP2.animation.play(id);
+    }
+
+    public static function createModchartState(rawMode:Bool = false, path:String = "", useHaxe:String = ""):HaxeScriptState
+    {
+        return new HaxeScriptState(rawMode,path,useHaxe);
+    }
+}
+
+/**
+ * JOELwindows7: BulbyVR's FlxG filtering for safety reason.
+ *
+ */
+class HscriptGlobals {
+    public static var VERSION = FlxG.VERSION;
+    public static var autoPause(get, set):Bool;
+    public static var bitmap(get, never):BitmapFrontEnd;
+    // no bitmapLog
+    public static var camera(get ,set):FlxCamera;
+    public static var cameras(get, never):CameraFrontEnd;
+    // no console frontend
+    // no debugger frontend
+    public static var drawFramerate(get, set):Int;
+    public static var elapsed(get, never):Float;
+    public static var fixedTimestep(get, set):Bool;
+    public static var fullscreen(get, set):Bool;
+    public static var game(get, never):FlxGame;
+    public static var gamepads(get, never):FlxGamepadManager;
+    public static var height(get, never):Int;
+    public static var initialHeight(get, never):Int;
+    public static var initialWidth(get, never):Int;
+    public static var initialZoom(get, never):Float;
+    public static var inputs(get, never):InputFrontEnd;
+    public static var keys(get, never):FlxKeyboard;
+    public static var log(get, never):LogFrontEnd;
+    public static var maxElapsed(get, set):Float;
+    public static var mouse = FlxG.mouse;
+    // no plugins
+    public static var random= FlxG.random;
+    public static var renderBlit(get, never):Bool;
+    public static var renderMethod(get, never):FlxRenderMethod;
+    public static var renderTile(get, never):Bool;
+    // no save because there are other ways to access it and i don't trust you guys
+    public static var sound(default, never):HscriptSoundFrontEndWrapper = new HscriptSoundFrontEndWrapper(FlxG.sound);
+    public static var stage(get, never):Stage;
+    public static var state(get, never):FlxState;
+    public static var swipes(get, never):FlxSwipe; //added
+    public static var timeScale(get, set):Float;
+    public static var touches(get, never):FlxTouch; //added
+    public static var updateFramerate(get,set):Int;
+    // no vcr : )
+    public static var watch(get, never):WatchFrontEnd = FlxG.watch; //added
+    public static var width(get, never):Int;
+    public static var worldBounds(get, never):FlxRect;
+    public static var worldDivisions(get, set):Int;
+    static function get_bitmap() {
+        return FlxG.bitmap;
+    }
+    static function get_cameras() {
+        return FlxG.cameras;
+    }
+    static function get_autoPause():Bool {
+        return FlxG.autoPause;
+    }
+    static function set_autoPause(b:Bool):Bool {
+        return FlxG.autoPause = b;
+    }
+	static function get_drawFramerate():Int
+	{
+		return FlxG.drawFramerate;
+	}
+
+	static function set_drawFramerate(b:Int):Int
+	{
+		return FlxG.drawFramerate = b;
+	}
+    static function get_elapsed():Float {
+        return FlxG.elapsed;
+    }
+	static function get_fixedTimestep():Bool
+	{
+		return FlxG.fixedTimestep;
+	}
+
+	static function set_fixedTimestep(b:Bool):Bool
+	{
+		return FlxG.fixedTimestep = b;
+	}
+	static function get_fullscreen():Bool
+	{
+		return FlxG.fullscreen;
+	}
+
+	static function set_fullscreen(b:Bool):Bool
+	{
+		return FlxG.fullscreen = b;
+	}
+    static function get_height():Int {
+        return FlxG.height;
+    }
+    static function get_initialHeight():Int {
+        return FlxG.initialHeight;
+    }
+    static function get_camera():FlxCamera {
+        return FlxG.camera;
+    }
+    static function set_camera(c:FlxCamera):FlxCamera {
+        return FlxG.camera = c;
+    }
+    static function get_game():FlxGame {
+        return FlxG.game;
+    }
+    static function get_gamepads():FlxGamepadManager {
+        return FlxG.gamepads;
+    }
+    static function get_initialWidth():Int {
+        return FlxG.initialWidth;
+    }
+    static function get_initialZoom():Float {
+        return FlxG.initialZoom;
+    }
+    static function get_inputs() {
+        return FlxG.inputs;
+    }
+    static function get_keys() {
+        return FlxG.keys;
+    }
+    static function get_log(){
+        return FlxG.log;
+    }
+    static function set_maxElapsed(s) {
+        return FlxG.maxElapsed = s;
+    }
+    static function get_maxElapsed() {
+        return FlxG.maxElapsed;
+    }
+    static function get_renderBlit() {
+        return FlxG.renderBlit;
+    }
+    static function get_renderMethod() {
+        return FlxG.renderMethod;
+    }
+    static function get_renderTile() {
+        return FlxG.renderTile;
+    }
+    static function get_stage() {
+        return FlxG.stage;
+    }
+    static function get_state() {
+        return FlxG.state;
+    }
+    static function get_swipes() {
+        return FlxG.swipes;
+    }
+    static function set_timeScale(s) {
+        return FlxG.timeScale = s;
+    }
+    static function get_timeScale() {
+        return FlxG.timeScale;
+    }
+    static function get_touches(){
+        return FlxG.touches;
+    }
+    static function set_updateFramerate(s) {
+        return FlxG.updateFramerate = s;
+    }
+    static function get_updateFramerate() {
+        return FlxG.updateFramerate;
+    }
+    static function get_watch(){
+        return FlxG.watch;
+    }
+    static function get_width() {
+        return FlxG.width;
+    }
+    static function get_worldBounds() {
+        return FlxG.worldBounds;
+    }
+    static function get_worldDivisions() {
+        return FlxG.worldDivisions;
+    }
+	static function set_worldDivisions(s)
+	{
+		return FlxG.worldDivisions = s;
+	}
+
+    public static function addChildBelowMouse<T:DisplayObject>(Child:T, IndexModifier:Int = 0):T {
+        return FlxG.addChildBelowMouse(Child, IndexModifier);
+    }
+    public static function addPostProcess(postProcess) {
+        return FlxG.addPostProcess(postProcess);
+    }
+    public static function collide(?ObjectOrGroup1, ?ObjectOrGroup2, ?NotifyCallback) {
+        return FlxG.collide(ObjectOrGroup1, ObjectOrGroup2, NotifyCallback);
+    }
+    // no open url because i don't trust you guys
+
+	public static function overlap(?ObjectOrGroup1, ?ObjectOrGroup2, ?NotifyCallback, ?ProcessCallback)
+	{
+		return FlxG.overlap(ObjectOrGroup1, ObjectOrGroup2, NotifyCallback, ProcessCallback);
+	}
+    public static function pixelPerfectOverlap(Sprite1, Sprite2, AlphaTolerance = 255, ?Camera) {
+        return FlxG.pixelPerfectOverlap(Sprite1, Sprite2, AlphaTolerance, Camera);
+    }
+    public static function removeChild<T:DisplayObject>(Child:T):T {
+        return FlxG.removeChild(Child);
+    }
+    public static function removePostProcess(postProcess) {
+        FlxG.removePostProcess(postProcess);
+    }
+    // no reset game or reset state because i don't trust you guys
+    public static function resizeGame(Width, Height) {
+        FlxG.resizeGame(Width, Height);
+    }
+    public static function resizeWindow(Width, Height) {
+        FlxG.resizeWindow(Width, Height);
+    }
+    // no switch state because i don't trust you guys
+}
+
+/**
+ * JOELwindows7: BulbyVR's Sound wrapper filter
+ */
+class HscriptSoundFrontEndWrapper {
+
+    var wrapping:SoundFrontEnd;
+    public var defaultMusicGroup(get, set):FlxSoundGroup;
+    public var defaultSoundGroup(get, set):FlxSoundGroup;
+    public var list(get, never):FlxTypedGroup<FlxSound>;
+    public var music (get, set):FlxSound;
+    // no mute keys because why do you need that
+    // no muted because i don't trust you guys
+    // no soundtray enabled because i'm lazy 
+    // no volume because i don't trust you guys
+    function get_defaultMusicGroup() {
+        return wrapping.defaultMusicGroup;
+    }
+    function set_defaultMusicGroup(a) {
+        return wrapping.defaultMusicGroup = a;
+    }
+    function get_defaultSoundGroup() {
+        return wrapping.defaultSoundGroup;
+    }
+    function set_defaultSoundGroup(a) {
+        return wrapping.defaultSoundGroup = a;
+    }
+    function get_list() {
+        return wrapping.list;
+    }
+    function get_music() {
+        return wrapping.music;
+    }
+    function set_music(a) {
+        return wrapping.music = a;
+    }
+    public function load(?EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = false, AutoPlay = false, ?URL, ?OnComplete) {
+        if ((EmbeddedSound is String)) {
+            var sound = FNFAssets.getSound(EmbeddedSound);
+            return wrapping.load(sound, Volume, Looped, Group, AutoDestroy, AutoPlay, URL, OnComplete);
+        }
+        return wrapping.load(EmbeddedSound, Volume, Looped, Group, AutoDestroy, AutoPlay, URL, OnComplete);
+    }
+    public function pause() {
+        wrapping.pause();
+    }
+    public function play(EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = true, ?OnComplete) {
+        if ((EmbeddedSound is String)) {
+            var sound = FNFAssets.getSound(EmbeddedSound);
+            return wrapping.play(sound, Volume, Looped, Group, AutoDestroy, OnComplete);
+        }
+        return wrapping.play(EmbeddedSound, Volume, Looped, Group, AutoDestroy, OnComplete);
+    }
+
+    public function playMusic(Music:FlxSoundAsset,Volume= 1.0, Looped = true, ?Group ) {
+        if ((Music is String)) {
+            var sound = FNFAssets.getSound(Music);
+            wrapping.playMusic(sound, Volume, Looped, Group);
+            return;
+        }
+        wrapping.playMusic(Music, Volume, Looped, Group);        
+
+    }
+    public function resume() {
+        wrapping.resume();
+    }
+    public function new(wrap:SoundFrontEnd) {
+        wrapping = wrap;
+    }
+}
+
+/**
+ * Base for the modchart classes to extend from.
+ * inspire the content of function from Kade Engine's & BulbyVR's
+ * here link https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/assets/data/tutorial/modchart.hscript
+ * @author JOELwindows7
+ */
+class HaxeModBase {
+    var difficulty:Int;
+}

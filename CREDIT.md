@@ -241,6 +241,10 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - manually copy the `hxcpp.h` from your haxe instalation here `C:\HaxeToolkit\haxe\lib\hxcpp\4,2,1\include\hxcpp.h` to `C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\export\release\android\obj\obj\android-v7\__pch\haxe\hxcpp.h`. repeat for other android architectures.
 - https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/ManualUploades/android_luajit_attempt_werrored%20(1).png faile the attempt to start Android with LuaJIT. pls help.
 - https://vcpkg.io/en/packages.html. also don't forget to includePath the entire vcpkg repo folder `<vcpkg>\**` stuff like that. download it here https://vcpkg.io/en/getting-started.html. from Microsoft
+- https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PluginManager.hx plugin managerer modding+
+- https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PlayState.hx playstate modding+
+- https://lib.haxe.org/p/haxe-files haxe file system manager
+- https://lib.haxe.org/p/hscript/ hscript
 - 
   
 # in event of git merge conflict
@@ -319,7 +323,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://odysee.com/@JOELwindows7:a/succ-reverberations-remake:7?r=FYLo4xpyS1GHsLWfFtZui1wUUV399JPK JOELwindows7 recorded succ in Audacity and then reverbed it. JOELwindows7 also redrew succ with all the compositions in GIMP yeah
 - https://knowyourmeme.com/memes/meme-man all meme man information Special meme fresh.
 - https://calver.org/ Use the calendar versioning system! let's see if that works. For us, our scheme will be **`YYYY.0M.MINOR.MICRO`** idk. I believe just to track the time when this was released.
-- https://gamebanana.com/mods/44208 FNF Modding plus. Chart JSON parameter added here and the compatibility now is being added.
+- https://gamebanana.com/mods/44208 ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 ), Asset Warning: has NC, ND) FNF Modding plus Bulby VR. Chart JSON parameter added here and the compatibility now is being added. inspire the Haxe Script modchart.
+- https://github.com/TheDrawingCoder-Gamer/Funkin ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 )) BulbyVR. the source code for FNFM+ above. the gamebanana page has been trashed, because troubles here and there.
 - https://gamebanana.com/tools/7158 FunkinVortex. inspire the Modding Plus specific chart JSON parameters here and there!
 - https://github.com/haxorplatform/androidhx android haxe template project. attempted android porting faile
 - https://lib.haxe.org/p/android6permissions android 6 permission checker for haxe. attempted android porting faile
@@ -337,6 +342,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://lib.haxe.org/p/ki-filesystem ki. use ki's filesystemer because internal sys filesystem doesn't work in Android
 - https://lib.haxe.org/p/haxe-files vegardit. um okay. how about this one?
 - https://github.com/JOELwindows7/linc_luajit JOELwindows7. I modded this appending luckydog7's android attempted (https://githubc.com/luckydog7/linc_luajit ). apparently android does not work. but hey, I have added Linux Raspberry Pi supports too. not tested yet. upstream by Andrei Rudenko https://github.com/AndreiRudenko/linc_luajit .
+- https://lib.haxe.org/p/hscript/ the hscript. since lua does not work in Android, here'as salte
+- https://github.com/ianharrigan/hscript-ex extension of hscript
 - 
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!

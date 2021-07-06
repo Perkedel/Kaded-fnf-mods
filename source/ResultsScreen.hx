@@ -172,6 +172,7 @@ class ResultsScreen extends FlxSubState
         cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
         //JOELwindows7: button sings
+        //addAcceptButton();
 
 		super.create();
 	}

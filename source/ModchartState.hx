@@ -287,8 +287,8 @@ class ModchartState
         PlayState.instance.addObject(sprite);
 
 		sprite.animation.play(startAnim);
-		return id;
 		#end
+		return id;
 	}
 
 	function makeLuaSprite(spritePath:String,toBeCalled:String, drawBehind:Bool)
@@ -373,11 +373,8 @@ class ModchartState
 
 				var result;
 
-				if(rawMode){
-					//JOELwindows7: execute le other file
-					result = LuaL.dofile(lua, Paths.lua(path));
-				} else
-					result = LuaL.dofile(lua, Paths.lua(songLowercase + "/modchart")); // execute le file
+				//JOELwindows7: decide if should load in RAW path or predefined.
+				result = LuaL.dofile(lua, Paths.lua(rawMode? path : songLowercase + "/modchart")); // execute le file
 	
 				if (result != 0)
 				{
@@ -906,9 +903,8 @@ class ModchartState
 					FlxG.camera.setFilters([new ShaderFilter(shaders[shaderIndex])]);
 				});*/
 
-				// default strums
-
 				//JOELwindows7: more special functions
+
 				Lua_helper.add_callback(lua, "cheerNow", function(ooutOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false, justOne:Bool = false, toWhichBg:Int = 0){
 					PlayState.instance.cheerNow(ooutOfBeatFractioning,doItOn,randomizeColor,justOne,toWhichBg);
 				});
@@ -1000,6 +996,8 @@ class ModchartState
 				});
 				//end more special functions
 				//So you don't have to hard code your cool effects.
+
+				// default strums
 
 				for (i in 0...PlayState.strumLineNotes.length) {
 					var member = PlayState.strumLineNotes.members[i];

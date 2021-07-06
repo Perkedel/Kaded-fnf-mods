@@ -288,6 +288,8 @@ class PlayState extends MusicBeatState
 
 	private var executeModchart = false;
 	private var executeStageScript = false; //JOELwindows7: for stage lua scripter
+	private var executeModHscript = false; //JOELwindows7: modchart but hscript. thancc BulbyVR
+	private var executeStageHscript = false;
 
 	// API stuff
 	
@@ -340,13 +342,15 @@ class PlayState extends MusicBeatState
 		
 		removedVideo = false;
 
+		var p; //JOELwindows7: the haxe-file stuff.
+
 		#if ((windows || linux) && sys)
 		executeModchart = FileSystem.exists(Paths.lua(songLowercase  + "/modchart"));
 		if (executeModchart)
 			PlayStateChangeables.Optimize = false;
 		#elseif (windows || linux || android)
 		//JOELwindows7: for not sys. use vergadit's filesystemers.
-		var p = Path.of(Paths.lua(songLowercase  + "/modchart"));
+		p = Path.of(Paths.lua(songLowercase  + "/modchart"));
 		executeModchart = p.exists();
 		trace("is modchart file exist? " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 		if (executeModchart)
@@ -361,7 +365,14 @@ class PlayState extends MusicBeatState
 		#end
 
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(songLowercase + "/modchart"));
-		//
+		
+		// JOELwindows7: now for the hscript
+		p = Path.of(Paths.hscript(songLowercase + "/modchart"));
+		executeModHscript = p.exists();
+		trace("is hscript modchart file exist? " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
+		if (executeModHscript)
+			PlayStateChangeables.Optimize = false;
+		trace('Mod hscript chart: ' + executeModHscript + " - " + Paths.hscript(songLowercase + "/modchart"));
 
 		#if (windows && cpp)
 		// Making difficulty text for Discord Rich Presence.
@@ -1878,6 +1889,9 @@ class PlayState extends MusicBeatState
 	public static var luaModchart:ModchartState = null;
 	public static var stageScript:ModchartState = null;
 	#end
+	//JOELwindows7: same as above but hscript.
+	public static var hscriptModchart:HaxeScriptState = null;
+	public static var stageHscript:HaxeScriptState = null;
 
 	function startCountdown():Void
 	{
@@ -1910,6 +1924,12 @@ class PlayState extends MusicBeatState
 			stageScript.executeState('start',[songLowercase]);
 		}
 		#end
+		//JOELwindows7: now for the hscript init
+		if(executeModHscript)
+		{
+			hscriptModchart = HaxeScriptState.createModchartState();
+			hscriptModchart.executeState('start',[songLowercase]);
+		}
 
 		talking = false;
 		startedCountdown = true;
@@ -5372,10 +5392,19 @@ class PlayState extends MusicBeatState
 			stageScript.setVar("areChromaScreen", multiIsChromaScreen);
 		}
 		#end
+		if(executeStageHscript){
+			trace('stage script: ' + executeStageHscript + " - " + Paths.hscript(daPath)); //JOELwindows7: check too
+
+			stageHscript = HaxeScriptState.createModchartState(true,daPath);
+
+			stageHscript.setVar("originalColors", multiOriginalColor);
+			stageHscript.setVar("areChromaScreen", multiIsChromaScreen);
+		}
 	}
 
 	//JOELwindows7: core starting point for custom stage
 	function initDaCustomStage(stageJsonPath:String){
+		var p;
 		trace("Lets init da json stage " + stageJsonPath);
 		curStage = SONG.stage;
 		loadStageFile("stages/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage));
@@ -5394,7 +5423,7 @@ class PlayState extends MusicBeatState
 			#elseif (windows || linux || android)
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
 			{
-				var p = Path.of(Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
+				p = Path.of(Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
 				trace("Stage file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 				executeStageScript = p.exists();
 			}
@@ -5405,13 +5434,25 @@ class PlayState extends MusicBeatState
 				executeStageScript = false;
 			#end
 
+			//for hscript pls
+			p = Path.of(Paths.hscript("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
+			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+				executeStageHscript = p.exists();
+			trace("Stage hscript file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
+
 			#if ((windows || linux) && cpp)
-			if(executeStageScript){
+			if(executeStageScript || executeStageHscript){
 				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
 			} else {
 				spawnStageImages(customStage);
 			}
-			#end
+			#else
+			if(executeStageHscript){
+				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+			} else {
+				spawnStageImages(customStage);
+			}
+			#end	
 		}
 	}
 
