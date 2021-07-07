@@ -46,14 +46,16 @@ class MusicBeatState extends FlxUIState
 	private var controls(get, never):Controls;
 
 	//JOELwindows7: mouse support flags
-	private var haveClicked = false;
-	private var haveBacked = false;
-	private var haveLefted = false;
-	private var haveUpped = false;
-	private var haveDowned = false;
-	private var haveRighted = false;
-	private var havePausened = false;
-	private var haveDebugSevened = false;
+	private var haveClicked:Bool = false;
+	private var haveBacked:Bool = false;
+	private var haveLefted:Bool = false;
+	private var haveUpped:Bool = false;
+	private var haveDowned:Bool = false;
+	private var haveRighted:Bool = false;
+	private var havePausened:Bool = false;
+	private var haveRetryed:Bool = false;
+	private var haveViewReplayed:Bool = false;
+	private var haveDebugSevened:Bool = false;
 
 	var backButton:FlxSprite; //JOELwindows7: the back button here
 	var leftButton:FlxSprite; //JOELwindows7: the left button here
@@ -62,6 +64,8 @@ class MusicBeatState extends FlxUIState
 	var downButton:FlxSprite; //JOELwindows7: the down button here
 	var pauseButton:FlxSprite; //JOELwindows7: the pause button here
 	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
+	var retryButton:FlxSprite; //JOELwindows7: the retry button here
+	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
 	//var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
 	public var onScreenGameplayButtons:OnScreenGameplayButtons; //JOELwindows7: the touchscreen buttons here
 
@@ -199,6 +203,7 @@ class MusicBeatState extends FlxUIState
 		backButton.updateHitbox();
 		backButton.antialiasing = true;
 		add(backButton);
+		return backButton;
 	}
 	private function addLeftButton(x:Int=100,y:Int=1280-100,scale:Float=.5){
 		leftButton = new FlxSprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
@@ -207,6 +212,7 @@ class MusicBeatState extends FlxUIState
 		leftButton.updateHitbox();
 		leftButton.antialiasing = true;
 		add(leftButton);
+		return leftButton;
 	}
 	private function addRightButton(x:Int=525,y:Int=1280-100,scale:Float=.5){
 		rightButton = new FlxSprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
@@ -215,6 +221,7 @@ class MusicBeatState extends FlxUIState
 		rightButton.updateHitbox();
 		rightButton.antialiasing = true;
 		add(rightButton);
+		return rightButton;
 	}
 	private function addUpButton(x:Int=240,y:Int=1280-100,scale:Float=.5){
 		upButton = new FlxSprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
@@ -223,6 +230,7 @@ class MusicBeatState extends FlxUIState
 		upButton.updateHitbox();
 		upButton.antialiasing = true;
 		add(upButton);
+		return upButton;
 	}
 	private function addDownButton(x:Int=450,y:Int=1280-100,scale:Float=.5){
 		downButton = new FlxSprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
@@ -231,6 +239,7 @@ class MusicBeatState extends FlxUIState
 		downButton.updateHitbox();
 		downButton.antialiasing = true;
 		add(downButton);
+		return downButton;
 	}
 	private function addPauseButton(x:Int=640,y:Int=10,scale:Float=.5){
 		pauseButton = new FlxSprite(x, y).loadGraphic(Paths.image('pauseButton'));
@@ -239,6 +248,7 @@ class MusicBeatState extends FlxUIState
 		pauseButton.updateHitbox();
 		pauseButton.antialiasing = true;
 		add(pauseButton);
+		return pauseButton;
 	}
 	private function addAcceptButton(x:Int=1280,y:Int=360,scale:Float=.5){
 		acceptButton = new FlxSprite(x, y).loadGraphic(Paths.image('acceptButton'));
@@ -247,6 +257,25 @@ class MusicBeatState extends FlxUIState
 		acceptButton.updateHitbox();
 		acceptButton.antialiasing = true;
 		add(acceptButton);
+		return acceptButton;
+	}
+	private function addRetryButton(x:Int = 500, y:Int =500, scale:Float=.5){
+		retryButton = new FlxSprite(x, y).loadGraphic(Paths.image('retryButton'));
+		retryButton.setGraphicSize(Std.int(retryButton.width * scale),Std.int(retryButton.height * scale));
+		retryButton.scrollFactor.set();
+		retryButton.updateHitbox();
+		retryButton.antialiasing = true;
+		add(retryButton);
+		return retryButton;
+	}
+	private function addViewReplayButton(x:Int = 500, y:Int =500, scale:Float=.5){
+		viewReplayButton = new FlxSprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
+		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale),Std.int(viewReplayButton.height * scale));
+		viewReplayButton.scrollFactor.set();
+		viewReplayButton.updateHitbox();
+		viewReplayButton.antialiasing = true;
+		add(viewReplayButton);
+		return viewReplayButton;
 	}
 	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false){
 		/*

@@ -1,29 +1,84 @@
 //package;
 
-import flixel.system.frontEnds.WatchFrontEnd;
-import flixel.system.frontEnds.LogFrontEnd;
+import flixel.util.FlxDestroyUtil;
+import flixel.*;
+import flixel.FlxGame;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxSubState;
+import flixel.FlxState;
+import flixel.FlxObject;
+import flixel.input.gamepad.FlxGamepadManager;
+import flixel.input.FlxSwipe;
+import flixel.input.FlxAccelerometer;
+import flixel.input.touch.FlxTouch;
+#if FLX_TOUCH
+import flixel.input.touch.FlxTouchManager;
+#end
+import flixel.input.keyboard.FlxKeyboard;
+import flixel.system.frontEnds.InputFrontEnd;
+import flixel.system.*;
+import flixel.system.frontEnds.*;
+import flixel.system.frontEnds.CameraFrontEnd;
+import flixel.system.frontEnds.BitmapFrontEnd;
+import flixel.system.FlxAssets.FlxSoundAsset;
+import flixel.system.FlxSound;
+import flixel.sound.*;
+import flixel.addons.display.FlxGridOverlay;
+import flixel.addons.effects.FlxTrail;
+import flixel.addons.effects.FlxTrailArea;
+import flixel.addons.effects.chainable.FlxEffectSprite;
+import flixel.addons.effects.chainable.FlxWaveEffect;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.system.FlxAssets.*;
 import hscript.*;
 import hx.files.*;
 import Controls;
 import openfl.display3D.textures.VideoTexture;
+import flixel.*;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.atlas.FlxAtlas;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.system.FlxSoundGroup;
+import flixel.group.FlxGroup;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
+import flixel.system.FlxSound;
+import flixel.system.FlxSound.*;
+import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
-import openfl.filters.ShaderFilter;
 import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.ui.FlxBar;
+import flixel.util.FlxCollision;
+import flixel.util.FlxColor;
+import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
+import flixel.util.FlxTimer;
+import flixel.math.FlxAngle;
+import flixel.math.FlxMath;
+import openfl.filters.ShaderFilter;
+import openfl.display.DisplayObject;
+import openfl.display.Stage;
+import openfl.display.Sprite;
+import openfl.display.BlendMode;
+import openfl.display.StageQuality;
+import openfl.media.Sound;
+import openfl.geom.Matrix;
+import openfl.Lib;
 import flixel.util.FlxColor;
 import openfl.geom.Matrix;
 import openfl.display.BitmapData;
 import lime.app.Application;
 import flixel.FlxSprite;
-import llua.Convert;
-import llua.Lua;
-import llua.State;
-import llua.LuaL;
-import flixel.FlxBasic;
-import flixel.FlxCamera;
-import flixel.FlxG;
 import lime.utils.Assets;
+import hscript.*;
+import plugins.tools.MetroSprite;
+
+using StringTools;
 
 /**
  * Modchart state but it's Haxe script. Also no need recompile. you can modchart with Haxe language.
@@ -36,9 +91,11 @@ import lime.utils.Assets;
 class HaxeScriptState {
     public var script:String = ""; //Content of the hscript file
     var parser:ParserEx = new ParserEx();
-    var prog;
-    var interp:InterpEx = createInterp();
+    var prog = null;
+    var interp:InterpEx;
+    var retailIsReady:Bool = false;
     var hscriptState:Map<String,InterpEx>;
+    var defaultUseHaxe:String = "modchart";
     //var instancering;
 
     //Some other variables
@@ -50,10 +107,31 @@ class HaxeScriptState {
      * @param path 
      * @param className 
      */
-    function new(rawMode:Bool = false, path:String = "", useHaxe:String = "",className:String = "HaxeMod"){
+    function new(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart",className:String = "HaxeMod"){
         trace("open hscript state because we are cool");
         initHaxeScriptState(rawMode,path,useHaxe,className);
     }
+
+    function callHscript(func_name:String, args:Array<Dynamic>, useHaxe:String = ""){
+        // if function doesn't exist
+		if (!hscriptState.get(useHaxe).variables.exists(func_name)) {
+			trace("Function doesn't exist, silently skipping...");
+			return;
+		}
+		var method = hscriptState.get(useHaxe).variables.get(func_name);
+		switch(args.length) {
+			case 0:
+				method();
+			case 1:
+				method(args[0]);
+		}
+    }
+
+    function callAllHScript(func_name:String, args:Array<Dynamic>) {
+		for (key in hscriptState.keys()) {
+			callHscript(func_name, args, key);
+		}
+	}
 
     /**
      * Set variable's value into something.
@@ -61,14 +139,20 @@ class HaxeScriptState {
      * @param var_name which variable?
      * @param object what value be filled with?
      */
-    public function setVar(var_name : String, object : Dynamic){
+    public function setVar(name:String, value:Dynamic, useHaxe:String = "modchart"){
         if(interp != null)
-            interp.variables.set(var_name,object);
+            if(retailIsReady){
+                hscriptState.get(useHaxe).variables.set(name,value);
+            } else
+                interp.variables.set(name,value);
         else
         {
             interp = createInterp();
-            setVar(var_name,object);
+            setVar(name,value,useHaxe);
         }
+    }
+    public function getVar(name:String, useHaxe:String = "modchart"):Dynamic{
+        return hscriptState.get(useHaxe).variables.get(name);
     }
 
     /**
@@ -80,19 +164,8 @@ class HaxeScriptState {
         setVar(var_name,object);
     }
 
-    public function executeState(name:String,args:Array<Dynamic>, useHaxe:String){
-        // if function doesn't exist
-		if (!hscriptStates.get(usehaxe).variables.exists(func_name)) {
-			trace("Function doesn't exist, silently skipping...");
-			return;
-		}
-		var method = hscriptStates.get(usehaxe).variables.get(func_name);
-		switch(args.length) {
-			case 0:
-				method();
-			case 1:
-				method(args[0]);
-		}
+    public function executeState(name:String,args:Array<Dynamic>, useHaxe:String = "modchart"){
+        callHscript(name,args,useHaxe);
     }
 
     function resetHaxeScriptState(soft:Bool = false){
@@ -106,7 +179,7 @@ class HaxeScriptState {
         interp = createInterp();
     }
 
-    function fillInScripts(rawMode:bool = false, path:String = ""){
+    function fillInScripts(rawMode:Bool = false, path:String = ""){
         // Pre lowecase song files
         var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
             switch (songLowercase) {
@@ -127,8 +200,10 @@ class HaxeScriptState {
      */
     public function createScriptClassInstance(className:String, args:Array<Dynamic> = null, addModule:String){
         if(interp != null)
+        {
             if(addModule != null && addModule != "") interp.addModule(addModule);
             return interp.createScriptClassInstance(className, args);
+        }
         else
         {
             interp = createInterp();
@@ -136,7 +211,7 @@ class HaxeScriptState {
         }
     }
 
-    function initHaxeScriptState(rawMode:Bool = false, path:String = "", useHaxe:String = "",className:String = ""){
+    function initHaxeScriptState(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart",className:String = ""){
         //start by init core stuffs.
         resetHaxeScriptState();
 
@@ -195,19 +270,19 @@ class HaxeScriptState {
         setVar("insert", PlayState.instance.insert);
         setVar("setDefaultZoom", function(zoom) {PlayState.instance.defaultCamZoom = zoom;});
         setVar("removeSprite", function(sprite) {
-			remove(sprite);
+			PlayState.instance.remove(sprite);
 		});
         setVar("instancePluginClass", createScriptClassInstance);
 
         // Callbacks heres, Kade Engine like
         //Sprites
         addCallback("makeSprite", makeHscriptSprite);
-        addCallback("changeDadCharacter", changeDadCharacte);
+        addCallback("changeDadCharacter", changeDadCharacter);
         addCallback("changeBoyfriendCharacter", changeBoyfriendCharacter);
         addCallback("getProperty", getPropertyByName);
         //addCallback("makeAnimatedSprite", makeAnimatedLuaSprite); //KadeDev says it's in development right now.
         addCallback("destroySprite", function(id:String) {
-            var sprite = luaSprites.get(id);
+            var sprite = hscriptSprite.get(id);
             if (sprite == null)
                 return false;
             PlayState.instance.removeObject(sprite);
@@ -493,131 +568,131 @@ class HaxeScriptState {
 
         // tweens
         addCallback("tweenCameraPos", function(toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenCameraAngle", function(toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenCameraZoom", function(toZoom:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenHudPos", function(toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
                         
         addCallback("tweenHudAngle", function(toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(PlayState.instance.camHUD, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(PlayState.instance.camHUD, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenHudZoom", function(toZoom:Float, time:Float, onComplete:String) {
-            FlxTween.tween(PlayState.instance.camHUD, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(PlayState.instance.camHUD, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenPos", function(id:String, toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenPosXAngle", function(id:String, toX:Int, toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenPosYAngle", function(id:String, toY:Int, toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenAngle", function(id:String, toAngle:Int, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenCameraPosOut", function(toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
                         
         addCallback("tweenCameraAngleOut", function(toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenCameraZoomOut", function(toZoom:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenHudPosOut", function(toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
                         
         addCallback("tweenHudAngleOut", function(toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(PlayState.instance.camHUD, {angle:toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(PlayState.instance.camHUD, {angle:toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenHudZoomOut", function(toZoom:Float, time:Float, onComplete:String) {
-            FlxTween.tween(PlayState.instance.camHUD, {zoom:toZoom}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(PlayState.instance.camHUD, {zoom:toZoom}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenPosOut", function(id:String, toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenPosXAngleOut", function(id:String, toX:Int, toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenPosYAngleOut", function(id:String, toY:Int, toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenAngleOut", function(id:String, toAngle:Int, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenCameraPosIn", function(toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
                         
         addCallback("tweenCameraAngleIn", function(toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenCameraZoomIn", function(toZoom:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenHudPosIn", function(toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
                         
         addCallback("tweenHudAngleIn", function(toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(PlayState.instance.camHUD, {angle:toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(PlayState.instance.camHUD, {angle:toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenHudZoomIn", function(toZoom:Float, time:Float, onComplete:String) {
-            FlxTween.tween(PlayState.instance.camHUD, {zoom:toZoom}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,["camera"]);}}});
+            FlxTween.tween(PlayState.instance.camHUD, {zoom:toZoom}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenPosIn", function(id:String, toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenPosXAngleIn", function(id:String, toX:Int, toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenPosYAngleIn", function(id:String, toY:Int, toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenAngleIn", function(id:String, toAngle:Int, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenFadeIn", function(id:String, toAlpha:Float, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {ease: FlxEase.circIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {ease: FlxEase.circIn, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         addCallback("tweenFadeOut", function(id:String, toAlpha:Float, time:Float, onComplete:String) {
-            FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {ease: FlxEase.circOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callLua(onComplete,[id]);}}});
+            FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {ease: FlxEase.circOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,[id]);}}});
         });
 
         //Shaders
@@ -756,6 +831,8 @@ class HaxeScriptState {
         //instancering:HaxeModBase = interp.createScriptClassInstance(className);
 
         trace("Hscript loaded");
+
+        retailIsReady = true;
     }
 
     /**
@@ -766,9 +843,9 @@ class HaxeScriptState {
      */
     public function registerModule(rawMode:Bool = false, path:String = "", className:String = ""){
         resetHaxeScriptState(true);
-        prog = parser.parseModule(script);
+        var progs = parser.parseModule(script);
         trace("register stuffs");
-        interp.registerModule(prog);
+        interp.registerModule(progs);
         trace("stuffs registered");
     }
 
@@ -779,7 +856,7 @@ class HaxeScriptState {
      * @see https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PluginManager.hx
      * @return InterpEx() the prebuilt InterpEx instance
      */
-    function createInterp():InterpEx(){
+    function createInterp():InterpEx{
         var reterp:InterpEx = new InterpEx();
 
         reterp.variables.set("Conductor", Conductor);
@@ -902,6 +979,31 @@ class HaxeScriptState {
 		return id;
     }
 
+    function getActorByName(id:String):Dynamic
+    {
+        // pre defined names
+        switch(id)
+        {
+            case 'boyfriend':
+                @:privateAccess
+                return PlayState.boyfriend;
+            case 'girlfriend':
+                @:privateAccess
+                return PlayState.gf;
+            case 'dad':
+                @:privateAccess
+                return PlayState.dad;
+        }
+        // lhscript objects or what ever
+        if (hscriptSprite.get(id) == null)
+        {
+            if (Std.parseInt(id) == null)
+                return Reflect.getProperty(PlayState.instance,id);
+            return PlayState.PlayState.strumLineNotes.members[Std.parseInt(id)];
+        }
+        return hscriptSprite.get(id);
+    }
+
     function changeDadCharacter(id:String)
     {				
         var olddadx = PlayState.dad.x;
@@ -922,9 +1024,19 @@ class HaxeScriptState {
         PlayState.instance.iconP2.animation.play(id);
     }
 
-    public static function createModchartState(rawMode:Bool = false, path:String = "", useHaxe:String = ""):HaxeScriptState
+    public static function createModchartState(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart"):HaxeScriptState
     {
         return new HaxeScriptState(rawMode,path,useHaxe);
+    }
+
+    public function die(){
+        trace("Hscript: Eik serkat!");
+        hscriptState = null;
+        prog = null;
+        interp = null;
+        parser = null;
+        script = "";
+        retailIsReady = false;
     }
 }
 
@@ -965,12 +1077,12 @@ class HscriptGlobals {
     public static var sound(default, never):HscriptSoundFrontEndWrapper = new HscriptSoundFrontEndWrapper(FlxG.sound);
     public static var stage(get, never):Stage;
     public static var state(get, never):FlxState;
-    public static var swipes(get, never):FlxSwipe; //added
+    public static var swipes(get, never):Array<FlxSwipe>; //added
     public static var timeScale(get, set):Float;
-    public static var touches(get, never):FlxTouch; //added
+    public static var touches(get, never):Array<FlxTouch>; //added
     public static var updateFramerate(get,set):Int;
     // no vcr : )
-    public static var watch(get, never):WatchFrontEnd = FlxG.watch; //added
+    public static var watch(get, never):WatchFrontEnd; //added
     public static var width(get, never):Int;
     public static var worldBounds(get, never):FlxRect;
     public static var worldDivisions(get, set):Int;
@@ -1070,7 +1182,7 @@ class HscriptGlobals {
     static function get_state() {
         return FlxG.state;
     }
-    static function get_swipes() {
+    static function get_swipes():Array<FlxSwipe> {
         return FlxG.swipes;
     }
     static function set_timeScale(s) {
@@ -1080,7 +1192,7 @@ class HscriptGlobals {
         return FlxG.timeScale;
     }
     static function get_touches(){
-        return FlxG.touches;
+        return FlxG.touches.list;
     }
     static function set_updateFramerate(s) {
         return FlxG.updateFramerate = s;
@@ -1176,7 +1288,8 @@ class HscriptSoundFrontEndWrapper {
     }
     public function load(?EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = false, AutoPlay = false, ?URL, ?OnComplete) {
         if ((EmbeddedSound is String)) {
-            var sound = FNFAssets.getSound(EmbeddedSound);
+            // var sound = FNFAssets.getSound(EmbeddedSound);
+            var sound = Paths.sound(EmbeddedSound);
             return wrapping.load(sound, Volume, Looped, Group, AutoDestroy, AutoPlay, URL, OnComplete);
         }
         return wrapping.load(EmbeddedSound, Volume, Looped, Group, AutoDestroy, AutoPlay, URL, OnComplete);
@@ -1186,7 +1299,8 @@ class HscriptSoundFrontEndWrapper {
     }
     public function play(EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = true, ?OnComplete) {
         if ((EmbeddedSound is String)) {
-            var sound = FNFAssets.getSound(EmbeddedSound);
+            // var sound = FNFAssets.getSound(EmbeddedSound);
+            var sound = Paths.sound(EmbeddedSound);
             return wrapping.play(sound, Volume, Looped, Group, AutoDestroy, OnComplete);
         }
         return wrapping.play(EmbeddedSound, Volume, Looped, Group, AutoDestroy, OnComplete);
@@ -1194,7 +1308,8 @@ class HscriptSoundFrontEndWrapper {
 
     public function playMusic(Music:FlxSoundAsset,Volume= 1.0, Looped = true, ?Group ) {
         if ((Music is String)) {
-            var sound = FNFAssets.getSound(Music);
+            // var sound = FNFAssets.getSound(Music);
+            var sound = Paths.music(Music);
             wrapping.playMusic(sound, Volume, Looped, Group);
             return;
         }

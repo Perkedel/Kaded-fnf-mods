@@ -53,6 +53,28 @@ class ResultsScreen extends FlxSubState
     public static var handoverHasVideo:Bool = false;
     public static var handoverVideoPath:String;
 
+    //JOELwindows7: mouse support flags
+	private var haveClicked:Bool = false;
+	private var haveBacked:Bool = false;
+	private var haveLefted:Bool = false;
+	private var haveUpped:Bool = false;
+	private var haveDowned:Bool = false;
+	private var haveRighted:Bool = false;
+	private var havePausened:Bool = false;
+	private var haveRetryed:Bool = false;
+	private var haveViewReplayed:Bool = false;
+	private var haveDebugSevened:Bool = false;
+
+	var backButton:FlxSprite; //JOELwindows7: the back button here
+	var leftButton:FlxSprite; //JOELwindows7: the left button here
+	var rightButton:FlxSprite; //JOELwindows7: the right button here
+	var upButton:FlxSprite; //JOELwindows7: the up button here
+	var downButton:FlxSprite; //JOELwindows7: the down button here
+	var pauseButton:FlxSprite; //JOELwindows7: the pause button here
+	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
+	var retryButton:FlxSprite; //JOELwindows7: the retry button here
+	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
+
     public function new(tellHasVideo:Bool = false, tellVideoPath:String = "assets/videos/null.webm"){
         super();
         //JOELwindows7: there may be epilogue cutscene
@@ -172,9 +194,14 @@ class ResultsScreen extends FlxSubState
         cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
         //JOELwindows7: button sings
-        //addAcceptButton();
+        addAcceptButton(FlxG.width-100, FlxG.height-125);
+        addViewReplayButton(Std.int((FlxG.width/2)-300), FlxG.height-250);
+        addRetryButton(Std.int((FlxG.width/2)-300), FlxG.height-125);
 
 		super.create();
+
+        //JOELwindows7: visiblize mouse
+        FlxG.mouse.visible = true;
 	}
 
 
@@ -187,7 +214,7 @@ class ResultsScreen extends FlxSubState
 
         // keybinds
 
-        if (PlayerSettings.player1.controls.ACCEPT || FlxG.mouse.justPressed) //JOELwindows7: install mouse support
+        if (PlayerSettings.player1.controls.ACCEPT || haveClicked) //JOELwindows7: install mouse support
         {
             music.fadeOut(0.3);
             
@@ -212,9 +239,11 @@ class ResultsScreen extends FlxSubState
             }
             else
                 FlxG.switchState(new FreeplayState());
+
+            haveClicked = false;
         }
 
-        if (FlxG.keys.justPressed.F1)
+        if (FlxG.keys.justPressed.F1 || haveViewReplayed)
         {
             trace(PlayState.rep.path);
             PlayState.rep = Replay.LoadReplay(PlayState.rep.path);
@@ -250,9 +279,11 @@ class ResultsScreen extends FlxSubState
             PlayState.storyDifficulty = PlayState.rep.replay.songDiff;
             PlayState.storyWeek = 0;
             LoadingState.loadAndSwitchState(new PlayState());
+
+            haveViewReplayed = false;
         }
 
-        if (FlxG.keys.justPressed.F2 )
+        if (FlxG.keys.justPressed.F2 || haveRetryed)
         {
             PlayState.rep = null;
 
@@ -286,9 +317,108 @@ class ResultsScreen extends FlxSubState
             PlayState.storyDifficulty = PlayState.storyDifficulty;
             PlayState.storyWeek = 0;
             LoadingState.loadAndSwitchState(new PlayState());
+
+            haveRetryed = false; //JOELwindows7: refalsing flag after done.
         }
 
 		super.update(elapsed);
 		
+        //JOELwindows7: mouse supports. bruh, why not extend from MusicBeatSubstate, wait, Kade? whoah.
+        //Didn't expect that. why FlxSubstate? not MusicBeat substate?
+        if(FlxG.mouse.overlaps(viewReplayButton)){
+            if(FlxG.mouse.justPressed)
+                haveViewReplayed = true;
+        } 
+        if(FlxG.mouse.overlaps(retryButton)){
+            if(FlxG.mouse.justPressed)
+                haveRetryed = true;
+        } 
+        if(FlxG.mouse.overlaps(acceptButton)){
+            if(FlxG.mouse.justPressed)
+                haveClicked = true;
+        }
+	}
+
+    //JOELwindows7: buttons
+	private function addBackButton(x:Int=720-200,y:Int=1280-100,scale:Float=.5){
+		backButton = new FlxSprite(x, y).loadGraphic(Paths.image('backButton'));
+		backButton.setGraphicSize(Std.int(backButton.width * scale),Std.int(backButton.height * scale));
+		backButton.scrollFactor.set();
+		backButton.updateHitbox();
+		backButton.antialiasing = true;
+		add(backButton);
+		return backButton;
+	}
+	private function addLeftButton(x:Int=100,y:Int=1280-100,scale:Float=.5){
+		leftButton = new FlxSprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
+		leftButton.setGraphicSize(Std.int(leftButton.width * scale),Std.int(leftButton.height * scale));
+		leftButton.scrollFactor.set();
+		leftButton.updateHitbox();
+		leftButton.antialiasing = true;
+		add(leftButton);
+		return leftButton;
+	}
+	private function addRightButton(x:Int=525,y:Int=1280-100,scale:Float=.5){
+		rightButton = new FlxSprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
+		rightButton.setGraphicSize(Std.int(rightButton.width * scale),Std.int(rightButton.height * scale));
+		rightButton.scrollFactor.set();
+		rightButton.updateHitbox();
+		rightButton.antialiasing = true;
+		add(rightButton);
+		return rightButton;
+	}
+	private function addUpButton(x:Int=240,y:Int=1280-100,scale:Float=.5){
+		upButton = new FlxSprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
+		upButton.setGraphicSize(Std.int(upButton.width * scale),Std.int(upButton.height * scale));
+		upButton.scrollFactor.set();
+		upButton.updateHitbox();
+		upButton.antialiasing = true;
+		add(upButton);
+		return upButton;
+	}
+	private function addDownButton(x:Int=450,y:Int=1280-100,scale:Float=.5){
+		downButton = new FlxSprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
+		downButton.setGraphicSize(Std.int(downButton.width * scale),Std.int(downButton.height * scale));
+		downButton.scrollFactor.set();
+		downButton.updateHitbox();
+		downButton.antialiasing = true;
+		add(downButton);
+		return downButton;
+	}
+	private function addPauseButton(x:Int=640,y:Int=10,scale:Float=.5){
+		pauseButton = new FlxSprite(x, y).loadGraphic(Paths.image('pauseButton'));
+		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale),Std.int(pauseButton.height * scale));
+		pauseButton.scrollFactor.set();
+		pauseButton.updateHitbox();
+		pauseButton.antialiasing = true;
+		add(pauseButton);
+		return pauseButton;
+	}
+	private function addAcceptButton(x:Int=1280,y:Int=360,scale:Float=.5){
+		acceptButton = new FlxSprite(x, y).loadGraphic(Paths.image('acceptButton'));
+		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale),Std.int(acceptButton.height * scale));
+		acceptButton.scrollFactor.set();
+		acceptButton.updateHitbox();
+		acceptButton.antialiasing = true;
+		add(acceptButton);
+		return acceptButton;
+	}
+	private function addRetryButton(x:Int = 500, y:Int =500, scale:Float=.5){
+		retryButton = new FlxSprite(x, y).loadGraphic(Paths.image('retryButton'));
+		retryButton.setGraphicSize(Std.int(retryButton.width * scale),Std.int(retryButton.height * scale));
+		retryButton.scrollFactor.set();
+		retryButton.updateHitbox();
+		retryButton.antialiasing = true;
+		add(retryButton);
+		return retryButton;
+	}
+	private function addViewReplayButton(x:Int = 500, y:Int =500, scale:Float=.5){
+		viewReplayButton = new FlxSprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
+		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale),Std.int(viewReplayButton.height * scale));
+		viewReplayButton.scrollFactor.set();
+		viewReplayButton.updateHitbox();
+		viewReplayButton.antialiasing = true;
+		add(viewReplayButton);
+		return viewReplayButton;
 	}
 }

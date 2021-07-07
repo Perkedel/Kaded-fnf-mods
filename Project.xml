@@ -239,6 +239,10 @@
 	<haxelib name="hscript-ex"/>
 	<!-- install hscript-ex with `haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex`-->
 
+	<!-- JOELwindows7: TJSON idk why use this while we already have built in JSON -->
+	<!-- used by BulbyVR in FNFM+ -->
+	<haxelib name="tjson"/>
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->

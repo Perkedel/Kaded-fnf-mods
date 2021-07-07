@@ -13,14 +13,16 @@ class MusicBeatSubstate extends FlxSubState
 	}
 
 	//JOELwindows7: mouse support flags
-	private var haveClicked = false;
-	private var haveBacked = false;
-	private var haveLefted = false;
-	private var haveUpped = false;
-	private var haveDowned = false;
-	private var haveRighted = false;
-	private var havePausened = false;
-	private var haveDebugSevened = false;
+	private var haveClicked:Bool = false;
+	private var haveBacked:Bool = false;
+	private var haveLefted:Bool = false;
+	private var haveUpped:Bool = false;
+	private var haveDowned:Bool = false;
+	private var haveRighted:Bool = false;
+	private var havePausened:Bool = false;
+	private var haveRetryed:Bool = false;
+	private var haveViewReplayed:Bool = false;
+	private var haveDebugSevened:Bool = false;
 
 	var backButton:FlxSprite; //JOELwindows7: the back button here
 	var leftButton:FlxSprite; //JOELwindows7: the left button here
@@ -92,6 +94,7 @@ class MusicBeatSubstate extends FlxSubState
 		backButton.updateHitbox();
 		backButton.antialiasing = true;
 		add(backButton);
+		return backButton;
 	}
 	private function addLeftButton(x:Int=100,y:Int=1280-100,scale:Float=.5){
 		leftButton = new FlxSprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
@@ -100,6 +103,7 @@ class MusicBeatSubstate extends FlxSubState
 		leftButton.updateHitbox();
 		leftButton.antialiasing = true;
 		add(leftButton);
+		return leftButton;
 	}
 	private function addRightButton(x:Int=525,y:Int=1280-100,scale:Float=.5){
 		rightButton = new FlxSprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
@@ -108,6 +112,7 @@ class MusicBeatSubstate extends FlxSubState
 		rightButton.updateHitbox();
 		rightButton.antialiasing = true;
 		add(rightButton);
+		return rightButton;
 	}
 	private function addUpButton(x:Int=240,y:Int=1280-100,scale:Float=.5){
 		upButton = new FlxSprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
@@ -116,6 +121,7 @@ class MusicBeatSubstate extends FlxSubState
 		upButton.updateHitbox();
 		upButton.antialiasing = true;
 		add(upButton);
+		return upButton;
 	}
 	private function addDownButton(x:Int=450,y:Int=1280-100,scale:Float=.5){
 		downButton = new FlxSprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
@@ -124,6 +130,7 @@ class MusicBeatSubstate extends FlxSubState
 		downButton.updateHitbox();
 		downButton.antialiasing = true;
 		add(downButton);
+		return downButton;
 	}
 	private function addPauseButton(x:Int=640,y:Int=10,scale:Float=.5){
 		pauseButton = new FlxSprite(x, y).loadGraphic(Paths.image('pauseButton'));
@@ -132,6 +139,7 @@ class MusicBeatSubstate extends FlxSubState
 		pauseButton.updateHitbox();
 		pauseButton.antialiasing = true;
 		add(pauseButton);
+		return pauseButton;
 	}
 	private function addAcceptButton(x:Int=1280,y:Int=360,scale:Float=.5){
 		acceptButton = new FlxSprite(x, y).loadGraphic(Paths.image('acceptButton'));
@@ -140,6 +148,7 @@ class MusicBeatSubstate extends FlxSubState
 		acceptButton.updateHitbox();
 		acceptButton.antialiasing = true;
 		add(acceptButton);
+		return acceptButton;
 	}
 	private function addRetryButton(x:Int = 500, y:Int =500, scale:Float=.5){
 		retryButton = new FlxSprite(x, y).loadGraphic(Paths.image('retryButton'));
@@ -148,6 +157,7 @@ class MusicBeatSubstate extends FlxSubState
 		retryButton.updateHitbox();
 		retryButton.antialiasing = true;
 		add(retryButton);
+		return retryButton;
 	}
 	private function addViewReplayButton(x:Int = 500, y:Int =500, scale:Float=.5){
 		viewReplayButton = new FlxSprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
@@ -156,5 +166,6 @@ class MusicBeatSubstate extends FlxSubState
 		viewReplayButton.updateHitbox();
 		viewReplayButton.antialiasing = true;
 		add(viewReplayButton);
+		return viewReplayButton;
 	}
 }

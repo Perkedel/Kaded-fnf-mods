@@ -257,7 +257,7 @@ class PlayState extends MusicBeatState
 
 	public static var campaignScore:Int = 0;
 
-	var defaultCamZoom:Float = 1.05;
+	public var defaultCamZoom:Float = 1.05; //JOELwindows7: what could go wrong?
 
 	public static var daPixelZoom:Float = 6;
 
@@ -474,14 +474,15 @@ class PlayState extends MusicBeatState
 				//JOELwindows7: make dialog loading things went procedural!
 				#if (sys && !mobile)
 				dialogue = (SONG.hasDialogueChat &&
-					FileSystem.exists(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Dialogue'))
+					FileSystem.exists(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue'))
 				)? 
-				CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Dialogue')):
+				CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')):
 				['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
 				#else
-				dialogue = (SONG.hasDialogueChat 
+				dialogue = (SONG.hasDialogueChat &&
+					Path.of(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')).exists()
 				)? 
-				CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Dialogue')):
+				CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')):
 				['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
 				#end
 				//Okay, do for the rest above!
@@ -490,14 +491,15 @@ class PlayState extends MusicBeatState
 		//JOELwinodws7: Epilogue shit
 		#if (sys && !mobile)
 		epilogue = (SONG.hasEpilogueChat &&
-			FileSystem.exists(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Epilogue'))
+			FileSystem.exists(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue'))
 		) ? 
-		CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Epilogue')):
+		CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')):
 		['dad: undefined defeat', 'bf:nullswag'];
 		#else
-		epilogue = (SONG.hasEpilogueChat
+		epilogue = (SONG.hasEpilogueChat &&
+			Path.of(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')).exists()
 		) ? 
-		CoolUtil.coolTextFile(Paths.txt('${StringTools.replace(SONG.song.toLowerCase()," ", "-")}/${StringTools.replace(SONG.song.toLowerCase()," ", "-")}Epilogue')):
+		CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')):
 		['dad: undefined defeat', 'bf:nullswag'];
 		#end
 		//see, as simple as that
@@ -1884,6 +1886,7 @@ class PlayState extends MusicBeatState
 	var perfectMode:Bool = false;
 
 	var luaWiggles:Array<WiggleEffect> = [];
+	var hscriptWiggles:Array<WiggleEffect> = []; //JOELwindows7: same but hscript
 
 	#if ((windows || linux) && cpp)
 	public static var luaModchart:ModchartState = null;
@@ -2749,6 +2752,73 @@ class PlayState extends MusicBeatState
 			stageScript.setVar("isChromaScreen", isChromaScreen);
 		}
 		#end
+		//JOELwindows7: the hscript version
+		if (executeModHscript && hscriptModchart != null && songStarted){
+			hscriptModchart.setVar('songPos',Conductor.songPosition);
+			hscriptModchart.setVar('hudZoom', camHUD.zoom);
+			hscriptModchart.setVar('cameraZoom',FlxG.camera.zoom);
+			hscriptModchart.executeState('update', [elapsed]);
+
+			for (i in hscriptWiggles)
+			{
+				trace('wiggle le gaming');
+				i.update(elapsed);
+			}
+
+			/*for (i in 0...strumLineNotes.length) {
+				var member = strumLineNotes.members[i];
+				member.x = hscriptModchart.getVar("strum" + i + "X", "float");
+				member.y = hscriptModchart.getVar("strum" + i + "Y", "float");
+				member.angle = hscriptModchart.getVar("strum" + i + "Angle", "float");
+			}*/
+
+			FlxG.camera.angle = hscriptModchart.getVar('cameraAngle', 'float');
+			camHUD.angle = hscriptModchart.getVar('camHudAngle','float');
+
+			if (hscriptModchart.getVar("showOnlyStrums"))
+			{
+				healthBarBG.visible = false;
+				kadeEngineWatermark.visible = false;
+				healthBar.visible = false;
+				iconP1.visible = false;
+				iconP2.visible = false;
+				scoreTxt.visible = false;
+			}
+			else
+			{
+				healthBarBG.visible = true;
+				kadeEngineWatermark.visible = true;
+				healthBar.visible = true;
+				iconP1.visible = true;
+				iconP2.visible = true;
+				scoreTxt.visible = true;
+			}
+
+			var p1 = hscriptModchart.getVar("strumLine1Visible");
+			var p2 = hscriptModchart.getVar("strumLine2Visible");
+
+			for (i in 0...4)
+			{
+				strumLineNotes.members[i].visible = p1;
+				if (i <= playerStrums.length)
+					playerStrums.members[i].visible = p2;
+			}
+
+			//JOELwindows7: okay I think this is a good place to constantly update variable
+			//that must be updated. idk.
+			hscriptModchart.setVar("originalColor", originalColor);
+			hscriptModchart.setVar("isChromaScreen", isChromaScreen);
+		}
+		//JOELwindows7: stage hscript
+		if(executeStageHscript && stageHscript != null && songStarted){
+			stageHscript.setVar('songPos',Conductor.songPosition);
+			stageHscript.setVar('hudZoom', camHUD.zoom);
+			stageHscript.setVar('cameraZoom',FlxG.camera.zoom);
+			stageHscript.executeState('update', [elapsed]);
+
+			stageHscript.setVar("originalColor", originalColor);
+			stageHscript.setVar("isChromaScreen", isChromaScreen);
+		}
 
 		// reverse iterate to remove oldest notes first and not invalidate the iteration
 		// stop iteration as soon as a note is not removed
@@ -2857,6 +2927,16 @@ class PlayState extends MusicBeatState
 				stageScript = null;
 			}
 			#end
+			//JOELwindows7: scronch hscript
+			if (hscriptModchart != null)
+			{
+				hscriptModchart.die();
+				hscriptModchart = null;
+			}
+			if (stageHscript != null){
+				stageHscript.die();
+				stageHscript = null;
+			}
 
 			haveDebugSevened = false;
 		}
@@ -2915,6 +2995,16 @@ class PlayState extends MusicBeatState
 				stageScript = null;
 			}
 			#end
+			//JOELwindows7: scronch hscript
+			if (hscriptModchart != null)
+			{
+				hscriptModchart.die();
+				hscriptModchart = null;
+			}
+			if (stageHscript != null){
+				stageHscript.die();
+				stageHscript = null;
+			}
 		}
 
 		if (FlxG.keys.justPressed.ZERO)
@@ -2932,6 +3022,16 @@ class PlayState extends MusicBeatState
 				stageScript = null;
 			}
 			#end
+			//JOELwindows7: scronch hscript
+			if (hscriptModchart != null)
+			{
+				hscriptModchart.die();
+				hscriptModchart = null;
+			}
+			if (stageHscript != null){
+				stageHscript.die();
+				stageHscript = null;
+			}
 		}
 
 		#end
@@ -3130,6 +3230,10 @@ class PlayState extends MusicBeatState
 			if (stageScript != null)
 				stageScript.setVar("mustHit",PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection);
 			#end
+			if (hscriptModchart != null)
+				hscriptModchart.setVar("mustHit",PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection);
+			if (stageHscript != null)
+				stageHscript.setVar("mustHit",PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection);
 
 			if (camFollow.x != dad.getMidpoint().x + 150 && !PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection)
 			{
@@ -3141,8 +3245,13 @@ class PlayState extends MusicBeatState
 					offsetX = luaModchart.getVar("followXOffset", "float");
 					offsetY = luaModchart.getVar("followYOffset", "float");
 				}
-
 				#end
+				//JOELwindows7: hscript cam offsetting
+				if (hscriptModchart != null)
+				{
+					offsetX = hscriptModchart.getVar("followXOffset", "float");
+					offsetY = hscriptModchart.getVar("followYOffset", "float");
+				}
 				camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
 				#if ((windows || linux) && cpp)
 				if (luaModchart != null)
@@ -3150,6 +3259,10 @@ class PlayState extends MusicBeatState
 				if (stageScript != null)
 					stageScript.executeState('playerTwoTurn',[]);
 				#end
+				if (hscriptModchart != null)
+					hscriptModchart.executeState('playerTwoTurn', []);
+				if (stageHscript != null)
+					stageHscript.executeState('playerTwoTurn',[]);
 				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
 
 				switch (dad.curCharacter)
@@ -3179,6 +3292,12 @@ class PlayState extends MusicBeatState
 					offsetY = luaModchart.getVar("followYOffset", "float");
 				}
 				#end
+				//JOELwindows7: hscript offsete
+				if (hscriptModchart != null)
+				{
+					offsetX = hscriptModchart.getVar("followXOffset", "float");
+					offsetY = hscriptModchart.getVar("followYOffset", "float");
+				}
 				camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
 
 				#if ((windows || linux) && cpp)
@@ -3187,6 +3306,10 @@ class PlayState extends MusicBeatState
 				if (stageScript != null)
 					stageScript.executeState('playerOneTurn', []);
 				#end
+				if (hscriptModchart != null)
+					hscriptModchart.executeState('playerOneTurn', []);
+				if (stageHscript != null)
+					stageHscript.executeState('playerOneTurn', []);
 
 				switch (curStage)
 				{
@@ -3442,6 +3565,10 @@ class PlayState extends MusicBeatState
 						if (stageScript != null)
 							stageScript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
 						#end
+						if (hscriptModchart != null)
+							hscriptModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+						if (stageHscript != null)
+							stageHscript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
 
 						dad.holdTimer = 0;
 	
@@ -3619,6 +3746,17 @@ class PlayState extends MusicBeatState
 			stageScript = null;
 		}
 		#end
+		//JOELwindows7: scronch hscript
+		if (hscriptModchart != null)
+		{
+			hscriptModchart.die();
+			hscriptModchart = null;
+		}
+		if (stageHscript != null)
+		{
+			stageHscript.die();
+			stageHscript = null;
+		}
 
 		trace("clearing gameplay"); //JOELwindows7: you trace
 
@@ -3690,6 +3828,17 @@ class PlayState extends MusicBeatState
 						stageScript = null;
 					}
 					#end
+					//JOELwindows7: scronch hscript
+					if (hscriptModchart != null)
+					{
+						hscriptModchart.die();
+						hscriptModchart = null;
+					}
+					if (stageHscript != null)
+					{
+						stageHscript.die();
+						stageHscript = null;
+					}
 
 					// if ()
 					StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
@@ -4119,6 +4268,26 @@ class PlayState extends MusicBeatState
 					//if (FlxG.keys.pressed){stageScript.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
 					};
 				#end
+				//JOELwindows7: lotsa hscript
+				if (hscriptModchart != null){
+				if (controls.LEFT_P){hscriptModchart.executeState('keyPressed',["left"]);};
+				if (controls.DOWN_P){hscriptModchart.executeState('keyPressed',["down"]);};
+				if (controls.UP_P){hscriptModchart.executeState('keyPressed',["up"]);};
+				if (controls.RIGHT_P){hscriptModchart.executeState('keyPressed',["right"]);};
+
+				//JOELwindows7: any keypresings here
+				//if (FlxG.keys.pressed){hscriptModChart.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
+				};
+
+				//JOELwindows7: stage script keypressings
+				if (stageHscript != null){
+					if (controls.LEFT_P){stageHscript.executeState('keyPressed',["left"]);};
+					if (controls.DOWN_P){stageHscript.executeState('keyPressed',["down"]);};
+					if (controls.UP_P){stageHscript.executeState('keyPressed',["up"]);};
+					if (controls.RIGHT_P){stageHscript.executeState('keyPressed',["right"]);};
+					
+					//if (FlxG.keys.pressed){stageHscript.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
+					};
 		 
 				
 				// Prevent player input if botplay is on
@@ -4462,6 +4631,10 @@ class PlayState extends MusicBeatState
 			if (stageScript != null)
 				stageScript.executeState('playerOneMiss', [direction, Conductor.songPosition]);
 			#end
+			if (hscriptModchart != null)
+				hscriptModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
+			if (stageHscript != null)
+				stageHscript.executeState('playerOneMiss', [direction, Conductor.songPosition]);
 
 
 			updateAccuracy();
@@ -4624,6 +4797,10 @@ class PlayState extends MusicBeatState
 					if (stageScript != null)
 						stageScript.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
 					#end
+					if (hscriptModchart != null)
+						hscriptModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+					if (stageHscript != null)
+						stageHscript.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
 
 
 					if(!loadRep && note.mustPress)
@@ -4791,6 +4968,15 @@ class PlayState extends MusicBeatState
 			stageScript.executeState('stepHit',[curStep]);
 		}
 		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.setVar('curStep',curStep);
+			hscriptModchart.executeState('stepHit',[curStep]);
+		}
+		if (executeStageHscript && stageHscript != null){
+			stageHscript.setVar('curStep',curStep);
+			stageHscript.executeState('stepHit',[curStep]);
+		}
 
 		// yes this updates every step.
 		// yes this is bad
@@ -4836,6 +5022,16 @@ class PlayState extends MusicBeatState
 			stageScript.executeState('beatHit',[curBeat]);
 		}
 		#end
+		//JOELwindows7: hscriptoid
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.setVar('curBeat',curBeat);
+			hscriptModchart.executeState('beatHit',[curBeat]);
+		}
+		if (executeStageHscript && stageHscript != null){
+			stageHscript.setVar('curBeat',curBeat);
+			stageHscript.executeState('beatHit',[curBeat]);
+		}
 
 		if (curSong == 'Tutorial' && dad.curCharacter == 'gf') {
 			if (curBeat % 2 == 1 && dad.animOffsets.exists('danceLeft'))
