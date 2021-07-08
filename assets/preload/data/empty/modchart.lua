@@ -30,19 +30,19 @@ function playerTwoTurn()
 
 end
 
-function playerOneSing(note, position)
+function playerOneSing(note, position, beatOf, stepOf)
 
 end
 
-function playerTwoSing(note, position)
+function playerTwoSing(note, position, beatOf, stepOf)
 
 end
 
-function playerOneMiss(note, position)
+function playerOneMiss(note, position, beatOf, stepOf)
 
 end
 
-function playerTwoMiss(note, position)
+function playerTwoMiss(note, position, beatOf, stepOf)
 
 end
 

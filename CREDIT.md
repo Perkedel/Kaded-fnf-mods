@@ -245,7 +245,10 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PlayState.hx playstate modding+
 - https://lib.haxe.org/p/haxe-files haxe file system manager
 - https://lib.haxe.org/p/hscript/ hscript
-- 
+- https://gamebanana.com/tuts/14110 how to chart FNF song. from BPM, tools useful, etc etc. 
+- https://tunebat.com/Analyzer use this to analyze BPM. take this as a grain of salt
+- https://www.justinguitar.com/tap-tempo-bpm-tool use this to tap tempo.
+- http://www.troubleshooters.com/codecorn/lua/luaif.htm orcks the Lua how to comparisons if.
   
 # in event of git merge conflict
 use VScode and Github desktop!

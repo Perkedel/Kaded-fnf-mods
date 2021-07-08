@@ -33,6 +33,9 @@ typedef SwagSong =
 	var allowedToHeadbang:Bool; //JOELwindows7: mark whether heys, color change, etc.
 	var useCustomStage:Bool; //JOELwindows7: should use custom stage?
 	//be allowed at certain moments in time
+
+	var forceLuaModchart:Bool; //JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	var forceHscriptModchart:Bool; //JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 }
 
 class Song
@@ -60,6 +63,9 @@ class Song
 	public var allowedToHeadbang:Bool = false; //JOELwindows7: mark whether heys, color change, etc.
 	public var useCustomStage:Bool = false; //JOELwindows7: should use custom stage?
 	//be allowed at certain moments in time
+
+	public var forceLuaModchart:Bool = false; //JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	public var forceHscriptModchart:Bool = false; //JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 
 	public function new(song, notes, bpm)
 	{

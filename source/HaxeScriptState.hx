@@ -81,6 +81,18 @@ import plugins.tools.MetroSprite;
 using StringTools;
 
 /**
+ * BulbyVR's display layer enums
+ * 
+ * @author JOELwindows7
+ * **/
+enum abstract DisplayLayer(Int) from Int to Int {
+    var BEHIND_GF = 1;
+    var BEHIND_BF = 1 << 1;
+    var BEHIND_DAD = 1 << 2;
+    var BEHIND_ALL = BEHIND_GF | BEHIND_BF | BEHIND_DAD;
+}
+
+/**
  * Modchart state but it's Haxe script. Also no need recompile. you can modchart with Haxe language.
  * alternative against Kade Engine's LuaJIT modchart. provided due to LuaJIT incompatibility for some platform.
  * inspired from BulbyVR's Modding+ https://github.com/TheDrawingCoder-Gamer/Funkin
@@ -107,23 +119,55 @@ class HaxeScriptState {
      * @param path 
      * @param className 
      */
-    function new(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart",className:String = "HaxeMod"){
+    function new(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart",className:String = "HaxeMod", useRetail:Bool = false){
         trace("open hscript state because we are cool");
-        initHaxeScriptState(rawMode,path,useHaxe,className);
+        initHaxeScriptState(rawMode,path,useHaxe,className, useRetail);
     }
 
-    function callHscript(func_name:String, args:Array<Dynamic>, useHaxe:String = ""){
-        // if function doesn't exist
-		if (!hscriptState.get(useHaxe).variables.exists(func_name)) {
-			trace("Function doesn't exist, silently skipping...");
-			return;
-		}
-		var method = hscriptState.get(useHaxe).variables.get(func_name);
+    function callHscript(func_name:String, args:Array<Dynamic>, useHaxe:String = "modchart"){
+        if(retailIsReady)
+        {
+            // if function doesn't exist
+            if (!hscriptState.get(useHaxe).variables.exists(func_name)) {
+                trace(func_name + " Function in Retail doesn't exist, silently skipping...");
+                return;
+            }
+        }
+        else {
+            // if function doesn't exist
+            if (!interp.variables.exists(func_name)) {
+                trace(func_name + " Function in Interp doesn't exist, silently skipping...");
+                return;
+            }
+        }
+        var method;
+        if(retailIsReady)
+		    method = hscriptState.get(useHaxe).variables.get(func_name);
+        else
+            method = interp.variables.get(func_name);
 		switch(args.length) {
 			case 0:
 				method();
 			case 1:
 				method(args[0]);
+            case 2:
+                method(args[0],args[1]);
+            case 3:
+                method(args[0],args[1],args[2]);
+            case 4:
+                method(args[0],args[1],args[2],args[3]);
+            case 5:
+                method(args[0],args[1],args[2],args[3],args[4]);
+            case 6:
+                method(args[0],args[1],args[2],args[3],args[4], args[5]);
+            case 7:
+                method(args[0],args[1],args[2],args[3],args[4], args[5], args[6]);
+            case 8:
+                method(args[0],args[1],args[2],args[3],args[4], args[5], args[6], args[7]);
+            case 9:
+                method(args[0],args[1],args[2],args[3],args[4], args[5], args[6], args[7], args[8]);
+            case 10:
+                method(args[0],args[1],args[2],args[3],args[4], args[5], args[6], args[7], args[8], args[9]);
 		}
     }
 
@@ -152,7 +196,10 @@ class HaxeScriptState {
         }
     }
     public function getVar(name:String, useHaxe:String = "modchart"):Dynamic{
-        return hscriptState.get(useHaxe).variables.get(name);
+        if(retailIsReady)
+            return hscriptState.get(useHaxe).variables.get(name);
+        else
+            return interp.variables.get(name);
     }
 
     /**
@@ -188,7 +235,9 @@ class HaxeScriptState {
             }
         
         script = Assets.getText(Paths.hscript(rawMode? path : songLowercase + "/modchart")).trim();
+        trace(script);
         prog = parser.parseString(script);
+        trace("parsened");
     }
 
     /**
@@ -211,7 +260,7 @@ class HaxeScriptState {
         }
     }
 
-    function initHaxeScriptState(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart",className:String = ""){
+    function initHaxeScriptState(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart",className:String = "", useRetail:Bool = false){
         //start by init core stuffs.
         resetHaxeScriptState();
 
@@ -265,6 +314,28 @@ class HaxeScriptState {
         setVar("strumLineY", PlayState.instance.strumLine.y);
 
         //JOELwindows7: BulbyVR's special stuffs
+        setVar("BEHIND_GF", BEHIND_GF);
+		setVar("BEHIND_BF", BEHIND_BF);
+		setVar("BEHIND_DAD", BEHIND_DAD);
+		setVar("BEHIND_ALL", BEHIND_ALL);
+        setVar("BEHIND_NONE", 0);
+        setVar("songData", PlayState.SONG);
+        setVar("camHUD", PlayState.instance.camHUD);
+        setVar("playerStrums", PlayState.playerStrums);
+		setVar("enemyStrums", PlayState.cpuStrums);
+        setVar("hscriptPath", path);
+        setVar("boyfriend", PlayState.boyfriend);
+        setVar("gf", PlayState.gf);
+		setVar("dad", PlayState.dad);
+		setVar("vocals", PlayState.instance.vocals);
+        setVar("gfSpeed", PlayState.instance.gfSpeed);
+        setVar("tweenCamIn", PlayState.instance.tweenCamIn);
+        setVar("health", PlayState.instance.health);
+		setVar("iconP1", PlayState.instance.iconP1);
+		setVar("iconP2", PlayState.instance.iconP2);
+        setVar("currentPlayState", PlayState.instance);
+        setVar("PlayState", PlayState);
+        setVar("window", Lib.application.window);
         setVar("add", PlayState.instance.add);
         setVar("remove", PlayState.instance.remove);
         setVar("insert", PlayState.instance.insert);
@@ -273,6 +344,40 @@ class HaxeScriptState {
 			PlayState.instance.remove(sprite);
 		});
         setVar("instancePluginClass", createScriptClassInstance);
+        setVar("addSprite", function (sprite, position) {
+			// sprite is a FlxSprite
+			// position is a Int
+			if (position & BEHIND_GF != 0)
+				PlayState.instance.remove(PlayState.gf);
+			if (position & BEHIND_DAD != 0)
+				PlayState.instance.remove(PlayState.dad);
+			if (position & BEHIND_BF != 0)
+				PlayState.instance.remove(PlayState.boyfriend);
+			PlayState.instance.add(sprite);
+			if (position & BEHIND_GF != 0)
+				PlayState.instance.add(PlayState.gf);
+			if (position & BEHIND_DAD != 0)
+				PlayState.instance.add(PlayState.dad);
+			if (position & BEHIND_BF != 0)
+				PlayState.instance.add(PlayState.boyfriend); 
+		});
+
+        //You must init the function callbacks first before even considered existed.
+        addCallback("loaded", function (song) {});
+        addCallback("start", function (song) {});
+		addCallback("beatHit", function (beat) {});
+		addCallback("update", function (elapsed) {});
+		addCallback("stepHit", function(step) {});
+		addCallback("playerTwoTurn", function () {});
+		addCallback("playerTwoMiss", function (note, position, beatOf, stepOf) {});
+		addCallback("playerTwoSing", function (note, position, beatOf, stepOf) {});
+		addCallback("playerOneTurn", function(){});
+        addCallback("playerOneMiss", function(note, position, beatOf, stepOf){});
+        addCallback("playerOneSing", function(note, position, beatOf, stepOf){});
+        addCallback("noteHit", function(player1:Bool, note:Note) {});
+        addCallback("keyPressed", function(key){});
+
+
 
         // Callbacks heres, Kade Engine like
         //Sprites
@@ -822,8 +927,10 @@ class HaxeScriptState {
         }
         
         //set hscriptState
-        hscriptState.set(useHaxe,interp);
-
+        hscriptState = new Map<String,InterpEx>();
+        if(useRetail)
+            hscriptState.set(useHaxe,interp);
+        interp.execute(prog);
         //call loaded once the file just loaded
         executeState("loaded", [PlayState.SONG.song], useHaxe);
         
@@ -832,7 +939,7 @@ class HaxeScriptState {
 
         trace("Hscript loaded");
 
-        retailIsReady = true;
+        retailIsReady = useRetail;
     }
 
     /**
@@ -994,7 +1101,7 @@ class HaxeScriptState {
                 @:privateAccess
                 return PlayState.dad;
         }
-        // lhscript objects or what ever
+        // hscript objects or what ever
         if (hscriptSprite.get(id) == null)
         {
             if (Std.parseInt(id) == null)
@@ -1003,6 +1110,20 @@ class HaxeScriptState {
         }
         return hscriptSprite.get(id);
     }
+
+    //JOELwindows7: BulbyVR get actor
+    function getHaxeActor(name:String):Dynamic {
+		switch (name) {
+			case "boyfriend" | "bf":
+				return PlayState.boyfriend;
+			case "girlfriend" | "gf":
+				return PlayState.gf;
+			case "dad":
+				return PlayState.dad;
+			default:
+				return PlayState.strumLineNotes.members[Std.parseInt(name)];
+		}
+	}
 
     function changeDadCharacter(id:String)
     {				
@@ -1024,14 +1145,14 @@ class HaxeScriptState {
         PlayState.instance.iconP2.animation.play(id);
     }
 
-    public static function createModchartState(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart"):HaxeScriptState
+    public static function createModchartState(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart", useRetail:Bool = false):HaxeScriptState
     {
-        return new HaxeScriptState(rawMode,path,useHaxe);
+        return new HaxeScriptState(rawMode,path,useHaxe, useRetail);
     }
 
     public function die(){
         trace("Hscript: Eik serkat!");
-        hscriptState = null;
+        hscriptState.clear;
         prog = null;
         interp = null;
         parser = null;

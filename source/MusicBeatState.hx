@@ -320,6 +320,31 @@ class MusicBeatState extends FlxUIState
 	}
 	public function removeTouchScreenButtons(){
 		if(onScreenGameplayButtons != null){
+			controls.trackedinputs = trackedinputs;
+			switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
+				case 0:
+					trace("No touch screen button to init at all.");
+				case 1:
+					trace("hitbox the touchscreen buttons");
+					controls.uninstallTouchScreenGameplays(onScreenGameplayButtons._hitbox);
+				case 2:
+					trace("Left side touchscreen buttons only");
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, FULL, NONE, true);
+				case 3:
+					trace("Right side touchscreen buttons only");
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, NONE, A_B_X_Y, true);
+				case 4:
+					trace("Full gamepad touchscreen");
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, FULL, A_B_X_Y, true);
+				default:
+					trace("huh? what do you mean? we don't know this touch buttons type\nUgh fine I guess you are my little pogchamp, come here.");
+					//lmao! gothmei reference & PEAR animated it this
+			}
+			/*
+			for(i in 0..trackedinputs.length){
+				controls.deleteActionButtonings(action, trackedinputs[i]);
+			}
+			*/
 			/*
 			FlxTween.tween(onScreenGameplayButtons,{alpha:0}, 1, {ease:FlxEase.circInOut, onComplete: function(tween:FlxTween){
 				onScreenGameplayButtons.visible = false;
@@ -331,7 +356,7 @@ class MusicBeatState extends FlxUIState
 				{ease:FlxEase.circInOut, 
 					onComplete: function(tween:FlxTween){
 						onScreenGameplayButtons.visible = false;
-						trackedinputs = [];
+						//trackedinputs = [];
 						onScreenGameplayButtons.destroy();
 					}
 				}, 

@@ -30,6 +30,8 @@
         "isMoody": false,
         "cutsceneType": "none",
         "uiType": "normal",
-        "preferredNoteAmount": 4
+        "preferredNoteAmount": 4,
+        "forceLuaModchart": false,
+        "forceHscriptModchart": false
     }
 }

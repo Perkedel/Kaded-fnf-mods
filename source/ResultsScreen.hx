@@ -334,6 +334,7 @@ class ResultsScreen extends FlxSubState
                 haveRetryed = true;
         } 
         if(FlxG.mouse.overlaps(acceptButton)){
+            //trace("hover accept button");
             if(FlxG.mouse.justPressed)
                 haveClicked = true;
         }

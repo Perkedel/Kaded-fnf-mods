@@ -30,37 +30,45 @@ function playerTwoTurn()
 
 end
 
-function playerOneSing(note, position)
+function playerOneSing(note, position, beatOf, stepOf)
     print("P1 sing " .. note .. " at " .. position)
-    if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
-        if(flashing) then
-            colorizeColorablebyKey(note,false,0)
+    if(-executeModHscript or executeModHscript == false) then
+        if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
+            if(flashing) then
+                colorizeColorablebyKey(note,false,0)
+            end
+        else
+            hideColoring(false, 0)
         end
     else
-        hideColoring(false, 0)
+        print("already hscript")
     end
 end
 
-function playerTwoSing(note, position)
+function playerTwoSing(note, position, beatOf, stepOf)
     print("P2 sing " .. note .. " at " .. position)
-    if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
-        if(flashing) then
-            colorizeColorablebyKey(note,false,0)
-        end
-        if(distractions) then
-            camZoomNow(0.015, 0.03, 1.35)
-            vibrate(0, 200)
+    if(-executeModHscript or executeModHscript == false) then -- `!` is not supported. use `-` or `not` to negate.
+        if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
+            if(flashing) then
+                colorizeColorablebyKey(note,false,0)
+            end
+            if(distractions) then
+                camZoomNow(0.015, 0.03, 1.35)
+                vibrate(0, 200)
+            end
+        else
+            hideColoring(false, 0)
         end
     else
-        hideColoring(false, 0)
+        print("already hscript")
     end
 end
 
-function playerOneMiss(note, position)
+function playerOneMiss(note, position, beatOf, stepOf)
     hideColoring(false, 0)
 end
 
-function playerTwoMiss(note, position)
+function playerTwoMiss(note, position, beatOf, stepOf)
     hideColoring(false, 0)
 end
 

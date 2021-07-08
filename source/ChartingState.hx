@@ -126,6 +126,8 @@ class ChartingState extends MusicBeatState
 				hasEpilogueChat: false,
 				allowedToHeadbang: false,
 				useCustomStage:false,
+				forceLuaModchart:false,
+				forceHscriptModchart:false,
 			};
 		}
 

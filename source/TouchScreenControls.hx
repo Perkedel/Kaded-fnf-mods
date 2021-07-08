@@ -103,11 +103,13 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
     override public function destroy(){
         super.destroy();
         trace("destroy touchscreen buttons");
-        if(_hitbox != null)
+        if(_hitbox != null){
             _hitbox = FlxDestroyUtil.destroy(_hitbox);
+        }
         trace("destroyeneding");
-        if(_virtualPad != null)
+        if(_virtualPad != null){
             _virtualPad = FlxDestroyUtil.destroy(_virtualPad);
+        }
         trace("ratatatatatatata!");
     }
 }

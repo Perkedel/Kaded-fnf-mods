@@ -154,7 +154,7 @@ class PlayState extends MusicBeatState
 	var detailsPausedText:String = "";
 	#end
 
-	private var vocals:FlxSound;
+	public var vocals:FlxSound; //JOELwindows7: make public for Moddchart
 
 	public var originalX:Float;
 
@@ -179,7 +179,7 @@ class PlayState extends MusicBeatState
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
 
-	private var gfSpeed:Int = 1;
+	public var gfSpeed:Int = 1; //JOELwindows7: making public because sethealth doesnt work without it
 	public var health:Float = 1; //making public because sethealth doesnt work without it
 	private var combo:Int = 0;
 	public static var misses:Int = 0;
@@ -350,7 +350,7 @@ class PlayState extends MusicBeatState
 			PlayStateChangeables.Optimize = false;
 		#elseif (windows || linux || android)
 		//JOELwindows7: for not sys. use vergadit's filesystemers.
-		p = Path.of(Paths.lua(songLowercase  + "/modchart"));
+		p = Path.of(Paths.lua("./" + songLowercase  + "/modchart"));
 		executeModchart = p.exists();
 		trace("is modchart file exist? " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 		if (executeModchart)
@@ -367,12 +367,17 @@ class PlayState extends MusicBeatState
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(songLowercase + "/modchart"));
 		
 		// JOELwindows7: now for the hscript
-		p = Path.of(Paths.hscript(songLowercase + "/modchart"));
+		p = Path.of(Paths.hscript("./" + songLowercase + "/modchart"));
 		executeModHscript = p.exists();
 		trace("is hscript modchart file exist? " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 		if (executeModHscript)
 			PlayStateChangeables.Optimize = false;
 		trace('Mod hscript chart: ' + executeModHscript + " - " + Paths.hscript(songLowercase + "/modchart"));
+
+		//JOELwindows7: okay since none of the working Android file exist checker been found, let's just peck this
+		// and do whatever the peck we want.
+		executeModchart = SONG.forceLuaModchart? true : executeModchart;
+		executeModHscript= SONG.forceHscriptModchart? true : executeModHscript;
 
 		#if (windows && cpp)
 		// Making difficulty text for Discord Rich Presence.
@@ -1932,7 +1937,20 @@ class PlayState extends MusicBeatState
 		{
 			hscriptModchart = HaxeScriptState.createModchartState();
 			hscriptModchart.executeState('start',[songLowercase]);
+			hscriptModchart.setVar('executeModchart', executeModchart);
+			hscriptModchart.setVar('executeModHscript', executeModHscript);
 		}
+		//JOELwindows7: tell Lua script whether hscript is running too
+		#if ((windows || linux) && cpp)
+		if(executeModchart){
+			luaModchart.setVar('executeModchart', executeModchart);
+			luaModchart.setVar('executeModHscript', executeModHscript);
+		}
+		if (executeStageScript && stageScript != null){
+			stageScript.setVar('executeModchart', executeModchart);
+			stageScript.setVar('executeModHscript', executeModHscript);
+		}
+		#end
 
 		talking = false;
 		startedCountdown = true;
@@ -2559,7 +2577,8 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function tweenCamIn():Void
+	//JOELwindows7: make public for modchart
+	public function tweenCamIn():Void
 	{
 		FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
 	}
@@ -4793,14 +4812,14 @@ class PlayState extends MusicBeatState
 		
 					#if ((windows || linux) && cpp)
 					if (luaModchart != null)
-						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition, curBeat, curStep]);
 					if (stageScript != null)
-						stageScript.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+						stageScript.executeState('playerOneSing', [note.noteData, Conductor.songPosition, curBeat, curStep]);
 					#end
 					if (hscriptModchart != null)
-						hscriptModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+						hscriptModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition, curBeat, curStep]);
 					if (stageHscript != null)
-						stageHscript.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+						stageHscript.executeState('playerOneSing', [note.noteData, Conductor.songPosition, curBeat, curStep]);
 
 
 					if(!loadRep && note.mustPress)
