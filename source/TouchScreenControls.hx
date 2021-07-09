@@ -5,7 +5,7 @@ import flixel.graphics.frames.FlxTileFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
 import flixel.system.FlxAssets;
-import flixel.ui.FlxVirtualPad;
+import ui.FlxVirtualPad; //use included virtualpad instead.
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.tweens.FlxEase;

@@ -1,6 +1,6 @@
 package;
 
-import flixel.ui.FlxVirtualPad;
+import ui.FlxVirtualPad;
 import flixel.ui.FlxButton;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.FlxG;
@@ -284,9 +284,9 @@ class Controls extends FlxActionSet
 	 * JOELwindows7: attempted to install things touchscreen.
 	 * add the Button for that onscreen gameplay buttons.
 	 * inspire it from https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
-	 * @param action 
-	 * @param thing 
-	 * @param state 
+	 * @param action the action
+	 * @param thing the button
+	 * @param state the state of that button
 	 */
 	public function installActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState){
 		trace("install action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
@@ -295,14 +295,14 @@ class Controls extends FlxActionSet
 
 		action.add(input);
 		mappedinputs.set(action, input);
-		trace("add the " + Std.string(mappedinputs.get(action)) + " of " + Std.string(action) + " in " + Std.string(state));
+		//trace("add the " + mappedinputs.toString() + " a " + Std.string(action) + " in " + Std.string(state));
 	}
 
 	public function uninstallActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState){
 		trace("uninstall action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
 		//var input = new FlxActionInputDigitalIFlxInput(thing, state);
 
-		trace("remove the " + Std.string(mappedinputs.get(action)) + " of " + Std.string(action) + " in " + Std.string(state));
+		//trace("remove the " + mappedinputs.toString() + " a " + Std.string(action) + " in " + Std.string(state));
 		action.remove(mappedinputs.get(action));
 	}
 
@@ -371,7 +371,7 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
 				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonRight, state));
-			case FULL: 
+			case FULL | RIGHT_FULL: 
 				//We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
 				trace("inlined assignations");
 				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
@@ -406,6 +406,8 @@ class Controls extends FlxActionSet
 			case NONE:
 				trace("No Action button");
 		}
+
+		trace("You have now mapped inputs " + mappedinputs.toString());
 	}
 
 	public function unsetVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode, ?isGameplay:Bool = false){
@@ -415,7 +417,8 @@ class Controls extends FlxActionSet
 			DPad = NONE;
 		if (Action == null)
 			Action = NONE;
-		
+		trace("You were having mapped inputs " + mappedinputs.toString());
+
 		//Now onto the action!
 		trace("uninstall DPAD touch " + Std.string(DPad));
 		switch (DPad)
@@ -430,7 +433,7 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonLeft, state));
 				inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonRight, state));
-			case FULL: 
+			case FULL | RIGHT_FULL: 
 				//We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
 				trace("inlined unassignations");
 				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonUp, state));
@@ -464,6 +467,31 @@ class Controls extends FlxActionSet
 				}
 			case NONE:
 				trace("No Action button");
+		}
+	}
+
+	/**
+	 * remove Flx virtual pad Input
+	 * yoink from https://github.com/luckydog7/trickster/blob/master/source/Controls.hx
+	 * @author JOELwindows7
+	 * @param Tinputs 
+	 */
+	public function removeFlxInput(Tinputs) {
+		for (action in this.digitalActions)
+		{
+			var i = action.inputs.length;
+			
+			while (i-- > 0)
+			{
+				var input = action.inputs[i];
+				/*if (input.device == IFLXINPUT_OBJECT)
+					action.remove(input);*/
+
+				var x = Tinputs.length;
+				while (x-- > 0)
+					if (Tinputs[x] == input)
+						action.remove(input);
+			}
 		}
 	}
 
@@ -542,7 +570,7 @@ class Controls extends FlxActionSet
 	 */
 	function forEachBound(control:Control, func:FlxActionDigital->FlxInputState->Void)
 	{
-		trace("Check for each bound " + Std.string(control) + " " + Std.string(func));
+		//trace("Check for each bound " + Std.string(control) + " " + Std.string(func));
 		switch (control)
 		{
 			case UP:

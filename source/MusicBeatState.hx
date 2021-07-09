@@ -2,7 +2,7 @@ package;
 
 import flixel.tweens.FlxEase;
 import flixel.FlxCamera;
-import flixel.ui.FlxVirtualPad;
+import ui.FlxVirtualPad;
 import flixel.input.actions.FlxActionInput;
 import TouchScreenControls;
 import haxe.Json;
@@ -293,7 +293,7 @@ class MusicBeatState extends FlxUIState
 			onScreenGameplayButtons = new OnScreenGameplayButtons(howManyButtons, initVisible);
 			//_alreadyAdded = onScreenGameplayButtons._alreadyAdded;
 		}
-		if(!dueAdded)
+		if(true)
 			switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
 				case 0:
 					trace("No touch screen button to init at all.");
