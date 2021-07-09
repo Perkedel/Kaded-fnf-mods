@@ -3371,7 +3371,6 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("stepShit", curStep);
 
 		//JOELwindows7: add more watches too
-		trace("add watch");
 		FlxG.watch.addQuick("tempoShit", Conductor.bpm);
 		FlxG.watch.addQuick("shinzouRateShit", heartRate);
 		FlxG.watch.addQuick("songPositionShit", Conductor.songPosition);
@@ -3451,7 +3450,6 @@ class PlayState extends MusicBeatState
 				}
 		}
 
-		trace("if unspawn note is not null");
 		if (unspawnNotes[0] != null)
 		{
 			if (unspawnNotes[0].strumTime - Conductor.songPosition < 3500)
@@ -3464,12 +3462,10 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		trace("generatemusic stuff");
 		if (generatedMusic)
 			{
 				notes.forEachAlive(function(daNote:Note)
 				{	
-					trace("do the note these " + Std.string(daNote));
 					// instead of doing stupid y > FlxG.height
 					// we be men and actually calculate the time :)
 					if (daNote.tooLate)
@@ -3551,7 +3547,6 @@ class PlayState extends MusicBeatState
 							}
 						}
 		
-	
 					if (!daNote.mustPress && daNote.wasGoodHit)
 					{
 						if (SONG.song != 'Tutorial')
@@ -3698,8 +3693,10 @@ class PlayState extends MusicBeatState
 			});
 		}
 
+		trace("when not in cutscene handle the input pls");
 		if (!inCutscene)
 			keyShit();
+		trace("okeh handled input");
 
 		//JOELwindows7: pause btton on screen
 		if(FlxG.mouse.overlaps(pauseButton) && startedCountdown && canPause){
@@ -3724,8 +3721,6 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
 		#end
-
-		//trace("Laggy trace in update");
 	}
 
 	//JOELwindows7: check if the song should display epilogue chat once the song has finished.
