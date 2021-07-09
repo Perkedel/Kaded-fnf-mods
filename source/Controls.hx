@@ -289,17 +289,20 @@ class Controls extends FlxActionSet
 	 * @param state 
 	 */
 	public function installActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState){
+		trace("install action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
 		var input = new FlxActionInputDigitalIFlxInput(thing, state);
 		trackedinputs.push(input);
 
 		action.add(input);
 		mappedinputs.set(action, input);
+		trace("add the " + Std.string(mappedinputs.get(action)) + " of " + Std.string(action) + " in " + Std.string(state));
 	}
 
 	public function uninstallActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState){
+		trace("uninstall action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
 		//var input = new FlxActionInputDigitalIFlxInput(thing, state);
 
-		trace("remove the " + Std.string(mappedinputs.get(action)));
+		trace("remove the " + Std.string(mappedinputs.get(action)) + " of " + Std.string(action) + " in " + Std.string(state));
 		action.remove(mappedinputs.get(action));
 	}
 
@@ -314,6 +317,7 @@ class Controls extends FlxActionSet
 	 * @param howManyButtons How many are the buttons? is this DDR, or Shaggy time again?
 	 */
 	public function installTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4){
+		trace("install the bind for hitbox");
 		inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonLeft, state));
 		inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonDown, state));
 		inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonUp, state));
@@ -325,9 +329,12 @@ class Controls extends FlxActionSet
 		inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[2], state));
 		inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[3], state));
 		*/
+
+		trace("You have now mapped inputs " + mappedinputs.toString());
 	}
 
 	public function uninstallTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4){
+		trace("You were having mapped inputs " + mappedinputs.toString());
 		inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, handoverTouchscreenButtons.buttonLeft, state));
 		inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, handoverTouchscreenButtons.buttonDown, state));
 		inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, handoverTouchscreenButtons.buttonUp, state));
@@ -343,6 +350,7 @@ class Controls extends FlxActionSet
 	 * @param Action Which Action button do you want? A, B, X, Y? or C?
 	 */
 	public function setVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode, ?isGameplay:Bool = false) {
+		trace("install bind for FlxVirtualPad " + Std.string(virtualPad) + " " + Std.string(DPad) + " " + Std.string(Action));
 		//Safety feature of it the handover optional variable value isn't given.
 		if (DPad == null)
 			DPad = NONE;
@@ -350,6 +358,7 @@ class Controls extends FlxActionSet
 			Action = NONE;
 		
 		//Now onto the action!
+		trace("install DPAD touch " + Std.string(DPad));
 		switch (DPad)
 		{
 			case UP_DOWN:
@@ -362,7 +371,9 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
 				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonRight, state));
-			case FULL: //We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
+			case FULL: 
+				//We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
+				trace("inlined assignations");
 				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonDown, state));
 				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
@@ -371,6 +382,7 @@ class Controls extends FlxActionSet
 				trace("No DPAD");
 		}
 
+		trace("install Action touch " + Std.string(Action));
 		switch (Action)
 		{
 			case A:
@@ -397,6 +409,7 @@ class Controls extends FlxActionSet
 	}
 
 	public function unsetVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode, ?isGameplay:Bool = false){
+		trace("uninstall bind for FlxVirtualPad " + Std.string(virtualPad) + " " + Std.string(DPad) + " " + Std.string(Action));
 		//Safety feature of it the handover optional variable value isn't given.
 		if (DPad == null)
 			DPad = NONE;
@@ -404,6 +417,7 @@ class Controls extends FlxActionSet
 			Action = NONE;
 		
 		//Now onto the action!
+		trace("uninstall DPAD touch " + Std.string(DPad));
 		switch (DPad)
 		{
 			case UP_DOWN:
@@ -416,7 +430,9 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonLeft, state));
 				inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonRight, state));
-			case FULL: //We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
+			case FULL: 
+				//We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
+				trace("inlined unassignations");
 				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonDown, state));
 				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonLeft, state));
@@ -425,6 +441,7 @@ class Controls extends FlxActionSet
 				trace("No DPAD");
 		}
 
+		trace("uninstall Action touch " + Std.string(Action));
 		switch (Action)
 		{
 			case A:
@@ -525,6 +542,7 @@ class Controls extends FlxActionSet
 	 */
 	function forEachBound(control:Control, func:FlxActionDigital->FlxInputState->Void)
 	{
+		trace("Check for each bound " + Std.string(control) + " " + Std.string(func));
 		switch (control)
 		{
 			case UP:

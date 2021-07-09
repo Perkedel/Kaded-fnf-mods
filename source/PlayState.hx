@@ -1714,6 +1714,7 @@ class PlayState extends MusicBeatState
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN,handleInput);
 
 		super.create();
+		trace("grepke");
 
 		//JOELwindows7: install debugge haxeflixeler
 		//commands
@@ -1738,10 +1739,14 @@ class PlayState extends MusicBeatState
 		FlxG.console.registerFunction("lightningStrikeShit", function(){
 			lightningStrikeShit();
 		});
+
+		//JOELwindows7: why the peck with touchscreen button game crash on second run?!
+		trace("finish create PlayState");
 	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
+		trace("has school intro " + Std.string(dialogueBox));
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		black.scrollFactor.set();
 		add(black);
@@ -1903,15 +1908,21 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
+		trace("startCountdown! Begin Funkin now");
 		inCutscene = false;
 
 		//JOELwindows7:visiblize buttons
+		/*
 		if(onScreenGameplayButtons != null){
 			trace("visible touchscreen buttons");
 			//onScreenGameplayButtons.visible = true;
 			//onScreenGameplayButtons.alpha = 0;
 		}
+		*/
+		//trace("visible touchscreen buttons");
+		//showOnScreenGameplayButtons();
 
+		trace("Generate Static arrows");
 		generateStaticArrows(0);
 		generateStaticArrows(1);
 
@@ -2065,21 +2076,23 @@ class PlayState extends MusicBeatState
 						touchscreenButtons.visible = true;
 					}
 					*/
-					if(onScreenGameplayButtons != null){
-						onScreenGameplayButtons.visible = true;
-						//and add cool animations
-						//FlxTween.tween(onScreenGameplayButtons,{alpha:1}, 1, {ease:FlxEase.circInOut});
-						//try luckydog7's renditions
-						//well, apparently, adjusting parent's alpha also affects all children's alpha
-						//inside it. right, where the peck is self modulate alpha?!??!!?
-						/*
-						FlxTween.num(onScreenGameplayButtons.alpha, 1, 1, 
-							{ease: FlxEase.circInOut}, 
-							function (a:Float) { 
-								onScreenGameplayButtons.alpha = a; 
-							});
-						*/
-					}
+					// if(onScreenGameplayButtons != null){
+					// 	onScreenGameplayButtons.visible = true;
+					// 	//and add cool animations
+					// 	//FlxTween.tween(onScreenGameplayButtons,{alpha:1}, 1, {ease:FlxEase.circInOut});
+					// 	//try luckydog7's renditions
+					// 	//well, apparently, adjusting parent's alpha also affects all children's alpha
+					// 	//inside it. right, where the peck is self modulate alpha?!??!!?
+					// 	/*
+					// 	FlxTween.num(onScreenGameplayButtons.alpha, 1, 1, 
+					// 		{ease: FlxEase.circInOut}, 
+					// 		function (a:Float) { 
+					// 			onScreenGameplayButtons.alpha = a; 
+					// 		});
+					// 	*/
+					// }
+					trace("visiblize touchscreen button now");
+					showOnScreenGameplayButtons();
 				case 4:
 					//JOELwindows7: just add trace for fun
 					trace("Run the song now!");
@@ -2605,9 +2618,10 @@ class PlayState extends MusicBeatState
 				touchscreenButtons.visible = false;
 			}
 			*/
-			if(onScreenGameplayButtons != null){
-				onScreenGameplayButtons.visible = false;
-			}
+			// if(onScreenGameplayButtons != null){
+			// 	onScreenGameplayButtons.visible = false;
+			// }
+			hideOnScreenGameplayButtons();
 		}
 
 		super.openSubState(SubState);
@@ -2643,9 +2657,10 @@ class PlayState extends MusicBeatState
 				touchscreenButtons.visible = true;
 			}
 			*/
-			if(onScreenGameplayButtons != null){
-				onScreenGameplayButtons.visible = true;
-			}
+			// if(onScreenGameplayButtons != null){
+			// 	onScreenGameplayButtons.visible = true;
+			// }
+			showOnScreenGameplayButtons();
 		}
 
 		super.closeSubState();
@@ -2918,7 +2933,7 @@ class PlayState extends MusicBeatState
 
 			havePausened = false;
 		}
-
+		
 
 		if (FlxG.keys.justPressed.SEVEN || haveDebugSevened) //JOELwindows7: have debug sevened, for chart option in pause menu maybe
 		{
@@ -3356,6 +3371,7 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("stepShit", curStep);
 
 		//JOELwindows7: add more watches too
+		trace("add watch");
 		FlxG.watch.addQuick("tempoShit", Conductor.bpm);
 		FlxG.watch.addQuick("shinzouRateShit", heartRate);
 		FlxG.watch.addQuick("songPositionShit", Conductor.songPosition);
@@ -3435,6 +3451,7 @@ class PlayState extends MusicBeatState
 				}
 		}
 
+		trace("if unspawn note is not null");
 		if (unspawnNotes[0] != null)
 		{
 			if (unspawnNotes[0].strumTime - Conductor.songPosition < 3500)
@@ -3447,11 +3464,12 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		trace("generatemusic stuff");
 		if (generatedMusic)
 			{
 				notes.forEachAlive(function(daNote:Note)
 				{	
-
+					trace("do the note these " + Std.string(daNote));
 					// instead of doing stupid y > FlxG.height
 					// we be men and actually calculate the time :)
 					if (daNote.tooLate)
@@ -3706,6 +3724,8 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
 		#end
+
+		//trace("Laggy trace in update");
 	}
 
 	//JOELwindows7: check if the song should display epilogue chat once the song has finished.
@@ -5682,6 +5702,31 @@ class PlayState extends MusicBeatState
 			gf.y += customStage.gfPosition[1];
 			dad.x += customStage.dadPosition[0];
 			dad.y += customStage.dadPosition[1];
+		}
+	}
+
+	//JOELwindows7: Ugh, fine, I guess you are my littler pogchamp, come here.
+	function colorizeColorablebyKey(note:String, justOne:Bool, toWhichBg:Int)
+	{
+		if (note == "left")
+		{
+			trace("set color magenta");
+			chooseColoringColor(FlxColor.fromString("magenta"), justOne, toWhichBg);
+		}
+		else if (note == "down")
+		{
+			trace("set color cyan");
+			chooseColoringColor(FlxColor.fromString("cyan"), justOne, toWhichBg);
+		}
+		else if (note == "up")
+		{
+			trace("set color lime");
+			chooseColoringColor(FlxColor.fromString("lime"), justOne, toWhichBg);
+		}
+		else if (note == "right")
+		{
+			trace("set color red");
+			chooseColoringColor(FlxColor.fromString("red"), justOne, toWhichBg);
 		}
 	}
 }

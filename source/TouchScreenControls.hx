@@ -47,27 +47,76 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
 
 	public var _hitbox:TouchScreenControls;
 	public var _virtualPad:FlxVirtualPad;
+    public var _virtualPadBoth:FlxVirtualPad;
+    public var _virtualPadLeft:FlxVirtualPad;
+    public var _virtualPadRight:FlxVirtualPad;
+    public var _alreadyAdded:Array<Bool>;
 
 	public function new(howManyButtons:Int = 4, initVisible:Bool = false){
+        trace("Start On Screen Gameplay Button da right now");
         this.howManyButtons = howManyButtons;
         this.initVisible = initVisible;
         super();
+        if(_alreadyAdded == null) _alreadyAdded = new Array<Bool>();
+        _alreadyAdded = [false, false, false, false, false];
+        initialize(howManyButtons,initVisible);
+        trace("Enjoy your On Screen Gameplay Button da right now");
+    }
 
+    public function initialize(howManyButtons:Int = 4, initVisible:Bool = false){
         trace("TouchScreenControls type " + Std.string(FlxG.save.data.selectTouchScreenButtons));
 
         switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
             case 0:
                 trace("No touch screen buttons");
             case 1:
-                _hitbox = new TouchScreenControls(howManyButtons, initVisible);
-                add(_hitbox);
+                if(_hitbox == null){
+                    trace("have Hitbox now yeah");
+                    _hitbox = new TouchScreenControls(howManyButtons, initVisible);
+                    if(!_alreadyAdded[1]) add(_hitbox);
+                    trace("hitboxen");
+                }
             default:
                 trace("no special case found, using init virtualpad instead");
-                initVirtualPad(Std.int(FlxG.save.data.selectTouchScreenButtons));
+                initVirtualPad(Std.int(FlxG.save.data.selectTouchScreenButtons),true);
+        }
+        chooseOnScreenButtons(Std.int(FlxG.save.data.selectTouchScreenButtons));
+        trace("the pad type " + Std.int(FlxG.save.data.selectTouchScreenButtons) + " has " + (_alreadyAdded[Std.int(FlxG.save.data.selectTouchScreenButtons)]? " been added " : " not been added"));
+        _alreadyAdded[Std.int(FlxG.save.data.selectTouchScreenButtons)] = true;
+    }
+
+    function chooseOnScreenButtons(whichOneIsIt:Int = 0){
+        trace("Chosen this " + Std.string(whichOneIsIt));
+        if(_virtualPadLeft != null) _virtualPadLeft.visible = false;
+        if(_virtualPadRight != null) _virtualPadRight.visible = false;
+        if(_virtualPadBoth != null) _virtualPadBoth.visible = false;
+        if(_virtualPad != null) _virtualPad.visible = false;
+        if(_hitbox != null) _hitbox.visible = false;
+
+        switch(whichOneIsIt){
+            case 0:
+                trace("Choose none touchscreen");
+            case 1:
+                trace("hitboxo");
+                if(_hitbox != null)
+                    _hitbox.visible = true;
+            case 2:
+                if(_virtualPadLeft != null)
+                    _virtualPadLeft.visible = true;
+            case 3:
+                if(_virtualPadRight != null)
+                    _virtualPadRight.visible = true;
+            case 4:
+                trace("Fulling Gamepad");
+                if(_virtualPadBoth != null)
+                    _virtualPadBoth.visible = true;
+            default:
+                if(_virtualPad != null)
+                    _virtualPad.visible = true;
         }
     }
 
-    function initVirtualPad(vpadMode:Int) 
+    function initVirtualPad(vpadMode:Int, bruteForce:Bool = true) 
     {
         switch (vpadMode)
         {
@@ -79,13 +128,22 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
                 trace("that's a hitbox. go get your friend");
             case 2:
                 //Left
-                _virtualPad = new FlxVirtualPad(FULL, NONE);
+                if(bruteForce)
+                    _virtualPadLeft = new FlxVirtualPad(FULL, NONE);
+                else
+                    _virtualPad = new FlxVirtualPad(FULL, NONE);
             case 3:
                 //Right
-                _virtualPad = new FlxVirtualPad(NONE, A_B_X_Y);
+                if(bruteForce)
+                    _virtualPadRight = new FlxVirtualPad(NONE,A_B_X_Y);
+                else
+                    _virtualPad = new FlxVirtualPad(NONE, A_B_X_Y);
             case 4:
                 //Both
-                _virtualPad = new FlxVirtualPad(FULL, A_B_X_Y);
+                if(bruteForce)
+                    _virtualPadBoth = new FlxVirtualPad(FULL,A_B_X_Y);
+                else
+                    _virtualPad = new FlxVirtualPad(FULL, A_B_X_Y);
             case 5:
                 //Custom
             default:
@@ -94,9 +152,21 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
         
         if(_virtualPad != null){
             _virtualPad.alpha = 0.75;
-            add(_virtualPad);	
+            if(!_alreadyAdded[5]) add(_virtualPad);	
         } else {
             trace("no virtual pad thingy available");
+        }
+        if(_virtualPadLeft != null){
+            _virtualPadLeft.alpha = 0.75;
+            if(!_alreadyAdded[2]) add(_virtualPadLeft);
+        }
+        if(_virtualPadRight != null){
+            _virtualPadRight.alpha = 0.75;
+            if(!_alreadyAdded[3]) add(_virtualPadRight);
+        }
+        if(_virtualPadBoth != null){
+            _virtualPadBoth.alpha = 0.75;
+            if(!_alreadyAdded[4]) add(_virtualPadBoth);
         }
     }
 
@@ -141,6 +211,7 @@ class TouchScreenControls extends FlxSpriteGroup{
 	public var buttonRight:FlxButton;
 
     public function new(howManyButtons:Int = 4, initVisible:Bool = false){
+        trace("Start building hitbox");
         daButtoners = new FlxTypedGroup<FlxButton>();
         this.howManyButtons = howManyButtons;
         this.initVisible = initVisible;
@@ -155,6 +226,7 @@ class TouchScreenControls extends FlxSpriteGroup{
         //initDoseButtons();
         bruteForceButtons();
         //visible = initVisible;
+        trace("build hitbox complete");
     }
 
     // inspire it from https://github.com/luckydog7/Funkin-android/blob/master/source/ui/Hitbox.hx
@@ -191,6 +263,7 @@ class TouchScreenControls extends FlxSpriteGroup{
     }
 
     public function bruteForceButtons(){
+        trace("brute force the hitbox");
         var graphic:FlxGraphic = FlxGraphic.fromRectangle(
             Std.int(FlxG.width/howManyButtons),
             Std.int(FlxG.height),
@@ -209,6 +282,7 @@ class TouchScreenControls extends FlxSpriteGroup{
         hitbox.add(add(buttonDown = addDeezButton(1*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,1, "down")));
         hitbox.add(add(buttonUp = addDeezButton(2*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,2, "up")));
         hitbox.add(add(buttonRight = addDeezButton(3*(FlxG.width/howManyButtons),0,(FlxG.width/howManyButtons),(FlxG.height),justImage.graphic,3, "right")));
+        trace("less go");
     }
 
     public function initDoseButtons(spriteMode:Bool = false){

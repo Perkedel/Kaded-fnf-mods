@@ -68,6 +68,9 @@ class MusicBeatState extends FlxUIState
 	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
 	//var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
 	public var onScreenGameplayButtons:OnScreenGameplayButtons; //JOELwindows7: the touchscreen buttons here
+	public static var dueAdded:Bool = false;
+
+	public var camControl:FlxCamera;
 
 	//JOELwindows7: touchscreen button stuffs
 	// https://github.com/luckydog7/Funkin-android/blob/master/source/MusicBeatState.hx
@@ -85,6 +88,7 @@ class MusicBeatState extends FlxUIState
 			trace('reg ' + transIn.region);
 
 		super.create();
+		trace("created Music Beat State");
 	}
 
 
@@ -283,43 +287,63 @@ class MusicBeatState extends FlxUIState
 		touchscreenButtons.initDoseButtons();
 		add(touchscreenButtons);
 		*/
-
+		var _alreadyAdded:Array<Bool> = [false, false, false, false];
 		trace("init the touchscreen buttons");
-		onScreenGameplayButtons = new OnScreenGameplayButtons(howManyButtons, initVisible);
-		switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
-			case 0:
-				trace("No touch screen button to init at all.");
-			case 1:
-				trace("hitbox the touchscreen buttons");
-				controls.installTouchScreenGameplays(onScreenGameplayButtons._hitbox,howManyButtons);
-			case 2:
-				trace("Left side touchscreen buttons only");
-				controls.setVirtualPad(onScreenGameplayButtons._virtualPad, FULL, NONE, true);
-			case 3:
-				trace("Right side touchscreen buttons only");
-				controls.setVirtualPad(onScreenGameplayButtons._virtualPad, NONE, A_B_X_Y, true);
-			case 4:
-				trace("Full gamepad touchscreen");
-				controls.setVirtualPad(onScreenGameplayButtons._virtualPad, FULL, A_B_X_Y, true);
-			default:
-				trace("huh? what do you mean? we don't know this touch buttons type\nUgh fine I guess you are my little pogchamp, come here.");
-				//lmao! gothmei reference & PEAR animated it this
+		if(onScreenGameplayButtons == null){
+			onScreenGameplayButtons = new OnScreenGameplayButtons(howManyButtons, initVisible);
+			//_alreadyAdded = onScreenGameplayButtons._alreadyAdded;
 		}
+		if(!dueAdded)
+			switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
+				case 0:
+					trace("No touch screen button to init at all.");
+				case 1:
+					trace("hitbox the touchscreen buttons");
+					if(_alreadyAdded[1] == false) controls.installTouchScreenGameplays(onScreenGameplayButtons._hitbox,howManyButtons);
+				case 2:
+					trace("Left side touchscreen buttons only");
+					if(_alreadyAdded[2] == false) controls.setVirtualPad(onScreenGameplayButtons._virtualPadLeft, FULL, NONE, true);
+				case 3:
+					trace("Right side touchscreen buttons only");
+					if(_alreadyAdded[3] == false) controls.setVirtualPad(onScreenGameplayButtons._virtualPadRight, NONE, A_B_X_Y, true);
+				case 4:
+					trace("Full gamepad touchscreen");
+					if(_alreadyAdded[4] == false) controls.setVirtualPad(onScreenGameplayButtons._virtualPadBoth, FULL, A_B_X_Y, true);
+				default:
+					trace("huh? what do you mean? we don't know this touch buttons type\nUgh fine I guess you are my little pogchamp, come here.");
+					//lmao! gothmei reference & PEAR animated it this
+			}
+		else
+			trace("due has already added bruh");
+		dueAdded = true;
+		_alreadyAdded[Std.int(FlxG.save.data.selectTouchScreenButtons)] = true;
 		trackedinputs = controls.trackedinputs;
+		// if(onScreenGameplayButtons != null)
+		// 	onScreenGameplayButtons.initialize(howManyButtons, initVisible);
 		controls.trackedinputs = [];
-
-		trace("setting dedicated touchscreen buttons camera");
-		var camControl = new FlxCamera();
-		FlxG.cameras.add(camControl);
-		camControl.bgColor.alpha = 0;
-		onScreenGameplayButtons.cameras = [camControl];
-
+		if(camControl == null){
+			trace("setting dedicated touchscreen buttons camera");
+			camControl = new FlxCamera();
+			FlxG.cameras.add(camControl);
+			camControl.bgColor.alpha = 0;
+			onScreenGameplayButtons.cameras = [camControl];
+		} else {
+			camControl.bgColor.alpha = 0;
+			onScreenGameplayButtons.cameras = [camControl];
+		}
 		onScreenGameplayButtons.visible = initVisible;
 		
 		add(onScreenGameplayButtons);
 	}
+	public function showOnScreenGameplayButtons(){
+		if(onScreenGameplayButtons != null) onScreenGameplayButtons.visible = true;
+	}
+	public function hideOnScreenGameplayButtons(){
+		if(onScreenGameplayButtons != null) onScreenGameplayButtons.visible = false;
+	}
 	public function removeTouchScreenButtons(){
 		if(onScreenGameplayButtons != null){
+			trace("uninstall touchscreen buttonings");
 			controls.trackedinputs = trackedinputs;
 			switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
 				case 0:
@@ -329,13 +353,13 @@ class MusicBeatState extends FlxUIState
 					controls.uninstallTouchScreenGameplays(onScreenGameplayButtons._hitbox);
 				case 2:
 					trace("Left side touchscreen buttons only");
-					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, FULL, NONE, true);
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPadLeft, FULL, NONE, true);
 				case 3:
 					trace("Right side touchscreen buttons only");
-					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, NONE, A_B_X_Y, true);
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPadRight, NONE, A_B_X_Y, true);
 				case 4:
 					trace("Full gamepad touchscreen");
-					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, FULL, A_B_X_Y, true);
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPadBoth, FULL, A_B_X_Y, true);
 				default:
 					trace("huh? what do you mean? we don't know this touch buttons type\nUgh fine I guess you are my little pogchamp, come here.");
 					//lmao! gothmei reference & PEAR animated it this
@@ -352,17 +376,20 @@ class MusicBeatState extends FlxUIState
 				onScreenGameplayButtons.destroy();
 			}});
 			*/
+			/*
 			FlxTween.num(onScreenGameplayButtons.alpha,0,1,
 				{ease:FlxEase.circInOut, 
 					onComplete: function(tween:FlxTween){
 						onScreenGameplayButtons.visible = false;
 						//trackedinputs = [];
-						onScreenGameplayButtons.destroy();
+						//onScreenGameplayButtons.destroy();
 					}
 				}, 
 				function (a:Float) { 
 					onScreenGameplayButtons.alpha = a; 
 			});
+			*/
+			onScreenGameplayButtons.visible = false;
 		}
 	}
 }

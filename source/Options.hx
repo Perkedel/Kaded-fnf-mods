@@ -1066,7 +1066,7 @@ class UseTouchScreenButtons extends Option{
 }
 
 class SelectTouchScreenButtons extends Option{
-	var max=1;
+	var max=4;
 
 	public function new(desc:String)
 	{

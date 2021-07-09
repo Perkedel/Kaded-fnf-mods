@@ -68,24 +68,24 @@ function playerOneSing(note, position)
 
 function colorizeColorablebyKey(note, justOne, toWhichBg)
 {
-    if (note == "left" || note == 0)
+    if (note == 0)
     {
-        print("set color magenta");
+        trace("set color magenta (hscript)");
         chooseColoringColor("magenta", justOne, toWhichBg);
     }
-    else if (note == "down" || note == 1)
+    else if (note == 1)
     {
-        print("set color cyan");
+        trace("set color cyan (hscript)");
         chooseColoringColor("cyan", justOne, toWhichBg);
     }
-    else if (note == "up" || note == 2)
+    else if (note == 2)
     {
-        print("set color lime");
+        trace("set color lime (hscript)");
         chooseColoringColor("lime", justOne, toWhichBg);
     }
-    else if (note == "right" || note == 3)
+    else if (note == 3)
     {
-        print("set color red");
+        trace("set color red (hscript)");
         chooseColoringColor("red", justOne, toWhichBg);
     }
 }
