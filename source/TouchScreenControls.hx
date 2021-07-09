@@ -47,9 +47,9 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
 
 	public var _hitbox:TouchScreenControls;
 	public var _virtualPad:FlxVirtualPad;
-    public var _virtualPadBoth:FlxVirtualPad;
-    public var _virtualPadLeft:FlxVirtualPad;
-    public var _virtualPadRight:FlxVirtualPad;
+    // public var _virtualPadBoth:FlxVirtualPad;
+    // public var _virtualPadLeft:FlxVirtualPad;
+    // public var _virtualPadRight:FlxVirtualPad;
     public var _alreadyAdded:Array<Bool>;
 
 	public function new(howManyButtons:Int = 4, initVisible:Bool = false){
@@ -78,7 +78,7 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
                 }
             default:
                 trace("no special case found, using init virtualpad instead");
-                initVirtualPad(Std.int(FlxG.save.data.selectTouchScreenButtons),true);
+                initVirtualPad(Std.int(FlxG.save.data.selectTouchScreenButtons),false);
         }
         chooseOnScreenButtons(Std.int(FlxG.save.data.selectTouchScreenButtons));
         trace("the pad type " + Std.int(FlxG.save.data.selectTouchScreenButtons) + " has " + (_alreadyAdded[Std.int(FlxG.save.data.selectTouchScreenButtons)]? " been added " : " not been added"));
@@ -87,36 +87,36 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
 
     function chooseOnScreenButtons(whichOneIsIt:Int = 0){
         trace("Chosen this " + Std.string(whichOneIsIt));
-        if(_virtualPadLeft != null) _virtualPadLeft.visible = false;
-        if(_virtualPadRight != null) _virtualPadRight.visible = false;
-        if(_virtualPadBoth != null) _virtualPadBoth.visible = false;
+        // if(_virtualPadLeft != null) _virtualPadLeft.visible = false;
+        // if(_virtualPadRight != null) _virtualPadRight.visible = false;
+        // if(_virtualPadBoth != null) _virtualPadBoth.visible = false;
         if(_virtualPad != null) _virtualPad.visible = false;
         if(_hitbox != null) _hitbox.visible = false;
 
         switch(whichOneIsIt){
             case 0:
                 trace("Choose none touchscreen");
-            case 1:
-                trace("hitboxo");
-                if(_hitbox != null)
-                    _hitbox.visible = true;
-            case 2:
-                if(_virtualPadLeft != null)
-                    _virtualPadLeft.visible = true;
-            case 3:
-                if(_virtualPadRight != null)
-                    _virtualPadRight.visible = true;
-            case 4:
-                trace("Fulling Gamepad");
-                if(_virtualPadBoth != null)
-                    _virtualPadBoth.visible = true;
+            // case 1:
+            //     trace("hitboxo");
+            //     if(_hitbox != null)
+            //         _hitbox.visible = true;
+            // case 2:
+            //     if(_virtualPadLeft != null)
+            //         _virtualPadLeft.visible = true;
+            // case 3:
+            //     if(_virtualPadRight != null)
+            //         _virtualPadRight.visible = true;
+            // case 4:
+            //     trace("Fulling Gamepad");
+            //     if(_virtualPadBoth != null)
+            //         _virtualPadBoth.visible = true;
             default:
                 if(_virtualPad != null)
                     _virtualPad.visible = true;
         }
     }
 
-    function initVirtualPad(vpadMode:Int, bruteForce:Bool = true) 
+    function initVirtualPad(vpadMode:Int, bruteForce:Bool = false) 
     {
         switch (vpadMode)
         {
@@ -128,21 +128,21 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
                 trace("that's a hitbox. go get your friend");
             case 2:
                 //Left
-                if(bruteForce)
-                    _virtualPadLeft = new FlxVirtualPad(FULL, NONE);
-                else
+                // if(bruteForce)
+                //     _virtualPadLeft = new FlxVirtualPad(FULL, NONE);
+                // else
                     _virtualPad = new FlxVirtualPad(FULL, NONE);
             case 3:
                 //Right
-                if(bruteForce)
-                    _virtualPadRight = new FlxVirtualPad(NONE,A_B_X_Y);
-                else
+                // if(bruteForce)
+                //     _virtualPadRight = new FlxVirtualPad(NONE,A_B_X_Y);
+                // else
                     _virtualPad = new FlxVirtualPad(NONE, A_B_X_Y);
             case 4:
                 //Both
-                if(bruteForce)
-                    _virtualPadBoth = new FlxVirtualPad(FULL,A_B_X_Y);
-                else
+                // if(bruteForce)
+                //     _virtualPadBoth = new FlxVirtualPad(FULL,A_B_X_Y);
+                // else
                     _virtualPad = new FlxVirtualPad(FULL, A_B_X_Y);
             case 5:
                 //Custom
@@ -152,22 +152,22 @@ class OnScreenGameplayButtons extends FlxSpriteGroup{
         
         if(_virtualPad != null){
             _virtualPad.alpha = 0.75;
-            if(!_alreadyAdded[5]) add(_virtualPad);	
+            add(_virtualPad);	
         } else {
             trace("no virtual pad thingy available");
         }
-        if(_virtualPadLeft != null){
-            _virtualPadLeft.alpha = 0.75;
-            if(!_alreadyAdded[2]) add(_virtualPadLeft);
-        }
-        if(_virtualPadRight != null){
-            _virtualPadRight.alpha = 0.75;
-            if(!_alreadyAdded[3]) add(_virtualPadRight);
-        }
-        if(_virtualPadBoth != null){
-            _virtualPadBoth.alpha = 0.75;
-            if(!_alreadyAdded[4]) add(_virtualPadBoth);
-        }
+        // if(_virtualPadLeft != null){
+        //     _virtualPadLeft.alpha = 0.75;
+        //     add(_virtualPadLeft);
+        // }
+        // if(_virtualPadRight != null){
+        //     _virtualPadRight.alpha = 0.75;
+        //     add(_virtualPadRight);
+        // }
+        // if(_virtualPadBoth != null){
+        //     _virtualPadBoth.alpha = 0.75;
+        //     add(_virtualPadBoth);
+        // }
     }
 
     override public function destroy(){

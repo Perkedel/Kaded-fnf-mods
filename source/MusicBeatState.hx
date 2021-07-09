@@ -302,13 +302,13 @@ class MusicBeatState extends FlxUIState
 					if(_alreadyAdded[1] == false) controls.installTouchScreenGameplays(onScreenGameplayButtons._hitbox,howManyButtons);
 				case 2:
 					trace("Left side touchscreen buttons only");
-					if(_alreadyAdded[2] == false) controls.setVirtualPad(onScreenGameplayButtons._virtualPadLeft, FULL, NONE, true);
+					if(_alreadyAdded[2] == false) controls.setVirtualPad(onScreenGameplayButtons._virtualPad, FULL, NONE, true);
 				case 3:
 					trace("Right side touchscreen buttons only");
-					if(_alreadyAdded[3] == false) controls.setVirtualPad(onScreenGameplayButtons._virtualPadRight, NONE, A_B_X_Y, true);
+					if(_alreadyAdded[3] == false) controls.setVirtualPad(onScreenGameplayButtons._virtualPad, NONE, A_B_X_Y, true);
 				case 4:
 					trace("Full gamepad touchscreen");
-					if(_alreadyAdded[4] == false) controls.setVirtualPad(onScreenGameplayButtons._virtualPadBoth, FULL, A_B_X_Y, true);
+					if(_alreadyAdded[4] == false) controls.setVirtualPad(onScreenGameplayButtons._virtualPad, FULL, A_B_X_Y, true);
 				default:
 					trace("huh? what do you mean? we don't know this touch buttons type\nUgh fine I guess you are my little pogchamp, come here.");
 					//lmao! gothmei reference & PEAR animated it this
@@ -353,13 +353,13 @@ class MusicBeatState extends FlxUIState
 					controls.uninstallTouchScreenGameplays(onScreenGameplayButtons._hitbox);
 				case 2:
 					trace("Left side touchscreen buttons only");
-					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPadLeft, FULL, NONE, true);
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, FULL, NONE, true);
 				case 3:
 					trace("Right side touchscreen buttons only");
-					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPadRight, NONE, A_B_X_Y, true);
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, NONE, A_B_X_Y, true);
 				case 4:
 					trace("Full gamepad touchscreen");
-					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPadBoth, FULL, A_B_X_Y, true);
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, FULL, A_B_X_Y, true);
 				default:
 					trace("huh? what do you mean? we don't know this touch buttons type\nUgh fine I guess you are my little pogchamp, come here.");
 					//lmao! gothmei reference & PEAR animated it this

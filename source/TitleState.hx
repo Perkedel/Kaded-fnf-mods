@@ -1,5 +1,6 @@
 package;
 
+import GalleryAchievements;
 #if sys
 import smTools.SMFile;
 #end
@@ -364,6 +365,10 @@ class TitleState extends MusicBeatState
 				NGio.unlockMedal(61034);
 			#end
 			#end
+			AchievementUnlocked.whichIs("funkin_started");
+			if (Date.now().getDay() == 5)
+				AchievementUnlocked.whichIs("just_like_the_game");
+
 
 			if (FlxG.save.data.flashing)
 				titleText.animation.play('press');

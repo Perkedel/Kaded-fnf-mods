@@ -1066,7 +1066,7 @@ class UseTouchScreenButtons extends Option{
 }
 
 class SelectTouchScreenButtons extends Option{
-	var max=4;
+	var max=1;
 
 	public function new(desc:String)
 	{
@@ -1152,5 +1152,27 @@ class VibrationOption extends Option{
 	private override function updateDisplay():String
 	{		
 		return "Vibration " + (FlxG.save.data.vibration ? "ON" : "OFF");
+	}
+}
+
+//JOELwindows7: view achievements unlocked. 
+//inspired from that 69420 runner (N word version) ninjamuffin99 made before.
+class GalleryOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		//FlxG.switchState(new LoadReplayState()); //or open new state.
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Gallery Achievements";
 	}
 }

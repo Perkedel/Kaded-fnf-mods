@@ -289,7 +289,7 @@ class Controls extends FlxActionSet
 	 * @param state the state of that button
 	 */
 	public function installActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState){
-		trace("install action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
+		//trace("install action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
 		var input = new FlxActionInputDigitalIFlxInput(thing, state);
 		trackedinputs.push(input);
 
@@ -299,7 +299,7 @@ class Controls extends FlxActionSet
 	}
 
 	public function uninstallActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState){
-		trace("uninstall action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
+		//trace("uninstall action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
 		//var input = new FlxActionInputDigitalIFlxInput(thing, state);
 
 		//trace("remove the " + mappedinputs.toString() + " a " + Std.string(action) + " in " + Std.string(state));
@@ -317,7 +317,7 @@ class Controls extends FlxActionSet
 	 * @param howManyButtons How many are the buttons? is this DDR, or Shaggy time again?
 	 */
 	public function installTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4){
-		trace("install the bind for hitbox");
+		//trace("install the bind for hitbox");
 		inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonLeft, state));
 		inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonDown, state));
 		inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonUp, state));
@@ -330,11 +330,11 @@ class Controls extends FlxActionSet
 		inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[3], state));
 		*/
 
-		trace("You have now mapped inputs " + mappedinputs.toString());
+		//trace("You have now mapped inputs " + mappedinputs.toString());
 	}
 
 	public function uninstallTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4){
-		trace("You were having mapped inputs " + mappedinputs.toString());
+		//trace("You were having mapped inputs " + mappedinputs.toString());
 		inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, handoverTouchscreenButtons.buttonLeft, state));
 		inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, handoverTouchscreenButtons.buttonDown, state));
 		inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, handoverTouchscreenButtons.buttonUp, state));
@@ -395,10 +395,10 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
 			case A_B_X_Y:
 				if(isGameplay){
-					inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonX, state));
-					inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonY, state));
-					inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
-					inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
+					inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonY, state));
+					inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
+					inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonX, state));
+					inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
 				} else {
 					inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
 					inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));

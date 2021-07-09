@@ -4266,10 +4266,8 @@ class PlayState extends MusicBeatState
 
 		private function keyShit():Void // I've invested in emma stocks
 			{
-				trace("handle input");
 				// control arrays, order L D R U
 				var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
-				trace("holdArray " + holdArray.toString());
 				var pressArray:Array<Bool> = [
 					controls.LEFT_P,
 					controls.DOWN_P,
@@ -4282,7 +4280,6 @@ class PlayState extends MusicBeatState
 					controls.UP_R,
 					controls.RIGHT_R
 				];
-				trace("added values for all action states key handlings");
 				#if ((windows || linux) && cpp)
 				if (luaModchart != null){
 				if (controls.LEFT_P){luaModchart.executeState('keyPressed',["left"]);};
@@ -4324,12 +4321,10 @@ class PlayState extends MusicBeatState
 					
 					//if (FlxG.keys.pressed){stageHscript.executeState('rawKeyPressed',[Std.string(FlxG.keys.pressed)]);};
 					};
-				trace("handled modchart element of keys");
 				
 				// Prevent player input if botplay is on
 				if(PlayStateChangeables.botPlay)
 				{
-					trace("is botplay! turn of all arrow keypresses");
 					holdArray = [false, false, false, false];
 					pressArray = [false, false, false, false];
 					releaseArray = [false, false, false, false];
@@ -4492,7 +4487,6 @@ class PlayState extends MusicBeatState
 					else
 						spr.centerOffsets();
 				});
-				trace("done handle input");
 			}
 
 			public function findByTime(time:Float):Array<Dynamic>
