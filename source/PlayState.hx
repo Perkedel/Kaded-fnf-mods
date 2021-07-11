@@ -5699,27 +5699,40 @@ class PlayState extends MusicBeatState
 	}
 
 	//JOELwindows7: Ugh, fine, I guess you are my littler pogchamp, come here.
-	function colorizeColorablebyKey(note:String, justOne:Bool, toWhichBg:Int)
+	public function colorizeColorablebyKey(note:String, justOne:Bool, toWhichBg:Int)
 	{
-		if (note == "left")
-		{
-			trace("set color magenta");
-			chooseColoringColor(FlxColor.fromString("magenta"), justOne, toWhichBg);
+		switch(note){
+			case "left":
+				trace("set color magenta");
+				chooseColoringColor(FlxColor.fromString("magenta"), justOne, toWhichBg);
+			case "down":
+				trace("set color cyan");
+				chooseColoringColor(FlxColor.fromString("cyan"), justOne, toWhichBg);
+			case "up":
+				trace("set color lime");
+				chooseColoringColor(FlxColor.fromString("lime"), justOne, toWhichBg);
+			case "right":
+				trace("set color red");
+				chooseColoringColor(FlxColor.fromString("red"), justOne, toWhichBg);
+			default:
 		}
-		else if (note == "down")
-		{
-			trace("set color cyan");
-			chooseColoringColor(FlxColor.fromString("cyan"), justOne, toWhichBg);
-		}
-		else if (note == "up")
-		{
-			trace("set color lime");
-			chooseColoringColor(FlxColor.fromString("lime"), justOne, toWhichBg);
-		}
-		else if (note == "right")
-		{
-			trace("set color red");
-			chooseColoringColor(FlxColor.fromString("red"), justOne, toWhichBg);
+	}
+
+	public function colorizeColorablebyKeyNum(note:Int, justOne:Bool, toWhichBg:Int){
+		switch(note){
+			case 0:
+				trace("set color magenta");
+				chooseColoringColor(FlxColor.fromString("magenta"), justOne, toWhichBg);
+			case 1:
+				trace("set color cyan");
+				chooseColoringColor(FlxColor.fromString("cyan"), justOne, toWhichBg);
+			case 2:
+				trace("set color lime");
+				chooseColoringColor(FlxColor.fromString("lime"), justOne, toWhichBg);
+			case 3:
+				trace("set color red");
+				chooseColoringColor(FlxColor.fromString("red"), justOne, toWhichBg);
+			default:
 		}
 	}
 }
