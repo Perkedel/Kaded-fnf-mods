@@ -88,7 +88,7 @@ class MusicBeatState extends FlxUIState
 			trace('reg ' + transIn.region);
 
 		super.create();
-		trace("created Music Beat State");
+		//trace("created Music Beat State");
 	}
 
 
@@ -254,7 +254,7 @@ class MusicBeatState extends FlxUIState
 		add(pauseButton);
 		return pauseButton;
 	}
-	private function addAcceptButton(x:Int=1280,y:Int=360,scale:Float=.5){
+	private function addAcceptButton(x:Int=1280-100,y:Int=720-100,scale:Float=.5){
 		acceptButton = new FlxSprite(x, y).loadGraphic(Paths.image('acceptButton'));
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale),Std.int(acceptButton.height * scale));
 		acceptButton.scrollFactor.set();

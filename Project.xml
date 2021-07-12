@@ -198,6 +198,9 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="newgrounds" unless='neko || hl || mobile'/>
 	<haxelib name="faxe" if='switch'/>
+	<!-- JOELwindows7: VVV Danger -->
+	<!-- <haxelib name="faxe"/>  -->
+	<!-- JOELwindows7: ^^^ dangerous experiment-->
 	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="cpp" unless="neko || hl || mobile"/>
 	<haxelib name="linc_luajit" if="cpp" unless="neko || hl || mobile"/>
@@ -240,7 +243,7 @@
 	<haxelib name="haxe-files"/>
 
 	<!-- JOELwindows7: used by BulbyVR with Modding+ for modchart instead of Lua. -->
-	<haxelib name="hscript"/>
+	<!-- <haxelib name="hscript"/> -->
 	<haxelib name="hscript-ex"/>
 	<!-- install hscript-ex with `haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex`-->
 

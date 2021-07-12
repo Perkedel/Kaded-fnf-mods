@@ -53,6 +53,11 @@ class OptionsMenu extends MusicBeatState
 			new CpuStrums("CPU's strumline lights up when a note hits it."),
 			#end
 		]),
+
+		new OptionCategory("Audio",[
+			new AdjustVolumeOption("Adjust Audio volume"),
+			new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
+		]),
 		
 		new OptionCategory("Misc", [
 			#if desktop

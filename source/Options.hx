@@ -1,5 +1,6 @@
 package;
 
+import experiments.LimeAudioBufferTester;
 import openfl.net.FileFilter;
 import haxe.Json;
 import openfl.net.FileReference;
@@ -1081,11 +1082,13 @@ class SelectTouchScreenButtons extends Option{
 
 	override function right():Bool{
 		changeModes(1);
+		display = updateDisplay();
 		return true;
 	}
 
 	override function left():Bool{
 		changeModes(-1);
+		display = updateDisplay();
 		return true;
 	}
 
@@ -1174,5 +1177,63 @@ class GalleryOption extends Option{
 	private override function updateDisplay():String
 	{
 		return "Gallery Achievements";
+	}
+}
+
+//JOELwindows7: adjust volume
+class AdjustVolumeOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptValues = true;
+	}
+
+	public override function press():Bool{
+		display = updateDisplay();
+		return true;
+	}
+
+	override function right():Bool{
+		FlxG.sound.changeVolume(.1);
+		display = updateDisplay();
+		return true;
+	}
+
+	override function left():Bool{
+		FlxG.sound.changeVolume(-.1);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Volume " + Std.string(FlxG.sound.volume);
+	}
+
+	override function getValue():String {
+		return "Volume: " + Std.string(FlxG.sound.volume);
+	}
+}
+
+//JOELwindows7: attempt the surround sound test using Lime audio source.
+class SurroundTestOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		//FlxG.switchState(new LoadReplayState()); //or open new state.
+		FlxG.switchState(new LimeAudioBufferTester());
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Surround Test";
 	}
 }

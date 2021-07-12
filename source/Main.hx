@@ -170,6 +170,9 @@ class Main extends Sprite
 		#else
 		trace("no yoink time.");
 		#end
+
+		//JOELwindows7: stop the accidentally press numpad 0 during arrow key on keyboard
+		destroyAccidentVolKeys();
 	}
 
 	var game:FlxGame;
@@ -198,5 +201,12 @@ class Main extends Sprite
 	public function getFPS():Float
 	{
 		return fpsCounter.currentFPS;
+	}
+
+	//JOELwindows7: Pusholl! Disable vol keys pls! it annoys me!!!
+	public function destroyAccidentVolKeys(){
+		FlxG.sound.volumeUpKeys = null;
+		FlxG.sound.volumeDownKeys = null;
+		FlxG.sound.muteKeys = null;
 	}
 }

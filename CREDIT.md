@@ -250,6 +250,12 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://www.justinguitar.com/tap-tempo-bpm-tool use this to tap tempo.
 - http://www.troubleshooters.com/codecorn/lua/luaif.htm orcks the Lua how to comparisons if.
 - https://gamebanana.com/mods/44345 Sarvente Mid Fight masses. please ask permission somewhere so we can build Ku Tetap Cinta Yesus with Sarvente as the flute here.
+- https://api.haxe.org/js/html/audio/AudioBuffer.html aaa audiobuffer
+- https://api.haxeflixel.com/flixel/system/frontEnds/SoundFrontEnd.html sound frontend type, how to disable volkeys & mute key.
+- https://api.lime.software/lime/media/AudioBuffer.html you said it support more than 2.0 Stereo channels.
+- https://api.lime.software/lime/media/AudioSource.html but I loaded and played that kinda 7.1 Surround Sound, it didn't work. it stuck.
+- https://github.com/uhrobots/faxe try fmod maybe?
+- https://www.fmod.com/ get the old v1 version to have lowlevel part of api instead of latest. copy over to the faxe lib folder in respective platforms.
   
 # in event of git merge conflict
 use VScode and Github desktop!
