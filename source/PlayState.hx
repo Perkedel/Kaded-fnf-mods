@@ -485,8 +485,8 @@ class PlayState extends MusicBeatState
 				CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')):
 				['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
 				#else
-				dialogue = (SONG.hasDialogueChat &&
-					Path.of(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')).exists()
+				dialogue = (SONG.hasDialogueChat #if !android &&
+					Path.of("./" + Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')).exists() #end
 				)? 
 				CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')):
 				['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
@@ -502,8 +502,8 @@ class PlayState extends MusicBeatState
 		CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')):
 		['dad: undefined defeat', 'bf:nullswag'];
 		#else
-		epilogue = (SONG.hasEpilogueChat &&
-			Path.of(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')).exists()
+		epilogue = (SONG.hasEpilogueChat #if !android &&
+			Path.of("./" + Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')).exists() #end
 		) ? 
 		CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')):
 		['dad: undefined defeat', 'bf:nullswag'];

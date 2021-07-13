@@ -13,7 +13,7 @@
         "song": "Title Classic",
         "artist": "Kawai Sprite",
         "notes": [],
-        "bpm": 92,
+        "bpm": 140,
         "sections": 0,
         "validScore": true,
         "noteStyle": "saubo",
@@ -29,7 +29,7 @@
         "isSpooky": false,
         "isMoody": false,
         "cutsceneType": "none",
-        "uiType": "normal",
+        "uiType": "saubo",
         "preferredNoteAmount": 4
     }
 }
