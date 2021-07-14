@@ -8,10 +8,15 @@ import flixel.FlxG;
 import lime.media.*;
 // import faxe.*;
 // import faxe.Faxe;
+#if (windows && cpp)
+import vlc.*;
+import vlc.VlcBitmap;
+#end
 
 class LimeAudioBufferTester extends MusicBeatState{
     public var theSound:AudioSource;
     public var theBuffer:AudioBuffer;
+    public var theVLC:VlcBitmap;
 
     public var infoText:FlxText;
     override function create(){
@@ -23,6 +28,12 @@ class LimeAudioBufferTester extends MusicBeatState{
         //Dangerous, fmod, proprietary
         // Faxe.fmod_init();
         // Faxe.fmod_load_sound(Paths.sound("SurroundSoundTest"));
+
+        //VLC trye
+        #if (windows && cpp)
+        initVlc();
+        theVLC.play(Paths.sound("SurroundSoundTest"));
+        #end
 
         trace("There are " + theBuffer.channels + " channels here");
         trace("Play " + Paths.sound("SurroundSoundTest"));
@@ -45,6 +56,31 @@ class LimeAudioBufferTester extends MusicBeatState{
         addBackButton(100,FlxG.height-128);
         addAcceptButton();
     }
+
+    function initVlc(){
+        #if (windows && cpp)
+        theVLC = new VlcBitmap();
+        theVLC.onVideoReady = onVlcVideoReady;
+		theVLC.onPlay = onVLCPlay;
+		theVLC.onPause = onVLCPause;
+		theVLC.onResume = onVLCResume;
+		theVLC.onStop = onVLCStop;
+		theVLC.onSeek = onVLCSeek;
+		theVLC.onComplete = onVLCComplete;
+		theVLC.onProgress = onVLCProgress;
+		theVLC.volume = 1;
+		theVLC.repeat = -1;
+        #end
+    }
+
+    function addVLC(){
+        #if (windows && cpp)
+        theVLC.inWindow = false;
+		theVLC.fullscreen = true;
+        add(cast theVLC);
+        #end
+    }
+
     override function update(elapsed){
         super.update(elapsed);
 
@@ -63,6 +99,11 @@ class LimeAudioBufferTester extends MusicBeatState{
 
             haveClicked = false;
         }
+        if(FlxG.keys.justPressed.V){
+            #if (windows && cpp)
+            theVLC.play(Paths.sound("SurroundSoundTest"));
+            #end
+        }
 
         if(FlxG.mouse.overlaps(backButton)){
             if(FlxG.mouse.justPressed){
@@ -75,4 +116,38 @@ class LimeAudioBufferTester extends MusicBeatState{
             }
         }
     }
+
+    // VLC functions
+    function onVlcVideoReady() 
+    {
+    }
+    
+    function onVLCPlay() 
+    {
+    }
+    
+    function onVLCPause() 
+    {
+    }
+    
+    function onVLCResume() 
+    {
+    }
+    
+    function onVLCStop() 
+    {
+    }
+    
+    function onVLCSeek() 
+    {
+    }
+    
+    function onVLCComplete() 
+    {
+    }
+    
+    function onVLCProgress() 
+    {
+    }
+    //end VLC functions
 }

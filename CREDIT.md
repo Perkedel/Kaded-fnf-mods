@@ -256,7 +256,17 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://api.lime.software/lime/media/AudioSource.html but I loaded and played that kinda 7.1 Surround Sound, it didn't work. it stuck.
 - https://github.com/uhrobots/faxe try fmod maybe?
 - https://www.fmod.com/ get the old v1 version to have lowlevel part of api instead of latest. copy over to the faxe lib folder in respective platforms.
-  
+- https://openal-soft.org/#download pls help me
+- https://forums.guru3d.com/threads/surround-sound-in-openal-not-working.295005/ how to make
+- https://gnd-tech.com/2020/08/how-to-enable-3d-audio-in-directsound3d-and-openal-games-without-a-sound-card/ surround sound works
+- https://community.pcgamingwiki.com/files/file/1363-dsoal/ in haxe
+- https://github.com/kcat/dsoal heeeelp!
+- http://openal.org/downloads/ pls help!
+- https://www.reddit.com/r/stalker/comments/5pjvb3/enabling_fully_3d_positional_audio_with_stereo/ whynt woerk surround sound I think I must hack the Haxe
+- https://www.indirectsound.com/registryIssues.html in case Windows picked internal dsound.dll instead of included next to the game executable. former value of these registry in my computer was `%SystemRoot%\System32\dsound.dll`.
+- https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/9 try VLC
+- https://github.com/datee/HaxeVLC uum, it's not a complete library, this is a test experiment.
+- https://github.com/phfernandez/HaxeVLC oh c'mon, why?!
 # in event of git merge conflict
 use VScode and Github desktop!
 ## New
@@ -354,7 +364,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/JOELwindows7/linc_luajit JOELwindows7. I modded this appending luckydog7's android attempted (https://githubc.com/luckydog7/linc_luajit ). apparently android does not work. but hey, I have added Linux Raspberry Pi supports too. not tested yet. upstream by Andrei Rudenko https://github.com/AndreiRudenko/linc_luajit .
 - https://lib.haxe.org/p/hscript/ the hscript. since lua does not work in Android, here'as salte
 - https://github.com/ianharrigan/hscript-ex extension of hscript
-- 
+- https://forthebadge.com/ (Warning: ???) Brave UX (not to be confused with Brave Browser). badges implemeteh!
+- https://github.com/datee/HaxeVLC (???) datee https://github.com/phfernandez/HaxeVLC (???) phfernandez. EXPERIMENTAL!!! Attempting to embed VLC because I want FNF supports surround sound 7.1. using phfernandez's fork due to ahead changes than datee's original.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

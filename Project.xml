@@ -251,6 +251,12 @@
 	<!-- used by BulbyVR in FNFM+ -->
 	<haxelib name="tjson"/>
 
+	<!-- JOELwindows7: try VLC maybe. -->
+	<!-- <haxelib name="haxevlc" if="windows"/> -->
+	<include path="source/vlc/LibVLCBuild.xml" />
+	<!-- https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/5 -->
+	<!-- https://github.com/datee/HaxeVLC -->
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->

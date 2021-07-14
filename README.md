@@ -97,11 +97,49 @@ BONUS WEEK! 4'33" . John Cage - 4'33" . John Cage did made a composition. and it
 # Credits
 as always, credits to all stuff involved will be on [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) thancc
 
+
+
 # ERROR
 ## Missing files
 ...
 
 # Misc
+## [For the badge](https://forthebadge.com/ )
+[![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/ages-12.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-for-android.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/check-it-out.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/contains-tasty-spaghetti-code.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/contains-technical-debt.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/ctrl-c-ctrl-v.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/designed-in-inkscape.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/fixed-bugs.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/fo-real.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/fo-sho.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/for-you.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/it-works-why.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/just-plain-nasty.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-markdown.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/no-ragrets.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/oooo-kill-em.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-coders-sweat.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-electricity.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-overtime.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-responsibility.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-pull-requests.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/pretty-risque.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/reading-6th-grade-level.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-badges.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-brains.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-git.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](https://forthebadge.com)
+
 ## some nice articles
 [![]("https://gamebanana.com/tuts/embeddables/14079?type=large")](https://gamebanana.com/tuts/14079)
 
