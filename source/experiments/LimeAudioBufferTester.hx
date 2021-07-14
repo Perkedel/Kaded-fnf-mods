@@ -9,14 +9,14 @@ import lime.media.*;
 // import faxe.*;
 // import faxe.Faxe;
 #if (windows && cpp)
-import vlc.*;
-import vlc.VlcBitmap;
+// import vlc.*;
+// import vlc.VlcBitmap;
 #end
 
 class LimeAudioBufferTester extends MusicBeatState{
     public var theSound:AudioSource;
     public var theBuffer:AudioBuffer;
-    public var theVLC:VlcBitmap;
+    // public var theVLC:VlcBitmap;
 
     public var infoText:FlxText;
     override function create(){
@@ -31,8 +31,8 @@ class LimeAudioBufferTester extends MusicBeatState{
 
         //VLC trye
         #if (windows && cpp)
-        initVlc();
-        theVLC.play(Paths.sound("SurroundSoundTest"));
+        // initVlc();
+        // theVLC.play(Paths.sound("SurroundSoundTest"));
         #end
 
         trace("There are " + theBuffer.channels + " channels here");
@@ -59,25 +59,25 @@ class LimeAudioBufferTester extends MusicBeatState{
 
     function initVlc(){
         #if (windows && cpp)
-        theVLC = new VlcBitmap();
-        theVLC.onVideoReady = onVlcVideoReady;
-		theVLC.onPlay = onVLCPlay;
-		theVLC.onPause = onVLCPause;
-		theVLC.onResume = onVLCResume;
-		theVLC.onStop = onVLCStop;
-		theVLC.onSeek = onVLCSeek;
-		theVLC.onComplete = onVLCComplete;
-		theVLC.onProgress = onVLCProgress;
-		theVLC.volume = 1;
-		theVLC.repeat = -1;
+        // theVLC = new VlcBitmap();
+        // theVLC.onVideoReady = onVlcVideoReady;
+		// theVLC.onPlay = onVLCPlay;
+		// theVLC.onPause = onVLCPause;
+		// theVLC.onResume = onVLCResume;
+		// theVLC.onStop = onVLCStop;
+		// theVLC.onSeek = onVLCSeek;
+		// theVLC.onComplete = onVLCComplete;
+		// theVLC.onProgress = onVLCProgress;
+		// theVLC.volume = 1;
+		// theVLC.repeat = -1;
         #end
     }
 
     function addVLC(){
         #if (windows && cpp)
-        theVLC.inWindow = false;
-		theVLC.fullscreen = true;
-        add(cast theVLC);
+        // theVLC.inWindow = false;
+		// theVLC.fullscreen = true;
+        // add(cast theVLC);
         #end
     }
 
@@ -101,7 +101,7 @@ class LimeAudioBufferTester extends MusicBeatState{
         }
         if(FlxG.keys.justPressed.V){
             #if (windows && cpp)
-            theVLC.play(Paths.sound("SurroundSoundTest"));
+            // theVLC.play(Paths.sound("SurroundSoundTest"));
             #end
         }
 
