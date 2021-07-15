@@ -44,7 +44,10 @@ install:
   - haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
   - haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
   - haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
+  - haxelib install uniontypes #BulbyVR used this
+  - haxelib install json2object #BulbyVR used this to convert JSON to object
   # - haxelib git haxevlc https://github.com/datee/HaxeVLC.git # for VLC.
+  - haxelib install extension-webview #luckydog7 for Android
   - haxelib list
   - pwd
   - cd /Users/appveyor/projects/kaded-fnf-mods-macos
