@@ -1663,6 +1663,8 @@ class PlayState extends MusicBeatState
 					{
 						remove(blackScreen);
 						FlxG.sound.play(Paths.sound('Lights_Turn_On'));
+						//JOELwindows7: vibrate the device
+						Controls.vibrate(0,2700);
 						camFollow.y = -2050;
 						camFollow.x += 200;
 						FlxG.camera.focusOn(camFollow.getPosition());
@@ -1685,6 +1687,8 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
+					//JOELwindows7: vibrate device as it this angery
+					Controls.vibrate(0, 1000);
 					schoolIntro(doof);
 				case 'thorns':
 					schoolIntro(doof);
@@ -1831,6 +1835,13 @@ class PlayState extends MusicBeatState
 								new FlxTimer().start(3.2, function(deadTime:FlxTimer)
 								{
 									FlxG.camera.fade(FlxColor.WHITE, 1.6, false);
+								});
+								//JOELwindows7: I hope this is asynchronous here.
+								// vibrate device in this seconden
+								new FlxTimer().start(2.5, function(deadTime:FlxTimer){
+									if(FlxG.save.data.vibration){
+										Controls.vibrate(0,2700);
+									}
 								});
 							}
 						});
@@ -4550,7 +4561,10 @@ class PlayState extends MusicBeatState
 					FlxG.stage.window.onFocusIn.add(focusIn);
 
 					var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
-					WebmPlayer.SKIP_STEP_LIMIT = 90;
+					#if (!mobile)
+					//WebmPlayer.SKIP_STEP_LIMIT = 90;
+					GlobalVideo.getWebm().webm.SKIP_STEP_LIMIT = 90; //JOELwindows7: for original gwebdev
+					#end
 					var str1:String = "WEBM SHIT"; 
 					webmHandler = new WebmHandler();
 					webmHandler.source(ourSource);

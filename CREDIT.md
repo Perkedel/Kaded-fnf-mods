@@ -267,6 +267,13 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/9 try VLC
 - https://github.com/datee/HaxeVLC uum, it's not a complete library, this is a test experiment.
 - https://github.com/phfernandez/HaxeVLC oh c'mon, why?!
+- https://github.com/Raltyro/VideoState.hx-Kade-Engine-1.5-Patch patchener for VideoState.hx
+- CD Projeckt Red - Cybepunk 2077
+- Bark Bark Games - HOUSE. Tabby is the manin character. as we seen its gameplay somewhere on YoTube, we noticed a familiar looking FPS counter on top left. the style is similar like what we in FNF and all Haxe or most OpenFL based games here  Therefore we SUSpect, House, is a Haxe game.
+- https://github.com/Raltyro/VideoState.hx-Kade-Engine-1.5-Patch patch for Kade Engine 1.5 something. the Gwebdev Video cutscener.
+- Standard consequences effect to search e.g. in Wikipedia: `streissand effect`, `hydra effect`, `cobra effect`. Streissand is when you attempt to censor the info but turns out the info becomes popular & angered about. Hydra is when you solve this thing, but then 2 problem arise, just like the beast is. Cobra is when you want to destroy it this trouble, and when you felt succeeded, turns out another people breed the thing that was your problem, and so you stopped destroying it and now when people dropped it out, it goes even wilder than ever before.
+- GameBanana Trash & Withholds. Most of the time it is for a good reason. but again. Just with few reasons that for me seems controvercial, makes all controvercial and inappropriate to invest with. You ask BulbyVR why, and you'll get the answer. and you ask me (JOELwindows7), and I'll give you Saubo as the answer.
+- kodok biru is reference to an artist BlueFrok, uh forgot twitter username.
 # in event of git merge conflict
 use VScode and Github desktop!
 ## New

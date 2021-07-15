@@ -125,6 +125,14 @@ class Main extends Sprite
 		//use this video from bbpanzu https://www.youtube.com/watch?v=2B7dqNB6GcE
 		//to figure out how supposed it be.
 		var ourSource:String = "assets/videos/DO NOT DELETE OR GAME WILL CRASH/dontDelete.webm";
+
+		//JOELwindows7: an check whether isWebm or not
+		#if web
+		GlobalVideo.isWebm = false;
+		#elseif desktop
+		GlobalVideo.isWebm = true;
+		#end
+		// https://github.com/Raltyro/VideoState.hx-Kade-Engine-1.5-Patch
 		
 		#if web
 		var str1:String = "HTML CRAP";
