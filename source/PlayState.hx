@@ -3856,7 +3856,11 @@ class PlayState extends MusicBeatState
 					else
 					{
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						#if !mobile
 						FlxG.switchState(SONG.hasEpilogueVideo? new VideoState("assets/videos/" + SONG.epilogueVideoPath + ".webm", new MainMenuState()) : new MainMenuState());
+						#else //doesn't work in Android for now
+						FlxG.switchState(new MainMenuState());
+						#end
 						//JOELwindows7: complicated! oh MY GOD!
 					}
 
@@ -3941,7 +3945,7 @@ class PlayState extends MusicBeatState
 					FlxG.sound.music.stop();
 
 					//JOELwindows7: if has video, then load the video first before going to new playstate!
-					//LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					#if !mobile
 					LoadingState.loadAndSwitchState(
 						hasEpilogueVideo?
 						(new VideoState("assets/videos/" + epilogueVideoPath + ".webm", 
@@ -3949,6 +3953,9 @@ class PlayState extends MusicBeatState
 						))
 						: (SONG.hasVideo ? new VideoState("assets/videos/" + SONG.videoPath + ".webm", new PlayState()) : new PlayState() )
 					);
+					#else //workaround since this doesn't work in Android
+					LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					#end
 					//JOELwindows7: oh God, so complicated. I hope it works!
 				}
 			}
