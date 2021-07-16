@@ -129,9 +129,10 @@ class Main extends Sprite
 		//JOELwindows7: an check whether isWebm or not
 		#if web
 		GlobalVideo.isWebm = false;
-		#elseif desktop
+		#elseif (desktop || mobile)
 		GlobalVideo.isWebm = true;
 		#end
+		trace("is GlobalVideo a webm? " + Std.string(GlobalVideo.isWebm));
 		// https://github.com/Raltyro/VideoState.hx-Kade-Engine-1.5-Patch
 		
 		#if web
@@ -143,7 +144,7 @@ class Main extends Sprite
 		vHandler.init2();
 		GlobalVideo.setVid(vHandler);
 		vHandler.source(ourSource);
-		#elseif (desktop && cpp)
+		#elseif ((desktop || mobile) && cpp)
 		var str1:String = "WEBM SHIT"; 
 		var webmHandle = new WebmHandler();
 		webmHandle.source(ourSource);

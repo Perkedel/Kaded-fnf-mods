@@ -55,6 +55,7 @@ install:
   - haxelib install json2object #BulbyVR used this to convert JSON to object
   # - haxelib git haxevlc https://github.com/datee/HaxeVLC.git # for VLC.
   - haxelib install extension-webview #luckydog7 for Android
+  - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
   - haxelib list
 
 # No tests idk lol

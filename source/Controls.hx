@@ -1,5 +1,8 @@
 package;
 
+import lime.ui.Haptic;
+import flixel.util.FlxTimer;
+import openfl.Lib;
 import ui.FlxVirtualPad;
 import flixel.ui.FlxButton;
 import flixel.input.gamepad.FlxGamepad;
@@ -14,6 +17,11 @@ import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
 //import haxe.hardware.Hardware;
+#if windows
+//JOELwindows7: Xinput now yeah
+// import com.furusystems.openfl.input.xinput.*;
+// import com.furusystems.openfl.input.*;
+#end
 #if android
 import Hardware;
 #end
@@ -128,6 +136,12 @@ class Controls extends FlxActionSet
 	public var gamepadsAdded:Array<Int> = [];
 	public var keyboardScheme = KeyboardScheme.None;
 
+	// JOELwindows7:Xinput thingy pls
+	// https://github.com/furusystems/openfl-xinput
+	#if windows
+	// var controller:Map<Int,XBox360Controller>;
+	#end
+
 	public var UP(get, never):Bool;
 
 	inline function get_UP()
@@ -216,6 +230,12 @@ class Controls extends FlxActionSet
 	#if (haxe >= "4.0.0")
 	public function new(name, scheme = None)
 	{
+		//JOELwindows7: Xinput API stuff
+		#if windows
+		// controller = new Map<Int,XBox360Controller>();
+		// controller.set(0,new XBox360Controller(0));
+		#end
+
 		mappedinputs = new Map<FlxActionDigital,FlxActionInput>();
 		super(name);
 
@@ -500,13 +520,40 @@ class Controls extends FlxActionSet
 	 * @param duration how long is vibration in milisecond
 	 * @param player which gamepad it should vibrates
 	 */
-	public static function vibrate(player:Int = 0,duration:Float = 100){
+	public static function vibrate(player:Int = 0,duration:Float = 100, period:Float = 0, strengthLeft:Float = 0, strengthRight:Float = 0){
 		//JOELwindows7: yess vibration go BRRR
 		if(FlxG.save.data.vibration){
+			Haptic.vibrate(Std.int(period),Std.int(duration)); //uh, lime got better implementation lol
+
 			#if android
-			Hardware.vibrate(Std.int(duration));
+			//Hardware.vibrate(Std.int(duration));
 			#end
+
+			rumble(player,strengthLeft,strengthRight);
+			new FlxTimer().start(duration, function(timer:FlxTimer){
+				rumble(player,0,0); //stop after it reaches the duration.
+			});
 		}
+	}
+
+	/**
+	 * Set Rumble of the Gamepad at the specified parameter.
+	 * it will stay at that set value until set again to another one.
+	 * @param player which player
+	 * @param strengthLeft left vibrator (coarse) strength, 0 - 65535
+	 * @param stregthRight right vibrator (fine) strength, 0 - 65535
+	 */
+	public static function rumble(player:Int = 0, strengthLeft:Float = 0, strengthRight:Float = 0){
+		#if windows
+		// if(
+		// 	(cast (Lib.current.getChildAt(0), Controls)).controller != null &&
+		// 	(cast (Lib.current.getChildAt(0), Controls)).controller.get(player).isConnected()
+		// 	){
+		// 		(cast (Lib.current.getChildAt(0), Controls)).controller.get(player).vibrationLeft = Std.int(strengthLeft);
+		// 		(cast (Lib.current.getChildAt(0), Controls)).controller.get(player).vibrationRight = Std.int(strengthRight);
+		// }
+
+		#end
 	}
 
 	override function update()

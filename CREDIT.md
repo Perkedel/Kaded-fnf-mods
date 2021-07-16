@@ -274,6 +274,10 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - Standard consequences effect to search e.g. in Wikipedia: `streissand effect`, `hydra effect`, `cobra effect`. Streissand is when you attempt to censor the info but turns out the info becomes popular & angered about. Hydra is when you solve this thing, but then 2 problem arise, just like the beast is. Cobra is when you want to destroy it this trouble, and when you felt succeeded, turns out another people breed the thing that was your problem, and so you stopped destroying it and now when people dropped it out, it goes even wilder than ever before.
 - GameBanana Trash & Withholds. Most of the time it is for a good reason. but again. Just with few reasons that for me seems controvercial, makes all controvercial and inappropriate to invest with. You ask BulbyVR why, and you'll get the answer. and you ask me (JOELwindows7), and I'll give you Saubo as the answer.
 - kodok biru is reference to an artist BlueFrok, uh forgot twitter username.
+- https://github.com/karaidon/hXInput XInput for Haxe
+- https://github.com/furusystems/openfl-xinput same but for OpenFL.
+- https://stackoverflow.com/a/17066803/9079640 how to Android vibration RAW Java Kotlin
+- https://api.lime.software/lime/ui/Haptic.html uhh, Lime has its own vibration implementation already here.
 # in event of git merge conflict
 use VScode and Github desktop!
 ## New
@@ -373,6 +377,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/ianharrigan/hscript-ex extension of hscript
 - https://forthebadge.com/ (Warning: ???) Brave UX (not to be confused with Brave Browser). badges implemeteh!
 - https://github.com/datee/HaxeVLC (???) datee https://github.com/phfernandez/HaxeVLC (???) phfernandez. EXPERIMENTAL!!! Attempting to embed VLC because I want FNF supports surround sound 7.1. using phfernandez's fork due to ahead changes than datee's original.
+- https://github.com/furusystems/openfl-xinput (MIT) furusystems. Xinput for OpenFL. lemme vibrate dose bars.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

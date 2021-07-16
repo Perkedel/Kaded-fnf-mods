@@ -990,9 +990,9 @@ class ModchartState
 					PlayState.instance.resetFastCar();
 				});
 
-				Lua_helper.add_callback(lua, "vibrate", function(player:Int = 0, duration:Float = 100){
+				Lua_helper.add_callback(lua, "vibrate", function(player:Int = 0, duration:Float = 100, period:Float = 0, strengthLeft:Float = 0, strengthRight:Float = 0){
 					//vibration, sensation, okeh self explanatory. lol TheFatRat - Electrified
-					Controls.vibrate(player,duration);
+					Controls.vibrate(player,duration, period, strengthLeft, strengthRight);
 				});
 				//end more special functions
 				//So you don't have to hard code your cool effects.

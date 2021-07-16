@@ -251,6 +251,10 @@
 	<!-- used by BulbyVR in FNFM+ -->
 	<haxelib name="tjson"/>
 
+	<!-- JOELwindows7: Xinput API for OpenFL -->
+	<!-- <haxelib name="xinput" if="windows"/> -->
+	<!-- - haxelib git xinput https://github.com/furusystems/openfl-xinput.git -->
+
 
 	<!-- JOELwindows7: try VLC maybe. -->
 	<!-- <haxelib name="haxevlc" if="windows"/> -->
