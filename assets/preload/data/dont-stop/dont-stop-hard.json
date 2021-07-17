@@ -1036,7 +1036,7 @@
         "isSpooky": false,
         "useCustomStage": false,
         "validScore": true,
-        "speed": 2,
+        "speed": 3,
         "artist": "Kawai Sprite",
         "sectionLengths": [],
         "isMoody": false,

@@ -378,6 +378,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://forthebadge.com/ (Warning: ???) Brave UX (not to be confused with Brave Browser). badges implemeteh!
 - https://github.com/datee/HaxeVLC (???) datee https://github.com/phfernandez/HaxeVLC (???) phfernandez. EXPERIMENTAL!!! Attempting to embed VLC because I want FNF supports surround sound 7.1. using phfernandez's fork due to ahead changes than datee's original.
 - https://github.com/furusystems/openfl-xinput (MIT) furusystems. Xinput for OpenFL. lemme vibrate dose bars.
+- https://github.com/ninjamuffin99/SHOOM (Apache 2.0) ninja_muffin99. aspect of SHOOM.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

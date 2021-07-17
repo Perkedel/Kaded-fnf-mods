@@ -1208,7 +1208,20 @@ class AdjustVolumeOption extends Option{
 
 	private override function updateDisplay():String
 	{
-		return "Volume " + Std.string(FlxG.sound.volume);
+		// https://github.com/ninjamuffin99/SHOOM/blob/master/source/PlayState.hx
+		// lmao shoooooooooooooooooooooooooooooooooooooooooooooooooom
+		var shoomSays:String="SH";
+		var remains:Int = 10;
+		for(i in 0...(Std.int(FlxG.sound.volume*10))){
+			shoomSays += 'O';
+			remains--;
+		}
+		shoomSays += 'M';
+		if(remains < 0) remains = 0;
+		for(i in 0...(remains)){
+			shoomSays += 'U';
+		}
+		return "Volume " + shoomSays;
 	}
 
 	override function getValue():String {

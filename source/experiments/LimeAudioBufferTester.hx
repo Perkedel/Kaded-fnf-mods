@@ -1,5 +1,6 @@
 package experiments;
 
+import plugins.sprites.DVDScreenSaver;
 import lime.media.openal.AL;
 import lime.media.openal.ALSource;
 import flixel.util.FlxColor;
@@ -17,6 +18,7 @@ class LimeAudioBufferTester extends MusicBeatState{
     public var theSound:AudioSource;
     public var theBuffer:AudioBuffer;
     // public var theVLC:VlcBitmap;
+    public var anHitCorner:DVDScreenSaver;
 
     public var infoText:FlxText;
     override function create(){
@@ -35,6 +37,9 @@ class LimeAudioBufferTester extends MusicBeatState{
         // theVLC.play(Paths.sound("SurroundSoundTest"));
         #end
 
+        //add DVDScreenSaver hit corner
+        anHitCorner = new DVDScreenSaver();
+
         trace("There are " + theBuffer.channels + " channels here");
         trace("Play " + Paths.sound("SurroundSoundTest"));
         infoText = new FlxText();
@@ -52,6 +57,7 @@ class LimeAudioBufferTester extends MusicBeatState{
         //var alSourceId = @:privateAccess (theSound.buffer);
         //var aLSource = AL.createSource();
         //AL.source3f(aLSource, AL.POSITION, 0,0,0);
+        add(anHitCorner);
 
         addBackButton(100,FlxG.height-128);
         addAcceptButton();
