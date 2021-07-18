@@ -221,7 +221,7 @@
 	<!-- Already cannon by Kade himself -->
 
 	<!-- the luckydog7 added this since the video plays in a webview -->
-	<!-- <haxelib name="extension-webview"/> -->
+	<!-- <haxelib name="extension-webview" if="android"/> -->
 	<!-- end Video Cutscener -->
 
 	<!-- JOELwindows7: ktravis' Android hardware access -->

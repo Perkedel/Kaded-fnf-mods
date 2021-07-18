@@ -25,6 +25,8 @@
         "defaultCamZoom": 0.5,
         "bfPosition": [500, 0],
         "gfPosition": [0, -100],
-        "dadPosition": [-500, 0]
+        "dadPosition": [-500, 0],
+        "forceLuaModchart": false,
+        "forceHscriptModchart": false
     }
 }

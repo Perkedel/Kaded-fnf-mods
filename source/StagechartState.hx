@@ -84,6 +84,9 @@ typedef SwagStage = {
     var bfHasTrail:Bool;
     var gfHasTrail:Bool;
     var dadHasTrail:Bool;
+
+    var forceLuaModchart:Bool;
+    var forceHscriptModchart:Bool;
 };
 
 class StageChart
@@ -98,6 +101,9 @@ class StageChart
     public var bfPosition:Array<Float> = [500,0];
     public var gfPosition:Array<Float> = [0, 100];
     public var dadPosition:Array<Float> = [-300,0];
+
+    public var forceLuaModchart:Bool = false;
+    public var forceHscriptModchart:Bool = false;
 
     public function new(name:String = "anStage", backgroundImages:Array<SwagBackground>, isHalloween:Bool = false){
         this.name = name;

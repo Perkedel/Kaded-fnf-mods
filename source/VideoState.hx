@@ -1,6 +1,7 @@
 package;
-
+#if cpp
 import webm.WebmPlayer;
+#end
 import flixel.FlxState;
 import flixel.FlxG;
 
@@ -131,8 +132,9 @@ class VideoState extends MusicBeatState
 		
 			/*new FlxTimer().start(0.1, function(tmr:FlxTimer)
 			{*/
+				// JOELwindows7: only do this if not null
 				trace("fix vidSound time by timing its length with soundMultiplier " + Std.string(soundMultiplier));
-				vidSound.time = vidSound.length * soundMultiplier;
+				if(vidSound != null) vidSound.time = vidSound.length * soundMultiplier; 
 				/*new FlxTimer().start(1.2, function(tmr:FlxTimer)
 				{
 					if (useSound)
@@ -141,6 +143,7 @@ class VideoState extends MusicBeatState
 					}
 				}, 0);*/
 				doShit = true;
+				trace("enable doing some poops of VIdeo here man");
 			//}, 1);
 		//}
 		

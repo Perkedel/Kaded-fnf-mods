@@ -368,9 +368,14 @@ class PlayState extends MusicBeatState
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(songLowercase + "/modchart"));
 		
 		// JOELwindows7: now for the hscript
+		#if !web
 		p = Path.of(Paths.hscript("./" + songLowercase + "/modchart"));
-		executeModHscript = p.exists();
+		executeModHscript = p.exists() || SONG.forceHscriptModchart;
 		trace("is hscript modchart file exist? " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
+		#else
+		executeModHscript = SONG.forceHscriptModchart;
+		#end
+		trace("forced hscript exist is " + Std.string(SONG.forceHscriptModchart));
 		if (executeModHscript)
 			PlayStateChangeables.Optimize = false;
 		trace('Mod hscript chart: ' + executeModHscript + " - " + Paths.hscript(songLowercase + "/modchart"));
@@ -485,7 +490,7 @@ class PlayState extends MusicBeatState
 				CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')):
 				['dad: da bu tu bu da', 'bf: emptyswag']; //JOELwindows7: add nullswag when noone had.
 				#else
-				dialogue = (SONG.hasDialogueChat #if !android &&
+				dialogue = (SONG.hasDialogueChat #if (!android && !web) &&
 					Path.of("./" + Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')).exists() #end
 				)? 
 				CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Dialogue')):
@@ -502,7 +507,7 @@ class PlayState extends MusicBeatState
 		CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')):
 		['dad: undefined defeat', 'bf:nullswag'];
 		#else
-		epilogue = (SONG.hasEpilogueChat #if !android &&
+		epilogue = (SONG.hasEpilogueChat #if (!android && !web) && //android & web not work
 			Path.of("./" + Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')).exists() #end
 		) ? 
 		CoolUtil.coolTextFile(Paths.txt('${toCompatCase(SONG.song.toLowerCase())}/${toCompatCase(SONG.song.toLowerCase())}Epilogue')):
@@ -1683,14 +1688,20 @@ class PlayState extends MusicBeatState
 							});
 						});
 					});
-				case 'senpai':
+				case 'senpai' | 'senpai-midi':
+					//JOELwindows7: add versioneing MIDI
 					schoolIntro(doof);
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
 					//JOELwindows7: vibrate device as it this angery
 					Controls.vibrate(0, 1000);
 					schoolIntro(doof);
-				case 'thorns':
+				case 'roses-midi': //JOELwindows7: for midi version
+					FlxG.sound.play(Paths.sound('ANGRY-midi'));
+					//JOELwindows7: vibrate device as it this angery
+					Controls.vibrate(0, 1000);
+					schoolIntro(doof);
+				case 'thorns' | 'thorns-midi':
 					schoolIntro(doof);
 				default:
 					//JOELwindows7: Heuristic for using JSON chart instead
@@ -5672,9 +5683,13 @@ class PlayState extends MusicBeatState
 			#elseif (windows || linux || android)
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
 			{
+				#if !web
 				p = Path.of(Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
 				trace("Stage file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
-				executeStageScript = p.exists();
+				executeStageScript = p.exists() || customStage.forceLuaModchart;
+				#else
+				executeStageScript = customStage.forceLuaModchart;
+				#end
 			}
 			#else
 				executeStageScript = false;
@@ -5684,10 +5699,16 @@ class PlayState extends MusicBeatState
 			#end
 
 			//for hscript pls
+			#if !web
 			p = Path.of(Paths.hscript("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
-				executeStageHscript = p.exists();
+				executeStageHscript = p.exists() || customStage.forceHscriptModchart;
 			trace("Stage hscript file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
+			#else
+			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+				executeStageHscript = customStage.forceHscriptModchart;
+			#end
+			trace("forced stage Hscript exist is " + Std.string(customStage.forceHscriptModchart));
 
 			#if ((windows || linux) && cpp)
 			if(executeStageScript || executeStageHscript){

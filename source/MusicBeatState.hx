@@ -200,7 +200,7 @@ class MusicBeatState extends FlxUIState
 	}
 
 	//JOELwindows7: buttons
-	private function addBackButton(x:Int=720-200,y:Int=1280-100,scale:Float=.5){
+	private function addBackButton(x:Int=100,y:Int=720-100,scale:Float=.5){
 		backButton = new FlxSprite(x, y).loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale),Std.int(backButton.height * scale));
 		backButton.scrollFactor.set();

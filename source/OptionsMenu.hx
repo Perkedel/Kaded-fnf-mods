@@ -75,6 +75,7 @@ class OptionsMenu extends MusicBeatState
 			new ShowInput("Display every single input in the score screen."),
 			new Optimization("No backgrounds, no characters, centered notes, no player 2."),
 			new ExportSaveToJson("BETA! Export entire save data into JSON file"),
+			new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"),
 			new BotPlay("Showcase your charts and mods with autoplay."),
 		])
 		

@@ -544,7 +544,7 @@ class Controls extends FlxActionSet
 	 * @param stregthRight right vibrator (fine) strength, 0 - 65535
 	 */
 	public static function rumble(player:Int = 0, strengthLeft:Float = 0, strengthRight:Float = 0){
-		#if windows
+		#if (windows && sys)
 		// if(
 		// 	(cast (Lib.current.getChildAt(0), Controls)).controller != null &&
 		// 	(cast (Lib.current.getChildAt(0), Controls)).controller.get(player).isConnected()

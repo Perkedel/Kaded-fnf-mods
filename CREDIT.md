@@ -278,6 +278,17 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://github.com/furusystems/openfl-xinput same but for OpenFL.
 - https://stackoverflow.com/a/17066803/9079640 how to Android vibration RAW Java Kotlin
 - https://api.lime.software/lime/ui/Haptic.html uhh, Lime has its own vibration implementation already here.
+- https://gamebanana.com/tuts/14142 how to GitHub with VS code.
+- https://gamebanana.com/tuts/14075 definitive guide of FNF mod submission
+- https://techspree.net/torrent-tracker-list-updated/ list of torrent tracker for download & upload?
+- https://tinytorrent.net/best-torrent-tracker-list-updated/ another list of torrent tracker
+- https://github.com/telperion/saturday-morning convert SM file to FNF.
+- https://gamebanana.com/tuts/13858 how to Arrow vortex to FNF
+- https://docs.microsoft.com/en-us/windows/uwp/gaming/gamepad-and-vibration doc dump
+- https://github.com/JOELwindows7/openfl-xinput dump
+- https://github.com/furusystems/openfl-xinput/blob/master/com/furusystems/openfl/input/xinput/XBox360Controller.hx failed xbox fix
+- https://github.com/karaidon/hXInput ah help
+
 # in event of git merge conflict
 use VScode and Github desktop!
 ## New

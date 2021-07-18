@@ -19,6 +19,7 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import lime.system.JNI;
+import plugins.systems.ScanPlatform;
 
 class Main extends Sprite
 {
@@ -127,15 +128,16 @@ class Main extends Sprite
 		var ourSource:String = "assets/videos/DO NOT DELETE OR GAME WILL CRASH/dontDelete.webm";
 
 		//JOELwindows7: an check whether isWebm or not
-		#if web
+		#if (web)
 		GlobalVideo.isWebm = false;
-		#elseif (desktop || mobile)
+		#elseif (desktop)
 		GlobalVideo.isWebm = true;
 		#end
 		trace("is GlobalVideo a webm? " + Std.string(GlobalVideo.isWebm));
 		// https://github.com/Raltyro/VideoState.hx-Kade-Engine-1.5-Patch
 		
-		#if web
+		#if (web)
+		trace("Video Cutscener is built-in Browser's");
 		var str1:String = "HTML CRAP";
 		var vHandler = new VideoHandler();
 		vHandler.init1();
@@ -145,6 +147,7 @@ class Main extends Sprite
 		GlobalVideo.setVid(vHandler);
 		vHandler.source(ourSource);
 		#elseif ((desktop) && cpp)
+		trace("Video Cutscener is external webm player");
 		var str1:String = "WEBM SHIT"; 
 		var webmHandle = new WebmHandler();
 		webmHandle.source(ourSource);
@@ -182,6 +185,9 @@ class Main extends Sprite
 
 		//JOELwindows7: stop the accidentally press numpad 0 during arrow key on keyboard
 		destroyAccidentVolKeys();
+
+		//JOELwindows7: mini scanners for platform detections
+		ScanPlatform.getPlatform();
 	}
 
 	var game:FlxGame;
@@ -218,4 +224,6 @@ class Main extends Sprite
 		FlxG.sound.volumeDownKeys = null;
 		FlxG.sound.muteKeys = null;
 	}
+
+	//JOELwindows7: mini platform scanner
 }

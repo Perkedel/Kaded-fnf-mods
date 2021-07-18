@@ -1,5 +1,6 @@
 package;
 
+import experiments.AnWebmer;
 import experiments.LimeAudioBufferTester;
 import openfl.net.FileFilter;
 import haxe.Json;
@@ -1249,4 +1250,26 @@ class SurroundTestOption extends Option{
 	{
 		return "Surround Test";
 	}
+}
+
+//JOELwindows7: quick way testing Webmer
+class AnVideoCutscenerTestOption extends Option{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+			//FlxG.switchState(new LoadReplayState()); //or open new state.
+			FlxG.switchState(new AnWebmer());
+			return false;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Video Cutscener Test";
+		}
 }

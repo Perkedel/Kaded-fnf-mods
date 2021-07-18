@@ -161,6 +161,9 @@ class WebmHandler
 	}
 	#else
 	public var webm:Sprite;
+	public var vidPath:String = "";
+	//public var io:WebmIo;
+	public var initialized:Bool = false;
 	public function new()
 	{
 	trace("THIS IS ANDROID! or some shit...");
