@@ -1034,7 +1034,7 @@
         "cutsceneType": "none",
         "song": "Dont Stop",
         "isSpooky": false,
-        "useCustomStage": false,
+        "useCustomStage": true,
         "validScore": true,
         "speed": 2,
         "artist": "Kawai Sprite",
@@ -1048,7 +1048,8 @@
         "allowedToHeadbang": false,
         "preferredNoteAmount": 4,
         "sections": 0,
-        "stage": "stage",
+
+        "stage": "amfrost",
         "needsVoices": false,
         "uiType": "normal",
         "noteStyle": "saubo",

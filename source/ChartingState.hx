@@ -878,6 +878,7 @@ class ChartingState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.ENTER)
 		{
+			trace("Okay, let's just test it " + _song.song);
 			lastSection = curSection;
 
 			PlayState.SONG = _song;

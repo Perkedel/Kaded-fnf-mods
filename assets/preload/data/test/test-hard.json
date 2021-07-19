@@ -7,6 +7,8 @@
         "player2": "hookx",
         "noteStyle": "saubo",
         "speed": 2,
+        "useCustomStage": true,
+        "stage": "amfrost",
         "notes": [{ "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, {
             "lengthInSteps": 16,
             "mustHitSection": false,

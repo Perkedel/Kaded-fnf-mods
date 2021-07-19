@@ -1854,7 +1854,7 @@
         "isSpooky": false,
         "song": "breakfast",
         "validScore": true,
-        "useCustomStage": false,
+        "useCustomStage": true,
         "artist": "none",
         "speed": 2,
         "hasEpilogueChat": false,
@@ -1868,7 +1868,7 @@
         "hasEpilogueVideo": false,
         "uiType": "normal",
         "needsVoices": false,
-        "stage": "stage",
+        "stage": "amfrost",
         "sections": 0,
         "bpm": 160,
         "noteStyle": "saubo"

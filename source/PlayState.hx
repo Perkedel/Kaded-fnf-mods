@@ -2292,6 +2292,8 @@ class PlayState extends MusicBeatState
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
 
+		trace("Generate Song: " + songData.song + " " + songData.bpm + " BPM");
+
 		curSong = songData.song;
 
 		if (SONG.needsVoices)
