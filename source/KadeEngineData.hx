@@ -6,6 +6,7 @@ class KadeEngineData
 {
     public static function initSave()
     {
+		trace("init save data now");
         if (FlxG.save.data.weekUnlocked == null)
 			FlxG.save.data.weekUnlocked = 7;
 
@@ -156,7 +157,7 @@ class KadeEngineData
 		trace("set FPS stuff from setting"); //JOELwindows7: trace this for android crashsures
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		#if (desktop && sys && !mobile && !web)
-		(cast (Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
+		//(cast (Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
 		#end //JOELwindows7: nvm, don't do that!
 		trace("successfully set FPS settings"); //JOELwindows7: see if Android version crash!
 	}

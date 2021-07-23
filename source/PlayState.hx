@@ -482,7 +482,7 @@ class PlayState extends MusicBeatState
 		// inspire the loader from FreeplayState.hx or OH ChartingState.hx. look at those dropdowns
 		// that lists characters, stages, etc.
 		// yeah I know, for future use we array this.
-		var initMissSfx = CoolUtil.coolTextFile(Paths.txt('numbersOfMissSfx'));
+		var initMissSfx = CoolUtil.coolTextFile(Paths.txt('data/numbersOfMissSfx'));
 		numOfMissNoteSfx = Std.parseInt(initMissSfx[0]);
 
 		//JOELwindows7: init the heartbeat system
@@ -1943,7 +1943,7 @@ class PlayState extends MusicBeatState
 		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
 
 		//JOELwindows7: here pay attention for senpai songs
-		if ((songLowercase == 'roses' 
+		if (songLowercase == 'roses' 
 			|| songLowercase == 'thorns' 
 			|| songLowercase == 'roses-midi' 
 			|| songLowercase == 'thorns-midi'
@@ -5827,7 +5827,7 @@ class PlayState extends MusicBeatState
 					camZoomNow(); 
 			}
 
-			if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0 && !inCutscene && !inResult)
+			if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0 && !inCutscene && !inResults)
 			{
 				//JOELwindows7: only do this when not in cutscene & not in result!
 				FlxG.camera.zoom += 0.015;

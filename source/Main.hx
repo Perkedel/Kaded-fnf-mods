@@ -112,13 +112,15 @@ class Main extends Sprite
 		}
 
 		#if (cpp && sys && !mobile) //JOELwindows7: remember! it doesn't work in Android!
+		trace("Go to caching first");
 		initialState = Caching;
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		#else
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		#end
+		trace("put game");
+		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		//JOELwindows7: nope, Caching still crashes in Android.
 		addChild(game);
+		trace("added game");
 
 		//GrowtopiaFli's Video Cutscener
 		//The code https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/
@@ -166,11 +168,12 @@ class Main extends Sprite
 		 });
 		 
 		#end
-
-		#if !mobile
+		
+		trace("init FPS counter");
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
-		toggleFPS(FlxG.save.data.fps);
+		#if !mobile
+		//toggleFPS(FlxG.save.data.fps);
 		#end
 
 		//JOELwindows7: GameBanana seems notorious.
@@ -203,7 +206,9 @@ class Main extends Sprite
 	var fpsCounter:FPS;
 
 	public function toggleFPS(fpsEnabled:Bool):Void {
+		trace("Toggle FPS counter " + Std.string(fpsEnabled));
 		fpsCounter.visible = fpsEnabled;
+		trace("doned toggling FPS counter");
 	}
 
 	public function changeFPSColor(color:FlxColor)

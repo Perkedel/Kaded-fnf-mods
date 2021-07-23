@@ -54,7 +54,7 @@ class DiffCalc
 
 
         
-        var firstNoteTime = cleanedNotes[0].strumTime;
+        var firstNoteTime = cleanedNotes.length > 0? cleanedNotes[0].strumTime : 0.0;
         
         // normalize the notes
 

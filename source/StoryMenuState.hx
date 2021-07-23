@@ -38,7 +38,7 @@ class StoryMenuState extends MusicBeatState
 	// because JSON only consider value a string and variable name like that with "".
 	// have fun!
 	//wait. it's already covered?
-	var weekDatas:Array<Dynamic>; //nope. only week names. they also borked weekData variable.
+	static var weekDatas:Array<Dynamic>; //nope. only week names. they also borked weekData variable.
 	// non-gamer move lol! you supposed to let it be filed procedural!!!
 	static function weekData(hardcoded:Bool = false):Array<Dynamic>
 	{

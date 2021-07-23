@@ -54,7 +54,9 @@ class Caching extends MusicBeatState
 
 		PlayerSettings.init();
 
+		trace("initing save data");
 		KadeEngineData.initSave();
+		trace("Save data inited");
 
 		FlxG.mouse.visible = false;
 
@@ -127,6 +129,7 @@ class Caching extends MusicBeatState
 					{
 						var alpha = HelperFunctions.truncateFloat(done / toBeDone * 100,2) / 100;
 						kadeLogo.alpha = alpha;
+						lFMLogo.alpha = alpha;
 						text.alpha = alpha;
 						text.text = "Loading... (" + done + "/" + toBeDone + ")";
 					}
