@@ -27,31 +27,30 @@ class OptionsMenu extends MusicBeatState
 	var options:Array<OptionCategory> = [
 		new OptionCategory("Gameplay", [
 			new DFJKOption(controls),
-			new UseTouchScreenButtons("Change whether should touchscreen buttons be shown"),
+			new UseTouchScreenButtons("Toggle touchscreen buttons in gameplay"),
 			new SelectTouchScreenButtons("Choose which touchscreen button you'd like to have"),
-			new DownscrollOption("Change the layout of the strumline."),
-			new GhostTapOption("Ghost Tapping is when you tap a direction and it doesn't give you a miss."),
-			new Judgement("Customize your Hit Timings (LEFT or RIGHT)"),
+			new DownscrollOption("Toggle making the notes scroll down rather than up."),
+			new GhostTapOption("Toggle counting pressing a directional input when no arrow is there as a miss."),
+			new Judgement("Customize your Hit Timings. (LEFT or RIGHT)"),
 			#if desktop
-			new FPSCapOption("Cap your FPS"),
+			new FPSCapOption("Change your FPS Cap."),
 			#end
-			new ScrollSpeedOption("Change your scroll speed (1 = Chart dependent)"),
+			new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
 			new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
 			new ResetButtonOption("Toggle pressing R to gameover."),
 			// new OffsetMenu("Get a note offset based off of your inputs!"),
-			new CustomizeGameplay("Drag'n'Drop Gameplay Modules around to your preference")
+			new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!")
 		]),
 		new OptionCategory("Appearance", [
 			new FullScreenOption("Toggle Fullscreen Mode"),
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
 			new CamZoomOption("Toggle the camera zoom in-game."),
-			#if desktop
-			new RainbowFPSOption("Make the FPS Counter Rainbow"),
-			new AccuracyOption("Display accuracy information."),
-			new NPSDisplayOption("Shows your current Notes Per Second."),
-			new SongPositionOption("Show the songs current position (as a bar)"),
-			new CpuStrums("CPU's strumline lights up when a note hits it."),
-			#end
+			new StepManiaOption("Sets the colors of the arrows depending on quantization instead of direction."),
+			new AccuracyOption("Display accuracy information on the info bar."),
+			new SongPositionOption("Show the song's current position as a scrolling bar."),
+			new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
+			new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
+			new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
 		]),
 
 		new OptionCategory("Audio",[
@@ -60,7 +59,6 @@ class OptionsMenu extends MusicBeatState
 		]),
 		
 		new OptionCategory("Misc", [
-			#if desktop
 			new FPSOption("Toggle the FPS Counter"),
 			new ReplayOption("View replays"),
 			#end
@@ -71,12 +69,24 @@ class OptionsMenu extends MusicBeatState
 			new WatermarkOption("Enable and disable all watermarks from the engine."),
 			new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),
+			new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty."),
+			new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
 			new ScoreScreen("Show the score screen after the end of a song"),
-			new ShowInput("Display every single input in the score screen."),
-			new Optimization("No backgrounds, no characters, centered notes, no player 2."),
+			new ShowInput("Display every single input on the score screen."),
+			new Optimization("No characters or backgrounds. Just a usual rhythm game layout."),
+			new GraphicLoading("On startup, cache every character. Significantly decrease load times. (HIGH MEMORY)"),
 			new ExportSaveToJson("BETA! Export entire save data into JSON file"),
 			new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"),
-			new BotPlay("Showcase your charts and mods with autoplay."),
+			new BotPlay("Showcase your charts and mods with autoplay.")
+		]),
+		
+		new OptionCategory("Saves and Data", [
+			#if desktop
+			new ReplayOption("View saved song replays."),
+			#end
+			new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
+			new LockWeeksOption("Reset your story mode progress. This is irreversible!"),
+			new ResetSettings("Reset ALL your settings. This is irreversible!")
 		])
 		
 	];
@@ -98,7 +108,10 @@ class OptionsMenu extends MusicBeatState
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
-		menuBG.antialiasing = true;
+		if(FlxG.save.data.antialiasing)
+			{
+				menuBG.antialiasing = true;
+			}
 		add(menuBG);
 
 		grpControls = new FlxTypedGroup<Alphabet>();

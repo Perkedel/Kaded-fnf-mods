@@ -160,6 +160,11 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		var songPath = 'assets/data/' + songLowercase + '/';
 
+		#if sys
+		if (PlayState.isSM && !PlayState.isStoryMode)
+			songPath = PlayState.pathToSm;
+		#end
+
 		if (controls.UP_P || upPcontroller || FlxG.mouse.wheel == 1 || haveUpped) //JOELwindows7: scroll up
 		{
 			changeSelection(-1);
@@ -251,6 +256,7 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 				case "Restart Song":
 					FlxG.mouse.visible = false; //JOELwindows7: just in case
+					PlayState.startTime = 0;
 					if (PlayState.instance.useVideo)
 					{
 						GlobalVideo.get().stop();
@@ -259,6 +265,7 @@ class PauseSubState extends MusicBeatSubstate
 					}
 					FlxG.resetState();
 				case "Exit to menu":
+					PlayState.startTime = 0;
 					if (PlayState.instance.useVideo)
 					{
 						GlobalVideo.get().stop();
@@ -287,7 +294,10 @@ class PauseSubState extends MusicBeatSubstate
 					if (FlxG.save.data.fpsCap > 290)
 						(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
 					
-					FlxG.switchState(new MainMenuState());
+					if (PlayState.isStoryMode)
+						FlxG.switchState(new StoryMenuState());
+					else
+						FlxG.switchState(new FreeplayState());
 			}
 			haveClicked = false;
 		} else {
@@ -395,6 +405,8 @@ class PauseSubState extends MusicBeatSubstate
 	function changeSelection(change:Int = 0):Void
 	{
 		curSelected += change;
+		
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		if (curSelected < 0)
 			curSelected = menuItems.length - 1;

@@ -6,9 +6,12 @@ import com.player03.android6.Permissions;
 #if cpp
 import webm.WebmPlayer;
 #end
+import lime.app.Application;
+#if windows
+import Discord.DiscordClient;
+#end
 import openfl.display.BlendMode;
 import openfl.text.TextFormat;
-import openfl.display.Application;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -31,15 +34,12 @@ class Main extends Sprite
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 
-	public static var watermarks = true; // Whether to put Kade Engine liteartly anywhere
+	public static var watermarks = true; // Whether to put Kade Engine literally anywhere
 	public static var odyseeMark = true; // Whether to put Odysee mark literally anywhere
 	public static var perkedelMark = true; // Whether to put Perkedel Technologies literally anywhere
 	public static var chosenMark:String = 'odysee'; //Whether to put chosen watermark litterally anywhere
 	public static var chosenMarkNum:Int = 0;
 	//JOELwindows7: Please no demonic reference about Mark of what the peck!
-
-	//JOELwindows7: the Android Permission pls help
-	//public static var androidPermissioner:Permission
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -157,12 +157,20 @@ class Main extends Sprite
 		GlobalVideo.setWebm(webmHandle);
 		#end
 		//end GrowtopiaFli Video Cutscener
+		
+		#if windows
+		DiscordClient.initialize();
+
+		Application.current.onExit.add (function (exitCode) {
+			DiscordClient.shutdown();
+		 });
+		 
+		#end
 
 		#if !mobile
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
 		toggleFPS(FlxG.save.data.fps);
-
 		#end
 
 		//JOELwindows7: GameBanana seems notorious.
