@@ -41,10 +41,11 @@ install:
   - haxelib git extension-webm https://github.com/KadeDev/extension-webm
   - haxelib run lime rebuild extension-webm windows
   # - haxelib install linc_luajit
-  - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
-  - haxelib install actuate
-  # - haxelib git extension-webm https://github.com/KadeDev/extension-webm
-  - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  - haxelib install linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  - haxelib install actuate 
+  #- haxelib git extension-webm https://github.com/KadeDev/extension-webm
+  #- haxelib run lime rebuild extension-webm windows
+  #why here's dublicate lmao
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
   # - haxelib install androidhx
