@@ -3741,7 +3741,7 @@ class PlayState extends MusicBeatState
 											cheerNow(4,2,true);
 										}
 							}
-							case '433':
+							case 'fortritri':
 							{
 								//JOELwindows7: silence is music lmao
 								//John Cage = 4'33", haha

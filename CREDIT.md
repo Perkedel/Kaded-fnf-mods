@@ -390,7 +390,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/datee/HaxeVLC (???) datee https://github.com/phfernandez/HaxeVLC (???) phfernandez. EXPERIMENTAL!!! Attempting to embed VLC because I want FNF supports surround sound 7.1. using phfernandez's fork due to ahead changes than datee's original.
 - https://github.com/furusystems/openfl-xinput (MIT) furusystems. Xinput for OpenFL. lemme vibrate dose bars.
 - https://github.com/ninjamuffin99/SHOOM (Apache 2.0) ninja_muffin99. aspect of SHOOM.
-- https://github.com/stepmania/stepmania Stepmania (MIT). Yoink the sample sm file Goin' Under just to test SM file loading capability. though, you must delete all difficulties but the one you'd like to play.
+- https://github.com/stepmania/stepmania https://www.stepmania.com/ Stepmania (MIT). Yoink the sample sm file Goin' Under just to test SM file loading capability. though, you must delete all difficulties but the one you'd like to play. psst, funfact, JOELwindows7 had ever translated this game into Bahasa Indonesia yeayh!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
@@ -466,4 +466,6 @@ of course, kindly contact the submitters first. give them time for maybe, a mont
 
 # internal extension
 - https://github.com/Perkedel/After-Church all inkscape assets
-- https://github.com/Perkedel/HexagonEngine logo inkscape assets
+- https://github.com/Perkedel/HexagonEngine logo inkscape assets#
+# bonus
+https://godotshaders.com/shader/update-botw-toon-shader/
