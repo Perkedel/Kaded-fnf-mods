@@ -38,19 +38,24 @@ class StoryMenuState extends MusicBeatState
 	// because JSON only consider value a string and variable name like that with "".
 	// have fun!
 	//wait. it's already covered?
-	static function weekData():Array<Dynamic>
+	var weekDatas:Array<Dynamic>; //nope. only week names. they also borked weekData variable.
+	// non-gamer move lol! you supposed to let it be filed procedural!!!
+	static function weekData(hardcoded:Bool = false):Array<Dynamic>
 	{
-		return [
-			['Tutorial'],
-			['Bopeebo', 'Fresh', 'Dad Battle'],
-			['Spookeez', 'South', "Monster"],
-			['Pico', 'Philly Nice', "Blammed"],
-			['Satin Panties', "High", "Milf"],
-			['Cocoa', 'Eggnog', 'Winter Horrorland'],
-			['Senpai', 'Roses', 'Thorns'],
-			['Senpai', 'Roses', 'Thorns'],
-			['Windfall','Rule The World', 'Well Meet Again'],
-		];
+		if(hardcoded)
+			return [
+				['Tutorial'],
+				['Bopeebo', 'Fresh', 'Dad Battle'],
+				['Spookeez', 'South', "Monster"],
+				['Pico', 'Philly Nice', "Blammed"],
+				['Satin Panties', "High", "Milf"],
+				['Cocoa', 'Eggnog', 'Winter Horrorland'],
+				['Senpai', 'Roses', 'Thorns'],
+				['Senpai', 'Roses', 'Thorns'],
+				['Windfall','Rule The World', 'Well Meet Again'],
+			];
+		else
+			return weekDatas;
 	}
 	// JOELwindows7: yeah, so, these hard code edit no longer needed.
 	var curDifficulty:Int = 1;
@@ -118,7 +123,7 @@ class StoryMenuState extends MusicBeatState
 		*/
 		//JOELwindows7: okay fine let's just json it.
 		var initWeekJson = loadFromJson('weekList');
-		//weekData = initWeekJson.weekData;
+		weekDatas = initWeekJson.weekData;
 		//weekUnlocked = initWeekJson.weekUnlocked;
 		weekCharacters = initWeekJson.weekCharacters;
 		//weekNames = initWeekJson.weekNames;
