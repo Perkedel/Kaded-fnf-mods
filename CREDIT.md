@@ -288,6 +288,11 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://github.com/JOELwindows7/openfl-xinput dump
 - https://github.com/furusystems/openfl-xinput/blob/master/com/furusystems/openfl/input/xinput/XBox360Controller.hx failed xbox fix
 - https://github.com/karaidon/hXInput ah help
+- https://handbrake.fr/ Convert video. Gratis & open source
+- https://twitter.com/KadeDeveloper/status/1417958060014772224?s=20 about Whitty. Do not reupload RAW. just the mod there is to it.
+- https://twitter.com/KadeDeveloper/status/1417938858285494273?s=20 whitty gone.
+- https://twitter.com/HiPhlox/status/1418519037005365249?s=20 one of bobcon
+- https://twitter.com/JOELwindows7/status/1418617463466434561?s=20 blns helep insert cameoid
 
 # in event of git merge conflict
 use VScode and Github desktop!

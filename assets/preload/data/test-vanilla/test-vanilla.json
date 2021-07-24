@@ -12,6 +12,9 @@
         "stage": "amfrost",
         "hasEpilogueChat": true,
         "hasDialogueChat": true,
+        "epilogueVideoPath": "OldMacDonaldHadABinCannon",
+        "forceHscriptModchart": true,
+        "hasEpilogueVideo": true,
         "notes": [{ "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, {
             "lengthInSteps": 16,
             "mustHitSection": false,

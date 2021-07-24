@@ -33,8 +33,8 @@ class AnWebmer extends MusicBeatState{
             haveBacked = false;
         }
         if(FlxG.keys.justPressed.ENTER || haveClicked){
-            trace("Play " + Paths.video("succ-reverberation-remake"));
-            FlxG.switchState(new VideoState(Paths.video("succ-reverberation-remake"), new AnWebmer()));    
+            trace("Play " + Paths.video("OldMacDonaldHadABinCannon"));
+            FlxG.switchState(new VideoState(Paths.video("OldMacDonaldHadABinCannon"), new AnWebmer()));    
         
             haveClicked = false;
         }

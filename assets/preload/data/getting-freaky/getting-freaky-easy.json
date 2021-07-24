@@ -26305,6 +26305,7 @@
         "speed": 1,
         "isMoody": false,
         "hasEpilogueChat": false,
+        "forceHscriptModchart": true,
         "sectionLengths": [],
         "gfVersion": "gf-covid",
         "chartVersion": "2",

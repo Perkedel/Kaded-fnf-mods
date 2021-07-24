@@ -1,8 +1,8 @@
 :bf:Whew! wow, not bad, but I did it!
 :dad:See, not that impossible. Congratulations, you finished this week!..
 :dad:We also would like to thank Madbrine for providing us the yoink of this particular chart and the voice file.
-:dad:You see, no games had this chart included before that exclusive 0.2.8.0 update.
-:dad:And the voice inlcuded before was empty.
+:dad:You see, no such (mods & vanilla) had this chart included before that exclusive 0.2.8.0 update.
+:dad:And the voice inlcuded before was empty. only the instrumental there is here.
 :dad:btw Kade Engine itself had their own test and more music we still haven't checked yet.
 :dad:So yeah.
 :bf:Okay, I began to be curious. What are you guys waiting for actually?

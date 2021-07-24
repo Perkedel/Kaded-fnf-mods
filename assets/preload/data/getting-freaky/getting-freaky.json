@@ -26319,6 +26319,7 @@
         "preferredNoteAmount": 4,
         "allowedToHeadbang": true,
         "hasEpilogueVideo": false,
+        "forceHscriptModchart": true,
         "uiType": "normal",
         "needsVoices": false,
         "stage": "amfrost",
