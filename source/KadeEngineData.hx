@@ -136,6 +136,10 @@ class KadeEngineData
 		//JOELwindows7: Vibrations
 		if (FlxG.save.data.vibration == null)
 			FlxG.save.data.vibration = true;
+
+		//JOELwindows7: PreUnlock weeks like in Stepmania Home mode
+		if (FlxG.save.data.preUnlocked == null)
+			FlxG.save.data.preUnlocked = false;
 		
 		if (FlxG.save.data.cacheImages == null)
 			FlxG.save.data.cacheImages = false;

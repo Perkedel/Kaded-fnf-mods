@@ -821,8 +821,48 @@ class HaxeScriptState {
         });*/
 
         //Special JOELwindows7
-        addCallback( "cheerNow", function(ooutOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false, justOne:Bool = false, toWhichBg:Int = 0){
-            PlayState.instance.cheerNow(ooutOfBeatFractioning,doItOn,randomizeColor,justOne,toWhichBg);
+        addCallback( "cheerNow", function(
+            ooutOfBeatFractioning:Int = 4, 
+            doItOn:Int = 0, 
+            randomizeColor:Bool = false, 
+            justOne:Bool = false, 
+            toWhichBg:Int = 0,
+            forceIt:Bool = false
+        ){
+            PlayState.instance.cheerNow(
+                ooutOfBeatFractioning,
+                doItOn,
+                randomizeColor,
+                justOne,
+                toWhichBg,
+                forceIt
+                );
+        });
+
+        addCallback( "heyNow", function(
+            ooutOfBeatFractioning:Int = 4, 
+            doItOn:Int = 0, 
+            randomizeColor:Bool = false, 
+            justOne:Bool = false, 
+            toWhichBg:Int = 0,
+            forceIt:Bool = false
+        ){
+            PlayState.instance.heyNow(
+                ooutOfBeatFractioning,
+                doItOn,
+                randomizeColor,
+                justOne,
+                toWhichBg, 
+                forceIt
+                );
+        });
+
+        addCallback("justCheer", function(forceIt:Bool = false){
+            PlayState.instance.justCheer(forceIt);
+        });
+
+        addCallback("justHey", function(forceIt:Bool = false){
+            PlayState.instance.justHey(forceIt);
         });
 
         addCallback( "prepareColorableBg", function(

@@ -22933,7 +22933,7 @@
         "sectionLengths": [],
         "isMoody": false,
         "hasEpilogueChat": false,
-        "gfVersion": "gf",
+        "gfVersion": "gf-covid",
         "chartVersion": "2",
         "eventObjects": [{
             "name": "Init BPM",
@@ -22942,7 +22942,7 @@
             "type": "BPM Change"
         }],
         "epilogueVideoPath": "",
-        "hasDialogueChat": false,
+        "hasDialogueChat": true,
         "hasEpilogueVideo": false,
         "allowedToHeadbang": false,
         "preferredNoteAmount": 4,

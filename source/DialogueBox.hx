@@ -30,6 +30,7 @@ class DialogueBox extends FlxSpriteGroup
 
 	var portraitLeft:FlxSprite;
 	var portraitRight:FlxSprite;
+	var portraitMiddle:FlxSprite; //JOELwindows7: for gf
 
 	var handSelect:FlxSprite;
 	var bgFade:FlxSprite;
@@ -40,8 +41,17 @@ class DialogueBox extends FlxSpriteGroup
 	//JOELwindows7: heuristic flag for character that is not default Senpai
 	var customCharPls:Bool = false;
 	var customBfPls:Bool = false;
+	var customGfPls:Bool = false;
 
-	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>)
+	public function new(
+		talkingRight:Bool = true, 
+		?dialogueList:Array<String>, 
+		?hadChat:Bool = false, 
+		?customChar:Bool = false, 
+		?customCharXML:String = "jakartaFair/Hookx-dialogueAppear",
+		?customCharFrame:String = "enter",
+		?customCharPrefix:String = "Hookx Portrait Enter"
+		)
 	{
 		super();
 
@@ -86,7 +96,7 @@ class DialogueBox extends FlxSpriteGroup
 		trace("song is: " + PlayState.SONG.song.toLowerCase() + " so pls check dialog!");
 		switch (PlayState.SONG.song.toLowerCase())
 		{
-			case 'senpai':
+			case 'senpai' | 'senpai-midi':
 				//JOELwindows7: pls add week 6 library makering.
 				//it seems the lime confused between main weeb and week special weeb folder
 				//or try to remove weeb and add week6 in here
@@ -102,7 +112,7 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByPrefix('normalOpen', 'SENPAI ANGRY IMPACT SPEECH', 24, false);
 				box.animation.addByIndices('normal', 'SENPAI ANGRY IMPACT SPEECH', [4], "", 24);
 
-			case 'thorns':
+			case 'thorns' | 'thorns-midi':
 				hasDialog = true;
 				box.frames = Paths.getSparrowAtlas('weeb/pixelUI/dialogueBox-evil', 'week6');
 				box.animation.addByPrefix('normalOpen', 'Spirit Textbox spawn', 24, false);
@@ -112,7 +122,15 @@ class DialogueBox extends FlxSpriteGroup
 				face.setGraphicSize(Std.int(face.width * 6));
 				add(face);
 			
-			case 'windfall':
+			case 'windfall' | 
+				'rule the world' | 
+				'well meet again' | 
+				'getting-freaky' |
+				'breakfast' |
+				'dont stop' |
+				'title classic' |
+				'test-vanilla'
+				:
 				//JOELwindows7: the dialogue normalizations
 				hasDialog = true;
 				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
@@ -123,32 +141,6 @@ class DialogueBox extends FlxSpriteGroup
 
 				customCharPls = true;
 				initiatePortraitLeft(-20,40,0.9,'jakartaFair/Hookx-dialogueAppear','enter','Hookx Portrait Enter');
-			case 'rule the world':
-				hasDialog = true;
-				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
-				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
-				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
-
-				nonPixel = true;
-
-				customCharPls = true;
-				initiatePortraitLeft(-20,40,0.9,'jakartaFair/Hookx-dialogueAppear','enter','Hookx Portrait Enter');
-			case 'well meet again':
-				hasDialog = true;
-				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
-				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
-				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
-
-				nonPixel = true;
-
-				customCharPls = true;
-				initiatePortraitLeft(-20,40,0.9,'jakartaFair/Hookx-dialogueAppear','enter','Hookx Portrait Enter');
-			case 'senpai-midi':
-				trace("please senpai-midi dialog where");
-				hasDialog = true;
-				box.frames = Paths.getSparrowAtlas('weeb/pixelUI/dialogueBox-pixel', 'week6');
-				box.animation.addByPrefix('normalOpen', 'Text Box Appear', 24, false);
-				box.animation.addByIndices('normal', 'Text Box Appear', [4], "", 24);
 			case 'roses-midi':
 				hasDialog = true;
 				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX-midi'));
@@ -156,17 +148,21 @@ class DialogueBox extends FlxSpriteGroup
 				box.frames = Paths.getSparrowAtlas('weeb/pixelUI/dialogueBox-senpaiMad', 'week6');
 				box.animation.addByPrefix('normalOpen', 'SENPAI ANGRY IMPACT SPEECH', 24, false);
 				box.animation.addByIndices('normal', 'SENPAI ANGRY IMPACT SPEECH', [4], "", 24);
-			case 'thorns-midi':
-				hasDialog = true;
-				box.frames = Paths.getSparrowAtlas('weeb/pixelUI/dialogueBox-evil', 'week6');
-				box.animation.addByPrefix('normalOpen', 'Spirit Textbox spawn', 24, false);
-				box.animation.addByIndices('normal', 'Spirit Textbox spawn', [11], "", 24);
-
-				var face:FlxSprite = new FlxSprite(320, 170).loadGraphic(Paths.image('weeb/spiritFaceForward', 'week6'));
-				face.setGraphicSize(Std.int(face.width * 6));
-				add(face);
 			default:
-				trace("Uh, no dialog...");
+				trace("Uh, no dialog info...");
+				hasDialog = hadChat;
+				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
+				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
+				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
+
+				if(customChar){
+					customCharPls = true;
+					initiatePortraitLeft(-20,40,0.9,
+						customCharXML,
+						customCharFrame,
+						customCharPrefix
+						);
+				}
 		}
 
 		this.dialogueList = dialogueList;
@@ -205,6 +201,18 @@ class DialogueBox extends FlxSpriteGroup
 			portraitRight.visible = false;
 		}
 		
+		//last but not least the bf
+		if(!customGfPls){
+			portraitMiddle = new FlxSprite(0, 40);
+			portraitMiddle.frames = Paths.getSparrowAtlas('weeb/gfPortrait', 'shared');
+			portraitMiddle.animation.addByPrefix('enter', 'Girlfriend portrait enter', 24, false);
+			portraitMiddle.setGraphicSize(Std.int(portraitMiddle.width * PlayState.daPixelZoom * 0.9));
+			portraitMiddle.updateHitbox();
+			portraitMiddle.scrollFactor.set();
+			add(portraitMiddle);
+			portraitMiddle.visible = false;
+		}
+
 		//JOELwindows7: I've added a heuristic to size width accordingly between nonPixel and pixel level.
 		box.animation.play('normalOpen');
 		if(nonPixel)
@@ -370,6 +378,7 @@ class DialogueBox extends FlxSpriteGroup
 		{
 			case 'dad':
 				portraitRight.visible = false;
+				portraitMiddle.visible = false;
 				if (!portraitLeft.visible)
 				{
 					portraitLeft.visible = true;
@@ -377,10 +386,19 @@ class DialogueBox extends FlxSpriteGroup
 				}
 			case 'bf':
 				portraitLeft.visible = false;
+				portraitMiddle.visible = false;
 				if (!portraitRight.visible)
 				{
 					portraitRight.visible = true;
 					portraitRight.animation.play('enter');
+				}
+			case 'gf':
+				portraitRight.visible = false;
+				portraitLeft.visible = false;
+				if (!portraitMiddle.visible)
+				{
+					portraitMiddle.visible = true;
+					portraitMiddle.animation.play('enter');
 				}
 		}
 	}

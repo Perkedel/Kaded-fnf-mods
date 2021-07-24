@@ -905,9 +905,50 @@ class ModchartState
 
 				//JOELwindows7: more special functions
 
-				Lua_helper.add_callback(lua, "cheerNow", function(ooutOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false, justOne:Bool = false, toWhichBg:Int = 0){
-					PlayState.instance.cheerNow(ooutOfBeatFractioning,doItOn,randomizeColor,justOne,toWhichBg);
+				Lua_helper.add_callback(lua, "cheerNow", function(
+					ooutOfBeatFractioning:Int = 4, 
+					doItOn:Int = 0, 
+					randomizeColor:Bool = false, 
+					justOne:Bool = false, 
+					toWhichBg:Int = 0, 
+					forceIt:Bool = false
+				){
+					PlayState.instance.cheerNow(
+						ooutOfBeatFractioning,
+						doItOn,
+						randomizeColor,
+						justOne,
+						toWhichBg, 
+						forceIt
+						);
 				});
+
+				Lua_helper.add_callback(lua, "heyNow", function(
+					ooutOfBeatFractioning:Int = 4, 
+					doItOn:Int = 0, 
+					randomizeColor:Bool = false, 
+					justOne:Bool = false, 
+					toWhichBg:Int = 0,
+					forceIt:Bool = false
+				){
+					PlayState.instance.heyNow(
+						ooutOfBeatFractioning,
+						doItOn,
+						randomizeColor,
+						justOne,
+						toWhichBg, 
+						forceIt
+						);
+				});
+
+				Lua_helper.add_callback(lua, "justCheer", function(forceIt:Bool = false){
+					PlayState.instance.justCheer(forceIt);
+				});
+
+				Lua_helper.add_callback(lua, "justHey", function(forceIt:Bool = false){
+					PlayState.instance.justHey(forceIt);
+				});
+
 
 				Lua_helper.add_callback(lua, "prepareColorableBg", function(
 					useImage:Bool = false, 

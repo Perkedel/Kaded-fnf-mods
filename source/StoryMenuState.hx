@@ -98,6 +98,15 @@ class StoryMenuState extends MusicBeatState
 		for(i in 0...weekNames.length)
 			weeks.push(true);
 		return weeks;
+		#else
+		//JOELwindows7: in Stepmania home use mode, you can have all songs preunlocked by default
+		// You can enable lock progress if you wish to have adventure sensation.
+		if(FlxG.save.data.preUnlocked)
+		{
+			for(i in 0...weekNames.length)
+				weeks.push(true);
+			return weeks;
+		}
 		#end
 		
 		weeks.push(true);

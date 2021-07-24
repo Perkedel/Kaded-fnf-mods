@@ -1361,6 +1361,8 @@ class PlayState extends MusicBeatState
 			case 'gf-ht':
 				//JOELwindows7: doned the gf-ht
 				curGf = 'gf-ht';
+			case 'gf-covid':
+				curGf = 'gf-covid';
 			default:
 				curGf = 'gf';
 		}
@@ -1374,16 +1376,8 @@ class PlayState extends MusicBeatState
 
 		switch (SONG.player2)
 		{
-			case 'gf':
-				dad.setPosition(gf.x, gf.y);
-				gf.visible = false;
-				if (isStoryMode)
-				{
-					camPos.x += 600;
-					tweenCamIn();
-				}
-			case 'gf-ht':
-				//JOELwindows7: copy paste above. the Home Theater also had left down up right as well!
+			case 'gf' | 'gf-covid' | 'gf-ht':
+				//JOELwindows7: multi same with other gf variants. the Home Theater also had left down up right as well!
 				dad.setPosition(gf.x, gf.y);
 				gf.visible = false;
 				if (isStoryMode)
@@ -1577,8 +1571,8 @@ class PlayState extends MusicBeatState
 
 		trace("SF CALC: " + Math.floor((PlayStateChangeables.safeFrames / 60) * 1000));
 
-		doof = new DialogueBox(false, dialogue); //JOELwindows7: make it global, pls!
-		eoof = new DialogueBox(false, epilogue); //JOELwinodws7: epilogue box too!
+		doof = new DialogueBox(false, dialogue, SONG.hasDialogueChat); //JOELwindows7: make it global, pls!
+		eoof = new DialogueBox(false, epilogue, SONG.hasEpilogueChat); //JOELwinodws7: epilogue box too!
 		// doof.x += 70;
 		// doof.y = FlxG.height * 0.5;
 		doof.scrollFactor.set();
@@ -5952,17 +5946,52 @@ class PlayState extends MusicBeatState
 	}
 
 	//JOELwindows7: make cheer a function
-	public function cheerNow(outOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false, justOne:Bool = false, toWhichBg:Int = 0){
+	public function cheerNow(
+		outOfBeatFractioning:Int = 4, 
+		doItOn:Int = 0, 
+		randomizeColor:Bool = false, 
+		justOne:Bool = false, 
+		toWhichBg:Int = 0, 
+		forceIt:Bool = false){
 		if(curBeat % outOfBeatFractioning == doItOn)
 		{
 			if(!triggeredAlready)
 				{
 					if(randomizeColor)
 						randomizeColoring(justOne, toWhichBg);
-					gf.playAnim('cheer');
+					gf.playAnim('cheer', forceIt);
 					triggeredAlready = true;
 				}
 		} else triggeredAlready = false;
+	}
+
+	public function heyNow(
+		outOfBeatFractioning:Int = 4, 
+		doItOn:Int = 0, 
+		randomizeColor:Bool = false, 
+		justOne:Bool = false, 
+		toWhichBg:Int = 0, 
+		forceIt:Bool = false
+		){
+		if(curBeat % outOfBeatFractioning == doItOn)
+		{
+			if(!triggeredAlready)
+				{
+					if(randomizeColor)
+						randomizeColoring(justOne, toWhichBg);
+					boyfriend.playAnim('hey', forceIt);
+					triggeredAlready = true;
+				}
+		} else triggeredAlready = false;
+	}
+
+	//JOELwindows7: just cheer & hey
+	public function justCheer(forceIt:Bool = false){
+		gf.playAnim('cheer', forceIt);
+	}
+
+	public function justHey(forceIt:Bool = false){
+		boyfriend.playAnim('hey', forceIt);
 	}
 
 	//JOELwindows7: prepare Colorable bg

@@ -86,7 +86,25 @@ class Character extends FlxSprite
 				addOffset('scared',0,2);
 
 				playAnim('danceRight');
+			case 'gf-covid':
+				// JOELwindows7: copy from that GIRLFRIEND CODE
+				tex = Paths.getSparrowAtlas('GF-covid_assets','shared',true);
+				frames = tex;
+				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
+				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
+				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
+				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
+				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
+				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
+				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
+				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
+				animation.addByPrefix('scared', 'GF FEAR', 24);
 
+				loadOffsetFile(curCharacter);
+
+				playAnim('danceRight');
 			case 'gf-christmas':
 				tex = Paths.getSparrowAtlas('gfChristmas','shared',true);
 				frames = tex;
@@ -535,10 +553,7 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
-			case 'gf':
-				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-					playAnim('danceRight');
-			case 'gf-ht':
+			case 'gf' | 'gf-ht' | 'gf-covid':
 				//JOELwindows7: okay idk how to make this work at all!
 				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 					playAnim('danceRight');
@@ -558,7 +573,7 @@ class Character extends FlxSprite
 		{
 			switch (curCharacter)
 			{
-				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel':
+				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-covid':
 					if (!animation.curAnim.name.startsWith('hair'))
 					{
 						danced = !danced;

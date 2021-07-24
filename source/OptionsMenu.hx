@@ -39,6 +39,7 @@ class OptionsMenu extends MusicBeatState
 			new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
 			new ResetButtonOption("Toggle pressing R to gameover."),
 			// new OffsetMenu("Get a note offset based off of your inputs!"),
+			new PreUnlockAllWeeksOption("Toggle whether to preUnlock all weeks no matter what"),
 			new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!")
 		]),
 		new OptionCategory("Appearance", [

@@ -6,9 +6,12 @@
         "player1": "bf-covid",
         "player2": "hookx",
         "noteStyle": "saubo",
+        "gfVersion": "gf-covid",
         "speed": 1,
         "useCustomStage": true,
         "stage": "amfrost",
+        "hasEpilogueChat": true,
+        "hasDialogueChat": true,
         "notes": [{ "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": false, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, { "lengthInSteps": 16, "mustHitSection": true, "sectionNotes": [] }, {
             "lengthInSteps": 16,
             "mustHitSection": false,
