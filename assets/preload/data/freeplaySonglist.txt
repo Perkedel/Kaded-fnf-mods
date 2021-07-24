@@ -29,3 +29,4 @@ Breakfast:hookx:10
 Dont Stop:hookx:10
 Title Classic:hookx:10
 Test-vanilla:hookx:10
+Test:gf:-1
