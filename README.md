@@ -1,4 +1,5 @@
-![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png )
+<!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png ) -->
+![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-meta-thumb.png )
 [Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
 
 # Last Funkin Moments
@@ -47,6 +48,10 @@ Hookx invited bf and gf again to a landscape view of mountain with a dead tree b
 - Amfrost stage where the Week Meta takes place! it got mountain view over there, a dead tree bark, and sandy ground.
 - GF wears masker too!!! even demons respects health protocol, don't you people be ashamed by her?
 - Stage loading JSON! load stage background images with JSON, or, Lua script the stage loading for even more advanced stuffs!
+- Kade Engine 1.6
+- Stepmania file support yay
+- more options!!! (beware though, don't touch Reset data options)
+- wuwuuwuwuwuwuwuw
 ## 2021.06 Week Strong! vs. Hookx the friendly Karaoke robot!
 [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/week-strong-new-added-2.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/week-strong-new-added-2.png )
 [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/hookx-dancing-here.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/hookx-dancing-here.png )
