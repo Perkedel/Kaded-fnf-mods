@@ -43,7 +43,7 @@ install:
   - haxelib run lime rebuild extension-webm windows
   - haxelib run lime rebuild extension-webm html5
   # - haxelib install linc_luajit
-  - haxelib install linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
   - haxelib install actuate 
   #- haxelib git extension-webm https://github.com/KadeDev/extension-webm
   #- haxelib run lime rebuild extension-webm windows
