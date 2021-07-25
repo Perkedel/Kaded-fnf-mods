@@ -47,6 +47,7 @@ install:
   # - haxelib git haxevlc https://github.com/datee/HaxeVLC.git # for VLC.
   - haxelib install extension-webview #luckydog7 for Android
   - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
+  - haxelib install haxe-files
   - haxelib list
   # JOELwindows7: okay now the butler
   - wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
