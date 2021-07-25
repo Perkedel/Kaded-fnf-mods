@@ -98,7 +98,7 @@ class FreeplayState extends MusicBeatState
 
 		trace("tryin to load sm files");
 
-		#if sys
+		#if (sys && !mobile) //JOELwindows7: android crash if attempt FileSystem stuffs
 		for(i in FileSystem.readDirectory("assets/sm/"))
 		{
 			trace(i);
