@@ -7,10 +7,28 @@ import lime.utils.Assets;
 
 using StringTools;
 
+class Event
+{
+	public var name:String;
+	public var position:Float;
+	public var value:Dynamic;
+	public var type:String;
+
+	public function new(name:String,pos:Float,value:Dynamic,type:String)
+	{
+		this.name = name;
+		this.position = pos;
+		this.value = value;
+		this.type = type;
+	}
+}
+
 typedef SwagSong =
 {
+	var chartVersion:String;
 	var song:String;
 	var notes:Array<SwagSection>;
+	var eventObjects:Array<Event>;
 	var bpm:Float;
 	var needsVoices:Bool;
 	var speed:Float;
@@ -31,15 +49,21 @@ typedef SwagSong =
 	var hasEpilogueChat:Bool; //JOELwindows7: mark that this has Epologue chat
 
 	var allowedToHeadbang:Bool; //JOELwindows7: mark whether heys, color change, etc.
+	var useCustomStage:Bool; //JOELwindows7: should use custom stage?
 	//be allowed at certain moments in time
+
+	var forceLuaModchart:Bool; //JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	var forceHscriptModchart:Bool; //JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 }
 
 class Song
 {
+	public var chartVersion:String;
 	public var song:String;
 	public var notes:Array<SwagSection>;
 	public var bpm:Float;
 	public var needsVoices:Bool = true;
+	public var eventObjects:Array<Event>;
 	public var speed:Float = 1;
 
 	public var player1:String = 'bf';
@@ -57,7 +81,11 @@ class Song
 	public var hasEpilogueChat:Bool = false; //JOELwindows7: mark that this has Epologue chat
 
 	public var allowedToHeadbang:Bool = false; //JOELwindows7: mark whether heys, color change, etc.
+	public var useCustomStage:Bool = false; //JOELwindows7: should use custom stage?
 	//be allowed at certain moments in time
+
+	public var forceLuaModchart:Bool = false; //JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	public var forceHscriptModchart:Bool = false; //JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 
 	public function new(song, notes, bpm)
 	{
@@ -66,10 +94,19 @@ class Song
 		this.bpm = bpm;
 	}
 
+	public static function loadFromJsonRAW(rawJson:String)
+	{
+		while (!rawJson.endsWith("}"))
+		{
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
+		}
+	
+		return parseJSONshit(rawJson);
+	}
+
 	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
 	{
-		trace(jsonInput);
-
 		// pre lowercasing the folder name
 		var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
 		switch (folderLowercase) {
@@ -80,9 +117,11 @@ class Song
 		trace('loading ' + folderLowercase + '/' + jsonInput.toLowerCase());
 
 		var rawJson = Assets.getText(Paths.json(folderLowercase + '/' + jsonInput.toLowerCase())).trim();
+		trace('loaded raw JSON');
 
 		while (!rawJson.endsWith("}"))
 		{
+			trace("clearing bullshits");
 			rawJson = rawJson.substr(0, rawJson.length - 1);
 			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
@@ -102,7 +141,7 @@ class Song
 				daNotes = songData.notes;
 				daSong = songData.song;
 				daBpm = songData.bpm; */
-
+		trace("now parse that JSON");
 		return parseJSONshit(rawJson);
 	}
 
@@ -110,6 +149,7 @@ class Song
 	{
 		var swagShit:SwagSong = cast Json.parse(rawJson).song;
 		swagShit.validScore = true;
+		trace("parsened"); //JOELwindows7: wtf happening.
 		return swagShit;
 	}
 }

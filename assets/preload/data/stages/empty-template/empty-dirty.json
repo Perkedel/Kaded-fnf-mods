@@ -1,0 +1,59 @@
+{
+    "stage": {
+        "name": "Empty Template Stage",
+        "useLuaScript": false,
+        "bg": "view-of-the-world-StageBackNoStar",
+        "stageFront": "view-of-the-world-StageFront",
+        "stageCurtain": "view-of-the-world-StageCurtain",
+        "colorableBg": "view-of-the-world-JustStars",
+        "customBg0": "",
+        "customBg1": "",
+        "customBg2": "",
+        "customBg3": "",
+        "customBg4": "",
+        "customBg5": "",
+        "customBg6": "",
+        "customBg7": "",
+        "customBg8": "",
+        "customBg9": "",
+        "bgScrollFactor": [1, 1],
+        "stageFrontScrollFactor": [1, 1],
+        "stageCurtainScrollFactor": [1, 1],
+        "colorableBgScrollFactor": [1, 1],
+        "useImagesMethodic": false,
+        "images": [
+            "view-of-the-world-StageBackNoStar",
+            "view-of-the-world-StageFront",
+            "view-of-the-world-StageCurtain",
+            "view-of-the-world-JustStars"
+        ],
+        "imagesScrollFactor": [
+            [1, 1],
+            [1, 1],
+            [1, 1],
+            [1, 1]
+        ],
+        "backgroundImages": [{
+            "callName": "bg",
+            "graphic": "null",
+            "generateMode": true,
+            "position": [0, 0],
+            "size": [128, 128],
+            "scrollFactor": [0, 0],
+            "colorable": false,
+            "antialiasing": true
+        }],
+        "whichImageAreColorable": [3],
+        "order": [3, 0, 1, 2],
+        "initInvisible": [false, false, false, false],
+        "isHalloween": false,
+        "halloweenLevel": false,
+        "isXML": [false, false, false, false],
+        "prefixXMLNames": [
+            "EarthSphere IDLE",
+            "Brawler IDLE",
+            "Brawler Curtain",
+            "stars IDLE"
+        ]
+    }
+}

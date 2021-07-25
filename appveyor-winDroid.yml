@@ -48,6 +48,7 @@ install:
   # - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   # Install project dependencies
   - haxelib install lime
+  - RefreshEnv
   - haxelib install openfl
   - haxelib install flixel
   - haxelib run lime setup flixel -y
@@ -62,20 +63,35 @@ install:
   - haxelib git faxe https://github.com/uhrobots/faxe
   - haxelib git polymod https://github.com/larsiusprime/polymod.git
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-  - haxelib git extension-webm https://github.com/KadeDev/extension-webm
+  # - haxelib git extension-webm https://github.com/KadeDev/extension-webm
+  - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  - haxelib rebuild extension-webm android
   # - C:\Android\android-sdk\cmdline-tools\bin\sdkmanager.bat "platform-tools" "platforms;android-19" "build-tools;31.0.0-rc5" --sdk_root="%ANDROID_SDK_LOC%"
   - haxelib run lime config ANDROID_SDK "%ANDROID_SDK_LOC%"
   - haxelib run lime config ANDROID_NDK_ROOT "%ANDROID_NDK_ROOT_LOC%\android-ndk-r15c"
   - haxelib run lime config ANDROID_SETUP true
   - haxelib run lime config JAVA_HOME C:\Program Files\Java\jdk1.8.0_211
   - haxelib run lime rebuild extension-webm android
-  - haxelib install linc_luajit
-  - haxelib install actuate
-  # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  # - haxelib install linc_luajit
+  - haxelib install linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  - haxelib install actuate 
+  #- haxelib git extension-webm https://github.com/KadeDev/extension-webm
+  #- haxelib run lime rebuild extension-webm windows
+  #why here's dublicate lmao
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
   # - haxelib install androidhx
+  - haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
+  - haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
+  - haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
+  - haxelib install uniontypes #BulbyVR used this
+  - haxelib install json2object #BulbyVR used this to convert JSON to object
+  # - haxelib git haxevlc https://github.com/datee/HaxeVLC.git # for VLC.
+  - haxelib install extension-webview #luckydog7 for Android
+  - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
   - haxelib list
+  # - haxelib run lime config HXCPP_ARM64 true
+  # - haxelib run lime config HXCPP_x86 true
 
 # No tests idk lol
 build_script:

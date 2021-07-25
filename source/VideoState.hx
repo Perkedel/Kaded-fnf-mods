@@ -1,5 +1,7 @@
 package;
-
+#if cpp
+import webm.WebmPlayer;
+#end
 import flixel.FlxState;
 import flixel.FlxG;
 
@@ -32,17 +34,24 @@ class VideoState extends MusicBeatState
 	public var defaultText:String = "";
 	public var doShit:Bool = false;
 	public var pauseText:String = "Press P To Pause/Unpause";
-	public var utilizeLoading:Bool = false;
+	public var autoPause:Bool = false;
+	public var musicPaused:Bool = false;
 
-	//JOELwindows7: some state requires loading
-	//such as Playstate with loading the song
-	public function new(source:String, toTrans:FlxState, useLoading:Bool = false)
+	public function new(source:String, toTrans:FlxState, frameSkipLimit:Int = -1, autopause:Bool = false)
 	{
 		super();
 		
-		utilizeLoading = useLoading;
+		autoPause = autopause;
+		
 		leSource = source;
 		transClass = toTrans;
+		if (frameSkipLimit != -1 && GlobalVideo.isWebm)
+		{
+			#if desktop
+			GlobalVideo.getWebm().webm.SKIP_STEP_LIMIT = frameSkipLimit;	
+			//WebmPlayer.SKIP_STEP_LIMIT = frameSkipLimit; //JOElwindows7 somekind for the kade's
+			#end
+		}
 	}
 	
 	override function create()
@@ -77,28 +86,45 @@ class VideoState extends MusicBeatState
 		txt.screenCenter();
 		add(txt);
 
+		trace("check vidSound exist");
 		if (GlobalVideo.isWebm)
 		{
-			if (Assets.exists(leSource.replace(".webm", ".ogg"), MUSIC) || Assets.exists(leSource.replace(".webm", ".ogg"), SOUND))
+			//JOELwindows7: i pecking don't understand why it doesn't work at all
+			// in Android
+			if (
+				// #if !mobile
+				Assets.exists(leSource.replace(".webm", ".ogg"), MUSIC) || 
+				Assets.exists(leSource.replace(".webm", ".ogg"), SOUND)
+				// #else
+				// true
+				// #end
+				)
 			{
 				useSound = true;
 				vidSound = FlxG.sound.play(leSource.replace(".webm", ".ogg"));
 			}
 		}
+		trace("checked vidSound exists.");
 
+		trace("le put the video in dees");
 		GlobalVideo.get().source(leSource);
+		trace('clear pauseoid');
 		GlobalVideo.get().clearPause();
 		if (GlobalVideo.isWebm)
 		{
+			trace("update da player");
 			GlobalVideo.get().updatePlayer();
 		}
 		GlobalVideo.get().show();
 		if (GlobalVideo.isWebm)
 		{
+			trace("restart vid");
 			GlobalVideo.get().restart();
 		} else {
+			trace("oh just play vid okey");
 			GlobalVideo.get().play();
 		}
+		trace("setup done for the le vid");
 		
 		/*if (useSound)
 		{*/
@@ -106,7 +132,9 @@ class VideoState extends MusicBeatState
 		
 			/*new FlxTimer().start(0.1, function(tmr:FlxTimer)
 			{*/
-				vidSound.time = vidSound.length * soundMultiplier;
+				// JOELwindows7: only do this if not null
+				trace("fix vidSound time by timing its length with soundMultiplier " + Std.string(soundMultiplier));
+				if(vidSound != null) vidSound.time = vidSound.length * soundMultiplier; 
 				/*new FlxTimer().start(1.2, function(tmr:FlxTimer)
 				{
 					if (useSound)
@@ -115,8 +143,16 @@ class VideoState extends MusicBeatState
 					}
 				}, 0);*/
 				doShit = true;
+				trace("enable doing some poops of VIdeo here man");
 			//}, 1);
 		//}
+		
+		if (autoPause && FlxG.sound.music != null && FlxG.sound.music.playing)
+		{
+			musicPaused = true;
+			FlxG.sound.music.pause();
+		}
+		trace("finish create VideoState cool and good");
 	}
 	
 	override function update(elapsed:Float)
@@ -199,12 +235,13 @@ class VideoState extends MusicBeatState
 			notDone = false;
 			FlxG.sound.music.volume = fuckingVolume;
 			txt.text = pauseText;
+			if (musicPaused)
+			{
+				musicPaused = false;
+				FlxG.sound.music.resume();
+			}
 			FlxG.autoPause = true;
-			//JOELwindows7: check if he use Loading
-			if(utilizeLoading)
-				LoadingState.loadAndSwitchState(transClass);
-			else
-				FlxG.switchState(transClass);
+			FlxG.switchState(transClass);
 		}
 		
 		if (GlobalVideo.get().played || GlobalVideo.get().restarted)

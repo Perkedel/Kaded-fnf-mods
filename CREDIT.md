@@ -1,6 +1,9 @@
 # Big shoutout yay
 thancc for all these resources! without them, everything is impossible.
 
+# About the License
+Hey, am I allowed to relicense? I was meant to just license part of my mods that's it, your original code is still yours.
+
 # list of credit links
 - https://youtu.be/9dfkMgrjDOw BrightFyre Comprehensive FNF mod from source code level
 - https://www.youtube.com/channel/UCvbZKyPNpKGri4uKGsZSw6w BrightFyre channel
@@ -201,7 +204,96 @@ thancc for all these resources! without them, everything is impossible.
 - https://snowkit.github.io/linc/ linc libraries for Haxe
 - the LuaJIT version last time is still 2.1.0-beta2
 - https://lib.haxe.org/p/markdown/ markdown to HTML converter library haxe
-  
+- https://snippets.haxeflixel.com/groups/typed-group/ how to FlxTypedGroup
+- https://haxe.org/manual/types-enum-instance.html how to enum in HaxeFlixel
+- https://haxeflixel.com/documentation/keyboard/ keyboard controlo
+- https://api.haxeflixel.com/flixel/input/keyboard/FlxKeyList.html keylist
+- https://api.haxeflixel.com/flixel/group/FlxTypedGroup.html again typed group
+- https://snippets.haxeflixel.com/groups/typed-group/ yeah
+- https://haxe.org/manual/types-enum-instance.html enum instance
+- https://haxeflixel.com/documentation/flxsprite/ flxsprite
+- https://api.haxeflixel.com/flixel/util/FlxColor.html flxcolor
+- document dumps again
+- https://haxeflixel.com/documentation/flxgroup/ FlxTypedGroup of FlxBasic. prettymuch basically the array of Flx objects
+- https://api.haxeflixel.com/flixel/group/FlxSpriteGroup.html a.k.a. FlxTypedGroup of FlxSprite
+- https://api.haxeflixel.com/flixel/ui/FlxBar.html flx meter bar HP bar
+- https://api.haxeflixel.com/flixel/FlxG.html system object
+- https://api.haxeflixel.com/flixel/input/touch/FlxTouchManager.html touchscreen
+- https://api.haxeflixel.com/flixel/input/FlxSwipe.html touch swipe
+- https://api.haxeflixel.com/flixel/ui/FlxVirtualPad.html virtual pad
+- https://api.haxeflixel.com/flixel/ui/FlxActionMode.html action mode for the virtual pad
+- https://api.haxeflixel.com/flixel/ui/FlxDPadMode.html dpad mode for the virtual pad
+- https://snippets.haxeflixel.com/input/keyboard/ keyboard how to
+- https://snippets.haxeflixel.com/input/ what input examples
+- https://gamebanana.com/threads/219778 avoid reuploading sky mod for the time being. I think, that's indefinite. Oh, speaking of browsing Git commit history, that's what I did. I turn back to time, right before the removal of Sky mod, and take everything Sky as all as I can. Assets, Codes, Projects, everything I know it would have one. May come back later if I missed anything. ssssshh, don't tell bbpanzu! if he know this he'll turn back in time and force push this alternate timeline like if Sky never been existed. wait a minute. uh oh! peck!
+- https://youtu.be/7awd-y_DTQY PEAR & https://twitter.com/gothmei/status/1309307834677571585 gothmei. peck, the tweet is gone. there is no preservation in twitter after all. We lost the little pogchamp voice. oh wait, PEAR still has it!
+- https://haxeflixel.com/documentation/flxtween/ how to tween
+- https://youtu.be/u1DKR9cOxnM Funkin modder direct trailer 
+- https://www.tutorialspoint.com/lua/lua_logical_operators.htm lua logical operators like `and` `or` etc.
+- https://github.com/ktravis/haxe-hardware the android hardware access library. only supports Android.
+- https://github.com/ktravis/haxe-hardware/pull/2 the pull request for that 2021 update
+- https://github.com/Perkedel/haxe-hardware here's my version.
+- https://haxe.org/manual/target-cpp-defines.html HXCPP definitions
+- https://luajit.org/install.html save this. might be useful one day
+- https://luajit.org/download.html install LuaJIT source code itself
+- https://github.com/AndreiRudenko/linc_luajit use this instead of mainstream haxelib. this has Linux64 library binary on it.
+- https://www.msys2.org/ the POSIX terminal thingy for Windows. easy MinGW environment.
+- manually copy the `hxcpp.h` from your haxe instalation here `C:\HaxeToolkit\haxe\lib\hxcpp\4,2,1\include\hxcpp.h` to `C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\export\release\android\obj\obj\android-v7\__pch\haxe\hxcpp.h`. repeat for other android architectures.
+- https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/ManualUploades/android_luajit_attempt_werrored%20(1).png faile the attempt to start Android with LuaJIT. pls help.
+- https://vcpkg.io/en/packages.html. also don't forget to includePath the entire vcpkg repo folder `<vcpkg>\**` stuff like that. download it here https://vcpkg.io/en/getting-started.html. from Microsoft
+- https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PluginManager.hx plugin managerer modding+
+- https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PlayState.hx playstate modding+
+- https://lib.haxe.org/p/haxe-files haxe file system manager
+- https://lib.haxe.org/p/hscript/ hscript
+- https://gamebanana.com/tuts/14110 how to chart FNF song. from BPM, tools useful, etc etc. 
+- https://tunebat.com/Analyzer use this to analyze BPM. take this as a grain of salt
+- https://www.justinguitar.com/tap-tempo-bpm-tool use this to tap tempo.
+- http://www.troubleshooters.com/codecorn/lua/luaif.htm orcks the Lua how to comparisons if.
+- https://gamebanana.com/mods/44345 Sarvente Mid Fight masses. please ask permission somewhere so we can build Ku Tetap Cinta Yesus with Sarvente as the flute here.
+- https://api.haxe.org/js/html/audio/AudioBuffer.html aaa audiobuffer
+- https://api.haxeflixel.com/flixel/system/frontEnds/SoundFrontEnd.html sound frontend type, how to disable volkeys & mute key.
+- https://api.lime.software/lime/media/AudioBuffer.html you said it support more than 2.0 Stereo channels.
+- https://api.lime.software/lime/media/AudioSource.html but I loaded and played that kinda 7.1 Surround Sound, it didn't work. it stuck.
+- https://github.com/uhrobots/faxe try fmod maybe?
+- https://www.fmod.com/ get the old v1 version to have lowlevel part of api instead of latest. copy over to the faxe lib folder in respective platforms.
+- https://openal-soft.org/#download pls help me
+- https://forums.guru3d.com/threads/surround-sound-in-openal-not-working.295005/ how to make
+- https://gnd-tech.com/2020/08/how-to-enable-3d-audio-in-directsound3d-and-openal-games-without-a-sound-card/ surround sound works
+- https://community.pcgamingwiki.com/files/file/1363-dsoal/ in haxe
+- https://github.com/kcat/dsoal heeeelp!
+- http://openal.org/downloads/ pls help!
+- https://www.reddit.com/r/stalker/comments/5pjvb3/enabling_fully_3d_positional_audio_with_stereo/ whynt woerk surround sound I think I must hack the Haxe
+- https://www.indirectsound.com/registryIssues.html in case Windows picked internal dsound.dll instead of included next to the game executable. former value of these registry in my computer was `%SystemRoot%\System32\dsound.dll`.
+- https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/9 try VLC
+- https://github.com/datee/HaxeVLC uum, it's not a complete library, this is a test experiment.
+- https://github.com/phfernandez/HaxeVLC oh c'mon, why?!
+- https://github.com/Raltyro/VideoState.hx-Kade-Engine-1.5-Patch patchener for VideoState.hx
+- CD Projeckt Red - Cybepunk 2077
+- Bark Bark Games - HOUSE. Tabby is the manin character. as we seen its gameplay somewhere on YoTube, we noticed a familiar looking FPS counter on top left. the style is similar like what we in FNF and all Haxe or most OpenFL based games here  Therefore we SUSpect, House, is a Haxe game.
+- https://github.com/Raltyro/VideoState.hx-Kade-Engine-1.5-Patch patch for Kade Engine 1.5 something. the Gwebdev Video cutscener.
+- Standard consequences effect to search e.g. in Wikipedia: `streissand effect`, `hydra effect`, `cobra effect`. Streissand is when you attempt to censor the info but turns out the info becomes popular & angered about. Hydra is when you solve this thing, but then 2 problem arise, just like the beast is. Cobra is when you want to destroy it this trouble, and when you felt succeeded, turns out another people breed the thing that was your problem, and so you stopped destroying it and now when people dropped it out, it goes even wilder than ever before.
+- GameBanana Trash & Withholds. Most of the time it is for a good reason. but again. Just with few reasons that for me seems controvercial, makes all controvercial and inappropriate to invest with. You ask BulbyVR why, and you'll get the answer. and you ask me (JOELwindows7), and I'll give you Saubo as the answer.
+- kodok biru is reference to an artist BlueFrok, uh forgot twitter username.
+- https://github.com/karaidon/hXInput XInput for Haxe
+- https://github.com/furusystems/openfl-xinput same but for OpenFL.
+- https://stackoverflow.com/a/17066803/9079640 how to Android vibration RAW Java Kotlin
+- https://api.lime.software/lime/ui/Haptic.html uhh, Lime has its own vibration implementation already here.
+- https://gamebanana.com/tuts/14142 how to GitHub with VS code.
+- https://gamebanana.com/tuts/14075 definitive guide of FNF mod submission
+- https://techspree.net/torrent-tracker-list-updated/ list of torrent tracker for download & upload?
+- https://tinytorrent.net/best-torrent-tracker-list-updated/ another list of torrent tracker
+- https://github.com/telperion/saturday-morning convert SM file to FNF.
+- https://gamebanana.com/tuts/13858 how to Arrow vortex to FNF
+- https://docs.microsoft.com/en-us/windows/uwp/gaming/gamepad-and-vibration doc dump
+- https://github.com/JOELwindows7/openfl-xinput dump
+- https://github.com/furusystems/openfl-xinput/blob/master/com/furusystems/openfl/input/xinput/XBox360Controller.hx failed xbox fix
+- https://github.com/karaidon/hXInput ah help
+- https://handbrake.fr/ Convert video. Gratis & open source
+- https://twitter.com/KadeDeveloper/status/1417958060014772224?s=20 about Whitty. Do not reupload RAW. just the mod there is to it.
+- https://twitter.com/KadeDeveloper/status/1417938858285494273?s=20 whitty gone.
+- https://twitter.com/HiPhlox/status/1418519037005365249?s=20 one of bobcon
+- https://twitter.com/JOELwindows7/status/1418617463466434561?s=20 blns helep insert cameoid
+
 # in event of git merge conflict
 use VScode and Github desktop!
 ## New
@@ -245,6 +337,8 @@ use VScode and Github desktop!
 # other mods that wins the inclusion (without permission if has CC or uh whatever bruh, otherwise unlikely). Congratulations!
 Note: in Game Banana, mods that did not have license written will set to CC4.0-BY-NC-ND by default (marked by `Warning: presumably no license so default`). We believe that with ND circle legally prevents anyone to yoink such mods without asking permission. However, such statement is vague, due to the gray area like e.g. SF2. in any case, review the details and yoink with caution.
 
+- https://github.com/ninjamuffin99/Funkin ninja_muffin99. Original vanilla. uh, license formerly was Apache 2.0, but have canceled to `Mods must be open source` since commit on 16 May 2021 [here](https://github.com/ninjamuffin99/Funkin/commit/8bd9126acd48a0c23124b897561b5fca1e161a8c ) because of allowing modders to not Open Source the fork while also avoiding license that Nintendo hates.
+- https://github.com/KadeDev/Kade-Engine KadeDev. Engine we freshly forked from. hey, it's still Apache-2.0 License.
 - https://gamebanana.com/mods/43569 (you can edit mod but pls credit author) FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
 - https://gamebanana.com/tools/7033 (Warning: presumably no license so default) nickham13 BF voice SF2
 - https://github.com/GenoX-Fome/funkin-utau/ GenoX FNF UTAU voices. use for AFI Junior - Guruku Tersayang pls
@@ -252,7 +346,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://www.heikoplate.de/psruti.html PSR UTI. Used for enchancing MIDI quality into Yamaha Musicsoft MIDI
 - https://odysee.com/@JOELwindows7:a/GurukuTersayang_MIDI:d?r=FKgkgQ5Mr5kWhLj6fG8zZkeMVtj4pLHm the MIDI of Guruku Tersayang. originally by Helly Hilmi (website gone), edited by JOELwindows7 with Sekaiju & then enchanced with PSR UTI
 - https://openmidiproject.osdn.jp/Sekaiju_en.html Sekaiju. Compose and edit MIDI, support almost all MIDI file standard data editing from notes to special data like SysEx.
-- https://github.com/luckydog7/Funkin-android followed almost everything just to make this Perkedel Kaded fnf mod works also on Android
+- https://gamebanana.com/mods/300796 (Warning: has NC, ND) https://github.com/luckydog7/Funkin-android luckydog7. followed almost everything just to make this Perkedel Kaded fnf mod works also on Android
 - https://github.com/ninjamuffin99/Funkin also manually yoink the last code directives where Kade engine didn't think it could've work in Linux and macOS too like Discord RPC stuffs. also add naughtiness according to week 7 update on newgrounds which btw according to [this tankman fact from Darnebolian](https://youtu.be/ZlRPJ8Umt0A?t=201 ) this toggle `naughtiness` does nothing at the moment. so eh heh. whatever okay!
 - https://inkscape.org there's a symbol panel that has all common symbols you can freely use. press `Shift` + `Ctrl` + `Y` or top menu `Object`, `Symbols (Shift + Ctrl + Y)`. there's more symbols too https://inkscape.org/gallery/=symbol/?order=liked . and this one too https://github.com/PanderMusubi/inkscape-open-symbols that I believe we've installed.
 - https://github.com/PanderMusubi/inkscape-open-symbols the symbols collection for Inkscape yay!
@@ -276,7 +370,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://odysee.com/@JOELwindows7:a/succ-reverberations-remake:7?r=FYLo4xpyS1GHsLWfFtZui1wUUV399JPK JOELwindows7 recorded succ in Audacity and then reverbed it. JOELwindows7 also redrew succ with all the compositions in GIMP yeah
 - https://knowyourmeme.com/memes/meme-man all meme man information Special meme fresh.
 - https://calver.org/ Use the calendar versioning system! let's see if that works. For us, our scheme will be **`YYYY.0M.MINOR.MICRO`** idk. I believe just to track the time when this was released.
-- https://gamebanana.com/mods/44208 FNF Modding plus. Chart JSON parameter added here and the compatibility now is being added.
+- https://gamebanana.com/mods/44208 ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 ), Asset Warning: has NC, ND) FNF Modding plus Bulby VR. Chart JSON parameter added here and the compatibility now is being added. inspire the Haxe Script modchart.
+- https://github.com/TheDrawingCoder-Gamer/Funkin ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 )) BulbyVR. the source code for FNFM+ above. the gamebanana page has been trashed, because troubles here and there.
 - https://gamebanana.com/tools/7158 FunkinVortex. inspire the Modding Plus specific chart JSON parameters here and there!
 - https://github.com/haxorplatform/androidhx android haxe template project. attempted android porting faile
 - https://lib.haxe.org/p/android6permissions android 6 permission checker for haxe. attempted android porting faile
@@ -289,6 +384,18 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://gamebanana.com/mods/54803 (Warning: has NC, ND) NoLime. just inspire the vibin style and hue gradient it accordingly. No yoinks from that one for now. okay, the color is different, I think I got this on my own, so no color mimic either.
 - https://www.fontspace.com/azonix-font-f30718 (Freeware, Personal & Commercial Use) for some asset names like week Jingle Punks YouTube Audio Library.
 - https://docs.microsoft.com/en-us/typography/font-list/kristen-itc uhhh, it's a Windows included font, idk. for name like The Green Orbs. a musician of YouTube Audio Library famous for their children oriented lullabies.
+- https://youtu.be/xmxmVQS-T-Y Madbrine yoinked test chart JSON from week7. (Permission being asked, awaiting answer. Previous somebody's engagement mostly returns `YES`)
+- https://github.com/ktravis/haxe-hardware ktravis. use this to access Android hardware stuffs. Only compatible with Android according to its readme, section project.xml formula, that it only allows this available if rendering to Android apk. Yes, you can access vibration with this. btw, I got this from Ninja's previous source codes that had the commercial engagement, and uh, it's 69420. I also bought that, for research purpose. No, not going to refund it.
+- https://lib.haxe.org/p/ki-filesystem ki. use ki's filesystemer because internal sys filesystem doesn't work in Android
+- https://lib.haxe.org/p/haxe-files vegardit. um okay. how about this one?
+- https://github.com/JOELwindows7/linc_luajit JOELwindows7. I modded this appending luckydog7's android attempted (https://githubc.com/luckydog7/linc_luajit ). apparently android does not work. but hey, I have added Linux Raspberry Pi supports too. not tested yet. upstream by Andrei Rudenko https://github.com/AndreiRudenko/linc_luajit .
+- https://lib.haxe.org/p/hscript/ the hscript. since lua does not work in Android, here'as salte
+- https://github.com/ianharrigan/hscript-ex extension of hscript
+- https://forthebadge.com/ (Warning: ???) Brave UX (not to be confused with Brave Browser). badges implemeteh!
+- https://github.com/datee/HaxeVLC (???) datee https://github.com/phfernandez/HaxeVLC (???) phfernandez. EXPERIMENTAL!!! Attempting to embed VLC because I want FNF supports surround sound 7.1. using phfernandez's fork due to ahead changes than datee's original.
+- https://github.com/furusystems/openfl-xinput (MIT) furusystems. Xinput for OpenFL. lemme vibrate dose bars.
+- https://github.com/ninjamuffin99/SHOOM (Apache 2.0) ninja_muffin99. aspect of SHOOM.
+- https://github.com/stepmania/stepmania https://www.stepmania.com/ Stepmania (MIT). Yoink the sample sm file Goin' Under just to test SM file loading capability. though, you must delete all difficulties but the one you'd like to play. psst, funfact, JOELwindows7 had ever translated this game into Bahasa Indonesia yeayh!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
@@ -307,7 +414,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 
 **dislcaimer**: above list are no way meant to insult, defame, or threat authors of the mods listed. Perkedel requires all contributor from all tiers, roles, etc. to be transparent not only what have been yoinked, but also deyoinked assets, as well as the reason behind each deyoinks and removal (also including the foreshadowing which means mods that wish to be yoinked but ND circled license in the way). for those author that got the mod removed, feel free to make change in your licensing in case you disagree with the removal.
 
-If you wish to grant us permission to yoink your mods here, please change your license that at least removes offending circle (such as `No Derivative`). Perkedel do not accept exclusive grant certificate, or even bribe absolutely, due to nature of Perkedel that importance people more than ownself, especially in terms of motto and service (violation like granting exclusive grant either to us or someonw will cause your name blacklisted for particular sector which is fnf mods. your mod will be blacklisted from being yoinked). We require that you in full heart declared whether or not should anyone use your assets, code script, and stuff.
+~~If you wish to grant us permission to yoink your mods here, please change your license that at least removes offending circle (such as `No Derivative`). Perkedel do not accept exclusive grant certificate, or even bribe absolutely, due to nature of Perkedel that importance people more than ownself, especially in terms of motto and service (violation like granting exclusive grant either to us or someonw will cause your name blacklisted for particular sector which is fnf mods. your mod will be blacklisted from being yoinked). We require that you in full heart declared whether or not should anyone use your assets, code script, and stuff.~~ Permission asking directive is active. read `PERMISSION.md` for more info.
 
 for more detail about our statement regarding the `No Derivative` is death wish, feel free to read here  
 https://gamebanana.com/questions/11159?post=9179454 
@@ -364,4 +471,6 @@ of course, kindly contact the submitters first. give them time for maybe, a mont
 
 # internal extension
 - https://github.com/Perkedel/After-Church all inkscape assets
-- https://github.com/Perkedel/HexagonEngine logo inkscape assets
+- https://github.com/Perkedel/HexagonEngine logo inkscape assets#
+# bonus
+https://godotshaders.com/shader/update-botw-toon-shader/

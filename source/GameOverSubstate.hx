@@ -102,6 +102,9 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		bf.playAnim('firstDeath');
 
+		//JOELwindows7: vibrate controller
+		Controls.vibrate(0,200);
+
 		//JOELwindows7: back button to surrender
 		addBackButton(20,FlxG.height+30);
 		backButton.scrollFactor.set();
@@ -111,6 +114,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		//JOELwindows7: make mouse cursor visible
 		FlxG.mouse.visible = true;
 	}
+
+	var startVibin:Bool = false;
 
 	override function update(elapsed:Float)
 	{
@@ -144,8 +149,8 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
 		{
-			//JOELwindows7: yess! the MIDI version detection.
 			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
+			startVibin = true;
 			FlxTween.tween(backButton,{y:FlxG.height - 100, alpha: 1},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
 		}
 
@@ -170,6 +175,10 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		super.beatHit();
 
+		if (startVibin && !isEnding)
+		{
+			bf.playAnim('deathLoop', true);
+		}
 		FlxG.log.add('beat');
 	}
 
@@ -183,11 +192,15 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (!isEnding)
 		{
+			PlayState.startTime = 0;
 			isEnding = true;
 			bf.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();
 			//JOELwindows7: yess! the MIDI version detection.
 			FlxG.sound.play(Paths.music('gameOverEnd' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
+
+			//JOELwindows7: vibrate it
+			Controls.vibrate(0, 50);
 
 			//JOELwindows7: context detections scheme like above first loss
 			switch(daBf){

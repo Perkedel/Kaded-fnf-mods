@@ -3,6 +3,7 @@ package;
 import flixel.ui.FlxSpriteButton;
 import flixel.ui.FlxButton;
 import flixel.addons.display.FlxExtendedSprite;
+import flixel.input.gamepad.FlxGamepad;
 import Controls.KeyboardScheme;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -47,9 +48,9 @@ class MainMenuState extends MusicBeatState
 	public static var nightly:String = "";
 	public static var larutMalam:String = ""; //JOELwindows7: Last Funkin Nightly mark
 
-	public static var kadeEngineVer:String = "1.5.3" + nightly;
+	public static var kadeEngineVer:String = "1.6" + nightly;
 	public static var gameVer:String = "0.2.7.1";
-	public static var lastFunkinMomentVer:String = "2021.06.3" + larutMalam; //JOELwindows7: last funkin moments version
+	public static var lastFunkinMomentVer:String = "2021.07.160" + larutMalam; //JOELwindows7: last funkin moments version
 	public static var yourModVer:String = "0.0.0.0"; //JOELwindows7: your own mod version
 
 	var magenta:FlxSprite;
@@ -78,7 +79,10 @@ class MainMenuState extends MusicBeatState
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
 		bg.screenCenter();
-		bg.antialiasing = true;
+		if(FlxG.save.data.antialiasing)
+			{
+				bg.antialiasing = true;
+			}
 		add(bg);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -91,7 +95,10 @@ class MainMenuState extends MusicBeatState
 		magenta.updateHitbox();
 		magenta.screenCenter();
 		magenta.visible = false;
-		magenta.antialiasing = true;
+		if(FlxG.save.data.antialiasing)
+			{
+				magenta.antialiasing = true;
+			}
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 		// magenta.scrollFactor.set();
@@ -117,7 +124,10 @@ class MainMenuState extends MusicBeatState
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);
 			menuItem.scrollFactor.set();
-			menuItem.antialiasing = true;
+			if(FlxG.save.data.antialiasing)
+				{
+					menuItem.antialiasing = true;
+				}
 			if (firstStart)
 			{
 				FlxTween.tween(menuItem,{y: 60 + (i * 160)},1 + (i * 0.25) ,{ease: FlxEase.expoInOut, onComplete: function(flxTween:FlxTween) 
@@ -200,15 +210,31 @@ class MainMenuState extends MusicBeatState
 				}
 				//peck this I'm tired! plns work lol
 			}
+			
+			var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+
+			if (gamepad != null)
+			{
+				if (gamepad.justPressed.DPAD_UP)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					changeItem(-1);
+				}
+				if (gamepad.justPressed.DPAD_DOWN)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					changeItem(1);
+				}
+			}
 
 			//JOELwindows7: attempt add mouse support kinda..
-			if (controls.UP_P)
+			if (FlxG.keys.justPressed.UP)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
-			if (controls.DOWN_P)
+			if (FlxG.keys.justPressed.DOWN)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);

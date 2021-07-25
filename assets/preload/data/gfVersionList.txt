@@ -1,4 +1,5 @@
 gf
+gf-covid
 gf-car
 gf-christmas
 gf-pixel

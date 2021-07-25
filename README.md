@@ -1,4 +1,5 @@
-![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png )
+<!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png ) -->
+![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-meta-thumb.png )
 [Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
 
 # Last Funkin Moments
@@ -23,7 +24,11 @@ if you don't trust it, check around the source code and its libraries referred.
 
 ## Status
 - Linux [![Build status Linux](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)  
+- Linux ~~32 Bit~~Raspberry Pi [![Build status](https://ci.appveyor.com/api/projects/status/ou9xo42n9cwce9bt?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux32)
 - Windows [![Build status Windows](https://ci.appveyor.com/api/projects/status/6m6urhdk0hx9esci?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windows)
+- Windows 32 Bit [![Build status](https://ci.appveyor.com/api/projects/status/4h3d2rswie08ndj2?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windows32)
+- Android (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/wkicycueho8xtb7h?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windroid)
+- HTML5 (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/ngwvliwkacsu0nly?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-winhtml5)
 - macOS [![Build status macOS](https://ci.appveyor.com/api/projects/status/61pl7ba9rgu375pn?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-macos)
 
 ## We have:
@@ -36,7 +41,18 @@ check out [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/C
 enjoy the last drops of funkin before everything went. went, I can't say this. you don't want to hear this.
 
 # Today's Update!
-## Week Strong! vs. Hookx the friendly Karaoke robot!
+## 2021.07 Week Meta! Hookx again, but we are waiting for someone.
+Hookx invited bf and gf again to a landscape view of mountain with a dead tree bark. They're waiting for someone.
+### Today's update we got
+- Week Meta. using internal UI musics. Getting Freaky, Game Over, Breakfast, Classic Menu song, and TEST.
+- Amfrost stage where the Week Meta takes place! it got mountain view over there, a dead tree bark, and sandy ground.
+- GF wears masker too!!! even demons respects health protocol, don't you people be ashamed by her?
+- Stage loading JSON! load stage background images with JSON, or, Lua script the stage loading for even more advanced stuffs!
+- Kade Engine 1.6
+- Stepmania file support yay
+- more options!!! (beware though, don't touch Reset data options)
+- wuwuuwuwuwuwuwuw
+## 2021.06 Week Strong! vs. Hookx the friendly Karaoke robot!
 [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/week-strong-new-added-2.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/week-strong-new-added-2.png )
 [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/hookx-dancing-here.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/hookx-dancing-here.png )
 [![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/new-unique-song-thumb.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/new-unique-song-thumb.png )
@@ -86,11 +102,49 @@ BONUS WEEK! 4'33" . John Cage - 4'33" . John Cage did made a composition. and it
 # Credits
 as always, credits to all stuff involved will be on [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) thancc
 
+
+
 # ERROR
 ## Missing files
 ...
 
 # Misc
+## [For the badge](https://forthebadge.com/ )
+[![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/ages-12.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-for-android.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/check-it-out.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/contains-tasty-spaghetti-code.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/contains-technical-debt.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/ctrl-c-ctrl-v.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/designed-in-inkscape.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/fixed-bugs.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/fo-real.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/fo-sho.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/for-you.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/it-works-why.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/just-plain-nasty.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-markdown.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/no-ragrets.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/oooo-kill-em.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-coders-sweat.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-electricity.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-overtime.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-responsibility.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-pull-requests.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/pretty-risque.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/reading-6th-grade-level.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-badges.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-brains.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-git.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](https://forthebadge.com)
+
 ## some nice articles
 [![]("https://gamebanana.com/tuts/embeddables/14079?type=large")](https://gamebanana.com/tuts/14079)
 
@@ -138,17 +192,23 @@ If you're looking for documentation, changelogs, or guides, you can find those o
 
 # Previews ([skip](#features))
 
-![Tutorial (Hard) on Downscroll](https://user-images.githubusercontent.com/15311104/113989685-fa5aea80-9850-11eb-9180-f5819a774c79.gif) ![Milf (Hard) on Downscroll](https://user-images.githubusercontent.com/15311104/113990845-2c208100-9852-11eb-8e6d-f1c9e8439871.gif)
+![Title Screen](art/readme/KadeEngineTitleScreen.png)
 
-![Roses (Hard) on Upscroll](https://user-images.githubusercontent.com/15311104/113993573-e31dfc00-9854-11eb-82ae-1f29dc8a0b04.png)
+![Week Select](art/readme/KadeEngineWeekSelect.png)
 
-![Milf (Hard) on Downscroll](https://user-images.githubusercontent.com/15311104/113991654-f4660900-9852-11eb-8c3d-f3927571f19b.png)
+![Freeplay](art/readme/KadeEngineFreeplay.png)
 
-![He malding](https://user-images.githubusercontent.com/15311104/113993693-02b52480-9855-11eb-9975-eb8a7a1be8d1.png)
+![Options](art/readme/KadeEngineOptions.png)
 
-![Free Play selection screen](https://i.imgur.com/LR0eWIC.png)
+![Senpai Gameplay (Hard, Upscroll)](art/readme/KadeEnginePixelGameplay.png)
 
-![Options Menu](https://i.imgur.com/LBXW9C1.png)
+![Roses Dialogue](art/readme/KadeEngineDialogue.png)
+
+![Pause Screen](art/readme/KadeEnginePauseScreen.png)
+
+![Results Screen](art/readme/KadeEngineResultsScreen.png)
+
+![Replay Loader](art/readme/KadeEngineReplayLoader.png)
 
 # Features
 
@@ -157,12 +217,15 @@ If you're looking for documentation, changelogs, or guides, you can find those o
  - **More information during gameplay**
 	 - While you're playing, we show you information about how you're doing, such as your accuracy, combo break count, notes per second, and your grade/rating.
  - **Customizable keybinds**
-	 - Instead of being forced to use WASD and the arrow keys, you can customize the keybinds to any keys you want!
+	 - Instead of being forced to use WASD and the arrow keys, you can set any keybinds you want!
  - **Replays** (in beta)
 	 - Have you ever gotten a crazy score but didn't record? The replay system solves that: it automatically saves a "replay" of your gameplay every time you complete a song, which you can play back inside of the game. 
 	 - Replays just store information about what you're doing, they don't actually record the screen -- so they take up way less space on your disk than videos.
  - **Audio offset**
-	 - If your headphones are delayed, you can set an offset in the options menu to line the game up with the delay and play with synced audio like intended.
+	 - If your speakers or headphones are delayed, you can set an offset in the options menu to line the game up with the delay and play with synced audio like intended!
+ - **And much, much more!**
+	 - There's so much more in store than just what's listed here! If you can imagine a quality of life feature, it's probably
+	 either already included in Kade Engine or is being worked on!
 
 # Credits
 ### Friday Night Funkin'
@@ -179,4 +242,6 @@ This game was made with love to Newgrounds and its community. Extra love to Tom 
 ### Shoutouts
 - [GWebDev](https://github.com/GrowtopiaFli) - Video Code
 - [Rozebud](https://github.com/ThatRozebudDude) - Ideas (that I stole)
-- [Puyo](https://github.com/daniel11420) - Setting up appveyor and a lot of other help
+- [Puyo](https://github.com/puyoxyz) - Setting up appveyor and a lot of other help
+- [Smokey](https://github.com/Smokey555) - telling me that I should do the tricky asset loading
+- [Poco](https://github.com/poco0317) - math degree (aka most of the fucking math in this project)

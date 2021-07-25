@@ -41,6 +41,10 @@ class OutdatedSubState extends MusicBeatState
 		bg.scale.x *= 1.55;
 		bg.scale.y *= 1.55;
 		bg.screenCenter();
+		if(FlxG.save.data.antialiasing)
+			{
+				bg.antialiasing = true;
+			}
 		add(bg);
 		
 		var kadeLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.image('KadeEngineLogo'));
@@ -49,6 +53,10 @@ class OutdatedSubState extends MusicBeatState
 		kadeLogo.x -= kadeLogo.frameHeight;
 		kadeLogo.y -= 180;
 		kadeLogo.alpha = 0.8;
+		if(FlxG.save.data.antialiasing)
+			{
+				kadeLogo.antialiasing = true;
+			}
 		add(kadeLogo);
 		kadeLogo.visible = false; //JOELwindows7: wait check which case first
 
@@ -71,6 +79,13 @@ class OutdatedSubState extends MusicBeatState
 			+ "\n& more changes and bugfixes in the full changelog"
 			+ "\n\nPress Space to view the full changelog and update\nor ESCAPE to ignore this",
 			32);
+
+		if (MainMenuState.nightly != "")
+			txt.text = 
+			"You are on\n"
+			+ MainMenuState.kadeEngineVer
+			+ "\nWhich is a PRE-RELEASE BUILD!"
+			+ "\n\nReport all bugs to the author of the pre-release.\nSpace/Escape ignores this.";
 		
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.fromRGB(200, 200, 200), CENTER);
 		txt.borderColor = FlxColor.BLACK;
@@ -78,7 +93,6 @@ class OutdatedSubState extends MusicBeatState
 		txt.borderStyle = FlxTextBorderStyle.OUTLINE;
 		txt.screenCenter();
 		add(txt);
-
 		var teks:FlxText = new FlxText(0, 0, FlxG.width,
 			"Your Last Funkin Moment is outdated!\nYou are on "
 			+ MainMenuState.lastFunkinMomentVer
@@ -88,6 +102,14 @@ class OutdatedSubState extends MusicBeatState
 			+ "\n& more changes and bugfixes in the full changelog"
 			+ "\n\nPress Space to view the full changelog and update\nor ESCAPE to ignore this", 
 			32);
+
+		if (MainMenuState.larutMalam != "")
+			teks.text = 
+			"You are on\n"
+			+ MainMenuState.lastFunkinMomentVer
+			+ "\nWhich is a PRE-RELEASE BUILD!"
+			+ "\n\nReport all bugs to the author of the pre-release.\nSpace/Escape ignores this.";
+
 		teks.setFormat("VCR OSD Mono", 32, FlxColor.fromRGB(200, 200, 200), CENTER);
 		teks.borderColor = FlxColor.BLACK;
 		teks.borderSize = 3;
@@ -131,7 +153,7 @@ class OutdatedSubState extends MusicBeatState
 				mitsake.visible = false;
 				trace("what the");
 		}
-
+		
 		FlxTween.color(bg, 2, bg.color, FlxColor.fromString(bgColors[colorRotation]));
 		FlxTween.angle(kadeLogo, kadeLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
 		//JOELwindows7: also do that for LFM logo
@@ -167,7 +189,7 @@ class OutdatedSubState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (controls.ACCEPT)
+		if (controls.ACCEPT && MainMenuState.nightly == "" && MainMenuState.larutMalam == "")
 		{
 			//JOELwindows7: accepted, go to which area should be updated
 			switch(whichAreaOutdated){
@@ -178,7 +200,11 @@ class OutdatedSubState extends MusicBeatState
 				default:
 					fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
 			}
-			
+		}
+		else if (controls.ACCEPT)
+		{
+			leftState = true;
+			FlxG.switchState(new MainMenuState());
 		}
 		if (controls.BACK)
 		{

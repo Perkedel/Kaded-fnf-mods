@@ -10,13 +10,12 @@ install:
   - cd /home/appveyor
   - sudo add-apt-repository ppa:haxe/releases -y
   - sudo apt update
-  - sudo apt install build-essential -y
-  - sudo apt-get install gcc-multilib g++-multilib -y
-  - sudo apt install neko tar -y
-  - wget https://github.com/HaxeFoundation/haxe/releases/download/4.2.2/haxe-4.2.2-linux64.tar.gz
-  - mkdir -p $HAXE_INSTALLDIR
-  - tar -xf haxe-4.2.2-linux64.tar.gz -C $HAXE_INSTALLDIR
-  - export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20210514141333_a2f4ba9
+  - sudo apt install build-essential libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev -y
+  - sudo apt install neko tar gcc-7 g++-7 gcc-7-multilib g++-7-multilib -y
+  - wget https://github.com/HaxeFoundation/haxe/releases/download/4.2.3/haxe-4.2.3-linux64.tar.gz
+  - mkdir $HAXE_INSTALLDIR
+  - tar -xf haxe-4.2.3-linux64.tar.gz -C $HAXE_INSTALLDIR
+  - export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20210701100239_1385eda
   - mkdir $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
   - haxelib install lime
   - haxelib install openfl
@@ -31,14 +30,23 @@ install:
   - haxelib git faxe https://github.com/uhrobots/faxe
   - haxelib git polymod https://github.com/larsiusprime/polymod.git
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-  - haxelib git extension-webm https://github.com/KadeDev/extension-webm
+  # - haxelib git extension-webm https://github.com/KadeDev/extension-webm
+  - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
   - haxelib run lime rebuild extension-webm linux
-  - haxelib install linc_luajit
+  # - haxelib install linc_luajit
+  - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
   - haxelib install actuate
-  # - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
   # - haxelib install androidhx
+  - haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
+  - haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
+  - haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
+  - haxelib install uniontypes #BulbyVR used this
+  - haxelib install json2object #BulbyVR used this to convert JSON to object
+  # - haxelib git haxevlc https://github.com/datee/HaxeVLC.git # for VLC.
+  - haxelib install extension-webview #luckydog7 for Android
+  - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
   - haxelib list
   # JOELwindows7: okay now the butler
   - wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default

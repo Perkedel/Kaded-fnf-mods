@@ -3,10 +3,11 @@
 // Lua
 //JOELwindows7: okay, please widen the area of support for macOS and Linux too.
 //dang failed. I guess we go back to only Windows..
+import Controls;
 import openfl.display3D.textures.VideoTexture;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-#if ((windows || linux) && cpp) //LuaJit only works for C++ 
+#if ((windows || linux || android) && cpp) //LuaJit only works for C++ 
 //https://lib.haxe.org/p/linc_luajit/
 import flixel.tweens.FlxEase;
 import openfl.filters.ShaderFilter;
@@ -253,7 +254,7 @@ class ModchartState
 					PlayState.instance.removeObject(PlayState.boyfriend);
 					PlayState.boyfriend = new Boyfriend(oldboyfriendx, oldboyfriendy, id);
 					PlayState.instance.addObject(PlayState.boyfriend);
-					PlayState.instance.iconP2.animation.play(id);
+					PlayState.instance.iconP1.animation.play(id);
 	}
 
 	function makeAnimatedLuaSprite(spritePath:String,names:Array<String>,prefixes:Array<String>,startAnim:String, id:String)
@@ -286,8 +287,8 @@ class ModchartState
         PlayState.instance.addObject(sprite);
 
 		sprite.animation.play(startAnim);
-		return id;
 		#end
+		return id;
 	}
 
 	function makeLuaSprite(spritePath:String,toBeCalled:String, drawBehind:Bool)
@@ -352,7 +353,7 @@ class ModchartState
 
     // LUA SHIT
 
-    function new()
+    function new(rawMode:Bool = false, path:String = "") //JOELwindows7: make lua stageont.
     {
         		trace('opening a lua state (because we are cool :))');
 				lua = LuaL.newstate();
@@ -370,7 +371,10 @@ class ModchartState
 					case 'philly-nice': songLowercase = 'philly';
 				}
 
-				var result = LuaL.dofile(lua, Paths.lua(songLowercase + "/modchart")); // execute le file
+				var result;
+
+				//JOELwindows7: decide if should load in RAW path or predefined.
+				result = LuaL.dofile(lua, Paths.lua(rawMode? path : songLowercase + "/modchart")); // execute le file
 	
 				if (result != 0)
 				{
@@ -419,6 +423,7 @@ class ModchartState
 				setVar("strumLineY", PlayState.instance.strumLine.y);
 
 				//JOELwindows7: mirror the variables here!
+				//Colored bg
 				setVar("originalColor", PlayState.instance.originalColor);
 				setVar("isChromaScreen", PlayState.instance.isChromaScreen);
 				//end mirror variables
@@ -898,12 +903,52 @@ class ModchartState
 					FlxG.camera.setFilters([new ShaderFilter(shaders[shaderIndex])]);
 				});*/
 
-				// default strums
-
 				//JOELwindows7: more special functions
-				Lua_helper.add_callback(lua, "cheerNow", function(ooutOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false){
-					PlayState.instance.cheerNow(ooutOfBeatFractioning,doItOn,randomizeColor);
+
+				Lua_helper.add_callback(lua, "cheerNow", function(
+					ooutOfBeatFractioning:Int = 4, 
+					doItOn:Int = 0, 
+					randomizeColor:Bool = false, 
+					justOne:Bool = false, 
+					toWhichBg:Int = 0, 
+					forceIt:Bool = false
+				){
+					PlayState.instance.cheerNow(
+						ooutOfBeatFractioning,
+						doItOn,
+						randomizeColor,
+						justOne,
+						toWhichBg, 
+						forceIt
+						);
 				});
+
+				Lua_helper.add_callback(lua, "heyNow", function(
+					ooutOfBeatFractioning:Int = 4, 
+					doItOn:Int = 0, 
+					randomizeColor:Bool = false, 
+					justOne:Bool = false, 
+					toWhichBg:Int = 0,
+					forceIt:Bool = false
+				){
+					PlayState.instance.heyNow(
+						ooutOfBeatFractioning,
+						doItOn,
+						randomizeColor,
+						justOne,
+						toWhichBg, 
+						forceIt
+						);
+				});
+
+				Lua_helper.add_callback(lua, "justCheer", function(forceIt:Bool = false){
+					PlayState.instance.justCheer(forceIt);
+				});
+
+				Lua_helper.add_callback(lua, "justHey", function(forceIt:Bool = false){
+					PlayState.instance.justHey(forceIt);
+				});
+
 
 				Lua_helper.add_callback(lua, "prepareColorableBg", function(
 					useImage:Bool = false, 
@@ -935,23 +980,29 @@ class ModchartState
 					//Just don't touch this.
 				});
 
-				Lua_helper.add_callback(lua, "randomizeColoring", function(){
-					PlayState.instance.randomizeColoring();
+				Lua_helper.add_callback(lua, "randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
+					PlayState.instance.randomizeColoring(justOne, toWhichBg);
 					//ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
 					//and you, Haxe Language Server laggs on purpose
 					//hence I blinded & mistyped!!! C'MON!!!! REALLY??!?!
 				});
 
-				Lua_helper.add_callback(lua, "chooseColoringColor", function(color:String = "WHITE"){
-					PlayState.instance.chooseColoringColor(FlxColor.fromString(color));
+				Lua_helper.add_callback(lua, "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0){
+					PlayState.instance.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
 					//hmm, I am afraid using raw FlxColor data doing won't work.
 					//You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
 					//so, maybe you should use the.. string version?
 					//so here it is. the FlxCOlor.fromString() is magic. it can understand 0x000000, #FFFFFFFF, or even Name!!! wow!!
 				});
 
-				Lua_helper.add_callback(lua, "camZoomNow", function(){
-					PlayState.instance.camZoomNow();
+				Lua_helper.add_callback(lua,"hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
+					PlayState.instance.hideColoring(justOne,toWhichBg);
+					//hide the colorings
+				});
+
+				Lua_helper.add_callback(lua, "camZoomNow", function(howMuchZoom:Float = .015, howMuchZoomHUD:Float = .03, maxZoom:Float = 1.35){
+					PlayState.instance.camZoomNow(howMuchZoom, howMuchZoomHUD, maxZoom);
+					//zoom the cam now
 				});
 
 				Lua_helper.add_callback(lua, "trainStart", function () {
@@ -979,8 +1030,15 @@ class ModchartState
 					//reset da cars! now!!
 					PlayState.instance.resetFastCar();
 				});
+
+				Lua_helper.add_callback(lua, "vibrate", function(player:Int = 0, duration:Float = 100, period:Float = 0, strengthLeft:Float = 0, strengthRight:Float = 0){
+					//vibration, sensation, okeh self explanatory. lol TheFatRat - Electrified
+					Controls.vibrate(player,duration, period, strengthLeft, strengthRight);
+				});
 				//end more special functions
 				//So you don't have to hard code your cool effects.
+
+				// default strums
 
 				for (i in 0...PlayState.strumLineNotes.length) {
 					var member = PlayState.strumLineNotes.members[i];
@@ -1000,9 +1058,10 @@ class ModchartState
         return Lua.tostring(lua,callLua(name, args));
     }
 
-    public static function createModchartState():ModchartState
+	//JOELwindows7: raw mode pls!
+    public static function createModchartState(rawMode:Bool = false, path:String = ""):ModchartState
     {
-        return new ModchartState();
+        return new ModchartState(rawMode,path);
     }
 }
 #end

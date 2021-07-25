@@ -1,3 +1,4 @@
+import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
 import flixel.FlxG;
 
@@ -5,11 +6,21 @@ class KadeEngineData
 {
     public static function initSave()
     {
-        if (FlxG.save.data.newInput == null)
+		trace("init save data now");
+        if (FlxG.save.data.weekUnlocked == null)
+			FlxG.save.data.weekUnlocked = 7;
+
+		if (FlxG.save.data.newInput == null)
 			FlxG.save.data.newInput = true;
 
 		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = false;
+
+		if (FlxG.save.data.antialiasing == null)
+			FlxG.save.data.antialiasing = true;
+
+		if (FlxG.save.data.missSounds == null)
+			FlxG.save.data.missSounds = true;
 
 		if (FlxG.save.data.dfjk == null)
 			FlxG.save.data.dfjk = false;
@@ -81,6 +92,9 @@ class KadeEngineData
 
 		if (FlxG.save.data.distractions == null)
 			FlxG.save.data.distractions = true;
+		
+		if (FlxG.save.data.stepMania == null)
+			FlxG.save.data.stepMania = false;
 
 		if (FlxG.save.data.flashing == null)
 			FlxG.save.data.flashing = true;
@@ -109,6 +123,31 @@ class KadeEngineData
 		if (FlxG.save.data.inputShow == null)
 			FlxG.save.data.inputShow = false;
 
+		if (FlxG.save.data.optimize == null)
+			FlxG.save.data.optimize = false;
+
+		//JOELwindows7: Touch screened button
+		if (FlxG.save.data.useTouchScreenButtons == null)
+			FlxG.save.data.useTouchScreenButtons = false;
+
+		if (FlxG.save.data.selectTouchScreenButtons == null)
+			FlxG.save.data.useTouchScreenButtons == 0;
+
+		//JOELwindows7: Vibrations
+		if (FlxG.save.data.vibration == null)
+			FlxG.save.data.vibration = true;
+
+		//JOELwindows7: PreUnlock weeks like in Stepmania Home mode
+		if (FlxG.save.data.preUnlocked == null)
+			FlxG.save.data.preUnlocked = false;
+		
+		if (FlxG.save.data.cacheImages == null)
+			FlxG.save.data.cacheImages = false;
+
+		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+		
+		KeyBinds.gamepad = gamepad != null;
+
 		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
@@ -122,7 +161,7 @@ class KadeEngineData
 		trace("set FPS stuff from setting"); //JOELwindows7: trace this for android crashsures
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		#if (desktop && sys && !mobile && !web)
-		(cast (Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
+		//(cast (Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
 		#end //JOELwindows7: nvm, don't do that!
 		trace("successfully set FPS settings"); //JOELwindows7: see if Android version crash!
 	}

@@ -1,5 +1,7 @@
 package;
 
+import experiments.AnWebmer;
+import experiments.LimeAudioBufferTester;
 import openfl.net.FileFilter;
 import haxe.Json;
 import openfl.net.FileReference;
@@ -126,6 +128,29 @@ class CpuStrums extends Option
 
 }
 
+class GraphicLoading extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.cacheImages = !FlxG.save.data.cacheImages;
+		
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return  FlxG.save.data.cacheImages ? "Preload Characters" : "Do not Preload Characters";
+	}
+
+}
+
 class DownscrollOption extends Option
 {
 	public function new(desc:String)
@@ -228,6 +253,26 @@ class DistractionsAndEffectsOption extends Option
 	}
 }
 
+class StepManiaOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		FlxG.save.data.stepMania = !FlxG.save.data.stepMania;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Colors by quantization " + (!FlxG.save.data.stepMania ? "off" : "on");
+	}
+}
+
 class ResetButtonOption extends Option
 {
 	public function new(desc:String)
@@ -265,6 +310,46 @@ class FlashingLightsOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Flashing Lights " + (!FlxG.save.data.flashing ? "off" : "on");
+	}
+}
+
+class AntialiasingOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		FlxG.save.data.antialiasing = !FlxG.save.data.antialiasing;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Antialiasing " + (!FlxG.save.data.antialiasing ? "off" : "on");
+	}
+}
+
+class MissSoundsOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		FlxG.save.data.missSounds = !FlxG.save.data.missSounds;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Miss Sounds " + (!FlxG.save.data.missSounds ? "off" : "on");
 	}
 }
 
@@ -324,10 +409,10 @@ class Judgement extends Option
 
 	override function getValue():String {
 		return "Safe Frames: " + Conductor.safeFrames +
-		" - SIK: " + HelperFunctions.truncateFloat(22 * Conductor.timeScale, 0) +
-		"ms GD: " + HelperFunctions.truncateFloat(45 * Conductor.timeScale, 0) +
+		" - SIK: " + HelperFunctions.truncateFloat(45 * Conductor.timeScale, 0) +
+		"ms GD: " + HelperFunctions.truncateFloat(90 * Conductor.timeScale, 0) +
 		"ms BD: " + HelperFunctions.truncateFloat(135 * Conductor.timeScale, 0) + 
-		"ms SHT: " + HelperFunctions.truncateFloat(155 * Conductor.timeScale, 0) +
+		"ms SHT: " + HelperFunctions.truncateFloat(166 * Conductor.timeScale, 0) +
 		"ms TOTAL: " + HelperFunctions.truncateFloat(Conductor.safeZoneOffset,0) + "ms";
 	}
 
@@ -511,6 +596,27 @@ class RainbowFPSOption extends Option
 	}
 }
 
+class Optimization extends Option
+{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			FlxG.save.data.optimize = !FlxG.save.data.optimize;
+			display = updateDisplay();
+			return true;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Optimization " + (FlxG.save.data.optimize ? "ON" : "OFF");
+		}
+}
+
 class NPSDisplayOption extends Option
 {
 	public function new(desc:String)
@@ -682,6 +788,131 @@ class CamZoomOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Camera Zoom " + (!FlxG.save.data.camzoom ? "off" : "on");
+	}
+}
+
+class LockWeeksOption extends Option
+{
+	var confirm:Bool = false;
+
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		if(!confirm)
+		{
+			confirm = true;
+			display = updateDisplay();
+			return true;
+		}
+		FlxG.save.data.weekUnlocked = 1;
+		StoryMenuState.weekUnlocked = [true, true];
+		trace('Weeks Locked');
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return confirm ? "Confirm Story Reset" : "Reset Story Progress";
+	}
+}
+
+class ResetScoreOption extends Option
+{
+	var confirm:Bool = false;
+
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		if(!confirm)
+		{
+			confirm = true;
+			display = updateDisplay();
+			return true;
+		}
+		FlxG.save.data.songScores = null;
+		for(key in Highscore.songScores.keys())
+		{
+			Highscore.songScores[key] = 0;
+		}
+		FlxG.save.data.songCombos = null;
+		for(key in Highscore.songCombos.keys())
+		{
+			Highscore.songCombos[key] = '';
+		}
+		confirm = false;
+		trace('Highscores Wiped');
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return confirm ? "Confirm Score Reset" : "Reset Score";
+	}
+}
+
+class ResetSettings extends Option
+{
+	var confirm:Bool = false;
+
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		if(!confirm)
+		{
+			confirm = true;
+			display = updateDisplay();
+			return true;
+		}
+		FlxG.save.data.weekUnlocked = null;
+		FlxG.save.data.newInput = null;
+		FlxG.save.data.downscroll = null;
+		FlxG.save.data.dfjk = null;
+		FlxG.save.data.accuracyDisplay = null;
+		FlxG.save.data.offset = null;
+		FlxG.save.data.songPosition = null;
+		FlxG.save.data.fps = null;
+		FlxG.save.data.changedHit = null;
+		FlxG.save.data.fpsRain = null;
+		FlxG.save.data.fpsCap = null;
+		FlxG.save.data.scrollSpeed = null;
+		FlxG.save.data.npsDisplay = null;
+		FlxG.save.data.frames = null;
+		FlxG.save.data.accuracyMod = null;
+		FlxG.save.data.watermark = null;
+		FlxG.save.data.ghost = null;
+		FlxG.save.data.distractions = null;
+		FlxG.save.data.flashing = null;
+		FlxG.save.data.resetButton = null;
+		FlxG.save.data.botplay = null;
+		FlxG.save.data.cpuStrums = null;
+		FlxG.save.data.strumline = null;
+		FlxG.save.data.customStrumLine = null;
+		FlxG.save.data.camzoom = null;
+		FlxG.save.data.stepMania = null;
+		KadeEngineData.initSave();
+		confirm = false;
+		trace('All settings have been reset');
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return confirm ? "Confirm Settings Reset" : "Reset Settings";
 	}
 }
 
@@ -1020,5 +1251,253 @@ class CardiophileOption extends Option{
 	private override function updateDisplay():String
 	{
 		return "Cardiophile " + (FlxG.save.data.cardiophile ? "ON" : "OFF");
+	}
+}
+
+//JOELwindows7: touchscreen buttons options
+class UseTouchScreenButtons extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.useTouchScreenButtons = !FlxG.save.data.useTouchScreenButtons;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return (FlxG.save.data.useTouchScreenButtons ? "Use Touch Screen Buttons" : "No Touch Screen Buttons");
+	}
+}
+
+class SelectTouchScreenButtons extends Option{
+	var max=1;
+
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptValues = true;
+	}
+
+	public override function press():Bool{
+		return false;
+	}
+
+	override function right():Bool{
+		changeModes(1);
+		display = updateDisplay();
+		return true;
+	}
+
+	override function left():Bool{
+		changeModes(-1);
+		display = updateDisplay();
+		return true;
+	}
+
+	function changeModes(number:Int = 0, isMoveTo:Bool = false) {
+		var cur:Int = Std.int(FlxG.save.data.selectTouchScreenButtons);
+		if(isMoveTo){
+			cur = number;
+		} else {
+			cur += number;
+		}
+		if(cur>max)
+			cur = 0;
+		else if(cur<0)
+			cur = max;
+		FlxG.save.data.selectTouchScreenButtons = cur;
+
+		display = updateDisplay();
+	}
+
+	function sayTheThing():String{
+		switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
+			case 0:
+				return "OFF";
+			case 1:
+				return "Hitbox";
+			case 2:
+				return "Virtual Pad Left";
+			case 3:
+				return "Virtual Pad Right";
+			case 4:
+				return "Virtual Pad Both";
+			case 5:
+				return "Virtual Pad Custom";
+			default:
+				return "???";
+		}
+	}
+
+	override function getValue():String {
+		return "Current Touchscreen Button: " + sayTheThing();
+	}
+
+	private override function updateDisplay():String
+	{		
+		return ("Touchscreen button type " + sayTheThing());
+	}
+}
+
+class VibrationOption extends Option{
+
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.vibration = !FlxG.save.data.vibration;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{		
+		return "Vibration " + (FlxG.save.data.vibration ? "ON" : "OFF");
+	}
+}
+
+//JOELwindows7: view achievements unlocked. 
+//inspired from that 69420 runner (N word version) ninjamuffin99 made before.
+class GalleryOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		//FlxG.switchState(new LoadReplayState()); //or open new state.
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Gallery Achievements";
+	}
+}
+
+//JOELwindows7: adjust volume
+class AdjustVolumeOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptValues = true;
+	}
+
+	public override function press():Bool{
+		display = updateDisplay();
+		return true;
+	}
+
+	override function right():Bool{
+		FlxG.sound.changeVolume(.1);
+		display = updateDisplay();
+		return true;
+	}
+
+	override function left():Bool{
+		FlxG.sound.changeVolume(-.1);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		// https://github.com/ninjamuffin99/SHOOM/blob/master/source/PlayState.hx
+		// lmao shoooooooooooooooooooooooooooooooooooooooooooooooooom
+		var shoomSays:String="SH";
+		var remains:Int = 10;
+		for(i in 0...(Std.int(FlxG.sound.volume*10))){
+			shoomSays += 'O';
+			remains--;
+		}
+		shoomSays += 'M';
+		if(remains < 0) remains = 0;
+		for(i in 0...(remains)){
+			shoomSays += 'U';
+		}
+		return "Volume " + shoomSays;
+	}
+
+	override function getValue():String {
+		return "Volume: " + Std.string(FlxG.sound.volume);
+	}
+}
+
+//JOELwindows7: attempt the surround sound test using Lime audio source.
+class SurroundTestOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		//FlxG.switchState(new LoadReplayState()); //or open new state.
+		FlxG.switchState(new LimeAudioBufferTester());
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Surround Test";
+	}
+}
+
+//JOELwindows7: quick way testing Webmer
+class AnVideoCutscenerTestOption extends Option{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+			//FlxG.switchState(new LoadReplayState()); //or open new state.
+			FlxG.switchState(new AnWebmer());
+			return false;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Video Cutscener Test";
+		}
+}
+
+class PreUnlockAllWeeksOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.preUnlocked = !FlxG.save.data.preUnlocked;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{		
+		return "All Weeks " + (FlxG.save.data.preUnlocked ? "PreUnlocked" : "Lock Progress");
 	}
 }

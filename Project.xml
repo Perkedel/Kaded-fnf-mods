@@ -22,6 +22,7 @@
 	<!-- JOELwindows7: from that luckydog, don't know what's this define for -->
 	<!-- https://github.com/luckydog7/Funkin-android/blob/master/Project.xml -->
 	<define name="mobileC" if="mobile" />
+	<!-- hey why do we need this? Touchscreen supposed to be supported on all platforms man. -->
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -72,6 +73,7 @@
 	<section if="PRELOAD_ALL">
 		<library name="songs"    preload="true" />
 		<library name="shared"   preload="true" />
+		<library name="week-1"    preload="true" />
 		<library name="tutorial" preload="true" />
 		<library name="week1"    preload="true" />
 		<library name="week2"    preload="true" />
@@ -89,11 +91,13 @@
 		<library name="odysee"   preload="true" if="odysee"/>
 		<library name="thief"   preload="true" if="thief"/>
 		<!-- <library name="weeks"    preload="true" /> -->
+		<library name="sm"    preload="true" />
 	</section>
 	
 	<section if="NO_PRELOAD_ALL">
 		<library name="songs"    preload="false" />
 		<library name="shared"   preload="false" />
+		<library name="week-1"    preload="false" />
 		<library name="tutorial" preload="false" />
 		<library name="week1"    preload="false" />
 		<library name="week2"    preload="false" />
@@ -111,12 +115,15 @@
 		<library name="odysee"   preload="false" if="odysee"/>
 		<library name="thief"   preload="false" if="thief"/>
 		<library name="week11"    preload="false" />
+		<library name="sm"    preload="false" />
 	</section>
 	
 	<assets path="assets/songs"    library="songs"    exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"    library="songs"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/shared"   library="shared"   exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"   library="shared"   exclude="*.mp3" unless="web"/>
+	<assets path="assets/week-1"    library="week-1"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week-1"    library="week-1"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/tutorial" library="tutorial" exclude="*.ogg" if="web"/>
 	<assets path="assets/tutorial" library="tutorial" exclude="*.mp3" unless="web"/>
 	<assets path="assets/week1"    library="week1"    exclude="*.ogg" if="web"/>
@@ -154,6 +161,9 @@
 	<assets path="assets/videos" include="*.mp3" if="web"/>
 	<assets path="assets/videos" include="*.ogg" unless="web"/>
 	
+	<assets path="assets/sm"    library="sm"    exclude="*.ogg" if="web"/>
+	<assets path="assets/sm"    library="sm"    exclude="*.mp3" unless="web"/>
+
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path='LICENSE' rename='LICENSE.txt' />
@@ -178,6 +188,9 @@
 
 	<haxelib name="flixel" />
 	<haxedev set='webgl' />
+	<!-- <haxelib name="openfl" /> -->
+	<!-- JOELwindows7: manually hxcpp it just in case -->
+	<haxedev name="hxcpp" if="cpp"/>
 
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
@@ -188,14 +201,17 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="newgrounds" unless='mobile'/>
+	<haxelib name="newgrounds" unless='neko || hl || mobile'/>
 	<haxelib name="faxe" if='switch'/>
+	<!-- JOELwindows7: VVV Danger -->
+	<!-- <haxelib name="faxe"/>  -->
+	<!-- JOELwindows7: ^^^ dangerous experiment-->
 	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="cpp" unless="neko || hl || mobile"/>
 	<haxelib name="linc_luajit" if="cpp" unless="neko || hl || mobile"/>
 	
 
-	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
+	<haxelib name="hxcpp-debug-server" if="cpp"/>
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
@@ -210,12 +226,46 @@
 	<!-- Already cannon by Kade himself -->
 
 	<!-- the luckydog7 added this since the video plays in a webview -->
-	<!-- <haxelib name="extension-webview"/> -->
+	<!-- <haxelib name="extension-webview" if="android"/> -->
 	<!-- end Video Cutscener -->
+
+	<!-- JOELwindows7: ktravis' Android hardware access -->
+	<!-- thx, ninja_muffin99, for the reference in your 69420 runner lol -->
+	<haxelib name="haxe-hardware" if="android" />
+	<!-- do not forget openfl -->
+	<!-- oh btw, here. I bought your 69420 runner, on N words! hahahahahaha!!! -->
+	<!-- yeah, same username. JOELwindows7. I am almost everywhere. -->
 
 	<!-- Android permissioning -->
 	<!-- added by JOELwindows7 -->
 	<haxelib name="android6permissions"/>
+
+	<!-- JOELwindows7: ki's filesytemer because internal sys filesystem doesn't work in Android -->
+	<!-- <haxelib name="ki-filesystem"/> -->
+	<!-- not updated anymore, I guess, it's error here. Unknown identifier : getModificationDate -->
+
+	<!-- JOELwindows7: vegardid filesystemer -->
+	<haxelib name="haxe-files"/>
+
+	<!-- JOELwindows7: used by BulbyVR with Modding+ for modchart instead of Lua. -->
+	<!-- <haxelib name="hscript"/> -->
+	<haxelib name="hscript-ex"/>
+	<!-- install hscript-ex with `haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex`-->
+
+	<!-- JOELwindows7: TJSON idk why use this while we already have built in JSON -->
+	<!-- used by BulbyVR in FNFM+ -->
+	<haxelib name="tjson"/>
+
+	<!-- JOELwindows7: Xinput API for OpenFL -->
+	<!-- <haxelib name="xinput" if="windows"/> -->
+	<!-- - haxelib git xinput https://github.com/furusystems/openfl-xinput.git -->
+
+
+	<!-- JOELwindows7: try VLC maybe. -->
+	<!-- <haxelib name="haxevlc" if="windows"/> -->
+	<!-- <include path="source/vlc/LibVLCBuild.xml" /> -->
+	<!-- https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/5 -->
+	<!-- https://github.com/datee/HaxeVLC -->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -245,6 +295,8 @@
 
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+
+	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />

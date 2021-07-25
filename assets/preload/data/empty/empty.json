@@ -13,6 +13,13 @@
         "song": "empty",
         "artist": "none",
         "notes": [],
+        "chartVersion": "1",
+        "eventObjects": [{
+            "name": "Init BPM",
+            "position": 0,
+            "value": 100,
+            "type": "BPM Change"
+        }],
         "bpm": 100,
         "sections": 0,
         "validScore": true,
@@ -30,6 +37,8 @@
         "isMoody": false,
         "cutsceneType": "none",
         "uiType": "normal",
-        "preferredNoteAmount": 4
+        "preferredNoteAmount": 4,
+        "forceLuaModchart": false,
+        "forceHscriptModchart": false
     }
 }
