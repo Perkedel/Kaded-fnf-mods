@@ -21,13 +21,12 @@ jobs:
             cd ~
             sudo add-apt-repository ppa:haxe/releases -y
             sudo apt update
-            sudo apt install build-essential -y
-            sudo apt-get install gcc-multilib g++-multilib -y
-            sudo apt install neko tar -y
-            wget https://github.com/HaxeFoundation/haxe/releases/download/4.2.2/haxe-4.2.2-linux64.tar.gz
+            sudo apt install build-essential libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev -y
+            sudo apt install neko tar gcc-7 g++-7 gcc-7-multilib g++-7-multilib -y
+            wget https://github.com/HaxeFoundation/haxe/releases/download/4.2.3/haxe-4.2.3-linux64.tar.gz
             mkdir -p $HAXE_INSTALLDIR
-            tar -xf haxe-4.2.2-linux64.tar.gz -C $HAXE_INSTALLDIR
-            export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20210514141333_a2f4ba9
+            tar -xf haxe-4.2.3-linux64.tar.gz -C $HAXE_INSTALLDIR
+            export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20210701100239_1385eda
             ls
             pwd
             mkdir -p $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
