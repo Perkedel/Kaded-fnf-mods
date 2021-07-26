@@ -60,6 +60,7 @@ install:
   - cd /home/appveyor/projects/kaded-fnf-mods-linux32
 
 build_script:
+  - haxelib run lime rebuild lime rpi
   - cd /home/appveyor/projects/kaded-fnf-mods-linux32
   # - haxelib run lime rebuild discord_rpc linux
   # - haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?
