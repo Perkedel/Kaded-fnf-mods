@@ -51,6 +51,7 @@ install:
   # - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   # Install project dependencies
   - haxelib install hxp
+  - haxelib install svg
   - haxelib install format
   - haxelib install lime
   - haxelib install lime-tools

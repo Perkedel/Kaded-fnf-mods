@@ -27,6 +27,7 @@ install:
   # Install project dependencies
   - haxelib install hxp
   - haxelib install format
+  - haxelib install svg
   - haxelib install lime
   - haxelib install lime-tools
   - RefreshEnv
