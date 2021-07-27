@@ -11,6 +11,9 @@ environment:
 install:
   # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
   - ps: Set-Service wuauserv -StartupType Manual
+  # Install all Visual C++ versions package, uhh, we got vcredist140 here.
+  - cinst vcredist-all -y
+  - choco install vcredist140
   # Install the neko chocolatey package (https://chocolatey.org/packages/neko)
   - cinst neko -y
   # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
@@ -47,7 +50,9 @@ install:
   # - Get-ChildItem -Path ".\tempExtract\build-tools\*" -Recurse | mv -Destination "%ANDROID_SDK_LOC%\build-tools" -Force
   # - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   # Install project dependencies
+  - haxelib install hxp
   - haxelib install lime
+  - haxelib install lime-tools
   - RefreshEnv
   - haxelib install openfl
   - haxelib install flixel

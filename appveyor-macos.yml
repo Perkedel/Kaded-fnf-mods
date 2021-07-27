@@ -19,7 +19,9 @@ install:
   - tar -xf haxe-4.2.3-osx.tar.gz -C $HAXE_INSTALLDIR
   - export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20210701100239_1385eda
   - mkdir $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
+  - haxelib install hxp
   - haxelib install lime
+  - haxelib install lime-tools
   - haxelib install openfl
   - haxelib install flixel
   - haxelib run lime setup flixel -y

@@ -6,7 +6,7 @@
 import openfl.display3D.textures.VideoTexture;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-#if ((windows || linux) && cpp) //LuaJit only works for C++ 
+#if ((windows) && cpp) //LuaJit only works for C++ 
 //https://lib.haxe.org/p/linc_luajit/
 import flixel.tweens.FlxEase;
 import openfl.filters.ShaderFilter;
