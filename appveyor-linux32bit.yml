@@ -18,6 +18,7 @@ install:
   - export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20210701100239_1385eda
   - mkdir $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
   - haxelib install hxp
+  - haxelib install format
   - haxelib install lime
   - haxelib install lime-tools
   - haxelib install openfl
