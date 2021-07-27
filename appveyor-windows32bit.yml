@@ -26,6 +26,7 @@ install:
   - haxelib setup "%HAXELIB_ROOT%"
   # Install project dependencies
   - haxelib install hxp
+  - haxelib install format
   - haxelib install lime
   - haxelib install lime-tools
   - RefreshEnv
