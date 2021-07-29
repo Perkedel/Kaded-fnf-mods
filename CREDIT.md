@@ -398,6 +398,9 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/furusystems/openfl-xinput (MIT) furusystems. Xinput for OpenFL. lemme vibrate dose bars.
 - https://github.com/ninjamuffin99/SHOOM (Apache 2.0) ninja_muffin99. aspect of SHOOM.
 - https://github.com/stepmania/stepmania https://www.stepmania.com/ Stepmania (MIT). Yoink the sample sm file Goin' Under just to test SM file loading capability. though, you must delete all difficulties but the one you'd like to play. psst, funfact, JOELwindows7 had ever translated this game into Bahasa Indonesia yeayh!
+- https://help.yoyogames.com/hc/en-us/articles/216754008-Uploading-Your-HTML5-Game-To-A-Web-Host despatrte attempt to host html5 build pls help
+- https://gamebanana.com/mods/298149 inspiration for using copyrighted ideas which in this case, Disney Pixar, Luca. yep. that's it.
+- https://odysee.com/@JOELwindows7:a/OldMacDonald-Had-a-bin-cannon:2?r=72GvXbostV9AxDEqgXmRx9Sp1hBw7qqx OldMcdonal had a bin cannot lol Bill Wurtz. full credit in end of video & that description.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
