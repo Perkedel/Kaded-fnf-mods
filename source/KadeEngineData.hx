@@ -140,6 +140,12 @@ class KadeEngineData
 		//JOELwindows7: PreUnlock weeks like in Stepmania Home mode
 		if (FlxG.save.data.preUnlocked == null)
 			FlxG.save.data.preUnlocked = false;
+
+		//JOELwindows7: vibration offset
+		if (FlxG.save.data.vibrationOffset == null || 
+			FlxG.save.data.vibrationOffset < 0.0
+			)
+			FlxG.save.data.vibrationOffset = 0.18;
 		
 		if (FlxG.save.data.cacheImages == null)
 			FlxG.save.data.cacheImages = false;

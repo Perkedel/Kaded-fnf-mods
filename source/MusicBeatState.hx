@@ -1,5 +1,6 @@
 package;
 
+import plugins.sprites.DVDScreenSaver;
 import flixel.tweens.FlxEase;
 import flixel.FlxCamera;
 import ui.FlxVirtualPad;
@@ -64,6 +65,7 @@ class MusicBeatState extends FlxUIState
 	var retryButton:FlxSprite; //JOELwindows7: the retry button here
 	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
 	//var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
+	var hourGlass:FlxSprite; //JOELwindows7: animated gravity hourglass Piskel
 	public var onScreenGameplayButtons:OnScreenGameplayButtons; //JOELwindows7: the touchscreen buttons here
 	public static var dueAdded:Bool = false;
 
@@ -314,6 +316,15 @@ class MusicBeatState extends FlxUIState
 		viewReplayButton.antialiasing = true;
 		add(viewReplayButton);
 		return viewReplayButton;
+	}
+	private function installBusyHourglassScreenSaver(){
+		hourGlass = new DVDScreenSaver(null,100,100);
+		hourGlass.frames = Paths.getSparrowAtlas('Gravity-HourGlass');
+		hourGlass.animation.addByPrefix('working', 'Gravity-HourGlass idle', 24);
+		hourGlass.animation.play('working');
+		hourGlass.updateHitbox();
+		add(hourGlass);
+		return hourGlass;
 	}
 	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false){
 		/*

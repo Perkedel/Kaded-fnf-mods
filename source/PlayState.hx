@@ -2034,8 +2034,8 @@ class PlayState extends MusicBeatState
 	function schoolOutro(?dialogueBox:DialogueBox):Void
 	{
 		//first, hide these botom bars and their icosn
-		healthBar.visible = false;
-		healthBarBG.visible = false;
+		//healthBar.visible = false;
+		//healthBarBG.visible = false;
 		iconP1.visible = false;
 		iconP2.visible = false;
 
@@ -5804,7 +5804,7 @@ class PlayState extends MusicBeatState
 				camHUD.zoom += 0.03;
 
 				//JOELwindows7: add vibrations!
-				Controls.vibrate(0, 10, 250);
+				Controls.vibrate(0, 150);
 			}
 
 			//JOELwindows7: HARDCODING FOR WE'LL MEET YOU AGAIN ZOOMS!

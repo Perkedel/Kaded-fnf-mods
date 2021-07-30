@@ -689,6 +689,7 @@
         "validScore": true,
         "bpm": 165,
         "speed": 2.3,
-        "allowedToHeadbang": true
+        "allowedToHeadbang": true,
+        "forceHscriptModchart": true
     }
 }

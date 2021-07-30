@@ -523,7 +523,9 @@ class Controls extends FlxActionSet
 	public static function vibrate(player:Int = 0,duration:Float = 100, period:Float = 0, strengthLeft:Float = 0, strengthRight:Float = 0){
 		//JOELwindows7: yess vibration go BRRR
 		if(FlxG.save.data.vibration){
-			Haptic.vibrate(Std.int(period),Std.int(duration)); //uh, lime got better implementation lol
+			new FlxTimer().start(FlxG.save.data.vibrationOffset, function(timer:FlxTimer){
+				Haptic.vibrate(Std.int(period),Std.int(duration)); //uh, lime got better implementation lol
+			});
 
 			#if android
 			//Hardware.vibrate(Std.int(duration));

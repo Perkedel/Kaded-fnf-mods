@@ -1501,3 +1501,40 @@ class PreUnlockAllWeeksOption extends Option{
 		return "All Weeks " + (FlxG.save.data.preUnlocked ? "PreUnlocked" : "Lock Progress");
 	}
 }
+
+class VibrationOffsetOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptValues = true;
+	}
+
+	public override function press():Bool{
+		display = updateDisplay();
+		return true;
+	}
+
+	override function right():Bool{
+		FlxG.save.data.vibrationOffset += .01;
+		display = updateDisplay();
+		return true;
+	}
+
+	override function left():Bool{
+		FlxG.save.data.vibrationOffset -= .01;
+		if(FlxG.save.data.vibrationOffset < 0.0)
+			FlxG.save.data.vibrationOfset = 0.0;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Vibration Offset";
+	}
+
+	override function getValue():String {
+		return "Vibration Offset: " + Std.string(FlxG.save.data.vibrationOffset);
+	}
+}
