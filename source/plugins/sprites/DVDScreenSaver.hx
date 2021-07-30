@@ -23,13 +23,13 @@ class DVDScreenSaver extends FlxSprite{
         y = FlxG.height/2;
         velocity.x = velocityX;
         velocity.y = velocityY;
-        
+        updateHitbox();
     }
 
     override function update(elapsed){
-        //FlxG.collide();
-        if(x<=0 || x>= FlxG.width) velocity.x *= -1;
-        if(y<=0 || y>= FlxG.height) velocity.y *= -1;
+        //FlxG.collide(); // enabling this will push elements away! dont do that
+        if(x<=0 || x>= FlxG.width-width) velocity.x *= -1;
+        if(y<=0 || y>= FlxG.height-height) velocity.y *= -1;
         super.update(elapsed);
     }
 }

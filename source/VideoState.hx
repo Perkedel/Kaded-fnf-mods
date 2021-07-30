@@ -47,7 +47,7 @@ class VideoState extends MusicBeatState
 		transClass = toTrans;
 		if (frameSkipLimit != -1 && GlobalVideo.isWebm)
 		{
-			#if desktop
+			#if (desktop || mobile)
 			GlobalVideo.getWebm().webm.SKIP_STEP_LIMIT = frameSkipLimit;	
 			//WebmPlayer.SKIP_STEP_LIMIT = frameSkipLimit; //JOElwindows7 somekind for the kade's
 			#end

@@ -260,12 +260,14 @@
 	<!-- <haxelib name="xinput" if="windows"/> -->
 	<!-- - haxelib git xinput https://github.com/furusystems/openfl-xinput.git -->
 
-
 	<!-- JOELwindows7: try VLC maybe. -->
 	<!-- <haxelib name="haxevlc" if="windows"/> -->
 	<!-- <include path="source/vlc/LibVLCBuild.xml" /> -->
 	<!-- https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/5 -->
 	<!-- https://github.com/datee/HaxeVLC -->
+
+	<!-- JOELwindows7: try Android Media extension thingy -->
+	<!-- <haxelib name="extension-android-media"/> -->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

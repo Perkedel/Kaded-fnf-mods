@@ -472,7 +472,7 @@ class FreeplayState extends MusicBeatState
 					}
 				}
 			}
-			//I'm afraid adding more `for` could killl performance here
+			//I'm afraid adding more `for` could kill performance here
 			//help!
 
 			//Back buttoner

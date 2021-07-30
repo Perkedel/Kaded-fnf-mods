@@ -131,8 +131,10 @@ class Main extends Sprite
 
 		//JOELwindows7: an check whether isWebm or not
 		#if (web)
+		trace("vid isWeb");
 		GlobalVideo.isWebm = false;
 		#elseif (desktop)
+		trace("vid isNative");
 		GlobalVideo.isWebm = true;
 		#end
 		trace("is GlobalVideo a webm? " + Std.string(GlobalVideo.isWebm));
@@ -154,6 +156,7 @@ class Main extends Sprite
 		var webmHandle = new WebmHandler();
 		webmHandle.source(ourSource);
 		webmHandle.makePlayer();
+		trace("new WebmHandler make player");
 		webmHandle.webm.name = str1;
 		addChild(webmHandle.webm);
 		GlobalVideo.setWebm(webmHandle);
