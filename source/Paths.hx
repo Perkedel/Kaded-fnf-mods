@@ -191,4 +191,8 @@ class Paths
 	{
 		return getPath('videos/$key.webm', TEXT, library);
 	}
+	inline static public function videoSound(key:String, ?library:String)
+		{
+			return getPath('videos/$key.ogg', SOUND, library);
+		}
 }

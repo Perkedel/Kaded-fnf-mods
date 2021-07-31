@@ -4450,8 +4450,8 @@ class PlayState extends MusicBeatState
 							new ResultsScreen(
 								SONG.hasEpilogueVideo, 
 								SONG.hasEpilogueVideo? 
-								"assets/videos/" + SONG.epilogueVideoPath + ".webm" : 
-								"assets/videos/null.webm"
+								SONG.epilogueVideoPath: 
+								"null"
 								));
 						new FlxTimer().start(1, function(tmr:FlxTimer)
 							{
@@ -4462,14 +4462,14 @@ class PlayState extends MusicBeatState
 					{
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
 						Conductor.changeBPM(102);
-						#if !mobile
+						// #if !mobile
 						FlxG.switchState(
 							SONG.hasEpilogueVideo? 
-							new VideoState("assets/videos/" + SONG.epilogueVideoPath + ".webm", new MainMenuState()) : 
+							VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : 
 							new StoryMenuState());
-						#else
-						FlxG.switchState(new StoryMenuState());
-						#end
+						// #else
+						// FlxG.switchState(new StoryMenuState());
+						// #end
 						//JOELwindows7: complicated! oh MY GOD!
 					}
 
@@ -4552,17 +4552,17 @@ class PlayState extends MusicBeatState
 					FlxG.sound.music.stop();
 
 					//JOELwindows7: if has video, then load the video first before going to new playstate!
-					#if !mobile
+					// #if !mobile
 					LoadingState.loadAndSwitchState(
 						hasEpilogueVideo?
-						(new VideoState("assets/videos/" + epilogueVideoPath + ".webm", 
-							(SONG.hasVideo ? new VideoState("assets/videos/" + SONG.videoPath + ".webm", new PlayState()) : new PlayState() )
+						(VideoCutscener.getThe(epilogueVideoPath, 
+							(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState() )
 						))
-						: (SONG.hasVideo ? new VideoState("assets/videos/" + SONG.videoPath + ".webm", new PlayState()) : new PlayState() )
+						: (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState() )
 					);
-					#else //workaround since this doesn't work in Android
-					LoadingState.loadAndSwitchState(new PlayState()); //Legacy
-					#end
+					// #else //workaround since this doesn't work in Android
+					// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					// #end
 					//JOELwindows7: oh God, so complicated. I hope it works!
 				}
 			}

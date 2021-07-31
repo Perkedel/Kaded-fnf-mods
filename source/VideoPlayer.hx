@@ -11,7 +11,7 @@ import Paths;
 #if cpp
 import webm.*;
 import flixel.system.FlxSound;
-//import utils.Asset2File;
+import utils.Asset2File;
 #elseif html5
 import openfl.net.NetStream;
 import openfl.media.Video;
@@ -30,11 +30,13 @@ import flixel.FlxSprite;
 
 class VideoPlayer extends FlxSprite
 {
+	public static var SKIP_STEP_LIMIT:Int = 90;
+	public var paused:Bool;
 	#if sys
 	public var webm:WebmPlayer;
 	var sound:FlxSound;
 
-	public static var SKIP_STEP_LIMIT:Int = 90;
+
 	#elseif html5
 	var netStream:NetStream;
 	public var player:Video;
@@ -56,6 +58,7 @@ class VideoPlayer extends FlxSprite
 	public function new(asset:String, ?x:Float, ?y:Float) 
 	{
 		super(x, y);
+		paused = false;
 
 		#if cpp
 		//WebmPlayer.SKIP_STEP_LIMIT = SKIP_STEP_LIMIT;
@@ -85,8 +88,9 @@ class VideoPlayer extends FlxSprite
 		{
 			webm.play();
 
-			if (Assets.exists(Paths.file(pathVideo + '.ogg')))
-				sound = FlxG.sound.play(Paths.file(pathVideo + '.ogg'))
+			if (Assets.exists(Paths.videoSound(pathVideo)))
+				// sound = FlxG.sound.play(Paths.file(pathVideo + '.ogg'))
+				sound = FlxG.sound.play(Paths.videoSound(pathVideo))
 			else
 				trace('sound dont exists');
 		}else
@@ -99,6 +103,43 @@ class VideoPlayer extends FlxSprite
 		if (finishCallback != null)
 			finishCallback();
 		
+		#end
+	}
+
+	//JOELwindows7: steal from VideoState.hx
+	public function togglePause():Void
+	{
+		if (paused)
+		{
+			resume();
+		} else {
+			pause();
+		}
+	}
+	public function pause():Void
+	{
+		#if sys
+		webm.changePlaying(false);
+		#end
+		paused = true;
+	}
+	public function resume():Void
+	{
+		#if sys
+		webm.changePlaying(true);
+		#end
+		paused = false;
+	}
+	public function dim():Void
+	{
+		#if sys
+		webm.alpha = GlobalVideo.daAlpha1;
+		#end
+	}
+	public function undim():Void
+	{
+		#if sys
+		webm.alpha = GlobalVideo.daAlpha2;
 		#end
 	}
 
@@ -119,8 +160,8 @@ class VideoPlayer extends FlxSprite
 	function changeVideo(asset:String) {
 		pathVideo = asset;
 		#if cpp
-		//var path = Asset2File.getPath(Paths.file(pathVideo), ".webm"); // maybe use without paths
-		var path = Paths.video(pathVideo); // maybe use without paths
+		// var path = Asset2File.getPath(Paths.file(pathVideo), ".webm"); // maybe use without paths
+		var path = Asset2File.getPath(Paths.video(pathVideo)); // maybe use without paths
 
 		var io:WebmIo = new WebmIoFile(path);
 		webm.fuck(io);

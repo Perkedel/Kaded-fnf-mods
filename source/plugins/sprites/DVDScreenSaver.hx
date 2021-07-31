@@ -19,8 +19,8 @@ class DVDScreenSaver extends FlxSprite{
         if(theGraphic == null){
             loadGraphic(FlxAssets.getBitmapData("flixel/images/logo/logo"));
         }
-        x = FlxG.width/2;
-        y = FlxG.height/2;
+        x = FlxG.random.float(0,FlxG.width-width-100);
+        y = FlxG.random.float(0,FlxG.height-height-100);
         velocity.x = velocityX;
         velocity.y = velocityY;
         updateHitbox();

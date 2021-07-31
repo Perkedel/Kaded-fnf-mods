@@ -37,15 +37,21 @@ class AnWebmer extends MusicBeatState{
         }
         if(FlxG.keys.justPressed.ENTER || haveClicked){
             trace("Play " + Paths.video("OldMacDonaldHadABinCannon"));
-            #if (desktop || web)
-            FlxG.switchState(new VideoState(Paths.video("OldMacDonaldHadABinCannon"), new AnWebmer(), 90));
-            #elseif mobile
-            //MediaPlayer.playFromAssets(Paths.video("OldMacDonaldHadABinCannon"));
-            FlxG.sound.music.stop();
-            ownVidSprite = new VideoPlayer("OldMacDonaldHadABinCannon");
-            ownVidSprite.play();
-            add(ownVidSprite);
-            #end
+            // #if (desktop || web)
+            // FlxG.switchState(new VideoState(Paths.video("OldMacDonaldHadABinCannon"), new AnWebmer(), 90));
+            // #elseif mobile
+            // //MediaPlayer.playFromAssets(Paths.video("OldMacDonaldHadABinCannon"));
+
+            // //WORKS!!!
+            // FlxG.sound.music.stop();
+            // ownVidSprite = new VideoPlayer("OldMacDonaldHadABinCannon");
+            // ownVidSprite.finishCallback = function(){FlxG.switchState(new AnWebmer());};
+            // ownVidSprite.play();
+            // add(ownVidSprite);
+            // #end
+
+            //FINAL
+            FlxG.switchState(VideoCutscener.getThe("OldMacDonaldHadABinCannon", new AnWebmer(), 90));
         
             haveClicked = false;
         }

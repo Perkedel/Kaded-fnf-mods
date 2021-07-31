@@ -246,11 +246,14 @@ class ResultsScreen extends FlxSubState
             {
                 FlxG.sound.playMusic(Paths.music('freakyMenu'));
                 Conductor.changeBPM(102);
-                #if !mobile //JOELwindows7: not working in Android
-                FlxG.switchState(handoverHasVideo? new VideoState(handoverVideoPath, new StoryMenuState()) : new StoryMenuState()); //JOELwindows7: here epilogue cutscenes
-                #else
-                FlxG.switchState(new StoryMenuState()); //JOELwindows7: no cutscene. unsupported platform.
-                #end
+                // #if !mobile //JOELwindows7: not working in Android
+                // FlxG.switchState(handoverHasVideo? new VideoState(handoverVideoPath, new StoryMenuState()) : new StoryMenuState()); //JOELwindows7: here epilogue cutscenes
+                // #else
+                // FlxG.switchState(new StoryMenuState()); //JOELwindows7: no cutscene. unsupported platform.
+                // #end
+                //JOELwindows7: works with Android
+                FlxG.switchState(handoverHasVideo? VideoCutscener.getThe(handoverVideoPath, new StoryMenuState()) : new StoryMenuState()); 
+                //JOELwindows7: here epilogue cutscenes
             }
             else
                 FlxG.switchState(new FreeplayState());

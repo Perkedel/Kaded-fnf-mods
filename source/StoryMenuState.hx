@@ -508,11 +508,11 @@ class StoryMenuState extends MusicBeatState
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				//JOELwindows7: check if the song has video files
-				#if !mobile
-				LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? new VideoState("assets/videos/" + PlayState.SONG.videoPath + ".webm", new PlayState()) : new PlayState(), true);
-				#else //workaround for Video cutscener not working in Android
-				LoadingState.loadAndSwitchState(new PlayState(), true);
-				#end
+				// #if !mobile
+				LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(), true);
+				// #else //workaround for Video cutscener not working in Android
+				// LoadingState.loadAndSwitchState(new PlayState(), true);
+				// #end
 			});
 		}
 	}

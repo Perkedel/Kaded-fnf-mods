@@ -65,6 +65,10 @@
 	<assets path="assets/preload_odysee" rename="assets/preload_odysee" exclude="*.mp3" unless="web" if="odysee"/>
 	<assets path="assets/preload_thief" rename="assets/preload_thief" exclude="*.ogg" if="web thief"/>
 	<assets path="assets/preload_thief" rename="assets/preload_thief" exclude="*.mp3" unless="web" if="thief"/>
+
+	<!-- JOELwindows7: put ndll files to game root dir -->
+	<assets path="ndll" rename="." exclude="*.ogg" if="web"/>
+	<assets path="ndll" rename="." exclude="*.mp3" unless="web"/>
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web || neko || hl" />

@@ -36,6 +36,9 @@ class VideoState extends MusicBeatState
 	public var pauseText:String = "Press P To Pause/Unpause";
 	public var autoPause:Bool = false;
 	public var musicPaused:Bool = false;
+	#if cpp
+	static private var nativeFramecount:String->Int = cpp.Lib.load("webmHelper", "GetFramecount", 1);
+	#end
 
 	public function new(source:String, toTrans:FlxState, frameSkipLimit:Int = -1, autopause:Bool = false)
 	{
@@ -53,6 +56,16 @@ class VideoState extends MusicBeatState
 			#end
 		}
 	}
+
+	//JOELwindows7: from kem0x's webm helper 
+	// https://github.com/kem0x/openfl-haxeflixel-video-code/blob/main/source/VideoState.hx
+	public function frameCount():Int {
+		#if cpp
+		return nativeFramecount(leSource);
+		#else
+		return Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));
+		#end
+	}
 	
 	override function create()
 	{
@@ -62,7 +75,19 @@ class VideoState extends MusicBeatState
 		
 		if (GlobalVideo.isWebm)
 		{
-		videoFrames = Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));
+			//videoFrames = Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));
+			#if cpp
+			videoFrames = frameCount();
+
+			trace("swag dll told us vid has " + videoFrames);
+
+			if (videoFrames == 0) {
+			#end
+				videoFrames = Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));
+
+			#if cpp
+			}
+			#end
 		}
 		
 		fuckingVolume = FlxG.sound.music.volume;
@@ -209,7 +234,7 @@ class VideoState extends MusicBeatState
 			GlobalVideo.get().restart();
 		}
 		
-		if (FlxG.keys.justPressed.P)
+		if (FlxG.keys.justPressed.P || FlxG.mouse.justPressed) //JOELwindows7: click to pause/unpause
 		{
 			txt.text = pauseText;
 			trace("PRESSED PAUSE");
