@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.text.FlxText;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -52,22 +53,25 @@ class VideoSelfContained extends MusicBeatState{
     public var autoPause:Bool = false;
 	public var musicPaused:Bool = false;
     public var txt:FlxText;
+    public var peckingVolume:Float = 1;
     var defaultText:String = "";
     public function new(source:String, toTrans:FlxState, frameSkipLimit:Int = -1, autopause:Bool = false){
+        transIn = FlxTransitionableState.defaultTransIn;
+        transOut = FlxTransitionableState.defaultTransOut;
         super();
         this.toTrans = toTrans;
         VideoPlayer.SKIP_STEP_LIMIT = frameSkipLimit;
         videoSprite = new VideoPlayer(source);
-        videoSprite.finishCallback = function(){
-            FlxG.switchState(toTrans);
-        };
+        videoSprite.finishCallback = donedCallback;
     }
 
     override function create(){
         super.create();
         FlxG.autoPause = false;
 
-        FlxG.sound.music.stop();
+        //FlxG.sound.music.stop();
+        peckingVolume = FlxG.sound.music.volume;
+        FlxG.sound.music.volume = 0;
         try {
             if(videoSprite != null){
                 new FlxTimer().start(1, function(tmr:FlxTimer){
@@ -76,11 +80,11 @@ class VideoSelfContained extends MusicBeatState{
                 add(videoSprite);
             } else {
                 trace("Werror videoSprite null");
-                FlxG.switchState(toTrans);
+                donedCallback();
             }
         } catch(e){
             trace("Werror faile video!\n\n" + Std.string(e));
-            FlxG.switchState(toTrans);
+            donedCallback();
         }
         
         txt = new FlxText(0, 0, FlxG.width,
@@ -107,5 +111,10 @@ class VideoSelfContained extends MusicBeatState{
 				txt.text = defaultText;
 			}
         }
+    }
+
+    function donedCallback(){
+        FlxG.sound.music.volume = peckingVolume;
+        FlxG.switchState(toTrans);
     }
 }

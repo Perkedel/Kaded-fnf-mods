@@ -111,6 +111,12 @@ class Paths
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
+	//JOELwindows7: MIDI file in music folder, menu music MIDI
+	inline static public function midiMeta(key:String, ?library:String)
+	{
+		return getPath('music/$key.mid', BINARY, library);
+	}
+
 	inline static public function voices(song:String)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
@@ -129,6 +135,17 @@ class Paths
 				case 'philly-nice': songLowercase = 'philly';
 			}
 		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
+	}
+
+	//JOELwindows7: copy inst but for MIDI
+	inline static public function midiInst(song:String)
+	{
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+			switch (songLowercase) {
+				case 'dad-battle': songLowercase = 'dadbattle';
+				case 'philly-nice': songLowercase = 'philly';
+			}
+		return 'songs:assets/songs/${songLowercase}/Inst.mid';
 	}
 
 	inline static public function image(key:String, ?library:String)

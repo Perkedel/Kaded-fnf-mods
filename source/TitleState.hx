@@ -29,6 +29,7 @@ import io.newgrounds.NG;
 #end
 import lime.app.Application;
 import openfl.Assets;
+import grig.midi.MidiOut;
 
 #if (windows && cpp)
 import Discord.DiscordClient;
@@ -58,6 +59,8 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		
+
 		//JOELwindows7: luckydog7 added this, maybe to prevent absolute quit by back button.
 		// https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx
 		// https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088
