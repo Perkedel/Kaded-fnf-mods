@@ -22,7 +22,7 @@ class Asset2File
 
 		var md5 = Md5.encode(Md5.make(file).toString());
 
-		trace("getting path of: " path + md5 + ext); //JOELwindows7: how does this work?
+		trace("getting path of: " + path + md5 + ext); //JOELwindows7: how does this work?
 		if (FileSystem.exists(path + md5 + ext))
 			return path + md5 + ext;
 
