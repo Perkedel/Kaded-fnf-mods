@@ -276,9 +276,13 @@
 	<!-- JOELwindows7: Haxe Grig stuffs because I want MIDI -->
 	<haxelib name="grig.audio"/>
 	<haxelib name="grig.midi"/>
+	<!-- requires tink_core -->
 
 	<!-- JOELwindows7: how about SiON? It got MIDIplayer out of the box..-->
 	<!-- <haxelib name="sion"/> -->
+
+	<!-- JOELwindows7: the Tinkerbell stuffs and for the depend on it -->
+	<haxelib name="tink_core"/>
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

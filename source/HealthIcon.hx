@@ -51,6 +51,8 @@ class HealthIcon extends FlxSprite
 		//JOELwindows7: add surprise warning icons
 		animation.add('surprise',[26],0,false,isPlayer);
 		animation.add('warning',[27],0,false,isPlayer);
+		animation.add('placeholder',[26,27],0,false,isPlayer);
+		animation.add('gf-placeholder',[26,27],0,false,isPlayer);
 		animation.play(char);
 
 		switch(char)

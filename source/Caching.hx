@@ -108,7 +108,7 @@ class Caching extends MusicBeatState
 
 		toBeDone = Lambda.count(images) + Lambda.count(music);
 
-		var bar = new FlxBar(10,FlxG.height - 50,FlxBarFillDirection.LEFT_TO_RIGHT,FlxG.width,40,this,"done",0,toBeDone);
+		var bar = new FlxBar(10,FlxG.height - 100,FlxBarFillDirection.LEFT_TO_RIGHT,FlxG.width,40,this,"done",0,toBeDone);
 		bar.color = FlxColor.PURPLE;
 
 		add(bar);

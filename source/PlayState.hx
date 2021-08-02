@@ -1363,6 +1363,8 @@ class PlayState extends MusicBeatState
 				curGf = 'gf-ht';
 			case 'gf-covid':
 				curGf = 'gf-covid';
+			case 'gf-placeholder':
+				curGf = 'gf-placeholder';
 			default:
 				curGf = 'gf';
 		}
@@ -1376,7 +1378,7 @@ class PlayState extends MusicBeatState
 
 		switch (SONG.player2)
 		{
-			case 'gf' | 'gf-covid' | 'gf-ht':
+			case 'gf' | 'gf-covid' | 'gf-ht' | 'gf-placeholder':
 				//JOELwindows7: multi same with other gf variants. the Home Theater also had left down up right as well!
 				dad.setPosition(gf.x, gf.y);
 				gf.visible = false;
@@ -1442,6 +1444,9 @@ class PlayState extends MusicBeatState
 				// world is bad. not worth living
 				// but why give up, we got something
 				// take my hand. I'll be waiting you outside
+				dad.y += 100;
+				dad.x -= 150;
+			case 'placeholder':
 				dad.y += 100;
 				dad.x -= 150;
 			default:

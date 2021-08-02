@@ -492,6 +492,48 @@ class Character extends FlxSprite
 				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
+			case 'placeholder' | 'gf-placeholder':
+				//JOELwindows7: Placeholder character
+				//For temporary placeholder & gone mods cope machine
+				frames = Paths.getSparrowAtlas('Placeholder','shared',true);
+				animation.addByPrefix('idle', 'Placeholder idle', 24, false);
+				animation.addByPrefix('singUP', 'Placeholder Sing Note UP', 24, false);
+				animation.addByPrefix('singDOWN', 'Placeholder Sing Note DOWN', 24, false);
+				animation.addByPrefix('singLEFT', 'Placeholder Sing Note LEFT', 24, false);
+				animation.addByPrefix('singRIGHT', 'Placeholder Sing Note RIGHT', 24, false);
+
+				animation.addByPrefix('singUP-alt', 'Placeholder Sing Note alt UP', 24, false);
+				animation.addByPrefix('singDOWN-alt', 'Placeholder Sing Note alt DOWN', 24, false);
+				animation.addByPrefix('singLEFT-alt', 'Placeholder Sing Note alt LEFT', 24, false);
+				animation.addByPrefix('singRIGHT-alt', 'Placeholder Sing Note alt RIGHT', 24, false);
+
+				animation.addByPrefix('singUPmiss', 'Placeholder Miss up', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'Placeholder Miss left', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'Placeholder Miss right', 24, false);
+				animation.addByPrefix('singDOWNmiss', 'Placeholder Miss down', 24, false);
+
+				animation.addByPrefix('hey', 'Placeholder Hey', 24, false);
+				animation.addByPrefix('cheer', 'Placeholder Hey alt', 24, false);
+				animation.addByPrefix('firstDeath', "Placeholder First Death", 24, false);
+				animation.addByPrefix('deathLoop', "Placeholder Dead Loop", 24, false);
+				animation.addByPrefix('deathConfirm', "Placeholder Dead Confirm", 24, false);
+
+				animation.addByPrefix('scared', 'Placeholder Scared', 24);
+				animation.addByPrefix('sad', 'Placeholder Sad', 24);
+
+				animation.addByPrefix('danceLeft', 'Placeholder Dance LEFT', 24, false);
+				animation.addByPrefix('danceRight', 'Placeholder Dance RIGHT', 24, false);
+				animation.addByPrefix('hairBlow', "Placeholder Hair Blowing", 24);
+				animation.addByPrefix('hairFall', "Placeholder Hair Falling", 24, false);
+				trace("Added Placeholderizing frames");
+				//loadOffsetFile(curCharacter);
+
+				if(!curCharacter.contains('gf'))
+					playAnim('idle')
+				else
+					playAnim('danceLeft')
+				;
+				trace("Go placeholdering");
 		}
 
 		dance();
@@ -553,7 +595,7 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
-			case 'gf' | 'gf-ht' | 'gf-covid':
+			case 'gf' | 'gf-ht' | 'gf-covid' | 'gf-placeholder':
 				//JOELwindows7: okay idk how to make this work at all!
 				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 					playAnim('danceRight');
@@ -573,7 +615,15 @@ class Character extends FlxSprite
 		{
 			switch (curCharacter)
 			{
-				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-covid':
+				case 'gf' | 
+					'gf-christmas' | 
+					'gf-car' | 
+					'gf-pixel' | 
+					'gf-covid' | 
+					'gf-placeholder' | 
+					'gf-ht':
+					//JOELwindows7: copy this if from above case
+					//well we can just add OR to this.
 					if (!animation.curAnim.name.startsWith('hair'))
 					{
 						danced = !danced;
@@ -583,17 +633,6 @@ class Character extends FlxSprite
 						else
 							playAnim('danceLeft');
 					}
-				case 'gf-ht':
-					//JOELwindows7: copy this if from above case
-					if (!animation.curAnim.name.startsWith('hair'))
-						{
-							danced = !danced;
-	
-							if (danced)
-								playAnim('danceRight');
-							else
-								playAnim('danceLeft');
-						}
 				case 'spooky':
 					danced = !danced;
 
@@ -619,7 +658,9 @@ class Character extends FlxSprite
 		else
 			offset.set(0, 0);
 
-		if (curCharacter == 'gf' || curCharacter == 'gf-ht')
+		if (curCharacter == 'gf' || 
+			curCharacter == 'gf-ht' ||
+			curCharacter == 'gf-placeholder')
 		{
 			if (AnimName == 'singLEFT')
 			{

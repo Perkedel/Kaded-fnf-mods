@@ -67,6 +67,7 @@ install:
   - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
   - haxelib install haxe-files
   - haxelib install hxcpp-debug-server
+  - haxelib install tink_core
   - haxelib install grig.audio
   - haxelib list
 

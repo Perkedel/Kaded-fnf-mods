@@ -509,8 +509,9 @@
         "bpm": 95.0,
         "sections": 0,
         "needsVoices": false,
-        "player1": "bf",
-        "player2": "gf",
+        "player1": "placeholder",
+        "player2": "placeholder",
+        "gfVersion": "gf-placeholder",
         "sectionLengths": [],
         "speed": 3
     }

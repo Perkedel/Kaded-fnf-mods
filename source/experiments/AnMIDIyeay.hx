@@ -1,10 +1,15 @@
 package experiments;
 
 // import org.si.midi.MIDIPlayer;
+import grig.midi.file.event.MidiMessageEvent;
+import grig.midi.file.event.*;
+import lime.utils.Bytes;
+import flixel.util.FlxTimer;
 #if sys
 import sys.io.File;
 #end
 import grig.midi.MidiFile;
+import grig.midi.*;
 import openfl.utils.Assets;
 import grig.midi.MidiOut;
 import grig.midi.MidiMessage;
@@ -14,11 +19,23 @@ import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import utils.*;
+import grig.midi.file.event.ChannelPrefixEvent;
+import grig.midi.file.event.PortPrefixEvent;
+import haxe.io.BytesInput;
+import haxe.Resource;
+import grig.midi.MidiFile;
+
+// import tink.unit.Assert.*;
 //import extension.android.*;
 
 class AnMIDIyeay extends MusicBeatState{
     //JOELwindows7: MIDI test
     //example https://gitlab.com/haxe-grig/grig.midi/-/blob/main/examples/MidiWriter/src/Main.hx
+
+    var midiFile:MidiFile;
+    var virtualStep:Int = 0;
+    var maxStep:Int;
+    var isPlaying:Bool = false;
 
     public var infoText:FlxText;
     override function create(){
@@ -69,19 +86,85 @@ class AnMIDIyeay extends MusicBeatState{
         beatTimer.run = function() {
             trace("Step " + Std.string(counter) + " (" + (counter % 2 == 0 ? "Even" : "Odd") + ")");
             handoverMIDIout.sendMessage(MidiMessage.ofArray(counter % 2 == 0 ? [144,54,70] : [128,54,64]));
-            if (counter == 7) beatTimer.stop();
+            if (counter == 7) {
+                trace("Finish MIDI MIDI");
+                beatTimer.stop();
+                //midiFiler(handoverMIDIout);
+            }
             counter++;
         }
 
     }
 
     function midiFiler(handoverMIDIout:MidiOut){
-        var steps:Int = 0;
-        #if sys
-        var midiFile:MidiFile = MidiFile.fromInput(File.read(Asset2File.getPath(Paths.midiMeta("senpai"))));
-        var tracksOfIt = midiFile.tracks;
-        #end
+        Conductor.changeBPM(144);
+        curStep = 0;
+        maxStep = 0;
+        trace("Attempt MIDI filer " + Asset2File.getPath(Paths.midiMeta("senpai")));
+        // var steps:Int = 0;
+        // #if sys
+        // var midiFile:MidiFile = MidiFile.fromInput(File.read());
+        // var tracksOfIt = midiFile.tracks;
+        // #end
+
+        // https://gitlab.com/haxe-grig/grig.midi/-/blob/main/tests/MidiFileTest.hx
+        //var bytes = Resource.getBytes(Paths.midiMeta("senpai"));
+        var bytes = Bytes.fromFile(Paths.midiMeta("senpai"));
+        trace("Bytes retrieved \n"+Std.string(bytes));
+        var input = new BytesInput(bytes);
+        midiFile = MidiFile.fromInput(input);
+
+        for(tracks in midiFile.tracks){
+            trace("Track No. " + Std.string(tracks));
+            for(midiEvent in tracks.midiEvents){
+                try{
+                    // var messageEvent = cast(midiEvent, grig.midi.file.event.MidiMessageEvent);
+                    // trace("Filling sounds in " + messageEvent.absoluteTime);
+                    // new FlxTimer().start(messageEvent.absoluteTime,function(timer:FlxTimer) {
+                    //     handoverMIDIout.sendMessage(messageEvent.midiMessage);
+                    // });
+                    // var soundsin = new Timer(messageEvent.absoluteTime);
+                    // soundsin.run = function() {
+                    //     handoverMIDIout.sendMessage(messageEvent.midiMessage);
+                    //     soundsin.stop();
+                    // }
+                    // if(messageEvent.midiMessage.messageType == TempoChang){
+
+                    // }
+                    // setMaxStep(midiEvent.absoluteTime);
+
+                    // https://stackoverflow.com/a/47346821/9079640
+                    //trace("MIDI event of " + Std.string(midiEvent.absoluteTime));
+                    switch(Type.typeof(midiEvent)){
+                        case TClass(MidiMessageEvent):
+                            //trace("MIDI Message ");
+                        case TClass(TempoChangeEvent):
+                            trace("Tempo Change " + Std.string(cast(midiEvent, TempoChangeEvent).tempo));
+                        case TClass(EndTrackEvent):
+
+                        default:
+                            //trace("default MIDI message");
+                    }
+                } catch(e){
+                    trace("Werror MIDIfiler " + Std.string(e));
+                }
+            }
+        }
     }
+
+    function setMaxStep(eval:Int){
+        if(eval>maxStep) maxStep = eval;
+    }
+
+    function stepTheMIDI(handoverEvent:MidiMessageEvent){
+        
+    }
+
+    // public function testNumTracks()
+    // {
+    //     return assert(midiFile.tracks.length == 14);
+    // }
+    
 
     function sionMIDI(){
         // https://github.com/gunnbr/SiON/blob/master/src/org/si/midi/MIDIPlayer.hx
@@ -91,12 +174,18 @@ class AnMIDIyeay extends MusicBeatState{
     override function update(elapsed){
         super.update(elapsed);
 
+        if(isPlaying){
+
+            //virtualStep++;
+        }
+
         if(FlxG.keys.justPressed.ESCAPE || haveBacked){
             FlxG.switchState(new MainMenuState());
             haveBacked = false;
         }
         if(FlxG.keys.justPressed.ENTER || haveClicked){
-            sionMIDI();
+            //sionMIDI();
+            //midiFiler(Main.midiOut);
         
             haveClicked = false;
         }
@@ -113,6 +202,16 @@ class AnMIDIyeay extends MusicBeatState{
         if(FlxG.mouse.overlaps(acceptButton)){
             if(FlxG.mouse.justPressed){
                 haveClicked = true;
+            }
+        }
+    }
+
+    override function stepHit(){
+        super.stepHit();
+
+        if(isPlaying){
+            for(tracks in midiFile.tracks){
+
             }
         }
     }

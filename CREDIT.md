@@ -296,6 +296,8 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://community.haxe.org/t/solved-raspberry-pi-setup-issue/1111 rebuild lime itself for RPi with `lime rebuild lime rpi`
 - https://muut.com/i/openfl/installation:haxeopenfl-on-a-raspberry wtf rpi build not werk why
 - https://grig.tech/ idk how to MIDI pls help wtf why there is no ready to use MIDI player?!??!?!?!?!??!?!
+- https://stackoverflow.com/a/47346821/9079640 type checking haxe
+- https://gamebanana.com/mods/310251 has away3D usage!!! 3D model in HaxeFlixel
 
 # in event of git merge conflict
 use VScode and Github desktop!
