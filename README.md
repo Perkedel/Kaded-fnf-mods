@@ -176,6 +176,7 @@ We have studio in GameBanana https://gamebanana.com/studios/35672 . Just to seiz
 # Friday Night Funkin': Kade Engine
 
 ### If you want to contribute to Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/CONTRIBUTING.md) first.
+### If you want to build Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/docs/building.md).
 
 ## Friday Night Funkin'
 **Friday Night Funkin'** is a rhythm game originally made for Ludum Dare 47 "Stuck In a Loop".

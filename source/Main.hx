@@ -122,9 +122,13 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-		#if (cpp && sys && !mobile) //JOELwindows7: remember! it doesn't work in Android!
+		#if !cpp
+		framerate = 60;
+		#end
+
+		#if cpp
+		initialState = Caching; //JOELwindows7: remember! it doesn't work in Android! make sure !mobile first
 		trace("Go to caching first");
-		initialState = Caching;
 		#else
 		#end
 		trace("put game");

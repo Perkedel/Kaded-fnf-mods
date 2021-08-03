@@ -52,7 +52,7 @@ class LoadReplayState extends MusicBeatState
         #end
 		trace(controlsStrings);
 
-        controlsStrings.sort(Reflect.compare);
+        controlsStrings.sort(sortByDate);
 
 		//JOELwindows7: procedural week adder
 		initWeekJson = loadFromJson('weekList');
@@ -131,6 +131,13 @@ class LoadReplayState extends MusicBeatState
 		FlxTween.tween(backButton,{y:FlxG.height - 120},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
 		
 		super.create();
+	}
+
+	function sortByDate(a:String, b:String) {
+		var aTime = Std.parseFloat(a.split("time")[1])/1000;
+		var bTime = Std.parseFloat(b.split("time")[1])/1000;
+
+		return Std.int(bTime - aTime); // Newest first
 	}
 
     public function getWeekNumbFromSong(songName:String):Int

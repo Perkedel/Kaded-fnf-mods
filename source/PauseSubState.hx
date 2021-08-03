@@ -244,7 +244,7 @@ class PauseSubState extends MusicBeatSubstate
 			}
 		#end
 
-		if (controls.ACCEPT || haveClicked) //JOELwindows7: transfer have clicked to here
+		if ((controls.ACCEPT || haveClicked) && !FlxG.keys.pressed.ALT)
 		{
 			FlxG.mouse.visible = false; //JOELwindows7: invisiblize after select
 			var daSelected:String = menuItems[curSelected];

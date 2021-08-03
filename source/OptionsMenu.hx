@@ -44,6 +44,7 @@ class OptionsMenu extends MusicBeatState
 		]),
 		new OptionCategory("Appearance", [
 			new FullScreenOption("Toggle Fullscreen Mode"),
+			new EditorRes("Not showing the editor grid will greatly increase editor performance"),
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
 			new CamZoomOption("Toggle the camera zoom in-game."),
 			new StepManiaOption("Sets the colors of the arrows depending on quantization instead of direction."),
@@ -153,6 +154,8 @@ class OptionsMenu extends MusicBeatState
 		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
 		FlxTween.tween(leftButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left right button
 		FlxTween.tween(rightButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: yeah.
+		
+		changeSelection();
 
 		super.create();
 
