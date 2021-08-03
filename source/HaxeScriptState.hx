@@ -112,6 +112,7 @@ class HaxeScriptState {
 
     //Some other variables
     public static var hscriptSprite:Map<String,FlxSprite> = [];
+    public var haxeWiggles:Map<String,WiggleEffect> = new Map<String,WiggleEffect>();
 
     /**
      * Instance HaxeScriptState.
@@ -233,8 +234,12 @@ class HaxeScriptState {
                 case 'dad-battle': songLowercase = 'dadbattle';
                 case 'philly-nice': songLowercase = 'philly';
             }
-        
-        script = Assets.getText(Paths.hscript(rawMode? path : songLowercase + "/modchart")).trim();
+
+        var patho = Paths.hscript(songLowercase + "/modchart");
+        if (PlayState.isSM)
+            patho = PlayState.pathToSm + "/modchart";
+    
+        script = Assets.getText(Paths.hscript(rawMode? path : patho)).trim();
         trace(script);
         prog = parser.parseString(script);
         trace("parsened");
@@ -385,6 +390,40 @@ class HaxeScriptState {
         addCallback("changeDadCharacter", changeDadCharacter);
         addCallback("changeBoyfriendCharacter", changeBoyfriendCharacter);
         addCallback("getProperty", getPropertyByName);
+
+        addCallBack("setNoteWiggle", function(wiggleId) {
+            PlayState.instance.camNotes.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
+        });
+        
+        addCallBack("setSustainWiggle", function(wiggleId) {
+            PlayState.instance.camSustains.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
+        });
+
+        addCallBack("createWiggle", function(freq:Float,amplitude:Float,speed:Float) {
+            var wiggle = new WiggleEffect();
+            wiggle.waveAmplitude = amplitude;
+            wiggle.waveSpeed = speed;
+            wiggle.waveFrequency = freq;
+
+            var id = Lambda.count(haxeWiggles) + 1 + "";
+
+            haxeWiggles.set(id,wiggle);
+            return id;
+        });
+
+        addCallBack("setWiggleTime", function(wiggleId:String,time:Float) {
+            var wiggle = haxeWiggles.get(wiggleId);
+
+            wiggle.shader.uTime.value = [time];
+        });
+
+        
+        addCallBack("setWiggleAmplitude", function(wiggleId:String,amp:Float) {
+            var wiggle = haxeWiggles.get(wiggleId);
+
+            wiggle.waveAmplitude = amp;
+        });
+
         //addCallback("makeAnimatedSprite", makeAnimatedLuaSprite); //KadeDev says it's in development right now.
         addCallback("destroySprite", function(id:String) {
             var sprite = hscriptSprite.get(id);
