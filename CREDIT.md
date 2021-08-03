@@ -298,6 +298,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://grig.tech/ idk how to MIDI pls help wtf why there is no ready to use MIDI player?!??!?!?!?!??!?!
 - https://stackoverflow.com/a/47346821/9079640 type checking haxe
 - https://gamebanana.com/mods/310251 has away3D usage!!! 3D model in HaxeFlixel
+- https://www.reddit.com/r/haxe/comments/35trn5/functions_as_parameters_and_multiple_constructors/ pass function callback with type
 
 # in event of git merge conflict
 use VScode and Github desktop!

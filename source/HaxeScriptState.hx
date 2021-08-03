@@ -237,9 +237,9 @@ class HaxeScriptState {
 
         var patho = Paths.hscript(songLowercase + "/modchart");
         if (PlayState.isSM)
-            patho = PlayState.pathToSm + "/modchart";
+            patho = PlayState.pathToSm + "/modchart.hscript";
     
-        script = Assets.getText(Paths.hscript(rawMode? path : patho)).trim();
+        script = Assets.getText(rawMode? Paths.hscript(path) :patho).trim();
         trace(script);
         prog = parser.parseString(script);
         trace("parsened");
@@ -391,15 +391,15 @@ class HaxeScriptState {
         addCallback("changeBoyfriendCharacter", changeBoyfriendCharacter);
         addCallback("getProperty", getPropertyByName);
 
-        addCallBack("setNoteWiggle", function(wiggleId) {
+        addCallback("setNoteWiggle", function(wiggleId) {
             PlayState.instance.camNotes.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
         });
         
-        addCallBack("setSustainWiggle", function(wiggleId) {
+        addCallback("setSustainWiggle", function(wiggleId) {
             PlayState.instance.camSustains.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
         });
 
-        addCallBack("createWiggle", function(freq:Float,amplitude:Float,speed:Float) {
+        addCallback("createWiggle", function(freq:Float,amplitude:Float,speed:Float) {
             var wiggle = new WiggleEffect();
             wiggle.waveAmplitude = amplitude;
             wiggle.waveSpeed = speed;
@@ -411,14 +411,14 @@ class HaxeScriptState {
             return id;
         });
 
-        addCallBack("setWiggleTime", function(wiggleId:String,time:Float) {
+        addCallback("setWiggleTime", function(wiggleId:String,time:Float) {
             var wiggle = haxeWiggles.get(wiggleId);
 
             wiggle.shader.uTime.value = [time];
         });
 
         
-        addCallBack("setWiggleAmplitude", function(wiggleId:String,amp:Float) {
+        addCallback("setWiggleAmplitude", function(wiggleId:String,amp:Float) {
             var wiggle = haxeWiggles.get(wiggleId);
 
             wiggle.waveAmplitude = amp;

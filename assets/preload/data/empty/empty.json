@@ -39,6 +39,9 @@
         "uiType": "normal",
         "preferredNoteAmount": 4,
         "forceLuaModchart": false,
-        "forceHscriptModchart": false
+        "forceHscriptModchart": false,
+        "reversedCountdown": false,
+        "invisibleCountdown": false,
+        "silentCountdown": false
     }
 }

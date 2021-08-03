@@ -2104,8 +2104,13 @@ class PlayState extends MusicBeatState
 	public static var hscriptModchart:HaxeScriptState = null;
 	public static var stageHscript:HaxeScriptState = null;
 
-	function startCountdown(silent:Bool = false, invisible:Bool = false, reversed:Bool = false):Void
+	// function startCountdown(silent:Bool = false, invisible:Bool = false, reversed:Bool = false):Void
+	function startCountdown():Void //unfortunately parametering doesn't work pls help pass parameter.
 	{
+		var silent:Bool = SONG.silentCountdown;
+		var invisible:Bool = SONG.invisibleCountdown;
+		var reversed:Bool = SONG.reversedCountdown;
+
 		trace("startCountdown! Begin Funkin now");
 		inCutscene = false;
 
@@ -2192,6 +2197,7 @@ class PlayState extends MusicBeatState
 			stageScript.setVar('executeModchart', executeModchart);
 			stageScript.setVar('executeModHscript', executeModHscript);
 		}
+		#end
 
 		talking = false;
 		startedCountdown = true;
@@ -2251,7 +2257,7 @@ class PlayState extends MusicBeatState
 
 					ready.screenCenter();
 					add(ready);
-					if(invisible) ready.visible = false;
+					// if(invisible) ready.visible = false;
 					FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)

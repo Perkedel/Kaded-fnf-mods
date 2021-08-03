@@ -183,6 +183,10 @@ class ChartingState extends MusicBeatState
 				useCustomStage:false,
 				forceLuaModchart:false,
 				forceHscriptModchart:false,
+				reversedCountdown:false,
+				invisibleCountdown:false,
+				silentCountdown:false,
+				skipCountdown:false,
 			};
 		}
 

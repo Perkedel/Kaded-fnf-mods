@@ -54,6 +54,12 @@ typedef SwagSong =
 
 	var forceLuaModchart:Bool; //JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
 	var forceHscriptModchart:Bool; //JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
+
+	//JOELwindows7: Countdown funny configs
+	var reversedCountdown:Bool;
+	var invisibleCountdown:Bool;
+	var silentCountdown:Bool;
+	var skipCountdown:Bool;
 }
 
 class Song
@@ -86,6 +92,12 @@ class Song
 
 	public var forceLuaModchart:Bool = false; //JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
 	public var forceHscriptModchart:Bool = false; //JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
+
+	//JOELwindows7: Countdown funny configs
+	public var reversedCountdown:Bool = false;
+	public var invisibleCountdown:Bool = false;
+	public var silentCountdown:Bool = false;
+	public var skipCountdown:Bool = false;
 
 	public function new(song, notes, bpm)
 	{

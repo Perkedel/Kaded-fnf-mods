@@ -512,6 +512,7 @@
         "player1": "bf",
         "player2": "gf",
         "stage": "komsel",
+        "reversedCountdown": true,
         "useCustomStage": true,
         "sectionLengths": [],
         "speed": 3

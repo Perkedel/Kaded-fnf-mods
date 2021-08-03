@@ -112,6 +112,7 @@ class Caching extends MusicBeatState
 		bar.color = FlxColor.PURPLE;
 
 		add(bar);
+		bar.color = FlxColor.PURPLE; //JOELwindows7: try again after adding this time?
 
 		add(kadeLogo);
 		add(lFMLogo);

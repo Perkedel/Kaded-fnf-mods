@@ -24,72 +24,72 @@ function update(elapsed)
 {
     //Vibrate as the drumbeds
     if(
-        curBeat == 32 ||
-        curBeat == 35 ||
-        curBeat == 37 ||
-        curBeat == 40 ||
+        curBeat == 32.0 ||
+        curBeat == 35.0 ||
+        curBeat == 37.0 ||
+        curBeat == 40.0 ||
         curBeat == 41.5 ||
-        curBeat == 43 ||
-        curBeat == 45 ||
-        curBeat == 48 ||
-        curBeat == 51 ||
-        curBeat == 53 ||
-        curBeat == 56 ||
+        curBeat == 43.0 ||
+        curBeat == 45.0 ||
+        curBeat == 48.0 ||
+        curBeat == 51.0 ||
+        curBeat == 53.0 ||
+        curBeat == 56.0 ||
         curBeat == 57.5 ||
-        curBeat == 59 ||
-        curBeat == 61 ||
-        curBeat == 64 ||
-        curBeat == 67 ||
-        curBeat == 69 ||
-        curBeat == 72 ||
+        curBeat == 59.0 ||
+        curBeat == 61.0 ||
+        curBeat == 64.0 ||
+        curBeat == 67.0 ||
+        curBeat == 69.0 ||
+        curBeat == 72.0 ||
         curBeat == 73.5 ||
-        curBeat == 75 ||
-        curBeat == 77 ||
-        curBeat == 80 ||
-        curBeat == 83 ||
-        curBeat == 85 ||
-        curBeat == 88 ||
+        curBeat == 75.0 ||
+        curBeat == 77.0 ||
+        curBeat == 80.0 ||
+        curBeat == 83.0 ||
+        curBeat == 85.0 ||
+        curBeat == 88.0 ||
         curBeat == 89.5 ||
-        curBeat == 91 ||
-        curBeat == 93 ||
-        curBeat == 128 ||
-        curBeat == 131 ||
-        curBeat == 133 ||
-        curBeat == 136 ||
+        curBeat == 91.0 ||
+        curBeat == 93.0 ||
+        curBeat == 128.0 ||
+        curBeat == 131.0 ||
+        curBeat == 133.0 ||
+        curBeat == 136.0 ||
         curBeat == 137.5 ||
-        curBeat == 139 ||
-        curBeat == 141 ||
-        curBeat == 144 ||
-        curBeat == 147 ||
-        curBeat == 149 ||
-        curBeat == 152 ||
+        curBeat == 139.0 ||
+        curBeat == 141.0 ||
+        curBeat == 144.0 ||
+        curBeat == 147.0 ||
+        curBeat == 149.0 ||
+        curBeat == 152.0 ||
         curBeat == 153.5 ||
-        curBeat == 155 ||
-        curBeat == 157 ||
-        curBeat == 160 ||
-        curBeat == 163 ||
-        curBeat == 165 ||
-        curBeat == 168 ||
+        curBeat == 155.0 ||
+        curBeat == 157.0 ||
+        curBeat == 160.0 ||
+        curBeat == 163.0 ||
+        curBeat == 165.0 ||
+        curBeat == 168.0 ||
         curBeat == 169.5 ||
-        curBeat == 171 ||
-        curBeat == 173 ||
-        curBeat == 176 ||
-        curBeat == 179 ||
-        curBeat == 181 ||
-        curBeat == 184 ||
-        curBeat == 185 ||
-        curBeat == 187 ||
-        curBeat == 189 ||
-        curBeat == 192 ||
-        curBeat == 224 ||
+        curBeat == 171.0 ||
+        curBeat == 173.0 ||
+        curBeat == 176.0 ||
+        curBeat == 179.0 ||
+        curBeat == 181.0 ||
+        curBeat == 184.0 ||
+        curBeat == 185.0 ||
+        curBeat == 187.0 ||
+        curBeat == 189.0 ||
+        curBeat == 192.0 ||
+        curBeat == 224.0 ||
         curBeat == 225.5 ||
-        curBeat == 228 ||
+        curBeat == 228.0 ||
         curBeat == 229.5 ||
-        curBeat == 236 ||
+        curBeat == 236.0 ||
         curBeat == 237.5 ||
-        curBeat == 244 ||
-        curBeat == 252 ||
-        curBeat == 256
+        curBeat == 244.0 ||
+        curBeat == 252.0 ||
+        curBeat == 256.0
         )
     {
         if(!triggeredAlready){
@@ -102,12 +102,12 @@ function update(elapsed)
 
     //Amen break trilled
     if(
-        curBeat == 104 ||
-        curBeat == 102 ||
-        curBeat == 200 ||
-        curBeat == 216 ||
-        curBeat == 232 ||
-        curBeat == 248
+        curBeat == 104.0 ||
+        curBeat == 102.0 ||
+        curBeat == 200.0 ||
+        curBeat == 216.0 ||
+        curBeat == 232.0 ||
+        curBeat == 248.0
     ){
         if(!triggeredAlready2){
             vibrate(0, 125, 500);
@@ -117,8 +117,8 @@ function update(elapsed)
 
     //turtartatar
     if(
-        curBeat == 240 ||
-        curBeat == 247
+        curBeat == 240.0 ||
+        curBeat == 247.0
     ){
         if(!triggeredAlready3){
             vibrate(0, 100, 500);
