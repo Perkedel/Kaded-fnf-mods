@@ -511,6 +511,8 @@
         "needsVoices": false,
         "player1": "bf",
         "player2": "gf",
+        "stage": "komsel",
+        "useCustomStage": true,
         "sectionLengths": [],
         "speed": 3
     }
