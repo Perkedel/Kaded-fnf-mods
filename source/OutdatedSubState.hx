@@ -37,6 +37,11 @@ class OutdatedSubState extends MusicBeatState
 	override function create()
 	{
 		super.create();
+		//JOELwindows7: put bekgrondes yesh
+		installStarfield2D(0,0,FlxG.width,FlxG.height);
+		installDefaultBekgron();
+		defaultBekgron.visible = false;
+
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('week54prototype', 'shared'));
 		bg.scale.x *= 1.55;
 		bg.scale.y *= 1.55;
@@ -146,6 +151,7 @@ class OutdatedSubState extends MusicBeatState
 			case 1: //Last Funkin Moment
 				lfmLogo.visible = true;
 				teks.visible = true;
+				defaultBekgron.visible = true;
 			case 2: //Your mod
 				mitsake.visible = false;
 				trace("visible teks your mod");

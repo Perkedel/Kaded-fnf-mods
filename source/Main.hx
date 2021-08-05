@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.plugin.screengrab.FlxScreenGrab;
+import flixel.input.keyboard.FlxKey;
 import grig.midi.MidiOut;
 import grig.midi.MidiIn;
 import flixel.util.FlxTimer;
@@ -136,6 +138,12 @@ class Main extends Sprite
 		//JOELwindows7: nope, Caching still crashes in Android.
 		addChild(game);
 		trace("added game");
+
+		//JOELwindows7: Friggin Screen Grab functions
+		//inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
+		//it had screenshoter so why not?
+		// 
+		FlxScreenGrab.defineHotKeys([FlxKey.PRINTSCREEN, FlxKey.F6], true, false);
 
 		//GrowtopiaFli's Video Cutscener
 		//The code https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/

@@ -36,6 +36,9 @@ class LoadingState extends MusicBeatState
 	
 	override function create()
 	{
+		//JOELwindows7: bekgron stuff
+		installStarfield3D(0,0,FlxG.width,FlxG.height);
+
 		logo = new FlxSprite(-150, -100);
 		logo.frames = Paths.getSparrowAtlas('logoBumpin');
 		if(FlxG.save.data.antialiasing)

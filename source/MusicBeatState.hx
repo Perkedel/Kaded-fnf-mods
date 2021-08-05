@@ -1,5 +1,8 @@
 package;
 
+import flixel.addons.display.FlxBackdrop;
+import flixel.group.FlxGroup;
+import flixel.addons.display.FlxStarField;
 import plugins.sprites.DVDScreenSaver;
 import flixel.tweens.FlxEase;
 import flixel.FlxCamera;
@@ -64,10 +67,16 @@ class MusicBeatState extends FlxUIState
 	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
 	var retryButton:FlxSprite; //JOELwindows7: the retry button here
 	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
+	//JOELwindows7: starfields here.
+	var starfield2D:FlxStarField2D;
+	var starfield3D:FlxStarField3D;
+	var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
+	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
 	//var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
 	var hourGlass:FlxSprite; //JOELwindows7: animated gravity hourglass Piskel
 	public var onScreenGameplayButtons:OnScreenGameplayButtons; //JOELwindows7: the touchscreen buttons here
 	public static var dueAdded:Bool = false;
+	var defaultBekgron:FlxBackdrop;
 
 	public var camControl:FlxCamera;
 
@@ -481,5 +490,57 @@ class MusicBeatState extends FlxUIState
 			*/
 			onScreenGameplayButtons.visible = false;
 		}
+	}
+
+	//JOELwindows7: install starfield
+	function installStarfield2D(
+		x:Int=0,
+		y:Int=0,
+		width:Int=0,
+		height:Int=0,
+		starAmount:Int=300, 
+		inArray:Bool = false
+		):FlxStarField2D
+		{
+		if(inArray){
+			var starfielding = new FlxStarField2D(x,y,width,height,starAmount);
+			var id:Int = multiStarfield2D.length;
+			starfielding.ID = id;
+			multiStarfield2D.add(starfielding);
+			add(starfielding);
+			return starfielding;
+		} else {
+			starfield2D = new FlxStarField2D(x,y,width,height,starAmount);
+			add(starfield2D);
+			return starfield2D;
+		}
+	}
+	function installStarfield3D(
+		x:Int=0,
+		y:Int=0,
+		width:Int=0,
+		height:Int=0,
+		starAmount:Int=300, 
+		inArray:Bool = false
+		):FlxStarField3D
+		{
+		if(inArray){
+			var starfielding = new FlxStarField3D(x,y,width,height,starAmount);
+			var id:Int = multiStarfield2D.length;
+			starfielding.ID = id;
+			multiStarfield3D.add(starfielding);
+			add(starfielding);
+			return starfielding;
+		} else {
+			starfield3D = new FlxStarField3D(x,y,width,height,starAmount);
+			add(starfield3D);
+			return starfield3D;
+		}
+	}
+	function installDefaultBekgron(){
+		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground'),1,0,true,false);
+		defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
+		defaultBekgron.updateHitbox();
+		add(defaultBekgron);
 	}
 }

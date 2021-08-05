@@ -111,6 +111,10 @@ class Caching extends MusicBeatState
 		var bar = new FlxBar(10,FlxG.height - 100,FlxBarFillDirection.LEFT_TO_RIGHT,FlxG.width,40,this,"done",0,toBeDone);
 		bar.color = FlxColor.PURPLE;
 
+		//JOELwindows7:bekgrond stuffer
+		installStarfield3D(0,0,FlxG.width,FlxG.height);
+		starfield3D.alpha = 0;
+
 		add(bar);
 		bar.color = FlxColor.PURPLE; //JOELwindows7: try again after adding this time?
 
@@ -131,6 +135,7 @@ class Caching extends MusicBeatState
 				if (toBeDone != 0 && done != toBeDone)
 					{
 						var alpha = HelperFunctions.truncateFloat(done / toBeDone * 100,2) / 100;
+						starfield3D.alpha = alpha;
 						kadeLogo.alpha = alpha;
 						lFMLogo.alpha = alpha;
 						text.alpha = alpha;

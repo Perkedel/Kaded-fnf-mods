@@ -82,6 +82,8 @@ class OptionsMenu extends MusicBeatState
 			new GraphicLoading("On startup, cache every character. Significantly decrease load times. (HIGH MEMORY)"),
 			new ExportSaveToJson("BETA! Export entire save data into JSON file"),
 			new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"),
+			new AnStarfieldTestOption("EXPERIMENTAL! Test FlxStarfield"),
+			new AnDefaultBekgronTestOption("EXPERIMENTAL! Test default background of Hexagon Engine"),
 			new BotPlay("Showcase your charts and mods with autoplay.")
 		]),
 		

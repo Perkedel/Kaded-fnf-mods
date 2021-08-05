@@ -300,6 +300,8 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/mods/310251 has away3D usage!!! 3D model in HaxeFlixel
 - https://www.reddit.com/r/haxe/comments/35trn5/functions_as_parameters_and_multiple_constructors/ pass function callback with type
 - https://gamebanana.com/threads/220018?post=9355357 Top Failed (& probably toxic) post by JOELwindows7. Name (sticker given). thancc BlackSwordsman (Epic fail), Lone-wolf (Cheesy), & Patrick Grady (Cool Story Bro), you're awesome (sarcasm intended). See you soon in LFM lore story.
+- https://api.haxeflixel.com/flixel/addons/plugin/screengrab/FlxScreenGrab.html screengrab how to in HaxeFlixel
+- https://gamebanana.com/mods/55620 FNF but it's LOVE2d Lua instead of Haxe
 
 # in event of git merge conflict
 use VScode and Github desktop!

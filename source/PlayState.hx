@@ -415,6 +415,10 @@ class PlayState extends MusicBeatState
 		executeModchart = false; // FORCE disable for non cpp targets
 		executeStageScript = false; //JOELwindows7: this too
 		#end
+		// if(SONG.forceLuaModchart == null){
+		// 	executeModchart = SONG.forceLuaModchart = false;
+		// }
+		trace("forced hscript exist is " + Std.string(SONG.forceLuaModchart));
 
 		trace('Mod chart: ' + executeModchart + " - " + Paths.lua(songLowercase + "/modchart"));
 
@@ -426,6 +430,9 @@ class PlayState extends MusicBeatState
 		#else
 		executeModHscript = SONG.forceHscriptModchart;
 		#end
+		// if(SONG.forceHscriptModchart == null){
+		// 	executeModHscript = SONG.forceHscriptModchart = false;
+		// }
 		trace("forced hscript exist is " + Std.string(SONG.forceHscriptModchart));
 		if (executeModHscript)
 			PlayStateChangeables.Optimize = false;
@@ -3415,6 +3422,7 @@ class PlayState extends MusicBeatState
 			#if (windows && cpp)
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
+			removeTouchScreenButtons();
 			FlxG.switchState(new ChartingState());
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
@@ -3441,6 +3449,7 @@ class PlayState extends MusicBeatState
 				stageHscript = null;
 			}
 
+			
 			haveDebugSevened = false;
 		}
 
@@ -3484,7 +3493,7 @@ class PlayState extends MusicBeatState
 				FlxG.stage.window.onFocusIn.remove(focusIn);
 				removedVideo = true;
 			}
-
+			removeTouchScreenButtons();
 			FlxG.switchState(new AnimationDebug(SONG.player2));
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
@@ -3513,6 +3522,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.ZERO)
 		{
+			removeTouchScreenButtons();
 			FlxG.switchState(new AnimationDebug(SONG.player1));
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
@@ -3660,6 +3670,7 @@ class PlayState extends MusicBeatState
 									{
 										if (!triggeredAlready)
 										{
+											randomizeColoring(); //JOELwindows7: change the stage light color!
 											gf.playAnim('cheer');
 											triggeredAlready = true;
 										}
@@ -3678,7 +3689,7 @@ class PlayState extends MusicBeatState
 										{
 											if (!triggeredAlready)
 											{
-												randomizeColoring(); //JOELwindows7: change the stage light color!
+												//randomizeColoring(); //JOELwindows7: change the stage light color!
 												gf.playAnim('cheer');
 												triggeredAlready = true;
 											}
@@ -6433,16 +6444,25 @@ class PlayState extends MusicBeatState
 			trace("forced stage Hscript exist is " + Std.string(customStage.forceHscriptModchart));
 
 			#if ((windows) && cpp)
+			spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
 			if(executeStageScript || executeStageHscript){
 				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
-			} else {
-				spawnStageImages(customStage);
 			}
+			// if(executeStageScript || executeStageHscript){
+			// 	spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+			// } else {
+			// 	spawnStageImages(customStage);
+			// }
 			#else
+			//wtf bro, don't be racist! both must be supported man
+			// if(executeStageHscript){
+			// 	spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+			// } else {
+			// 	spawnStageImages(customStage);
+			// }
+			spawnStageImages(customStage);
 			if(executeStageHscript){
 				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
-			} else {
-				spawnStageImages(customStage);
 			}
 			#end	
 		}
@@ -6499,4 +6519,31 @@ class PlayState extends MusicBeatState
 			default:
 		}
 	}
+
+	//JOELwindows7: special starfielder for playstate
+	public function installStarfield(
+		is3D:Bool = false,
+		x:Float=0, y:Float=0,
+		width:Float=0, height:Float=0,
+		starAmount:Int=300,
+		behind:Bool = true
+		){
+			if(behind){
+				//yeet elements first & put back again later.
+				remove(gf);
+				remove(boyfriend);
+				remove(dad);
+			}
+			if(is3D){
+				installStarfield3D(Std.int(x),Std.int(y),Std.int(width),Std.int(height),starAmount);
+			} else {
+				installStarfield2D(Std.int(x),Std.int(y),Std.int(width),Std.int(height),starAmount);
+			}
+			if(behind){
+				//here put back all again.
+				add(gf);
+				add(boyfriend);
+				add(dad);
+			}
+		}
 }

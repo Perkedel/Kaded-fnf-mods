@@ -3,6 +3,7 @@ package;
 import experiments.AnMIDIyeay;
 import experiments.AnWebmer;
 import experiments.LimeAudioBufferTester;
+import experiments.*;
 import openfl.net.FileFilter;
 import haxe.Json;
 import openfl.net.FileReference;
@@ -1515,6 +1516,50 @@ class AnVideoCutscenerTestOption extends Option{
 		}
 }
 
+//JOELwindows7: quick way testing Starfield
+class AnStarfieldTestOption extends Option{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+			//FlxG.switchState(new LoadReplayState()); //or open new state.
+			FlxG.switchState(new AnStarfielde());
+			return false;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Starfield Test";
+		}
+}
+
+//JOELwindows7: quick way testing default bekgrond
+class AnDefaultBekgronTestOption extends Option{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+			//FlxG.switchState(new LoadReplayState()); //or open new state.
+			FlxG.switchState(new AnDefaultBekgronde());
+			return false;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Default Background Test";
+		}
+}
+
 //JOELwindows7: quick way testing MIDI
 class AnMIDITestOption extends Option{
 	public function new(desc:String)
@@ -1537,6 +1582,7 @@ class AnMIDITestOption extends Option{
 		}
 }
 
+//JOELwindows7: Force all weeks to unlock
 class PreUnlockAllWeeksOption extends Option{
 	public function new(desc:String)
 	{
@@ -1557,6 +1603,7 @@ class PreUnlockAllWeeksOption extends Option{
 	}
 }
 
+//JOELwindows7: Vibration had delay. offset it this
 class VibrationOffsetOption extends Option{
 	public function new(desc:String)
 	{

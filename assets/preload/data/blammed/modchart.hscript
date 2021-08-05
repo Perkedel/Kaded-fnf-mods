@@ -10,6 +10,10 @@ var triggeredAlready = false;
 var triggeredAlready2 = false;
 var triggeredAlready3 = false;
 
+var trogger = false;
+var troggir = false;
+var troggur = false;
+
 function loaded(song)
 {
 
@@ -24,38 +28,15 @@ function update(elapsed)
 {
     //Vibrate as the drumbeds
     if(
-        curBeat == 32.0 ||
-        curBeat == 35.0 ||
-        curBeat == 37.0 ||
-        curBeat == 40.0 ||
+        
         curBeat == 41.5 ||
-        curBeat == 43.0 ||
-        curBeat == 45.0 ||
-        curBeat == 48.0 ||
-        curBeat == 51.0 ||
-        curBeat == 53.0 ||
-        curBeat == 56.0 ||
+        
         curBeat == 57.5 ||
-        curBeat == 59.0 ||
-        curBeat == 61.0 ||
-        curBeat == 64.0 ||
-        curBeat == 67.0 ||
-        curBeat == 69.0 ||
-        curBeat == 72.0 ||
+        
         curBeat == 73.5 ||
-        curBeat == 75.0 ||
-        curBeat == 77.0 ||
-        curBeat == 80.0 ||
-        curBeat == 83.0 ||
-        curBeat == 85.0 ||
-        curBeat == 88.0 ||
+        
         curBeat == 89.5 ||
-        curBeat == 91.0 ||
-        curBeat == 93.0 ||
-        curBeat == 128.0 ||
-        curBeat == 131.0 ||
-        curBeat == 133.0 ||
-        curBeat == 136.0 ||
+        
         curBeat == 137.5 ||
         curBeat == 139.0 ||
         curBeat == 141.0 ||
@@ -64,32 +45,11 @@ function update(elapsed)
         curBeat == 149.0 ||
         curBeat == 152.0 ||
         curBeat == 153.5 ||
-        curBeat == 155.0 ||
-        curBeat == 157.0 ||
-        curBeat == 160.0 ||
-        curBeat == 163.0 ||
-        curBeat == 165.0 ||
-        curBeat == 168.0 ||
+        
         curBeat == 169.5 ||
-        curBeat == 171.0 ||
-        curBeat == 173.0 ||
-        curBeat == 176.0 ||
-        curBeat == 179.0 ||
-        curBeat == 181.0 ||
-        curBeat == 184.0 ||
-        curBeat == 185.0 ||
-        curBeat == 187.0 ||
-        curBeat == 189.0 ||
-        curBeat == 192.0 ||
-        curBeat == 224.0 ||
+        
         curBeat == 225.5 ||
-        curBeat == 228.0 ||
-        curBeat == 229.5 ||
-        curBeat == 236.0 ||
-        curBeat == 237.5 ||
-        curBeat == 244.0 ||
-        curBeat == 252.0 ||
-        curBeat == 256.0
+        
         )
     {
         if(!triggeredAlready){
@@ -129,7 +89,101 @@ function update(elapsed)
 
 function beatHit(beat)
 {
-    
+    //Auxilary since it didn't work anymore if floatered.
+    //exact beat stuff
+    if(
+        beat == 32 ||
+        beat == 35 ||
+        beat == 37 ||
+        beat == 40 ||
+        beat == 43 ||
+        beat == 45 ||
+        beat == 48 ||
+        beat == 51 ||
+        beat == 53 ||
+        beat == 56 ||
+        beat == 59 ||
+        beat == 61 ||
+        beat == 64 ||
+        beat == 67 ||
+        beat == 69 ||
+        beat == 72 ||
+        beat == 75 ||
+        beat == 77 ||
+        beat == 80 ||
+        beat == 83 ||
+        beat == 85 ||
+        beat == 88 ||
+        beat == 91 ||
+        beat == 93 ||
+        beat == 128 ||
+        beat == 131 ||
+        beat == 133 ||
+        beat == 136 ||
+        beat == 139 ||
+        beat == 141 ||
+        beat == 144 ||
+        beat == 147 ||
+        beat == 149 ||
+        beat == 152 ||
+        beat == 155 ||
+        beat == 157 ||
+        beat == 160 ||
+        beat == 163 ||
+        beat == 165 ||
+        beat == 168 ||
+        beat == 171 ||
+        beat == 173 ||
+        beat == 176 ||
+        beat == 179 ||
+        beat == 181 ||
+        beat == 184 ||
+        beat == 185 ||
+        beat == 187 ||
+        beat == 189 ||
+        beat == 192 ||
+        beat == 224 ||
+        beat == 228 ||
+        beat == 229 ||
+        beat == 236 ||
+        beat == 237 ||
+        beat == 244 ||
+        beat == 252 ||
+        beat == 256
+    ){
+        if(!trogger){
+            vibrate(0,125,0);
+            trace("vibrate pls");
+
+            trogger = true;
+        }
+    } else trogger = false;
+
+    //Amen break trilled
+    if(
+        beat == 104 ||
+        beat == 102 ||
+        beat == 200 ||
+        beat == 216 ||
+        beat == 232 ||
+        beat == 248
+    ){
+        if(!troggir){
+            vibrate(0, 125, 500);
+            troggir = true;
+        }
+    } else troggir = false;
+
+    //turtartatar
+    if(
+        beat == 240 ||
+        beat == 247
+    ){
+        if(!troggur){
+            vibrate(0, 100, 500);
+            troggur = true;
+        }
+    } else troggur = false;
 }
 
 function stepHit(step)
