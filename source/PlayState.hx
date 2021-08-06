@@ -1467,12 +1467,26 @@ class PlayState extends MusicBeatState
 			case 'placeholder':
 				dad.y += 100;
 				dad.x -= 150;
+				camPos.set(dad.getGraphicMidpoint().x + 220, dad.getGraphicMidpoint().y);
 			default:
 				trace("Oh no! it looks like you forgot the offset position data for Player 2 " + SONG.player2);
 				FlxG.log.add("Forgot offset position data for Player2 " + SONG.player2);
 		}
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
+
+		// JOELwindows7: REPOSITIONING PER BOYFRIEND
+		switch(SONG.player1)
+		{
+			case 'bf':
+				//No need, the stage repositionings has already based on bf itself
+				// its positioning has been for bf himself
+			case 'placeholder':
+				boyfriend.y -= 220;
+			default:
+				//no repositioning
+		}
+		// Optional unless your character is not default bf
 
 		// REPOSITIONING PER STAGE
 		switch (curStage)
