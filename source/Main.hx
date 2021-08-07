@@ -143,7 +143,9 @@ class Main extends Sprite
 		//inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
 		//it had screenshoter so why not?
 		// 
+		#if !js
 		FlxScreenGrab.defineHotKeys([FlxKey.PRINTSCREEN, FlxKey.F6], true, false);
+		#end
 
 		//GrowtopiaFli's Video Cutscener
 		//The code https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/

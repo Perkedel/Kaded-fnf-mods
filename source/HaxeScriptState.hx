@@ -236,8 +236,10 @@ class HaxeScriptState {
             }
 
         var patho = Paths.hscript(songLowercase + "/modchart");
+        #if sys
         if (PlayState.isSM)
             patho = PlayState.pathToSm + "/modchart.hscript";
+        #end
     
         script = Assets.getText(rawMode? Paths.hscript(path) :patho).trim();
         trace(script);

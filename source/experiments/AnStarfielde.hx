@@ -53,7 +53,9 @@ class AnStarfielde extends MusicBeatState{
             haveClicked = false;
         }
         if(FlxG.keys.justPressed.V){
+            #if !js
            FlxScreenGrab.grab(false,false);
+           #end
         }
 
         if(FlxG.mouse.overlaps(backButton)){
