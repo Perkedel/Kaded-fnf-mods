@@ -302,6 +302,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/threads/220018?post=9355357 Top Failed (& probably toxic) post by JOELwindows7. Name (sticker given). thancc BlackSwordsman (Epic fail), Lone-wolf (Cheesy), & Patrick Grady (Cool Story Bro), you're awesome (sarcasm intended). See you soon in LFM lore story.
 - https://api.haxeflixel.com/flixel/addons/plugin/screengrab/FlxScreenGrab.html screengrab how to in HaxeFlixel
 - https://gamebanana.com/mods/55620 FNF but it's LOVE2d Lua instead of Haxe
+- https://gamebanana.com/mods/311713 Shaggy keys in KE 1.5.4
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -409,6 +410,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://gamebanana.com/mods/298149 inspiration for using copyrighted ideas which in this case, Disney Pixar, Luca. yep. that's it.
 - https://odysee.com/@JOELwindows7:a/OldMacDonald-Had-a-bin-cannon:2?r=72GvXbostV9AxDEqgXmRx9Sp1hBw7qqx OldMcdonal had a bin cannot lol Bill Wurtz. full credit in end of video & that description.
 - https://github.com/kem0x/openfl-haxeflixel-video-code/tree/main/source/ndll webm helper to count frames right wawa instead of manually `ffprobe`.
+- http://songsindonesia.didiharyadi.com/midi/index.html (WARNING: except Indonesia Raya and some: For Personal & Education Purpose only) Didi Haryadi MIDIs. take Indonesia Raya MIDI cover.
+- https://api.haxeflixel.com/flixel/system/FlxPreloader.html polgon Preloadering
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

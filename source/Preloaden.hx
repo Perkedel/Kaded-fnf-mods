@@ -48,19 +48,19 @@ class Preloaden extends FlxBasePreloader
         this._height = Std.int(Lib.current.stage.stageHeight / buffer.scaleY);
          
         var ratio:Float = this._width / 2560; //This allows us to scale assets depending on the size of the screen.
-        var ratiu:Float = this._height / 2560;
+        var ratiu:Float = this._height / 8 * .04;
          
         logo = new Sprite();
         logo.addChild(new Bitmap(new KadeEngineLogo(0,0))); //Sets the graphic of the sprite to a Bitmap object, which uses our embedded BitmapData class.
         logo.scaleX = logo.scaleY = ratio;
-        logo.x = ((this._width - logo.width) / 2) - 120;
-        logo.y = ((this._height - logo.height) / 2) - 150;
+        logo.x = ((this._width - logo.width) / 2) ;
+        logo.y = ((this._height - logo.height) / 2) - 50;
         buffer.addChild(logo); //Adds the graphic to the NMEPreloader's buffer.
 
         icon = new Sprite();
         icon.addChild(new Bitmap(new LFMIcon(0,0)));
         icon.scaleX = icon.scaleY = ratio;
-        icon.x = ((this._width - icon.width) / 2) - 20;
+        icon.x = ((this._width - icon.width) / 2);
         icon.y = ((this._height - icon.height) / 2) + 100;
         buffer.addChild(icon);
 
@@ -108,4 +108,13 @@ class Preloaden extends FlxBasePreloader
         
         super.update(Percent);
     }
+
+    // override function onUpdate(bytesLoaded:Int, bytseTotal:Int){
+    //     //Size is not accurate in chrome.
+    //     #if web
+
+    //     #else
+    //         super.onUpdate(bytesLoaded, bytseTotal);
+    //     #end
+    // }
 }
