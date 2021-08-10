@@ -412,6 +412,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/kem0x/openfl-haxeflixel-video-code/tree/main/source/ndll webm helper to count frames right wawa instead of manually `ffprobe`.
 - http://songsindonesia.didiharyadi.com/midi/index.html (WARNING: except Indonesia Raya and some: For Personal & Education Purpose only) Didi Haryadi MIDIs. take Indonesia Raya MIDI cover.
 - https://api.haxeflixel.com/flixel/system/FlxPreloader.html polgon Preloadering
+- https://gamebanana.com/blogs/19216 BonkMayker's meme of Old web. Check this project's README.md to see in action. you can implement yourself too in comments and post anywhere that complies with the HTML syntaxes.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

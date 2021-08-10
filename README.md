@@ -148,9 +148,17 @@ as always, credits to all stuff involved will be on [`CREDIT.md`](https://github
 ## some nice articles
 [![]("https://gamebanana.com/tuts/embeddables/14079?type=large")](https://gamebanana.com/tuts/14079)
 
-## My Miku (Miku Expo 2021)
+### My Miku (Miku Expo 2021)
 - http://paint.mikuexpo.com/studio.php?id=57afdd4ffe146803efca580c79002680 Hoyheid
 - http://paint.mikuexpo.com/studio.php?id=39c96c01e2f6d5574f7c4afca74785e2 Genos Miku
+
+### Old web meme, by BonkMaykr, one of the greatest Uberstylist here at GameBanana
+https://gamebanana.com/blogs/19216  
+[![]("https://gamebanana.com/blogs/embeddables/19216?type=large")](https://gamebanana.com/blogs/19216)
+
+<div style="border:10px inset #cccccc;background:url(https://bonkmaykr.xyz/dream/img/center.png),url(https://bonkmaykr.xyz/dream/img/bg2.webp);background-position:center center, center center;background-repeat:no-repeat no-repeat, repeat repeat;display:block;height:400px;background-attachment:scroll, fixed;"></div>
+
+yeah lol
 
 ## todo
 - ~~redecorate for Perkedel temp week works~~
@@ -161,6 +169,8 @@ as always, credits to all stuff involved will be on [`CREDIT.md`](https://github
 
 ## studio
 We have studio in GameBanana https://gamebanana.com/studios/35672 . Just to seize the opportunity before anyone impersonate our brand, as well as to contain and collects our mods in GameBanana yay.
+
+edit: goned the day. we lack more than 1 person after 1 week.
 
 ![](https://github.com/Perkedel/kaded-fnf-mods/raw/stable/LastFunkinMomentsLogo.png)
 
