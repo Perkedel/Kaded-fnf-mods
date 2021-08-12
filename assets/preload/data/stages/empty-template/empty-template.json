@@ -27,6 +27,7 @@
         "gfPosition": [0, -100],
         "dadPosition": [-500, 0],
         "forceLuaModchart": false,
-        "forceHscriptModchart": false
+        "forceHscriptModchart": false,
+        "ignoreMainImages": false
     }
 }

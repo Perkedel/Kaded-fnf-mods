@@ -6366,7 +6366,7 @@ class PlayState extends MusicBeatState
 				}
 				//anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
 				anBgThing.active = dataBg.active;
-				anBgThing.antialiasing = dataBg.antialiasing;
+				anBgThing.antialiasing = dataBg.antialiasing && FlxG.save.data.antialiasing;
 				anBgThing.scrollFactor.set(dataBg.scrollFactor[0],dataBg.scrollFactor[1]);
 				anBgThing.ID = i;
 				anBgThing.updateHitbox();
@@ -6400,9 +6400,10 @@ class PlayState extends MusicBeatState
 		}
 		#end
 		if(executeStageHscript){
-			trace('stage script: ' + executeStageHscript + " - " + Paths.hscript(daPath)); //JOELwindows7: check too
+			trace('stage Hscript: ' + executeStageHscript + " - " + Paths.hscript(daPath)); //JOELwindows7: check too
 
 			stageHscript = HaxeScriptState.createModchartState(true,daPath);
+			stageHscript.executeState('loaded',[toCompatCase(SONG.stage)]);
 
 			stageHscript.setVar("originalColors", multiOriginalColor);
 			stageHscript.setVar("areChromaScreen", multiIsChromaScreen);
@@ -6426,7 +6427,10 @@ class PlayState extends MusicBeatState
 			add(trailAll);
 			#if ((windows) && sys)
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
-				executeStageScript = FileSystem.exists(Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
+				executeStageScript = FileSystem.exists(
+					Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript")) ||
+					customStage.forceLuaModchart
+					;
 			#elseif (windows)
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
 			{
@@ -6457,28 +6461,11 @@ class PlayState extends MusicBeatState
 			#end
 			trace("forced stage Hscript exist is " + Std.string(customStage.forceHscriptModchart));
 
-			#if ((windows) && cpp)
-			spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
-			if(executeStageScript || executeStageHscript){
+			if(!customStage.ignoreMainImages)
+				spawnStageImages(customStage);
+			if(#if ((windows) && cpp) executeStageScript || #end executeStageHscript){
 				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
 			}
-			// if(executeStageScript || executeStageHscript){
-			// 	spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
-			// } else {
-			// 	spawnStageImages(customStage);
-			// }
-			#else
-			//wtf bro, don't be racist! both must be supported man
-			// if(executeStageHscript){
-			// 	spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
-			// } else {
-			// 	spawnStageImages(customStage);
-			// }
-			spawnStageImages(customStage);
-			if(executeStageHscript){
-				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
-			}
-			#end	
 		}
 	}
 

@@ -1,0 +1,51 @@
+{
+    "stage": {
+        "name": "Empty Template Stage",
+        "useStageScript": true,
+        "backgroundImages": [{
+            "callName": "bg",
+            "generateMode": false,
+            "active": false,
+            "graphic": "FlagHoister-bg",
+            "isXML": false,
+            "frameXMLName": "anBg",
+            "prefixXMLName": "idle",
+            "frameRate": 24,
+            "mirrored": false,
+            "position": [-1750, -1000],
+            "scrollFactor": [1, 1],
+            "size": [128, 128],
+            "scale": [3, 3],
+            "colorable": false,
+            "initColor": "white",
+            "initVisible": true,
+            "antialiasing": true
+        }, {
+            "callName": "front",
+            "generateMode": false,
+            "active": false,
+            "graphic": "FlagHoister-front",
+            "isXML": false,
+            "frameXMLName": "anBg",
+            "prefixXMLName": "idle",
+            "frameRate": 24,
+            "mirrored": false,
+            "position": [-1750, -1000],
+            "scrollFactor": [1, 1],
+            "size": [128, 128],
+            "scale": [3, 3],
+            "colorable": false,
+            "initColor": "white",
+            "initVisible": true,
+            "antialiasing": true
+        }],
+        "isHalloween": false,
+        "defaultCamZoom": 0.1,
+        "bfPosition": [500, 100],
+        "gfPosition": [-350, 100],
+        "dadPosition": [-400, 100],
+        "forceLuaModchart": false,
+        "forceHscriptModchart": true,
+        "ignoreMainImages": false
+    }
+}
