@@ -1,5 +1,6 @@
 package experiments;
 
+import plugins.sprites.QmovephBackground;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.addons.display.FlxStarField;
 import flixel.FlxSprite;
@@ -15,7 +16,13 @@ class AnDefaultBekgronde extends MusicBeatState{
     override function create(){
         super.create();
 
-        installDefaultBekgron();
+        // installDefaultBekgron();
+        try{
+            var defaultBackgrounder = new QmovephBackground();
+            add(defaultBackgrounder);
+        } catch(e){
+            trace(e);
+        }
 
         infoText = new FlxText();
         infoText.text = "Default Bekgron Test\n" +

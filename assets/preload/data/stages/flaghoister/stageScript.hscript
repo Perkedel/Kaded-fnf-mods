@@ -9,7 +9,7 @@
 function loaded(song)
 {
     //Manually override camera pls
-    setCamPosition(0,0);
+    //setCamPosition(0,0);
 }
 
 function start(song) 

@@ -1,5 +1,6 @@
 package;
 
+import plugins.sprites.QmovephBackground;
 import GalleryAchievements;
 #if sys
 import smTools.SMFile;
@@ -52,6 +53,7 @@ class TitleState extends MusicBeatState
 	var ngSpr:FlxSprite;
 	var perkedelSpr:FlxSprite; //JOELwindows7: the Perkedel Logo
 	var odyseeSpr:FlxSprite; //JOELwindows7: the Odysee Logo
+	var defaultBackgrounder:QmovephBackground; //JOELwindows7: the default background
 
 	var curWacky:Array<String> = [];
 
@@ -213,6 +215,10 @@ class TitleState extends MusicBeatState
 
 		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
+
+		//JOELwindows7: the default background pls
+		// defaultBackgrounder = new QmovephBackground();
+		// credGroup.add(defaultBackgrounder);
 
 		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
 		credTextShit.screenCenter();

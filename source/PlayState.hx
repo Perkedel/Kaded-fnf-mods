@@ -2208,6 +2208,9 @@ class PlayState extends MusicBeatState
 			hscriptModchart.setVar('executeModchart', executeModchart);
 			hscriptModchart.setVar('executeModHscript', executeModHscript);
 		}
+		if (executeStageHscript && stageHscript != null){
+			stageHscript.executeState('start',[songLowercase]);
+		}
 		//JOELwindows7: tell Lua script whether hscript is running too
 		#if ((windows) && cpp)
 		if(executeModchart){
@@ -6393,8 +6396,8 @@ class PlayState extends MusicBeatState
 			trace('stage script: ' + executeStageScript + " - " + Paths.lua(daPath)); //JOELwindows7: check too
 
 			stageScript = ModchartState.createModchartState(true,daPath);
-			stageScript.executeState('loaded',[toCompatCase(SONG.stage)]);
-
+			stageScript.executeState('loaded',[toCompatCase(SONG.song)]);
+			trace("loaded it up stage lua script");
 			stageScript.setVar("originalColors", multiOriginalColor);
 			stageScript.setVar("areChromaScreen", multiIsChromaScreen);
 		}
@@ -6403,11 +6406,13 @@ class PlayState extends MusicBeatState
 			trace('stage Hscript: ' + executeStageHscript + " - " + Paths.hscript(daPath)); //JOELwindows7: check too
 
 			stageHscript = HaxeScriptState.createModchartState(true,daPath);
-			stageHscript.executeState('loaded',[toCompatCase(SONG.stage)]);
-
+			stageHscript.executeState('loaded',[toCompatCase(SONG.song)]);
+			trace("loaded it up stage haxe script");
 			stageHscript.setVar("originalColors", multiOriginalColor);
 			stageHscript.setVar("areChromaScreen", multiIsChromaScreen);
 		}
+
+		trace("Spawned the stage script yeay");
 	}
 
 	//JOELwindows7: core starting point for custom stage
@@ -6428,14 +6433,14 @@ class PlayState extends MusicBeatState
 			#if ((windows) && sys)
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
 				executeStageScript = FileSystem.exists(
-					Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript")) ||
+					Paths.lua("stage/" + toCompatCase(SONG.stage) +"/stageScript")) ||
 					customStage.forceLuaModchart
 					;
 			#elseif (windows)
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
 			{
 				#if !web
-				p = Path.of(Paths.lua("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
+				p = Path.of(Paths.lua("stage/" + toCompatCase(SONG.stage) +"/stageScript"));
 				trace("Stage file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 				executeStageScript = p.exists() || customStage.forceLuaModchart;
 				#else
@@ -6451,7 +6456,7 @@ class PlayState extends MusicBeatState
 
 			//for hscript pls
 			#if !web
-			p = Path.of(Paths.hscript("stage/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage) +"/stageScript"));
+			p = Path.of(Paths.hscript("stage/" + toCompatCase(SONG.stage) +"/stageScript"));
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
 				executeStageHscript = p.exists() || customStage.forceHscriptModchart;
 			trace("Stage hscript file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
