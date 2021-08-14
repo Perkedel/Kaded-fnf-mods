@@ -277,6 +277,7 @@ class HaxeScriptState {
         //script = p.exists()? f.readAsString(): "";
 
         fillInScripts(rawMode, path);
+        trace("Filled Script");
         
         // Syndicate all vars here boys!
         // Peck this. let's just yoink BulbyVR's modchart inits and stuffs
@@ -290,6 +291,7 @@ class HaxeScriptState {
         setVar("downscroll", FlxG.save.data.downscroll);
         setVar("flashing", FlxG.save.data.flashing);
         setVar("distractions", FlxG.save.data.distractions);
+        trace("setVar those metadata");
 
         setVar("curStep", 0);
         setVar("curBeat", 0);
@@ -304,6 +306,7 @@ class HaxeScriptState {
 
         setVar("followXOffset",0);
         setVar("followYOffset",0);
+        trace("camera setVar");
 
         setVar("showOnlyStrums", false);
         setVar("strumLine1Visible", true);
@@ -315,10 +318,13 @@ class HaxeScriptState {
         setVar("windowHeight",FlxG.height);
         setVar("hudWidth", PlayState.instance.camHUD.width);
         setVar("hudHeight", PlayState.instance.camHUD.height);
+        trace("HUD setVar");
 
         setVar("mustHit", false);
+        trace("mustHit setVar");
 
         setVar("strumLineY", PlayState.instance.strumLine.y);
+        trace("Camera target & Strumline height setVar");
 
         //JOELwindows7: BulbyVR's special stuffs
         setVar("BEHIND_GF", BEHIND_GF);
@@ -368,6 +374,7 @@ class HaxeScriptState {
 			if (position & BEHIND_BF != 0)
 				PlayState.instance.add(PlayState.boyfriend); 
 		});
+        trace("setVar BulbyVR stuffs");
 
         //You must init the function callbacks first before even considered existed.
         addCallback("loaded", function (song) {});
@@ -383,7 +390,7 @@ class HaxeScriptState {
         addCallback("playerOneSing", function(note, position, beatOf, stepOf){});
         addCallback("noteHit", function(player1:Bool, note:Note) {});
         addCallback("keyPressed", function(key){});
-
+        trace("Inited setVars");
 
 
         // Callbacks heres, Kade Engine like
@@ -425,6 +432,7 @@ class HaxeScriptState {
 
             wiggle.waveAmplitude = amp;
         });
+        trace("wiggle wiggle setVar");
 
         //addCallback("makeAnimatedSprite", makeAnimatedLuaSprite); //KadeDev says it's in development right now.
         addCallback("destroySprite", function(id:String) {

@@ -1,5 +1,6 @@
 package;
 
+import plugins.sprites.QmovephBackground;
 import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxGroup;
 import flixel.addons.display.FlxStarField;
@@ -77,6 +78,7 @@ class MusicBeatState extends FlxUIState
 	public var onScreenGameplayButtons:OnScreenGameplayButtons; //JOELwindows7: the touchscreen buttons here
 	public static var dueAdded:Bool = false;
 	var defaultBekgron:FlxBackdrop;
+	var qmovephBekgron:QmovephBackground;
 
 	public var camControl:FlxCamera;
 
@@ -538,9 +540,21 @@ class MusicBeatState extends FlxUIState
 		}
 	}
 	function installDefaultBekgron(){
-		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground'),1,0,true,false);
-		defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
+		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'),50,0,true,false);
+		// defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
+		defaultBekgron.velocity.x = -100;
 		defaultBekgron.updateHitbox();
 		add(defaultBekgron);
+	}
+	function justInitDefaultBekgron():FlxBackdrop {
+		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'),50,0,true,false);
+		theBekgron.velocity.x = -100;
+		theBekgron.updateHitbox();
+		return theBekgron;
+	}
+	function installSophisticatedDefaultBekgron() {
+		qmovephBekgron = new QmovephBackground();
+		add(qmovephBekgron);
+		qmovephBekgron.startDoing();
 	}
 }

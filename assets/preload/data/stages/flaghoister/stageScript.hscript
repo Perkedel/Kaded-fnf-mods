@@ -9,13 +9,13 @@
 function loaded(song)
 {
     //Manually override camera pls
-    //setCamPosition(0,0);
+    setCamPosition(500,0);
 }
 
 function start(song) 
 {
     //Manually override camera pls again
-    setCamPosition(0,0);
+    setCamPosition(500,0);
 }
 
 function update(elapsed)

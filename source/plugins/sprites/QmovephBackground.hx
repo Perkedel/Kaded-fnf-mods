@@ -17,6 +17,10 @@ class QmovephBackground extends FlxGroup{
     var bubbles:FlxTypedGroup<QmovephBubble>;
     var bubbleSpawnTime:Float;
     public function new(){
+        
+        super();
+    }
+    public function startDoing(){
         // bg = FlxGradient.createGradientFlxSprite(
         //     FlxG.width, FlxG.height,
         //     [
@@ -31,25 +35,33 @@ class QmovephBackground extends FlxGroup{
         stars = new FlxTypedGroup<QmovephFlying>(20);
         trace("dreea");
         bubbles = new FlxTypedGroup<QmovephBubble>(20);
-        trace("druuu");
+        trace("druuu " + Std.string(bg) + " " + Std.string(stars) + " " + Std.string(bubbles) + " ");
         add(bg);
+        trace("add bg");
         add(stars);
+        trace("add stars");
         add(bubbles);
         trace("druuua");
-        super();
     }
     override function update(elapsed:Float){
-        starSpawnTime += elapsed * 5;
-        if (starSpawnTime > 1)
-        {
-            starSpawnTime--;
-            stars.add(stars.recycle(QmovephFlying.new));
-        }
-        bubbleSpawnTime += elapsed * 5;
-        if (starSpawnTime > 1)
-        {
-            bubbleSpawnTime--;
-            bubbles.add(bubbles.recycle(QmovephBubble.new));
+        if(stars != null){
+            starSpawnTime += elapsed * 5;
+            if (starSpawnTime > 1)
+            {
+                starSpawnTime--;
+                stars.add(stars.recycle(QmovephFlying.new));
+            }
+        }   
+
+        if(bubbles != null){
+            bubbleSpawnTime += elapsed * 5;
+            if (starSpawnTime > 1)
+            {
+                bubbleSpawnTime--;
+                var reBubble = bubbles.recycle(QmovephBubble.new);
+                reBubble.aStar = false;
+                bubbles.add(reBubble);
+            }
         }
 
         super.update(elapsed);
@@ -63,8 +75,8 @@ class QmovephFlying extends FlxSprite{
         super();
         // this.aStar = aStar;
         if(this.aStar){
-
-        }
+            trace("Star pls");
+        } else trace("Bubbles pls");
         kill();
     }
 
@@ -79,7 +91,8 @@ class QmovephFlying extends FlxSprite{
             FlxG.random.int(Std.int((FlxG.height/2)-height), Std.int(FlxG.height - height))
             ;
         loadGraphic(Paths.image(aStar? "QmovephStar" : "QmovephBubble"));
-        velocity.x = -(FlxG.random.float(10,200));
+        velocity.x = -(FlxG.random.float(500,1000));
+        angularVelocity = FlxG.random.float(-100,100);
         color = FlxG.random.color(FlxColor.fromRGB(10,10,10),FlxColor.WHITE);
         updateHitbox();
         super.revive();
@@ -87,15 +100,20 @@ class QmovephFlying extends FlxSprite{
 
     override public function update(elapsed:Float)
     {
-        if (x < 0)
+        if (x < -width)
             kill();
         super.update(elapsed);
     }
 }
 
 class QmovephBubble extends QmovephFlying{
-    public function new(){
-        aStar = false;
+    override public function new(){
+        this.aStar = false;
+        trace("a bubble, star is " + Std.string(aStar));
         super();
+    }
+    override function revive(){
+        aStar = false;
+        super.revive();
     }
 }

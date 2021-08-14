@@ -18,8 +18,9 @@ class AnDefaultBekgronde extends MusicBeatState{
 
         // installDefaultBekgron();
         try{
-            var defaultBackgrounder = new QmovephBackground();
-            add(defaultBackgrounder);
+            // var defaultBackgrounder = new QmovephBackground();
+            // add(defaultBackgrounder);
+            installSophisticatedDefaultBekgron();
         } catch(e){
             trace(e);
         }

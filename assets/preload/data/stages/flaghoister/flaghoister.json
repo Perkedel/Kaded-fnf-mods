@@ -40,10 +40,10 @@
             "antialiasing": true
         }],
         "isHalloween": false,
-        "defaultCamZoom": 0.1,
+        "defaultCamZoom": 0.3,
         "bfPosition": [500, 100],
         "gfPosition": [-350, 100],
-        "dadPosition": [-400, 100],
+        "dadPosition": [-500, 100],
         "forceLuaModchart": false,
         "forceHscriptModchart": true,
         "ignoreMainImages": false

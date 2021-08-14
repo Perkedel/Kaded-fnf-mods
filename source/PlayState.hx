@@ -247,6 +247,7 @@ class PlayState extends MusicBeatState
 	var isHalloween:Bool = false;
 
 	var useStageScript:Bool = false; //JOELwindows7: flag to start try the stage Lua script
+	var attemptStageScript:Bool = false; //JOELwindows7: flag to start prepare stage script after all stuffs loaded.
 
 	var phillyCityLights:FlxTypedGroup<FlxSprite>;
 	var phillyTrain:FlxSprite;
@@ -1953,6 +1954,11 @@ class PlayState extends MusicBeatState
 		FlxG.console.registerFunction("lightningStrikeShit", function(){
 			lightningStrikeShit();
 		});
+
+		//JOELwindows7: Now Init CustomStage scripts if had to.
+		if(attemptStageScript){
+			spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+		}
 
 		//JOELwindows7: why the peck with touchscreen button game crash on second run?!
 		trace("finish create PlayState");
@@ -6469,7 +6475,8 @@ class PlayState extends MusicBeatState
 			if(!customStage.ignoreMainImages)
 				spawnStageImages(customStage);
 			if(#if ((windows) && cpp) executeStageScript || #end executeStageHscript){
-				spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+				// spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+				attemptStageScript = true;
 			}
 		}
 	}
