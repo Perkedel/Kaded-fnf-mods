@@ -303,6 +303,11 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://api.haxeflixel.com/flixel/addons/plugin/screengrab/FlxScreenGrab.html screengrab how to in HaxeFlixel
 - https://gamebanana.com/mods/55620 FNF but it's LOVE2d Lua instead of Haxe
 - https://gamebanana.com/mods/311713 Shaggy keys in KE 1.5.4
+- https://snippets.haxeflixel.com/groups/recycling/ recycler
+- https://api.haxeflixel.com/flixel/FlxSprite.html flxsprite
+- https://api.haxeflixel.com/flixel/group/FlxTypedGroup.html typed group
+- https://api.haxeflixel.com/flixel/util/FlxGradient.html ehlp how to gradient wtf how
+- https://haxeflixel.com/documentation/cheat-sheet/ cheatsheet again
 
 # in event of git merge conflict
 use VScode and Github desktop!
