@@ -156,8 +156,10 @@ class TitleState extends MusicBeatState
 		add(bg);
 
 		//JOELwindows7: the default background pls
-		if(Main.perkedelMark)
-			installDefaultBekgron();
+		if(Main.perkedelMark){
+			// installDefaultBekgron();
+			installSophisticatedDefaultBekgron();
+		}
 
 		if (Main.watermarks) {
 			logoBl = new FlxSprite(-150, 1500);

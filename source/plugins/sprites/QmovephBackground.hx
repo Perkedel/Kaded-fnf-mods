@@ -14,7 +14,7 @@ class QmovephBackground extends FlxGroup{
     var bg:FlxSprite;
     var stars:FlxTypedGroup<QmovephFlying>;
     var starSpawnTime:Float;
-    var bubbles:FlxTypedGroup<QmovephBubble>;
+    var bubbles:FlxTypedGroup<QmovephFlying>;
     var bubbleSpawnTime:Float;
     public function new(){
         
@@ -34,7 +34,7 @@ class QmovephBackground extends FlxGroup{
         trace("addre");
         stars = new FlxTypedGroup<QmovephFlying>(20);
         trace("dreea");
-        bubbles = new FlxTypedGroup<QmovephBubble>(20);
+        bubbles = new FlxTypedGroup<QmovephFlying>(20);
         trace("druuu " + Std.string(bg) + " " + Std.string(stars) + " " + Std.string(bubbles) + " ");
         add(bg);
         trace("add bg");
@@ -55,10 +55,10 @@ class QmovephBackground extends FlxGroup{
 
         if(bubbles != null){
             bubbleSpawnTime += elapsed * 5;
-            if (starSpawnTime > 1)
+            if (bubbleSpawnTime > 1)
             {
                 bubbleSpawnTime--;
-                var reBubble = bubbles.recycle(QmovephBubble.new);
+                var reBubble = bubbles.recycle(QmovephFlying.new);
                 reBubble.aStar = false;
                 bubbles.add(reBubble);
             }
@@ -75,8 +75,10 @@ class QmovephFlying extends FlxSprite{
         super();
         // this.aStar = aStar;
         if(this.aStar){
-            trace("Star pls");
-        } else trace("Bubbles pls");
+            //trace("Star pls");
+        } else {
+            //trace("Bubbles pls");
+        }
         kill();
     }
 
@@ -91,7 +93,7 @@ class QmovephFlying extends FlxSprite{
             FlxG.random.int(Std.int((FlxG.height/2)-height), Std.int(FlxG.height - height))
             ;
         loadGraphic(Paths.image(aStar? "QmovephStar" : "QmovephBubble"));
-        velocity.x = -(FlxG.random.float(500,1000));
+        velocity.x = -(FlxG.random.float(200,750));
         angularVelocity = FlxG.random.float(-100,100);
         color = FlxG.random.color(FlxColor.fromRGB(10,10,10),FlxColor.WHITE);
         updateHitbox();
@@ -106,14 +108,33 @@ class QmovephFlying extends FlxSprite{
     }
 }
 
-class QmovephBubble extends QmovephFlying{
-    override public function new(){
-        this.aStar = false;
-        trace("a bubble, star is " + Std.string(aStar));
+class QmovephBubble extends FlxSprite{
+    public function new()
+    {
         super();
+        kill();
     }
-    override function revive(){
-        aStar = false;
+
+    override public function revive()
+    {
+        var ratio = FlxG.random.float(0.2,1.2);
+        scale.x = ratio;
+        scale.y = ratio;
+        x = FlxG.width;
+        y = FlxG.random.int(Std.int((FlxG.height/2)-height), Std.int(FlxG.height - height))
+            ;
+        loadGraphic(Paths.image("QmovephBubble"));
+        velocity.x = -(FlxG.random.float(500,1000));
+        angularVelocity = FlxG.random.float(-100,100);
+        color = FlxG.random.color(FlxColor.fromRGB(10,10,10),FlxColor.WHITE);
+        updateHitbox();
         super.revive();
+    }
+
+    override public function update(elapsed:Float)
+    {
+        if (x < -width)
+            kill();
+        super.update(elapsed);
     }
 }
