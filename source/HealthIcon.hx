@@ -25,19 +25,20 @@ class HealthIcon extends FlxSprite
 
 		isPlayer = isOldIcon = false;
 
-		if (FlxG.save.data.antialiasing)
-		{
-			switch(char)
-			{
-				case 'bf-pixel' | 'senpai' | 'senpai-angry' | 'spirit' | 'gf-pixel':
-					antialiasing = false;
-				default:
-					antialiasing = true;
-			}
-			//JOELwindows7: not my code. but, YOU PECKING CAN DO THIS WITH SWITCH CASE??!! 
-			//`|` IN SWITCH CASE?! IN HAXE??!?!? HAAAAAAAAAAAAAAAAAAAAAAAA!!!
-			//lemme tell you, this I believe is not possible in CPP!!!! you must If if you dual case!
-		}
+		// if (FlxG.save.data.antialiasing)
+		// {
+		// 	switch(char)
+		// 	{
+		// 		case 'bf-pixel' | 'senpai' | 'senpai-angry' | 'spirit' | 'gf-pixel':
+		// 			antialiasing = false;
+		// 		default:
+		// 			antialiasing = true;
+		// 	}
+		// 	//JOELwindows7: not my code. but, YOU PECKING CAN DO THIS WITH SWITCH CASE??!! 
+		// 	//`|` IN SWITCH CASE?! IN HAXE??!?!? HAAAAAAAAAAAAAAAAAAAAAAAA!!!
+		// 	//lemme tell you, this I believe is not possible in CPP!!!! you must If if you dual case!
+		// }
+		antialiasing = FlxG.save.data.antialiasing;
 
 		changeIcon(char);
 		scrollFactor.set();
@@ -54,6 +55,10 @@ class HealthIcon extends FlxSprite
 			char = char.split("-")[0];
 
 		loadGraphic(Paths.image('icons/icon-' + char), true, 150, 150);
+		if(char.endsWith('-pixel') || char.startsWith('senpai') || char.startsWith('spirit'))
+			antialiasing = false
+		else
+			antialiasing = FlxG.save.data.antialiasing;
 		animation.add(char, [0, 1], 0, false, isPlayer);
 		animation.play(char);
 	}

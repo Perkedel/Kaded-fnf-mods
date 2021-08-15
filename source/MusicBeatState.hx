@@ -13,6 +13,7 @@ import TouchScreenControls;
 import haxe.Json;
 import lime.utils.Assets;
 import flixel.FlxSprite;
+import flixel.FlxBasic;
 #if (windows && cpp)
 import Discord.DiscordClient;
 #end
@@ -90,6 +91,26 @@ class MusicBeatState extends FlxUIState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
+	private var assets:Array<FlxBasic> = [];
+
+	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
+	{
+		if (FlxG.save.data.optimize)
+			assets.push(Object);
+		return super.add(Object);
+	}
+
+	public function clean()
+	{
+		if (FlxG.save.data.optimize)
+		{
+			for(i in assets)
+			{
+				remove(i);
+			}
+		}
+	}
+
 	override function create()
 	{
 		TimingStruct.clearTimings();
@@ -157,9 +178,6 @@ class MusicBeatState extends FlxUIState
 				var step = ((60 / data.bpm) * 1000) / 4;
 				var startInMS = (data.startTime * 1000);
 
-
-				var percent = (Conductor.songPosition - startInMS) / (data.length * 1000);
-
 				curDecimalBeat = data.startBeat + (((Conductor.songPosition/1000) - data.startTime) * (data.bpm / 60));
 				var ste:Int = Math.floor(data.startStep + ((Conductor.songPosition - startInMS) / step));
 				if (ste >= 0)
@@ -175,6 +193,7 @@ class MusicBeatState extends FlxUIState
 					}
 					else if (ste < curStep)
 					{
+						trace("reset steps for some reason?? at " + Conductor.songPosition);
 						//Song reset?
 						curStep = ste;
 						updateBeat();
@@ -200,6 +219,7 @@ class MusicBeatState extends FlxUIState
 					else if (nextStep < curStep)
 					{
 						//Song reset?
+						trace("(no bpm change) reset steps for some reason?? at " + Conductor.songPosition);
 						curStep = nextStep;
 						updateBeat();
 						stepHit();

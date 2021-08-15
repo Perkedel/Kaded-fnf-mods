@@ -54,7 +54,6 @@ class TitleState extends MusicBeatState
 	var ngSpr:FlxSprite;
 	var perkedelSpr:FlxSprite; //JOELwindows7: the Perkedel Logo
 	var odyseeSpr:FlxSprite; //JOELwindows7: the Odysee Logo
-	var defaultBackgrounder:FlxBackdrop; //JOELwindows7: the default background
 
 	var curWacky:Array<String> = [];
 
@@ -65,8 +64,6 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		
-
 		//JOELwindows7: luckydog7 added this, maybe to prevent absolute quit by back button.
 		// https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx
 		// https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088
@@ -108,6 +105,7 @@ class TitleState extends MusicBeatState
 		
 		#end
 
+
 				
 		Highscore.load();
 
@@ -129,8 +127,10 @@ class TitleState extends MusicBeatState
 
 		#if FREEPLAY
 		FlxG.switchState(new FreeplayState());
+		clean();
 		#elseif CHARTING
 		FlxG.switchState(new ChartingState());
+		clean();
 		#else
 		#if !cpp
 		new FlxTimer().start(1, function(tmr:FlxTimer)
@@ -153,7 +153,7 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		// bg.antialiasing = true;
+		// bg.antialiasing = FlxG.save.data.antialiasing;
 		// bg.setGraphicSize(Std.int(bg.width * 0.6));
 		// bg.updateHitbox();
 		add(bg);
@@ -166,19 +166,16 @@ class TitleState extends MusicBeatState
 
 		if (Main.watermarks) {
 			logoBl = new FlxSprite(-150, 1500);
-			logoBl.frames = 
-				Main.perkedelMark? 
-				Paths.getSparrowAtlas('LFMLogoBumpin'): 
-				Paths.getSparrowAtlas('KadeEngineLogoBumpin')
-				;
+			logoBl.frames = Paths.getSparrowAtlas(
+				Main.perkedelMark?
+				'LFMLogoBumpin':
+				'KadeEngineLogoBumpin'
+				);
 		} else {
 			logoBl = new FlxSprite(-150, -100);
 			logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		}
-		if(FlxG.save.data.antialiasing)
-			{
-				logoBl.antialiasing = true;
-			}
+		logoBl.antialiasing = FlxG.save.data.antialiasing;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.updateHitbox();
 		// logoBl.screenCenter();
@@ -188,10 +185,7 @@ class TitleState extends MusicBeatState
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		if(FlxG.save.data.antialiasing)
-			{
-				gfDance.antialiasing = true;
-			}
+		gfDance.antialiasing = FlxG.save.data.antialiasing;
 		add(gfDance);
 		add(logoBl);
 
@@ -199,10 +193,7 @@ class TitleState extends MusicBeatState
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
-		if(FlxG.save.data.antialiasing)
-			{
-				titleText.antialiasing = true;
-			}
+		titleText.antialiasing = FlxG.save.data.antialiasing;
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
@@ -210,10 +201,7 @@ class TitleState extends MusicBeatState
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
 		logo.screenCenter();
-		if(FlxG.save.data.antialiasing)
-			{
-				logo.antialiasing = true;
-			}
+		logo.antialiasing = FlxG.save.data.antialiasing;
 		// add(logo);
 
 		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
@@ -239,11 +227,8 @@ class TitleState extends MusicBeatState
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
-		if(FlxG.save.data.antialiasing)
-			{
-				ngSpr.antialiasing = true;
-			}
-		
+		ngSpr.antialiasing = FlxG.save.data.antialiasing;
+
 		//JOELwindows7: odysee spriter
 		odyseeSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('odysee_Logo_Transparent_White_Text'));
 		add(odyseeSpr);
@@ -251,10 +236,7 @@ class TitleState extends MusicBeatState
 		odyseeSpr.setGraphicSize(Std.int(odyseeSpr.width * .5),Std.int(odyseeSpr.height * .5)); 
 		odyseeSpr.updateHitbox();
 		odyseeSpr.screenCenter(X);
-		if(FlxG.save.data.antialiasing)
-			{
-				odyseeSpr.antialiasing = true;
-			}
+		odyseeSpr.antialiasing = FlxG.save.data.antialiasing;
 
 		//JOELwindows7: Perkedel spriter
 		perkedelSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('Perkedel_Logo_Typeborder'));
@@ -263,11 +245,7 @@ class TitleState extends MusicBeatState
 		perkedelSpr.setGraphicSize(Std.int(perkedelSpr.width * .2),Std.int(perkedelSpr.height * .2)); 
 		perkedelSpr.updateHitbox();
 		perkedelSpr.screenCenter(X);
-		if(FlxG.save.data.antialiasing)
-			{
-				perkedelSpr.antialiasing = true;
-			}
-
+		perkedelSpr.antialiasing = FlxG.save.data.antialiasing;
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
@@ -385,6 +363,7 @@ class TitleState extends MusicBeatState
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				// Get current version of Kade Engine
+
 				//JOELwindows7: do this if not mobile since in there this doesn't work
 				//according to the luckydog7 and mods that don't care update
 				#if !mobile
@@ -402,16 +381,19 @@ class TitleState extends MusicBeatState
 						OutdatedSubState.needVer = returnedData[0];
 						OutdatedSubState.currChanges = returnedData[1];
 						FlxG.switchState(new OutdatedSubState());
+						clean();
 					}
 					else
 					{
 						FlxG.switchState(new MainMenuState());
+						clean();
 					}
 				}
 				
 				http.onError = function (error) {
 				  trace('error: $error');
 				  FlxG.switchState(new MainMenuState()); // fail but we go anyway
+				  clean();
 				}
 				
 				http.request();
@@ -600,8 +582,6 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
-			
-
 			remove(ngSpr);
 			remove(odyseeSpr);
 			remove(perkedelSpr);

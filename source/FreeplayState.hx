@@ -70,6 +70,7 @@ class FreeplayState extends MusicBeatState
 	override function create()
 	{
 		//JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
+		clean();
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
 
 		//var diffList = "";
@@ -191,10 +192,7 @@ class FreeplayState extends MusicBeatState
 		// LOAD CHARACTERS
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
-		if(FlxG.save.data.antialiasing)
-			{
-				bg.antialiasing = true;
-			}
+		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
@@ -420,8 +418,9 @@ class FreeplayState extends MusicBeatState
 			}
 
 
-			PlayState.SONG = hmm;
-			trace("Loaded Song into Playstate"); //JOELwindows7: what hapened
+
+			PlayState.SONG = Song.conversionChecks(hmm);
+			trace("Loaded Song into Playstate " + Std.string(hmm)); //JOELwindows7: what hapened
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyWeek = songs[curSelected].week;
@@ -439,6 +438,7 @@ class FreeplayState extends MusicBeatState
 			PlayState.isSM = false;
 			#end
 			LoadingState.loadAndSwitchState(new PlayState());
+			clean();
 			haveClicked = false;
 		} else {
 			//JOELwindows7: make mouse visible when moved.
@@ -608,6 +608,7 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+		diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
 		
 		#if PRELOAD_ALL
 		if (songs[curSelected].songCharacter == "sm")
