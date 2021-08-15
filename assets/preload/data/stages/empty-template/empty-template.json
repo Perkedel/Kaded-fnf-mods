@@ -28,6 +28,10 @@
         "dadPosition": [-500, 0],
         "forceLuaModchart": false,
         "forceHscriptModchart": false,
-        "ignoreMainImages": false
+        "ignoreMainImages": false,
+        "overrideCamFollowP1": false,
+        "overrideCamFollowP2": false,
+        "camFollowP1Pos": [0, 0],
+        "camFollowP2Pos": [0, 0]
     }
 }

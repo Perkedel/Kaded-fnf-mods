@@ -98,6 +98,8 @@ class MusicBeatState extends FlxUIState
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
+		initCamControl(); //JOELwindows7: init the cam control now! 
+		//dedicated touchscreen button container
 		super.create();
 		//trace("created Music Beat State");
 	}
@@ -291,13 +293,23 @@ class MusicBeatState extends FlxUIState
 		return swagShit;
 	}
 
+	//JOELwindows7: init dedicated touchscreen buttons camera
+	function initCamControl(){
+		trace("setting dedicated touchscreen buttons camera");
+		camControl = new FlxCamera();
+		FlxG.cameras.add(camControl);
+		camControl.bgColor.alpha = 0;
+	}
+
 	//JOELwindows7: buttons
 	private function addBackButton(x:Int=100,y:Int=720-100,scale:Float=.5){
 		backButton = new FlxSprite(x, y).loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale),Std.int(backButton.height * scale));
 		backButton.scrollFactor.set();
 		backButton.updateHitbox();
-		backButton.antialiasing = true;
+		backButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			backButton.cameras = [camControl];
 		add(backButton);
 		return backButton;
 	}
@@ -306,7 +318,9 @@ class MusicBeatState extends FlxUIState
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale),Std.int(leftButton.height * scale));
 		leftButton.scrollFactor.set();
 		leftButton.updateHitbox();
-		leftButton.antialiasing = true;
+		leftButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			leftButton.cameras = [camControl];
 		add(leftButton);
 		return leftButton;
 	}
@@ -315,7 +329,9 @@ class MusicBeatState extends FlxUIState
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale),Std.int(rightButton.height * scale));
 		rightButton.scrollFactor.set();
 		rightButton.updateHitbox();
-		rightButton.antialiasing = true;
+		rightButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			rightButton.cameras = [camControl];
 		add(rightButton);
 		return rightButton;
 	}
@@ -324,7 +340,9 @@ class MusicBeatState extends FlxUIState
 		upButton.setGraphicSize(Std.int(upButton.width * scale),Std.int(upButton.height * scale));
 		upButton.scrollFactor.set();
 		upButton.updateHitbox();
-		upButton.antialiasing = true;
+		upButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			upButton.cameras = [camControl];
 		add(upButton);
 		return upButton;
 	}
@@ -333,7 +351,9 @@ class MusicBeatState extends FlxUIState
 		downButton.setGraphicSize(Std.int(downButton.width * scale),Std.int(downButton.height * scale));
 		downButton.scrollFactor.set();
 		downButton.updateHitbox();
-		downButton.antialiasing = true;
+		downButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			downButton.cameras = [camControl];
 		add(downButton);
 		return downButton;
 	}
@@ -342,7 +362,9 @@ class MusicBeatState extends FlxUIState
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale),Std.int(pauseButton.height * scale));
 		pauseButton.scrollFactor.set();
 		pauseButton.updateHitbox();
-		pauseButton.antialiasing = true;
+		pauseButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			pauseButton.cameras = [camControl];
 		add(pauseButton);
 		return pauseButton;
 	}
@@ -351,7 +373,9 @@ class MusicBeatState extends FlxUIState
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale),Std.int(acceptButton.height * scale));
 		acceptButton.scrollFactor.set();
 		acceptButton.updateHitbox();
-		acceptButton.antialiasing = true;
+		acceptButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			acceptButton.cameras = [camControl];
 		add(acceptButton);
 		return acceptButton;
 	}
@@ -360,7 +384,9 @@ class MusicBeatState extends FlxUIState
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale),Std.int(retryButton.height * scale));
 		retryButton.scrollFactor.set();
 		retryButton.updateHitbox();
-		retryButton.antialiasing = true;
+		retryButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			retryButton.cameras = [camControl];
 		add(retryButton);
 		return retryButton;
 	}
@@ -369,7 +395,9 @@ class MusicBeatState extends FlxUIState
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale),Std.int(viewReplayButton.height * scale));
 		viewReplayButton.scrollFactor.set();
 		viewReplayButton.updateHitbox();
-		viewReplayButton.antialiasing = true;
+		viewReplayButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			viewReplayButton.cameras = [camControl];
 		add(viewReplayButton);
 		return viewReplayButton;
 	}
@@ -423,10 +451,7 @@ class MusicBeatState extends FlxUIState
 		// 	onScreenGameplayButtons.initialize(howManyButtons, initVisible);
 		controls.trackedinputs = [];
 		if(camControl == null){
-			trace("setting dedicated touchscreen buttons camera");
-			camControl = new FlxCamera();
-			FlxG.cameras.add(camControl);
-			camControl.bgColor.alpha = 0;
+			initCamControl();
 			onScreenGameplayButtons.cameras = [camControl];
 		} else {
 			camControl.bgColor.alpha = 0;

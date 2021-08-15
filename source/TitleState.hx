@@ -60,6 +60,9 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
+	var alreadyDecideOutdated:Bool = false; //JOELwindows7: flag to decide outdated. 
+	//to prevent reselectoid after seen outdated on previously
+
 	override public function create():Void
 	{
 		
@@ -394,6 +397,7 @@ class TitleState extends MusicBeatState
 					returnedData[1] = data.substring(data.indexOf('-'), data.length);
 				  	if (!MainMenuState.kadeEngineVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState)
 					{
+						alreadyDecideOutdated = true;
 						trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.kadeEngineVer);
 						OutdatedSubState.needVer = returnedData[0];
 						OutdatedSubState.currChanges = returnedData[1];
@@ -432,7 +436,8 @@ class TitleState extends MusicBeatState
 					returnedData[1] = data.substring(data.indexOf('-'), data.length);
 				  	if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.tinggalkanState)
 					{
-						OutdatedSubState.whichAreaOutdated = 1; //mark that LFM one is outdated
+						if(!alreadyDecideOutdated)
+							OutdatedSubState.whichAreaOutdated = 1; //mark that LFM one is outdated
 						trace('LFM outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
 						OutdatedSubState.needVerLast = returnedData[0];
 						OutdatedSubState.perubahanApaSaja = returnedData[1];

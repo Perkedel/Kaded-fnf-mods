@@ -41,6 +41,8 @@ class Caching extends MusicBeatState
 	var kadeLogo:FlxSprite;
 	var lFMLogo:FlxSprite; //JOELwindows7: LFM logo
 
+	var bar:FlxBar; //JOELwindows7: globalize the loading bar.
+
 	public static var bitmapData:Map<String,FlxGraphic>;
 
 	var images = [];
@@ -108,7 +110,8 @@ class Caching extends MusicBeatState
 
 		toBeDone = Lambda.count(images) + Lambda.count(music);
 
-		var bar = new FlxBar(10,FlxG.height - 100,FlxBarFillDirection.LEFT_TO_RIGHT,FlxG.width,40,this,"done",0,toBeDone);
+		//JOELwindows7: globalize loading bar
+		bar = new FlxBar(10,FlxG.height - 100,FlxBarFillDirection.LEFT_TO_RIGHT,FlxG.width,40,this,"done",0,toBeDone);
 		bar.color = FlxColor.PURPLE;
 
 		//JOELwindows7:bekgrond stuffer
@@ -140,6 +143,7 @@ class Caching extends MusicBeatState
 						lFMLogo.alpha = alpha;
 						text.alpha = alpha;
 						text.text = "Loading... (" + done + "/" + toBeDone + ")";
+						//bar.value = done; //JOELwindows7: workaround since not showing up
 					}
 			}
 		

@@ -326,6 +326,17 @@ class HaxeScriptState {
         setVar("strumLineY", PlayState.instance.strumLine.y);
         trace("Camera target & Strumline height setVar");
 
+        //JOELwindows7: mirror the variables here!
+        //Colored bg
+        setVar("originalColor", PlayState.instance.originalColor);
+        setVar("isChromaScreen", PlayState.instance.isChromaScreen);
+        //end mirror variables
+        
+        //init just in case
+        setVar("songLength", 0);
+
+        // callbacks
+
         //JOELwindows7: BulbyVR's special stuffs
         setVar("BEHIND_GF", BEHIND_GF);
 		setVar("BEHIND_BF", BEHIND_BF);

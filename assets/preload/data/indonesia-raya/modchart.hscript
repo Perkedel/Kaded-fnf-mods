@@ -8,17 +8,12 @@
 
 function loaded(song)
 {
-    //Manually override camera pls
-    //setCamPosition(100,200);
-    //followYOffset = -5000;
+    
 }
 
 function start(song) 
 {
-    //Manually override camera pls again
-    //setCamPosition(100,200);
-    //followYOffset = -5000;
-    //followXOffset = -5000;
+
 }
 
 function update(elapsed)
@@ -48,7 +43,7 @@ function keyReleased(key)
 
 function playerTwoTurn()
 {
-    //followXOffset = -5000;
+
 }
 
 function playerTwoMiss(note, position)
@@ -63,7 +58,7 @@ function playerTwoSing(note, position)
 
 function playerOneTurn()
 {
-    //followXOffset = -5000;
+    
 }
 
 function playerOneMiss(note, position)
@@ -100,4 +95,4 @@ function colorizeColorablebyKey(note, justOne, toWhichBg)
     }
 }
 
-trace("finish loading stage hscript <3 yay cool and good.");
+trace("finish loading hscript <3 yay cool and good.");

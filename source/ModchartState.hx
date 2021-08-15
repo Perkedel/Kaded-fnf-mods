@@ -437,6 +437,9 @@ class ModchartState
 				setVar("isChromaScreen", PlayState.instance.isChromaScreen);
 				//end mirror variables
 				
+				//init just in case
+				setVar("songLength", 0);
+
 				// callbacks
 	
 				// sprites

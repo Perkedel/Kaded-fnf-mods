@@ -40,12 +40,16 @@
             "antialiasing": true
         }],
         "isHalloween": false,
-        "defaultCamZoom": 0.3,
+        "defaultCamZoom": 0.35,
         "bfPosition": [500, 100],
         "gfPosition": [-350, 100],
-        "dadPosition": [-500, 100],
+        "dadPosition": [-800, 100],
         "forceLuaModchart": false,
         "forceHscriptModchart": true,
-        "ignoreMainImages": false
+        "ignoreMainImages": false,
+        "overrideCamFollowP1": true,
+        "overrideCamFollowP2": true,
+        "camFollowP1Pos": [-40, -40],
+        "camFollowP2Pos": [-40, -40]
     }
 }

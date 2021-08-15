@@ -32,9 +32,9 @@ class QmovephBackground extends FlxGroup{
         //     ;
         bg = new FlxSprite(0,0,Paths.image("DefaultBackground-empty720p"));
         trace("addre");
-        stars = new FlxTypedGroup<QmovephFlying>(20);
+        stars = new FlxTypedGroup<QmovephFlying>(50);
         trace("dreea");
-        bubbles = new FlxTypedGroup<QmovephFlying>(20);
+        bubbles = new FlxTypedGroup<QmovephFlying>(50);
         trace("druuu " + Std.string(bg) + " " + Std.string(stars) + " " + Std.string(bubbles) + " ");
         add(bg);
         trace("add bg");

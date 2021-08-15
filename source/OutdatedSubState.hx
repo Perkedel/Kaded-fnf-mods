@@ -66,11 +66,11 @@ class OutdatedSubState extends MusicBeatState
 		kadeLogo.visible = false; //JOELwindows7: wait check which case first
 
 		//JOELwindows7: our LFM logo here pls
-		var lfmLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.image('LastFunkinMomentsLogo'));
-		lfmLogo.scale.y = 0.1;
-		lfmLogo.scale.x = 0.1;
+		var lfmLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.image('art/LFMicon256'));
+		lfmLogo.scale.y = .5;
+		lfmLogo.scale.x = .5;
 		lfmLogo.x -= lfmLogo.frameHeight;
-		lfmLogo.y -= 180;
+		lfmLogo.y -= 0;
 		lfmLogo.alpha = .8;
 		add(lfmLogo);
 		lfmLogo.visible = false; //JOELwindows7: wait check which case first

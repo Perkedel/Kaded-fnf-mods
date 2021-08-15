@@ -184,8 +184,13 @@ class PlayState extends MusicBeatState
 
 	private var camFollow:FlxObject;
 
+	
 	private static var prevCamFollow:FlxObject;
 
+	//JOELwindows7: flag to let stage or whatever override camFollow position
+	private var overrideCamFollowP1:Bool = false;
+	private var overrideCamFollowP2:Bool = false;
+	
 	public static var strumLineNotes:FlxTypedGroup<FlxSprite> = null;
 	public static var playerStrums:FlxTypedGroup<FlxSprite> = null;
 	public static var cpuStrums:FlxTypedGroup<FlxSprite> = null;
@@ -2200,10 +2205,12 @@ class PlayState extends MusicBeatState
 		{
 			luaModchart = ModchartState.createModchartState();
 			luaModchart.executeState('start', [songLowercase]);
+			luaModchart.setVar('songLength',[songLength]);
 		}
 		if (executeStageScript && stageScript != null)
 		{
 			stageScript.executeState('start',[songLowercase]);
+			stageScript.setVar('songLength',[songLength]);
 		}
 		#end
 		//JOELwindows7: now for the hscript init
@@ -2213,9 +2220,11 @@ class PlayState extends MusicBeatState
 			hscriptModchart.executeState('start',[songLowercase]);
 			hscriptModchart.setVar('executeModchart', executeModchart);
 			hscriptModchart.setVar('executeModHscript', executeModHscript);
+			hscriptModchart.setVar('songLength',[songLength]);
 		}
 		if (executeStageHscript && stageHscript != null){
 			stageHscript.executeState('start',[songLowercase]);
+			stageHscript.setVar('songLength',[songLength]);
 		}
 		//JOELwindows7: tell Lua script whether hscript is running too
 		#if ((windows) && cpp)
@@ -3841,7 +3850,14 @@ class PlayState extends MusicBeatState
 					offsetX = hscriptModchart.getVar("followXOffset", "float");
 					offsetY = hscriptModchart.getVar("followYOffset", "float");
 				}
-				camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
+				if(overrideCamFollowP2){
+					//JOELwindows7: override bf cam position
+					if(customStage != null){
+						camFollow.setPosition(customStage.camFollowP2Pos[0] + offsetX, customStage.camFollowP2Pos[1] + offsetY);
+					} else
+						camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
+				} else
+					camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
 				#if ((windows) && cpp)
 				if (luaModchart != null)
 					luaModchart.executeState('playerTwoTurn', []);
@@ -3881,7 +3897,14 @@ class PlayState extends MusicBeatState
 					offsetX = hscriptModchart.getVar("followXOffset", "float");
 					offsetY = hscriptModchart.getVar("followYOffset", "float");
 				}
-				camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
+				if(overrideCamFollowP1){
+					//JOELwindows7: override bf cam position
+					if(customStage != null){
+						camFollow.setPosition(customStage.camFollowP1Pos[0] + offsetX, customStage.camFollowP1Pos[1] + offsetY);
+					} else
+						camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
+				} else
+					camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
 
 				#if ((windows) && cpp)
 				if (luaModchart != null)
@@ -6478,6 +6501,9 @@ class PlayState extends MusicBeatState
 				// spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
 				attemptStageScript = true;
 			}
+
+			overrideCamFollowP1 = customStage.overrideCamFollowP1;
+			overrideCamFollowP2 = customStage.overrideCamFollowP2;
 		}
 	}
 
