@@ -188,6 +188,15 @@
         "successionAdrenalAdd": [10, 5, 4, 3],
         "fearShockAdd": [50, 30, 20, 15],
         "relaxMinusPerBeat": [1, 2, 2, 3]
+    }, {
+        "character": "placeholder",
+        "initHR": 1,
+        "maxHR": 9999,
+        "minHR": 1,
+        "heartTierBoundaries": [100, 1000, 5000, 9000],
+        "successionAdrenalAdd": [100, 50, 25, 10],
+        "fearShockAdd": [5000, 1000, 500, 100],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
     }],
     "heartOrders": [
         "bf",

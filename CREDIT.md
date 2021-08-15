@@ -308,6 +308,10 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://api.haxeflixel.com/flixel/group/FlxTypedGroup.html typed group
 - https://api.haxeflixel.com/flixel/util/FlxGradient.html ehlp how to gradient wtf how
 - https://haxeflixel.com/documentation/cheat-sheet/ cheatsheet again
+- https://gamebanana.com/tuts/14283 luRaichu's how to spritesheet packer & FNF character without Adobe Animate at all!!!
+- https://gamebanana.com/tuts/14287 how to intro text
+- https://gamebanana.com/tuts/14279 how to vocal with lmms
+- https://gamebanana.com/tuts/14278 how change bg color in StoryMenuState.hx
 
 # in event of git merge conflict
 use VScode and Github desktop!
