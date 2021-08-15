@@ -152,16 +152,16 @@ class TitleState extends MusicBeatState
 	{
 		persistentUpdate = true;
 
-		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		// bg.antialiasing = FlxG.save.data.antialiasing;
-		// bg.setGraphicSize(Std.int(bg.width * 0.6));
-		// bg.updateHitbox();
-		add(bg);
-
 		//JOELwindows7: the default background pls
 		if(Main.perkedelMark){
 			// installDefaultBekgron();
 			installSophisticatedDefaultBekgron();
+		} else {
+			var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+			// bg.antialiasing = FlxG.save.data.antialiasing;
+			// bg.setGraphicSize(Std.int(bg.width * 0.6));
+			// bg.updateHitbox();
+			add(bg);
 		}
 
 		if (Main.watermarks) {

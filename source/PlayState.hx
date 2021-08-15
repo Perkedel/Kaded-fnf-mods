@@ -102,8 +102,8 @@ class PlayState extends MusicBeatState
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
 	public static var customStage:SwagStage;
-	public static var HEART:SwagHeart; //JOELwindows7: heartbeat spec
-	public static var HEARTS:HeartList; //JOELwindows7: list of heart specs
+	public static var HEART:Array<SwagHeart>; //JOELwindows7: heartbeat spec
+	// public static var HEARTS:HeartList; //JOELwindows7: list of heart specs
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
@@ -145,15 +145,52 @@ class PlayState extends MusicBeatState
 	//hopefully the "thiefs" got displeased lmao!
 
 	//JOELwindows7: Doki doki dance thingie
-	public var heartRate:Int = 70;
-	public var minHR:Int = 70;
-	public var maxHR:Int = 220;
-	public var heartTierIsRightNow:Int = 0;
-	public var heartTierBoundaries:Array<Int> = [90, 120, 150, 200]; // tier when bellow each number
-	public var successionAdrenalAdd:Array<Int> = [4, 3, 2, 1];
-	public var fearShockAdd:Array<Int> = [10, 8, 7, 5];
-	public var relaxMinusPerBeat:Array<Int> = [1, 2, 4, 7];
-	var slowedAlready:Bool = false;
+	//bf, dad, gf
+	public var heartRate:Array<Int> = [
+		70, 
+		60, 
+		80
+		];
+	public var minHR:Array<Int> = [
+		70, 
+		60, 
+		80
+		];
+	public var maxHR:Array<Int> = [
+		220, 
+		210, 
+		290
+		];
+	public var heartTierIsRightNow:Array<Int> = [
+		0,
+		0,
+		0
+		];
+	public var heartTierBoundaries:Array<Array<Int>> = [
+		[90, 120, 150, 200],
+		[90, 120, 150, 200],
+		[90, 120, 150, 200],
+		]; // tier when bellow each number
+	public var successionAdrenalAdd:Array<Array<Int>> = [
+		[4, 3, 2, 1],
+		[4, 3, 2, 1],
+		[4, 3, 2, 1],
+		];
+	public var fearShockAdd:Array<Array<Int>> = [
+		[10, 8, 7, 5],
+		[10, 8, 7, 5],
+		[10, 8, 7, 5],
+		];
+	public var relaxMinusPerBeat:Array<Array<Int>> = [
+		[1, 2, 4, 7],
+		[1, 2, 4, 7],
+		[1, 2, 4, 7],
+		];
+	var slowedAlready:Array<Bool> = [
+		false,
+		false,
+		false
+		];
 
 	#if (windows && cpp)
 	// Discord RPC variables
@@ -3383,8 +3420,8 @@ class PlayState extends MusicBeatState
 			nps, 
 			maxNPS, 
 			accuracy, 
-			heartRate, 
-			heartTierIsRightNow
+			heartRate[0], 
+			heartTierIsRightNow[0]
 			);
 
 		var lengthInPx = scoreTxt.textField.length * scoreTxt.frameHeight; // bad way but does more or less a better job
@@ -4254,6 +4291,9 @@ class PlayState extends MusicBeatState
 								vocals.volume = 1;
 					}
 					daNote.active = false;
+					
+					if(!daNote.isSustainNote)
+						successfullyStep(1); //JOELwindows7:successfully step for p2
 
 					daNote.kill();
 					notes.remove(daNote, true);
@@ -4684,7 +4724,7 @@ class PlayState extends MusicBeatState
 					PlayState.SONG = Song.loadFromJson(poop, PlayState.storyPlaylist[0]);
 					//JOELwindows7: conform the story mode oid based on dash is space like StoryMenuState.hx
 					// also load heartspec
-					PlayState.HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
+					// PlayState.HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
 					FlxG.sound.music.stop();
 
 					//JOELwindows7: if has video, then load the video first before going to new playstate!
@@ -5832,7 +5872,8 @@ class PlayState extends MusicBeatState
 		gf.playAnim('scared', true);
 
 		//JOELwindows7: shock fear Heartbeat jumps
-		increaseHR(fearShockAdd[heartTierIsRightNow]);
+		increaseHR(fearShockAdd[0][heartTierIsRightNow[0]],0);
+		increaseHR(fearShockAdd[2][heartTierIsRightNow[2]],2);
 
 		//JOELwindows7: vibrate controllers
 		Controls.vibrate(0,100);
@@ -6262,73 +6303,101 @@ class PlayState extends MusicBeatState
 	
 		//JOELwindows7: manage heartbeat moments
 		function startHeartBeat(){
-			HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
-			var chooseIndex = 0;
-			switch(SONG.player1){
-				case 'bf': chooseIndex = 0;
-				case 'gf': chooseIndex = 1;
-				default: chooseIndex = 0;
+			DokiDoki.buildHeartsList();
+			// HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
+			// var chooseIndex = 0;
+			// switch(SONG.player1){
+			// 	case 'bf': chooseIndex = 0;
+			// 	case 'gf': chooseIndex = 1;
+			// 	default: chooseIndex = 0;
+			// }
+			
+			// HEART = HEARTS.heartSpecs[chooseIndex];
+			try{
+				HEART[0] = DokiDoki.hearts.get(SONG.player1);
+			} catch(e) {
+				trace("bf heart error " + e);
+				trace("attempting rescue");
+				HEART[0] = DokiDoki.hearts.get('bf');
 			}
-			heartTierIsRightNow = 0;
-			HEART = HEARTS.heartSpecs[chooseIndex];
-			heartRate = HEART.initHR;
-			minHR = HEART.minHR;
-			maxHR = HEART.maxHR;
-			successionAdrenalAdd = HEART.successionAdrenalAdd;
-			fearShockAdd = HEART.fearShockAdd;
-			relaxMinusPerBeat = HEART.relaxMinusPerBeat;
-			heartTierBoundaries = HEART.heartTierBoundaries;
+			try{
+				HEART[1] = DokiDoki.hearts.get(SONG.player2);
+			} catch(e) {
+				 trace("dad heart error " + e);
+				 trace("attempting rescue");
+				 HEART[1] = DokiDoki.hearts.get('dad')
+			}
+			try{
+				HEART[2] = DokiDoki.hearts.get(SONG.gfVersion);
+			} catch(e) {
+				trace("gf heart error " + e);
+				trace("attempting rescue");
+				HEART[2] = DokiDoki.hearts.get('gf');
+			}
+			for(i in 0...HEART.length){
+				heartTierIsRightNow[i] = 0;
+				heartRate[i] = HEART[i].initHR;
+				minHR[i] = HEART[i].minHR;
+				maxHR[i] = HEART[i].maxHR;
+				successionAdrenalAdd[i] = HEART[i].successionAdrenalAdd;
+				fearShockAdd[i] = HEART[i].fearShockAdd;
+				relaxMinusPerBeat[i] = HEART[i].relaxMinusPerBeat;
+				heartTierBoundaries[i] = HEART[i].heartTierBoundaries;
+				slowedAlready[i] = false;
+			}
 		}
 		function updateHeartbeat(){
 			//update the tier status
-			if(heartRate > heartTierBoundaries[heartTierIsRightNow]){
-	
-			}
-	
-			if(curBeat % 4 == 0){
-				//Relax heartbeat
-				if(!slowedAlready)
-				{
-					increaseHR(-relaxMinusPerBeat[heartTierIsRightNow]);
-					slowedAlready = true;
+			for(i in 0...HEART.length){
+				if(heartRate[i] > heartTierBoundaries[i][heartTierIsRightNow[i]]){
+		
 				}
-			} else slowedAlready = false;
+		
+				if(curBeat % 4 == 0){
+					//Relax heartbeat
+					if(!slowedAlready[i])
+					{
+						increaseHR(-relaxMinusPerBeat[i][heartTierIsRightNow[i]],i);
+						slowedAlready[i] = true;
+					}
+				} else slowedAlready[i] = false;
+			}
 		}
-		function successfullyStep(){
-			increaseHR(successionAdrenalAdd[heartTierIsRightNow]);
+		function successfullyStep(whichOne:Int = 0){
+			increaseHR(successionAdrenalAdd[whichOne][heartTierIsRightNow[whichOne]],whichOne);
 		}
-		function checkWhichHeartTierWent(giveHB:Int){
-			// if(giveHB > heartTierBoundaries[heartTierIsRightNow] && giveHB < heartTierBoundaries[heartTierIsRightNow+1]){
+		function checkWhichHeartTierWent(giveHB:Int,whichOne:Int = 0){
+			// if(giveHB > heartTierBoundaries[whichOne][heartTierIsRightNow[whichOne]] && giveHB < heartTierBoundaries[whichOne][heartTierIsRightNow[whichOne]+1]){
 			// 	heartTierIsRightNow++;
-			// } else if (giveHB > heartTierBoundaries[heartTierIsRightNow+1]){
+			// } else if (giveHB > heartTierBoundaries[whichOne][heartTierIsRightNow[whichOne]+1]){
 	
 			// }
 	
 			//Hard code bcause logic brainstorm is haarde
-			if (giveHB < heartTierBoundaries[0])
-				heartTierIsRightNow = 0;
-			else if(giveHB >= heartTierBoundaries[0] && giveHB < heartTierBoundaries[1])
-				heartTierIsRightNow = 1;
-			else if(giveHB >= heartTierBoundaries[1] && giveHB < heartTierBoundaries[2])
-				heartTierIsRightNow = 2;
-			else if(giveHB >= heartTierBoundaries[2] && giveHB < heartTierBoundaries[3])
-				heartTierIsRightNow = 3;
-			else if(giveHB >= heartTierBoundaries[3]){
+			if (giveHB < heartTierBoundaries[whichOne][0])
+				heartTierIsRightNow[whichOne] = 0;
+			else if(giveHB >= heartTierBoundaries[whichOne][0] && giveHB < heartTierBoundaries[whichOne][1])
+				heartTierIsRightNow[whichOne] = 1;
+			else if(giveHB >= heartTierBoundaries[whichOne][1] && giveHB < heartTierBoundaries[whichOne][2])
+				heartTierIsRightNow[whichOne] = 2;
+			else if(giveHB >= heartTierBoundaries[whichOne][2] && giveHB < heartTierBoundaries[whichOne][3])
+				heartTierIsRightNow[whichOne] = 3;
+			else if(giveHB >= heartTierBoundaries[whichOne][3]){
 				//uhhh, idk..
 			}
 		}
-		public function increaseHR(forHowMuch:Int = 0){
-			heartRate += forHowMuch;
+		public function increaseHR(forHowMuch:Int = 0, whichOne:Int = 0){
+			heartRate[whichOne] += forHowMuch;
 	
-			if(heartRate > maxHR){
-				heartRate = maxHR;
+			if(heartRate[whichOne] > maxHR[whichOne]){
+				heartRate[whichOne] = maxHR[whichOne];
 			}
-			if (heartRate < minHR){
-				heartRate = minHR;
+			if (heartRate[whichOne] < minHR[whichOne]){
+				heartRate[whichOne] = minHR[whichOne];
 			}
 	
 			//update the tier status
-			checkWhichHeartTierWent(heartRate);
+			checkWhichHeartTierWent(heartRate[whichOne], whichOne);
 		}
 	
 		//JOELwindows7: fake countdowns! also countups too!

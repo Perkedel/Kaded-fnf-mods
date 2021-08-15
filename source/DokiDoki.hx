@@ -35,6 +35,8 @@ class DokiDoki {
     var fearShockAdd:Array<Int> = [22,20,10,5];
     var relaxMinusPerBeat:Array<Int> = [1,5,10,15];
 
+    public static var hearts:Map<String,SwagHeart>;
+
     public function new(character:String = "bf"){
         this.character = character;
         var heartList:HeartList = loadFromJson("heartBeatSpec");
@@ -67,6 +69,21 @@ class DokiDoki {
         }
 
 		return parseJSONshit(rawJson);
+    }
+    public static function buildHeartsList():Map<String,SwagHeart>{
+        if(hearts == null)
+            hearts = new Map<String,SwagHeart>(); //Must be instantiated first!
+        var HEARTS:HeartList = loadFromJson("heartBeatSpec");
+        trace("HEARTS: \n" + Std.string(HEARTS));
+        var things:Array<SwagHeart> = HEARTS.heartSpecs.copy();
+        trace("things ("+ Std.string(things.length) +"): \n" + things.toString());
+        // var workaroundList:Map<String,SwagHeart>; //wtf why still null object reference?!
+        for(i in 0...things.length){
+            // workaroundList.set(things[i].character,things[i]);
+            DokiDoki.hearts.set(things[i].character,things[i]);
+        }
+        return hearts;
+        // return workaroundList;
     }
     public static function parseJSONshit(rawJson:String):HeartList{
 		var swagShit:HeartList = cast Json.parse(rawJson);
