@@ -1,5 +1,10 @@
 package;
 
+import plugins.sprites.QmovephBackground;
+import flixel.addons.display.FlxBackdrop;
+import flixel.group.FlxGroup;
+import flixel.addons.display.FlxStarField;
+import plugins.sprites.DVDScreenSaver;
 import flixel.tweens.FlxEase;
 import flixel.FlxCamera;
 import ui.FlxVirtualPad;
@@ -8,6 +13,7 @@ import TouchScreenControls;
 import haxe.Json;
 import lime.utils.Assets;
 import flixel.FlxSprite;
+import flixel.FlxBasic;
 #if (windows && cpp)
 import Discord.DiscordClient;
 #end
@@ -26,6 +32,7 @@ typedef SwagWeeks = {
 	var weekUnlocked:Array<Bool>;
 	var weekCharacters:Array<Dynamic>;
 	var weekNames:Array<String>;
+	var weekColor:Array<String>;
 } 
 
 class MusicBeatState extends FlxUIState
@@ -63,9 +70,17 @@ class MusicBeatState extends FlxUIState
 	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
 	var retryButton:FlxSprite; //JOELwindows7: the retry button here
 	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
+	//JOELwindows7: starfields here.
+	var starfield2D:FlxStarField2D;
+	var starfield3D:FlxStarField3D;
+	var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
+	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
 	//var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
+	var hourGlass:FlxSprite; //JOELwindows7: animated gravity hourglass Piskel
 	public var onScreenGameplayButtons:OnScreenGameplayButtons; //JOELwindows7: the touchscreen buttons here
 	public static var dueAdded:Bool = false;
+	var defaultBekgron:FlxBackdrop;
+	var qmovephBekgron:QmovephBackground;
 
 	public var camControl:FlxCamera;
 
@@ -77,6 +92,26 @@ class MusicBeatState extends FlxUIState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
+	private var assets:Array<FlxBasic> = [];
+
+	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
+	{
+		if (FlxG.save.data.optimize)
+			assets.push(Object);
+		return super.add(Object);
+	}
+
+	public function clean()
+	{
+		if (FlxG.save.data.optimize)
+		{
+			for(i in assets)
+			{
+				remove(i);
+			}
+		}
+	}
+
 	override function create()
 	{
 		TimingStruct.clearTimings();
@@ -85,6 +120,8 @@ class MusicBeatState extends FlxUIState
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
+		initCamControl(); //JOELwindows7: init the cam control now! 
+		//dedicated touchscreen button container
 		super.create();
 		//trace("created Music Beat State");
 	}
@@ -105,7 +142,7 @@ class MusicBeatState extends FlxUIState
 	override function update(elapsed:Float)
 	{
 		//everyStep();
-		var nextStep:Int = updateCurStep();
+		/*var nextStep:Int = updateCurStep();
 
 		if (nextStep >= 0)
 		{
@@ -125,7 +162,7 @@ class MusicBeatState extends FlxUIState
 				updateBeat();
 				stepHit();
 			}
-		}
+		}*/
 
 		if (Conductor.songPosition < 0)
 			curDecimalBeat = 0;
@@ -139,16 +176,60 @@ class MusicBeatState extends FlxUIState
 
 				Conductor.crochet = ((60 / data.bpm) * 1000);
 
-				var percent = (Conductor.songPosition - (data.startTime * 1000)) / (data.length * 1000);
+				var step = ((60 / data.bpm) * 1000) / 4;
+				var startInMS = (data.startTime * 1000);
 
 				curDecimalBeat = data.startBeat + (((Conductor.songPosition/1000) - data.startTime) * (data.bpm / 60));
+				var ste:Int = Math.floor(data.startStep + ((Conductor.songPosition - startInMS) / step));
+				if (ste >= 0)
+				{
+					if (ste > curStep)
+					{
+						for (i in curStep...ste)
+						{
+							curStep++;
+							updateBeat();
+							stepHit();
+						}
+					}
+					else if (ste < curStep)
+					{
+						trace("reset steps for some reason?? at " + Conductor.songPosition);
+						//Song reset?
+						curStep = ste;
+						updateBeat();
+						stepHit();
+					}
+				}
 			}
 			else
 			{
 				curDecimalBeat = (Conductor.songPosition / 1000) * (Conductor.bpm/60);
+				var nextStep:Int = Math.floor(Conductor.songPosition / Conductor.stepCrochet);
+				if (nextStep >= 0)
+				{
+					if (nextStep > curStep)
+					{
+						for (i in curStep...nextStep)
+						{
+							curStep++;
+							updateBeat();
+							stepHit();
+						}
+					}
+					else if (nextStep < curStep)
+					{
+						//Song reset?
+						trace("(no bpm change) reset steps for some reason?? at " + Conductor.songPosition);
+						curStep = nextStep;
+						updateBeat();
+						stepHit();
+					}
+				}
 				Conductor.crochet = ((60 / Conductor.bpm) * 1000);
 			}
 		}
+
 
 		if (FlxG.save.data.fpsRain && skippedFrames >= 6)
 			{
@@ -233,13 +314,23 @@ class MusicBeatState extends FlxUIState
 		return swagShit;
 	}
 
+	//JOELwindows7: init dedicated touchscreen buttons camera
+	function initCamControl(){
+		trace("setting dedicated touchscreen buttons camera");
+		camControl = new FlxCamera();
+		FlxG.cameras.add(camControl);
+		camControl.bgColor.alpha = 0;
+	}
+
 	//JOELwindows7: buttons
 	private function addBackButton(x:Int=100,y:Int=720-100,scale:Float=.5){
 		backButton = new FlxSprite(x, y).loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale),Std.int(backButton.height * scale));
 		backButton.scrollFactor.set();
 		backButton.updateHitbox();
-		backButton.antialiasing = true;
+		backButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			backButton.cameras = [camControl];
 		add(backButton);
 		return backButton;
 	}
@@ -248,7 +339,9 @@ class MusicBeatState extends FlxUIState
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale),Std.int(leftButton.height * scale));
 		leftButton.scrollFactor.set();
 		leftButton.updateHitbox();
-		leftButton.antialiasing = true;
+		leftButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			leftButton.cameras = [camControl];
 		add(leftButton);
 		return leftButton;
 	}
@@ -257,7 +350,9 @@ class MusicBeatState extends FlxUIState
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale),Std.int(rightButton.height * scale));
 		rightButton.scrollFactor.set();
 		rightButton.updateHitbox();
-		rightButton.antialiasing = true;
+		rightButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			rightButton.cameras = [camControl];
 		add(rightButton);
 		return rightButton;
 	}
@@ -266,7 +361,9 @@ class MusicBeatState extends FlxUIState
 		upButton.setGraphicSize(Std.int(upButton.width * scale),Std.int(upButton.height * scale));
 		upButton.scrollFactor.set();
 		upButton.updateHitbox();
-		upButton.antialiasing = true;
+		upButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			upButton.cameras = [camControl];
 		add(upButton);
 		return upButton;
 	}
@@ -275,7 +372,9 @@ class MusicBeatState extends FlxUIState
 		downButton.setGraphicSize(Std.int(downButton.width * scale),Std.int(downButton.height * scale));
 		downButton.scrollFactor.set();
 		downButton.updateHitbox();
-		downButton.antialiasing = true;
+		downButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			downButton.cameras = [camControl];
 		add(downButton);
 		return downButton;
 	}
@@ -284,7 +383,9 @@ class MusicBeatState extends FlxUIState
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale),Std.int(pauseButton.height * scale));
 		pauseButton.scrollFactor.set();
 		pauseButton.updateHitbox();
-		pauseButton.antialiasing = true;
+		pauseButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			pauseButton.cameras = [camControl];
 		add(pauseButton);
 		return pauseButton;
 	}
@@ -293,7 +394,9 @@ class MusicBeatState extends FlxUIState
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale),Std.int(acceptButton.height * scale));
 		acceptButton.scrollFactor.set();
 		acceptButton.updateHitbox();
-		acceptButton.antialiasing = true;
+		acceptButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			acceptButton.cameras = [camControl];
 		add(acceptButton);
 		return acceptButton;
 	}
@@ -302,7 +405,9 @@ class MusicBeatState extends FlxUIState
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale),Std.int(retryButton.height * scale));
 		retryButton.scrollFactor.set();
 		retryButton.updateHitbox();
-		retryButton.antialiasing = true;
+		retryButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			retryButton.cameras = [camControl];
 		add(retryButton);
 		return retryButton;
 	}
@@ -311,9 +416,20 @@ class MusicBeatState extends FlxUIState
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale),Std.int(viewReplayButton.height * scale));
 		viewReplayButton.scrollFactor.set();
 		viewReplayButton.updateHitbox();
-		viewReplayButton.antialiasing = true;
+		viewReplayButton.antialiasing = FlxG.save.data.antialiasing;
+		if(camControl != null)
+			viewReplayButton.cameras = [camControl];
 		add(viewReplayButton);
 		return viewReplayButton;
+	}
+	private function installBusyHourglassScreenSaver(){
+		hourGlass = new DVDScreenSaver(null,100,100);
+		hourGlass.frames = Paths.getSparrowAtlas('Gravity-HourGlass');
+		hourGlass.animation.addByPrefix('working', 'Gravity-HourGlass idle', 24);
+		hourGlass.animation.play('working');
+		hourGlass.updateHitbox();
+		add(hourGlass);
+		return hourGlass;
 	}
 	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false){
 		/*
@@ -356,10 +472,7 @@ class MusicBeatState extends FlxUIState
 		// 	onScreenGameplayButtons.initialize(howManyButtons, initVisible);
 		controls.trackedinputs = [];
 		if(camControl == null){
-			trace("setting dedicated touchscreen buttons camera");
-			camControl = new FlxCamera();
-			FlxG.cameras.add(camControl);
-			camControl.bgColor.alpha = 0;
+			initCamControl();
 			onScreenGameplayButtons.cameras = [camControl];
 		} else {
 			camControl.bgColor.alpha = 0;
@@ -425,5 +538,69 @@ class MusicBeatState extends FlxUIState
 			*/
 			onScreenGameplayButtons.visible = false;
 		}
+	}
+
+	//JOELwindows7: install starfield
+	function installStarfield2D(
+		x:Int=0,
+		y:Int=0,
+		width:Int=0,
+		height:Int=0,
+		starAmount:Int=300, 
+		inArray:Bool = false
+		):FlxStarField2D
+		{
+		if(inArray){
+			var starfielding = new FlxStarField2D(x,y,width,height,starAmount);
+			var id:Int = multiStarfield2D.length;
+			starfielding.ID = id;
+			multiStarfield2D.add(starfielding);
+			add(starfielding);
+			return starfielding;
+		} else {
+			starfield2D = new FlxStarField2D(x,y,width,height,starAmount);
+			add(starfield2D);
+			return starfield2D;
+		}
+	}
+	function installStarfield3D(
+		x:Int=0,
+		y:Int=0,
+		width:Int=0,
+		height:Int=0,
+		starAmount:Int=300, 
+		inArray:Bool = false
+		):FlxStarField3D
+		{
+		if(inArray){
+			var starfielding = new FlxStarField3D(x,y,width,height,starAmount);
+			var id:Int = multiStarfield2D.length;
+			starfielding.ID = id;
+			multiStarfield3D.add(starfielding);
+			add(starfielding);
+			return starfielding;
+		} else {
+			starfield3D = new FlxStarField3D(x,y,width,height,starAmount);
+			add(starfield3D);
+			return starfield3D;
+		}
+	}
+	function installDefaultBekgron(){
+		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'),50,0,true,false);
+		// defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
+		defaultBekgron.velocity.x = -100;
+		defaultBekgron.updateHitbox();
+		add(defaultBekgron);
+	}
+	function justInitDefaultBekgron():FlxBackdrop {
+		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'),50,0,true,false);
+		theBekgron.velocity.x = -100;
+		theBekgron.updateHitbox();
+		return theBekgron;
+	}
+	function installSophisticatedDefaultBekgron() {
+		qmovephBekgron = new QmovephBackground();
+		add(qmovephBekgron);
+		qmovephBekgron.startDoing();
 	}
 }

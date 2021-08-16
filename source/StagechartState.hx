@@ -87,6 +87,14 @@ typedef SwagStage = {
 
     var forceLuaModchart:Bool;
     var forceHscriptModchart:Bool;
+
+    var ignoreMainImages:Bool;
+
+    var overrideCamFollowP1:Bool;
+    var overrideCamFollowP2:Bool;
+
+    var camFollowP1Pos:Array<Float>;
+    var camFollowP2Pos:Array<Float>;
 };
 
 class StageChart
@@ -104,6 +112,14 @@ class StageChart
 
     public var forceLuaModchart:Bool = false;
     public var forceHscriptModchart:Bool = false;
+
+    public var ignoreMainImages:Bool = false;
+
+    public var overrideCamFollowP1:Bool = false;
+    public var overrideCamFollowP2:Bool = false;
+
+    public var camFollowP1Pos:Array<Float> = [0,0];
+    public var camFollowP2Pos:Array<Float> = [0,0];
 
     public function new(name:String = "anStage", backgroundImages:Array<SwagBackground>, isHalloween:Bool = false){
         this.name = name;

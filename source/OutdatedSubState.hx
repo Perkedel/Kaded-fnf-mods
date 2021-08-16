@@ -37,14 +37,16 @@ class OutdatedSubState extends MusicBeatState
 	override function create()
 	{
 		super.create();
+		//JOELwindows7: put bekgrondes yesh
+		installStarfield2D(0,0,FlxG.width,FlxG.height);
+		installDefaultBekgron();
+		defaultBekgron.visible = false;
+		
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('week54prototype', 'shared'));
 		bg.scale.x *= 1.55;
 		bg.scale.y *= 1.55;
 		bg.screenCenter();
-		if(FlxG.save.data.antialiasing)
-			{
-				bg.antialiasing = true;
-			}
+		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 		
 		var kadeLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.image('KadeEngineLogo'));
@@ -53,20 +55,18 @@ class OutdatedSubState extends MusicBeatState
 		kadeLogo.x -= kadeLogo.frameHeight;
 		kadeLogo.y -= 180;
 		kadeLogo.alpha = 0.8;
-		if(FlxG.save.data.antialiasing)
-			{
-				kadeLogo.antialiasing = true;
-			}
+		kadeLogo.antialiasing = FlxG.save.data.antialiasing;
 		add(kadeLogo);
 		kadeLogo.visible = false; //JOELwindows7: wait check which case first
 
 		//JOELwindows7: our LFM logo here pls
-		var lfmLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.image('LastFunkinMomentsLogo'));
-		lfmLogo.scale.y = 0.1;
-		lfmLogo.scale.x = 0.1;
+		var lfmLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.image('art/LFMicon256'));
+		lfmLogo.scale.y = .5;
+		lfmLogo.scale.x = .5;
 		lfmLogo.x -= lfmLogo.frameHeight;
-		lfmLogo.y -= 180;
+		lfmLogo.y -= 0;
 		lfmLogo.alpha = .8;
+		lfmLogo.antialiasing = FlxG.save.data.antialiasing;
 		add(lfmLogo);
 		lfmLogo.visible = false; //JOELwindows7: wait check which case first
 		
@@ -93,6 +93,7 @@ class OutdatedSubState extends MusicBeatState
 		txt.borderStyle = FlxTextBorderStyle.OUTLINE;
 		txt.screenCenter();
 		add(txt);
+
 		var teks:FlxText = new FlxText(0, 0, FlxG.width,
 			"Your Last Funkin Moment is outdated!\nYou are on "
 			+ MainMenuState.lastFunkinMomentVer
@@ -146,6 +147,7 @@ class OutdatedSubState extends MusicBeatState
 			case 1: //Last Funkin Moment
 				lfmLogo.visible = true;
 				teks.visible = true;
+				defaultBekgron.visible = true;
 			case 2: //Your mod
 				mitsake.visible = false;
 				trace("visible teks your mod");

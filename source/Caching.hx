@@ -41,6 +41,8 @@ class Caching extends MusicBeatState
 	var kadeLogo:FlxSprite;
 	var lFMLogo:FlxSprite; //JOELwindows7: LFM logo
 
+	var bar:FlxBar; //JOELwindows7: globalize the loading bar.
+
 	public static var bitmapData:Map<String,FlxGraphic>;
 
 	var images = [];
@@ -81,9 +83,14 @@ class Caching extends MusicBeatState
 		text.y -= kadeLogo.height / 2 - 125;
 		text.x -= 170;
 		kadeLogo.setGraphicSize(Std.int(kadeLogo.width * 0.6));
-		kadeLogo.antialiasing = true;
+		if(FlxG.save.data.antialiasing != null)
+			kadeLogo.antialiasing = FlxG.save.data.antialiasing;
+		else
+			kadeLogo.antialiasing = true;
 		
 		kadeLogo.alpha = 0;
+
+		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
 		#if cpp
 		if (FlxG.save.data.cacheImages)
@@ -108,14 +115,22 @@ class Caching extends MusicBeatState
 
 		toBeDone = Lambda.count(images) + Lambda.count(music);
 
-		var bar = new FlxBar(10,FlxG.height - 50,FlxBarFillDirection.LEFT_TO_RIGHT,FlxG.width,40,null,"done",0,toBeDone);
+		//JOELwindows7: globalize loading bar
+		bar = new FlxBar(10,FlxG.height - 100,FlxBarFillDirection.LEFT_TO_RIGHT,FlxG.width,40,this,"done",0,toBeDone);
 		bar.color = FlxColor.PURPLE;
 
+		//JOELwindows7:bekgrond stuffer
+		installStarfield3D(0,0,FlxG.width,FlxG.height);
+		starfield3D.alpha = 0;
+
 		add(bar);
+		bar.color = FlxColor.PURPLE; //JOELwindows7: try again after adding this time?
 
 		add(kadeLogo);
 		add(lFMLogo);
 		add(text);
+
+		installBusyHourglassScreenSaver(); //JOELwindows7: for loading animation hourglass
 
 		trace('starting caching..');
 		
@@ -128,10 +143,12 @@ class Caching extends MusicBeatState
 				if (toBeDone != 0 && done != toBeDone)
 					{
 						var alpha = HelperFunctions.truncateFloat(done / toBeDone * 100,2) / 100;
+						starfield3D.alpha = alpha;
 						kadeLogo.alpha = alpha;
 						lFMLogo.alpha = alpha;
 						text.alpha = alpha;
 						text.text = "Loading... (" + done + "/" + toBeDone + ")";
+						//bar.value = done; //JOELwindows7: workaround since not showing up
 					}
 			}
 		

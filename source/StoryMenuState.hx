@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.FlxEase;
 import MusicBeatState.SwagWeeks;
 import lime.utils.Assets;
 import flixel.input.actions.FlxActionManager.ActionSetJson;
@@ -75,6 +76,8 @@ class StoryMenuState extends MusicBeatState
 
 	var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 
+	var weekColor:Array<String>;
+
 	var txtWeekTitle:FlxText;
 
 	var curWeek:Int = 0;
@@ -90,6 +93,8 @@ class StoryMenuState extends MusicBeatState
 	var sprDifficulty:FlxSprite;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
+
+	var yellowBG:FlxSprite; //JOELwindows7: globalize this bg so we can colorize it.
 
 	function unlockWeeks():Array<Bool>
 	{
@@ -136,6 +141,7 @@ class StoryMenuState extends MusicBeatState
 		//weekUnlocked = initWeekJson.weekUnlocked;
 		weekCharacters = initWeekJson.weekCharacters;
 		//weekNames = initWeekJson.weekNames;
+		weekColor = initWeekJson.weekColor;
 
 		weekUnlocked = unlockWeeks();
 
@@ -173,7 +179,9 @@ class StoryMenuState extends MusicBeatState
 
 		//Mark selection for campaign menu ui assets
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
+		yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE); //JOELwindows7: globalized lol
+		//original color was 0xFFF9CF51
+		//You must be white as a base colorable.
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
@@ -197,10 +205,7 @@ class StoryMenuState extends MusicBeatState
 			grpWeekText.add(weekThing);
 
 			weekThing.screenCenter(X);
-			if(FlxG.save.data.antialiasing)
-				{
-					weekThing.antialiasing = true;
-				}
+			weekThing.antialiasing = FlxG.save.data.antialiasing;
 			// weekThing.updateHitbox();
 
 			// Needs an offset thingie
@@ -212,10 +217,7 @@ class StoryMenuState extends MusicBeatState
 				lock.animation.addByPrefix('lock', 'lock');
 				lock.animation.play('lock');
 				lock.ID = i;
-				if(FlxG.save.data.antialiasing)
-					{
-						lock.antialiasing = true;
-					}
+				lock.antialiasing = FlxG.save.data.antialiasing;
 				grpLocks.add(lock);
 			}
 		}
@@ -502,17 +504,17 @@ class StoryMenuState extends MusicBeatState
 			PlayState.shits = 0;
 			PlayState.goods = 0;
 			PlayState.campaignMisses = 0;
-			PlayState.SONG = Song.loadFromJson(poop, PlayState.storyPlaylist[0]);
+			PlayState.SONG = Song.conversionChecks(Song.loadFromJson(poop, PlayState.storyPlaylist[0]));
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				//JOELwindows7: check if the song has video files
-				#if !mobile
-				LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? new VideoState("assets/videos/" + PlayState.SONG.videoPath + ".webm", new PlayState()) : new PlayState(), true);
-				#else //workaround for Video cutscener not working in Android
-				LoadingState.loadAndSwitchState(new PlayState(), true);
-				#end
+				// #if !mobile
+				LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(), true);
+				// #else //workaround for Video cutscener not working in Android
+				// LoadingState.loadAndSwitchState(new PlayState(), true);
+				// #end
 			});
 		}
 	}
@@ -627,6 +629,16 @@ class StoryMenuState extends MusicBeatState
 		txtTracklist.x -= FlxG.width * 0.35;
 
 		txtTracklist.text += "\n";
+
+		//JOELwindows7: change yellowBG color pls
+		yellowBG.color = FlxColor.fromString(weekColor[curWeek]);
+		// FlxTween.tween(
+		// 	yellowBG, 
+		// 	{color:FlxColor.fromString(weekColor[curWeek])},
+		// 	.5,
+		// 	{ease:FlxEase.linear}
+		// 	);
+		//wtf bro, the tweener triggers epilepsy!
 
 		#if !switch
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);

@@ -1,7 +1,9 @@
 package;
 
+import experiments.AnMIDIyeay;
 import experiments.AnWebmer;
 import experiments.LimeAudioBufferTester;
+import experiments.*;
 import openfl.net.FileFilter;
 import haxe.Json;
 import openfl.net.FileReference;
@@ -151,6 +153,29 @@ class GraphicLoading extends Option
 
 }
 
+class EditorRes extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.editorBG = !FlxG.save.data.editorBG;
+		
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return  FlxG.save.data.editorBG ? "Show Editor Grid" : "Do not Show Editor Grid";
+	}
+
+}
+
 class DownscrollOption extends Option
 {
 	public function new(desc:String)
@@ -290,6 +315,27 @@ class ResetButtonOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Reset Button " + (!FlxG.save.data.resetButton ? "off" : "on");
+	}
+}
+
+class InstantRespawn extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.InstantRespawn = !FlxG.save.data.InstantRespawn;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Instant Respawn " + (!FlxG.save.data.InstantRespawn ? "off" : "on");
 	}
 }
 
@@ -810,6 +856,7 @@ class LockWeeksOption extends Option
 		}
 		FlxG.save.data.weekUnlocked = 1;
 		StoryMenuState.weekUnlocked = [true, true];
+		confirm = false;
 		trace('Weeks Locked');
 		display = updateDisplay();
 		return true;
@@ -880,6 +927,8 @@ class ResetSettings extends Option
 		FlxG.save.data.weekUnlocked = null;
 		FlxG.save.data.newInput = null;
 		FlxG.save.data.downscroll = null;
+		FlxG.save.data.antialiasing = null;
+		FlxG.save.data.missSounds = null;
 		FlxG.save.data.dfjk = null;
 		FlxG.save.data.accuracyDisplay = null;
 		FlxG.save.data.offset = null;
@@ -895,6 +944,7 @@ class ResetSettings extends Option
 		FlxG.save.data.watermark = null;
 		FlxG.save.data.ghost = null;
 		FlxG.save.data.distractions = null;
+		FlxG.save.data.stepMania = null;
 		FlxG.save.data.flashing = null;
 		FlxG.save.data.resetButton = null;
 		FlxG.save.data.botplay = null;
@@ -902,7 +952,12 @@ class ResetSettings extends Option
 		FlxG.save.data.strumline = null;
 		FlxG.save.data.customStrumLine = null;
 		FlxG.save.data.camzoom = null;
-		FlxG.save.data.stepMania = null;
+		FlxG.save.data.scoreScreen = null;
+		FlxG.save.data.inputShow = null;
+		FlxG.save.data.optimize = null;
+		FlxG.save.data.cacheImages = null;
+		FlxG.save.data.editor = null;
+
 		KadeEngineData.initSave();
 		confirm = false;
 		trace('All settings have been reset');
@@ -1482,6 +1537,73 @@ class AnVideoCutscenerTestOption extends Option{
 		}
 }
 
+//JOELwindows7: quick way testing Starfield
+class AnStarfieldTestOption extends Option{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+			//FlxG.switchState(new LoadReplayState()); //or open new state.
+			FlxG.switchState(new AnStarfielde());
+			return false;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Starfield Test";
+		}
+}
+
+//JOELwindows7: quick way testing default bekgrond
+class AnDefaultBekgronTestOption extends Option{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+			//FlxG.switchState(new LoadReplayState()); //or open new state.
+			FlxG.switchState(new AnDefaultBekgronde());
+			return false;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "Default Background Test";
+		}
+}
+
+//JOELwindows7: quick way testing MIDI
+class AnMIDITestOption extends Option{
+	public function new(desc:String)
+		{
+			super();
+			description = desc;
+		}
+	
+		public override function press():Bool
+		{
+			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+			//FlxG.switchState(new LoadReplayState()); //or open new state.
+			FlxG.switchState(new AnMIDIyeay());
+			return false;
+		}
+	
+		private override function updateDisplay():String
+		{
+			return "MIDI Test";
+		}
+}
+
+//JOELwindows7: Force all weeks to unlock
 class PreUnlockAllWeeksOption extends Option{
 	public function new(desc:String)
 	{
@@ -1499,5 +1621,83 @@ class PreUnlockAllWeeksOption extends Option{
 	private override function updateDisplay():String
 	{		
 		return "All Weeks " + (FlxG.save.data.preUnlocked ? "PreUnlocked" : "Lock Progress");
+	}
+}
+
+//JOELwindows7: Vibration had delay. offset it this
+class VibrationOffsetOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptValues = true;
+	}
+
+	public override function press():Bool{
+		display = updateDisplay();
+		return true;
+	}
+
+	override function right():Bool{
+		FlxG.save.data.vibrationOffset += .01;
+		display = updateDisplay();
+		return true;
+	}
+
+	override function left():Bool{
+		FlxG.save.data.vibrationOffset -= .01;
+		if(FlxG.save.data.vibrationOffset < 0.0)
+			FlxG.save.data.vibrationOfset = 0.0;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Vibration Offset";
+	}
+
+	override function getValue():String {
+		return "Vibration Offset: " + Std.string(FlxG.save.data.vibrationOffset);
+	}
+}
+
+class OutOfSegsWarningOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.outOfSegsWarning = !FlxG.save.data.outOfSegsWarning;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{		
+		return "Out of segs " + (FlxG.save.data.outOfSegsWarning ? "Printed" : "SSSSHHHH");
+	}
+}
+
+class PrintSongChartContentOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.traceSongChart = !FlxG.save.data.traceSongChart;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{		
+		return "Song Chart Content " + (FlxG.save.data.traceSongChart ? "Printed" : "SSSSHHHH");
 	}
 }

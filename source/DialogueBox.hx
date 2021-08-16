@@ -26,6 +26,7 @@ class DialogueBox extends FlxSpriteGroup
 
 	var dropText:FlxText;
 
+	//public var finishThing:Void->Void;
 	public var finishThing:Void->Void;
 
 	var portraitLeft:FlxSprite;

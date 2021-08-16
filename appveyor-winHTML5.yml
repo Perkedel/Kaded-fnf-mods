@@ -27,6 +27,7 @@ install:
   # Install project dependencies
   - haxelib install hxp
   - haxelib install format
+  - haxelib install svg
   - haxelib install lime
   - haxelib install lime-tools
   - RefreshEnv
@@ -49,7 +50,8 @@ install:
   - haxelib run lime rebuild extension-webm windows
   - haxelib run lime rebuild extension-webm html5
   # - haxelib install linc_luajit
-  - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  # - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git
   - haxelib install actuate 
   #- haxelib run lime rebuild extension-webm windows
   #why here's dublicate lmao
@@ -66,6 +68,8 @@ install:
   - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
   - haxelib install haxe-files
   - haxelib install hxcpp-debug-server
+  - haxelib install tink_core
+  - haxelib install grig.audio
   - haxelib list
 
 # No tests idk lol

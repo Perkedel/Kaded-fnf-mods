@@ -2,13 +2,13 @@ package;
 
 import flixel.FlxG;
 import openfl.display.Sprite;
-#if desktop
+#if (desktop || mobile)
 import webm.*;
 #end
 
 class WebmHandler
 {
-	#if desktop
+	#if (desktop || mobile)
 	public var webm:WebmPlayer;
 	public var vidPath:String = "";
 	public var io:WebmIo;
@@ -28,8 +28,11 @@ class WebmHandler
 	
 	public function makePlayer():Void
 	{
+		trace("making player");
 		io = new WebmIoFile(vidPath);
+		trace("new WebmIoFile");
 		webm = new WebmPlayer();
+		trace("new webm player");
 		webm.fuck(io, false);
 		webm.addEventListener(WebmEvent.PLAY, function(e) {
 			onPlay();
@@ -43,6 +46,7 @@ class WebmHandler
 		webm.addEventListener(WebmEvent.RESTART, function(e) {
 			onRestart();
 		});
+		trace("event callback added");
 		webm.visible = false;
 		initialized = true;
 	}

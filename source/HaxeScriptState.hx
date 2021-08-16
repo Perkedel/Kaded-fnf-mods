@@ -1,5 +1,6 @@
 //package;
 
+import utils.Asset2File;
 import flixel.util.FlxDestroyUtil;
 import flixel.*;
 import flixel.FlxGame;
@@ -112,6 +113,7 @@ class HaxeScriptState {
 
     //Some other variables
     public static var hscriptSprite:Map<String,FlxSprite> = [];
+    public var haxeWiggles:Map<String,WiggleEffect> = new Map<String,WiggleEffect>();
 
     /**
      * Instance HaxeScriptState.
@@ -233,8 +235,14 @@ class HaxeScriptState {
                 case 'dad-battle': songLowercase = 'dadbattle';
                 case 'philly-nice': songLowercase = 'philly';
             }
-        
-        script = Assets.getText(Paths.hscript(rawMode? path : songLowercase + "/modchart")).trim();
+
+        var patho = Paths.hscript(songLowercase + "/modchart");
+        #if sys
+        if (PlayState.isSM)
+            patho = PlayState.pathToSm + "/modchart.hscript";
+        #end
+    
+        script = Assets.getText(rawMode? Paths.hscript(path) :patho).trim();
         trace(script);
         prog = parser.parseString(script);
         trace("parsened");
@@ -270,6 +278,7 @@ class HaxeScriptState {
         //script = p.exists()? f.readAsString(): "";
 
         fillInScripts(rawMode, path);
+        trace("Filled Script");
         
         // Syndicate all vars here boys!
         // Peck this. let's just yoink BulbyVR's modchart inits and stuffs
@@ -283,6 +292,7 @@ class HaxeScriptState {
         setVar("downscroll", FlxG.save.data.downscroll);
         setVar("flashing", FlxG.save.data.flashing);
         setVar("distractions", FlxG.save.data.distractions);
+        trace("setVar those metadata");
 
         setVar("curStep", 0);
         setVar("curBeat", 0);
@@ -297,6 +307,7 @@ class HaxeScriptState {
 
         setVar("followXOffset",0);
         setVar("followYOffset",0);
+        trace("camera setVar");
 
         setVar("showOnlyStrums", false);
         setVar("strumLine1Visible", true);
@@ -308,10 +319,24 @@ class HaxeScriptState {
         setVar("windowHeight",FlxG.height);
         setVar("hudWidth", PlayState.instance.camHUD.width);
         setVar("hudHeight", PlayState.instance.camHUD.height);
+        trace("HUD setVar");
 
         setVar("mustHit", false);
+        trace("mustHit setVar");
 
         setVar("strumLineY", PlayState.instance.strumLine.y);
+        trace("Camera target & Strumline height setVar");
+
+        //JOELwindows7: mirror the variables here!
+        //Colored bg
+        setVar("originalColor", PlayState.instance.originalColor);
+        setVar("isChromaScreen", PlayState.instance.isChromaScreen);
+        //end mirror variables
+        
+        //init just in case
+        setVar("songLength", 0);
+
+        // callbacks
 
         //JOELwindows7: BulbyVR's special stuffs
         setVar("BEHIND_GF", BEHIND_GF);
@@ -361,6 +386,7 @@ class HaxeScriptState {
 			if (position & BEHIND_BF != 0)
 				PlayState.instance.add(PlayState.boyfriend); 
 		});
+        trace("setVar BulbyVR stuffs");
 
         //You must init the function callbacks first before even considered existed.
         addCallback("loaded", function (song) {});
@@ -376,7 +402,7 @@ class HaxeScriptState {
         addCallback("playerOneSing", function(note, position, beatOf, stepOf){});
         addCallback("noteHit", function(player1:Bool, note:Note) {});
         addCallback("keyPressed", function(key){});
-
+        trace("Inited setVars");
 
 
         // Callbacks heres, Kade Engine like
@@ -385,6 +411,41 @@ class HaxeScriptState {
         addCallback("changeDadCharacter", changeDadCharacter);
         addCallback("changeBoyfriendCharacter", changeBoyfriendCharacter);
         addCallback("getProperty", getPropertyByName);
+
+        addCallback("setNoteWiggle", function(wiggleId) {
+            PlayState.instance.camNotes.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
+        });
+        
+        addCallback("setSustainWiggle", function(wiggleId) {
+            PlayState.instance.camSustains.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
+        });
+
+        addCallback("createWiggle", function(freq:Float,amplitude:Float,speed:Float) {
+            var wiggle = new WiggleEffect();
+            wiggle.waveAmplitude = amplitude;
+            wiggle.waveSpeed = speed;
+            wiggle.waveFrequency = freq;
+
+            var id = Lambda.count(haxeWiggles) + 1 + "";
+
+            haxeWiggles.set(id,wiggle);
+            return id;
+        });
+
+        addCallback("setWiggleTime", function(wiggleId:String,time:Float) {
+            var wiggle = haxeWiggles.get(wiggleId);
+
+            wiggle.shader.uTime.value = [time];
+        });
+
+        
+        addCallback("setWiggleAmplitude", function(wiggleId:String,amp:Float) {
+            var wiggle = haxeWiggles.get(wiggleId);
+
+            wiggle.waveAmplitude = amp;
+        });
+        trace("wiggle wiggle setVar");
+
         //addCallback("makeAnimatedSprite", makeAnimatedLuaSprite); //KadeDev says it's in development right now.
         addCallback("destroySprite", function(id:String) {
             var sprite = hscriptSprite.get(id);
@@ -1052,7 +1113,14 @@ class HaxeScriptState {
 			case 'philly-nice': songLowercase = 'philly';
 		}
 
-        var data:BitmapData = BitmapData.fromFile(Paths.luaImage(songLowercase + "/" + spritePath));
+        var path = Asset2File.getPath("assets/data/" + songLowercase);
+
+		if (PlayState.isSM)
+			path = PlayState.pathToSm;
+        trace(path);
+
+        var data:BitmapData = BitmapData.fromFile(path + "/" + spritePath + ".png");
+        trace("bitmap data " + Std.string(data));
 
 		var sprite:FlxSprite = new FlxSprite(0,0);
 		var imgWidth:Float = FlxG.width / data.width;
@@ -1074,6 +1142,7 @@ class HaxeScriptState {
 		sprite.pixels = data2;
 
         hscriptSprite.set(toBeCalled,sprite);
+        trace("new "+toBeCalled+" Sprite added \n" + Std.string(hscriptSprite.get(toBeCalled)));
         // and I quote:
 		// shitty layering but it works!
         @:privateAccess
@@ -1103,7 +1172,13 @@ class HaxeScriptState {
 			case 'philly-nice': songLowercase = 'philly';
 		}
 
-        var data:BitmapData = BitmapData.fromFile(Paths.luaImage(songLowercase + '/' + spritePath));
+        var path = Asset2File.getPath("assets/data/" + songLowercase);
+
+		if (PlayState.isSM)
+			path = PlayState.pathToSm;
+        trace(path);
+
+        var data:BitmapData = BitmapData.fromFile(path + "/" + spritePath + ".png");
 
         var sprite:FlxSprite = new FlxSprite(0,0);
 

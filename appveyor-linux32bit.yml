@@ -18,6 +18,7 @@ install:
   - export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20210701100239_1385eda
   - mkdir $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
   - haxelib install hxp
+  - haxelib install svg
   - haxelib install format
   - haxelib install lime
   - haxelib install lime-tools
@@ -37,7 +38,8 @@ install:
   - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
   - haxelib run lime rebuild extension-webm linux
   # - haxelib install linc_luajit
-  - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  # - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git
   - haxelib install actuate
   # JOELwindows7: Android permissioner
   - haxelib install android6permissions
@@ -52,6 +54,8 @@ install:
   - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
   - haxelib install haxe-files
   - haxelib install hxcpp-debug-server
+  - haxelib install tink_core
+  - haxelib install grig.audio
   - haxelib list
   # JOELwindows7: okay now the butler
   - wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
@@ -68,6 +72,11 @@ build_script:
   - haxelib run lime rebuild tools rpi
   # - cp ~/haxelib/lime/7,9,0/ndll/RPi/lime.ndll ~/haxelib/lime-tools/1,5,7/ndll/Linux
   # - cp ~/haxelib/lime/7,9,0/ndll/RPi/lime.ndll ~/haxelib/lime-tools/1,5,7/ndll/RPi
+  - ls ~/haxelib/lime-tools/1,5,7/ndll/
+  - ls ~/haxelib/lime/7,9,0/ndll/RPi/lime.ndll 
+  - cp ~/haxelib/lime-tools/1,5,7/ndll/RPi ~/haxelib/lime/7,9,0/ndll/RPi/lime.ndll
+  - haxelib run lime rebuild lime rpi #do again
+  - haxelib run lime rebuild lime-tools rpi #do again
   - cd /home/appveyor/projects/kaded-fnf-mods-linux32
   # - haxelib run lime rebuild discord_rpc linux
   # - haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?

@@ -295,6 +295,28 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://twitter.com/JOELwindows7/status/1418617463466434561?s=20 blns helep insert cameoid
 - https://community.haxe.org/t/solved-raspberry-pi-setup-issue/1111 rebuild lime itself for RPi with `lime rebuild lime rpi`
 - https://muut.com/i/openfl/installation:haxeopenfl-on-a-raspberry wtf rpi build not werk why
+- https://grig.tech/ idk how to MIDI pls help wtf why there is no ready to use MIDI player?!??!?!?!?!??!?!
+- https://stackoverflow.com/a/47346821/9079640 type checking haxe
+- https://gamebanana.com/mods/310251 has away3D usage!!! 3D model in HaxeFlixel
+- https://www.reddit.com/r/haxe/comments/35trn5/functions_as_parameters_and_multiple_constructors/ pass function callback with type
+- https://gamebanana.com/threads/220018?post=9355357 Top Failed (& probably toxic) post by JOELwindows7. Name (sticker given). thancc BlackSwordsman (Epic fail), Lone-wolf (Cheesy), & Patrick Grady (Cool Story Bro), you're awesome (sarcasm intended). See you soon in LFM lore story.
+- https://api.haxeflixel.com/flixel/addons/plugin/screengrab/FlxScreenGrab.html screengrab how to in HaxeFlixel
+- https://gamebanana.com/mods/55620 FNF but it's LOVE2d Lua instead of Haxe
+- https://gamebanana.com/mods/311713 Shaggy keys in KE 1.5.4
+- https://snippets.haxeflixel.com/groups/recycling/ recycler
+- https://api.haxeflixel.com/flixel/FlxSprite.html flxsprite
+- https://api.haxeflixel.com/flixel/group/FlxTypedGroup.html typed group
+- https://api.haxeflixel.com/flixel/util/FlxGradient.html ehlp how to gradient wtf how
+- https://haxeflixel.com/documentation/cheat-sheet/ cheatsheet again
+- https://gamebanana.com/tuts/14283 luRaichu's how to spritesheet packer & FNF character without Adobe Animate at all!!!
+- https://gamebanana.com/tuts/14287 how to intro text
+- https://gamebanana.com/tuts/14279 how to vocal with lmms
+- https://gamebanana.com/tuts/14278 how change bg color in StoryMenuState.hx
+- https://api.haxe.org/Array.html array
+- https://haxe.org/manual/std-Map.html map
+- https://api.haxeflixel.com/flixel/math/FlxMath.html FlxMath the Math utilities
+- https://api.haxeflixel.com/flixel/util/FlxColor.html color again
+- https://www.w3schools.com/colors/colors_picker.asp color picker
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -398,6 +420,14 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/furusystems/openfl-xinput (MIT) furusystems. Xinput for OpenFL. lemme vibrate dose bars.
 - https://github.com/ninjamuffin99/SHOOM (Apache 2.0) ninja_muffin99. aspect of SHOOM.
 - https://github.com/stepmania/stepmania https://www.stepmania.com/ Stepmania (MIT). Yoink the sample sm file Goin' Under just to test SM file loading capability. though, you must delete all difficulties but the one you'd like to play. psst, funfact, JOELwindows7 had ever translated this game into Bahasa Indonesia yeayh!
+- https://help.yoyogames.com/hc/en-us/articles/216754008-Uploading-Your-HTML5-Game-To-A-Web-Host despatrte attempt to host html5 build pls help
+- https://gamebanana.com/mods/298149 inspiration for using copyrighted ideas which in this case, Disney Pixar, Luca. yep. that's it.
+- https://odysee.com/@JOELwindows7:a/OldMacDonald-Had-a-bin-cannon:2?r=72GvXbostV9AxDEqgXmRx9Sp1hBw7qqx OldMcdonal had a bin cannot lol Bill Wurtz. full credit in end of video & that description.
+- https://github.com/kem0x/openfl-haxeflixel-video-code/tree/main/source/ndll webm helper to count frames right wawa instead of manually `ffprobe`.
+- http://songsindonesia.didiharyadi.com/midi/index.html (WARNING: except Indonesia Raya and some: For Personal & Education Purpose only) Didi Haryadi MIDIs. take Indonesia Raya MIDI cover.
+- https://api.haxeflixel.com/flixel/system/FlxPreloader.html polgon Preloadering
+- https://gamebanana.com/blogs/19216 BonkMayker's meme of Old web. Check this project's README.md to see in action. you can implement yourself too in comments and post anywhere that complies with the HTML syntaxes.
+- https://en.wikipedia.org/wiki/File:Flag_of_Indonesia.svg flag of Indonesia.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

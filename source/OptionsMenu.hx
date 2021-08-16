@@ -38,12 +38,14 @@ class OptionsMenu extends MusicBeatState
 			new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
 			new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
 			new ResetButtonOption("Toggle pressing R to gameover."),
+			new InstantRespawn("Toggle if you instantly respawn after dying."),
 			// new OffsetMenu("Get a note offset based off of your inputs!"),
 			new PreUnlockAllWeeksOption("Toggle whether to preUnlock all weeks no matter what"),
 			new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!")
 		]),
 		new OptionCategory("Appearance", [
 			new FullScreenOption("Toggle Fullscreen Mode"),
+			new EditorRes("Not showing the editor grid will greatly increase editor performance"),
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
 			new CamZoomOption("Toggle the camera zoom in-game."),
 			new StepManiaOption("Sets the colors of the arrows depending on quantization instead of direction."),
@@ -57,6 +59,7 @@ class OptionsMenu extends MusicBeatState
 		new OptionCategory("Audio",[
 			new AdjustVolumeOption("Adjust Audio volume"),
 			new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
+			new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
 		]),
 		
 		new OptionCategory("Misc", [
@@ -68,6 +71,7 @@ class OptionsMenu extends MusicBeatState
 			new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), //JOELwindows7: make this Odysee exclusive pls. how!
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 			new VibrationOption("Toggle Vibration that let your gamepade / device vibrates."),
+			new VibrationOffsetOption("Adjust Vibration offset delaying"),
 			new WatermarkOption("Enable and disable all watermarks from the engine."),
 			new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 			new OdyseemarkOption("Turn off all Odysee watermarks from the engine."),
@@ -79,6 +83,10 @@ class OptionsMenu extends MusicBeatState
 			new GraphicLoading("On startup, cache every character. Significantly decrease load times. (HIGH MEMORY)"),
 			new ExportSaveToJson("BETA! Export entire save data into JSON file"),
 			new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"),
+			new AnStarfieldTestOption("EXPERIMENTAL! Test FlxStarfield"),
+			new AnDefaultBekgronTestOption("EXPERIMENTAL! Test default background of Hexagon Engine"),
+			new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
+			new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
 			new BotPlay("Showcase your charts and mods with autoplay.")
 		]),
 		
@@ -103,6 +111,7 @@ class OptionsMenu extends MusicBeatState
 	var blackBorder:FlxSprite;
 	override function create()
 	{
+		clean();
 		instance = this;
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat"));
 
@@ -110,10 +119,7 @@ class OptionsMenu extends MusicBeatState
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
-		if(FlxG.save.data.antialiasing)
-			{
-				menuBG.antialiasing = true;
-			}
+		menuBG.antialiasing = FlxG.save.data.antialiasing;
 		add(menuBG);
 
 		grpControls = new FlxTypedGroup<Alphabet>();
@@ -151,6 +157,8 @@ class OptionsMenu extends MusicBeatState
 		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
 		FlxTween.tween(leftButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left right button
 		FlxTween.tween(rightButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: yeah.
+		
+		changeSelection();
 
 		super.create();
 
@@ -185,7 +193,7 @@ class OptionsMenu extends MusicBeatState
 		{
 			//JOELwindows7: right click to go back, I guess.
 			//incase gamers get mad, smash keyboard, no longer working?
-			if ((controls.BACK || haveBacked)&& !isCat)
+			if ((controls.BACK || haveBacked) && !isCat)
 			{
 				FlxG.switchState(new MainMenuState());
 				haveBacked = false;

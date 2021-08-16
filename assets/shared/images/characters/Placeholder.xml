@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="Placeholder.png"><SubTexture name="Placeholder Sing Note DOWN0000" x="0" y="0" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Sing Note alt DOWN0000" x="388" y="0" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Miss Down0000" x="776" y="0" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder idle0000" x="1164" y="0" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder alt idle0000" x="0" y="628" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Sing Note LEFT0000" x="388" y="628" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Sing Note alt LEFT0000" x="776" y="628" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Miss left0000" x="1164" y="628" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Sing Note RIGHT0000" x="0" y="1256" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Sign Note alt RIGHT0000" x="388" y="1256" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Miss right0000" x="776" y="1256" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Sing Note UP0000" x="1164" y="1256" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Sing Note alt UP0000" x="0" y="1884" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Miss up0000" x="388" y="1884" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Hey0000" x="776" y="1884" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Hey alt0000" x="1164" y="1884" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Death Loop0000" x="0" y="2512" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder First Death0000" x="388" y="2512" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Dance LEFT0000" x="776" y="2512" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Dance RIGHT0000" x="1164" y="2512" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Death Confirm0000" x="0" y="3140" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Hair Blowing0000" x="388" y="3140" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Hair Falling0000" x="776" y="3140" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Scared0000" x="1164" y="3140" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Sad0000" x="0" y="3768" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+</TextureAtlas>

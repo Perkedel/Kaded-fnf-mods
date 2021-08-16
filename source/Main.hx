@@ -1,5 +1,10 @@
 package;
 
+import flixel.addons.plugin.screengrab.FlxScreenGrab;
+import flixel.input.keyboard.FlxKey;
+import grig.midi.MidiOut;
+import grig.midi.MidiIn;
+import flixel.util.FlxTimer;
 #if !debug
 import com.player03.android6.Permissions;
 #end
@@ -41,6 +46,9 @@ class Main extends Sprite
 	public static var chosenMarkNum:Int = 0;
 	//JOELwindows7: Please no demonic reference about Mark of what the peck!
 
+	public static var midiIn:MidiIn; //JOELwindows7: Grig MIDI in
+	public static var midiOut:MidiOut; //JOELwindows7: Grig MIDI out
+
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void
@@ -54,6 +62,11 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+
+		//JOELwindows7: Grig midi pls
+		trace("MIDI out APIs:\n" + MidiOut.getApis());
+		midiIn = new MidiIn(grig.midi.Api.Unspecified);
+		midiOut = new MidiOut(grig.midi.Api.Unspecified);
 
 		//JOELwindows7: pecking ask permission on Android 6 and forth
 		#if (android && !debug)
@@ -111,9 +124,13 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-		#if (cpp && sys && !mobile) //JOELwindows7: remember! it doesn't work in Android!
+		#if !cpp
+		framerate = 60;
+		#end
+
+		#if cpp
+		initialState = Caching; //JOELwindows7: remember! it doesn't work in Android! make sure !mobile first
 		trace("Go to caching first");
-		initialState = Caching;
 		#else
 		#end
 		trace("put game");
@@ -121,6 +138,14 @@ class Main extends Sprite
 		//JOELwindows7: nope, Caching still crashes in Android.
 		addChild(game);
 		trace("added game");
+
+		//JOELwindows7: Friggin Screen Grab functions
+		//inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
+		//it had screenshoter so why not?
+		// 
+		#if !js
+		FlxScreenGrab.defineHotKeys([FlxKey.PRINTSCREEN, FlxKey.F6], true, false);
+		#end
 
 		//GrowtopiaFli's Video Cutscener
 		//The code https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/
@@ -131,8 +156,10 @@ class Main extends Sprite
 
 		//JOELwindows7: an check whether isWebm or not
 		#if (web)
+		trace("vid isWeb");
 		GlobalVideo.isWebm = false;
 		#elseif (desktop)
+		trace("vid isNative");
 		GlobalVideo.isWebm = true;
 		#end
 		trace("is GlobalVideo a webm? " + Std.string(GlobalVideo.isWebm));
@@ -154,6 +181,7 @@ class Main extends Sprite
 		var webmHandle = new WebmHandler();
 		webmHandle.source(ourSource);
 		webmHandle.makePlayer();
+		trace("new WebmHandler make player");
 		webmHandle.webm.name = str1;
 		addChild(webmHandle.webm);
 		GlobalVideo.setWebm(webmHandle);
@@ -172,9 +200,11 @@ class Main extends Sprite
 		trace("init FPS counter");
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
-		#if !mobile
-		//toggleFPS(FlxG.save.data.fps);
-		#end
+		// #if !mobile
+		new FlxTimer().start(1,function (timer:FlxTimer) {
+			toggleFPS(FlxG.save.data.fps);
+		});
+		// #end
 
 		//JOELwindows7: GameBanana seems notorious.
 		//let's just hide everything that "trashworthy" / "blammworthy"

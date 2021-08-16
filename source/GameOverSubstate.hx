@@ -129,6 +129,11 @@ class GameOverSubstate extends MusicBeatSubstate
 			haveClicked = false; //JOELwindows7: the mouse support improvement
 		}
 
+		if(FlxG.save.data.InstantRespawn)
+		{
+			LoadingState.loadAndSwitchState(new PlayState());
+		}
+
 		if (controls.BACK || haveBacked)
 		{
 			FlxG.sound.music.stop();

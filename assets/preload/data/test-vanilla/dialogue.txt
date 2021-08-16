@@ -1,0 +1,16 @@
+:dad:The final song right here will be very hard no matter what difficulty you've chosen.
+:bf:Whoah!? Okay.
+:gf:Please don't be too hard for us, therefore.
+:dad:No, it is not impossible though. I'm here providing just the way it is. It wasn't my intention to compete.
+:bf:Okay, what is this song about?
+:dad:during the work for the 0.2.8 update, as well as the most *exciting update*, 
+:dad:Mth (if not wrong) in his involvement wanted to improve the rhythming system.
+:dad:With it, he needs to test the capability of the brand new rhythming system, so this is what he came with.
+:dad:To test voice syncs and multi press capability, while minimizing the infuriating input drops on the previous system.
+:dad:Mth also built an alternative charting way that harnesses the power of FLStudio. So called, SNIFF, the SiIva Note Importer.
+:dad:With this way, you just use the provided FLStudio template to build rhythm charts fast and efficient compared with internal charter.
+:dad:Because FLStudio is DAW and obviously is so accurate, anyone can join the easy while making the most accurate chart.
+:bf:Wow! that's amazing!!
+:dad:Indeed. Now, bear with me. This should not be too impossible to handle, you can do this. ready?
+:bf:Yeah!
+:dad:Alright, let's begin! Test by Kawai Sprite

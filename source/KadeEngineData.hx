@@ -101,6 +101,9 @@ class KadeEngineData
 
 		if (FlxG.save.data.resetButton == null)
 			FlxG.save.data.resetButton = false;
+
+		if (FlxG.save.data.InstantRespawn == null)
+			FlxG.save.data.InstantRespawn = false;
 		
 		if (FlxG.save.data.botplay == null)
 			FlxG.save.data.botplay = false;
@@ -140,9 +143,31 @@ class KadeEngineData
 		//JOELwindows7: PreUnlock weeks like in Stepmania Home mode
 		if (FlxG.save.data.preUnlocked == null)
 			FlxG.save.data.preUnlocked = false;
+
+		//JOELwindows7: vibration offset
+		if (FlxG.save.data.vibrationOffset == null || 
+			FlxG.save.data.vibrationOffset < 0.0
+			)
+			FlxG.save.data.vibrationOffset = 0.18;
+
+		//JOELwindows7: Timing struct out of any segs warning
+		if (FlxG.save.data.outOfSegsWarning == null){
+			FlxG.save.data.outOfSegsWarning = false;
+		}
+
+		//JOELwindows7: Print Song Chart content
+		if (FlxG.save.data.traceSongChart == null){
+			FlxG.save.data.traceSongChart = false;
+		}
 		
 		if (FlxG.save.data.cacheImages == null)
 			FlxG.save.data.cacheImages = false;
+
+		if (FlxG.save.data.editorBG == null)
+			FlxG.save.data.editor = false;
+		
+		if (FlxG.save.data.zoom == null)
+			FlxG.save.data.zoom = 1;
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 		

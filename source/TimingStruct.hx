@@ -7,6 +7,7 @@ class TimingStruct
     public var bpm:Float = 0;
 
     public var startBeat:Float = 0;
+    public var startStep:Int = 0;
     public var endBeat:Float = Math.POSITIVE_INFINITY;
     public var startTime:Float = 0;
 
@@ -23,7 +24,7 @@ class TimingStruct
         AllTimings.push(pog);
     }
 
-    public function new(startBeat,bpm,endBeat:Float, offset:Float)
+    public function new(startBeat:Float,bpm:Float,endBeat:Float, offset:Float)
     {
         this.bpm = bpm;
         this.startBeat = startBeat;
@@ -39,7 +40,8 @@ class TimingStruct
             if (msTime >= i.startTime * 1000 && msTime < (i.startTime + i.length) * 1000)
                 return i;
         }
-        trace('Apparently ' + msTime + ' is out of any segs'); //JOELwindows7: update trace is laggy
+        if(FlxG.save.data.outOfSegsWarning)
+            trace('Apparently ' + msTime + ' is out of any segs'); //JOELwindows7: update trace is laggy
         return null;
     }
 

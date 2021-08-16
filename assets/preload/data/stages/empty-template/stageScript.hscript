@@ -1,0 +1,98 @@
+//JOELwindows7: steal example from BulbyVR
+// https://github.com/FunkinModdingPlus/ModdingPlus/blob/master/assets/data/milf/modchart.hscript
+// It should work the same like Kade Engine Lua Modchart, just this time, in Haxe Language
+// Lua Modchart Documentation at: https://kadedev.github.io/Kade-Engine/modchart .
+// https://github.com/KadeDev/Kade-Engine/wiki
+// But remember, this is Haxe Script. convert your syntax format to it here.
+// templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
+
+function loaded(song)
+{
+
+}
+
+function start(song) 
+{
+
+}
+
+function update(elapsed)
+{
+
+}
+
+function beatHit(beat)
+{
+    
+}
+
+function stepHit(step)
+{
+
+}
+
+function keyPressed(key)
+{
+
+}
+
+function keyReleased(key)
+{
+    
+}
+
+function playerTwoTurn()
+{
+
+}
+
+function playerTwoMiss(note, position)
+{
+
+}
+
+function playerTwoSing(note, position)
+{
+
+}
+
+function playerOneTurn()
+{
+    
+}
+
+function playerOneMiss(note, position)
+{
+
+}
+
+function playerOneSing(note, position)
+{
+
+}
+
+function colorizeColorablebyKey(note, justOne, toWhichBg)
+{
+    if (note == 'left')
+    {
+        trace("set color magenta (hscript)");
+        chooseColoringColor("magenta", justOne, toWhichBg);
+    }
+    else if (note == 'down')
+    {
+        trace("set color cyan (hscript)");
+        chooseColoringColor("cyan", justOne, toWhichBg);
+    }
+    else if (note == 'up')
+    {
+        trace("set color lime (hscript)");
+        chooseColoringColor("lime", justOne, toWhichBg);
+    }
+    else if (note == 'right')
+    {
+        trace("set color red (hscript)");
+        chooseColoringColor("red", justOne, toWhichBg);
+    }
+}
+
+trace("finish loading stage hscript <3 yay cool and good.");

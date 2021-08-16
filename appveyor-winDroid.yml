@@ -51,6 +51,7 @@ install:
   # - unzip .\android_sdk.zip "%ANDROID_SDK_LOC%"
   # Install project dependencies
   - haxelib install hxp
+  - haxelib install svg
   - haxelib install format
   - haxelib install lime
   - haxelib install lime-tools
@@ -78,7 +79,8 @@ install:
   - haxelib run lime config JAVA_HOME C:\Program Files\Java\jdk1.8.0_211
   - haxelib run lime rebuild extension-webm android
   # - haxelib install linc_luajit
-  - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  # - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git
   - haxelib install actuate 
   #- haxelib run lime rebuild extension-webm windows
   #why here's dublicate lmao
@@ -95,6 +97,8 @@ install:
   - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
   - haxelib install haxe-files
   - haxelib install hxcpp-debug-server
+  - haxelib install tink_core
+  - haxelib install grig.audio
   - haxelib list
   # - haxelib run lime config HXCPP_ARM64 true
   # - haxelib run lime config HXCPP_x86 true

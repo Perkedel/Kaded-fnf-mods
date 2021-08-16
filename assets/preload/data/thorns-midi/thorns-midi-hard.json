@@ -1354,6 +1354,7 @@
         "bpm": 190,
         "hasEpilogueVideo": true,
         "epilogueVideoPath": "credit-week6-midi",
-        "hasDialogueChat": true
+        "hasDialogueChat": true,
+        "hasEpilogueChat": true
     }
 }

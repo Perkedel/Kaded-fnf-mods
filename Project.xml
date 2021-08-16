@@ -7,10 +7,13 @@
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
 
+	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/>
+
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
 	<!-- <app preloader="Preloader" resizable="true" /> -->
-	<app preloader="flixel.system.FlxPreloader" />
+	<!-- <app preloader="flixel.system.FlxPreloader" /> -->
+	<app preloader="Preloaden" resizable="false"/>
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
@@ -65,6 +68,10 @@
 	<assets path="assets/preload_odysee" rename="assets/preload_odysee" exclude="*.mp3" unless="web" if="odysee"/>
 	<assets path="assets/preload_thief" rename="assets/preload_thief" exclude="*.ogg" if="web thief"/>
 	<assets path="assets/preload_thief" rename="assets/preload_thief" exclude="*.mp3" unless="web" if="thief"/>
+
+	<!-- JOELwindows7: put ndll files to game root dir -->
+	<assets path="ndll" rename="." exclude="*.ogg" if="web"/>
+	<assets path="ndll" rename="." exclude="*.mp3" unless="web"/>
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web || neko || hl" />
@@ -207,8 +214,8 @@
 	<!-- <haxelib name="faxe"/>  -->
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
 	<haxelib name="polymod"/>
-	<haxelib name="discord_rpc" if="cpp" unless="neko || hl || mobile"/>
-	<haxelib name="linc_luajit" if="cpp windows" unless="neko || hl || mobile"/>
+	<haxelib name="discord_rpc" if="cpp windows" unless="neko || hl || mobile"/>
+	<haxelib name="linc_luajit" if="cpp" unless="neko || hl || mobile"/>
 	
 
 	<haxelib name="hxcpp-debug-server" if="cpp"/>
@@ -260,12 +267,25 @@
 	<!-- <haxelib name="xinput" if="windows"/> -->
 	<!-- - haxelib git xinput https://github.com/furusystems/openfl-xinput.git -->
 
-
 	<!-- JOELwindows7: try VLC maybe. -->
 	<!-- <haxelib name="haxevlc" if="windows"/> -->
 	<!-- <include path="source/vlc/LibVLCBuild.xml" /> -->
 	<!-- https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/5 -->
 	<!-- https://github.com/datee/HaxeVLC -->
+
+	<!-- JOELwindows7: try Android Media extension thingy -->
+	<!-- <haxelib name="extension-android-media"/> -->
+
+	<!-- JOELwindows7: Haxe Grig stuffs because I want MIDI -->
+	<haxelib name="grig.audio"/>
+	<haxelib name="grig.midi"/>
+	<!-- requires tink_core -->
+
+	<!-- JOELwindows7: how about SiON? It got MIDIplayer out of the box..-->
+	<!-- <haxelib name="sion"/> -->
+
+	<!-- JOELwindows7: the Tinkerbell stuffs and for the depend on it -->
+	<haxelib name="tink_core"/>
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

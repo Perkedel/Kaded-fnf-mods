@@ -1,12 +1,15 @@
 package experiments;
 
+import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
+//import extension.android.*;
 
 class AnWebmer extends MusicBeatState{
 
     public var infoText:FlxText;
+    public var ownVidSprite:VideoPlayer;
     override function create(){
         super.create();
 
@@ -34,7 +37,21 @@ class AnWebmer extends MusicBeatState{
         }
         if(FlxG.keys.justPressed.ENTER || haveClicked){
             trace("Play " + Paths.video("OldMacDonaldHadABinCannon"));
-            FlxG.switchState(new VideoState(Paths.video("OldMacDonaldHadABinCannon"), new AnWebmer()));    
+            // #if (desktop || web)
+            // FlxG.switchState(new VideoState(Paths.video("OldMacDonaldHadABinCannon"), new AnWebmer(), 90));
+            // #elseif mobile
+            // //MediaPlayer.playFromAssets(Paths.video("OldMacDonaldHadABinCannon"));
+
+            // //WORKS!!!
+            // FlxG.sound.music.stop();
+            // ownVidSprite = new VideoPlayer("OldMacDonaldHadABinCannon");
+            // ownVidSprite.finishCallback = function(){FlxG.switchState(new AnWebmer());};
+            // ownVidSprite.play();
+            // add(ownVidSprite);
+            // #end
+
+            //FINAL
+            FlxG.switchState(VideoCutscener.getThe("OldMacDonaldHadABinCannon", new AnWebmer(), 90));
         
             haveClicked = false;
         }
