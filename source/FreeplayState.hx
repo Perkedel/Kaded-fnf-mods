@@ -420,7 +420,12 @@ class FreeplayState extends MusicBeatState
 
 
 			PlayState.SONG = Song.conversionChecks(hmm);
-			trace("Loaded Song into Playstate " + Std.string(hmm)); //JOELwindows7: what hapened
+			trace("Loaded Song into Playstate " + (
+				FlxG.save.data.traceSongChart?
+				Std.string(hmm):
+				"bla bla bla"
+				)
+				); //JOELwindows7: what hapened
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyWeek = songs[curSelected].week;

@@ -40,7 +40,8 @@ class TimingStruct
             if (msTime >= i.startTime * 1000 && msTime < (i.startTime + i.length) * 1000)
                 return i;
         }
-        trace('Apparently ' + msTime + ' is out of any segs'); //JOELwindows7: update trace is laggy
+        if(FlxG.save.data.outOfSegsWarning)
+            trace('Apparently ' + msTime + ' is out of any segs'); //JOELwindows7: update trace is laggy
         return null;
     }
 

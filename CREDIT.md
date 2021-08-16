@@ -312,6 +312,11 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/tuts/14287 how to intro text
 - https://gamebanana.com/tuts/14279 how to vocal with lmms
 - https://gamebanana.com/tuts/14278 how change bg color in StoryMenuState.hx
+- https://api.haxe.org/Array.html array
+- https://haxe.org/manual/std-Map.html map
+- https://api.haxeflixel.com/flixel/math/FlxMath.html FlxMath the Math utilities
+- https://api.haxeflixel.com/flixel/util/FlxColor.html color again
+- https://www.w3schools.com/colors/colors_picker.asp color picker
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -422,6 +427,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - http://songsindonesia.didiharyadi.com/midi/index.html (WARNING: except Indonesia Raya and some: For Personal & Education Purpose only) Didi Haryadi MIDIs. take Indonesia Raya MIDI cover.
 - https://api.haxeflixel.com/flixel/system/FlxPreloader.html polgon Preloadering
 - https://gamebanana.com/blogs/19216 BonkMayker's meme of Old web. Check this project's README.md to see in action. you can implement yourself too in comments and post anywhere that complies with the HTML syntaxes.
+- https://en.wikipedia.org/wiki/File:Flag_of_Indonesia.svg flag of Indonesia.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

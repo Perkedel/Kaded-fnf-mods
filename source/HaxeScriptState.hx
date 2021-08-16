@@ -1,5 +1,6 @@
 //package;
 
+import utils.Asset2File;
 import flixel.util.FlxDestroyUtil;
 import flixel.*;
 import flixel.FlxGame;
@@ -1112,7 +1113,14 @@ class HaxeScriptState {
 			case 'philly-nice': songLowercase = 'philly';
 		}
 
-        var data:BitmapData = BitmapData.fromFile(Paths.luaImage(songLowercase + "/" + spritePath));
+        var path = Asset2File.getPath("assets/data/" + songLowercase);
+
+		if (PlayState.isSM)
+			path = PlayState.pathToSm;
+        trace(path);
+
+        var data:BitmapData = BitmapData.fromFile(path + "/" + spritePath + ".png");
+        trace("bitmap data " + Std.string(data));
 
 		var sprite:FlxSprite = new FlxSprite(0,0);
 		var imgWidth:Float = FlxG.width / data.width;
@@ -1134,6 +1142,7 @@ class HaxeScriptState {
 		sprite.pixels = data2;
 
         hscriptSprite.set(toBeCalled,sprite);
+        trace("new "+toBeCalled+" Sprite added \n" + Std.string(hscriptSprite.get(toBeCalled)));
         // and I quote:
 		// shitty layering but it works!
         @:privateAccess
@@ -1163,7 +1172,13 @@ class HaxeScriptState {
 			case 'philly-nice': songLowercase = 'philly';
 		}
 
-        var data:BitmapData = BitmapData.fromFile(Paths.luaImage(songLowercase + '/' + spritePath));
+        var path = Asset2File.getPath("assets/data/" + songLowercase);
+
+		if (PlayState.isSM)
+			path = PlayState.pathToSm;
+        trace(path);
+
+        var data:BitmapData = BitmapData.fromFile(path + "/" + spritePath + ".png");
 
         var sprite:FlxSprite = new FlxSprite(0,0);
 

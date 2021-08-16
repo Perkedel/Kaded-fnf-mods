@@ -1661,3 +1661,43 @@ class VibrationOffsetOption extends Option{
 		return "Vibration Offset: " + Std.string(FlxG.save.data.vibrationOffset);
 	}
 }
+
+class OutOfSegsWarningOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.outOfSegsWarning = !FlxG.save.data.outOfSegsWarning;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{		
+		return "Out of segs " + (FlxG.save.data.outOfSegsWarning ? "Printed" : "SSSSHHHH");
+	}
+}
+
+class PrintSongChartContentOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.traceSongChart = !FlxG.save.data.traceSongChart;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{		
+		return "Song Chart Content " + (FlxG.save.data.traceSongChart ? "Printed" : "SSSSHHHH");
+	}
+}

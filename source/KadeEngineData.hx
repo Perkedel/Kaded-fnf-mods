@@ -149,6 +149,16 @@ class KadeEngineData
 			FlxG.save.data.vibrationOffset < 0.0
 			)
 			FlxG.save.data.vibrationOffset = 0.18;
+
+		//JOELwindows7: Timing struct out of any segs warning
+		if (FlxG.save.data.outOfSegsWarning == null){
+			FlxG.save.data.outOfSegsWarning = false;
+		}
+
+		//JOELwindows7: Print Song Chart content
+		if (FlxG.save.data.traceSongChart == null){
+			FlxG.save.data.traceSongChart = false;
+		}
 		
 		if (FlxG.save.data.cacheImages == null)
 			FlxG.save.data.cacheImages = false;

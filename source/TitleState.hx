@@ -153,7 +153,7 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 
 		//JOELwindows7: the default background pls
-		if(Main.perkedelMark){
+		if(Main.watermarks && Main.perkedelMark){
 			// installDefaultBekgron();
 			installSophisticatedDefaultBekgron();
 		} else {
@@ -420,6 +420,7 @@ class TitleState extends MusicBeatState
 					{
 						if(!alreadyDecideOutdated)
 							OutdatedSubState.whichAreaOutdated = 1; //mark that LFM one is outdated
+						alreadyDecideOutdated = true;
 						trace('LFM outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
 						OutdatedSubState.needVerLast = returnedData[0];
 						OutdatedSubState.perubahanApaSaja = returnedData[1];

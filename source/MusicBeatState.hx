@@ -32,6 +32,7 @@ typedef SwagWeeks = {
 	var weekUnlocked:Array<Bool>;
 	var weekCharacters:Array<Dynamic>;
 	var weekNames:Array<String>;
+	var weekColor:Array<String>;
 } 
 
 class MusicBeatState extends FlxUIState

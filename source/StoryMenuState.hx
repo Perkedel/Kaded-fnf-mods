@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.FlxEase;
 import MusicBeatState.SwagWeeks;
 import lime.utils.Assets;
 import flixel.input.actions.FlxActionManager.ActionSetJson;
@@ -75,6 +76,8 @@ class StoryMenuState extends MusicBeatState
 
 	var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 
+	var weekColor:Array<String>;
+
 	var txtWeekTitle:FlxText;
 
 	var curWeek:Int = 0;
@@ -90,6 +93,8 @@ class StoryMenuState extends MusicBeatState
 	var sprDifficulty:FlxSprite;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
+
+	var yellowBG:FlxSprite; //JOELwindows7: globalize this bg so we can colorize it.
 
 	function unlockWeeks():Array<Bool>
 	{
@@ -136,6 +141,7 @@ class StoryMenuState extends MusicBeatState
 		//weekUnlocked = initWeekJson.weekUnlocked;
 		weekCharacters = initWeekJson.weekCharacters;
 		//weekNames = initWeekJson.weekNames;
+		weekColor = initWeekJson.weekColor;
 
 		weekUnlocked = unlockWeeks();
 
@@ -173,7 +179,9 @@ class StoryMenuState extends MusicBeatState
 
 		//Mark selection for campaign menu ui assets
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
+		yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE); //JOELwindows7: globalized lol
+		//original color was 0xFFF9CF51
+		//You must be white as a base colorable.
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
@@ -621,6 +629,16 @@ class StoryMenuState extends MusicBeatState
 		txtTracklist.x -= FlxG.width * 0.35;
 
 		txtTracklist.text += "\n";
+
+		//JOELwindows7: change yellowBG color pls
+		yellowBG.color = FlxColor.fromString(weekColor[curWeek]);
+		// FlxTween.tween(
+		// 	yellowBG, 
+		// 	{color:FlxColor.fromString(weekColor[curWeek])},
+		// 	.5,
+		// 	{ease:FlxEase.linear}
+		// 	);
+		//wtf bro, the tweener triggers epilepsy!
 
 		#if !switch
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);

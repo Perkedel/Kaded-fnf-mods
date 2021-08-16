@@ -10,7 +10,8 @@
         ["Windfall", "Rule The World", "Well Meet Again"],
         ["Senpai-midi", "Roses-midi", "Thorns-midi"],
         ["fortritri"],
-        ["Getting-Freaky", "breakfast", "Dont Stop", "Title Classic", "Test-vanilla"]
+        ["Getting-Freaky", "breakfast", "Dont Stop", "Title Classic", "Test-vanilla"],
+        ["Indonesia Raya"]
     ],
     "weekUnlocked": [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true],
     "weekCharacters": [
@@ -24,7 +25,8 @@
         ["hookx", "bf", "gf"],
         ["senpai", "bf", "gf"],
         ["hookx", "bf", "gf"],
-        ["hookx", "bf", "gf"]
+        ["hookx", "bf", "gf"],
+        ["", "", ""]
     ],
     "weekNames": [
         "How to Funk",
@@ -37,6 +39,21 @@
         "TheFatRat songs",
         "Hating_Simulator_nokia.jar Microemulator",
         "Silence is music",
-        "Waiting for Something idk"
+        "Waiting for Something idk",
+        "Indonesia Raya"
+    ],
+    "weekColor": [
+        "#F9CF51",
+        "#F9CF51",
+        "#3333ff",
+        "#993399",
+        "#ff0066",
+        "#3366ff",
+        "pink",
+        "#66ccff",
+        "pink",
+        "white",
+        "#ffff99",
+        "red"
     ]
 }

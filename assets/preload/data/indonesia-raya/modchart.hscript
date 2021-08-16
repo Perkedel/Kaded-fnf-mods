@@ -6,6 +6,10 @@
 // But remember, this is Haxe Script. convert your syntax format to it here.
 // templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
 
+var flag; //Flag sprite
+var yourFlag = 'indonesia';
+var beingHoisted = false; //flag to start hoist
+
 function loaded(song)
 {
     
@@ -13,12 +17,30 @@ function loaded(song)
 
 function start(song) 
 {
+    //Your Flag, variable to be called, draw behind
+    makeSprite(yourFlag,'flag',false);
+    //flag.x = -500;
+    //flag.y = 200;
+    setActorX(-900,'flag');
+    setActorY(300,'flag');
+}
 
+function flagHoistMeter(level,upTo){
+    setActorY(FlxMath.remapToRange(level,upTo,1300,-500),'flag');
+    // https://api.haxeflixel.com/flixel/math/FlxMath.html
 }
 
 function update(elapsed)
 {
-
+    
+    if(!beingHoisted){
+        trace("Start Hoist the flag in ");
+        trace(songLength);
+        strumLine1Visible = false;
+        //tweenPos('flag',-900,-400,songLength/1000);
+        beingHoisted = true;
+    }
+    flagHoistMeter(songPos,songLength);
 }
 
 function beatHit(beat)

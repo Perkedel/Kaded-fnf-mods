@@ -74,9 +74,9 @@ class DokiDoki {
         if(hearts == null)
             hearts = new Map<String,SwagHeart>(); //Must be instantiated first!
         var HEARTS:HeartList = loadFromJson("heartBeatSpec");
-        trace("HEARTS: \n" + Std.string(HEARTS));
+        // trace("HEARTS: \n" + Std.string(HEARTS));
         var things:Array<SwagHeart> = HEARTS.heartSpecs.copy();
-        trace("things ("+ Std.string(things.length) +"): \n" + things.toString());
+        // trace("things ("+ Std.string(things.length) +"): \n" + things.toString());
         // var workaroundList:Map<String,SwagHeart>; //wtf why still null object reference?!
         for(i in 0...things.length){
             // workaroundList.set(things[i].character,things[i]);

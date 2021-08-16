@@ -2226,12 +2226,12 @@ class PlayState extends MusicBeatState
 		{
 			luaModchart = ModchartState.createModchartState();
 			luaModchart.executeState('start', [songLowercase]);
-			luaModchart.setVar('songLength',[songLength]);
+			luaModchart.setVar('songLength',songLength);
 		}
 		if (executeStageScript && stageScript != null)
 		{
 			stageScript.executeState('start',[songLowercase]);
-			stageScript.setVar('songLength',[songLength]);
+			stageScript.setVar('songLength',songLength);
 		}
 		#end
 		//JOELwindows7: now for the hscript init
@@ -2241,11 +2241,11 @@ class PlayState extends MusicBeatState
 			hscriptModchart.executeState('start',[songLowercase]);
 			hscriptModchart.setVar('executeModchart', executeModchart);
 			hscriptModchart.setVar('executeModHscript', executeModHscript);
-			hscriptModchart.setVar('songLength',[songLength]);
+			hscriptModchart.setVar('songLength',songLength);
 		}
 		if (executeStageHscript && stageHscript != null){
 			stageHscript.executeState('start',[songLowercase]);
-			stageHscript.setVar('songLength',[songLength]);
+			stageHscript.setVar('songLength',songLength);
 		}
 		//JOELwindows7: tell Lua script whether hscript is running too
 		#if (cpp)
@@ -6313,24 +6313,36 @@ class PlayState extends MusicBeatState
 			// }
 			
 			// HEART = HEARTS.heartSpecs[chooseIndex];
+			if(HEART == null){
+				HEART = new Array<SwagHeart>();
+			}
 			try{
 				HEART[0] = DokiDoki.hearts.get(SONG.player1);
+				trace(SONG.player1 +" heart\n" + Std.string(HEART[0]));
+				if(HEART[0] == null)
+					HEART[0] = DokiDoki.hearts.get('bf');
 			} catch(e) {
-				trace("bf heart error " + e);
+				trace(SONG.player1 +" heart error " + e);
 				trace("attempting rescue");
 				HEART[0] = DokiDoki.hearts.get('bf');
 			}
 			try{
 				HEART[1] = DokiDoki.hearts.get(SONG.player2);
+				trace(SONG.player2 +" heart\n" + Std.string(HEART[1]));
+				if(HEART[1] == null)
+					HEART[1] = DokiDoki.hearts.get('dad');
 			} catch(e) {
-				 trace("dad heart error " + e);
+				 trace(SONG.player2 +" heart error " + e);
 				 trace("attempting rescue");
-				 HEART[1] = DokiDoki.hearts.get('dad')
+				 HEART[1] = DokiDoki.hearts.get('dad');
 			}
 			try{
 				HEART[2] = DokiDoki.hearts.get(SONG.gfVersion);
+				trace(SONG.gfVersion +" heart\n" + Std.string(HEART[2]));
+				if(HEART[2] == null)
+					HEART[2] = DokiDoki.hearts.get('gf');
 			} catch(e) {
-				trace("gf heart error " + e);
+				trace(SONG.gfVersion +" heart error " + e);
 				trace("attempting rescue");
 				HEART[2] = DokiDoki.hearts.get('gf');
 			}
