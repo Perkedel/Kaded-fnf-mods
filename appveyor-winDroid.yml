@@ -99,6 +99,7 @@ install:
   - haxelib install hxcpp-debug-server
   - haxelib install tink_core
   - haxelib install grig.audio
+  - haxelib install grig.midi
   - haxelib list
   # - haxelib run lime config HXCPP_ARM64 true
   # - haxelib run lime config HXCPP_x86 true

@@ -58,6 +58,7 @@ install:
   - haxelib install hxcpp-debug-server
   - haxelib install tink_core
   - haxelib install grig.audio
+  - haxelib install grig.midi
   - haxelib list
   - pwd
   - cd /Users/appveyor/projects/kaded-fnf-mods-macos
