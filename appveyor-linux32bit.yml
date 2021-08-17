@@ -74,7 +74,8 @@ build_script:
   # - cp ~/haxelib/lime/7,9,0/ndll/RPi/lime.ndll ~/haxelib/lime-tools/1,5,7/ndll/Linux
   # - cp ~/haxelib/lime/7,9,0/ndll/RPi/lime.ndll ~/haxelib/lime-tools/1,5,7/ndll/RPi
   - ls ~/haxelib/lime-tools/1,5,7/ndll/
-  - ls ~/haxelib/lime/7,9,0/ndll/RPi/lime.ndll 
+  # - ls ~/haxelib/lime/7,9,0/ndll/RPi/
+  # - mkdir -p  
   - cp ~/haxelib/lime-tools/1,5,7/ndll/RPi ~/haxelib/lime/7,9,0/ndll/RPi/lime.ndll
   - haxelib run lime rebuild lime rpi #do again
   - haxelib run lime rebuild lime-tools rpi #do again
