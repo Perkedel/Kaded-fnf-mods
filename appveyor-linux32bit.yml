@@ -89,6 +89,7 @@ after_build:
   - pwd
   - ls
   # - tar -cvf last-funkin-moments-32bit.tar -C /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin .
+  - tar -cvf last-funkin-moments-RPi.tar -C /home/appveyor/projects/kaded-fnf-mods-linux32/export/release/linux/bin .
   # JOELwindows7: upload to itch
   # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux32/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor; fi
   # wtf appveyor did not expect git
