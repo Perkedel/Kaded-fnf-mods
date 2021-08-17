@@ -2176,7 +2176,7 @@ class PlayState extends MusicBeatState
 	var luaWiggles:Array<WiggleEffect> = [];
 	var hscriptWiggles:Array<WiggleEffect> = []; //JOELwindows7: same but hscript
 
-	#if (cpp)
+	#if ((windows || linux) && cpp)
 	public static var luaModchart:ModchartState = null;
 	public static var stageScript:ModchartState = null;
 	#end
