@@ -7,7 +7,7 @@ import Controls;
 import openfl.display3D.textures.VideoTexture;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-#if cpp //LuaJit only works for C++ 
+#if ((windows || linux) && cpp) //LuaJit only works for C++ 
 //https://lib.haxe.org/p/linc_luajit/
 import flixel.tweens.FlxEase;
 import openfl.filters.ShaderFilter;
@@ -302,9 +302,10 @@ class ModchartState
 		}
 
 		var path = Sys.getCwd() + "assets/data/" + songLowercase + '/';
-
+		#if sys
 		if (PlayState.isSM)
 			path = PlayState.pathToSm + "/";
+		#end
 
 		var data:BitmapData = BitmapData.fromFile(path + spritePath + ".png");
 
@@ -379,8 +380,10 @@ class ModchartState
 				}
 
 				var path = Paths.lua(songLowercase + "/modchart");
+				#if sys
 				if (PlayState.isSM)
 					path = PlayState.pathToSm + "/modchart.lua";
+				#end
 
 				//JOELwindows7: decide if should load in RAW path or predefined.
 				var result = LuaL.dofile(lua, path); // execute le file

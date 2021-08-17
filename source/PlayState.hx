@@ -2221,7 +2221,7 @@ class PlayState extends MusicBeatState
 			case 'philly-nice':
 				songLowercase = 'philly';
 		}
-		#if (cpp)
+		#if ((windows || linux) && cpp)
 		if (executeModchart)
 		{
 			luaModchart = ModchartState.createModchartState();
