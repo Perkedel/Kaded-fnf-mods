@@ -215,7 +215,7 @@
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
 	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="cpp windows" unless="neko || hl || mobile"/>
-	<haxelib name="linc_luajit" if="cpp" unless="neko || hl || mobile"/>
+	<haxelib name="linc_luajit" if="cpp" unless="neko || hl || mobile || mac"/>
 	
 
 	<haxelib name="hxcpp-debug-server" if="cpp"/>

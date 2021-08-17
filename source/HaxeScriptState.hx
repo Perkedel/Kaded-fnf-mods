@@ -1115,8 +1115,10 @@ class HaxeScriptState {
 
         var path = Asset2File.getPath("assets/data/" + songLowercase);
 
+        #if sys
 		if (PlayState.isSM)
 			path = PlayState.pathToSm;
+        #end
         trace(path);
 
         var data:BitmapData = BitmapData.fromFile(path + "/" + spritePath + ".png");
@@ -1174,8 +1176,10 @@ class HaxeScriptState {
 
         var path = Asset2File.getPath("assets/data/" + songLowercase);
 
+        #if sys
 		if (PlayState.isSM)
 			path = PlayState.pathToSm;
+        #end
         trace(path);
 
         var data:BitmapData = BitmapData.fromFile(path + "/" + spritePath + ".png");
