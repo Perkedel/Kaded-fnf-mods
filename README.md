@@ -1,5 +1,6 @@
+![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-merdeka-thumb.png )
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png ) -->
-![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-meta-thumb.png )
+<!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-meta-thumb.png ) -->
 [Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
 
 # Last Funkin Moments
@@ -41,6 +42,13 @@ check out [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/C
 enjoy the last drops of funkin before everything went. went, I can't say this. you don't want to hear this.
 
 # Today's Update!
+## 2021.08 Week Merdeka! Dirgahayu Republik Indonesia ke-76
+full changelog: https://odysee.com/@JOELwindows7:a/LFM-changelog-2021.08.162:5?r=FuQAe8A6FYG9dBHJjkXxdkq1V1Zn9VHn
+### Today's update we got
+- Week Merdeka. [Indonesia Raya](https://en.wikipedia.org/wiki/Indonesia_Raya ) cipt. [W.R. Supratman](https://en.wikipedia.org/wiki/Wage_Rudolf_Supratman ) with MIDI cover arranged by [Didi Haryadi](http://songsindonesia.didiharyadi.com/ ).
+- Week BG color guys. each week selected has their color.
+- Qmoveph Background. installed in Title screen yeay
+- etc.
 ## 2021.07 Week Meta! Hookx again, but we are waiting for someone.
 Hookx invited bf and gf again to a landscape view of mountain with a dead tree bark. They're waiting for someone.
 ### Today's update we got
