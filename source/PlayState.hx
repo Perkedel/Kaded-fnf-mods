@@ -2248,7 +2248,7 @@ class PlayState extends MusicBeatState
 			stageHscript.setVar('songLength',songLength);
 		}
 		//JOELwindows7: tell Lua script whether hscript is running too
-		#if (cpp)
+		#if ((windows || linux) && cpp)
 		if(executeModchart){
 			luaModchart.setVar('executeModchart', executeModchart);
 			luaModchart.setVar('executeModHscript', executeModHscript);
