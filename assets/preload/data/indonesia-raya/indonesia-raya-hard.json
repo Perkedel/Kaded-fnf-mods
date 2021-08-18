@@ -23337,7 +23337,7 @@
         "hasVideo": false,
         "isCheer": false,
         "invisibleCountdown": false,
-        "forceHscriptModchart": false,
+        "forceHscriptModchart": true,
         "cutsceneType": "none",
         "useCustomStage": true,
         "speed": 1,

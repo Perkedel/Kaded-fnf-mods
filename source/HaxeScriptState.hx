@@ -1113,7 +1113,13 @@ class HaxeScriptState {
 			case 'philly-nice': songLowercase = 'philly';
 		}
 
-        var path = Asset2File.getPath("assets/data/" + songLowercase);
+        var path = 
+            #if !mobile
+            Asset2File.getPath("assets/data/" + songLowercase);
+            #else
+            "assets/data/" + songLowercase
+            #end
+            ;
 
         #if sys
 		if (PlayState.isSM)
@@ -1121,7 +1127,13 @@ class HaxeScriptState {
         #end
         trace(path);
 
-        var data:BitmapData = BitmapData.fromFile(path + "/" + spritePath + ".png");
+        var data:BitmapData = BitmapData.fromFile(
+            #if !mobile
+            path + "/" + spritePath + ".png"
+            #else
+            Asset2File.getPath(path + "/" + spritePath + ".png")
+            #end
+            );
         trace("bitmap data " + Std.string(data));
 
 		var sprite:FlxSprite = new FlxSprite(0,0);
@@ -1174,7 +1186,13 @@ class HaxeScriptState {
 			case 'philly-nice': songLowercase = 'philly';
 		}
 
-        var path = Asset2File.getPath("assets/data/" + songLowercase);
+        var path = 
+            #if !mobile
+            Asset2File.getPath("assets/data/" + songLowercase);
+            #else
+            "assets/data/" + songLowercase
+            #end
+            ;
 
         #if sys
 		if (PlayState.isSM)
@@ -1182,7 +1200,13 @@ class HaxeScriptState {
         #end
         trace(path);
 
-        var data:BitmapData = BitmapData.fromFile(path + "/" + spritePath + ".png");
+        var data:BitmapData = BitmapData.fromFile(
+            #if !mobile
+            path + "/" + spritePath + ".png"
+            #else
+            Asset2File.getPath(path + "/" + spritePath + ".png")
+            #end
+            );
 
         var sprite:FlxSprite = new FlxSprite(0,0);
 
