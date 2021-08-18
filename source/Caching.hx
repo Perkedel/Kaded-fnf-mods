@@ -27,6 +27,7 @@ import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.text.FlxText;
+import utils.Asset2File;
 
 using StringTools;
 
@@ -107,7 +108,13 @@ class Caching extends MusicBeatState
 
 		trace("caching music...");
 
-		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/songs")))
+		for (i in FileSystem.readDirectory(FileSystem.absolutePath(
+			#if !mobile
+			"assets/songs"
+			#else
+			Asset2File.getPath("assets/songs")
+			#end
+			)))
 		{
 			music.push(i);
 		}

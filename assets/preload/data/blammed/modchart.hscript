@@ -48,7 +48,7 @@ function update(elapsed)
         
         curBeat == 169.5 ||
         
-        curBeat == 225.5 ||
+        curBeat == 225.5
         
         )
     {
