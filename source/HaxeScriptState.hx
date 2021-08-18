@@ -1115,7 +1115,7 @@ class HaxeScriptState {
 
         var path = 
             #if !mobile
-            Asset2File.getPath("assets/data/" + songLowercase);
+            Asset2File.getPath("assets/data/" + songLowercase)
             #else
             "assets/data/" + songLowercase
             #end
@@ -1188,7 +1188,7 @@ class HaxeScriptState {
 
         var path = 
             #if !mobile
-            Asset2File.getPath("assets/data/" + songLowercase);
+            Asset2File.getPath("assets/data/" + songLowercase)
             #else
             "assets/data/" + songLowercase
             #end
