@@ -128,10 +128,11 @@ class Main extends Sprite
 		framerate = 60;
 		#end
 
-		#if cpp
+		#if (cpp && !mobile)
 		initialState = Caching; //JOELwindows7: remember! it doesn't work in Android! make sure !mobile first
 		trace("Go to caching first");
 		#else
+		trace("Just straight to the game anyway");
 		#end
 		trace("put game");
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
