@@ -98,7 +98,7 @@ after_build:
   - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux32/export/release/linux/bin joelwindows7/last-funkin-moments:linuxRPi-appveyor
 
 artifacts:
-# - path: /home/appveyor/last-funkin-moments-32bit.tar
+# - path: last-funkin-moments-32bit.tar
 #   name: Last Funkin Moments for Linux 32Bit
-- path: /home/appveyor/last-funkin-moments-RPi.tar
+- path: last-funkin-moments-RPi.tar
   name: Last Funkin Moments for Linux Raspberry Pi
