@@ -78,8 +78,8 @@ after_build:
   - cd ~
   - pwd
   - ls
-  - tar -cvf last-funkin-moments.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin ~
-  # - tar -cvf last-funkin-moments-32bit.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin ~
+  - tar -cvf last-funkin-moments.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin .
+  # - tar -cvf last-funkin-moments-32bit.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin .
   - ls
   # JOELwindows7: upload to itch
   # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin joelwindows7/last-funkin-moments:linux-appveyor; fi
@@ -93,3 +93,6 @@ artifacts:
   name: Last Funkin Moments for Linux
 # - path: last-funkin-moments-32bit.tar
 #   name: Last Funkin Moments for Linux 32Bit
+- path: export/release/linux/bin
+    name: last-funkin-moments
+    type: zip
