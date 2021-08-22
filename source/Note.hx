@@ -133,64 +133,98 @@ class Note extends FlxSprite
 				switch(PlayState.storyWeek) {case 6: noteTypeCheck = 'pixel';}
 			} else {noteTypeCheck = PlayState.SONG.noteStyle;}
 			
-			switch (noteTypeCheck)
-			{
-				case 'pixel':
-					loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels', 'week6'), true, 17, 17);
-					if (isSustainNote)
-						loadGraphic(Paths.image('weeb/pixelUI/arrowEnds', 'week6'), true, 7, 6);
+			if(PlayState.SONG.useCustomNoteStyle){
+				frames = Paths.getSparrowAtlas("noteskins/" + noteTypeCheck + '/NOTE_assets');
 
-					for (i in 0...4)
-					{
-						animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
-						animation.add(dataColor[i] + 'hold', [i]); // Holds
-						animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
-					}
+				for (i in 0...4)
+				{
+					animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+					animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+					animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+				}
 
-					var widthSize = Std.int(PlayState.curStage.startsWith('school') ? (width * PlayState.daPixelZoom) : (isSustainNote ? (width * (PlayState.daPixelZoom - 1.5)) : (width * PlayState.daPixelZoom)));
+				var widthSize = Std.int(width * 0.7);
+				if(PlayState.SONG.noteStyle.contains('pixel'))
+				{
+					widthSize = Std.int(
+						PlayState.curStage.startsWith('school') ? 
+						(width * PlayState.daPixelZoom) : 
+						(isSustainNote ? 
+							(width * (PlayState.daPixelZoom - 1.5)) : (
+								width * PlayState.daPixelZoom)
+								)
+								);
+				}
 
-					setGraphicSize(widthSize);
-					updateHitbox();
-				case 'saubo':
-					//JOELwindows7: LFM original noteskin
-					frames = Paths.getSparrowAtlas('Saubo_NOTE_assets');
-	
-					animation.addByPrefix('greenScroll', 'green0');
-					animation.addByPrefix('redScroll', 'red0');
-					animation.addByPrefix('blueScroll', 'blue0');
-					animation.addByPrefix('purpleScroll', 'purple0');
-	
-					animation.addByPrefix('purpleholdend', 'pruple end hold');
-					animation.addByPrefix('greenholdend', 'green hold end');
-					animation.addByPrefix('redholdend', 'red hold end');
-					animation.addByPrefix('blueholdend', 'blue hold end');
-	
-					animation.addByPrefix('purplehold', 'purple hold piece');
-					animation.addByPrefix('greenhold', 'green hold piece');
-					animation.addByPrefix('redhold', 'red hold piece');
-					animation.addByPrefix('bluehold', 'blue hold piece');
-	
-					setGraphicSize(Std.int(width * 0.7));
-					updateHitbox();
-					if(FlxG.save.data.antialiasing)
-					{
-						antialiasing = true;
-					}
-				default:
-					frames = Paths.getSparrowAtlas('NOTE_assets');
+				setGraphicSize(widthSize);
+				updateHitbox();
+				antialiasing = FlxG.save.data.antialiasing && !noteTypeCheck.contains('pixel');
+			} else
+				switch (noteTypeCheck)
+				{
+					case 'pixel':
+						loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels', 'week6'), true, 17, 17);
+						if (isSustainNote)
+							loadGraphic(Paths.image('weeb/pixelUI/arrowEnds', 'week6'), true, 7, 6);
 
-					for (i in 0...4)
-					{
-						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
-						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
-						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
-					}
+						for (i in 0...4)
+						{
+							animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
+							animation.add(dataColor[i] + 'hold', [i]); // Holds
+							animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
+						}
 
-					setGraphicSize(Std.int(width * 0.7));
-					updateHitbox();
-					
-					antialiasing = FlxG.save.data.antialiasing;
-			}
+						var widthSize = Std.int(PlayState.curStage.startsWith('school') ? (width * PlayState.daPixelZoom) : (isSustainNote ? (width * (PlayState.daPixelZoom - 1.5)) : (width * PlayState.daPixelZoom)));
+
+						setGraphicSize(widthSize);
+						updateHitbox();
+					case 'saubo':
+						//JOELwindows7: LFM original noteskin
+						frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+		
+						// animation.addByPrefix('greenScroll', 'green0');
+						// animation.addByPrefix('redScroll', 'red0');
+						// animation.addByPrefix('blueScroll', 'blue0');
+						// animation.addByPrefix('purpleScroll', 'purple0');
+		
+						// animation.addByPrefix('purpleholdend', 'pruple end hold');
+						// animation.addByPrefix('greenholdend', 'green hold end');
+						// animation.addByPrefix('redholdend', 'red hold end');
+						// animation.addByPrefix('blueholdend', 'blue hold end');
+		
+						// animation.addByPrefix('purplehold', 'purple hold piece');
+						// animation.addByPrefix('greenhold', 'green hold piece');
+						// animation.addByPrefix('redhold', 'red hold piece');
+						// animation.addByPrefix('bluehold', 'blue hold piece');
+
+						for (i in 0...4)
+						{
+							animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+							animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+							animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+						}
+		
+						setGraphicSize(Std.int(width * 0.7));
+						updateHitbox();
+						if(FlxG.save.data.antialiasing)
+						{
+							antialiasing = true;
+						}
+					default:
+						frames = Paths.getSparrowAtlas('NOTE_assets');
+
+						for (i in 0...4)
+						{
+							animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+							animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+							animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+						}
+
+						setGraphicSize(Std.int(width * 0.7));
+						updateHitbox();
+						
+						antialiasing = FlxG.save.data.antialiasing;
+				}
 		}
 
 		x += swagWidth * noteData;

@@ -515,6 +515,8 @@
         "reversedCountdown": true,
         "useCustomStage": true,
         "sectionLengths": [],
-        "speed": 3
+        "speed": 3,
+        "useCustomNoteStyle": true,
+        "noteStyle": "stepmania"
     }
 }

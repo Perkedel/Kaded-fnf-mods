@@ -60,6 +60,9 @@ typedef SwagSong =
 	var invisibleCountdown:Bool;
 	var silentCountdown:Bool;
 	var skipCountdown:Bool;
+
+	//JOELwindows7: more configs
+	var useCustomNoteStyle:Bool; // enable to custom noteskin
 }
 
 class Song
@@ -98,6 +101,9 @@ class Song
 	public var invisibleCountdown:Bool = false;
 	public var silentCountdown:Bool = false;
 	public var skipCountdown:Bool = false;
+
+	//JOELwindows7: more configs
+	public var useCustomNoteStyle:Bool = false; // enable to custom noteskin
 
 	public function new(song, notes, bpm)
 	{

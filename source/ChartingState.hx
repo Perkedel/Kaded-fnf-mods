@@ -192,6 +192,7 @@ class ChartingState extends MusicBeatState
 				invisibleCountdown:false,
 				silentCountdown:false,
 				skipCountdown:false,
+				useCustomNoteStyle:false,
 			};
 		}
 

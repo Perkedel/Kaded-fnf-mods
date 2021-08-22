@@ -513,6 +513,8 @@
         "player2": "placeholder",
         "gfVersion": "gf-placeholder",
         "sectionLengths": [],
-        "speed": 3
+        "speed": 3,
+        "useCustomNoteStyle": true,
+        "noteStyle": "rectangle"
     }
 }
