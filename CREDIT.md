@@ -318,6 +318,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://api.haxeflixel.com/flixel/util/FlxColor.html color again
 - https://www.w3schools.com/colors/colors_picker.asp color picker
 - https://gamebanana.com/questions/16557 can I use copyrighted music? opinions says yes though it's not safe for YouTube.
+- https://gamebanana.com/tuts/14218 HOW TO ADD CHARACTER SELECTION MENU tuts TorchTheDragon
 
 # in event of git merge conflict
 use VScode and Github desktop!
