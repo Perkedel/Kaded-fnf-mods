@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.text.FlxTypeText;
@@ -44,9 +45,13 @@ class DialogueBox extends FlxSpriteGroup
 	var customBfPls:Bool = false;
 	var customGfPls:Bool = false;
 
+	//JOELwindows7: own FlxSound because generate song destroyed the intro music
+	public static var ownIntroMusic:FlxSound;
+
 	public function new(
 		talkingRight:Bool = true, 
 		?dialogueList:Array<String>, 
+		?isEpilogue:Bool = false,
 		?hadChat:Bool = false, 
 		?customChar:Bool = false, 
 		?customCharXML:String = "jakartaFair/Hookx-dialogueAppear",
@@ -60,24 +65,40 @@ class DialogueBox extends FlxSpriteGroup
 		// whoah! in Flutter, I have to import. even when they're next to it! wow! Haxe is great!!!
 		// AND THE PECK?! in Unity, I must point also the instance inside the class 
 		// (just to grab its current value of a variable right now), not just the class itself. hoof! I am jealous!
-		switch (PlayState.SONG.song.toLowerCase())
+		if(!isEpilogue)
 		{
-			case 'senpai':
-				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'thorns':
-				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'senpai-midi':
-				trace("Hey play lunchbox now");
-				FlxG.sound.playMusic(Paths.music('Lunchbox-midi'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'thorns-midi':
-				FlxG.sound.playMusic(Paths.music('LunchboxScary-midi'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			default:
-				trace("No pre-dialog sound to play!");
+			switch (PlayState.SONG.song.toLowerCase())
+			{
+				case 'senpai':
+					// FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
+					// FlxG.sound.music.fadeIn(1, 0, 0.8);
+					DialogueBox.ownIntroMusic = new FlxSound().loadEmbedded(Paths.music('Lunchbox'));
+				case 'thorns':
+					// FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
+					// FlxG.sound.music.fadeIn(1, 0, 0.8);
+					DialogueBox.ownIntroMusic = new FlxSound().loadEmbedded(Paths.music('LunchboxScary'));
+				case 'senpai-midi':
+					trace("Hey play lunchbox now");
+					// FlxG.sound.playMusic(Paths.music('Lunchbox-midi'), 0);
+					// FlxG.sound.music.fadeIn(1, 0.1, 0.8);
+					DialogueBox.ownIntroMusic = new FlxSound().loadEmbedded(Paths.music('Lunchbox-midi'));
+				case 'thorns-midi':
+					// FlxG.sound.playMusic(Paths.music('LunchboxScary-midi'), 0);
+					// FlxG.sound.music.fadeIn(1, 0.1, 0.8);
+					DialogueBox.ownIntroMusic = new FlxSound().loadEmbedded(Paths.music('LunchboxScary-midi'));
+				default:
+					DialogueBox.ownIntroMusic = new FlxSound();
+					trace("No pre-dialog sound to play!");
+			}
+		} else {
+			ownIntroMusic = new FlxSound();
 		}
+
+		//JOELwindows7: because generate song destroyed the music.
+		DialogueBox.ownIntroMusic.volume = 0;
+		DialogueBox.ownIntroMusic.fadeIn(1, 0.1, 0.8);
+		FlxG.sound.list.add(ownIntroMusic);
+		DialogueBox.ownIntroMusic.play();
 
 		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
 		bgFade.scrollFactor.set();
@@ -307,7 +328,14 @@ class DialogueBox extends FlxSpriteGroup
 					isEnding = true;
 
 					if (PlayState.SONG.song.toLowerCase() == 'senpai' || PlayState.SONG.song.toLowerCase() == 'thorns' || PlayState.SONG.song.toLowerCase() == 'senpai-midi' || PlayState.SONG.song.toLowerCase() == 'thorns-midi' )
-						FlxG.sound.music.fadeOut(2.2, 0);
+						// FlxG.sound.music.fadeOut(2.2, 0);
+						//JOELwindows7: Sorry sir, we'll use dedicated object instead
+						DialogueBox.ownIntroMusic.fadeOut(2.2,0);
+					
+					//JOELwindows7: Do this after that music faded out
+					new FlxTimer().start(2.2, function(tmr:FlxTimer) {
+						DialogueBox.ownIntroMusic.stop();
+					});
 
 					new FlxTimer().start(0.2, function(tmr:FlxTimer)
 					{

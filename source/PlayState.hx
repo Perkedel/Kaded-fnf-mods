@@ -1607,7 +1607,7 @@ class PlayState extends MusicBeatState
 		trace("SF CALC: " + Math.floor((PlayStateChangeables.safeFrames / 60) * 1000));
 
 		doof = new DialogueBox(false, dialogue, SONG.hasDialogueChat); //JOELwindows7: make it global, pls!
-		eoof = new DialogueBox(false, epilogue, SONG.hasEpilogueChat); //JOELwinodws7: epilogue box too!
+		eoof = new DialogueBox(false, epilogue, SONG.hasEpilogueChat, true); //JOELwinodws7: epilogue box too!
 		// doof.x += 70;
 		// doof.y = FlxG.height * 0.5;
 		doof.scrollFactor.set();
@@ -2341,7 +2341,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					if(!silent)
-						FlxG.sound.play(Paths.sound((reversed?'intro3':'intro1') + altSuffix), 0.6);
+						FlxG.sound.play(Paths.sound((reversed?'intro3':'intro1') + altSuffix + midiSuffix), 0.6);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2], week6Bullshit));
 					go.scrollFactor.set();
@@ -2583,6 +2583,7 @@ class PlayState extends MusicBeatState
 		// FlxG.sound.music.onComplete = checkEpilogueChat; 
 		// //JOELwindows7: now instead pls check the epilogue chat!
 		vocals.play();
+		DialogueBox.ownIntroMusic.stop();
 
 		// Song check real quick
 		switch (curSong)
@@ -2653,6 +2654,7 @@ class PlayState extends MusicBeatState
 
 		if (!paused)
 		{
+			trace("Geh Generate song");
 			#if sys
 			if (!isStoryMode && isSM)
 			{
