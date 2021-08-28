@@ -329,8 +329,8 @@ class HaxeScriptState {
 
         //JOELwindows7: mirror the variables here!
         //Colored bg
-        setVar("originalColor", PlayState.instance.originalColor);
-        setVar("isChromaScreen", PlayState.instance.isChromaScreen);
+        setVar("originalColor", PlayState.instance.Stage.originalColor);
+        setVar("isChromaScreen", PlayState.instance.Stage.isChromaScreen);
         //end mirror variables
         
         //init just in case
@@ -364,7 +364,7 @@ class HaxeScriptState {
         setVar("add", PlayState.instance.add);
         setVar("remove", PlayState.instance.remove);
         setVar("insert", PlayState.instance.insert);
-        setVar("setDefaultZoom", function(zoom) {PlayState.instance.defaultCamZoom = zoom;});
+        setVar("setDefaultZoom", function(zoom) {PlayState.instance.Stage.camZoom = zoom;});
         setVar("removeSprite", function(sprite) {
 			PlayState.instance.remove(sprite);
 		});
@@ -937,7 +937,7 @@ class HaxeScriptState {
             scrollFactorX:Float = .5, scrollFactorY:Float = .5,
             active:Bool = false, callNow:Bool = true, unique:Bool = false
         ){
-            PlayState.instance.prepareColorableBg(
+            PlayState.instance.Stage.prepareColorableBg(
                 useImage,
                 positionX,positionY,
                 imagePath,animated,
@@ -957,14 +957,14 @@ class HaxeScriptState {
         });
 
         addCallback( "randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
-            PlayState.instance.randomizeColoring(justOne, toWhichBg);
+            PlayState.instance.Stage.randomizeColoring(justOne, toWhichBg);
             //ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
             //and you, Haxe Language Server laggs on purpose
             //hence I blinded & mistyped!!! C'MON!!!! REALLY??!?!
         });
 
         addCallback( "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0){
-            PlayState.instance.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
+            PlayState.instance.Stage.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
             //hmm, I am afraid using raw FlxColor data doing won't work.
             //You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
             //so, maybe you should use the.. string version?
@@ -972,7 +972,7 @@ class HaxeScriptState {
         });
 
         addCallback("hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
-            PlayState.instance.hideColoring(justOne,toWhichBg);
+            PlayState.instance.Stage.hideColoring(justOne,toWhichBg);
             //hide the colorings
         });
 

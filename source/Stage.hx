@@ -9,6 +9,19 @@ import flixel.FlxBasic;
 import flixel.group.FlxGroup;
 import flixel.system.FlxSound;
 import flixel.addons.effects.chainable.FlxWaveEffect;
+#if (cpp && sys)
+import Sys;
+import sys.FileSystem;
+#end
+//JOELwindows7: use ki's filesystemer?
+// import filesystem.File;
+// Adds candy I/O (read/write/append) extension methods onto File
+// using filesystem.FileTools;
+
+//JOELwindows7: okay how about vegardit's filesystemer?
+import hx.files.*;
+
+using StringTools;
 
 class Stage
 {
@@ -24,6 +37,8 @@ class Stage
     public var animatedBacks:Array<FlxSprite> = []; // Store animated backgrounds and make them play animation(Animation must be named Idle!! Else use swagGroup)
     public var layInFront:Array<Array<FlxSprite>> = [[], [], []]; // BG layering, format: first [0] - in front of GF, second [1] - in front of opponent, third [2] - in front of boyfriend(and techincally also opponent since Haxe layering moment)
     public var slowBacks:Map<Int, Array<FlxSprite>> = []; // Change/add/remove backgrounds mid song! Format: "slowBacks[StepToBeActivated] = [Sprites,To,Be,Changed,Or,Added];"
+
+	public var swagColors:Map<String, FlxColor> = []; //JOELwindows7: store color for which bg name
 
 	//JOELwindows7: global backgrounder. to prioritize add() in order after all variable has been filled with instances
 	var bgAll:FlxTypedGroup<FlxSprite>;
@@ -45,6 +60,12 @@ class Stage
 	public var multiIsChromaScreen:Array<Bool> = [false]; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
 	public var multiColorable:Array<Bool> = [false];
 
+	//JOELwindows7: flag to let stage or whatever override camFollow position
+	public var overrideCamFollowP1:Bool = false;
+	public var overrideCamFollowP2:Bool = false;
+	public var manualCamFollowPosP1:Array<Float> = [0,0];
+	public var manualCamFollowPosP2:Array<Float> = [0,0];
+
 	public function add(object:Dynamic, mapName:String){
 		swagBacks[mapName] = object;
 		toAdd.push(object);
@@ -52,6 +73,9 @@ class Stage
 
     public function new(daStage:String)
     {
+		//JOELwindows7: add BgAll here boys
+		swagGroup['bgAll'] = new FlxTypedGroup<FlxSprite>();
+
         this.curStage = daStage;
         camZoom = 1.05; // Don't change zoom here, unless you want to change zoom of every stage that doesn't have custom one
         halloweenLevel = false;
@@ -60,7 +84,7 @@ class Stage
 		if(PlayState.SONG.useCustomStage)
 		{
 			//JOELwindows7: Here's the switchover!
-			initDaCustomStage(SONG.stage);
+			initDaCustomStage(PlayState.SONG.stage);
 		} else
         switch(daStage)
         {
@@ -728,7 +752,7 @@ class Stage
     }
 
 	//JOELwindows7: init stagefile
-	public static var customStage:SwagStage;
+	public var customStage:SwagStage;
 	var useStageScript:Bool = false; //JOELwindows7: flag to start try the stage Lua script
 	var attemptStageScript:Bool = false; //JOELwindows7: flag to start prepare stage script after all stuffs loaded
 
@@ -741,104 +765,102 @@ class Stage
 	}
 
 	function spawnStageImages(daData:SwagStage){
-
-		/*
-		if(bgAll != null){
-			for(i in 0...customStage.backgroundImages.length){
-				var dataBg:SwagBackground = customStage.backgroundImages[i];
-				var anBgThing:FlxSprite = new FlxSprite(dataBg.position[0],dataBg.position[1]);
-				multiColorable[i] = dataBg.colorable;
-				trace("spawning bg " + dataBg.callName);
-				if(dataBg.generateMode){
-					anBgThing.makeGraphic(Std.int(dataBg.size[0]),Std.int(dataBg.size[1]),FlxColor.fromString(dataBg.initColor));
-					multiIsChromaScreen[i] = true;
+		for(i in 0...customStage.backgroundImages.length){
+			var dataBg:SwagBackground = customStage.backgroundImages[i];
+			var anBgThing:FlxSprite = new FlxSprite(dataBg.position[0],dataBg.position[1]);
+			multiColorable[i] = dataBg.colorable;
+			trace("spawning bg " + dataBg.callName);
+			if(dataBg.generateMode){
+				anBgThing.makeGraphic(Std.int(dataBg.size[0]),Std.int(dataBg.size[1]),FlxColor.fromString(dataBg.initColor));
+				multiIsChromaScreen[i] = true;
+			} else {
+				if(dataBg.isXML){
+					anBgThing.frames = Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic);
+					anBgThing.animation.addByPrefix(dataBg.frameXMLName,dataBg.prefixXMLName,dataBg.frameRate,dataBg.mirrored);
 				} else {
-					if(dataBg.isXML){
-						anBgThing.frames = Paths.getSparrowAtlas("stage/" + toCompatCase(SONG.stage) + "/" + dataBg.graphic);
-						anBgThing.animation.addByPrefix(dataBg.frameXMLName,dataBg.prefixXMLName,dataBg.frameRate,dataBg.mirrored);
-					} else {
-						anBgThing.loadGraphic(Paths.image("stages/" + toCompatCase(SONG.stage) + "/" + dataBg.graphic));
-					}
-					anBgThing.setGraphicSize(Std.int(anBgThing.width * dataBg.scale[0]),Std.int(anBgThing.height * dataBg.scale[1]));
-					if(dataBg.colorable){
-						anBgThing.color = FlxColor.fromString(dataBg.initColor);
-					}
+					anBgThing.loadGraphic(Paths.image("stages/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic));
 				}
-				//anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
-				anBgThing.active = dataBg.active;
-				anBgThing.antialiasing = dataBg.antialiasing && FlxG.save.data.antialiasing;
-				anBgThing.scrollFactor.set(dataBg.scrollFactor[0],dataBg.scrollFactor[1]);
-				anBgThing.ID = i;
-				anBgThing.updateHitbox();
-				multiOriginalColor[i] = anBgThing.color;
-
-				bgAll.add(anBgThing);
-				anBgThing.visible = dataBg.initVisible;
-
-				if(trailAll != null){
-					if(dataBg.hasTrail){
-						var trailing = new FlxTrail(anBgThing, null, 4, 24, 0.3, 0.069);
-						trailing.ID = i;
-						trailAll.add(trailing);
-					}
+				anBgThing.setGraphicSize(Std.int(anBgThing.width * dataBg.scale[0]),Std.int(anBgThing.height * dataBg.scale[1]));
+				if(dataBg.colorable){
+					anBgThing.color = FlxColor.fromString(dataBg.initColor);
 				}
 			}
+			//anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
+			anBgThing.active = dataBg.active;
+			anBgThing.antialiasing = dataBg.antialiasing && FlxG.save.data.antialiasing;
+			anBgThing.scrollFactor.set(dataBg.scrollFactor[0],dataBg.scrollFactor[1]);
+			anBgThing.ID = i;
+			anBgThing.updateHitbox();
+			// multiOriginalColor[i] = anBgThing.color;
+			swagColors[dataBg.callName] = anBgThing.color;
+
+			// bgAll.add(anBgThing);
+			add(anBgThing, dataBg.callName);
+			anBgThing.visible = dataBg.initVisible;
+
+			// if(trailAll != null){
+			// 	if(dataBg.hasTrail){
+			// 		var trailing = new FlxTrail(anBgThing, null, 4, 24, 0.3, 0.069);
+			// 		trailing.ID = i;
+			// 		trailAll.add(trailing);
+			// 	}
+			// }
 		}
-		*/
 	}
 
 	//JOELwindows7: when stage is using Lua script
-	function spawnStageScript(daPath:String){
+	public function spawnStageScript(daPath:String){
 		#if ((windows) && cpp)
 		if(executeStageScript){
 			trace('stage script: ' + executeStageScript + " - " + Paths.lua(daPath)); //JOELwindows7: check too
 
-			stageScript = ModchartState.createModchartState(true,daPath);
-			stageScript.executeState('loaded',[toCompatCase(SONG.song)]);
+			PlayState.stageScript = ModchartState.createModchartState(true,daPath);
+			PlayState.stageScript.executeState('loaded',[CoolUtil.toCompatCase(PlayState.SONG.song)]);
 			trace("loaded it up stage lua script");
-			stageScript.setVar("originalColors", multiOriginalColor);
-			stageScript.setVar("areChromaScreen", multiIsChromaScreen);
+			PlayState.stageScript.setVar("originalColors", multiOriginalColor);
+			PlayState.stageScript.setVar("areChromaScreen", multiIsChromaScreen);
 		}
 		#end
 		if(executeStageHscript){
 			trace('stage Hscript: ' + executeStageHscript + " - " + Paths.hscript(daPath)); //JOELwindows7: check too
 
-			stageHscript = HaxeScriptState.createModchartState(true,daPath);
-			stageHscript.executeState('loaded',[toCompatCase(SONG.song)]);
+			PlayState.stageHscript = HaxeScriptState.createModchartState(true,daPath);
+			PlayState.stageHscript.executeState('loaded',[CoolUtil.toCompatCase(PlayState.SONG.song)]);
 			trace("loaded it up stage haxe script");
-			stageHscript.setVar("originalColors", multiOriginalColor);
-			stageHscript.setVar("areChromaScreen", multiIsChromaScreen);
+			PlayState.stageHscript.setVar("originalColors", multiOriginalColor);
+			PlayState.stageHscript.setVar("areChromaScreen", multiIsChromaScreen);
 		}
 
 		trace("Spawned the stage script yeay");
 	}
 
 	//JOELwindows7: core starting point for custom stage
-	function initDaCustomStage(stageJsonPath:String){
+	public function initDaCustomStage(stageJsonPath:String){
 		var p;
 		trace("Lets init da json stage " + stageJsonPath);
-		curStage = SONG.stage;
-		loadStageFile("stages/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage));
+		curStage = PlayState.SONG.stage;
+		loadStageFile("stages/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + CoolUtil.toCompatCase(PlayState.SONG.stage));
 
 		if(customStage != null)
 		{
-			defaultCamZoom = customStage.defaultCamZoom;
+			// defaultCamZoom = customStage.defaultCamZoom;
+			camZoom = customStage.defaultCamZoom;
 			halloweenLevel = customStage.isHalloween;
-			bgAll = new FlxTypedGroup<FlxSprite>();
-			add(bgAll);
-			trailAll = new FlxTypedGroup<FlxTrail>();
-			add(trailAll);
+			// bgAll = new FlxTypedGroup<FlxSprite>();
+			// add(bgAll);
+			// trailAll = new FlxTypedGroup<FlxTrail>();
+			// add(trailAll);
 			#if ((windows) && sys)
-			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+			if (!PlayStateChangeables.Optimize && PlayState.SONG.useCustomStage && customStage.useStageScript)
 				executeStageScript = FileSystem.exists(
-					Paths.lua("stage/" + toCompatCase(SONG.stage) +"/stageScript")) ||
+					Paths.lua("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) +"/stageScript")) ||
 					customStage.forceLuaModchart
 					;
 			#elseif (windows)
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
 			{
 				#if !web
-				p = Path.of(Paths.lua("stage/" + toCompatCase(SONG.stage) +"/stageScript"));
+				p = Path.of(Paths.lua("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) +"/stageScript"));
 				trace("Stage file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 				executeStageScript = p.exists() || customStage.forceLuaModchart;
 				#else
@@ -854,8 +876,8 @@ class Stage
 
 			//for hscript pls
 			#if !web
-			p = Path.of(Paths.hscript("stage/" + toCompatCase(SONG.stage) +"/stageScript"));
-			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+			p = Path.of(Paths.hscript("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) +"/stageScript"));
+			if (!PlayStateChangeables.Optimize && PlayState.SONG.useCustomStage && customStage.useStageScript)
 				executeStageHscript = p.exists() || customStage.forceHscriptModchart;
 			trace("Stage hscript file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 			#else
@@ -877,16 +899,118 @@ class Stage
 	}
 
 	//JOELwindows7: offset characters
-	function repositionThingsInStage(whatStage:String){
+	public function repositionThingsInStage(whatStage:String){
 		trace("use Custom Stage Positioners");
 		if(customStage != null)
 		{
-			boyfriend.x += customStage.bfPosition[0];
-			boyfriend.y += customStage.bfPosition[1];
-			gf.x += customStage.gfPosition[0];
-			gf.y += customStage.gfPosition[1];
-			dad.x += customStage.dadPosition[0];
-			dad.y += customStage.dadPosition[1];
+			PlayState.boyfriend.x += customStage.bfPosition[0];
+			PlayState.boyfriend.y += customStage.bfPosition[1];
+			PlayState.gf.x += customStage.gfPosition[0];
+			PlayState.gf.y += customStage.gfPosition[1];
+			PlayState.dad.x += customStage.dadPosition[0];
+			PlayState.dad.y += customStage.dadPosition[1];
 		}
+	}
+
+	//JOELwindows7: prepare Colorable bg
+	public function prepareColorableBg(useImage:Bool = false, 
+		positionX:Null<Float> = -500, positionY:Null<Float> = -500, 
+		?imagePath:String = '', ?animated:Bool = false,
+		color:Null<FlxColor> = FlxColor.WHITE,
+		width:Int = 1, height:Int = 1, 
+		upscaleX:Int = 1, upscaleY:Int = 1, 
+		antialiasing:Bool = true,
+		scrollFactorX:Float = .5, scrollFactorY:Float = .5,
+		active:Bool = false, callNow:Bool = true, ?unique:Bool = false)
+	{
+
+		colorableGround = 
+			useImage?
+				new FlxSprite(positionX, positionY).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'), animated, width, height, unique):
+				new FlxSprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME)
+				;
+		colorableGround.setGraphicSize(Std.int(colorableGround.width * upscaleX),Std.int(colorableGround.height * upscaleY));
+		colorableGround.updateHitbox();
+		colorableGround.antialiasing = antialiasing;
+		colorableGround.scrollFactor.set(scrollFactorX,scrollFactorY);
+		colorableGround.active = active;
+		if(callNow)
+			add(colorableGround, 'colorableGround');
+		// originalColor = colorableGround.color;
+		swagColors['colorableGround'] = colorableGround.color;
+	}
+
+	//JOELwindows7: randomize the color of the colorableGround
+	public function randomizeColoring(justOne:Bool = false, toWhichBg:Int = 0)
+	{	
+		if(swagBacks['colorableGround'] != null){
+			// colorableGround.visible = true;
+			// colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+			swagBacks['colorableGround'].visible = true;
+			swagBacks['colorableGround'].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+			trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
+		}
+		if(swagGroup['bgAll'] != null)
+			if(justOne){
+				swagGroup['bgAll'].members[toWhichBg].visible = true;
+				swagGroup['bgAll'].members[toWhichBg].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+				trace("now bg " + Std.string(swagGroup['bgAll'].members[toWhichBg].ID) + " color is " + swagBacks['colorableGround'].color.toHexString());
+			} else
+			{
+				swagGroup['bgAll'].forEach(function(theBg:FlxSprite){
+					if(multiColorable[theBg.ID])
+					{
+						theBg.visible = true;
+						theBg.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+						trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+					}
+				});
+			}
+	}
+
+	//JOELwindows7: copy above, but this let you choose color
+	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE, justOne:Bool = true, toWhichBg:Int = 0)
+	{
+		if(swagBacks['colorableGround'] != null){
+			swagBacks['colorableGround'].visible = true;
+			swagBacks['colorableGround'].color = color;
+			trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
+		}
+		if(swagGroup['bgAll'] != null)
+		{
+			if(justOne)
+			{
+				swagGroup['bgAll'].members[toWhichBg].visible = true;
+				swagGroup['bgAll'].members[toWhichBg].color = color;
+				trace("now bg " + Std.string(swagGroup['bgAll'].members[toWhichBg].ID) + " color is " + swagBacks['colorableGround'].color.toHexString());
+			} else {
+				swagGroup['bgAll'].forEach(function(theBg:FlxSprite){
+					if(multiColorable[theBg.ID]){
+						theBg.visible = true;
+						theBg.color = color;
+						trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+					}
+				});
+			}
+		}
+	}
+
+	//JOELwindows7: To hide coloring incase you don't need it anymore
+	public function hideColoring(justOne:Bool = false, toWhichBg:Int = 0) {
+		if(swagBacks['colorableGround'] != null)
+			if(isChromaScreen){
+				swagBacks['colorableGround'].color = originalColor;
+			} else swagBacks['colorableGround'].visible = false;
+		if(swagGroup['bgAll'] != null)
+			if(justOne){
+				swagGroup['bgAll'].members[toWhichBg].color = multiOriginalColor[toWhichBg];
+				if(multiIsChromaScreen[toWhichBg])
+					swagGroup['bgAll'].members[toWhichBg].visible = false;
+			} else
+				swagGroup['bgAll'].forEach(function(theBg:FlxSprite){
+					theBg.color = multiOriginalColor[theBg.ID];
+					if(multiIsChromaScreen[theBg.ID])
+						theBg.visible = false;
+				});
 	}
 }

@@ -106,7 +106,7 @@ class PlayState extends MusicBeatState
 
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
-	public static var customStage:SwagStage;
+	// public static var customStage:SwagStage;
 	public static var HEART:Array<SwagHeart>; //JOELwindows7: heartbeat spec
 	// public static var HEARTS:HeartList; //JOELwindows7: list of heart specs
 	public static var isStoryMode:Bool = false;
@@ -234,8 +234,8 @@ class PlayState extends MusicBeatState
 	private static var prevCamFollow:FlxObject;
 
 	//JOELwindows7: flag to let stage or whatever override camFollow position
-	private var overrideCamFollowP1:Bool = false;
-	private var overrideCamFollowP2:Bool = false;
+	// private var overrideCamFollowP1:Bool = false;
+	// private var overrideCamFollowP2:Bool = false;
 	private var manualCamFollowPosP1:Array<Float> = [0,0];
 	private var manualCamFollowPosP2:Array<Float> = [0,0];
 
@@ -845,7 +845,7 @@ class PlayState extends MusicBeatState
 				//basically gf get down from speaker and duet against player 1
 				dad.y += 100;
 				dad.x -= 100;
-				switch(curGf){
+				switch(gfCheck){
 					case 'gf':
 						//remove the gf from speaker
 					case 'gf-ht':
@@ -1007,7 +1007,7 @@ class PlayState extends MusicBeatState
 				gf.y -= 100;
 			default:
 				if(SONG.useCustomStage){
-					repositionThingsInStage(curStage);
+					Stage.repositionThingsInStage(curStage);
 				} else {
 					trace("Hey uh, we missing the stage offset information for stage " + curStage + " guys.");
 					FlxG.log.add("Missing stage offset positioning for " + curStage);
@@ -1511,7 +1511,7 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: Now Init CustomStage scripts if had to.
 		if(attemptStageScript){
-			spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+			Stage.spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
 		}
 
 		//JOELwindows7: why the peck with touchscreen button game crash on second run?!
@@ -1707,7 +1707,14 @@ class PlayState extends MusicBeatState
 		//generateStaticArrows(0);
 		//generateStaticArrows(1);
 
-
+		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+		switch (songLowercase)
+		{
+			case 'dad-battle':
+				songLowercase = 'dadbattle';
+			case 'philly-nice':
+				songLowercase = 'philly';
+		}
 
 		talking = false;
 		startedCountdown = true;
@@ -2851,8 +2858,8 @@ class PlayState extends MusicBeatState
 			luaModchart.executeState('update', [elapsed]);
 			//JOELwindows7: okay I think this is a good place to constantly update variable
 			//that must be updated. idk.
-			luaModchart.setVar("originalColor", originalColor);
-			luaModchart.setVar("isChromaScreen", isChromaScreen);
+			luaModchart.setVar("originalColor", Stage.originalColor);
+			luaModchart.setVar("isChromaScreen", Stage.isChromaScreen);
 
 			for (key => value in luaModchart.luaWiggles) 
 			{
@@ -2919,8 +2926,8 @@ class PlayState extends MusicBeatState
 			stageScript.setVar('cameraZoom',FlxG.camera.zoom);
 			stageScript.executeState('update', [elapsed]);
 
-			stageScript.setVar("originalColor", originalColor);
-			stageScript.setVar("isChromaScreen", isChromaScreen);
+			stageScript.setVar("originalColor", Stage.originalColor);
+			stageScript.setVar("isChromaScreen", Stage.isChromaScreen);
 		}
 		#end
 		//JOELwindows7: the hscript version
@@ -2932,8 +2939,8 @@ class PlayState extends MusicBeatState
 			hscriptModchart.executeState('update', [elapsed]);
 			//JOELwindows7: okay I think this is a good place to constantly update variable
 			//that must be updated. idk.
-			hscriptModchart.setVar("originalColor", originalColor);
-			hscriptModchart.setVar("isChromaScreen", isChromaScreen);
+			hscriptModchart.setVar("originalColor", Stage.originalColor);
+			hscriptModchart.setVar("isChromaScreen", Stage.isChromaScreen);
 
 			for (key => value in hscriptModchart.haxeWiggles) 
 			{
@@ -2990,8 +2997,8 @@ class PlayState extends MusicBeatState
 			stageHscript.setVar('cameraZoom',FlxG.camera.zoom);
 			stageHscript.executeState('update', [elapsed]);
 
-			stageHscript.setVar("originalColor", originalColor);
-			stageHscript.setVar("isChromaScreen", isChromaScreen);
+			stageHscript.setVar("originalColor", Stage.originalColor);
+			stageHscript.setVar("isChromaScreen", Stage.isChromaScreen);
 		}
 
 		// reverse iterate to remove oldest notes first and not invalidate the iteration
@@ -3363,7 +3370,7 @@ class PlayState extends MusicBeatState
 									{
 										if (!triggeredAlready)
 										{
-											randomizeColoring(); //JOELwindows7: change the stage light color!
+											Stage.randomizeColoring(); //JOELwindows7: change the stage light color!
 											gf.playAnim('cheer');
 											triggeredAlready = true;
 										}
@@ -3447,7 +3454,7 @@ class PlayState extends MusicBeatState
 									{
 										if(!triggeredAlready)
 											{
-												randomizeColoring();
+												Stage.randomizeColoring();
 												gf.playAnim('cheer');
 												triggeredAlready = true;
 											}
@@ -3474,7 +3481,7 @@ class PlayState extends MusicBeatState
 							if(curBeat % 4 == 0)
 							{
 								if(!triggeredAlready){
-									randomizeColoring();
+									Stage.randomizeColoring();
 									triggeredAlready = true;
 								}
 							} else triggeredAlready = false;
@@ -3511,10 +3518,10 @@ class PlayState extends MusicBeatState
 					offsetX = hscriptModchart.getVar("followXOffset", "float");
 					offsetY = hscriptModchart.getVar("followYOffset", "float");
 				}
-				if(overrideCamFollowP2){
+				if(Stage.overrideCamFollowP2){
 					//JOELwindows7: override bf cam position
-					if(customStage != null){
-						camFollow.setPosition(customStage.camFollowP2Pos[0] + offsetX, customStage.camFollowP2Pos[1] + offsetY);
+					if(Stage.customStage != null){
+						camFollow.setPosition(Stage.customStage.camFollowP2Pos[0] + offsetX, Stage.customStage.camFollowP2Pos[1] + offsetY);
 					} else
 						camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
 				} else
@@ -3558,10 +3565,10 @@ class PlayState extends MusicBeatState
 					offsetX = hscriptModchart.getVar("followXOffset", "float");
 					offsetY = hscriptModchart.getVar("followYOffset", "float");
 				}
-				if(overrideCamFollowP1){
+				if(Stage.overrideCamFollowP1){
 					//JOELwindows7: override bf cam position
-					if(customStage != null){
-						camFollow.setPosition(customStage.camFollowP1Pos[0] + offsetX, customStage.camFollowP1Pos[1] + offsetY);
+					if(Stage.customStage != null){
+						camFollow.setPosition(Stage.customStage.camFollowP1Pos[0] + offsetX, Stage.customStage.camFollowP1Pos[1] + offsetY);
 					} else
 						camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
 				} else
@@ -6069,7 +6076,7 @@ class PlayState extends MusicBeatState
 				if(!triggeredAlready)
 					{
 						if(randomizeColor)
-							randomizeColoring(justOne, toWhichBg);
+							Stage.randomizeColoring(justOne, toWhichBg);
 						gf.playAnim('cheer', forceIt);
 						triggeredAlready = true;
 					}
@@ -6089,7 +6096,7 @@ class PlayState extends MusicBeatState
 				if(!triggeredAlready)
 					{
 						if(randomizeColor)
-							randomizeColoring(justOne, toWhichBg);
+							Stage.randomizeColoring(justOne, toWhichBg);
 						boyfriend.playAnim('hey', forceIt);
 						triggeredAlready = true;
 					}
@@ -6105,102 +6112,7 @@ class PlayState extends MusicBeatState
 			boyfriend.playAnim('hey', forceIt);
 		}
 	
-		//JOELwindows7: prepare Colorable bg
-		public function prepareColorableBg(useImage:Bool = false, 
-			positionX:Null<Float> = -500, positionY:Null<Float> = -500, 
-			?imagePath:String = '', ?animated:Bool = false,
-			color:Null<FlxColor> = FlxColor.WHITE,
-			width:Int = 1, height:Int = 1, 
-			upscaleX:Int = 1, upscaleY:Int = 1, 
-			antialiasing:Bool = true,
-			scrollFactorX:Float = .5, scrollFactorY:Float = .5,
-			active:Bool = false, callNow:Bool = true, ?unique:Bool = false)
-		{
-	
-			colorableGround = 
-				useImage?
-					new FlxSprite(positionX, positionY).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'), animated, width, height, unique):
-					new FlxSprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME)
-					;
-			colorableGround.setGraphicSize(Std.int(colorableGround.width * upscaleX),Std.int(colorableGround.height * upscaleY));
-			colorableGround.updateHitbox();
-			colorableGround.antialiasing = antialiasing;
-			colorableGround.scrollFactor.set(scrollFactorX,scrollFactorY);
-			colorableGround.active = active;
-			if(callNow)
-				add(colorableGround);
-			originalColor = colorableGround.color;
-		}
-	
-		//JOELwindows7: randomize the color of the colorableGround
-		public function randomizeColoring(justOne:Bool = false, toWhichBg:Int = 0)
-		{	
-			if(colorableGround != null){
-				colorableGround.visible = true;
-				colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
-				trace("now colorable color is " + colorableGround.color.toHexString());
-			}
-			if(bgAll != null)
-				if(justOne){
-					bgAll.members[toWhichBg].visible = true;
-					bgAll.members[toWhichBg].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
-					trace("now bg " + Std.string(bgAll.members[toWhichBg].ID) + " color is " + colorableGround.color.toHexString());
-				} else
-					bgAll.forEach(function(theBg:FlxSprite){
-						if(multiColorable[theBg.ID])
-						{
-							theBg.visible = true;
-							theBg.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
-							trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
-						}
-					});
-		}
-	
-		//JOELwindows7: copy above, but this let you choose color
-		public function chooseColoringColor(color:FlxColor = FlxColor.WHITE, justOne:Bool = true, toWhichBg:Int = 0)
-		{
-			if(colorableGround != null){
-				colorableGround.visible = true;
-				colorableGround.color = color;
-				trace("now colorable color is " + colorableGround.color.toHexString());
-			}
-			if(bgAll != null)
-			{
-				if(justOne)
-				{
-					bgAll.members[toWhichBg].visible = true;
-					bgAll.members[toWhichBg].color = color;
-					trace("now bg " + Std.string(bgAll.members[toWhichBg].ID) + " color is " + colorableGround.color.toHexString());
-				} else {
-					bgAll.forEach(function(theBg:FlxSprite){
-						if(multiColorable[theBg.ID]){
-							theBg.visible = true;
-							theBg.color = color;
-							trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
-						}
-					});
-				}
-			}
-		}
-	
-		//JOELwindows7: To hide coloring incase you don't need it anymore
-		public function hideColoring(justOne:Bool = false, toWhichBg:Int = 0) {
-			if(colorableGround != null)
-				if(isChromaScreen){
-					colorableGround.color = originalColor;
-				} else colorableGround.visible = false;
-			if(bgAll != null)
-				if(justOne){
-					bgAll.members[toWhichBg].color = multiOriginalColor[toWhichBg];
-					if(multiIsChromaScreen[toWhichBg])
-						bgAll.members[toWhichBg].visible = false;
-				} else
-					bgAll.forEach(function(theBg:FlxSprite){
-						theBg.color = multiOriginalColor[theBg.ID];
-						if(multiIsChromaScreen[theBg.ID])
-							theBg.visible = false;
-					});
-		}
+		
 	
 		//JOELwindows7: manage heartbeat moments
 		function startHeartBeat(){
@@ -6440,161 +6352,7 @@ class PlayState extends MusicBeatState
 			return StringTools.replace(daString, " ", "-").toLowerCase();
 		}
 	
-		//JOELwindows7: init stagefile
-		function loadStageFile(path:String){
-			customStage = StageChart.loadFromJson(path);
-			if(customStage != null){
-				useStageScript = customStage.useStageScript;
-				isHalloween = customStage.isHalloween;
-			}
-		}
-	
-		function spawnStageImages(daData:SwagStage){
-			if(bgAll != null){
-				for(i in 0...customStage.backgroundImages.length){
-					var dataBg:SwagBackground = customStage.backgroundImages[i];
-					var anBgThing:FlxSprite = new FlxSprite(dataBg.position[0],dataBg.position[1]);
-					multiColorable[i] = dataBg.colorable;
-					trace("spawning bg " + dataBg.callName);
-					if(dataBg.generateMode){
-						anBgThing.makeGraphic(Std.int(dataBg.size[0]),Std.int(dataBg.size[1]),FlxColor.fromString(dataBg.initColor));
-						multiIsChromaScreen[i] = true;
-					} else {
-						if(dataBg.isXML){
-							anBgThing.frames = Paths.getSparrowAtlas("stage/" + toCompatCase(SONG.stage) + "/" + dataBg.graphic);
-							anBgThing.animation.addByPrefix(dataBg.frameXMLName,dataBg.prefixXMLName,dataBg.frameRate,dataBg.mirrored);
-						} else {
-							anBgThing.loadGraphic(Paths.image("stages/" + toCompatCase(SONG.stage) + "/" + dataBg.graphic));
-						}
-						anBgThing.setGraphicSize(Std.int(anBgThing.width * dataBg.scale[0]),Std.int(anBgThing.height * dataBg.scale[1]));
-						if(dataBg.colorable){
-							anBgThing.color = FlxColor.fromString(dataBg.initColor);
-						}
-					}
-					//anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
-					anBgThing.active = dataBg.active;
-					anBgThing.antialiasing = dataBg.antialiasing && FlxG.save.data.antialiasing;
-					anBgThing.scrollFactor.set(dataBg.scrollFactor[0],dataBg.scrollFactor[1]);
-					anBgThing.ID = i;
-					anBgThing.updateHitbox();
-					multiOriginalColor[i] = anBgThing.color;
-	
-					bgAll.add(anBgThing);
-					anBgThing.visible = dataBg.initVisible;
-	
-					if(trailAll != null){
-						if(dataBg.hasTrail){
-							var trailing = new FlxTrail(anBgThing, null, 4, 24, 0.3, 0.069);
-							trailing.ID = i;
-							trailAll.add(trailing);
-						}
-					}
-				}
-			}
-		}
-	
-		//JOELwindows7: when stage is using Lua script
-		function spawnStageScript(daPath:String){
-			#if ((windows) && cpp)
-			if(executeStageScript){
-				trace('stage script: ' + executeStageScript + " - " + Paths.lua(daPath)); //JOELwindows7: check too
-	
-				stageScript = ModchartState.createModchartState(true,daPath);
-				stageScript.executeState('loaded',[toCompatCase(SONG.song)]);
-				trace("loaded it up stage lua script");
-				stageScript.setVar("originalColors", multiOriginalColor);
-				stageScript.setVar("areChromaScreen", multiIsChromaScreen);
-			}
-			#end
-			if(executeStageHscript){
-				trace('stage Hscript: ' + executeStageHscript + " - " + Paths.hscript(daPath)); //JOELwindows7: check too
-	
-				stageHscript = HaxeScriptState.createModchartState(true,daPath);
-				stageHscript.executeState('loaded',[toCompatCase(SONG.song)]);
-				trace("loaded it up stage haxe script");
-				stageHscript.setVar("originalColors", multiOriginalColor);
-				stageHscript.setVar("areChromaScreen", multiIsChromaScreen);
-			}
-	
-			trace("Spawned the stage script yeay");
-		}
-	
-		//JOELwindows7: core starting point for custom stage
-		function initDaCustomStage(stageJsonPath:String){
-			var p;
-			trace("Lets init da json stage " + stageJsonPath);
-			curStage = SONG.stage;
-			loadStageFile("stages/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage));
-	
-			if(customStage != null)
-			{
-				defaultCamZoom = customStage.defaultCamZoom;
-				halloweenLevel = customStage.isHalloween;
-				bgAll = new FlxTypedGroup<FlxSprite>();
-				add(bgAll);
-				trailAll = new FlxTypedGroup<FlxTrail>();
-				add(trailAll);
-				#if ((windows) && sys)
-				if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
-					executeStageScript = FileSystem.exists(
-						Paths.lua("stage/" + toCompatCase(SONG.stage) +"/stageScript")) ||
-						customStage.forceLuaModchart
-						;
-				#elseif (windows)
-				if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
-				{
-					#if !web
-					p = Path.of(Paths.lua("stage/" + toCompatCase(SONG.stage) +"/stageScript"));
-					trace("Stage file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
-					executeStageScript = p.exists() || customStage.forceLuaModchart;
-					#else
-					executeStageScript = customStage.forceLuaModchart;
-					#end
-				}
-				#else
-					executeStageScript = false;
-				#end
-				#if !cpp
-					executeStageScript = false;
-				#end
-	
-				//for hscript pls
-				#if !web
-				p = Path.of(Paths.hscript("stage/" + toCompatCase(SONG.stage) +"/stageScript"));
-				if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
-					executeStageHscript = p.exists() || customStage.forceHscriptModchart;
-				trace("Stage hscript file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
-				#else
-				if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
-					executeStageHscript = customStage.forceHscriptModchart;
-				#end
-				trace("forced stage Hscript exist is " + Std.string(customStage.forceHscriptModchart));
-	
-				if(!customStage.ignoreMainImages)
-					spawnStageImages(customStage);
-				if(#if ((windows) && cpp) executeStageScript || #end executeStageHscript){
-					// spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
-					attemptStageScript = true;
-				}
-	
-				overrideCamFollowP1 = customStage.overrideCamFollowP1;
-				overrideCamFollowP2 = customStage.overrideCamFollowP2;
-			}
-		}
-	
-		//JOELwindows7: offset characters
-		function repositionThingsInStage(whatStage:String){
-			trace("use Custom Stage Positioners");
-			if(customStage != null)
-			{
-				boyfriend.x += customStage.bfPosition[0];
-				boyfriend.y += customStage.bfPosition[1];
-				gf.x += customStage.gfPosition[0];
-				gf.y += customStage.gfPosition[1];
-				dad.x += customStage.dadPosition[0];
-				dad.y += customStage.dadPosition[1];
-			}
-		}
+		
 	
 		//JOELwindows7: Ugh, fine, I guess you are my littler pogchamp, come here.
 		public function colorizeColorablebyKey(note:String, justOne:Bool, toWhichBg:Int)
@@ -6602,16 +6360,16 @@ class PlayState extends MusicBeatState
 			switch(note){
 				case "left":
 					trace("set color magenta");
-					chooseColoringColor(FlxColor.fromString("magenta"), justOne, toWhichBg);
+					Stage.chooseColoringColor(FlxColor.fromString("magenta"), justOne, toWhichBg);
 				case "down":
 					trace("set color cyan");
-					chooseColoringColor(FlxColor.fromString("cyan"), justOne, toWhichBg);
+					Stage.chooseColoringColor(FlxColor.fromString("cyan"), justOne, toWhichBg);
 				case "up":
 					trace("set color lime");
-					chooseColoringColor(FlxColor.fromString("lime"), justOne, toWhichBg);
+					Stage.chooseColoringColor(FlxColor.fromString("lime"), justOne, toWhichBg);
 				case "right":
 					trace("set color red");
-					chooseColoringColor(FlxColor.fromString("red"), justOne, toWhichBg);
+					Stage.chooseColoringColor(FlxColor.fromString("red"), justOne, toWhichBg);
 				default:
 			}
 		}
@@ -6620,16 +6378,16 @@ class PlayState extends MusicBeatState
 			switch(note){
 				case 0:
 					trace("set color magenta");
-					chooseColoringColor(FlxColor.fromString("magenta"), justOne, toWhichBg);
+					Stage.chooseColoringColor(FlxColor.fromString("magenta"), justOne, toWhichBg);
 				case 1:
 					trace("set color cyan");
-					chooseColoringColor(FlxColor.fromString("cyan"), justOne, toWhichBg);
+					Stage.chooseColoringColor(FlxColor.fromString("cyan"), justOne, toWhichBg);
 				case 2:
 					trace("set color lime");
-					chooseColoringColor(FlxColor.fromString("lime"), justOne, toWhichBg);
+					Stage.chooseColoringColor(FlxColor.fromString("lime"), justOne, toWhichBg);
 				case 3:
 					trace("set color red");
-					chooseColoringColor(FlxColor.fromString("red"), justOne, toWhichBg);
+					Stage.chooseColoringColor(FlxColor.fromString("red"), justOne, toWhichBg);
 				default:
 			}
 		}
