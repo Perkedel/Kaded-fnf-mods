@@ -20,8 +20,7 @@ import lime.net.curl.CURLCode;
 import haxe.Json;
 import haxe.format.JsonParser;
 
-//JOELwindows7: hey, I changed all discord rpc to only available to desktop, except neko and hashlink.
-#if (windows && cpp)
+#if (desktop && cpp)
 import Discord.DiscordClient;
 #end
 
@@ -145,7 +144,7 @@ class StoryMenuState extends MusicBeatState
 
 		weekUnlocked = unlockWeeks();
 
-		#if (windows && cpp)
+		#if (desktop && cpp)
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
 		#end
@@ -487,7 +486,7 @@ class StoryMenuState extends MusicBeatState
 			PlayState.storyPlaylist = weekData()[curWeek];
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
-
+			PlayState.songMultiplier = 1;
 
 			PlayState.storyDifficulty = curDifficulty;
 

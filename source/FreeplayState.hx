@@ -23,7 +23,8 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 
-#if (windows && cpp)
+
+#if (desktop && cpp)
 import Discord.DiscordClient;
 #end
 
@@ -34,6 +35,9 @@ class FreeplayState extends MusicBeatState
 	public static var songs:Array<SongMetadata> = [];
 
 	var selector:FlxText;
+
+	public static var rate:Float = 1.0;
+
 	public static var curSelected:Int = 0;
 	public static var curDifficulty:Int = 1;
 
@@ -139,7 +143,7 @@ class FreeplayState extends MusicBeatState
 				{
 					if (file.contains(" "))
 						FileSystem.rename("assets/sm/" + i + "/" + file,"assets/sm/" + i + "/" + file.replace(" ","_"));
-					if (file.endsWith(".sm"))
+					if (file.endsWith(".sm") && !FileSystem.exists("assets/sm/" + i + "/converted.json"))
 					{
 						trace("reading " + file);
 						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ","_"));
@@ -148,6 +152,18 @@ class FreeplayState extends MusicBeatState
 						var meta = new SongMetadata(file.header.TITLE, 0, "sm",file,"assets/sm/" + i);
 						songs.push(meta);
 						var song = Song.loadFromJsonRAW(data);
+						songData.set(file.header.TITLE, [song,song,song]);
+					}
+					else if (FileSystem.exists("assets/sm/" + i + "/converted.json") && file.endsWith(".sm"))
+					{
+						trace("reading " + file);
+						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ","_"));
+						trace("Converting " + file.header.TITLE);
+						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
+						var meta = new SongMetadata(file.header.TITLE, 0, "sm",file,"assets/sm/" + i);
+						songs.push(meta);
+						var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + i + "/converted.json"));
+						trace("got content lol");
 						songData.set(file.header.TITLE, [song,song,song]);
 					}
 				}
@@ -174,7 +190,7 @@ class FreeplayState extends MusicBeatState
 			}
 		 */
 
-		 #if (windows && cpp)
+		 #if (desktop && cpp)
 		 // Updating Discord Rich Presence
 		 DiscordClient.changePresence("In the Freeplay Menu", null);
 		 #end
@@ -230,7 +246,7 @@ class FreeplayState extends MusicBeatState
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		// scoreText.alignment = RIGHT;
 
-		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.35), 105, 0xFF000000);
+		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.35), 135, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
@@ -242,9 +258,9 @@ class FreeplayState extends MusicBeatState
 		diffCalcText.font = scoreText.font;
 		add(diffCalcText);
 
-		previewtext = new FlxText(scoreText.x, scoreText.y + 94, 0, "" + (KeyBinds.gamepad ? "X" : "SPACE") + " to preview", 24);
+		previewtext = new FlxText(scoreText.x, scoreText.y + 94, 0, "Rate: " + rate + "x", 24);
 		previewtext.font = scoreText.font;
-		//add(previewtext);
+		add(previewtext);
 
 		comboText = new FlxText(diffText.x + 100, diffText.y, 0, "", 24);
 		comboText.font = diffText.font;
@@ -377,16 +393,56 @@ class FreeplayState extends MusicBeatState
 		//if (FlxG.keys.justPressed.SPACE && !openedPreview)
 			//openSubState(new DiffOverview());
 
-		if (FlxG.keys.justPressed.LEFT || haveLefted)
+		if (FlxG.keys.pressed.SHIFT)
 		{
-			changeDiff(-1);
-			haveLefted = false;
+			if (FlxG.keys.justPressed.LEFT || haveLefted)
+			{
+				rate -= 0.05;
+				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+				haveLefted = false;
+			}
+			if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
+			{
+				rate += 0.05;
+				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+				haveRighted = false;
+			}
+
+			if (rate > 3)
+			{
+				rate = 3;
+				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+			}
+			else if (rate < 0.5)
+			{
+				rate = 0.5;
+				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+			}
+
+			previewtext.text = "Rate: " + rate + "x";
 		}
-		if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
+		else
 		{
-			changeDiff(1);
-			haveRighted = false;
+			if (FlxG.keys.justPressed.LEFT || haveLefted)
+			{
+				changeDiff(-1);
+				haveLefted = false;
+			}
+			if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
+			{
+				changeDiff(1);
+				haveRighted = false;
+			}
 		}
+		
+					
+		#if cpp
+		@:privateAccess
+		{
+			if (FlxG.sound.music.playing)
+				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
+		}
+		#end
 
 		if (controls.BACK || haveBacked)
 		{
@@ -442,7 +498,11 @@ class FreeplayState extends MusicBeatState
 			#else
 			PlayState.isSM = false;
 			#end
+
+			PlayState.songMultiplier = rate;
+
 			LoadingState.loadAndSwitchState(new PlayState());
+
 			clean();
 			haveClicked = false;
 		} else {

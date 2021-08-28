@@ -24,7 +24,8 @@
 	 - `haxelib install flixel-ui`
 	 - `haxelib install hscript`
 	 - `haxelib install newgrounds`
-	 - `haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git`
+	 - `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git`
+	 - `haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit`
 	 - `haxelib git faxe https://github.com/uhrobots/faxe`
 	 - `haxelib git polymod https://github.com/larsiusprime/polymod.git`
 	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
@@ -36,13 +37,9 @@
 If you are planning to build for Windows, you also need to install **Visual Studio 2019**. While installing it, *don't click on any of the options to install workloads*. Instead, go to the **individual components** tab and choose the following:
 
 -   MSVC v142 - VS 2019 C++ x64/x86 build tools
--   MSVC v141 - VS 2017 C++ x64/x86 build tools
 -   Windows SDK (10.0.17763.0)
--   C++ Profiling tools
--   C++ CMake tools for windows
--   C++ ATL for v142 build tools (x86 & x64)
 
-This will install about 7 GB of crap, but is necessary to build for Windows.
+This will install about 4 GB of crap, but is necessary to build for Windows.
 
 ### macOS-only dependencies (these are required for building on macOS at all, including html5.)
 If you are running macOS, you'll need to install Xcode. You can download it from the macOS App Store or from the [Xcode website](https://developer.apple.com/xcode/).
@@ -64,3 +61,25 @@ Finally, we are ready to build.
 - The build will be in `Kade-Engine/export/release/<target>/bin`, with `<target>` being the target you built to in the previous step. (i.e. `Kade-Engine/export/release/windows/bin`)
 - Incase you added the -debug flag the files will be inside `Kade-Engine/export/debug/<target>/bin`
 - Only the `bin` folder is necessary to run the game. The other ones in `export/release/<target>` are not.
+
+## Troubleshooting
+If you are experiencing one of the common problems below, you can use the provided steps to fix the issue.
+
+### Type not found : StatePointer
+
+If you experience this problem, you may see lines like 
+
+```
+source/LuaClass.hx:33: characters 46-58 : Type not found : StatePointer
+```
+
+This problem occurs when running an old version of the libraries that power the Lua-based modcharting system. These libraries were replaced in Kade Engine v1.7.
+
+To fix this issue, run the following commands to reinstall the proper versions:
+
+```
+haxelib remove linc_luajit
+haxelib remove hxvm-luajit
+haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
+```

@@ -33,7 +33,7 @@ import lime.app.Application;
 import openfl.Assets;
 import grig.midi.MidiOut;
 
-#if (windows && cpp)
+#if (desktop && cpp)
 import Discord.DiscordClient;
 #end
 
@@ -363,7 +363,7 @@ class TitleState extends MusicBeatState
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				// Get current version of Kade Engine
-
+				
 				//JOELwindows7: do this if not mobile since in there this doesn't work
 				//according to the luckydog7 and mods that don't care update
 				#if !mobile

@@ -12,7 +12,7 @@ import com.player03.android6.Permissions;
 import webm.WebmPlayer;
 #end
 import lime.app.Application;
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
 import openfl.display.BlendMode;
@@ -189,7 +189,7 @@ class Main extends Sprite
 		#end
 		//end GrowtopiaFli Video Cutscener
 		
-		#if windows
+		#if (desktop && cpp)
 		DiscordClient.initialize();
 
 		Application.current.onExit.add (function (exitCode) {

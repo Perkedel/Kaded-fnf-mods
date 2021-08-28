@@ -22,10 +22,10 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public function new(x:Float, y:Float)
 	{
-		var daStage = PlayState.curStage;
+		var daStage = PlayState.Stage.curStage;
 		var daBf:String = '';
 		var daSong:String = PlayState.SONG.song; //damn, I couldn't access that. I change the publicity to public man!
-		switch (PlayState.SONG.player1)
+		switch (PlayState.boyfriend.curCharacter)
 		{
 			case 'bf-pixel':
 				stageSuffix = '-pixel';
