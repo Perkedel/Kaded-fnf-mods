@@ -1,5 +1,8 @@
 package;
 
+import flixel.addons.effects.FlxTrail;
+import StagechartState;
+import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxBasic;
@@ -22,12 +25,43 @@ class Stage
     public var layInFront:Array<Array<FlxSprite>> = [[], [], []]; // BG layering, format: first [0] - in front of GF, second [1] - in front of opponent, third [2] - in front of boyfriend(and techincally also opponent since Haxe layering moment)
     public var slowBacks:Map<Int, Array<FlxSprite>> = []; // Change/add/remove backgrounds mid song! Format: "slowBacks[StepToBeActivated] = [Sprites,To,Be,Changed,Or,Added];"
 
+	//JOELwindows7: global backgrounder. to prioritize add() in order after all variable has been filled with instances
+	var bgAll:FlxTypedGroup<FlxSprite>;
+	var stageFrontAll:FlxTypedGroup<FlxSprite>;
+	var stageCurtainAll:FlxTypedGroup<FlxSprite>;
+	var trailAll:FlxTypedGroup<FlxTrail>;
+
+	public var executeStageScript = false; //JOELwindows7: for stage lua scripter
+	public var executeStageHscript = false;
+
+	public var colorableGround:FlxSprite; //JOELwindows7: the colorable sprite thingy
+	public var originalColor:FlxColor = FlxColor.WHITE; //JOELwindows7: store the original color for chroma screen and RGB lightings
+	public var isChromaScreen:Bool = false; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
+	//if chroma screen, then don't invisiblize, instead turn it back to original color!
+
+	//JOELwindows7: arraying them seems won't work at all. so let's make them separateroid instead.
+	public var multicolorableGround:FlxTypedGroup<FlxSprite>; //JOELwindows7: the colorable sprite thingy
+	public var multiOriginalColor:Array<FlxColor> = [FlxColor.WHITE]; //JOELwindows7: store the original color for chroma screen and RGB lightings
+	public var multiIsChromaScreen:Array<Bool> = [false]; //JOELwindows7: whether this is a Chroma screen or just RGB lightings.
+	public var multiColorable:Array<Bool> = [false];
+
+	public function add(object:Dynamic, mapName:String){
+		swagBacks[mapName] = object;
+		toAdd.push(object);
+	}
+
     public function new(daStage:String)
     {
         this.curStage = daStage;
         camZoom = 1.05; // Don't change zoom here, unless you want to change zoom of every stage that doesn't have custom one
         halloweenLevel = false;
 
+		trace("Load da stage here ya"); //JOELwindows7: wtf happened
+		if(PlayState.SONG.useCustomStage)
+		{
+			//JOELwindows7: Here's the switchover!
+			initDaCustomStage(SONG.stage);
+		} else
         switch(daStage)
         {
             case 'halloween':
@@ -89,8 +123,13 @@ class Stage
                             toAdd.push(phillyTrain);
 						}
 
+						//JOELwindows7: buddy, you forgot to put the train sound in week3 special folder
+						//No wonder the train cannot come. it missing that sound.
+						//remember, the trains position depends on the sound playback position!
 						PlayState.trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes', 'week3'));
 						FlxG.sound.list.add(PlayState.trainSound);
+						//there, I've copied the train_passes ogg & mp3 into the week3/sounds . 
+						//yay it works.
 
 						// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
 
@@ -321,7 +360,7 @@ class Stage
 						var bgGirls = new BackgroundGirls(-100, 190);
 						bgGirls.scrollFactor.set(0.9, 0.9);
 
-						if (PlayState.SONG.song.toLowerCase() == 'roses')
+						if (PlayState.SONG.song.toLowerCase() == 'roses' || PlayState.SONG.song.toLowerCase() == 'roses-midi')
 						{
 							if (FlxG.save.data.distractions)
 							{
@@ -395,6 +434,245 @@ class Stage
 							add(waveSpriteFG);
 						 */
 					}
+				case 'jakartaFair':
+					{
+						//JOELwindows7:
+						/*
+						Jakarta fair, ayo ke Jakarta Fair
+						Ajang arena pameran dan hiburan
+
+						ayo kita pergi kesana, rekreasi sekaligus berbelanja
+						belanja terlengkap di Jakarta fair...
+
+						ayo kita, ke Jakarta fair. ayo kita ke Jakarta fair. Kemayoran!!!
+						*/
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'jakartaFair';
+						var bgActualOffset_x = -150;
+						var bgActualOffset_y = -100;
+						var bg:FlxSprite = new FlxSprite(bgActualOffset_x + -500, bgActualOffset_y + -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgBehindALL'));
+						bg.setGraphicSize(Std.int(bg.width * 1.2),Std.int(bg.height * 1.2));
+						bg.antialiasing = FlxG.save.data.antialiasing;
+						bg.scrollFactor.set(.9, .9);
+						bg.active = false;
+						add(bg, 'bg');
+
+						var stageFront:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgInsideBooth'));
+						stageFront.setGraphicSize(Std.int(stageFront.width * 1.2),Std.int(stageFront.height * 1.2));
+						stageFront.updateHitbox();
+						stageFront.antialiasing = FlxG.save.data.antialiasing;
+						stageFront.scrollFactor.set(1, 1);
+						stageFront.active = false;
+						add(stageFront, 'stageFront');
+
+						//Now for the colorable ceiling!
+						colorableGround = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'));
+						colorableGround.setGraphicSize(Std.int(colorableGround.width * 1.2),Std.int((colorableGround.height * 1.2)));
+						colorableGround.updateHitbox();
+						colorableGround.antialiasing = FlxG.save.data.antialiasing;
+						colorableGround.scrollFactor.set(1,1);
+						colorableGround.active = false;
+						colorableGround.color.setRGB(1,1,1,0);
+						add(colorableGround, 'colorableGround');
+						isChromaScreen = false; //the ceiling is RGB light!
+						originalColor = colorableGround.color; //store the default color!
+						colorableGround.visible = false; //Hide the RGB light first before begin!
+
+						//now back to final closest to the camera.
+						var stageCurtains:FlxSprite = new FlxSprite(-500,-100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgRearSpeakers'));
+						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2),Std.int(stageFront.height * 1.2));
+						stageCurtains.updateHitbox();
+						stageCurtains.antialiasing = FlxG.save.data.antialiasing;
+						stageCurtains.scrollFactor.set(1.5, 1.5);
+						stageCurtains.active = false;
+						add(stageCurtains, 'stageCurtains');
+					}
+				case 'qmoveph':
+					{
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'qmoveph';
+						var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('qmoveph/DefaultBackground'));
+						bg.setGraphicSize(Std.int(bg.width *1.1), Std.int(bg.height * 1.1));
+						bg.antialiasing = FlxG.save.data.antialiasing;
+						bg.scrollFactor.set(0.9, 0.9);
+						bg.active = false;
+						add(bg, 'bg');
+					}
+				case 'cruelThesis':
+					{
+						//JOELwindows7: LOL Van Elektronishe with Cruel Angel Thesis lol Evangelion
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'cruelThesis';
+						var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('VanElektronische/VanElektronische_corpThesis'));
+						bg.setGraphicSize(Std.int(bg.width *1.2), Std.int(bg.height * 1.2));
+						bg.antialiasing = FlxG.save.data.antialiasing;
+						bg.scrollFactor.set(0.9, 0.9);
+						bg.active = false;
+						add(bg, 'bg');
+					}
+				case 'lapanganParalax':
+					{
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'lapanganParalax';
+						var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Bekgron'));
+						bg.setGraphicSize(Std.int(bg.width * 1.2), Std.int(bg.height * 1.2));
+						bg.antialiasing = FlxG.save.data.antialiasing;
+						bg.scrollFactor.set(0.3, 0.3);
+						bg.active = false;
+						add(bg, 'bg');
+
+						var bg2:FlxSprite = new FlxSprite(-200, -150).loadGraphic(Paths.image('lapanganParalax/Betwaangron'));
+						bg2.setGraphicSize(Std.int(bg2.width * 1.2), Std.int(bg2.height * 1.2));
+						bg2.antialiasing = FlxG.save.data.antialiasing;
+						bg2.scrollFactor.set(0.5, 0.5);
+						bg2.active = false;
+						add(bg2, 'bg2');
+
+						var bg3:FlxSprite = new FlxSprite(-200, -50).loadGraphic(Paths.image('lapanganParalax/Betweengron'));
+						bg3.setGraphicSize(Std.int(bg3.width * 1.2), Std.int(bg3.height * 1.2));
+						bg3.antialiasing = FlxG.save.data.antialiasing;
+						bg3.scrollFactor.set(0.7, 0.7);
+						bg3.active = false;
+						add(bg3, 'bg3');
+
+						var stageFront:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Midgron'));
+						stageFront.setGraphicSize(Std.int(stageFront.width * 1.2), Std.int(stageFront.height * 1.2));
+						stageFront.updateHitbox();
+						stageFront.antialiasing = FlxG.save.data.antialiasing;
+						stageFront.scrollFactor.set(0.9, 0.9);
+						stageFront.active = false;
+						add(stageFront, 'stageFront');
+
+						var stageCurtains:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Forgron'));
+						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2), Std.int(stageCurtains.height * 1.2));
+						stageCurtains.updateHitbox();
+						stageCurtains.antialiasing = FlxG.save.data.antialiasing;
+						stageCurtains.scrollFactor.set(1.3, 1.3);
+						stageCurtains.active = false;
+						add(stageCurtains, 'stageCurtains');
+					}
+				case 'blank':
+					{
+						// defaultCamZoom = 0.5;
+						camZoom = 0.5;
+						curStage = 'blank';
+						// JOELwindows7: Just blank. nothing.
+						// chroma key color is #000000 . well, it's hard, yes, 
+						// so if you need chroma key, you should green screen instead.
+					}
+				case 'greenscreen':
+					{
+						// defaultCamZoom = 0.5;
+						camZoom = 0.5;
+						curStage = 'greenscreen';
+						//JOELwindows7: turns out you can generate graphic with Make Graphic! 
+						// it is even there on the FlxSprite construction wow!
+						// read function of `schoolIntro`. there's a variable called `red` which is the FlxSprite of full red.
+						// so, now you can chroma key full green!
+						// heh what the peck man? GREEN is #008000 (dim green)!?? but LIME is #00FF00 (full green)?!? really bro?!
+						// you confused me!!! the true green was supposed to be full green #00FF00 what the peck, Flixel?!
+						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
+						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+						colorableGround.updateHitbox();
+						colorableGround.antialiasing = FlxG.save.data.antialiasing;
+						colorableGround.scrollFactor.set(0.1,0.1);
+						colorableGround.active = false;
+						add(colorableGround, 'colorableGround');
+						originalColor = colorableGround.color; //store the original color first!
+						isChromaScreen = true; //The background is chroma screen
+					}
+				case 'bluechroma':
+					{
+						//JOELwindows7: same as greenscreen but blue. not to be confused with blue screen of death!
+						// defaultCamZoom = 0.5;
+						camZoom = 0.5;
+						curStage = 'bluechroma';
+						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.BLUE);
+						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+						colorableGround.updateHitbox();
+						colorableGround.antialiasing = FlxG.save.data.antialiasing;
+						colorableGround.scrollFactor.set(0.1,0.1);
+						colorableGround.active = false;
+						add(colorableGround, 'colorableGround');
+						originalColor = colorableGround.color; //store the original color first!
+						isChromaScreen = true; //The background is chroma screen
+					}
+				case 'semple':
+					{
+						//JOELwindows7: Stuart Semple is multidisciplinary Bristish artist! A painter, and more.
+						// He is famous for the pinkest color you've ever seen.
+						// https://culturehustle.com/products/pink-50g-powdered-paint-by-stuart-semple
+						// and peck Anish Kapoor.
+						// defaultCamZoom = 0.5;
+						camZoom = 0.5;
+						curStage = 'semple';
+						// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
+						// because no camera has the ability to capture way over Pink Semple had.
+						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.MAGENTA);
+						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+						colorableGround.updateHitbox();
+						colorableGround.antialiasing = FlxG.save.data.antialiasing;
+						colorableGround.scrollFactor.set(0.1,0.1);
+						colorableGround.active = false;
+						add(colorableGround, 'colorableGround');
+						originalColor = colorableGround.color; //store the original color first!
+						isChromaScreen = true; //The background is chroma screen
+					}
+				case 'whitening':
+					{
+						//JOELwindows7: This looks familiar. oh no.
+						//anyway. USE THIS SCREEN IF YOU WANT TO CHANGE COLOR with FULL RGB!
+						//BEST SCREEN FOR FULL RGB COLOR!!!
+						// defaultCamZoom = 0.5;
+						camZoom = 0.5;
+						curStage = 'whitening';
+						// JOELwindows7: guys, pls don't blamm me. it's nothing to do. let's assume it's purely coincidental.
+						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.WHITE);
+						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+						colorableGround.updateHitbox();
+						colorableGround.antialiasing = FlxG.save.data.antialiasing;
+						colorableGround.scrollFactor.set(0.1,0.1);
+						colorableGround.active = false;
+						add(colorableGround, 'colorableGround');
+						originalColor = colorableGround.color; //store the original color first!
+						isChromaScreen = true; //The background is chroma screen
+					}
+				case 'kuning':
+					{
+						//JOELwindows7: yellow this one out
+						// defaultCamZoom = 0.5;
+						camZoom = 0.5;
+						curStage = 'kuning';
+						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.YELLOW);
+						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+						colorableGround.updateHitbox();
+						colorableGround.antialiasing = FlxG.save.data.antialiasing;
+						colorableGround.scrollFactor.set(0.1,0.1);
+						colorableGround.active = false;
+						add(colorableGround, 'colorableGround');
+						originalColor = colorableGround.color; //store the original color first!
+						isChromaScreen = true; //The background is chroma screen
+					}
+				case 'blood':
+					{
+						//JOELwindows7: red screen
+						// defaultCamZoom = 0.5;
+						camZoom = 0.5;
+						curStage = 'blood';
+						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.RED);
+						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5),Std.int(colorableGround.height * 5));
+						colorableGround.updateHitbox();
+						colorableGround.antialiasing = FlxG.save.data.antialiasing;
+						colorableGround.scrollFactor.set(0.1,0.1);
+						colorableGround.active = false;
+						add(colorableGround, 'colorableGround');
+						originalColor = colorableGround.color; //store the original color first!
+						isChromaScreen = true; //The background is chroma screen
+					}
 				default:
 					{
 						camZoom = 0.9;
@@ -415,6 +693,27 @@ class Stage
 						swagBacks['stageFront'] = stageFront;
                         toAdd.push(stageFront);
 
+						//JOELwindows7: reinstall stage light and this time, I added bloom yay!
+						var stageLight:FlxSprite = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light'));
+						stageLight.setGraphicSize(Std.int(stageLight.width * 1), Std.int(stageLight.height * 1));
+						stageLight.updateHitbox();
+						stageLight.antialiasing = FlxG.save.data.antialiasing;
+						stageLight.scrollFactor.set(1.3,1.3);
+						stageLight.active = false;
+
+						//JOELwindows7: here's the bloom of that lighting
+						colorableGround = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light_bloom'));
+						colorableGround.setGraphicSize(Std.int(colorableGround.width * 2),Std.int(colorableGround.height * 2));
+						colorableGround.updateHitbox();
+						colorableGround.antialiasing = FlxG.save.data.antialiasing;
+						colorableGround.scrollFactor.set(1.3,1.3);
+						colorableGround.active = false;
+
+						//JOELwindows7: make sure order is correct
+						add(colorableGround, 'colorableGround');
+						add(stageLight, 'stageLight');
+						colorableGround.visible = false; //initially off for performer safety.
+
 						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
 						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
 						stageCurtains.updateHitbox();
@@ -427,4 +726,167 @@ class Stage
 					}
         }
     }
+
+	//JOELwindows7: init stagefile
+	public static var customStage:SwagStage;
+	var useStageScript:Bool = false; //JOELwindows7: flag to start try the stage Lua script
+	var attemptStageScript:Bool = false; //JOELwindows7: flag to start prepare stage script after all stuffs loaded
+
+	function loadStageFile(path:String){
+		customStage = StageChart.loadFromJson(path);
+		if(customStage != null){
+			useStageScript = customStage.useStageScript;
+			halloweenLevel = customStage.isHalloween;
+		}
+	}
+
+	function spawnStageImages(daData:SwagStage){
+
+		/*
+		if(bgAll != null){
+			for(i in 0...customStage.backgroundImages.length){
+				var dataBg:SwagBackground = customStage.backgroundImages[i];
+				var anBgThing:FlxSprite = new FlxSprite(dataBg.position[0],dataBg.position[1]);
+				multiColorable[i] = dataBg.colorable;
+				trace("spawning bg " + dataBg.callName);
+				if(dataBg.generateMode){
+					anBgThing.makeGraphic(Std.int(dataBg.size[0]),Std.int(dataBg.size[1]),FlxColor.fromString(dataBg.initColor));
+					multiIsChromaScreen[i] = true;
+				} else {
+					if(dataBg.isXML){
+						anBgThing.frames = Paths.getSparrowAtlas("stage/" + toCompatCase(SONG.stage) + "/" + dataBg.graphic);
+						anBgThing.animation.addByPrefix(dataBg.frameXMLName,dataBg.prefixXMLName,dataBg.frameRate,dataBg.mirrored);
+					} else {
+						anBgThing.loadGraphic(Paths.image("stages/" + toCompatCase(SONG.stage) + "/" + dataBg.graphic));
+					}
+					anBgThing.setGraphicSize(Std.int(anBgThing.width * dataBg.scale[0]),Std.int(anBgThing.height * dataBg.scale[1]));
+					if(dataBg.colorable){
+						anBgThing.color = FlxColor.fromString(dataBg.initColor);
+					}
+				}
+				//anBgThing.setPosition(dataBg.position[0],dataBg.position[1]);
+				anBgThing.active = dataBg.active;
+				anBgThing.antialiasing = dataBg.antialiasing && FlxG.save.data.antialiasing;
+				anBgThing.scrollFactor.set(dataBg.scrollFactor[0],dataBg.scrollFactor[1]);
+				anBgThing.ID = i;
+				anBgThing.updateHitbox();
+				multiOriginalColor[i] = anBgThing.color;
+
+				bgAll.add(anBgThing);
+				anBgThing.visible = dataBg.initVisible;
+
+				if(trailAll != null){
+					if(dataBg.hasTrail){
+						var trailing = new FlxTrail(anBgThing, null, 4, 24, 0.3, 0.069);
+						trailing.ID = i;
+						trailAll.add(trailing);
+					}
+				}
+			}
+		}
+		*/
+	}
+
+	//JOELwindows7: when stage is using Lua script
+	function spawnStageScript(daPath:String){
+		#if ((windows) && cpp)
+		if(executeStageScript){
+			trace('stage script: ' + executeStageScript + " - " + Paths.lua(daPath)); //JOELwindows7: check too
+
+			stageScript = ModchartState.createModchartState(true,daPath);
+			stageScript.executeState('loaded',[toCompatCase(SONG.song)]);
+			trace("loaded it up stage lua script");
+			stageScript.setVar("originalColors", multiOriginalColor);
+			stageScript.setVar("areChromaScreen", multiIsChromaScreen);
+		}
+		#end
+		if(executeStageHscript){
+			trace('stage Hscript: ' + executeStageHscript + " - " + Paths.hscript(daPath)); //JOELwindows7: check too
+
+			stageHscript = HaxeScriptState.createModchartState(true,daPath);
+			stageHscript.executeState('loaded',[toCompatCase(SONG.song)]);
+			trace("loaded it up stage haxe script");
+			stageHscript.setVar("originalColors", multiOriginalColor);
+			stageHscript.setVar("areChromaScreen", multiIsChromaScreen);
+		}
+
+		trace("Spawned the stage script yeay");
+	}
+
+	//JOELwindows7: core starting point for custom stage
+	function initDaCustomStage(stageJsonPath:String){
+		var p;
+		trace("Lets init da json stage " + stageJsonPath);
+		curStage = SONG.stage;
+		loadStageFile("stages/" + toCompatCase(SONG.stage) + "/" + toCompatCase(SONG.stage));
+
+		if(customStage != null)
+		{
+			defaultCamZoom = customStage.defaultCamZoom;
+			halloweenLevel = customStage.isHalloween;
+			bgAll = new FlxTypedGroup<FlxSprite>();
+			add(bgAll);
+			trailAll = new FlxTypedGroup<FlxTrail>();
+			add(trailAll);
+			#if ((windows) && sys)
+			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+				executeStageScript = FileSystem.exists(
+					Paths.lua("stage/" + toCompatCase(SONG.stage) +"/stageScript")) ||
+					customStage.forceLuaModchart
+					;
+			#elseif (windows)
+			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+			{
+				#if !web
+				p = Path.of(Paths.lua("stage/" + toCompatCase(SONG.stage) +"/stageScript"));
+				trace("Stage file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
+				executeStageScript = p.exists() || customStage.forceLuaModchart;
+				#else
+				executeStageScript = customStage.forceLuaModchart;
+				#end
+			}
+			#else
+				executeStageScript = false;
+			#end
+			#if !cpp
+				executeStageScript = false;
+			#end
+
+			//for hscript pls
+			#if !web
+			p = Path.of(Paths.hscript("stage/" + toCompatCase(SONG.stage) +"/stageScript"));
+			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+				executeStageHscript = p.exists() || customStage.forceHscriptModchart;
+			trace("Stage hscript file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
+			#else
+			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+				executeStageHscript = customStage.forceHscriptModchart;
+			#end
+			trace("forced stage Hscript exist is " + Std.string(customStage.forceHscriptModchart));
+
+			if(!customStage.ignoreMainImages)
+				spawnStageImages(customStage);
+			if(#if ((windows) && cpp) executeStageScript || #end executeStageHscript){
+				// spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+				attemptStageScript = true;
+			}
+
+			overrideCamFollowP1 = customStage.overrideCamFollowP1;
+			overrideCamFollowP2 = customStage.overrideCamFollowP2;
+		}
+	}
+
+	//JOELwindows7: offset characters
+	function repositionThingsInStage(whatStage:String){
+		trace("use Custom Stage Positioners");
+		if(customStage != null)
+		{
+			boyfriend.x += customStage.bfPosition[0];
+			boyfriend.y += customStage.bfPosition[1];
+			gf.x += customStage.gfPosition[0];
+			gf.y += customStage.gfPosition[1];
+			dad.x += customStage.dadPosition[0];
+			dad.y += customStage.dadPosition[1];
+		}
+	}
 }

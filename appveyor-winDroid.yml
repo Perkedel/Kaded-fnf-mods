@@ -80,7 +80,8 @@ install:
   - haxelib run lime rebuild extension-webm android
   # - haxelib install linc_luajit
   # - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
-  - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git
+  # - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git
+  - haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
   - haxelib install actuate 
   #- haxelib run lime rebuild extension-webm windows
   #why here's dublicate lmao
@@ -94,6 +95,7 @@ install:
   - haxelib install json2object #BulbyVR used this to convert JSON to object
   # - haxelib git haxevlc https://github.com/datee/HaxeVLC.git # for VLC.
   - haxelib install extension-webview #luckydog7 for Android
+  - haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
   - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
   - haxelib install haxe-files
   - haxelib install hxcpp-debug-server
