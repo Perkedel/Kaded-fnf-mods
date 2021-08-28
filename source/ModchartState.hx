@@ -442,8 +442,8 @@ class ModchartState
 
 		//JOELwindows7: mirror the variables here!
 		//Colored bg
-		setVar("originalColor", PlayState.instance.Stage.originalColor);
-		setVar("isChromaScreen", PlayState.instance.Stage.isChromaScreen);
+		setVar("originalColor", PlayState.Stage.originalColor);
+		setVar("isChromaScreen", PlayState.Stage.isChromaScreen);
 		//end mirror variables
 		
 		//init just in case
@@ -1082,7 +1082,7 @@ class ModchartState
 			scrollFactorX:Float = .5, scrollFactorY:Float = .5,
 			active:Bool = false, callNow:Bool = true, unique:Bool = false
 		){
-			PlayState.instance.Stage.prepareColorableBg(
+			PlayState.Stage.prepareColorableBg(
 				useImage,
 				positionX,positionY,
 				imagePath,animated,
@@ -1102,14 +1102,14 @@ class ModchartState
 		});
 
 		Lua_helper.add_callback(lua, "randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
-			PlayState.instance.Stage.randomizeColoring(justOne, toWhichBg);
+			PlayState.Stage.randomizeColoring(justOne, toWhichBg);
 			//ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
 			//and you, Haxe Language Server laggs on purpose
 			//hence I blinded & mistyped!!! C'MON!!!! REALLY??!?!
 		});
 
 		Lua_helper.add_callback(lua, "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0){
-			PlayState.instance.Stage.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
+			PlayState.Stage.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
 			//hmm, I am afraid using raw FlxColor data doing won't work.
 			//You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
 			//so, maybe you should use the.. string version?
@@ -1117,7 +1117,7 @@ class ModchartState
 		});
 
 		Lua_helper.add_callback(lua,"hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
-			PlayState.instance.Stage.hideColoring(justOne,toWhichBg);
+			PlayState.Stage.hideColoring(justOne,toWhichBg);
 			//hide the colorings
 		});
 
