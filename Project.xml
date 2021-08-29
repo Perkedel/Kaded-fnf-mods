@@ -167,6 +167,10 @@
 	<!-- JOELwindows7: for GrowtopiaFli Video Cutscener -->
 	<assets path="assets/videos" include="*.mp3" if="web"/>
 	<assets path="assets/videos" include="*.ogg" unless="web"/>
+
+	<!-- for VLC Cutscener BrightFyre yess -->
+	<assets path="plugins/" rename='' if="windows"/>
+	<assets path="dlls/" rename='' if="windows"/>
 	
 	<assets path="assets/sm"    library="sm"    exclude="*.ogg" if="web"/>
 	<assets path="assets/sm"    library="sm"    exclude="*.mp3" unless="web"/>
@@ -276,8 +280,8 @@
 	<!-- <haxelib name="extension-android-media"/> -->
 
 	<!-- JOELwindows7: Haxe Grig stuffs because I want MIDI -->
-	<haxelib name="grig.audio"/>
-	<haxelib name="grig.midi"/>
+	<!-- <haxelib name="grig.audio"/> -->
+	<!-- <haxelib name="grig.midi"/> -->
 	<!-- requires tink_core -->
 
 	<!-- JOELwindows7: how about SiON? It got MIDIplayer out of the box..-->

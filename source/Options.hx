@@ -1614,7 +1614,7 @@ class AnMIDITestOption extends Option{
 		{
 			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 			//FlxG.switchState(new LoadReplayState()); //or open new state.
-			FlxG.switchState(new AnMIDIyeay());
+			// FlxG.switchState(new AnMIDIyeay());
 			return false;
 		}
 	

@@ -60,7 +60,7 @@ class OptionsMenu extends MusicBeatState
 		new OptionCategory("Audio",[
 			new AdjustVolumeOption("Adjust Audio volume"),
 			new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
-			new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
+			// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
 		]),
 		
 		new OptionCategory("Misc", [

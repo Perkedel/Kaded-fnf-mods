@@ -2,8 +2,8 @@ package;
 
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.input.keyboard.FlxKey;
-import grig.midi.MidiOut;
-import grig.midi.MidiIn;
+// import grig.midi.MidiOut;
+// import grig.midi.MidiIn;
 import flixel.util.FlxTimer;
 #if !debug
 import com.player03.android6.Permissions;
@@ -46,8 +46,8 @@ class Main extends Sprite
 	public static var chosenMarkNum:Int = 0;
 	//JOELwindows7: Please no demonic reference about Mark of what the peck!
 
-	public static var midiIn:MidiIn; //JOELwindows7: Grig MIDI in
-	public static var midiOut:MidiOut; //JOELwindows7: Grig MIDI out
+	// public static var midiIn:MidiIn; //JOELwindows7: Grig MIDI in
+	// public static var midiOut:MidiOut; //JOELwindows7: Grig MIDI out
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -64,9 +64,9 @@ class Main extends Sprite
 		super();
 
 		//JOELwindows7: Grig midi pls
-		trace("MIDI out APIs:\n" + MidiOut.getApis());
-		midiIn = new MidiIn(grig.midi.Api.Unspecified);
-		midiOut = new MidiOut(grig.midi.Api.Unspecified);
+		// trace("MIDI out APIs:\n" + MidiOut.getApis());
+		// midiIn = new MidiIn(grig.midi.Api.Unspecified);
+		// midiOut = new MidiOut(grig.midi.Api.Unspecified);
 
 		//JOELwindows7: pecking ask permission on Android 6 and forth
 		#if (android && !debug)

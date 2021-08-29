@@ -431,6 +431,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://gamebanana.com/blogs/19216 BonkMayker's meme of Old web. Check this project's README.md to see in action. you can implement yourself too in comments and post anywhere that complies with the HTML syntaxes.
 - https://en.wikipedia.org/wiki/File:Flag_of_Indonesia.svg flag of Indonesia.
 - https://gamebanana.com/mods/30863 (`Pls Credit`) AetherLynx Noteskin pack. can use if you credit him/her. PECKING FINALLY asset we can use right ahead woohoo thancc cool and good awesome div by zero!!!
+- https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support BrightFyre friggin Haxe VLC. FlxSprite video MP4 support guys!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

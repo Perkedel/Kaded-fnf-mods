@@ -51,8 +51,8 @@ class DialogueBox extends FlxSpriteGroup
 	public function new(
 		talkingRight:Bool = true, 
 		?dialogueList:Array<String>, 
-		?isEpilogue:Bool = false,
 		?hadChat:Bool = false, 
+		?isEpilogue:Bool = false,
 		?customChar:Bool = false, 
 		?customCharXML:String = "jakartaFair/Hookx-dialogueAppear",
 		?customCharFrame:String = "enter",
@@ -97,6 +97,7 @@ class DialogueBox extends FlxSpriteGroup
 					FlxG.sound.list.add(sound);
 					sound.fadeIn(1, 0, 0.8);
 				default:
+					sound = new FlxSound();
 					// DialogueBox.ownIntroMusic = new FlxSound();
 					trace("No pre-dialog sound to play!");
 			}

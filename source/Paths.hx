@@ -208,7 +208,14 @@ class Paths
 		return getPath('videos/$key.webm', TEXT, library);
 	}
 	inline static public function videoSound(key:String, ?library:String)
-		{
-			return getPath('videos/$key.ogg', SOUND, library);
-		}
+	{
+		return getPath('videos/$key.ogg', SOUND, library);
+	}
+
+	//JOELwindows7: apparently BrightFyre's MP4 support video Cutscener
+	inline static public function videoVlc(key:String, ?library:String)
+	{
+		trace('assets/videos/$key.mp4');
+		return getPath('videos/$key.mp4', BINARY, library);
+	}
 }

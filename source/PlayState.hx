@@ -3042,6 +3042,12 @@ class PlayState extends MusicBeatState
 		//JOELwindows7: update heartbeat moments
 		updateHeartbeat();
 
+		if(curBeat > 8){
+			//JOELwindows7: invisiblize watermark after 8 curBeat
+			//to prevent view obstruction
+			reuploadWatermark.visible = false;
+		}
+
 		// scoreTxt.text = Ratings.CalculateRanking(
 		// 	songScore, 
 		// 	songScoreDef, 
@@ -4189,6 +4195,7 @@ class PlayState extends MusicBeatState
 	//JOELwindows7: check if the song should display epilogue chat once the song has finished.
 	function checkEpilogueChat():Void
 	{
+		trace("Check Epilogue " + Std.string(SONG.hasEpilogueChat) + "\n and isStoryMode " + Std.string(isStoryMode));
 		//fade and hide the touchscreen button
 		removeTouchScreenButtons();
 		//if song has epilogue chat then do this

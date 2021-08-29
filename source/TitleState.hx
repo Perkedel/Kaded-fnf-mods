@@ -31,7 +31,7 @@ import io.newgrounds.NG;
 #end
 import lime.app.Application;
 import openfl.Assets;
-import grig.midi.MidiOut;
+// import grig.midi.MidiOut;
 
 #if (desktop && cpp)
 import Discord.DiscordClient;
