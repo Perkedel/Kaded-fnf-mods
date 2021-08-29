@@ -366,7 +366,7 @@ class ModchartState
 
     // LUA SHIT
 
-    function new(rawMode:Bool = false, path:String = "", ? isStoryMode = true) //JOELwindows7: make lua stageont. ? isStoryMode is upstream pls push away!
+    function new(rawMode:Bool = false, pathu:String = "", ? isStoryMode = true) //JOELwindows7: make lua stageont. ? isStoryMode is upstream pls push away!
     {
 		trace('opening a lua state (because we are cool :))');
 		lua = LuaL.newstate();
@@ -390,6 +390,9 @@ class ModchartState
 		var path = Paths.lua(songLowercase + "/modchart");
 		if (PlayState.isSM)
 			path = PlayState.pathToSm + "/modchart.lua";
+
+		//JOELwindows7: okeh if you ask raw path there you have it.
+		if(rawMode) path = pathu;
 
 		var result = LuaL.dofile(lua, path); // execute le file
 

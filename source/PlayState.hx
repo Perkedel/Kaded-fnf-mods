@@ -280,7 +280,7 @@ class PlayState extends MusicBeatState
 	public var camSustains:FlxCamera;
 	public var camNotes:FlxCamera;
 
-	private var camGame:FlxCamera;
+	public var camGame:FlxCamera; //JOELwindows7: dude whyn't work anymore after 1.7
 	public var cannotDie = false;
 
 	public static var offsetTesting:Bool = false;

@@ -33,11 +33,10 @@ class VideoCutscener{
         return
         #if mobile
         new VideoSelfContained(source, toTrans, frameSkipLimit, autopause)
-        #if mac
-        new VideoState(Paths.video(source), toTrans, frameSkipLimit, autopause)
-        #else
-        // new VideoState(Paths.video(source), toTrans, frameSkipLimit, autopause)
+        #elseif (windows || web)
         new VLCState(Paths.video(source), toTrans, frameSkipLimit, autopause)
+        #else
+        new VideoState(Paths.video(source), toTrans, frameSkipLimit, autopause)
         #end
         ;
     }
@@ -149,7 +148,7 @@ class VLCState extends MusicBeatState{
         super.create();
         FlxG.autoPause = false;
 
-        //FlxG.sound.music.stop();
+        FlxG.sound.music.stop();
         peckingVolume = FlxG.sound.music.volume;
         // FlxG.sound.music.volume = 0;
         try {
@@ -160,9 +159,13 @@ class VLCState extends MusicBeatState{
                 });
                 // add(videoSprite);
             } else {
-                trace("Werror videoSprite null");
-                donedCallback();
+                trace("Werror VLC null, just peck this out");
+                new FlxTimer().start(0.1, function(tmr:FlxTimer){
+                    theVLC.playMP4(source,toTrans);
+                });
+                // donedCallback();
             }
+            
         } catch(e){
             trace("Werror faile video!\n\n" + Std.string(e));
             donedCallback();

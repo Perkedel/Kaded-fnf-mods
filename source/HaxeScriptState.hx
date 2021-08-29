@@ -237,10 +237,10 @@ class HaxeScriptState {
             }
 
         var patho = Paths.hscript(songLowercase + "/modchart");
-        #if sys
+        // #if sys
         if (PlayState.isSM)
             patho = PlayState.pathToSm + "/modchart.hscript";
-        #end
+        // #end
     
         script = Assets.getText(rawMode? Paths.hscript(path) :patho).trim();
         trace(script);
@@ -734,15 +734,19 @@ class HaxeScriptState {
 
         // tweens
         addCallback("tweenCameraPos", function(toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
+            //JOELwindows7: was using FlxG.camera directly.
+            // Now this no longer work let's go through the variable camGame instead.
+            FlxTween.tween(PlayState.instance.camGame, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenCameraAngle", function(toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
+            //JOELwindows7: this too
+            FlxTween.tween(PlayState.instance.camGame, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenCameraZoom", function(toZoom:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
+            //JOELwindows7: and another.
+            FlxTween.tween(PlayState.instance.camGame, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenHudPos", function(toX:Int, toY:Int, time:Float, onComplete:String) {
