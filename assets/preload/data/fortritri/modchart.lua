@@ -23,13 +23,17 @@ function keyPressed(key)
     -- basically to change player2 character in swift in game. that's all.
     -- maybe we can add vocal change too one day?
     if key == "down" then
-        changeDadCharacter('hookx')
+        -- changeDadCharacter('hookx')
+        dad:changeCharacter('hookx')
     elseif key == "up" then
-        changeDadCharacter('pico')
+        -- changeDadCharacter('pico')
+        dad:changeCharacter('pico')
     elseif key == "left" then
-        changeDadCharacter('dad')
+        -- changeDadCharacter('dad')
+        dad:changeCharacter('dad')
     elseif key == "right" then
-        changeDadCharacter('mom')
+        -- changeDadCharacter('mom')
+        dad:changeCharacter('mom')
     end
     
 end

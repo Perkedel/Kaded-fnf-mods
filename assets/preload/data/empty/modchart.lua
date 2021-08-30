@@ -10,6 +10,10 @@ function update(elapsed)
 
 end
 
+function songStart()
+
+end
+
 function beatHit(beat)
 
 end

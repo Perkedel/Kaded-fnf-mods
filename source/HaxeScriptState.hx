@@ -393,6 +393,7 @@ class HaxeScriptState {
         addCallback("start", function (song) {});
 		addCallback("beatHit", function (beat) {});
 		addCallback("update", function (elapsed) {});
+        addCallback("songStart", function (elapsed) {});
 		addCallback("stepHit", function(step) {});
 		addCallback("playerTwoTurn", function () {});
 		addCallback("playerTwoMiss", function (note, position, beatOf, stepOf) {});
@@ -500,8 +501,11 @@ class HaxeScriptState {
             return PlayState.instance.camHUD.y;
         });
         addCallback("setCamPosition", function (x:Int, y:Int) {
-            FlxG.camera.x = x;
-            FlxG.camera.y = y;
+            // JOELwindows7: pls werk again wtf man
+            // FlxG.camera.x = x;
+            // FlxG.camera.y = y;
+            PlayState.instance.camGame.x = x;
+            PlayState.instance.camGame.y = y;
         });
         addCallback("getCameraX", function () {
             return FlxG.camera.x;
@@ -510,7 +514,10 @@ class HaxeScriptState {
             return FlxG.camera.y;
         });
         addCallback("setCamZoom", function(zoomAmount:Float) {
-            FlxG.camera.zoom = zoomAmount;
+            //JOELwindows7: was go refer to FlxG.camera directly.
+            //C'mon it was working before 1.7 wtf man?!
+            // FlxG.camera.zoom = zoomAmount;
+            PlayState.instance.camGame.zoom = zoomAmount;
         });
         addCallback("setHudZoom", function(zoomAmount:Float) {
             PlayState.instance.camHUD.zoom = zoomAmount;
@@ -961,6 +968,7 @@ class HaxeScriptState {
         });
 
         addCallback( "randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
+            trace("wattempt script randomize color");
             PlayState.Stage.randomizeColoring(justOne, toWhichBg);
             //ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
             //and you, Haxe Language Server laggs on purpose
@@ -968,6 +976,7 @@ class HaxeScriptState {
         });
 
         addCallback( "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0){
+            trace("wattempt script choose color " + color);
             PlayState.Stage.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
             //hmm, I am afraid using raw FlxColor data doing won't work.
             //You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.

@@ -945,9 +945,9 @@ class Stage
 	{	
 		if(swagBacks['colorableGround'] != null){
 			// colorableGround.visible = true;
-			// colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
 			swagBacks['colorableGround'].visible = true;
 			swagBacks['colorableGround'].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
+			colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
 			trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
 		}
 		if(swagGroup['bgAll'] != null)
@@ -974,6 +974,7 @@ class Stage
 		if(swagBacks['colorableGround'] != null){
 			swagBacks['colorableGround'].visible = true;
 			swagBacks['colorableGround'].color = color;
+			colorableGround.color = color;
 			trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
 		}
 		if(swagGroup['bgAll'] != null)

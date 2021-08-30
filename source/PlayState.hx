@@ -1684,6 +1684,9 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
+		//JOELwindows7: feggin renew song length
+		renewSongLengths();
+
 		var silent:Bool = SONG.silentCountdown;
 		var invisible:Bool = SONG.invisibleCountdown;
 		var reversed:Bool = SONG.reversedCountdown;
@@ -2074,6 +2077,13 @@ class PlayState extends MusicBeatState
 
 		if (executeModchart)
 			luaModchart.executeState("songStart",[null]);
+		//JOELwindows7: here on the other side too song started
+		if (executeStageScript)
+			stageScript.executeState("songStart",[null]);
+		if (executeModHscript)
+			hscriptModchart.executeState('songStart',[null]);
+		if (executeStageHscript)
+			stageHscript.executeState('songStart',[null]);
 
 		#if (desktop && cpp)
 		// Updating Discord Rich Presence (with Time Left)
@@ -6457,6 +6467,22 @@ class PlayState extends MusicBeatState
 	function scronchModcharts(){
 		scronchLuaScript();
 		scronchHscript();
+	}
+
+	//JOELwindows7: feggin renew song length because something went wrong.
+	function renewSongLengths(){
+		if(executeModchart && luaModchart != null){
+			luaModchart.setVar('songLength',songLength);
+		}
+		if(executeStageScript && stageScript != null){
+			stageScript.setVar('songLength',songLength);
+		}
+		if(executeModHscript && hscriptModchart != null){
+			hscriptModchart.setVar('songLength',songLength);
+		}
+		if(executeStageHscript && stageHscript != null){
+			stageHscript.setVar('songLength',songLength);
+		}
 	}
 }
 //u looked :O -ides
