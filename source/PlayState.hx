@@ -1254,8 +1254,27 @@ class PlayState extends MusicBeatState
         {
          switch (SONG.player2)
            {
-             case 'gf':
-             healthBar.createFilledBar(0xFFFF0000, 0xFF0097C4);
+             case 'gf' | 'gf-covid' | 'strawberry-clock':
+             healthBar.createFilledBar(0xFFFF0000, 0xFF0097C4); //FULL red
+			 case 'hookx' | 'sky' | 'carol': //JOELwindows7: Protoglin Amexamlef. 
+			 //we had revealed from reserved folders.
+			 healthBar.createFilledBar(0xFF5000E6,0xFF0097C4); //Purple Manifesto
+			 case 'whitty':
+			 healthBar.createFilledBar(0xFFFF8000,0xFF0097C4); //glowing eye orange
+			 case 'updike':
+			 healthBar.createFilledBar(0xFFFFFFFF,0xFF0097C4); //Just white
+			 case 'sarvente' | 'sarvente-dark':
+			 healthBar.createFilledBar(0xFFFF80FF,0xFF0097C4); //Pink Sacred
+			 case 'sarvente-lucifer':
+			 healthBar.createFilledBar(0xFFFF0066,0xFF0097C4); //Semple Pink, Anish Kappor shoo!
+			 case 'selever':
+			 healthBar.createFilledBar(0xFFB3003B,0xFF0097C4); //Maroone Velvet
+			 case 'ruv':
+			 healthBar.createFilledBar(0xFF5C5C8A,0xFF0097C4); //Russian Blue
+			 case 'puella':
+			 healthBar.createFilledBar(0xFF9900cc,0xFF0097C4); //Hat purple
+			 case 'placeholder':
+			 healthBar.createFilledBar(0xFF0D0D0D,0xFF0097C4); //Gray
              case 'dad' | 'mom-car' | 'parents-christmas':
              healthBar.createFilledBar(0xFF5A07F5, 0xFF0097C4);
              case 'spooky':

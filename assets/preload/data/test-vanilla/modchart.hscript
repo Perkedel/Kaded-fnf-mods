@@ -20,6 +20,7 @@ function start(song)
 function songStart(){
     setCamZoom(0.2);
     tweenCameraZoom(0.9,20);
+    //oh wow this works?! okeh idk man.
 }
 
 function update(elapsed)
