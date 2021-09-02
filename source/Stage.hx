@@ -850,13 +850,13 @@ class Stage
 			// add(bgAll);
 			// trailAll = new FlxTypedGroup<FlxTrail>();
 			// add(trailAll);
-			#if ((windows) && sys)
+			#if ((cpp) && sys)
 			if (!PlayStateChangeables.Optimize && PlayState.SONG.useCustomStage && customStage.useStageScript)
 				executeStageScript = FileSystem.exists(
 					Paths.lua("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) +"/stageScript")) ||
 					customStage.forceLuaModchart
 					;
-			#elseif (windows)
+			#elseif (windows || linux)
 			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
 			{
 				#if !web
@@ -948,7 +948,7 @@ class Stage
 			swagBacks['colorableGround'].visible = true;
 			swagBacks['colorableGround'].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
 			colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0),FlxG.random.float(0.0,1.0));
-			trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
+			trace("now colorable color is " + colorableGround.color.toHexString());
 		}
 		if(swagGroup['bgAll'] != null)
 			if(justOne){

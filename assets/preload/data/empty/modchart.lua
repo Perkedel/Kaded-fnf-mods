@@ -2,23 +2,28 @@
 -- https://github.com/KadeDev/Kade-Engine/wiki
 -- templated by JOELwindows7, with yoinks from that documentation
 
-function start(song)
+-- this gets called starts when the level loads.
+function start(song) -- arguments, the song name
     print("Song: " .. song .. " @ " .. bpm .. " downscroll: " .. downscroll)
 end
 
-function update(elapsed)
+-- this gets called every frame
+function update(elapsed) -- arguments, how long it took to complete a frame
 
 end
+
 
 function songStart()
 
 end
 
-function beatHit(beat)
+-- this gets called every beat
+function beatHit(beat) -- arguments, the current beat of the song
 
 end
 
-function stepHit(step)
+-- this gets called every step
+function stepHit(step) -- arguments, the current step of the song (4 steps are in a beat)
 
 end
 
