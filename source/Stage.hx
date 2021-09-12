@@ -66,9 +66,12 @@ class Stage
 	public var manualCamFollowPosP1:Array<Float> = [0,0];
 	public var manualCamFollowPosP2:Array<Float> = [0,0];
 
-	public function add(object:Dynamic, mapName:String){
+	public function add(object:Dynamic, mapName:String, layFront:Bool = false, whichLayerFront:Int = 0){
 		swagBacks[mapName] = object;
-		toAdd.push(object);
+		if(layFront)
+			layInFront[whichLayerFront].push(object)
+		else
+			toAdd.push(object);
 	}
 
     public function new(daStage:String)
@@ -510,7 +513,7 @@ class Stage
 						stageCurtains.antialiasing = FlxG.save.data.antialiasing;
 						stageCurtains.scrollFactor.set(1.5, 1.5);
 						stageCurtains.active = false;
-						add(stageCurtains, 'stageCurtains');
+						add(stageCurtains, 'stageCurtains', true, 2);
 					}
 				case 'qmoveph':
 					{
@@ -577,7 +580,7 @@ class Stage
 						stageCurtains.antialiasing = FlxG.save.data.antialiasing;
 						stageCurtains.scrollFactor.set(1.3, 1.3);
 						stageCurtains.active = false;
-						add(stageCurtains, 'stageCurtains');
+						add(stageCurtains, 'stageCurtains', true, 2);
 					}
 				case 'blank':
 					{
@@ -795,7 +798,7 @@ class Stage
 			swagColors[dataBg.callName] = anBgThing.color;
 
 			// bgAll.add(anBgThing);
-			add(anBgThing, dataBg.callName);
+			add(anBgThing, dataBg.callName, dataBg.layInFrontNow, dataBg.inFrontOfWhich);
 			anBgThing.visible = dataBg.initVisible;
 
 			// if(trailAll != null){

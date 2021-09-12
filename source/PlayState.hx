@@ -1275,6 +1275,8 @@ class PlayState extends MusicBeatState
 			 healthBar.createFilledBar(0xFF9900cc,0xFF0097C4); //Hat purple
 			 case 'placeholder':
 			 healthBar.createFilledBar(0xFF0D0D0D,0xFF0097C4); //Gray
+			 case 'tankman' | 'gamewatch':
+			 healthBar.createFilledBar(0xFF000000,0xFF0097C4); //Activated Charcoal	
              case 'dad' | 'mom-car' | 'parents-christmas':
              healthBar.createFilledBar(0xFF5A07F5, 0xFF0097C4);
              case 'spooky':
@@ -1373,6 +1375,8 @@ class PlayState extends MusicBeatState
 		botPlayState.borderQuality = 2;
 		if (PlayStateChangeables.botPlay && !loadRep)
 			add(botPlayState);
+		//JOELwindows7: install Psyched blinking botplay Text
+		fadeOutBotplayText();
 
 		iconP1 = new HealthIcon(boyfriend.curCharacter, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
@@ -6501,6 +6505,22 @@ class PlayState extends MusicBeatState
 		}
 		if(executeStageHscript && stageHscript != null){
 			stageHscript.setVar('songLength',songLength);
+		}
+	}
+
+	//JOELwindows7: Psyched Botplay text fade in out
+	function fadeOutBotplayText(){
+		if(botPlayState != null){
+			FlxTween.tween(botPlayState, {alpha: 0}, 1, {ease: FlxEase.linear, onComplete: function(twn:FlxTween){
+				fadeInBotplayText();
+			}});
+		}
+	}
+	function fadeInBotplayText(){
+		if(botPlayState != null){
+			FlxTween.tween(botPlayState, {alpha: 1}, 1, {ease: FlxEase.linear, onComplete: function(twn:FlxTween){
+				fadeOutBotplayText();
+			}});
 		}
 	}
 }
