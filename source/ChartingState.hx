@@ -2853,8 +2853,8 @@ class ChartingState extends MusicBeatState
 				var daNoteInfo = i[1];
 				var daStrumTime = i[0];
 				var daSus = i[2];
-
-				var note:Note = new Note(daStrumTime, daNoteInfo % 4,null,false,true,i[3], i[4]);
+				var daType = i[5]; //JOELwindows7: da type yeahhhh
+				var note:Note = new Note(daStrumTime, daNoteInfo % 4,null,false,true,i[3], i[4], daType);
 				note.rawNoteData = daNoteInfo;
 				note.sustainLength = daSus;
 				note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -3192,11 +3192,17 @@ class ChartingState extends MusicBeatState
 		var noteStrum = strum;
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
+		var noteType = 0; //JOELwindows7: press hold? alt + add note (1 2 3 4 or click collumn to add) to add mine.
+		if (FlxG.keys.pressed.ONE)
+			noteType = 1;
+		if (FlxG.keys.pressed.ALT)
+			noteType = 2;
 
+		//JOELwindows7: push noteType too
 		if (n != null)
-			section.sectionNotes.push([n.strumTime, n.noteData, n.sustainLength, false, TimingStruct.getBeatFromTime(n.strumTime)]);
+			section.sectionNotes.push([n.strumTime, n.noteData, n.sustainLength, false, TimingStruct.getBeatFromTime(n.strumTime), n.noteType]);
 		else
-			section.sectionNotes.push([noteStrum, noteData, noteSus, false, TimingStruct.getBeatFromTime(noteStrum)]);
+			section.sectionNotes.push([noteStrum, noteData, noteSus, false, TimingStruct.getBeatFromTime(noteStrum), noteType]);
 
 		var thingy = section.sectionNotes[section.sectionNotes.length - 1];
 

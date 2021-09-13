@@ -13,6 +13,13 @@ import PlayState;
 
 using StringTools;
 
+//JOELwindows7: Applied mod based on
+/*
+- https://youtu.be/iiQfjYcpJfQ
+- https://gamebanana.com/questions/17887
+*/
+//Yes, noteTypes like mine or so.
+
 class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
@@ -34,6 +41,7 @@ class Note extends FlxSprite
 	public var isSustainNote:Bool = false;
 	public var originColor:Int = 0; // The sustain note's original note's color
 	public var noteSection:Int = 0;
+	public var noteType:Int = 0; //JOELwindows7: type of note.
 
 	public var luaID:Int = 0;
 
@@ -70,7 +78,7 @@ class Note extends FlxSprite
 
 	public var children:Array<Note> = [];
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0, ?noteType:Int = 0) //JOELwindows7: edge long noteType
 	{
 		super();
 
@@ -80,7 +88,7 @@ class Note extends FlxSprite
 		beat = bet;
 
 		this.isAlt = isAlt;
-
+		this.noteType = noteType; //JOELwindows7: oh yeah noteType
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
@@ -124,7 +132,21 @@ class Note extends FlxSprite
 
 		if (inCharter)
 		{
-			frames = Paths.getSparrowAtlas('NOTE_assets');
+			//JOELwindows7: sussy frames for special noteType
+			var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+			for(amogus in fuckingSussy.frames)
+			{
+				this.frames.pushFrame(amogus);
+			}
+
+			// frames = Paths.getSparrowAtlas('NOTE_assets');
+			//JOELwindows7: noteType speziale
+			switch(noteType){
+				case 2:
+					frames = Paths.getSparrowAtlas('NOTE_assets_special');
+				default:
+					frames = Paths.getSparrowAtlas('NOTE_assets');
+			}
 
 			for (i in 0...4)
 			{
@@ -179,16 +201,44 @@ class Note extends FlxSprite
 
 							for (i in 0...4)
 							{
-								animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
+								//JOELwindows7: hacky special notetypes like mines
+								var chooseNormalNoteSet = 4;
+								switch(noteType){
+									case 2:
+										chooseNormalNoteSet = 20;
+									default:
+										chooseNormalNoteSet = 4;
+								}
+								// animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
+								animation.add(dataColor[i] + 'Scroll', [i + chooseNormalNoteSet]); // Normal notes / Mines notes
 								animation.add(dataColor[i] + 'hold', [i]); // Holds
 								animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
+
+								//JOELwindows7: special ones
+								// animation.add(dataColor[i] + 'Scroll', [i + 20]); // Mines (NoteType 2)
+								// animation.add(dataColor[i] + 'hold', [i]); // Mine Holds
+								// animation.add(dataColor[i] + 'holdend', [i + 20]); // Mine Tails
 							}
 
 							setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 							updateHitbox();
 						case 'saubo':
+							//JOELwindows7: sussy frames for special noteType
+							var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+							for(amogus in fuckingSussy.frames)
+							{
+								this.frames.pushFrame(amogus);
+							}
+
 							//JOELwindows7: LFM original noteskin
-							frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+							// frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+							//JOELwindows7: noteType speziale
+							switch(noteType){
+								case 2:
+									frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+								default:
+									frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+							}
 			
 							// animation.addByPrefix('greenScroll', 'green0');
 							// animation.addByPrefix('redScroll', 'red0');
@@ -216,7 +266,21 @@ class Note extends FlxSprite
 							updateHitbox();
 							antialiasing = FlxG.save.data.antialiasing;
 						default:
-							frames = Paths.getSparrowAtlas('NOTE_assets');
+							//JOELwindows7: sussy frames for special noteType
+							var fuckingSussy = Paths.getSparrowAtlas('NOTE_assets_special');
+							for(amogus in fuckingSussy.frames)
+							{
+								this.frames.pushFrame(amogus);
+							}
+
+							// frames = Paths.getSparrowAtlas('NOTE_assets');
+							//JOELwindows7: noteType speziale
+							switch(noteType){
+								case 2:
+									frames = Paths.getSparrowAtlas('NOTE_assets_special');
+								default:
+									frames = Paths.getSparrowAtlas('NOTE_assets');
+							}
 
 							for (i in 0...4)
 							{

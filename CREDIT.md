@@ -319,6 +319,8 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://www.w3schools.com/colors/colors_picker.asp color picker
 - https://gamebanana.com/questions/16557 can I use copyrighted music? opinions says yes though it's not safe for YouTube.
 - https://gamebanana.com/tuts/14218 HOW TO ADD CHARACTER SELECTION MENU tuts TorchTheDragon
+- https://gamebanana.com/questions/17887 Note mine how do i add this
+- https://www.youtube.com/watch?v=iiQfjYcpJfQ use this video man
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -435,6 +437,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/ShadowMario/FNF-PsychEngine/ https://gamebanana.com/mods/309789 Shadow Mario. Psyched inspirations such as blinking botplay text & stuff. bbpanzu had used this and the showcase shows it that.
 - pls insert TheFatRat - Mayday credit
 - pls insert Sub Urban - Cradles (NCS Release)
+- https://www.youtube.com/watch?v=iiQfjYcpJfQ . add mine note type
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
