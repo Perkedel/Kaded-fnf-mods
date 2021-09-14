@@ -133,11 +133,11 @@ class Note extends FlxSprite
 		if (inCharter)
 		{
 			//JOELwindows7: sussy frames for special noteType
-			var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
-			for(amogus in fuckingSussy.frames)
-			{
-				this.frames.pushFrame(amogus);
-			}
+			// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+			// for(amogus in fuckingSussy.frames)
+			// {
+			// 	this.frames.pushFrame(amogus);
+			// }
 
 			// frames = Paths.getSparrowAtlas('NOTE_assets');
 			//JOELwindows7: noteType speziale
@@ -224,11 +224,11 @@ class Note extends FlxSprite
 							updateHitbox();
 						case 'saubo':
 							//JOELwindows7: sussy frames for special noteType
-							var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
-							for(amogus in fuckingSussy.frames)
-							{
-								this.frames.pushFrame(amogus);
-							}
+							// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+							// for(amogus in fuckingSussy.frames)
+							// {
+							// 	this.frames.pushFrame(amogus);
+							// }
 
 							//JOELwindows7: LFM original noteskin
 							// frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
@@ -267,11 +267,11 @@ class Note extends FlxSprite
 							antialiasing = FlxG.save.data.antialiasing;
 						default:
 							//JOELwindows7: sussy frames for special noteType
-							var fuckingSussy = Paths.getSparrowAtlas('NOTE_assets_special');
-							for(amogus in fuckingSussy.frames)
-							{
-								this.frames.pushFrame(amogus);
-							}
+							// var fuckingSussy = Paths.getSparrowAtlas('NOTE_assets_special');
+							// for(amogus in fuckingSussy.frames)
+							// {
+							// 	this.frames.pushFrame(amogus);
+							// }
 
 							// frames = Paths.getSparrowAtlas('NOTE_assets');
 							//JOELwindows7: noteType speziale
