@@ -73,6 +73,10 @@ install:
   - haxelib install tink_core
   - haxelib install grig.audio
   - haxelib install grig.midi
+  # JOELwindows7: the GameJolt API
+  - haxelib git tentools https://github.com/TentaRJ/tentools.git
+  - haxelib git systools https://github.com/haya3218/systools
+  - haxelib run lime rebuild systools windows
   - haxelib list
 
 # No tests idk lol

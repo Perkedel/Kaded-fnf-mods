@@ -4,3 +4,5 @@ assets/preload/data/milf/modchart.lua
 node_modules/
 package-lock.json
 package.json
+# GameJolt API Key may not be shared
+source/GJKeys.hx

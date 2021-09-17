@@ -290,6 +290,11 @@
 	<!-- JOELwindows7: the Tinkerbell stuffs and for the depend on it -->
 	<haxelib name="tink_core"/>
 
+	<!-- JOELwindows7: TentaRJ's GameJolt tools -->
+	<haxelib name="tentools" />
+	<haxelib name="systools" unless = "mobile"/>
+	<ndll name="systools" haxelib="systools" />
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->

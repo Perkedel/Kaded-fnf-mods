@@ -31,6 +31,7 @@ import io.newgrounds.NG;
 #end
 import lime.app.Application;
 import openfl.Assets;
+import GameJolt.GameJoltAPI;
 // import grig.midi.MidiOut;
 
 #if (desktop && cpp)
@@ -64,6 +65,8 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		
+
 		//JOELwindows7: luckydog7 added this, maybe to prevent absolute quit by back button.
 		// https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx
 		// https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088
@@ -105,7 +108,9 @@ class TitleState extends MusicBeatState
 		
 		#end
 
-
+		// JOELwindows7: TentaRJ GameJolter
+		GameJoltAPI.connect();
+		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
 				
 		Highscore.load();
 
@@ -344,7 +349,7 @@ class TitleState extends MusicBeatState
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
 			#end
-			AchievementUnlocked.whichIs("funkin_started");
+			AchievementUnlocked.whichIs("anFunkin");
 			if (Date.now().getDay() == 5)
 				AchievementUnlocked.whichIs("just_like_the_game");
 

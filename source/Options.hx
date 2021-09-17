@@ -1,5 +1,6 @@
 package;
 
+import GameJolt;
 import experiments.AnMIDIyeay;
 import experiments.AnWebmer;
 import experiments.LimeAudioBufferTester;
@@ -1703,6 +1704,7 @@ class OutOfSegsWarningOption extends Option{
 	}
 }
 
+//JOELwindows7: Print chart contents option while play
 class PrintSongChartContentOption extends Option{
 	public function new(desc:String)
 	{
@@ -1720,6 +1722,25 @@ class PrintSongChartContentOption extends Option{
 	private override function updateDisplay():String
 	{		
 		return "Song Chart Content " + (FlxG.save.data.traceSongChart ? "Printed" : "SSSSHHHH");
+	}
+}
+
+//JOELwindows7: GameJolt login TentaRJ
+class LogGameJoltIn extends Option{
+	public function new(desc:String){
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.switchState(new GameJoltLogin());
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return GameJoltAPI.getStatus() ? "GJ " + GameJoltAPI.getUserInfo(true) : "GameJolt Login";
 	}
 }
 

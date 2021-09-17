@@ -23,6 +23,17 @@ If your antivirus went **sus**, they're dumb! None of these file are impostor, t
 I mean, if the antivirus thought that file is `malicious`, it's false positive. Ignore that, it's safe.  
 if you don't trust it, check around the source code and its libraries referred.
 
+## Using API
+- GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (Private, do not share). Here's the code:
+```haxe
+package;
+class GJKeys
+{
+    public static var id:Int = 	0; // Put your game's ID here
+    public static var key:String = ""; // Put your game's private API key here
+}
+```
+
 ## Status
 - Linux [![Build status Linux](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)  
 - Linux ~~32 Bit~~Raspberry Pi [![Build status](https://ci.appveyor.com/api/projects/status/ou9xo42n9cwce9bt?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux32)
