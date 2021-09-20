@@ -3,6 +3,7 @@ package;
 /// Code created by Rozebud for FPS Plus (thanks rozebud)
 // modified by KadeDev for use in Kade Engine/Tricky
 
+import GalleryAchievements;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.util.FlxAxes;
 import flixel.FlxSubState;
@@ -111,6 +112,9 @@ class KeyBindMenu extends FlxSubState
         textUpdate();
 
 		super.create();
+
+        //JOELwindows7: stuffs
+        AchievementUnlocked.whichIs("key_map");
 	}
 
     var frames = 0;

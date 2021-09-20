@@ -1,5 +1,6 @@
 package;
 
+import GalleryAchievements;
 import GameJolt;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.tweens.FlxEase;
@@ -169,7 +170,8 @@ class OptionsMenu extends MusicBeatState
 
 		super.create();
 
-		
+		//JOELwindows7: stuffs
+		AchievementUnlocked.whichIs("anOption");
 	}
 
 	var isCat:Bool = false;

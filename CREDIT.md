@@ -437,7 +437,8 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://github.com/ShadowMario/FNF-PsychEngine/ https://gamebanana.com/mods/309789 Shadow Mario. Psyched inspirations such as blinking botplay text & stuff. bbpanzu had used this and the showcase shows it that.
 - pls insert TheFatRat - Mayday credit
 - pls insert Sub Urban - Cradles (NCS Release)
-- https://www.youtube.com/watch?v=iiQfjYcpJfQ . add mine note type
+- https://www.youtube.com/watch?v=iiQfjYcpJfQ https://pastebin.com/eLy6Mxte . add mine note type
+- https://github.com/TentaRJ/GameJolt-FNF-Integration https://github.com/TentaRJ/tentools TentaRJ. Stuffs like GameJolt Achievements and perhaps other things later.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

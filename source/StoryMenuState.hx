@@ -1,5 +1,6 @@
 package;
 
+import GalleryAchievements;
 import flixel.tweens.FlxEase;
 import MusicBeatState.SwagWeeks;
 import lime.utils.Assets;
@@ -291,6 +292,9 @@ class StoryMenuState extends MusicBeatState
 		addBackButton(10,Std.int((FlxG.height/2)+40),.25);
 
 		super.create();
+
+		//JOELwindows7: stuffs
+		AchievementUnlocked.whichIs("story_mode");
 	}
 
 	override function update(elapsed:Float)

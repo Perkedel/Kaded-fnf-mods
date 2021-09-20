@@ -1,5 +1,6 @@
 package;
 
+import GalleryAchievements;
 import flixel.ui.FlxSpriteButton;
 import flixel.ui.FlxButton;
 import flixel.addons.display.FlxExtendedSprite;
@@ -243,6 +244,7 @@ class MainMenuState extends MusicBeatState
 				{
 					FlxG.sound.play(Paths.sound('confirmMenu')); // JOELwindows7: hey, pls don't forget the confirm sound for Kickstarter go to one also!
 					fancyOpenURL("https://ninja-muffin24.itch.io/funkin");
+					AchievementUnlocked.whichIs("acknowledgement");
 				}
 				else
 				{

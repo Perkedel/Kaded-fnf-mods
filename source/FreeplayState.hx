@@ -1,5 +1,6 @@
 package;
 
+import GalleryAchievements;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import lime.app.Application;
@@ -300,10 +301,12 @@ class FreeplayState extends MusicBeatState
 
 		super.create();
 
-		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7 also tween back button!
-		FlxTween.tween(leftButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7 also tween left button!
-		FlxTween.tween(rightButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7 also tween right button!
+		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left button!
+		FlxTween.tween(rightButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween right button!
 
+		//JOELwindows7: stuff
+		AchievementUnlocked.whichIs("freeplay_mode");
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String)

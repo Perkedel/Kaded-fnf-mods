@@ -1,5 +1,6 @@
 package;
 
+import GalleryAchievements;
 import GameJolt;
 import experiments.AnMIDIyeay;
 import experiments.AnWebmer;
@@ -1494,6 +1495,9 @@ class AdjustVolumeOption extends Option{
 
 	private override function updateDisplay():String
 	{
+		// achievements for it
+		AchievementUnlocked.whichIs("no_more_accident_volkeys");
+
 		// https://github.com/ninjamuffin99/SHOOM/blob/master/source/PlayState.hx
 		// lmao shoooooooooooooooooooooooooooooooooooooooooooooooooom
 		var shoomSays:String="SH";
@@ -1504,6 +1508,7 @@ class AdjustVolumeOption extends Option{
 		}
 		shoomSays += 'M';
 		if(remains < 0) remains = 0;
+		if(remains <= 0) AchievementUnlocked.whichIs("anBeethoven");
 		for(i in 0...(remains)){
 			shoomSays += 'U';
 		}

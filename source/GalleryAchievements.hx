@@ -56,6 +56,51 @@ class HardCodeAchievements{
                 gameJolt : 148268
             }
         },
+        "story_mode" => {
+            nameID : "story_mode",
+            displayName: "The Funkin Story",
+            howToUnlock : "open Story Mode menu",
+            isSecret: false,
+            externalAchievmentIDs : {
+                gameJolt : 148275
+            }
+        },
+        "freeplay_mode" => {
+            nameID : "freeplay_mode",
+            displayName: "lemme be wild",
+            howToUnlock : "open Freeplay menu",
+            isSecret: false,
+            externalAchievmentIDs : {
+                gameJolt : 148274
+            }
+        },
+        "acknowledgement" => {
+            nameID : "acknowledgement",
+            displayName: "acknowledge the devs",
+            howToUnlock : "open Donate / Credit menu",
+            isSecret: false,
+            externalAchievmentIDs : {
+                gameJolt : 148276
+            }
+        },
+        "key_map" => {
+            nameID : "key_map",
+            displayName: "I must adjust the keys first",
+            howToUnlock : "open Key mapping configurator",
+            isSecret: false,
+            externalAchievmentIDs : {
+                gameJolt : 148278
+            }
+        },
+        "no_week_7" => {
+            nameID : "no_week_7",
+            displayName: "No Week 7 huh?",
+            howToUnlock : "Completed week 6",
+            isSecret: false,
+            externalAchievmentIDs : {
+                gameJolt : 148271
+            }
+        },
         "just_like_the_game" => {
             nameID : "just_like_the_game",
             displayName: "Just like the game",
@@ -81,6 +126,33 @@ class HardCodeAchievements{
             isSecret: false,
             externalAchievmentIDs : {
                 gameJolt : 148271
+            }
+        },
+        "no_more_accident_volkeys" =>{
+            nameID : "no_more_accident_volkeys",
+            displayName: "No more accident Volume keys",
+            howToUnlock : "Adjust Volume",
+            isSecret: false,
+            externalAchievmentIDs : {
+                gameJolt : 148277
+            }
+        },
+        "anBeethoven" =>{
+            nameID : "anBeethoven",
+            displayName: "Beethoven",
+            howToUnlock : "make volume 0 or mute",
+            isSecret: false,
+            externalAchievmentIDs : {
+                gameJolt : 148272
+            }
+        },
+        "anOption" =>{
+            nameID : "anOption",
+            displayName: "Option Menu guys",
+            howToUnlock : "open Option menu",
+            isSecret: false,
+            externalAchievmentIDs : {
+                gameJolt : 148273
             }
         }
     ];

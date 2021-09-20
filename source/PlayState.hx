@@ -1,5 +1,6 @@
 package;
 
+import GalleryAchievements.AchievementUnlocked;
 import Controls;
 import TouchScreenControls;
 import LuaClass.LuaCamera;
@@ -4447,6 +4448,8 @@ class PlayState extends MusicBeatState
 						#if newgrounds
 						NGio.unlockMedal(60961);
 						#end
+						// AchievementUnlocked.whichIs("anSpook"); //JOELwindows7: achievement unlocked beat week
+						checkWeekComplete();
 						Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 					}
 
@@ -4536,6 +4539,9 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
+
+		//JOELwindows7: stuffening
+		touchedSongComplete();
 	}
 
 	var endingSong:Bool = false;
@@ -6560,6 +6566,32 @@ class PlayState extends MusicBeatState
 			FlxTween.tween(botPlayState, {alpha: 1}, 1, {ease: FlxEase.linear, onComplete: function(twn:FlxTween){
 				fadeOutBotplayText();
 			}});
+		}
+	}
+
+	//JOELwindows7: Check week Completition
+	function checkWeekComplete(){
+		// var weekRightNowIs:Int = storyWeek;
+		trace("Week Complete No. " + Std.string(storyWeek));
+
+		switch(storyWeek){
+			case 0:
+				trace("tutorial completa");
+			case 1:
+				AchievementUnlocked.whichIs("anSpook");
+			case 6:
+				AchievementUnlocked.whichIs("tankman_in_embargo");
+			default:
+				trace("week completa");
+		}
+	}
+
+	//JOELwindows7: check song has completed (including Botplay)
+	function touchedSongComplete(){
+		trace("Song Complete " + curSong);
+		switch(curSong){
+			default:
+				trace("an song complete");
 		}
 	}
 }
