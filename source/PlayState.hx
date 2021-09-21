@@ -3527,6 +3527,16 @@ class PlayState extends MusicBeatState
 								}
 							} else triggeredAlready = false;
 						}
+						case 'getting-freaky':
+						{
+							//JOELwindows7: temporary degradation fix.
+							//the modcharted doesn't work somehow idfk why
+							
+						}
+						default:
+						{
+
+						}
 					}
 				}
 			}
@@ -5938,6 +5948,34 @@ class PlayState extends MusicBeatState
 				boyfriend.playAnim('hey', true);
 			}
 
+			//JOELwindows7: temporary degradation fix
+			if(curSong == 'getting-freaky')
+			{
+				if(
+					curBeat == 7 || 
+					curBeat == 23 || 
+					curBeat == 39 || 
+					curBeat == 55 || 
+					curBeat == 71 || 
+					curBeat == 87 ||
+					curBeat == 103 || 
+					curBeat == 119 ||
+					curBeat == 135 ||
+					curBeat == 151 ||
+					curBeat == 167 ||
+					curBeat == 183
+					){
+						// if(!triggeredAlready){
+						// 	trace("ayy!");
+						// 	justCheer(true);
+						// 	justHey(true);
+						// 	triggeredAlready = true;
+						// }
+						justCheer(true);
+						justHey(true);
+				} /*else triggeredAlready = false;*/
+			}
+
 			//JOELwindows7: found pay attention to this if player 2 is gf.
 			if (curBeat % 16 == 15 && SONG.song == 'Tutorial' && (dad.curCharacter == 'gf' || dad.curCharacter == 'gf-ht') && curBeat > 16 && curBeat < 48)
 			{
@@ -6190,11 +6228,20 @@ class PlayState extends MusicBeatState
 	
 		//JOELwindows7: just cheer & hey
 		public function justCheer(forceIt:Bool = false){
+			trace("Cheer");
 			gf.playAnim('cheer', forceIt);
+			gf.playAnim('cheer', forceIt);
+			gf.playAnim('cheer', forceIt);
+			trace("did this even Cheer?");
 		}
 	
 		public function justHey(forceIt:Bool = false){
+			trace("Hey");
 			boyfriend.playAnim('hey', forceIt);
+			boyfriend.playAnim('hey', forceIt);
+			boyfriend.playAnim('hey', forceIt);
+			//JOELwindows7: pecking force 3 times because it always been overwritten by dance
+			trace("did this even Hey?");
 		}
 	
 		

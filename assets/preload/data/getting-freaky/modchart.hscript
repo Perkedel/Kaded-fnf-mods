@@ -39,6 +39,7 @@ function update(elapsed)
     */
 
     //This one works so well!
+    /*
     if(
         curBeat == 7 || 
         curBeat == 23 || 
@@ -60,11 +61,36 @@ function update(elapsed)
                 triggeredAlready = true;
             }
     } else triggeredAlready = false;
+    */
 }
 
 function beatHit(beat)
 {
-    
+    //nope! they only work here now. let's see
+    if(
+        beat == 7 || 
+        beat == 23 || 
+        beat == 39 || 
+        beat == 55 || 
+        beat == 71 || 
+        beat == 87 ||
+        beat == 103 || 
+        beat == 119 ||
+        beat == 135 ||
+        beat == 151 ||
+        beat == 167 ||
+        beat == 183
+        ){
+            if(!triggeredAlready){
+                trace("ayy!");
+                justCheer(true);
+                justHey(true);
+                triggeredAlready = true;
+            }
+            // why the peck workn't?!
+            playActorAnimation('boyfriend','hey',true);
+            playActorAnimation('girlfriend','cheer',true);
+    } else triggeredAlready = false;
 }
 
 function stepHit(step)

@@ -1,5 +1,6 @@
 package;
 
+import MusicBeatState;
 import GalleryAchievements;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -60,6 +61,12 @@ class FreeplayState extends MusicBeatState
 
 	public static var songData:Map<String,Array<SwagSong>> = [];
 
+	//JOELwindows7: globalize bg variable to be refered for color change
+	var bg:FlxSprite;
+
+	//JOELwindows7: week data here
+	var weekInfo:SwagWeeks;
+
 	public static function loadDiff(diff:Int, format:String, name:String, array:Array<SwagSong>)
 	{
 		try 
@@ -72,11 +79,29 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+	public static function loadWeekDatas(weekDatas:SwagWeeks):SwagWeeks
+	{
+		try
+		{
+			weekDatas = StoryMenuState.loadFromJson('weekList');
+			return weekDatas;
+		}
+		catch(ex)
+		{
+			//werror
+			FlxG.log.error("wError " + ex + "\n unable to load weeklist");
+			return null;
+		}
+	}
+
 	override function create()
 	{
 		//JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+
+		//JOELwindows7: pls install weekData
+		weekInfo = FreeplayState.loadWeekDatas(weekInfo);
 
 		//var diffList = "";
 
@@ -208,7 +233,8 @@ class FreeplayState extends MusicBeatState
 
 		// LOAD CHARACTERS
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		// var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat')); //JOELwindows7: here global
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
@@ -731,6 +757,9 @@ class FreeplayState extends MusicBeatState
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+
+		//JOELwindows7: now change bg color based on what week did this on
+		changeColorByWeekOf(curSelected);
 	}
 
 	//JOELwindows7: copy from above but this time it set selection number
@@ -783,6 +812,28 @@ class FreeplayState extends MusicBeatState
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+
+		//JOELwindows7: now change bg color based on what week did this on
+		changeColorByWeekOf(curSelected);
+	}
+
+	function changeColorByWeekOf(which:Int = 0){
+		if(bg != null)
+			if(which <= -1) bg.color = FlxColor.fromString("purple")
+			else
+				{
+					try
+					{
+						bg.color = FlxColor.fromString(weekInfo.weekColor[songs[which].week]);
+					}
+					catch(e)
+					{
+						trace("error Week color selection no. " + Std.string(curSelected) + ". " + e);
+						trace("Week datas " + Std.string(weekInfo));
+						FlxG.log.warn(e);
+						bg.color = FlxColor.fromString("purple");
+					}
+				}
 	}
 }
 
