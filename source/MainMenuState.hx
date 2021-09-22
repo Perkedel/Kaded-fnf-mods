@@ -51,7 +51,7 @@ class MainMenuState extends MusicBeatState
 
 	public static var kadeEngineVer:String = "1.7" + nightly;
 	public static var gameVer:String = "0.2.7.1";
-	public static var lastFunkinMomentVer:String = "2021.08.162" + larutMalam; //JOELwindows7: last funkin moments version
+	public static var lastFunkinMomentVer:String = "2021.09.170" + larutMalam; //JOELwindows7: last funkin moments version
 	public static var yourModVer:String = "0.0.0.0"; //JOELwindows7: your own mod version
 
 	var magenta:FlxSprite;

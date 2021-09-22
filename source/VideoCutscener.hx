@@ -198,6 +198,7 @@ class VLCState extends MusicBeatState{
     }
 
     function donedCallback(){
+        FlxG.autoPause = true;
         FlxG.sound.music.volume = peckingVolume;
         FlxG.switchState(toTrans);
     }

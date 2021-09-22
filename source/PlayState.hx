@@ -5973,6 +5973,9 @@ class PlayState extends MusicBeatState
 						// }
 						justCheer(true);
 						justHey(true);
+						//C'mon work wtf
+						boyfriend.playAnim('hey', true);
+						gf.playAnim('cheer',true);
 				} /*else triggeredAlready = false;*/
 			}
 
