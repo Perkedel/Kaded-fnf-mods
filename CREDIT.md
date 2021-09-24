@@ -435,8 +435,14 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://gamebanana.com/mods/30863 (`Pls Credit`) AetherLynx Noteskin pack. can use if you credit him/her. PECKING FINALLY asset we can use right ahead woohoo thancc cool and good awesome div by zero!!!
 - https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support BrightFyre friggin Haxe VLC. FlxSprite video MP4 support guys!
 - https://github.com/ShadowMario/FNF-PsychEngine/ https://gamebanana.com/mods/309789 Shadow Mario. Psyched inspirations such as blinking botplay text & stuff. bbpanzu had used this and the showcase shows it that.
-- pls insert TheFatRat - Mayday credit
+- pls insert TheFatRat - Mayday credit https://lnk.to/thefatratmayday
 - pls insert Sub Urban - Cradles (NCS Release)
+```
+Track: Sub Urban - Cradles [NCS Release]
+Music provided by NoCopyrightSounds.
+Watch: https://youtu.be/Hn4sfC2PbhI
+Free Download / Stream: http://ncs.io/CradlesYO
+```
 - https://www.youtube.com/watch?v=iiQfjYcpJfQ https://pastebin.com/eLy6Mxte . add mine note type
 - https://github.com/TentaRJ/GameJolt-FNF-Integration https://github.com/TentaRJ/tentools TentaRJ. Stuffs like GameJolt Achievements and perhaps other things later.
 
