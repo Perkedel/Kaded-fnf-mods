@@ -1481,14 +1481,18 @@ class PlayState extends MusicBeatState
 				case 'thorns' | 'thorns-midi':
 					schoolIntro(doof);
 				default:
-					//JOELwindows7: Heuristic for using JSON chart instead
-					if(SONG.hasDialogueChat){
-						schoolIntro(doof);
-					} else {
-						new FlxTimer().start(1, function(timer) {
-							startCountdown();
-						});
-					}
+					introScene(); //JOELwindows7: start intro cutscene!
+					new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer){ //JOELwindows7: also add delay before start
+						//for intro cutscene after video and before dialogue chat you know!
+						//JOELwindows7: Heuristic for using JSON chart instead
+						if(SONG.hasDialogueChat){
+							schoolIntro(doof);
+						} else {
+							new FlxTimer().start(1, function(timer) {
+								startCountdown();
+							});
+						}
+					});
 			}
 		}
 		else
@@ -1531,6 +1535,16 @@ class PlayState extends MusicBeatState
 		});
 		FlxG.console.registerFunction("lightningStrikeShit", function(){
 			lightningStrikeShit();
+		});
+		FlxG.console.registerFunction("justCheer", function(){
+			justCheer();
+		});
+		FlxG.console.registerFunction("justHey", function(){
+			justHey();
+		});
+		FlxG.console.registerFunction("justCheerHey", function(){
+			justHey();
+			justCheer();
 		});
 
 		//JOELwindows7: Now Init CustomStage scripts if had to.
@@ -2849,20 +2863,21 @@ class PlayState extends MusicBeatState
 				}
 
 			var newScroll = 1.0;
-
-			for(i in SONG.eventObjects)
-			{
-				switch(i.type)
+			
+			if(SONG != null && SONG.eventObjects != null) //JOELwindows7: somehow werror if eventObject null
+				for(i in SONG.eventObjects)
 				{
-					case "Scroll Speed Change":
-						if (i.position <= curDecimalBeat && !pastScrollChanges.contains(i))
-						{
-							pastScrollChanges.push(i);
-							trace("SCROLL SPEED CHANGE to " + i.value);
-							newScroll = i.value;
-						}
+					switch(i.type)
+					{
+						case "Scroll Speed Change":
+							if (i.position <= curDecimalBeat && !pastScrollChanges.contains(i))
+							{
+								pastScrollChanges.push(i);
+								trace("SCROLL SPEED CHANGE to " + i.value);
+								newScroll = i.value;
+							}
+					}
 				}
-			}
 
 			if (newScroll != 0)
 				PlayStateChangeables.scrollSpeed *= newScroll;
@@ -4398,7 +4413,11 @@ class PlayState extends MusicBeatState
 				campaignBads += bads;
 				campaignShits += shits;
 
+				//JOELwindows7: wait! remember the song name first!
+				var lastSonginPlaylist = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
+
 				storyPlaylist.remove(storyPlaylist[0]);
+
 
 				if (storyPlaylist.length <= 0)
 				{
@@ -4407,37 +4426,45 @@ class PlayState extends MusicBeatState
 
 					paused = true;
 
+					//JOELwindows7: delay time before go to next song
+					var delayFirstBeforeThat:Float = SONG.delayAfterFinish;
+					// for that eggnog light shut off thingy e.g.
+
 					FlxG.sound.music.stop();
 					vocals.stop();
-					if (FlxG.save.data.scoreScreen)
-					{
-						openSubState(
-							new ResultsScreen(
-								SONG.hasEpilogueVideo, 
+					//JOELwindows7: here timer guys
+					outroScene(lastSonginPlaylist);
+					new FlxTimer().start(delayFirstBeforeThat,function(tmr:FlxTimer){
+						if (FlxG.save.data.scoreScreen)
+						{
+							openSubState(
+								new ResultsScreen(
+									SONG.hasEpilogueVideo, 
+									SONG.hasEpilogueVideo? 
+									SONG.epilogueVideoPath: 
+									"null"
+								));
+							new FlxTimer().start(1, function(tmr:FlxTimer)
+								{
+									inResults = true;
+								});
+						}
+						else
+						{
+							FlxG.sound.playMusic(Paths.music('freakyMenu'));
+							Conductor.changeBPM(102);
+							// #if !mobile
+							FlxG.switchState(
 								SONG.hasEpilogueVideo? 
-								SONG.epilogueVideoPath: 
-								"null"
-							));
-						new FlxTimer().start(1, function(tmr:FlxTimer)
-							{
-								inResults = true;
-							});
-					}
-					else
-					{
-						FlxG.sound.playMusic(Paths.music('freakyMenu'));
-						Conductor.changeBPM(102);
-						// #if !mobile
-						FlxG.switchState(
-							SONG.hasEpilogueVideo? 
-							VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : 
-							new StoryMenuState());
-						// #else
-						// FlxG.switchState(new StoryMenuState());
-						// #end
-						//JOELwindows7: complicated! oh MY GOD!
-						clean();
-					}
+								VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : 
+								new StoryMenuState());
+							// #else
+							// FlxG.switchState(new StoryMenuState());
+							// #end
+							//JOELwindows7: complicated! oh MY GOD!
+						}
+					});
+					clean();
 
 					#if cpp
 					if (luaModchart != null)
@@ -4482,7 +4509,15 @@ class PlayState extends MusicBeatState
 					trace('LOADING NEXT SONG');
 					trace(poop);
 
-					if (StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase() == 'eggnog')
+					//JOELwindows7: delay time before go to next song
+					var delayFirstBeforeThat:Float = SONG.delayAfterFinish;
+					// for that eggnog light shut off thingy e.g.
+
+					// JOELwindows7: wait a minute sir. the song name
+					// has already removed from playlist bruh!
+					// this then starts on Cocoa instead of supposed eggnog!
+					// if (StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase() == 'eggnog')
+					if (lastSonginPlaylist == 'eggnog') // Now this should fix it I guess. Not elegant but it works.
 					{
 						var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
 							-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
@@ -4492,6 +4527,8 @@ class PlayState extends MusicBeatState
 
 						FlxG.sound.play(Paths.sound('Lights_Shut_off'));
 					}
+					outroScene(lastSonginPlaylist);
+					//Psychedly Successfully fixed the light shut off scene!
 
 					FlxTransitionableState.skipNextTransIn = true;
 					FlxTransitionableState.skipNextTransOut = true;
@@ -4509,20 +4546,23 @@ class PlayState extends MusicBeatState
 					// PlayState.HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
 					FlxG.sound.music.stop();
 
-					//JOELwindows7: if has video, then load the video first before going to new playstate!
-					// #if !mobile
-					LoadingState.loadAndSwitchState(
-						hasEpilogueVideo?
-						(VideoCutscener.getThe(epilogueVideoPath, 
-							(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState() )
-						))
-						: (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState() )
-					);
-					// #else //workaround since this doesn't work in Android
-					// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
-					// #end
-					//JOELwindows7: oh God, so complicated. I hope it works!
-					clean();
+					//JOELwindows7: here timer guys
+					new FlxTimer().start(delayFirstBeforeThat,function(tmr:FlxTimer){
+						//JOELwindows7: if has video, then load the video first before going to new playstate!
+						// #if !mobile
+						LoadingState.loadAndSwitchState(
+							hasEpilogueVideo?
+							(VideoCutscener.getThe(epilogueVideoPath, 
+								(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState() )
+							))
+							: (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState() )
+						);
+						// #else //workaround since this doesn't work in Android
+						// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+						// #end
+						//JOELwindows7: oh God, so complicated. I hope it works!
+						clean();
+					});
 				}
 			}
 			else
@@ -5741,6 +5781,11 @@ class PlayState extends MusicBeatState
 		boyfriend.playAnim('scared', true);
 		gf.playAnim('scared', true);
 
+		//JOELwindows7: Psyched camera flash
+		if(FlxG.save.data.flashing){
+			FlxG.camera.flash(FlxColor.WHITE, 1);
+		}
+
 		//JOELwindows7: shock fear Heartbeat jumps
 		increaseHR(fearShockAdd[0][heartTierIsRightNow[0]],0);
 		increaseHR(fearShockAdd[2][heartTierIsRightNow[2]],2);
@@ -6230,19 +6275,35 @@ class PlayState extends MusicBeatState
 		}
 	
 		//JOELwindows7: just cheer & hey
+		var isCheering:Bool = false; //flag to prevent other animation playings before it done
 		public function justCheer(forceIt:Bool = false){
+			isCheering = true;
 			trace("Cheer");
+			gf.animation.finishCallback = function(name:String){
+				if(name == 'cheer'){
+					isCheering = false;
+					trace("Cheer finish");
+				}
+			};
 			gf.playAnim('cheer', forceIt);
-			gf.playAnim('cheer', forceIt);
-			gf.playAnim('cheer', forceIt);
+			// gf.playAnim('cheer', forceIt);
+			// gf.playAnim('cheer', forceIt);
 			trace("did this even Cheer?");
 		}
-	
+		
+		var isHeying:Bool = false; //flag to prevent other animation playings before it done
 		public function justHey(forceIt:Bool = false){
+			isHeying = true;
 			trace("Hey");
+			boyfriend.animation.finishCallback = function(name:String){
+				if(name == 'hey'){
+					isHeying = false;
+					trace("Hey finish");
+				}
+			}
 			boyfriend.playAnim('hey', forceIt);
-			boyfriend.playAnim('hey', forceIt);
-			boyfriend.playAnim('hey', forceIt);
+			// boyfriend.playAnim('hey', forceIt);
+			// boyfriend.playAnim('hey', forceIt);
 			//JOELwindows7: pecking force 3 times because it always been overwritten by dance
 			trace("did this even Hey?");
 		}
@@ -6642,6 +6703,22 @@ class PlayState extends MusicBeatState
 		switch(curSong){
 			default:
 				trace("an song complete");
+		}
+	}
+
+	//JOELwindows7: Psyched intro after video and before dialogue chat
+	function introScene(){
+		switch(curSong){
+			default:
+				//No cutscene intro
+		}
+	}
+
+	//JOELwindows7: Psyched outro after dialogue chat & before epilogue video
+	function outroScene(handoverName:String){
+		switch(handoverName.toLowerCase()){
+			default:
+
 		}
 	}
 }

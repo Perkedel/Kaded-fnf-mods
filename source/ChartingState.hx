@@ -216,6 +216,8 @@ class ChartingState extends MusicBeatState
 				silentCountdown:false,
 				skipCountdown:false,
 				useCustomNoteStyle:false,
+				delayBeforeStart: 0.0,
+				delayAfterFinish: 0.0,
 			};
 		}
 

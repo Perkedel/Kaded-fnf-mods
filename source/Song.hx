@@ -63,6 +63,10 @@ typedef SwagSong =
 
 	//JOELwindows7: more configs
 	var useCustomNoteStyle:Bool; // enable to custom noteskin
+
+	//JOELwindows7: Delays
+	var delayBeforeStart:Float; //Delay before the song start. for cutscene after dia video
+	var delayAfterFinish:Float; //Delay after song finish before load next song. for cutscene before epilogue video
 }
 
 class Song
@@ -105,6 +109,10 @@ class Song
 
 	//JOELwindows7: more configs
 	public var useCustomNoteStyle:Bool = false; // enable to custom noteskin
+
+	//JOELwindows7: Delays
+	public var delayBeforeStart:Float = 0; //Delay before the song start. for cutscene after dia video
+	public var delayAfterFinish:Float = 0; //Delay after song finish before load next song. for cutscene before epilogue video
 
 	public function new(song, notes, bpm)
 	{

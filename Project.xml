@@ -217,7 +217,7 @@
 	<!-- JOELwindows7: VVV Danger -->
 	<!-- <haxelib name="faxe"/>  -->
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
-	<haxelib name="polymod"/>
+	<!-- <haxelib name="polymod"/> -->
 	<haxelib name="discord_rpc" if="cpp desktop" unless="neko || hl"/>
 	<haxelib name="linc_luajit"/>
 	<haxelib name="hxvm-luajit" if="desktop"/>

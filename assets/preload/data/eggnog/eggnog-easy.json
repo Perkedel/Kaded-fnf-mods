@@ -1,5 +1,6 @@
 {
     "song": {
+        "delayAfterFinish": 1.5,
         "player1": "bf-christmas",
         "gfVersion": "gf-christmas",
         "notes": [{ "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, {
