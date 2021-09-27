@@ -1150,7 +1150,8 @@ class ChartingState extends MusicBeatState
 		noteStyleDropDown.selectedLabel = _song.noteStyle;
 
 		var noteStyleLabel = new FlxText(10,280,64,'Note Skin');
-
+		
+		//JOELwindows7: pinpoint the UI group tab window. do add your stuff here I guess
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
