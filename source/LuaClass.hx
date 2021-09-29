@@ -1,21 +1,28 @@
 import flixel.FlxG;
+#if cpp
 import llua.Convert;
 import llua.Lua;
 import llua.State;
 import llua.LuaL;
+#end
 import flixel.util.FlxAxes;
 import flixel.FlxSprite;
 import lime.app.Application;
 import openfl.Lib;
+#if sys
 import sys.io.File;
+#end
 import flash.display.BitmapData;
+#if sys
 import sys.FileSystem;
+#end
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.FlxCamera;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import haxe.DynamicAccess;
 
+#if (cpp && sys)
 // completely yoinked from andromeda (thats what you get for stealing my callback inputs you fuckers /j)
 
 typedef LuaProperty = {
@@ -1787,3 +1794,4 @@ class LuaNote extends LuaClass { // again, stolen from andromeda but improved a 
       super.Register(l);
     }
   }
+  #end

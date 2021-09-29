@@ -3,10 +3,14 @@ package;
 import GalleryAchievements.AchievementUnlocked;
 import Controls;
 import TouchScreenControls;
+#if (cpp)
 import LuaClass.LuaCamera;
 import LuaClass.LuaCharacter;
+#end
 import lime.media.openal.AL;
+#if cpp
 import LuaClass.LuaNote;
+#end
 import Song.Event;
 import openfl.media.Sound;
 #if sys
@@ -1125,6 +1129,7 @@ class PlayState extends MusicBeatState
 
 		if (executeModchart)
 			{
+				#if cpp
 				new LuaCamera(camGame,"camGame").Register(ModchartState.lua);
 				new LuaCamera(camHUD,"camHUD").Register(ModchartState.lua);
 				new LuaCamera(camSustains,"camSustains").Register(ModchartState.lua);
@@ -1132,6 +1137,7 @@ class PlayState extends MusicBeatState
 				new LuaCharacter(dad,"dad").Register(ModchartState.lua);
 				new LuaCharacter(gf,"gf").Register(ModchartState.lua);
 				new LuaCharacter(boyfriend,"boyfriend").Register(ModchartState.lua);
+				#end
 			}
 		var index = 0;
 
@@ -2113,11 +2119,13 @@ class PlayState extends MusicBeatState
 		if (useVideo)
 			GlobalVideo.get().resume();
 
+		#if cpp
 		if (executeModchart)
 			luaModchart.executeState("songStart",[null]);
 		//JOELwindows7: here on the other side too song started
 		if (executeStageScript)
 			stageScript.executeState("songStart",[null]);
+		#end
 		if (executeModHscript)
 			hscriptModchart.executeState('songStart',[null]);
 		if (executeStageHscript)
@@ -2756,7 +2764,9 @@ class PlayState extends MusicBeatState
 
 					if (executeModchart)
 					{
-						new LuaNote(dunceNote,currentLuaIndex);			
+						#if cpp
+						new LuaNote(dunceNote,currentLuaIndex);	
+						#end		
 						dunceNote.luaID = currentLuaIndex;
 					}		
 					
@@ -6650,12 +6660,14 @@ class PlayState extends MusicBeatState
 
 	//JOELwindows7: feggin renew song length because something went wrong.
 	function renewSongLengths(){
+		#if cpp
 		if(executeModchart && luaModchart != null){
 			luaModchart.setVar('songLength',songLength);
 		}
 		if(executeStageScript && stageScript != null){
 			stageScript.setVar('songLength',songLength);
 		}
+		#end
 		if(executeModHscript && hscriptModchart != null){
 			hscriptModchart.setVar('songLength',songLength);
 		}
