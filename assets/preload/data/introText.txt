@@ -1200,3 +1200,4 @@ pushul--ushuushu
 hang alt sysrq--reisub
 sudo pacman dash--syu
 sudo apt update--sudo apt upgrade dash y
+spook--fermansyah
