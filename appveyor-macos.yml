@@ -65,8 +65,11 @@ install:
   - haxelib git systools https://github.com/haya3218/systools
   - haxelib run lime rebuild systools mac
   - haxelib list
+  - ls
   - pwd
   - cd /Users/appveyor/projects/kaded-fnf-mods-macos
+  # download placeholding keys
+  - wget --output-file=/Users/appveyor/projects/kaded-fnf-mods-macos/source/GJKeys.hx https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
 
 build_script:
   # - haxelib run lime rebuild discord_rpc macos

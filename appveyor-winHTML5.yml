@@ -78,6 +78,9 @@ install:
   - haxelib git systools https://github.com/haya3218/systools
   - haxelib run lime rebuild systools windows
   - haxelib list
+  - dir
+  # download placeholding keys
+  - wget --output-file=C:\projects\kaded-fnf-mods-winHTML5\source\GJKeys.hx https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
 
 # No tests idk lol
 build_script:
