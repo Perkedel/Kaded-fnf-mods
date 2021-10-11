@@ -1,7 +1,7 @@
 {
     "song": {
-        "videoPath": "",
-        "hasVideo": false,
+        "videoPath": "Toxic_cradlesIntro",
+        "hasVideo": true,
         "notes": [{
                 "endTime": 3000,
                 "playerAltAnim": false,
@@ -39611,9 +39611,9 @@
         "sectionLengths": [],
         "forceLuaModchart": false,
         "hasDialogueChat": false,
-        "epilogueVideoPath": "",
+        "epilogueVideoPath": "Toxic_cradlesOutro",
         "preferredNoteAmount": 4,
-        "hasEpilogueVideo": false,
+        "hasEpilogueVideo": true,
         "uiType": "normal",
         "sections": 0,
         "reversedCountdown": false,

@@ -1,6 +1,6 @@
 {
     "song": {
-        "videoPath": "",
+        "videoPath": "Toxic_doremiIntro",
         "notes": [{
                 "endTime": 2000,
                 "playerAltAnim": false,
@@ -25811,7 +25811,7 @@
                 "changeBPM": false
             }
         ],
-        "hasVideo": false,
+        "hasVideo": true,
         "isCheer": false,
         "invisibleCountdown": false,
         "forceHscriptModchart": false,

@@ -1,7 +1,7 @@
 {
     "song": {
-        "videoPath": "Toxic_maydayIntro",
-        "hasVideo": true,
+        "videoPath": "Toxic_Ma",
+        "hasVideo": false,
         "notes": [{
                 "endTime": 3200,
                 "playerAltAnim": false,
@@ -34092,9 +34092,9 @@
         "sectionLengths": [],
         "forceLuaModchart": false,
         "hasDialogueChat": false,
-        "epilogueVideoPath": "",
+        "epilogueVideoPath": "Toxic_maydayOutro",
         "preferredNoteAmount": 4,
-        "hasEpilogueVideo": false,
+        "hasEpilogueVideo": true,
         "uiType": "normal",
         "sections": 0,
         "reversedCountdown": false,

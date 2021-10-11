@@ -1,6 +1,6 @@
 {
     "song": {
-        "videoPath": "",
+        "videoPath": "Toxic_doremiIntro",
         "notes": [{
                 "endTime": 2000,
                 "playerAltAnim": false,
@@ -25811,7 +25811,7 @@
                 "changeBPM": false
             }
         ],
-        "hasVideo": false,
+        "hasVideo": true,
         "isCheer": false,
         "invisibleCountdown": false,
         "forceHscriptModchart": false,
@@ -25824,8 +25824,8 @@
         "sectionLengths": [],
         "forceLuaModchart": false,
         "hasDialogueChat": false,
-        "epilogueVideoPath": "",
-        "hasEpilogueVideo": false,
+        "epilogueVideoPath": "Toxic_doremiOutro",
+        "hasEpilogueVideo": true,
         "preferredNoteAmount": 4,
         "sections": 0,
         "uiType": "normal",
