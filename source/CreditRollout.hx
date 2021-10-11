@@ -1,0 +1,122 @@
+import flixel.util.FlxTimer;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.util.FlxColor;
+import flixel.text.FlxText;
+import flixel.group.FlxGroup;
+
+/**
+ * Credit Fades in out for seasonal series e.g.
+ * @author JOELwindows7
+ */
+class CreditRollout extends FlxTypedGroup<FlxText>{
+    var textTitle:FlxText;
+    var textName:FlxText;
+    var textRole:FlxText;
+    var linesOfThem:Array<String>; //lines of the credit roll
+    var indexening:Int = 0;
+    var currentLineSet:Array<String>; //each line has 3 strings here
+
+    public function new(){
+        textTitle = new FlxText(0, 0, 0, "Title", 24);
+        textTitle.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+        textTitle.scrollFactor.set();
+
+        textName = new FlxText(0, 0, 0, "Lorem Ipsum", 72);
+        textName.setFormat(Paths.font("vcr.ttf"), 72, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+        textName.scrollFactor.set();
+
+        textRole = new FlxText(0, 0, 0, "Dolor sit", 18);
+        textRole.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+        textRole.scrollFactor.set();
+
+        super();
+
+        add(textTitle);
+        add(textName);
+        add(textRole);
+    }
+
+    public function loadCreditData(path){
+        indexening = 0;
+        linesOfThem = CoolUtil.coolTextFile(path);
+        currentLineSet = linesOfThem[indexening].split(":");
+
+        updateTexts();
+    }
+
+    public function fadeToOther(isPrevious:Bool = true, duration:Float = 1){
+        FlxTween.tween(textTitle, {alpha: 0},duration,{
+            ease: FlxEase.quadInOut,
+            onComplete: function(twn:FlxTween)
+            {
+                
+            }
+        });
+
+        FlxTween.tween(textName, {alpha: 0},duration,{
+            ease: FlxEase.quadInOut,
+            onComplete: function(twn:FlxTween)
+            {
+                
+            }
+        });
+
+        FlxTween.tween(textRole, {alpha: 0},duration,{
+            ease: FlxEase.quadInOut,
+            onComplete: function(twn:FlxTween)
+            {
+                
+            }
+        });
+
+        new FlxTimer().start(duration, function(twn:FlxTimer){
+            changeLine(indexening+1);
+            fadeInAgainPls(duration);
+        });
+    }
+
+    function fadeInAgainPls(duration:Float = 0){
+        FlxTween.tween(textTitle, {alpha: 1},duration,{
+            ease: FlxEase.quadInOut,
+            onComplete: function(twn:FlxTween)
+            {
+                
+            }
+        });
+
+        FlxTween.tween(textName, {alpha: 1},duration,{
+            ease: FlxEase.quadInOut,
+            onComplete: function(twn:FlxTween)
+            {
+                
+            }
+        });
+
+        FlxTween.tween(textRole, {alpha: 1},duration,{
+            ease: FlxEase.quadInOut,
+            onComplete: function(twn:FlxTween)
+            {
+                
+            }
+        });
+    }
+
+    public function changeLine(which:Int = 0){
+        indexening = which;
+        currentLineSet = linesOfThem[indexening].split(":");
+
+        updateTexts();
+    }
+
+    function updateTexts(){
+        if(textTitle != null) textTitle.text = currentLineSet[0];
+        if(textName != null) textName.text = currentLineSet[1];
+        if(textRole != null) textRole.text = currentLineSet[2];
+    }
+
+    // override function create(){
+        
+    //     super.create();
+    // }
+}

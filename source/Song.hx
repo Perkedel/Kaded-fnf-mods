@@ -67,6 +67,8 @@ typedef SwagSong =
 	//JOELwindows7: Delays
 	var delayBeforeStart:Float; //Delay before the song start. for cutscene after dia video
 	var delayAfterFinish:Float; //Delay after song finish before load next song. for cutscene before epilogue video
+
+	var isCreditRoll; //JOELwindows7: is this credit roll? if yes then roll credit.
 }
 
 class Song
@@ -113,6 +115,8 @@ class Song
 	//JOELwindows7: Delays
 	public var delayBeforeStart:Float = 0; //Delay before the song start. for cutscene after dia video
 	public var delayAfterFinish:Float = 0; //Delay after song finish before load next song. for cutscene before epilogue video
+
+	public var isCreditRoll; //JOELwindows7: is this credit roll? if yes then roll credit.
 
 	public function new(song, notes, bpm)
 	{

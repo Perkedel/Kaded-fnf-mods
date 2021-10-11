@@ -34118,6 +34118,7 @@
         "stage": "view-of-the-world",
         "needsVoices": false,
         "bpm": 75,
-        "noteStyle": "saubo"
+        "noteStyle": "saubo",
+        "isCreditRoll": true
     }
 }
