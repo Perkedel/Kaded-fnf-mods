@@ -116,7 +116,7 @@ class Song
 	public var delayBeforeStart:Float = 0; //Delay before the song start. for cutscene after dia video
 	public var delayAfterFinish:Float = 0; //Delay after song finish before load next song. for cutscene before epilogue video
 
-	public var isCreditRoll:Bool; //JOELwindows7: is this credit roll? if yes then roll credit.
+	public var isCreditRoll:Bool = false; //JOELwindows7: is this credit roll? if yes then roll credit.
 
 	public function new(song, notes, bpm)
 	{

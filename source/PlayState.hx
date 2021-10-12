@@ -407,6 +407,9 @@ class PlayState extends MusicBeatState
 
 	public static var startTime = 0.0;
 
+	//JOELwindows7: other stuffs
+	public static var creditRollout:CreditRollout; //Credit fade rolls
+	
 	// API stuff
 
 	public function addObject(object:FlxBasic)
@@ -1397,6 +1400,14 @@ class PlayState extends MusicBeatState
 		addPauseButton(Std.int((FlxG.width/2)-(128/2)), 80);
 		trace("install pause button");
 
+		//JOELwindows7: install credit Rolls
+		creditRollout = new CreditRollout();
+		creditRollout.build();
+		// add(creditRollout);
+		add(creditRollout.textTitle);
+		add(creditRollout.textName);
+		add(creditRollout.textRole);
+
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
@@ -1420,7 +1431,10 @@ class PlayState extends MusicBeatState
 		reuploadWatermark.cameras = [camHUD]; //JOELwindows7: stick the reupload watermark to camera
 		if (loadRep)
 			replayTxt.cameras = [camHUD];
-
+		// creditRollout.cameras = [camHUD]; //JOELwindows7: da credit must be stuck to the HUD field
+		creditRollout.textTitle.cameras = [camHUD]; //JOELwindows7: pls whynt work wtf
+		creditRollout.textName.cameras = [camHUD]; //JOELwindows7: cmon man
+		creditRollout.textRole.cameras = [camHUD]; //JOELwindows7: aaaaaaa man
 		//JOELwindows7: install touchscreen buttons
 		if(FlxG.save.data.useTouchScreenButtons){
 			trace("Installing touchscreen buttons...");
@@ -1556,6 +1570,11 @@ class PlayState extends MusicBeatState
 		//JOELwindows7: Now Init CustomStage scripts if had to.
 		if(attemptStageScript){
 			Stage.spawnStageScript("stages/" + toCompatCase(SONG.stage) +"/stageScript");
+		}
+
+		//JOELwindows7: show credit rollouts if the song has to do so
+		if(SONG.isCreditRoll){
+			creditRollout.loadCreditData("creditsRolls" + toCompatCase(SONG.stage) + ".txt");
 		}
 
 		//JOELwindows7: why the peck with touchscreen button game crash on second run?!
@@ -1893,6 +1912,11 @@ class PlayState extends MusicBeatState
 				case 4:
 					//JOELwindows7: just add trace for fun
 					trace("Run the song now!");
+
+					//JOELwindows7: start Credit rolling if the song has so
+					if(SONG.isCreditRoll && creditRollout != null){
+						creditRollout.startRolling();
+					}
 			}
 
 			swagCounter += 1;
