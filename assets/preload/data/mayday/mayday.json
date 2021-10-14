@@ -34088,10 +34088,10 @@
         "useCustomNoteStyle": false,
         "artist": "TheFatRat",
         "speed": 2,
-        "hasEpilogueChat": false,
+        "hasEpilogueChat": true,
         "sectionLengths": [],
         "forceLuaModchart": false,
-        "hasDialogueChat": false,
+        "hasDialogueChat": true,
         "epilogueVideoPath": "Toxic_maydayOutro",
         "preferredNoteAmount": 4,
         "hasEpilogueVideo": true,
@@ -34119,6 +34119,7 @@
         "needsVoices": false,
         "bpm": 75,
         "noteStyle": "saubo",
-        "isCreditRoll": true
+        "isCreditRoll": true,
+        "delayAfterFinish": 10.0
     }
 }

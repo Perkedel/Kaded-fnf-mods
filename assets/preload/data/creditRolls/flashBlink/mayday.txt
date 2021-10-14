@@ -1,5 +1,5 @@
-Last Funkin Moments:Joel Robert Justiawan:LFM mod founder & everything he did this mod
-Original Friday Night Funkin:Cameron Taylor:FNF founder of this & coding
+Last Funkin Moments:Joel Robert Justiawan: (JOELwindows7) LFM mod founder & everything he did this mod
+Original Friday Night Funkin:Cameron Taylor: (ninja_muffin99) FNF founder of this & coding
 Original Friday Night Funkin:Phantom Arcade:Art Style
 Original Friday Night Funkin:Kawai Sprite:Musician
 Original Friday Night Funkin:Evilsk8tr:Art too as well
@@ -11,7 +11,7 @@ Sprite Sheet Sparrow Atlas:UncertainProductions:XML Spritesheet maker
 Android Port:luckydog7:inspiration for porting into APK
 HaxeScript:BulbyVR:FNF Modding+ inspirations
 Stepmania:Stepmania team:Samples & inspirations ahead
-Week Strong:Christian Büttner:TheFatRat songs
+Week Strong:Christian Büttner: (TheFatRat) TheFatRat songs
 MIDI inspirations:SeaNothing:Cover MIDI of FNF songs
 Yoinker:Madbrine:Yoinked Test chart complete version
 Test:Mth:Charted test
@@ -21,5 +21,44 @@ Week Merdeka:Wage Rudolf Supratman:created Indonesian national anthem
 Week Merdeka:Didi Haryadi:MIDI cover of Indonesia Raya
 Week Merdeka:Joseph Cleber:Symphonic & signature version of Indonesia Raya
 Week Merdeka:Fatmawati:Indonesian flag design
+Week Toxic:Joel Robert Justiawan:JOELwindows7 made Doremi FNF cover
+Week Toxic:Sub Urban:Cradles
+Week Toxic:TheFatRat:Mayday
+Sounds:sphion:Paper tear for bf_covid death
+Sounds:Leszek Szary:Game Over 8 bit for Perkedel Force Majeur sound
+Sounds:CGEffex:Car crash sounds and more
+HaxeScript:BulbyVR:inspiration for Haxescript & stuffs
+HaxeScript:Ian Harrigan:Hscript-EX extension for the Haxescript
+VLC:datee:HaxeVLC original
+VLC:phfernandez:HaxeVLC original fork
+Additional libraries:ktravis:access Android hardware for Haxe
+Inkscape Symbols pack:PanderMusubi:Collections of Inkscape symbols library
+Soundfonts:Logan McOof:SF2 files for all custom things
+Soundfonts:Nickham13:SF2 files for all custom things like bf
+Soundfonts:GenoX:UTAU voice of FNF characters
+VST:FullBucket.de:Frequency Shifter
+Tools:Heikoplate:PSR UTI. make MIDI becomes Yamaha Musicsoft for $0
+Tools:kuzu (Open MIDI Project):Sekaiju. MIDI editor
+Tools:Inkscape Team:Inkscape vector graphic editor
+Tools:Olive Video Editor:anVideo Editor Open Source, $0, FUll version!!!
+Tools:UncertainProductions:SpriteSheet maker of XML Sparrow Atlas
+Tools:kem0x:DLL to count number of frame of video on demand.
+Tools:Haxe Foundation:Haxe this itself
+Tools:HaxeFlixel:Framework to have this FNF real
 Featuring:Bill Wurtz:surreal Jazz & meme musician
+Community:FNF Modding Community:bring modders in!
 Protoglin Amexamlef:bbpanzu:inspiration source
+Protoglin Amexamlef:Sock.clip:inspiration source
+Protoglin Amexamlef:Kuroao_anomal:inspiration source
+Bratslen:Birbs Drama making communities:Destroyer of everything, responsible of downtooks.
+Realm:Tom Fulps:Newgrounds
+Realm:Tom Pitlik:GameBanana
+Realm:GameJolt:GameJolt
+Realm:Jeremy Kauffman:LBRY Odysee
+Realm:Moondance???:itch.io
+Realm:Google:YouTube
+Realm:ByteDance:TikTok
+Thancc:for your attention:Cool and good
+by JOELwindows7:Perkedel Technologies:CC4.0-BY-SA
+LFM Copyright:Perkedel Technologies:2021. Some Rights Reserved
+Contact JOELwindows7:www.cointr.ee/joelwindows7:Joel's donation & social medias

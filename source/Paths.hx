@@ -75,6 +75,11 @@ class Paths
 		return getPath('data/$key.hscript', TEXT, library);
 	}
 
+	inline static public function creditFlashBlink(key:String,?library:String)
+	{
+		return getPath('data/creditRolls/flashBlink/$key.txt', TEXT, library);
+	}
+
 	inline static public function luaImage(key:String, ?library:String)
 	{
 		return getPath('data/$key.png', IMAGE, library);

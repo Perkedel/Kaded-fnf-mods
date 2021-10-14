@@ -1049,7 +1049,7 @@ class PlayState extends MusicBeatState
 			doof.finishThing = startCountdown;
 
 			//JOELwindows7: new epilogue way
-			eoof = new DialogueBox(false, dialogue, SONG.hasDialogueChat, true);
+			eoof = new DialogueBox(false, epilogue, SONG.hasEpilogueChat, true);
 			// eoof.x += 70;
 			// eoof.y = FlxG.height * 0.5;
 			eoof.scrollFactor.set(); //JOELwindows7: also set scroll factor too for epilogue box!
@@ -1574,7 +1574,7 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: show credit rollouts if the song has to do so
 		if(SONG.isCreditRoll){
-			creditRollout.loadCreditData("creditsRolls" + toCompatCase(SONG.stage) + ".txt");
+			creditRollout.loadCreditData(Paths.creditFlashBlink(SONG.song), SONG.creditRunsOnce);
 		}
 
 		//JOELwindows7: why the peck with touchscreen button game crash on second run?!
@@ -4401,6 +4401,11 @@ class PlayState extends MusicBeatState
 		#end
 		scronchHscript();
 
+		//JOELwindows7: stuff to end
+		if(creditRollout != null){
+			creditRollout.stopRolling(); //end the credit roll first.
+		}
+
 		trace("clearing gameplay"); //JOELwindows7: you trace
 
 		canPause = false;
@@ -6753,6 +6758,20 @@ class PlayState extends MusicBeatState
 	//JOELwindows7: Psyched outro after dialogue chat & before epilogue video
 	function outroScene(handoverName:String){
 		switch(handoverName.toLowerCase()){
+			case 'windfall': //blacken the screen like going to Winter Horrorland but slowed and sadder
+			// to contemplate in memory of those 3 taken down mods. and more.
+				var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
+					-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+				blackShit.scrollFactor.set();
+				blackShit.alpha = 0;
+				add(blackShit);
+				// camHUD.alpha = 0;
+				FlxTween.tween(camHUD,{alpha:0},5,{ease:FlxEase.linear, onComplete:function(twn:FlxTween){
+					
+				}});
+				FlxTween.tween(blackShit,{alpha:0},5,{ease:FlxEase.linear, onComplete:function(twn:FlxTween){
+					
+				}});
 			default:
 
 		}

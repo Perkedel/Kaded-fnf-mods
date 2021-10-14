@@ -219,6 +219,7 @@ class ChartingState extends MusicBeatState
 				delayBeforeStart: 0.0,
 				delayAfterFinish: 0.0,
 				isCreditRoll: false,
+				creditRunsOnce: false,
 			};
 		}
 

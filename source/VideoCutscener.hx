@@ -146,7 +146,7 @@ class VLCState extends MusicBeatState{
 
     override function create(){
         super.create();
-        FlxG.autoPause = false;
+        // FlxG.autoPause = false;
 
         FlxG.sound.music.stop();
         peckingVolume = FlxG.sound.music.volume;
@@ -198,7 +198,7 @@ class VLCState extends MusicBeatState{
     }
 
     function donedCallback(){
-        // FlxG.autoPause = true;
+        FlxG.autoPause = true;
         FlxG.sound.music.volume = peckingVolume;
         FlxG.switchState(toTrans);
     }

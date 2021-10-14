@@ -2077,6 +2077,8 @@
         "speed": 2,
         "hasDialogueChat": true,
         "hasEpilogueChat": false,
-        "noteStyle": "saubo"
+        "noteStyle": "saubo",
+        "isCreditRoll": true,
+        "creditRunsOnce": true
     }
 }

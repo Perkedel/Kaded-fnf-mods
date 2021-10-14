@@ -18,23 +18,25 @@ class CreditRollout extends FlxTypedGroup<FlxText>{
     var indexening:Int = 0;
     var currentLineSet:Array<String>; //each line has 3 strings here
     var interval:Float = 3;
+    var started:Bool = false;
+    var runsOnce:Bool = false;
 
     public function new(){
         super();
     }
 
     public function build(){
-        textTitle = new FlxText(100, FlxG.height-400, 0, "Title", 24);
+        textTitle = new FlxText(100, FlxG.height-150, 0, "Title", 24);
         textTitle.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         textTitle.scrollFactor.set();
         textTitle.alpha = 0;
 
-        textName = new FlxText(100, FlxG.height-300, 0, "Lorem Ipsum", 72);
-        textName.setFormat(Paths.font("vcr.ttf"), 72, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+        textName = new FlxText(100, FlxG.height-125, 0, "Lorem Ipsum", 48);
+        textName.setFormat(Paths.font("vcr.ttf"), 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         textName.scrollFactor.set();
         textName.alpha = 0;
 
-        textRole = new FlxText(100, FlxG.height-200, 0, "Dolor sit", 18);
+        textRole = new FlxText(100, FlxG.height-75, 0, "Dolor sit", 18);
         textRole.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         textRole.scrollFactor.set();
         textRole.alpha = 0;
@@ -44,7 +46,8 @@ class CreditRollout extends FlxTypedGroup<FlxText>{
         add(textRole);
     }
 
-    public function loadCreditData(path){
+    public function loadCreditData(path,?onceRun:Bool = false){
+        runsOnce = onceRun;
         indexening = 0;
         linesOfThem = CoolUtil.coolTextFile(path);
         currentLineSet = linesOfThem[indexening].split(":");
@@ -54,9 +57,15 @@ class CreditRollout extends FlxTypedGroup<FlxText>{
     }
 
     public function startRolling(){
+        started = true;
+        fadeInAgainPls();
         new FlxTimer().start(interval, function(tmr:FlxTimer){
             fadeToOther();
         }, 0);
+    }
+
+    public function stopRolling(){
+        started = false;
     }
 
     public function fadeToOther(isPrevious:Bool = true, duration:Float = .5){
@@ -84,40 +93,49 @@ class CreditRollout extends FlxTypedGroup<FlxText>{
             }
         });
 
-        new FlxTimer().start(duration, function(twn:FlxTimer){
-            changeLine(indexening+1);
-            fadeInAgainPls(duration);
-        });
+        if(started)
+            new FlxTimer().start(duration, function(twn:FlxTimer){
+                changeLine(indexening+1);
+                fadeInAgainPls(duration);
+            });
     }
 
     function fadeInAgainPls(duration:Float = 0.5){
-        FlxTween.tween(textTitle, {alpha: 1},duration,{
-            ease: FlxEase.quadInOut,
-            onComplete: function(twn:FlxTween)
-            {
-                
-            }
-        });
+        if(started)
+        {
+            FlxTween.tween(textTitle, {alpha: 1},duration,{
+                ease: FlxEase.quadInOut,
+                onComplete: function(twn:FlxTween)
+                {
+                    
+                }
+            });
 
-        FlxTween.tween(textName, {alpha: 1},duration,{
-            ease: FlxEase.quadInOut,
-            onComplete: function(twn:FlxTween)
-            {
-                
-            }
-        });
+            FlxTween.tween(textName, {alpha: 1},duration,{
+                ease: FlxEase.quadInOut,
+                onComplete: function(twn:FlxTween)
+                {
+                    
+                }
+            });
 
-        FlxTween.tween(textRole, {alpha: 1},duration,{
-            ease: FlxEase.quadInOut,
-            onComplete: function(twn:FlxTween)
-            {
-                
-            }
-        });
+            FlxTween.tween(textRole, {alpha: 1},duration,{
+                ease: FlxEase.quadInOut,
+                onComplete: function(twn:FlxTween)
+                {
+                    
+                }
+            });
+        }
     }
 
     public function changeLine(which:Int = 0){
         indexening = which;
+        if(indexening > linesOfThem.length-1){
+            indexening = 0;
+            if(runsOnce) stopRolling();
+        }
+        if(indexening < 0) indexening = linesOfThem.length-1;
         currentLineSet = linesOfThem[indexening].split(":");
 
         updateTexts();

@@ -162,6 +162,9 @@ class DialogueBox extends FlxSpriteGroup
 				'breakfast' |
 				'dont stop' |
 				'title classic' |
+				'mayday' |
+				'cradles' |
+				'doremi' |
 				'test-vanilla'
 				:
 				//JOELwindows7: the dialogue normalizations
@@ -187,6 +190,8 @@ class DialogueBox extends FlxSpriteGroup
 				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
 				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
+
+				nonPixel = true;
 
 				if(customChar){
 					customCharPls = true;
