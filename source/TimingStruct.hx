@@ -32,6 +32,8 @@ class TimingStruct
         if (seg != null)
             beat = seg.startBeat + (((time / 1000) - seg.startTime) * (seg.bpm / 60));
 
+        // FlxG.watch.addQuick("get Time from Time", [beat, time, seg]); //JOELwindows7: temp debug pls help
+
         return beat;
     }
 
@@ -42,6 +44,8 @@ class TimingStruct
 
         if (seg != null)
             time = seg.startTime + ((beat - seg.startBeat) / (seg.bpm / 60));
+
+        // FlxG.watch.addQuick("get Time from Beat", [beat, time, seg]); //JOELwindows7: temp debug pls help
 
         return time * 1000;
     }

@@ -1,6 +1,6 @@
 {
     "song": {
-        "videoPath": "Toxic_Ma",
+        "videoPath": "Toxic_maydayIntro",
         "hasVideo": false,
         "notes": [{
                 "endTime": 3200,
@@ -34065,20 +34065,8 @@
                 "changeBPM": false,
                 "startTime": 7372800,
                 "bpm": 75
-            },
-            {
-                "endTime": null,
-                "playerAltAnim": false,
-                "altAnim": false,
-                "CPUAltAnim": false,
-                "mustHitSection": true,
-                "lengthInSteps": 16,
-                "typeOfSection": 0,
-                "sectionNotes": [],
-                "changeBPM": false,
-                "startTime": 7376000,
-                "bpm": 75
             }
+
         ],
         "isCheer": false,
         "invisibleCountdown": false,

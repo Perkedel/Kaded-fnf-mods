@@ -1241,7 +1241,7 @@ class PlayState extends MusicBeatState
 			songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
 			add(songPosBar);
 
-			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.song.length * 5), songPosBG.y, 0, SONG.song, 16);
+			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.song.length * 5), songPosBG.y, 0, SONG.artist + " - " + SONG.song, 16);
 			if (PlayStateChangeables.useDownscroll)
 				songName.y -= 3;
 			songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1576,6 +1576,8 @@ class PlayState extends MusicBeatState
 		if(SONG.isCreditRoll){
 			creditRollout.loadCreditData(Paths.creditFlashBlink(SONG.song), SONG.creditRunsOnce);
 		}
+
+		FlxG.autoPause = true; //JOELwindows7: because somehow the film does not return it back
 
 		//JOELwindows7: why the peck with touchscreen button game crash on second run?!
 		trace("finish create PlayState");
@@ -2265,6 +2267,7 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
+		FlxG.sound.music.looped = false; //JOELwindows7: okay try to make this unloop.
 		//FlxG.sound.music.onComplete = endSong;
 		FlxG.sound.music.onComplete = checkEpilogueChat; 
 		//JOELwindows7: now instead pls check the epilogue chat!
@@ -2305,7 +2308,7 @@ class PlayState extends MusicBeatState
 			songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
 			add(songPosBar);
 
-			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.song.length * 5), songPosBG.y, 0, SONG.song, 16);
+			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.song.length * 5), songPosBG.y, 0, SONG.artist + " - " + SONG.song, 16);
 			if (PlayStateChangeables.useDownscroll)
 				songName.y -= 3;
 			songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -2833,7 +2836,9 @@ class PlayState extends MusicBeatState
 					// so no reason to delete it at all
 					if (unspawnNotes.length == 0 && FlxG.sound.music.length - Conductor.songPosition <= 100)
 					{
-						endSong();
+						// endSong();
+						checkEpilogueChat(); //JOELwindows7: you sneaky little punk!
+						// you have endSong just little bit earlier in case stroffs.
 					}
 				}
 			}
@@ -2910,11 +2915,20 @@ class PlayState extends MusicBeatState
 								trace("SCROLL SPEED CHANGE to " + i.value);
 								newScroll = i.value;
 							}
+						case "Cheer Now":
+							justCheer();
+						case "Hey Now":
+							justHey();
+						case "Cheer Hey Now":
+							justCheer();
+							justHey();
 					}
 				}
 
 			if (newScroll != 0)
 				PlayStateChangeables.scrollSpeed *= newScroll;
+
+			// FlxG.watch.addQuick("Musnic playing",[newScroll,timingSeg]);
 		}
 	
 		if (PlayStateChangeables.botPlay && FlxG.keys.justPressed.ONE)
@@ -3740,6 +3754,21 @@ class PlayState extends MusicBeatState
 		//JOELwindows7: add more watches too
 		FlxG.watch.addQuick("shinzouRateShit", heartRate);
 		FlxG.watch.addQuick("songPositionShit", Conductor.songPosition);
+		FlxG.watch.addQuick("Ending Song",endingSong);
+		FlxG.watch.addQuick("Cam Follow",[camFollow.x,camFollow.y]);
+		FlxG.watch.addQuick("In Cutscene",inCutscene);
+		FlxG.watch.addQuick("Camera Game Pos",[camGame.x,camGame.y]);
+		FlxG.watch.addQuick("Auto Pause",FlxG.autoPause);
+		FlxG.watch.addQuick("generated Music",generatedMusic);
+		FlxG.watch.addQuick("starting song", startingSong);
+		FlxG.watch.addQuick("Started Countdown", startedCountdown);
+		FlxG.watch.addQuick("Song started", songStarted);
+		FlxG.watch.addQuick("Allowed Headbang",allowedToHeadbang);
+		FlxG.watch.addQuick("danced",danced);
+		if(currentSection != null) {
+			FlxG.watch.addQuick("Current Section", Std.string(currentSection));
+			FlxG.watch.addQuick("Must hit",currentSection.mustHitSection);
+		}
 
 		if (curSong == 'Fresh')
 		{
@@ -4298,6 +4327,9 @@ class PlayState extends MusicBeatState
 	//JOELwindows7: check if the song should display epilogue chat once the song has finished.
 	function checkEpilogueChat():Void
 	{
+		endingSong = true; // Just in case somekind of forgor
+		songStarted = false; //try to do this?
+		FlxG.sound.music.stop(); //Stop the music now man.
 		trace("Check Epilogue " + Std.string(SONG.hasEpilogueChat) + "\n and isStoryMode " + Std.string(isStoryMode));
 		//fade and hide the touchscreen button
 		removeTouchScreenButtons();
@@ -4309,20 +4341,23 @@ class PlayState extends MusicBeatState
 
 	public function getSectionByTime(ms:Float):SwagSection
 		{
-	
+			// FlxG.watch.addQuick("ms Section by time", ms);
 			for (i in SONG.notes)
 			{
 				var start = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.startTime)));
 				var end = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.endTime)));
 
+				// FlxG.watch.addQuick("i in Song Note", [start, end, i]); //JOELwindows7: idk what error
+					// is from of the subsequent song wtf man
 
 				if (ms >= start && ms < end)
 				{
+					
 					return i;
 				}
 			}
 	
-	
+			// FlxG.watch.addQuick("i in Song Note", [null, null, null]); //JOELwindows7: pls help!
 			return null;
 		}
 
@@ -4579,7 +4614,9 @@ class PlayState extends MusicBeatState
 					//Okay you can now change the song.
 
 					//JOELwindows7: wait, double safety standard pls.
-					PlayState.SONG = Song.loadFromJson(poop, PlayState.storyPlaylist[0]);
+					// PlayState.SONG = Song.loadFromJson(poop, PlayState.storyPlaylist[0]);
+					PlayState.SONG = Song.conversionChecks(Song.loadFromJson(poop, PlayState.storyPlaylist[0]));
+					//JOELwindows7: fix the song with conversionChecks
 					//JOELwindows7: conform the story mode oid based on dash is space like StoryMenuState.hx
 					// also load heartspec
 					// PlayState.HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
@@ -6758,7 +6795,7 @@ class PlayState extends MusicBeatState
 	//JOELwindows7: Psyched outro after dialogue chat & before epilogue video
 	function outroScene(handoverName:String){
 		switch(handoverName.toLowerCase()){
-			case 'windfall': //blacken the screen like going to Winter Horrorland but slowed and sadder
+			case 'mayday': //blacken the screen like going to Winter Horrorland but slowed and sadder
 			// to contemplate in memory of those 3 taken down mods. and more.
 				var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
 					-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
@@ -6769,7 +6806,7 @@ class PlayState extends MusicBeatState
 				FlxTween.tween(camHUD,{alpha:0},5,{ease:FlxEase.linear, onComplete:function(twn:FlxTween){
 					
 				}});
-				FlxTween.tween(blackShit,{alpha:0},5,{ease:FlxEase.linear, onComplete:function(twn:FlxTween){
+				FlxTween.tween(blackShit,{alpha:1},5,{ease:FlxEase.linear, onComplete:function(twn:FlxTween){
 					
 				}});
 			default:

@@ -3,17 +3,19 @@ Original Friday Night Funkin:Cameron Taylor: (ninja_muffin99) FNF founder of thi
 Original Friday Night Funkin:Phantom Arcade:Art Style
 Original Friday Night Funkin:Kawai Sprite:Musician
 Original Friday Night Funkin:Evilsk8tr:Art too as well
-Kade Engine:KadeDev:Based Pog Chad Frog guy
+Kade Engine:KadeDev:Based Pog Chad Frog guy big W
 Psyched Stuffs:Shadow Mario:Psyched feature inspirations
 Video Cutscener:GWebDev:Webmer support
 Video Cutscener:BrightFyre:MP4 support with VLC
-Sprite Sheet Sparrow Atlas:UncertainProductions:XML Spritesheet maker
 Android Port:luckydog7:inspiration for porting into APK
+Android Port:KlavierGaming:inspiration for porting into APK
 HaxeScript:BulbyVR:FNF Modding+ inspirations
 Stepmania:Stepmania team:Samples & inspirations ahead
+Noteskins:AetherLynx:Collection of FNF noteskins
 Week Strong:Christian Büttner: (TheFatRat) TheFatRat songs
 MIDI inspirations:SeaNothing:Cover MIDI of FNF songs
 Yoinker:Madbrine:Yoinked Test chart complete version
+Yoinker:JayB:reupload S-YXG2006LE VSTi over
 Test:Mth:Charted test
 Week Meta:Samuel Beckett:Waiting for Godot
 Silence:John Cage:4'33" song
@@ -37,6 +39,7 @@ Soundfonts:Logan McOof:SF2 files for all custom things
 Soundfonts:Nickham13:SF2 files for all custom things like bf
 Soundfonts:GenoX:UTAU voice of FNF characters
 VST:FullBucket.de:Frequency Shifter
+VST:Yamaha Corporation:S-YXG2006LE
 Tools:Heikoplate:PSR UTI. make MIDI becomes Yamaha Musicsoft for $0
 Tools:kuzu (Open MIDI Project):Sekaiju. MIDI editor
 Tools:Inkscape Team:Inkscape vector graphic editor
@@ -45,6 +48,9 @@ Tools:UncertainProductions:SpriteSheet maker of XML Sparrow Atlas
 Tools:kem0x:DLL to count number of frame of video on demand.
 Tools:Haxe Foundation:Haxe this itself
 Tools:HaxeFlixel:Framework to have this FNF real
+Tools:Herman Seibb:VST Host
+Tutorials:BrightFyre:How to Mod FNF series
+Tutorials:bbpanzu:Video Cutscener + other tutorials
 Featuring:Bill Wurtz:surreal Jazz & meme musician
 Community:FNF Modding Community:bring modders in!
 Protoglin Amexamlef:bbpanzu:inspiration source
@@ -55,7 +61,7 @@ Realm:Tom Fulps:Newgrounds
 Realm:Tom Pitlik:GameBanana
 Realm:GameJolt:GameJolt
 Realm:Jeremy Kauffman:LBRY Odysee
-Realm:Moondance???:itch.io
+Realm:Itch Corp:itch.io
 Realm:Google:YouTube
 Realm:ByteDance:TikTok
 Thancc:for your attention:Cool and good

@@ -25796,19 +25796,6 @@
                 "bpm": 120,
                 "startTime": 3918000,
                 "changeBPM": false
-            },
-            {
-                "endTime": null,
-                "playerAltAnim": false,
-                "altAnim": false,
-                "CPUAltAnim": false,
-                "mustHitSection": true,
-                "lengthInSteps": 16,
-                "typeOfSection": 0,
-                "sectionNotes": [],
-                "bpm": 120,
-                "startTime": 3920000,
-                "changeBPM": false
             }
         ],
         "hasVideo": true,

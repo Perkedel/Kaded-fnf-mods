@@ -39584,19 +39584,6 @@
                 "changeBPM": false,
                 "startTime": 7418080.27362837,
                 "bpm": 80
-            },
-            {
-                "endTime": null,
-                "playerAltAnim": false,
-                "altAnim": false,
-                "CPUAltAnim": false,
-                "mustHitSection": true,
-                "lengthInSteps": 16,
-                "typeOfSection": 0,
-                "sectionNotes": [],
-                "changeBPM": false,
-                "startTime": 7421390.61845595,
-                "bpm": 80
             }
         ],
         "isCheer": false,

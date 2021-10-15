@@ -19,7 +19,7 @@ import openfl.utils.AssetType;
  * @author JOELwindows7
  */
 class VideoCutscener{
-    public static function startThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = false){
+    public static function startThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = true){
         FlxG.switchState(
             #if mobile
             new VideoSelfContained(source, toTrans, frameSkipLimit, autopause)
@@ -29,7 +29,7 @@ class VideoCutscener{
         );
     }
 
-    public static function getThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = false):MusicBeatState{
+    public static function getThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = true):MusicBeatState{
         return
         #if mobile
         new VideoSelfContained(source, toTrans, frameSkipLimit, autopause)
@@ -57,7 +57,7 @@ class VideoSelfContained extends MusicBeatState{
     public var txt:FlxText;
     public var peckingVolume:Float = 1;
     var defaultText:String = "";
-    public function new(source:String, toTrans:FlxState, frameSkipLimit:Int = -1, autopause:Bool = false){
+    public function new(source:String, toTrans:FlxState, frameSkipLimit:Int = -1, autopause:Bool = true){
         transIn = FlxTransitionableState.defaultTransIn;
         transOut = FlxTransitionableState.defaultTransOut;
         super();
@@ -132,7 +132,7 @@ class VLCState extends MusicBeatState{
     public var txt:FlxText;
     public var peckingVolume:Float = 1;
     var defaultText:String = "";
-    public function new(source:String, toTrans:FlxState, frameSkipLimit:Int = -1, autopause:Bool = false){
+    public function new(source:String, toTrans:FlxState, frameSkipLimit:Int = -1, autopause:Bool = true){
         transIn = FlxTransitionableState.defaultTransIn;
         transOut = FlxTransitionableState.defaultTransOut;
         super();

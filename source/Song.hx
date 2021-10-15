@@ -27,6 +27,7 @@ typedef SwagSong =
 {
 	var chartVersion:String;
 	var song:String;
+	var artist:String; //JOELwindows7: the artist of it
 	var notes:Array<SwagSection>;
 	var eventObjects:Array<Event>;
 	var bpm:Float;
@@ -77,6 +78,7 @@ class Song
 	public static var latestChart:String = "KE1";
 	public var chartVersion:String;
 	public var song:String;
+	public var artist:String; //JOELwindows7: the artist of it
 	public var notes:Array<SwagSection>;
 	public var bpm:Float;
 	public var needsVoices:Bool = true;

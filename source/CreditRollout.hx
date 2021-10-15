@@ -49,7 +49,16 @@ class CreditRollout extends FlxTypedGroup<FlxText>{
     public function loadCreditData(path,?onceRun:Bool = false){
         runsOnce = onceRun;
         indexening = 0;
-        linesOfThem = CoolUtil.coolTextFile(path);
+        try{
+            linesOfThem = CoolUtil.coolTextFile(path);
+        } catch(e){
+            FlxG.log.error("Could not load Cool credit text " + path);
+            FlxG.log.error(e);
+            linesOfThem = ["Error:404:Credit Text file not found",
+                "Error:Check Path:" + path,
+                "Error:Message:" + e
+        ];
+        }
         currentLineSet = linesOfThem[indexening].split(":");
 
         updateTexts();
