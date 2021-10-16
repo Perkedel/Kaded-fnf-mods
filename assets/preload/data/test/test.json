@@ -1,6 +1,7 @@
 {
     "song": {
         "song": "Test",
+        "artist": "KadeDev",
         "notes": [{
             "lengthInSteps": 16,
             "bpm": 95.0,

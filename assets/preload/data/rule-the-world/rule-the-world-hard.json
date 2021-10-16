@@ -1347,6 +1347,7 @@
             "bpm": 102
         }, { "sectionNotes": [], "typeOfSection": 0, "lengthInSteps": 16, "altAnim": false, "mustHitSection": false, "changeBPM": false, "bpm": 102 }, { "sectionNotes": [], "typeOfSection": 0, "lengthInSteps": 16, "altAnim": false, "mustHitSection": true, "changeBPM": false, "bpm": 102 }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 102, "changeBPM": false, "mustHitSection": true }],
         "song": "Rule The World",
+        "artist": "TheFatRat",
         "needsVoices": false,
         "validScore": true,
         "sections": 0,

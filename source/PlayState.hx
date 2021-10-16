@@ -2920,8 +2920,8 @@ class PlayState extends MusicBeatState
 						case "Hey Now":
 							justHey();
 						case "Cheer Hey Now":
-							justCheer();
-							justHey();
+							if(i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0) justCheer();
+							if(i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0) justHey();
 					}
 				}
 
@@ -4329,6 +4329,7 @@ class PlayState extends MusicBeatState
 	{
 		endingSong = true; // Just in case somekind of forgor
 		songStarted = false; //try to do this?
+		startingSong = true; //Oh maybe this helps simulate like if the song is on preparation?
 		FlxG.sound.music.stop(); //Stop the music now man.
 		trace("Check Epilogue " + Std.string(SONG.hasEpilogueChat) + "\n and isStoryMode " + Std.string(isStoryMode));
 		//fade and hide the touchscreen button
@@ -4621,6 +4622,12 @@ class PlayState extends MusicBeatState
 					// also load heartspec
 					// PlayState.HEARTS = DokiDoki.loadFromJson("heartBeatSpec");
 					FlxG.sound.music.stop();
+
+					//JOELwindows7: log this one in will ya?
+					trace("Here's path for this outro " + epilogueVideoPath + "\n and next song intro " + SONG.videoPath);
+					FlxG.log.add("Here's path for this outro " + epilogueVideoPath + "\n and next song intro " + SONG.videoPath);
+					trace("and outro is enabled " + Std.string(hasEpilogueVideo) + "and next song intro enabled" + SONG.hasVideo);
+					FlxG.log.add("and outro is enabled " + Std.string(hasEpilogueVideo) + "and next song intro enabled" + SONG.hasVideo);
 
 					//JOELwindows7: here timer guys
 					new FlxTimer().start(delayFirstBeforeThat,function(tmr:FlxTimer){

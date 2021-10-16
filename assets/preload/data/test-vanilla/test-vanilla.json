@@ -1,6 +1,7 @@
 {
     "song": {
         "song": "Test-vanilla",
+        "artist": "Kawai Sprite",
         "bpm": 150.0,
         "needsVoices": true,
         "player1": "bf-covid",

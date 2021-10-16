@@ -4676,6 +4676,7 @@
         "hasDialogueChat": true,
         "hasEpilogueChat": true,
         "allowedToHeadbang": true,
-        "noteStyle": "saubo"
+        "noteStyle": "saubo",
+        "artist": "TheFatRat"
     }
 }

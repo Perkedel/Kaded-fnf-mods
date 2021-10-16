@@ -848,6 +848,7 @@
         }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 159, "changeBPM": false, "mustHitSection": true }],
         "player2": "monster-christmas",
         "song": "Winter Horrorland",
+        "artist": "bassetfilms",
         "stage": "mallEvil",
         "needsVoices": true,
         "validScore": true,

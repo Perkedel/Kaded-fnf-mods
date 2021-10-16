@@ -1,6 +1,7 @@
 {
     "song": {
         "song": "Bopeebo",
+        "artist": "Kawai Sprite",
         "bpm": 100.0,
         "needsVoices": true,
         "player1": "bf",

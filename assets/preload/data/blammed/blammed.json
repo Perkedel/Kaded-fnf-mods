@@ -633,6 +633,7 @@
         }],
         "player2": "pico",
         "song": "Blammed",
+        "artist": "Kawai Sprite",
         "stage": "philly",
         "needsVoices": true,
         "validScore": true,

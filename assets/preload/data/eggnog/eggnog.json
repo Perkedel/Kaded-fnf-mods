@@ -684,6 +684,7 @@
         }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 150, "changeBPM": false, "mustHitSection": true }],
         "player2": "parents-christmas",
         "song": "Eggnog",
+        "artist": "Kawai Sprite",
         "stage": "mall",
         "needsVoices": true,
         "validScore": true,

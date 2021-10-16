@@ -1,7 +1,7 @@
 {
     "song": {
         "videoPath": "Toxic_maydayIntro",
-        "hasVideo": false,
+        "hasVideo": true,
         "notes": [{
                 "endTime": 3200,
                 "playerAltAnim": false,

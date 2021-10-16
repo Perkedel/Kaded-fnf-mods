@@ -1,6 +1,7 @@
 {
     "song": {
         "song": "Tutorial",
+        "artist": "Kawai Sprite",
         "notes": [{
             "mustHitSection": true,
             "typeOfSection": 0,

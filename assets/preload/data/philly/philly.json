@@ -635,6 +635,7 @@
         }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 175, "changeBPM": false, "mustHitSection": true }],
         "player2": "pico",
         "song": "Philly Nice",
+        "artist": "Kawai Sprite",
         "stage": "philly",
         "needsVoices": true,
         "validScore": true,

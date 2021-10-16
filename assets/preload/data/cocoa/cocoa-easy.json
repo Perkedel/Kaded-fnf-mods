@@ -478,6 +478,7 @@
         }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 100, "changeBPM": false, "mustHitSection": true }],
         "player2": "parents-christmas",
         "song": "Cocoa",
+        "artist": "Kawai Sprite",
         "stage": "mall",
         "needsVoices": true,
         "validScore": true,

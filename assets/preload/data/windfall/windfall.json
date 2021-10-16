@@ -2079,6 +2079,7 @@
         "hasEpilogueChat": false,
         "noteStyle": "saubo",
         "isCreditRoll": true,
-        "creditRunsOnce": true
+        "creditRunsOnce": true,
+        "artist": "TheFatRat"
     }
 }

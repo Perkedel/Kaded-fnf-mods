@@ -691,6 +691,7 @@
         }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "sectionNotes": [], "lengthInSteps": 16, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 120, "changeBPM": false, "mustHitSection": true }],
         "player2": "senpai-angry",
         "song": "Roses",
+        "artist": "Kawai Sprite",
         "stage": "school",
         "needsVoices": true,
         "validScore": true,
