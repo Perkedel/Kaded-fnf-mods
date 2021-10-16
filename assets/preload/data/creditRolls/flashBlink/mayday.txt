@@ -5,6 +5,7 @@ Original Friday Night Funkin:Kawai Sprite:Musician
 Original Friday Night Funkin:Evilsk8tr:Art too as well
 Kade Engine:KadeDev:Based Pog Chad Frog guy big W
 Psyched Stuffs:Shadow Mario:Psyched feature inspirations
+Mic'd up Stuffs:Verwex:Very W mic'd up
 Video Cutscener:GWebDev:Webmer support
 Video Cutscener:BrightFyre:MP4 support with VLC
 Android Port:luckydog7:inspiration for porting into APK
@@ -49,6 +50,8 @@ Tools:kem0x:DLL to count number of frame of video on demand.
 Tools:Haxe Foundation:Haxe this itself
 Tools:HaxeFlixel:Framework to have this FNF real
 Tools:Herman Seibb:VST Host
+Tools:Leshy Labs:Spritesheet XML sparrow atlas maker
+Tools:Tunebeat:Tempo Analyzer and stuffs
 Tutorials:BrightFyre:How to Mod FNF series
 Tutorials:bbpanzu:Video Cutscener + other tutorials
 Featuring:Bill Wurtz:surreal Jazz & meme musician

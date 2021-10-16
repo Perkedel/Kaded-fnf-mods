@@ -278,6 +278,8 @@ class PlayState extends MusicBeatState
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
+	private var finishingSong:Bool = false; //JOELwindows7: here make redundant flag to make sure the song doesn't run alone
+	//even the song has been done.
 
 	public var iconP1:HealthIcon; // making these public again because i may be stupid
 	public var iconP2:HealthIcon; // what could go wrong?
@@ -1241,7 +1243,7 @@ class PlayState extends MusicBeatState
 			songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
 			add(songPosBar);
 
-			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.song.length * 5), songPosBG.y, 0, SONG.artist + " - " + SONG.song, 16);
+			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - ((SONG.song.length + 3 + SONG.artist.length) * 5), songPosBG.y, 0, SONG.artist + " - " + SONG.song, 16);
 			if (PlayStateChangeables.useDownscroll)
 				songName.y -= 3;
 			songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1279,7 +1281,7 @@ class PlayState extends MusicBeatState
 			 healthBar.createFilledBar(0xFFFF0066,0xFF0097C4); //Semple Pink, Anish Kappor shoo!
 			 case 'selever':
 			 healthBar.createFilledBar(0xFFB3003B,0xFF0097C4); //Maroone Velvet
-			 case 'ruv':
+			 case 'ruv' | 'kapi':
 			 healthBar.createFilledBar(0xFF5C5C8A,0xFF0097C4); //Russian Blue
 			 case 'puella':
 			 healthBar.createFilledBar(0xFF9900cc,0xFF0097C4); //Hat purple
@@ -1449,6 +1451,7 @@ class PlayState extends MusicBeatState
 
 		// cameras = [FlxG.cameras.list[1]];
 		startingSong = true;
+		finishingSong = false;
 
 		trace('starting');
 
@@ -2308,7 +2311,7 @@ class PlayState extends MusicBeatState
 			songPosBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
 			add(songPosBar);
 
-			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.song.length * 5), songPosBG.y, 0, SONG.artist + " - " + SONG.song, 16);
+			var songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - ((SONG.song.length + 3 + SONG.artist.length) * 5), songPosBG.y, 0, SONG.artist + " - " + SONG.song, 16);
 			if (PlayStateChangeables.useDownscroll)
 				songName.y -= 3;
 			songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -2916,12 +2919,18 @@ class PlayState extends MusicBeatState
 								newScroll = i.value;
 							}
 						case "Cheer Now":
-							justCheer();
+							justCheer(true);
 						case "Hey Now":
-							justHey();
+							justHey(true);
 						case "Cheer Hey Now":
-							if(i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0) justCheer();
-							if(i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0) justHey();
+							if(i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0) justCheer(true);
+							if(i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0) justHey(true);
+						case "Camera Zoom in":
+							camZoomNow(i.value);
+						case "HUD Zoom in":
+							camZoomNow(0,i.value);
+						case "Both Zoom in":
+							camZoomNow(i.value,i.value);
 					}
 				}
 
@@ -3388,7 +3397,7 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		if (startingSong)
+		if (startingSong && !finishingSong) //JOELwindows7: so let's get back here out here.
 		{
 			if (startedCountdown)
 			{
@@ -3761,6 +3770,7 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("Auto Pause",FlxG.autoPause);
 		FlxG.watch.addQuick("generated Music",generatedMusic);
 		FlxG.watch.addQuick("starting song", startingSong);
+		FlxG.watch.addQuick("finishing song", finishingSong);
 		FlxG.watch.addQuick("Started Countdown", startedCountdown);
 		FlxG.watch.addQuick("Song started", songStarted);
 		FlxG.watch.addQuick("Allowed Headbang",allowedToHeadbang);
@@ -4329,7 +4339,8 @@ class PlayState extends MusicBeatState
 	{
 		endingSong = true; // Just in case somekind of forgor
 		songStarted = false; //try to do this?
-		startingSong = true; //Oh maybe this helps simulate like if the song is on preparation?
+		// startingSong = true; //Oh maybe this helps simulate like if the song is on preparation?
+		finishingSong = true; //fine let's phreaking do redundancy.
 		FlxG.sound.music.stop(); //Stop the music now man.
 		trace("Check Epilogue " + Std.string(SONG.hasEpilogueChat) + "\n and isStoryMode " + Std.string(isStoryMode));
 		//fade and hide the touchscreen button
@@ -5866,7 +5877,7 @@ class PlayState extends MusicBeatState
 
 		//JOELwindows7: Psyched camera flash
 		if(FlxG.save.data.flashing){
-			FlxG.camera.flash(FlxColor.WHITE, 1);
+			FlxG.camera.flash(FlxColor.WHITE, .6);
 		}
 
 		//JOELwindows7: shock fear Heartbeat jumps

@@ -54,6 +54,7 @@ class CreditRollout extends FlxTypedGroup<FlxText>{
         } catch(e){
             FlxG.log.error("Could not load Cool credit text " + path);
             FlxG.log.error(e);
+            trace("Werror " + e + " at " + path);
             linesOfThem = ["Error:404:Credit Text file not found",
                 "Error:Check Path:" + path,
                 "Error:Message:" + e

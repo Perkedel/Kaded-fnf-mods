@@ -620,6 +620,9 @@ class ChartingState extends MusicBeatState
 			//JOELwindows7: list of event here
 			var eventType = new FlxUIDropDownMenu(10,60,FlxUIDropDownMenu.makeStrIdLabelArray(
 				[
+					"Camera Zoom in",
+					"HUD Zoom in",
+					"Both Zoom in",
 					"Cheer Now",
 					"Hey Now",
 					"Cheer Hey Now",

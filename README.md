@@ -24,7 +24,7 @@ I mean, if the antivirus thought that file is `malicious`, it's false positive. 
 if you don't trust it, check around the source code and its libraries referred.
 
 ## Using API
-- GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (Private, do not share). Here's the code:
+- GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (**Private, do not share** if filled with your keys). Here's the code:
 ```haxe
 package;
 class GJKeys

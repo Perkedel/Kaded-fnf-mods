@@ -20,7 +20,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/tools/7015 FileDaddy. easily install mod for FNF
 - https://gamebanana.com/wips/55046 contains all character from almost most mods of FNF communities, all playable yay! maybe I should do the same here?
 - https://gamejolt.com/games/unipla/616582  contains all character from almost most mods of FNF communities, all playable yay! maybe I should do the same here?
-- https://gamebanana.com/mods/44236 Mic'd up FNF yess. with wholely different UI UX.
+- https://gamebanana.com/mods/44236 Verwex Mic'd up FNF yess. with wholely different UI UX.
 - https://gamebanana.com/mods/44140 GenoX FNF UTAU cover
 - https://hdboye.github.io/FnfModAttempt/ list of fnf mods & play nows (no longer updated) capu wattomp
 - https://github.com/NyxTheShield/MIDI2FNF the MIDI chart to FNF chart json wow
