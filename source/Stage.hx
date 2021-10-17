@@ -817,7 +817,7 @@ class Stage
 		if(executeStageScript){
 			trace('stage script: ' + executeStageScript + " - " + Paths.lua(daPath)); //JOELwindows7: check too
 
-			PlayState.stageScript = ModchartState.createModchartState(true,daPath);
+			PlayState.stageScript = ModchartState.createModchartState(PlayState.isStoryMode,true,daPath);
 			PlayState.stageScript.executeState('loaded',[CoolUtil.toCompatCase(PlayState.SONG.song)]);
 			trace("loaded it up stage lua script");
 			PlayState.stageScript.setVar("originalColors", multiOriginalColor);

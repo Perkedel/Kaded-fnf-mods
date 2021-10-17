@@ -51,7 +51,8 @@ function playerTwoSing(note, position)
     trace("P2 sing " + note + " at " + position + " hscript");
     if ((curBeat >= 0 && curBeat < 16) || (curBeat >= 144)){
         if(flashing)
-            colorizeColorablebyKey(note,false,0);
+            //colorizeColorablebyKey(note,false,0);
+            randomizeColoring();
         if(distractions){
             trace("BRUMM " + curBeat);
             camZoomNow(0.015, 0.03, 1.35);
@@ -77,7 +78,8 @@ function playerOneSing(note, position)
     trace("P1 sing " + note + " at " + position + " hscript");
     if ((curBeat >= 0 && curBeat < 16) || (curBeat >= 144)){
         if(flashing)
-            colorizeColorablebyKey(note,false,0);
+            //colorizeColorablebyKey(note,false,0);
+            randomizeColoring();
     }else{
         hideColoring(false, 0);
     }

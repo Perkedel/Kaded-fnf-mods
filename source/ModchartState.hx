@@ -366,7 +366,7 @@ class ModchartState
 
     // LUA SHIT
 
-    function new(rawMode:Bool = false, pathu:String = "", ? isStoryMode = true) //JOELwindows7: make lua stageont. ? isStoryMode is upstream pls push away!
+    function new(? isStoryMode = true, rawMode:Bool = false, pathu:String = "") //JOELwindows7: make lua stageont. ? isStoryMode is upstream pls push away!
     {
 		trace('opening a lua state (because we are cool :))');
 		lua = LuaL.newstate();
@@ -1171,9 +1171,9 @@ class ModchartState
     }
 
     //JOELwindows7: raw mode pls!
-	public static function createModchartState(rawMode:Bool = false, path:String = "", ? isStoryMode = true):ModchartState
+	public static function createModchartState(? isStoryMode = true, rawMode:Bool = false, path:String = ""):ModchartState
     {
-        return new ModchartState(rawMode,path,isStoryMode);
+        return new ModchartState(isStoryMode, rawMode,path);
     }
 }
 #end
