@@ -155,6 +155,16 @@
 	<assets path="assets/week10"    library="week10"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/week11"    library="week11"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week11"    library="week11"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/week12"    library="week12"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week12"    library="week12"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/week13"    library="week13"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week13"    library="week13"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/week14"    library="week14"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week14"    library="week14"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/week15"    library="week15"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week15"    library="week15"    exclude="*.mp3" unless="web"/>
+	<!-- JOELwindows7: please! I'm tired. make it all procedural already -->
+	<!-- wait I think 1.8 has something here?? -->
 	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/odysee"    library="odysee"    exclude="*.ogg" if="web odysee"/>
@@ -212,7 +222,8 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="newgrounds" unless='neko || hl || mobile'/>
+	<haxelib name="newgrounds" unless='mobile || emscripten'/>
+	<!-- whoah NG stuff now supports neko & haslink whoahow -->
 	<haxelib name="faxe" if='switch'/>
 	<!-- JOELwindows7: VVV Danger -->
 	<!-- <haxelib name="faxe"/>  -->
@@ -293,8 +304,9 @@
 	<!-- JOELwindows7: TentaRJ's GameJolt tools -->
 	<haxelib name="tentools" />
 	<haxelib name="systools" unless = "mobile"/>
-	<ndll name="systools" haxelib="systools" />
-
+	<ndll name="systools" haxelib="systools" unless = "mobile"/>
+	<!-- Final touch to have this -->
+	<haxedef name="gamejolt" if="tentools systools"/>
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->

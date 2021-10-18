@@ -5,6 +5,9 @@ import lime.app.Application;
 #if sys
 import sys.io.File;
 #end
+// #if js
+// import js.html.File;
+// #end
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.StrNameLabel;
 import flixel.FlxCamera;
@@ -170,10 +173,12 @@ class ChartingState extends MusicBeatState
 
 		if (PlayState.SONG != null)
 		{
+			#if sys
 			if (PlayState.isSM)
 				_song = Song.conversionChecks(Song.loadFromJsonRAW(File.getContent(PlayState.pathToSm + "/converted.json")));
 			else
 			{
+			#end
 				var songFormat = StringTools.replace(PlayState.SONG.song, " ", "-");
 				switch (songFormat) {
 					case 'Dad-Battle': songFormat = 'Dadbattle';
@@ -183,7 +188,9 @@ class ChartingState extends MusicBeatState
 				var poop:String = Highscore.formatSong(songFormat, PlayState.storyDifficulty);
 
 				_song = Song.conversionChecks(Song.loadFromJson(poop, PlayState.SONG.song));
-			}
+			#if sys
+			} //JOELwindows7: so it has to be anything supported by sys
+			#end
 		}
 		else
 		{
@@ -1504,10 +1511,12 @@ class ChartingState extends MusicBeatState
 		FlxG.sound.playMusic(Paths.inst(daSong), 0.6);
 		#end
 
+		#if sys
 		if (PlayState.isSM)
 			_song = Song.conversionChecks(Song.loadFromJsonRAW(File.getContent(PlayState.pathToSm + "/converted.json")));
 		else
 		{
+		#end
 			var songFormat = StringTools.replace(PlayState.SONG.song, " ", "-");
 			switch (songFormat) {
 				case 'Dad-Battle': songFormat = 'Dadbattle';
@@ -1517,7 +1526,9 @@ class ChartingState extends MusicBeatState
 			var poop:String = Highscore.formatSong(songFormat, PlayState.storyDifficulty);
 
 			_song = Song.conversionChecks(Song.loadFromJson(poop, PlayState.SONG.song));
-		}
+		#if sys
+		} //JOELwindows7: must be sys compatible
+		#end
 
 		// WONT WORK FOR TUTORIAL OR TEST SONG!!! REDO LATER
 		#if sys
@@ -1852,6 +1863,7 @@ class ChartingState extends MusicBeatState
 			{
 				if (FlxG.sound.music.playing)
 				{
+					#if cpp //JOELwindows7: must be cpp
 					@:privateAccess
 					{
 						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
@@ -1870,6 +1882,7 @@ class ChartingState extends MusicBeatState
 						}
 			
 					}	
+					#end
 				}
 			}
 

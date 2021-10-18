@@ -321,6 +321,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/tuts/14218 HOW TO ADD CHARACTER SELECTION MENU tuts TorchTheDragon
 - https://gamebanana.com/questions/17887 Note mine how do i add this
 - https://www.youtube.com/watch?v=iiQfjYcpJfQ use this video man
+- https://gamebanana.com/mods/328733?post=9535558 gff inspiration. `shitty mod didn't get downloaded get angry`. name the update `The Poopiest Mod of the year` `The Poopiest Update of the year`.
 
 # in event of git merge conflict
 use VScode and Github desktop!

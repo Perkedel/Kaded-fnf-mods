@@ -1,7 +1,9 @@
 package;
 
 import GalleryAchievements;
+#if gamejolt
 import GameJolt;
+#end
 import flixel.input.gamepad.FlxGamepad;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -104,7 +106,9 @@ class OptionsMenu extends MusicBeatState
 
 		//JOELwindows7: Account options
 		new OptionCategory("Accounts",[
+			#if gamejolt
 			new LogGameJoltIn("(" + GameJoltAPI.getUserInfo(true) + ") Log your GameJolt account in")
+			#end
 		])
 		
 	];

@@ -1,7 +1,9 @@
 package;
 
 import GalleryAchievements;
+#if gamejolt
 import GameJolt;
+#end
 import experiments.AnMIDIyeay;
 import experiments.AnWebmer;
 import experiments.LimeAudioBufferTester;
@@ -1739,13 +1741,19 @@ class LogGameJoltIn extends Option{
 
 	public override function press():Bool
 	{
+		#if gamejolt
 		FlxG.switchState(new GameJoltLogin());
+		#end
 		return false;
 	}
 
 	private override function updateDisplay():String
 	{
+		#if gamejolt
 		return GameJoltAPI.getStatus() ? "GJ " + GameJoltAPI.getUserInfo(true) : "GameJolt Login";
+		#else
+		return "GameJolt not supported";
+		#end
 	}
 }
 

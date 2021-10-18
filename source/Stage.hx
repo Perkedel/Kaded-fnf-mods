@@ -884,7 +884,7 @@ class Stage
 				executeStageHscript = p.exists() || customStage.forceHscriptModchart;
 			trace("Stage hscript file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 			#else
-			if (!PlayStateChangeables.Optimize && SONG.useCustomStage && customStage.useStageScript)
+			if (!PlayStateChangeables.Optimize && PlayState.SONG.useCustomStage && customStage.useStageScript)
 				executeStageHscript = customStage.forceHscriptModchart;
 			#end
 			trace("forced stage Hscript exist is " + Std.string(customStage.forceHscriptModchart));

@@ -63,6 +63,8 @@ class MP4Handler
 		nc.addEventListener("netStatus", netConnection_onNetStatus);
 
 		netStream.play(path);
+		#elseif mobile
+		
 		#else
 		finishCallback = callback;
 

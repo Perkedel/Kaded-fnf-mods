@@ -31,7 +31,9 @@ import io.newgrounds.NG;
 #end
 import lime.app.Application;
 import openfl.Assets;
+#if gamejolt
 import GameJolt.GameJoltAPI;
+#end
 // import grig.midi.MidiOut;
 
 #if (desktop && cpp)
@@ -109,8 +111,10 @@ class TitleState extends MusicBeatState
 		#end
 
 		// JOELwindows7: TentaRJ GameJolter
+		#if gamejolt
 		GameJoltAPI.connect();
 		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+		#end
 				
 		Highscore.load();
 

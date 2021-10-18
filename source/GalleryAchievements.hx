@@ -18,7 +18,9 @@
 
 import flixel.FlxG;
 import flixel.util.FlxSave;
+#if gamejolt
 import GameJolt;
+#end
 import Options;
 
  //JOELwindows7: This is Achievement system.
@@ -192,7 +194,9 @@ class ViewTheAchievement extends MusicBeatSubstate{
 
 class AchievementUnlocked{
     public static function whichIs(nameID:String){
+        #if gamejolt
         GameJoltAPI.getTrophy(HardCodeAchievements.listings[nameID].externalAchievmentIDs.gameJolt);
+        #end
         // FlxG.save.data.achievementUnlocked[nameID] = true;
         trace("Achievement Unlocked: " + nameID);
     }
