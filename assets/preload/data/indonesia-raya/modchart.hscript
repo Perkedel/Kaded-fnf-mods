@@ -27,7 +27,7 @@ function start(song)
 
 function flagHoistMeter(level,upTo){
     //1800 was + 500.0 was
-    setActorY(-(FlxMath.remapToRange(level,upTo,0,1)+500.0),'flag');
+    setActorY(-(FlxMath.remapToRange(level,upTo,0,1.1))+500,'flag');
     // https://api.haxeflixel.com/flixel/math/FlxMath.html
 }
 

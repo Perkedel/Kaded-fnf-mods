@@ -428,6 +428,24 @@ class DialogueBox extends FlxSpriteGroup
 					portraitLeft.visible = true;
 					portraitLeft.animation.play('enter');
 				}
+				switch(PlayState.SONG.player2.toLowerCase()){ //JOELwindows7: HAHA! different character sound go brrrrr!!!
+					case 'hookx':
+						dropText.font = 'Ubuntu Bold';
+						swagDialogue.font = 'Ubuntu Bold';
+						dropText.color = 0xFF7d00bf;
+						swagDialogue.color = 0xFF055bff;
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk1'), 0.6),
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk2'), 0.6),
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk3'), 0.6),
+						];
+					default:
+						dropText.font = 'Pixel Arial 11 Bold';
+						swagDialogue.font = 'Pixel Arial 11 Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+				}
 			case 'bf':
 				portraitLeft.visible = false;
 				portraitMiddle.visible = false;
@@ -436,6 +454,24 @@ class DialogueBox extends FlxSpriteGroup
 					portraitRight.visible = true;
 					portraitRight.animation.play('enter');
 				}
+				switch(PlayState.SONG.player1.toLowerCase()){ //JOELwindows7: HAHA! different character sound go brrrrr!!!
+					case 'hookx':
+						dropText.font = 'Ubuntu Bold';
+						swagDialogue.font = 'Ubuntu Bold';
+						dropText.color = 0xFF7d00bf;
+						swagDialogue.color = 0xFF055bff;
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk1'), 0.6),
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk2'), 0.6),
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk3'), 0.6),
+						];
+					default:
+						dropText.font = 'Pixel Arial 11 Bold';
+						swagDialogue.font = 'Pixel Arial 11 Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+				}
 			case 'gf':
 				portraitRight.visible = false;
 				portraitLeft.visible = false;
@@ -443,6 +479,14 @@ class DialogueBox extends FlxSpriteGroup
 				{
 					portraitMiddle.visible = true;
 					portraitMiddle.animation.play('enter');
+				}
+				switch(PlayState.SONG.gfVersion.toLowerCase()){ //JOELwindows7: HAHA! different character sound go brrrrr!!!
+					default:
+						dropText.font = 'Pixel Arial 11 Bold';
+						swagDialogue.font = 'Pixel Arial 11 Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 				}
 		}
 	}

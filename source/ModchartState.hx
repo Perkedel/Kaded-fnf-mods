@@ -30,6 +30,8 @@ import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
 
+using StringTools;
+
 class ModchartState 
 {
 	//public static var shaders:Array<LuaShader> = null;
@@ -1113,7 +1115,7 @@ class ModchartState
 		});
 
 		Lua_helper.add_callback(lua, "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0){
-			PlayState.Stage.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
+			PlayState.Stage.chooseColoringColor(FlxColor.fromString(color.trim()), justOne, toWhichBg);
 			//hmm, I am afraid using raw FlxColor data doing won't work.
 			//You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
 			//so, maybe you should use the.. string version?

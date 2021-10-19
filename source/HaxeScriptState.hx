@@ -977,7 +977,7 @@ class HaxeScriptState {
 
         addCallback( "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0){
             trace("wattempt script choose color " + color);
-            PlayState.Stage.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
+            PlayState.Stage.chooseColoringColor(FlxColor.fromString(color.trim()), justOne, toWhichBg);
             //hmm, I am afraid using raw FlxColor data doing won't work.
             //You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
             //so, maybe you should use the.. string version?
