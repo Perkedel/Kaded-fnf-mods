@@ -42,6 +42,7 @@ Soundfonts:GenoX:UTAU voice of FNF characters
 VST:FullBucket.de:Frequency Shifter
 VST:Yamaha Corporation:S-YXG2006LE
 Fonts:Canonical:Ubuntu fonts
+Tools:Audacity Team:Audio editor
 Tools:Heikoplate:PSR UTI. make MIDI becomes Yamaha Musicsoft for $0
 Tools:kuzu (Open MIDI Project):Sekaiju. MIDI editor
 Tools:Inkscape Team:Inkscape vector graphic editor
@@ -52,6 +53,7 @@ Tools:Haxe Foundation:Haxe this itself
 Tools:HaxeFlixel:Framework to have this FNF real
 Tools:Herman Seibb:VST Host
 Tools:Leshy Labs:Spritesheet XML sparrow atlas maker
+Tools:LMMS:Linux Multimedia Studio DAW
 Tools:Tunebeat:Tempo Analyzer and stuffs
 Tools:W3 School:Web stuffs & Color tools
 Tutorials:BrightFyre:How to Mod FNF series

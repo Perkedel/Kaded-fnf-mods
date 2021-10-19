@@ -16,7 +16,7 @@ install:
   # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
   - cinst haxe -y
   # JOELwindows7: Install the wget and stuffs
-  # - cinst wget -y # downloader
+  - cinst wget -y # downloader
   - cinst butler -y # upload to itch io
   # - cinst zip -y # zip it
   # - cinst unzip -y # unzip it
@@ -79,7 +79,7 @@ install:
   - haxelib list
   - dir
   # download placeholding keys
-  - wget --output-file=C:\projects\kaded-fnf-mods-windows32\source\GJKeys.hx https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+  - wget --output-document='C:\projects\kaded-fnf-mods-winDroid\source\GJKeys.hx' https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
 
 # No tests idk lol
 build_script:
