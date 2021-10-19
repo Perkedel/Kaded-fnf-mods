@@ -447,6 +447,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.youtube.com/watch?v=iiQfjYcpJfQ https://pastebin.com/eLy6Mxte . add mine note type
 - https://github.com/TentaRJ/GameJolt-FNF-Integration https://github.com/TentaRJ/tentools TentaRJ. Stuffs like GameJolt Achievements and perhaps other things later.
 - https://design.ubuntu.com/font/ Canonical. Ubuntu font set yeay!
+- https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Conso ah this tool right here to get hex color. 
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

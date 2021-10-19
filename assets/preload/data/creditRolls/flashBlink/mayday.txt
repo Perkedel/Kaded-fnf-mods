@@ -41,6 +41,7 @@ Soundfonts:Nickham13:SF2 files for all custom things like bf
 Soundfonts:GenoX:UTAU voice of FNF characters
 VST:FullBucket.de:Frequency Shifter
 VST:Yamaha Corporation:S-YXG2006LE
+Fonts:Canonical:Ubuntu fonts
 Tools:Heikoplate:PSR UTI. make MIDI becomes Yamaha Musicsoft for $0
 Tools:kuzu (Open MIDI Project):Sekaiju. MIDI editor
 Tools:Inkscape Team:Inkscape vector graphic editor
@@ -52,6 +53,7 @@ Tools:HaxeFlixel:Framework to have this FNF real
 Tools:Herman Seibb:VST Host
 Tools:Leshy Labs:Spritesheet XML sparrow atlas maker
 Tools:Tunebeat:Tempo Analyzer and stuffs
+Tools:W3 School:Web stuffs & Color tools
 Tutorials:BrightFyre:How to Mod FNF series
 Tutorials:bbpanzu:Video Cutscener + other tutorials
 Featuring:Bill Wurtz:surreal Jazz & meme musician
