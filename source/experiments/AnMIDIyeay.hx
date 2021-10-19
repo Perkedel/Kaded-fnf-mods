@@ -1,5 +1,7 @@
+
 package experiments;
 
+/*
 // import org.si.midi.MIDIPlayer;
 import grig.midi.file.event.MidiMessageEvent;
 import grig.midi.file.event.*;
@@ -77,7 +79,7 @@ class AnMIDIyeay extends MusicBeatState{
             }
         });
     }
-
+    /*
     function midiMidi(handoverMIDIout:MidiOut){
         trace("Midi Midi");
         var counter:Int = 0;
@@ -215,4 +217,6 @@ class AnMIDIyeay extends MusicBeatState{
             }
         }
     }
+    
 }
+*/

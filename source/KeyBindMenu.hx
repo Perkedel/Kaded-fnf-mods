@@ -3,6 +3,7 @@ package;
 /// Code created by Rozebud for FPS Plus (thanks rozebud)
 // modified by KadeDev for use in Kade Engine/Tricky
 
+import GalleryAchievements;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.util.FlxAxes;
 import flixel.FlxSubState;
@@ -111,6 +112,9 @@ class KeyBindMenu extends FlxSubState
         textUpdate();
 
 		super.create();
+
+        //JOELwindows7: stuffs
+        AchievementUnlocked.whichIs("key_map");
 	}
 
     var frames = 0;
@@ -183,10 +187,13 @@ class KeyBindMenu extends FlxSubState
                 }
 
             case "input":
-                tempKey = keys[curSelected];
-                keys[curSelected] = "?";
-                if (KeyBinds.gamepad)
+                if (KeyBinds.gamepad) {
+                    tempKey = gpKeys[curSelected];
                     gpKeys[curSelected] = "?";
+                } else {
+                    tempKey = keys[curSelected];
+                    keys[curSelected] = "?";
+                }
                 textUpdate();
                 state = "waiting";
 
@@ -325,12 +332,15 @@ class KeyBindMenu extends FlxSubState
         var shouldReturn:Bool = true;
 
         var notAllowed:Array<String> = ["START"];
+        var swapKey:Int = -1;
 
         for(x in 0...gpKeys.length)
             {
                 var oK = gpKeys[x];
-                if(oK == r)
+                if(oK == r) {
+                    swapKey = x;
                     gpKeys[x] = null;
+                }
                 if (notAllowed.contains(oK))
                 {
                     gpKeys[x] = null;
@@ -339,7 +349,17 @@ class KeyBindMenu extends FlxSubState
                 }
             }
 
+        if (notAllowed.contains(r))
+        {
+            gpKeys[curSelected] = tempKey;
+            lastKey = r;
+            return;
+        }
+
         if(shouldReturn){
+            if (swapKey != -1) {
+                gpKeys[swapKey] = tempKey;
+            }
             gpKeys[curSelected] = r;
             FlxG.sound.play(Paths.sound('scrollMenu'));
         }
@@ -357,6 +377,7 @@ class KeyBindMenu extends FlxSubState
         var shouldReturn:Bool = true;
 
         var notAllowed:Array<String> = [];
+        var swapKey:Int = -1;
 
         for(x in blacklist){notAllowed.push(x);}
 
@@ -365,8 +386,10 @@ class KeyBindMenu extends FlxSubState
         for(x in 0...keys.length)
             {
                 var oK = keys[x];
-                if(oK == r)
+                if(oK == r) {
+                    swapKey = x;
                     keys[x] = null;
+                }
                 if (notAllowed.contains(oK))
                 {
                     keys[x] = null;
@@ -375,9 +398,9 @@ class KeyBindMenu extends FlxSubState
                 }
             }
 
-        if (r.contains("NUMPAD"))
+        if (notAllowed.contains(r))
         {
-            keys[curSelected] = null;
+            keys[curSelected] = tempKey;
             lastKey = r;
             return;
         }
@@ -385,6 +408,10 @@ class KeyBindMenu extends FlxSubState
         lastKey = "";
 
         if(shouldReturn){
+            // Swap keys instead of setting the other one as null
+            if (swapKey != -1) {
+                keys[swapKey] = tempKey;
+            }
             keys[curSelected] = r;
             FlxG.sound.play(Paths.sound('scrollMenu'));
         }

@@ -51,7 +51,8 @@ function playerTwoSing(note, position)
     trace("P2 sing " + note + " at " + position + " hscript");
     if ((curBeat >= 0 && curBeat < 16) || (curBeat >= 144)){
         if(flashing)
-            colorizeColorablebyKey(note,false,0);
+            //colorizeColorablebyKey(note,false,0);
+            randomizeColoring();
         if(distractions){
             trace("BRUMM " + curBeat);
             camZoomNow(0.015, 0.03, 1.35);
@@ -77,7 +78,8 @@ function playerOneSing(note, position)
     trace("P1 sing " + note + " at " + position + " hscript");
     if ((curBeat >= 0 && curBeat < 16) || (curBeat >= 144)){
         if(flashing)
-            colorizeColorablebyKey(note,false,0);
+            //colorizeColorablebyKey(note,false,0);
+            randomizeColoring();
     }else{
         hideColoring(false, 0);
     }
@@ -85,22 +87,22 @@ function playerOneSing(note, position)
 
 function colorizeColorablebyKey(note, justOne, toWhichBg)
 {
-    if (note == 'left')
+    if (note == 0 /*'left'*/)
     {
         trace("set color magenta (hscript)");
         chooseColoringColor("magenta", justOne, toWhichBg);
     }
-    else if (note == 'down')
+    else if (note == 1 /*'down'*/)
     {
         trace("set color cyan (hscript)");
         chooseColoringColor("cyan", justOne, toWhichBg);
     }
-    else if (note == 'up')
+    else if (note == 2 /*'up'*/)
     {
         trace("set color lime (hscript)");
         chooseColoringColor("lime", justOne, toWhichBg);
     }
-    else if (note == 'right')
+    else if (note == 3 /*'right'*/)
     {
         trace("set color red (hscript)");
         chooseColoringColor("red", justOne, toWhichBg);

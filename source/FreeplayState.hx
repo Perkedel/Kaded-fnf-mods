@@ -1,5 +1,7 @@
 package;
 
+import MusicBeatState;
+import GalleryAchievements;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import lime.app.Application;
@@ -23,7 +25,8 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 
-#if (windows && cpp)
+
+#if (desktop && cpp)
 import Discord.DiscordClient;
 #end
 
@@ -34,6 +37,9 @@ class FreeplayState extends MusicBeatState
 	public static var songs:Array<SongMetadata> = [];
 
 	var selector:FlxText;
+
+	public static var rate:Float = 1.0;
+
 	public static var curSelected:Int = 0;
 	public static var curDifficulty:Int = 1;
 
@@ -55,6 +61,12 @@ class FreeplayState extends MusicBeatState
 
 	public static var songData:Map<String,Array<SwagSong>> = [];
 
+	//JOELwindows7: globalize bg variable to be refered for color change
+	var bg:FlxSprite;
+
+	//JOELwindows7: week data here
+	var weekInfo:SwagWeeks;
+
 	public static function loadDiff(diff:Int, format:String, name:String, array:Array<SwagSong>)
 	{
 		try 
@@ -67,11 +79,29 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+	public static function loadWeekDatas(weekDatas:SwagWeeks):SwagWeeks
+	{
+		try
+		{
+			weekDatas = StoryMenuState.loadFromJson('weekList');
+			return weekDatas;
+		}
+		catch(ex)
+		{
+			//werror
+			FlxG.log.error("wError " + ex + "\n unable to load weeklist");
+			return null;
+		}
+	}
+
 	override function create()
 	{
 		//JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+
+		//JOELwindows7: pls install weekData
+		weekInfo = FreeplayState.loadWeekDatas(weekInfo);
 
 		//var diffList = "";
 
@@ -139,7 +169,7 @@ class FreeplayState extends MusicBeatState
 				{
 					if (file.contains(" "))
 						FileSystem.rename("assets/sm/" + i + "/" + file,"assets/sm/" + i + "/" + file.replace(" ","_"));
-					if (file.endsWith(".sm"))
+					if (file.endsWith(".sm") && !FileSystem.exists("assets/sm/" + i + "/converted.json"))
 					{
 						trace("reading " + file);
 						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ","_"));
@@ -148,6 +178,18 @@ class FreeplayState extends MusicBeatState
 						var meta = new SongMetadata(file.header.TITLE, 0, "sm",file,"assets/sm/" + i);
 						songs.push(meta);
 						var song = Song.loadFromJsonRAW(data);
+						songData.set(file.header.TITLE, [song,song,song]);
+					}
+					else if (FileSystem.exists("assets/sm/" + i + "/converted.json") && file.endsWith(".sm"))
+					{
+						trace("reading " + file);
+						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ","_"));
+						trace("Converting " + file.header.TITLE);
+						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
+						var meta = new SongMetadata(file.header.TITLE, 0, "sm",file,"assets/sm/" + i);
+						songs.push(meta);
+						var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + i + "/converted.json"));
+						trace("got content lol");
 						songData.set(file.header.TITLE, [song,song,song]);
 					}
 				}
@@ -174,7 +216,7 @@ class FreeplayState extends MusicBeatState
 			}
 		 */
 
-		 #if (windows && cpp)
+		 #if (desktop && cpp)
 		 // Updating Discord Rich Presence
 		 DiscordClient.changePresence("In the Freeplay Menu", null);
 		 #end
@@ -191,7 +233,8 @@ class FreeplayState extends MusicBeatState
 
 		// LOAD CHARACTERS
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		// var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat')); //JOELwindows7: here global
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
@@ -230,7 +273,7 @@ class FreeplayState extends MusicBeatState
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		// scoreText.alignment = RIGHT;
 
-		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.35), 105, 0xFF000000);
+		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.35), 135, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
@@ -242,9 +285,9 @@ class FreeplayState extends MusicBeatState
 		diffCalcText.font = scoreText.font;
 		add(diffCalcText);
 
-		previewtext = new FlxText(scoreText.x, scoreText.y + 94, 0, "" + (KeyBinds.gamepad ? "X" : "SPACE") + " to preview", 24);
+		previewtext = new FlxText(scoreText.x, scoreText.y + 94, 0, "Rate: " + rate + "x", 24);
 		previewtext.font = scoreText.font;
-		//add(previewtext);
+		add(previewtext);
 
 		comboText = new FlxText(diffText.x + 100, diffText.y, 0, "", 24);
 		comboText.font = diffText.font;
@@ -284,10 +327,12 @@ class FreeplayState extends MusicBeatState
 
 		super.create();
 
-		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7 also tween back button!
-		FlxTween.tween(leftButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7 also tween left button!
-		FlxTween.tween(rightButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7 also tween right button!
+		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left button!
+		FlxTween.tween(rightButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween right button!
 
+		//JOELwindows7: stuff
+		AchievementUnlocked.whichIs("freeplay_mode");
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String)
@@ -377,16 +422,56 @@ class FreeplayState extends MusicBeatState
 		//if (FlxG.keys.justPressed.SPACE && !openedPreview)
 			//openSubState(new DiffOverview());
 
-		if (FlxG.keys.justPressed.LEFT || haveLefted)
+		if (FlxG.keys.pressed.SHIFT)
 		{
-			changeDiff(-1);
-			haveLefted = false;
+			if (FlxG.keys.justPressed.LEFT || haveLefted)
+			{
+				rate -= 0.05;
+				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+				haveLefted = false;
+			}
+			if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
+			{
+				rate += 0.05;
+				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+				haveRighted = false;
+			}
+
+			if (rate > 3)
+			{
+				rate = 3;
+				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+			}
+			else if (rate < 0.5)
+			{
+				rate = 0.5;
+				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+			}
+
+			previewtext.text = "Rate: " + rate + "x";
 		}
-		if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
+		else
 		{
-			changeDiff(1);
-			haveRighted = false;
+			if (FlxG.keys.justPressed.LEFT || haveLefted)
+			{
+				changeDiff(-1);
+				haveLefted = false;
+			}
+			if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
+			{
+				changeDiff(1);
+				haveRighted = false;
+			}
 		}
+		
+					
+		#if cpp
+		@:privateAccess
+		{
+			if (FlxG.sound.music.playing)
+				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
+		}
+		#end
 
 		if (controls.BACK || haveBacked)
 		{
@@ -442,7 +527,11 @@ class FreeplayState extends MusicBeatState
 			#else
 			PlayState.isSM = false;
 			#end
+
+			PlayState.songMultiplier = rate;
+
 			LoadingState.loadAndSwitchState(new PlayState());
+
 			clean();
 			haveClicked = false;
 		} else {
@@ -668,6 +757,9 @@ class FreeplayState extends MusicBeatState
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+
+		//JOELwindows7: now change bg color based on what week did this on
+		changeColorByWeekOf(curSelected);
 	}
 
 	//JOELwindows7: copy from above but this time it set selection number
@@ -720,6 +812,28 @@ class FreeplayState extends MusicBeatState
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+
+		//JOELwindows7: now change bg color based on what week did this on
+		changeColorByWeekOf(curSelected);
+	}
+
+	function changeColorByWeekOf(which:Int = 0){
+		if(bg != null)
+			if(which <= -1) bg.color = FlxColor.fromString("purple")
+			else
+				{
+					try
+					{
+						bg.color = FlxColor.fromString(weekInfo.weekColor[songs[which].week]);
+					}
+					catch(e)
+					{
+						trace("error Week color selection no. " + Std.string(curSelected) + ". " + e);
+						trace("Week datas " + Std.string(weekInfo));
+						FlxG.log.warn(e);
+						bg.color = FlxColor.fromString("purple");
+					}
+				}
 	}
 }
 

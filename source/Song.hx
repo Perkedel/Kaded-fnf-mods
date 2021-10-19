@@ -27,6 +27,7 @@ typedef SwagSong =
 {
 	var chartVersion:String;
 	var song:String;
+	var artist:String; //JOELwindows7: the artist of it
 	var notes:Array<SwagSection>;
 	var eventObjects:Array<Event>;
 	var bpm:Float;
@@ -60,12 +61,24 @@ typedef SwagSong =
 	var invisibleCountdown:Bool;
 	var silentCountdown:Bool;
 	var skipCountdown:Bool;
+
+	//JOELwindows7: more configs
+	var useCustomNoteStyle:Bool; // enable to custom noteskin
+
+	//JOELwindows7: Delays
+	var delayBeforeStart:Float; //Delay before the song start. for cutscene after dia video
+	var delayAfterFinish:Float; //Delay after song finish before load next song. for cutscene before epilogue video
+
+	var isCreditRoll:Bool; //JOELwindows7: is this credit roll? if yes then roll credit.
+	var creditRunsOnce:Bool; //JOELwindows7: is this credit runs once?
 }
 
 class Song
 {
+	public static var latestChart:String = "KE1";
 	public var chartVersion:String;
 	public var song:String;
+	public var artist:String; //JOELwindows7: the artist of it
 	public var notes:Array<SwagSection>;
 	public var bpm:Float;
 	public var needsVoices:Bool = true;
@@ -99,12 +112,23 @@ class Song
 	public var silentCountdown:Bool = false;
 	public var skipCountdown:Bool = false;
 
+	//JOELwindows7: more configs
+	public var useCustomNoteStyle:Bool = false; // enable to custom noteskin
+
+	//JOELwindows7: Delays
+	public var delayBeforeStart:Float = 0; //Delay before the song start. for cutscene after dia video
+	public var delayAfterFinish:Float = 0; //Delay after song finish before load next song. for cutscene before epilogue video
+
+	public var isCreditRoll:Bool = false; //JOELwindows7: is this credit roll? if yes then roll credit.
+	public var creditRunsOnce:Bool = false; //JOELwindows7: is this credit runs once?
+
 	public function new(song, notes, bpm)
 	{
 		this.song = song;
 		this.notes = notes;
 		this.bpm = bpm;
 	}
+	
 
 	public static function loadFromJsonRAW(rawJson:String)
 	{
@@ -116,6 +140,7 @@ class Song
 	
 		return parseJSONshit(rawJson);
 	}
+	
 
 	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
 	{
@@ -181,6 +206,41 @@ class Song
 
 		song.eventObjects = convertedStuff;
 
+		if (song.noteStyle == null)
+			song.noteStyle = "normal";
+
+		if (song.gfVersion == null)
+			song.gfVersion = "gf";
+		
+
+		TimingStruct.clearTimings();
+        
+		var currentIndex = 0;
+		for (i in song.eventObjects)
+		{
+			if (i.type == "BPM Change")
+			{
+				var beat:Float = i.position;
+
+				var endBeat:Float = Math.POSITIVE_INFINITY;
+
+				TimingStruct.addTiming(beat,i.value,endBeat, 0); // offset in this case = start time since we don't have a offset
+				
+				if (currentIndex != 0)
+				{
+					var data = TimingStruct.AllTimings[currentIndex - 1];
+					data.endBeat = beat;
+					data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
+					var step = ((60 / data.bpm) * 1000) / 4;
+					TimingStruct.AllTimings[currentIndex].startStep = Math.floor(((data.endBeat / (data.bpm / 60)) * 1000) / step);
+					TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
+				}
+
+				currentIndex++;
+			}
+		}
+
+
 		for(i in song.notes)
 		{
 			var currentBeat = 4 * index;
@@ -201,12 +261,20 @@ class Song
 
 			for(ii in i.sectionNotes)
 			{
-				if (ii[3] == null)
+				if (song.chartVersion == null)
+				{
 					ii[3] = false;
+					ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+				}
+
+				if (ii[3] == 0)
+					ii[3] == false;
 			}
 
 			index++;
 		}
+
+		song.chartVersion = latestChart;
 
 		return song;
 
@@ -222,7 +290,7 @@ class Song
 		for (section in swagShit.notes) 
 		{
 			if (section.altAnim)
-				section.p1AltAnim = section.altAnim;
+				section.CPUAltAnim = section.altAnim;
 		}
 
 		return swagShit;

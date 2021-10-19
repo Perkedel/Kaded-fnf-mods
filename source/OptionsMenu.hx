@@ -1,5 +1,9 @@
 package;
 
+import GalleryAchievements;
+#if gamejolt
+import GameJolt;
+#end
 import flixel.input.gamepad.FlxGamepad;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -51,6 +55,7 @@ class OptionsMenu extends MusicBeatState
 			new StepManiaOption("Sets the colors of the arrows depending on quantization instead of direction."),
 			new AccuracyOption("Display accuracy information on the info bar."),
 			new SongPositionOption("Show the song's current position as a scrolling bar."),
+			new Colour("The color behind icons now fit with their theme. (e.g. Pico = green)"),
 			new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
 			new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
 			new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
@@ -59,7 +64,7 @@ class OptionsMenu extends MusicBeatState
 		new OptionCategory("Audio",[
 			new AdjustVolumeOption("Adjust Audio volume"),
 			new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
-			new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
+			// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
 		]),
 		
 		new OptionCategory("Misc", [
@@ -92,11 +97,18 @@ class OptionsMenu extends MusicBeatState
 		
 		new OptionCategory("Saves and Data", [
 			#if desktop
-			new ReplayOption("View saved song replays."),
+			//new ReplayOption("View saved song replays."),
 			#end
 			new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
 			new LockWeeksOption("Reset your story mode progress. This is irreversible!"),
 			new ResetSettings("Reset ALL your settings. This is irreversible!")
+		]),
+
+		//JOELwindows7: Account options
+		new OptionCategory("Accounts",[
+			#if gamejolt
+			new LogGameJoltIn("(" + GameJoltAPI.getUserInfo(true) + ") Log your GameJolt account in")
+			#end
 		])
 		
 	];
@@ -162,7 +174,8 @@ class OptionsMenu extends MusicBeatState
 
 		super.create();
 
-		
+		//JOELwindows7: stuffs
+		AchievementUnlocked.whichIs("anOption");
 	}
 
 	var isCat:Bool = false;

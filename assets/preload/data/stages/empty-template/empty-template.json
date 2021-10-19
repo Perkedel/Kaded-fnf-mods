@@ -19,7 +19,9 @@
             "colorable": false,
             "initColor": "white",
             "initVisible": true,
-            "antialiasing": true
+            "antialiasing": true,
+            "layInFrontNow": false,
+            "inFrontOfWhich": 0
         }],
         "isHalloween": false,
         "defaultCamZoom": 0.5,

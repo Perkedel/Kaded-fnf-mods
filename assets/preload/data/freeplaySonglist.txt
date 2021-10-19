@@ -31,3 +31,6 @@ Title Classic:hookx:10
 Test-vanilla:hookx:10
 Test:gf:-1
 Indonesia Raya:placeholder:11
+doremi:hookx:12
+cradles:hookx:12
+mayday:hookx:12

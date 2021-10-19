@@ -17,6 +17,7 @@ class AnWebmer extends MusicBeatState{
         infoText.text = "WEBM tester\n" +
         "\n" +
         "ENTER = Play the video\n" +
+        "V = Play the video with VLC" +
         "ESCAPE = Go back\n" +
         "";
         infoText.size = 32;
@@ -59,6 +60,9 @@ class AnWebmer extends MusicBeatState{
             #if (windows && cpp)
             // theVLC.play(Paths.sound("SurroundSoundTest"));
             #end
+            //attempt BrightFyre's MP4 support powered by all working VLC
+            var anVideo:MP4Handler = new MP4Handler();
+            anVideo.playMP4(Paths.videoVlc("Compilateur-justAlsa"), new AnWebmer());
         }
 
         if(FlxG.mouse.overlaps(backButton)){

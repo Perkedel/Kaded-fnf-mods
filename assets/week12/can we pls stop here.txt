@@ -1,0 +1,2 @@
+there should be a destructive edit that makes all this filed procedurally
+rather than have to manually define it again in hard code wtf man?!

@@ -13,8 +13,14 @@ function loaded(song)
 
 function start(song) 
 {
-    setCamZoom(.2);
-    tweenCameraZoom(.9,20);
+    //setCamZoom(.2);
+    //tweenCameraZoom(.9,20);
+}
+
+function songStart(){
+    setCamZoom(0.2);
+    tweenCameraZoom(0.9,20);
+    //oh wow this works?! okeh idk man.
 }
 
 function update(elapsed)

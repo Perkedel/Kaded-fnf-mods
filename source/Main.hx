@@ -2,8 +2,8 @@ package;
 
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.input.keyboard.FlxKey;
-import grig.midi.MidiOut;
-import grig.midi.MidiIn;
+// import grig.midi.MidiOut;
+// import grig.midi.MidiIn;
 import flixel.util.FlxTimer;
 #if !debug
 import com.player03.android6.Permissions;
@@ -12,7 +12,7 @@ import com.player03.android6.Permissions;
 import webm.WebmPlayer;
 #end
 import lime.app.Application;
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
 import openfl.display.BlendMode;
@@ -46,8 +46,8 @@ class Main extends Sprite
 	public static var chosenMarkNum:Int = 0;
 	//JOELwindows7: Please no demonic reference about Mark of what the peck!
 
-	public static var midiIn:MidiIn; //JOELwindows7: Grig MIDI in
-	public static var midiOut:MidiOut; //JOELwindows7: Grig MIDI out
+	// public static var midiIn:MidiIn; //JOELwindows7: Grig MIDI in
+	// public static var midiOut:MidiOut; //JOELwindows7: Grig MIDI out
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -64,9 +64,9 @@ class Main extends Sprite
 		super();
 
 		//JOELwindows7: Grig midi pls
-		trace("MIDI out APIs:\n" + MidiOut.getApis());
-		midiIn = new MidiIn(grig.midi.Api.Unspecified);
-		midiOut = new MidiOut(grig.midi.Api.Unspecified);
+		// trace("MIDI out APIs:\n" + MidiOut.getApis());
+		// midiIn = new MidiIn(grig.midi.Api.Unspecified);
+		// midiOut = new MidiOut(grig.midi.Api.Unspecified);
 
 		//JOELwindows7: pecking ask permission on Android 6 and forth
 		#if (android && !debug)
@@ -189,7 +189,7 @@ class Main extends Sprite
 		#end
 		//end GrowtopiaFli Video Cutscener
 		
-		#if windows
+		#if (desktop && cpp)
 		DiscordClient.initialize();
 
 		Application.current.onExit.add (function (exitCode) {
@@ -271,3 +271,50 @@ class Main extends Sprite
 
 	//JOELwindows7: mini platform scanner
 }
+
+//JOELwindows7: Oh my God. extremely complicated since 1.7 changes here yeauw.
+/**
+ * A lot of stuffs has been moved into its own dedicated area.
+ * I hope this works here.
+ * 
+ * See, why modding FNF is insanely hard? because yeah. everything change, goes all the way out of understanding.
+ * you will need to relearn the new stuff again. If you wish to stay in current situation, 
+ * it'll even be whole sufferings and torture to adapt to this brand new world.
+ * 
+ * I wish me & you gamers don't have to face this every single time. All we have to do should've been like
+ * just build the song, stage data, character data, modcharts and stuffs and call it a day. Not like you must
+ * download source code and hardcodely add stuffs in it, or make your own filed compile-less loading yourself just to get
+ * away with it.
+ * 
+ * You know, Kade cases here, is already a big trouble. I hope it's not Kade and friends' fault. And I do believe so.
+ * e.g. PlayState.hx is notorious for conflict entirely according to since when I was
+ * started forking it this. Options.hx too! wtf?!?!?! I don't get it! it's merely change this, but Git somehow interpret it
+ * like everything changes, can't compare at all. What? is it because entire file reupload through GitHub? Oh pls don't!
+ * use your locally cloned and push from that computer instead. Or is it? I believe GitHub should be smart, and even already is
+ * the file is changed manually through GitHub or uploaded overwrite manually through GitHub. compare what's different
+ * and here's the commit result. part of this change, not all these change.
+ * 
+ * You know why FNF was here in the first place? wait **what the peck was that question?** pull it back!
+ * There may be something trouble or lacks in Stepmania or Etterna. And it seems that there is new thing compared.
+ * which are stage scenery, characters, and stuffs. You see, common rhythm game bg are just images. Well, osu! has sophisticated
+ * stage bg (storyboard) too but unfortunately it's RAW and just that, and also different programming language.
+ * FNF on the other hand had these built in, for all songs. it's core principle for the stage bg. You even can storyboard with all familiar Lua & Haxe script.
+ * not that bizzare programming language (although you can do that if you'd like, just like bbpanzu's)
+ * 
+ * Some thesis examiner would still not understand, especially those stans, ugh get the peck rid of them!
+ * But here we are. With all lives given in it instead of just a plain image or video. with versus on all songs.
+ * it's unique! I believe... that Versus mode in DDR isn't the same we were FNFing about. We are talking about
+ * Co-Op but it's versus instead. not just Double or what. 2 player, 4 had this and the other had other 4. not 4 arrows go to both player, no!
+ * 
+ * Hey we are almost talking personal stuff here. Hold your mouth pls! We do not want our mission contract here be compromised
+ * and got trashed because of the real intention of this LFM here. 
+ * We still have more weeks every month until the Full Ass. And this meantime we must tell messages to gamers
+ * about today's situation in this FNF mod communities.
+ * 
+ * So I wanted to make one here out again. I've been concepting this since days of Stepmania. Game mode selection is hard sessioned. I hate that.
+ * I want it also dynamic like rest of the parameter in a session. if you want to switch to PIU you don't need to restart session first.
+ * Just choose in the song selection menu that's it. and heck the arrow collumn and be added or removed on demand later in the game when there is the command in
+ * the rhythm data. VOEZ go brrrrrrrrr!!!! VOEZ with collumns templates. each collumns has assigned keypress which.
+ * Collumn can be 1D, 2D osu-like saber, 3D, 4D, ah whatever you get the idea. most importantly, like Stepmania loadings. also
+ * with characters and sceneries inspired from it this FNF.
+ */

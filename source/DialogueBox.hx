@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.text.FlxTypeText;
@@ -44,10 +45,14 @@ class DialogueBox extends FlxSpriteGroup
 	var customBfPls:Bool = false;
 	var customGfPls:Bool = false;
 
+	//JOELwindows7: own FlxSound because generate song destroyed the intro music
+	var sound:FlxSound;
+
 	public function new(
 		talkingRight:Bool = true, 
 		?dialogueList:Array<String>, 
 		?hadChat:Bool = false, 
+		?isEpilogue:Bool = false,
 		?customChar:Bool = false, 
 		?customCharXML:String = "jakartaFair/Hookx-dialogueAppear",
 		?customCharFrame:String = "enter",
@@ -60,24 +65,51 @@ class DialogueBox extends FlxSpriteGroup
 		// whoah! in Flutter, I have to import. even when they're next to it! wow! Haxe is great!!!
 		// AND THE PECK?! in Unity, I must point also the instance inside the class 
 		// (just to grab its current value of a variable right now), not just the class itself. hoof! I am jealous!
-		switch (PlayState.SONG.song.toLowerCase())
+		if(!isEpilogue)
 		{
-			case 'senpai':
-				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'thorns':
-				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'senpai-midi':
-				trace("Hey play lunchbox now");
-				FlxG.sound.playMusic(Paths.music('Lunchbox-midi'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			case 'thorns-midi':
-				FlxG.sound.playMusic(Paths.music('LunchboxScary-midi'), 0);
-				FlxG.sound.music.fadeIn(1, 0, 0.8);
-			default:
-				trace("No pre-dialog sound to play!");
+			switch (PlayState.SONG.song.toLowerCase())
+			{
+				case 'senpai':
+					sound = new FlxSound().loadEmbedded(Paths.music('Lunchbox'),true);
+					sound.volume = 0;
+					FlxG.sound.list.add(sound);
+					sound.fadeIn(1, 0, 0.8);
+				case 'thorns':
+					sound = new FlxSound().loadEmbedded(Paths.music('LunchboxScary'),true);
+					sound.volume = 0;
+					FlxG.sound.list.add(sound);
+					sound.fadeIn(1, 0, 0.8);
+				case 'senpai-midi':
+					trace("Hey play lunchbox now");
+					// FlxG.sound.playMusic(Paths.music('Lunchbox-midi'), 0);
+					// FlxG.sound.music.fadeIn(1, 0.1, 0.8);
+					// DialogueBox.ownIntroMusic = new FlxSound().loadEmbedded(Paths.music('Lunchbox-midi'));
+					sound = new FlxSound().loadEmbedded(Paths.music('Lunchbox-midi'),true);
+					sound.volume = 0;
+					FlxG.sound.list.add(sound);
+					sound.fadeIn(1, 0, 0.8);
+				case 'thorns-midi':
+					// FlxG.sound.playMusic(Paths.music('LunchboxScary-midi'), 0);
+					// FlxG.sound.music.fadeIn(1, 0.1, 0.8);
+					// DialogueBox.ownIntroMusic = new FlxSound().loadEmbedded(Paths.music('LunchboxScary-midi'));
+					sound = new FlxSound().loadEmbedded(Paths.music('LunchboxScary-midi'),true);
+					sound.volume = 0;
+					FlxG.sound.list.add(sound);
+					sound.fadeIn(1, 0, 0.8);
+				default:
+					sound = new FlxSound();
+					// DialogueBox.ownIntroMusic = new FlxSound();
+					trace("No pre-dialog sound to play!");
+			}
+		} else {
+			sound = new FlxSound();
 		}
+
+		//JOELwindows7: because generate song destroyed the music.
+		// DialogueBox.ownIntroMusic.volume = 0;
+		// DialogueBox.ownIntroMusic.fadeIn(1, 0.1, 0.8);
+		// FlxG.sound.list.add(ownIntroMusic);
+		// DialogueBox.ownIntroMusic.play();
 
 		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
 		bgFade.scrollFactor.set();
@@ -130,6 +162,9 @@ class DialogueBox extends FlxSpriteGroup
 				'breakfast' |
 				'dont stop' |
 				'title classic' |
+				'mayday' |
+				'cradles' |
+				'doremi' |
 				'test-vanilla'
 				:
 				//JOELwindows7: the dialogue normalizations
@@ -155,6 +190,8 @@ class DialogueBox extends FlxSpriteGroup
 				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
 				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
 				box.animation.addByIndices('normal', 'speech bubble normal', [4], "", 24);
+
+				nonPixel = true;
 
 				if(customChar){
 					customCharPls = true;
@@ -306,9 +343,15 @@ class DialogueBox extends FlxSpriteGroup
 				{
 					isEnding = true;
 
-					if (PlayState.SONG.song.toLowerCase() == 'senpai' || PlayState.SONG.song.toLowerCase() == 'thorns' || PlayState.SONG.song.toLowerCase() == 'senpai-midi' || PlayState.SONG.song.toLowerCase() == 'thorns-midi' )
-						FlxG.sound.music.fadeOut(2.2, 0);
+					if (PlayState.SONG.song.toLowerCase() == 'senpai' || PlayState.SONG.song.toLowerCase() == 'thorns' 
+						|| PlayState.SONG.song.toLowerCase() == 'senpai-midi' || PlayState.SONG.song.toLowerCase() == 'thorns-midi')
+						sound.fadeOut(2.2, 0);
 
+					//JOELwindows7: Do this after that music faded out
+					new FlxTimer().start(2.2, function(tmr:FlxTimer) {
+						sound.stop();
+					});
+					
 					new FlxTimer().start(0.2, function(tmr:FlxTimer)
 					{
 						box.alpha -= 1 / 5;
@@ -385,6 +428,24 @@ class DialogueBox extends FlxSpriteGroup
 					portraitLeft.visible = true;
 					portraitLeft.animation.play('enter');
 				}
+				switch(PlayState.SONG.player2.toLowerCase()){ //JOELwindows7: HAHA! different character sound go brrrrr!!!
+					case 'hookx':
+						dropText.font = 'Ubuntu Bold';
+						swagDialogue.font = 'Ubuntu Bold';
+						dropText.color = 0xFF7d00bf;
+						swagDialogue.color = 0xFF055bff;
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk1'), 0.6),
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk2'), 0.6),
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk3'), 0.6),
+						];
+					default:
+						dropText.font = 'Pixel Arial 11 Bold';
+						swagDialogue.font = 'Pixel Arial 11 Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+				}
 			case 'bf':
 				portraitLeft.visible = false;
 				portraitMiddle.visible = false;
@@ -393,6 +454,24 @@ class DialogueBox extends FlxSpriteGroup
 					portraitRight.visible = true;
 					portraitRight.animation.play('enter');
 				}
+				switch(PlayState.SONG.player1.toLowerCase()){ //JOELwindows7: HAHA! different character sound go brrrrr!!!
+					case 'hookx':
+						dropText.font = 'Ubuntu Bold';
+						swagDialogue.font = 'Ubuntu Bold';
+						dropText.color = 0xFF7d00bf;
+						swagDialogue.color = 0xFF055bff;
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk1'), 0.6),
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk2'), 0.6),
+							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk3'), 0.6),
+						];
+					default:
+						dropText.font = 'Pixel Arial 11 Bold';
+						swagDialogue.font = 'Pixel Arial 11 Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+				}
 			case 'gf':
 				portraitRight.visible = false;
 				portraitLeft.visible = false;
@@ -400,6 +479,14 @@ class DialogueBox extends FlxSpriteGroup
 				{
 					portraitMiddle.visible = true;
 					portraitMiddle.animation.play('enter');
+				}
+				switch(PlayState.SONG.gfVersion.toLowerCase()){ //JOELwindows7: HAHA! different character sound go brrrrr!!!
+					default:
+						dropText.font = 'Pixel Arial 11 Bold';
+						swagDialogue.font = 'Pixel Arial 11 Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 				}
 		}
 	}

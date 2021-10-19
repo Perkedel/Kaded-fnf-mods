@@ -1,203 +1,224 @@
 {
     "heartSpecs": [{
-        "character": "bf",
-        "initHR": 70,
-        "maxHR": 220,
-        "minHR": 70,
-        "heartTierBoundaries": [90, 120, 150, 200],
-        "successionAdrenalAdd": [4, 3, 2, 1],
-        "fearShockAdd": [10, 8, 7, 5],
-        "relaxMinusPerBeat": [1, 2, 4, 7]
-    }, {
-        "character": "gf",
-        "initHR": 80,
-        "maxHR": 400,
-        "minHR": 80,
-        "heartTierBoundaries": [100, 150, 200, 300],
-        "successionAdrenalAdd": [6, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "dad",
-        "initHR": 60,
-        "maxHR": 190,
-        "minHR": 50,
-        "heartTierBoundaries": [80, 100, 125, 180],
-        "successionAdrenalAdd": [2, 2, 1, 1],
-        "fearShockAdd": [10, 10, 8, 5],
-        "relaxMinusPerBeat": [2, 8, 10, 15]
-    }, {
-        "character": "pico",
-        "initHR": 80,
-        "maxHR": 240,
-        "minHR": 80,
-        "heartTierBoundaries": [80, 100, 125, 180],
-        "successionAdrenalAdd": [2, 2, 1, 1],
-        "fearShockAdd": [50, 20, 10, 5],
-        "relaxMinusPerBeat": [1, 2, 2, 2]
-    }, {
-        "character": "mom",
-        "initHR": 60,
-        "maxHR": 200,
-        "minHR": 50,
-        "heartTierBoundaries": [80, 100, 125, 180],
-        "successionAdrenalAdd": [2, 2, 1, 1],
-        "fearShockAdd": [10, 10, 8, 5],
-        "relaxMinusPerBeat": [2, 8, 10, 15]
-    }, {
-        "character": "senpai",
-        "initHR": 70,
-        "maxHR": 200,
-        "minHR": 60,
-        "heartTierBoundaries": [80, 100, 125, 180],
-        "successionAdrenalAdd": [2, 2, 1, 1],
-        "fearShockAdd": [10, 10, 8, 5],
-        "relaxMinusPerBeat": [2, 8, 10, 15]
-    }, {
-        "character": "hookx",
-        "initHR": 70,
-        "maxHR": 400,
-        "minHR": 70,
-        "heartTierBoundaries": [100, 150, 200, 300],
-        "successionAdrenalAdd": [6, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "tankman",
-        "initHR": 70,
-        "maxHR": 250,
-        "minHR": 50,
-        "heartTierBoundaries": [80, 100, 125, 180],
-        "successionAdrenalAdd": [2, 2, 1, 1],
-        "fearShockAdd": [10, 10, 8, 5],
-        "relaxMinusPerBeat": [2, 8, 10, 15]
-    }, {
-        "character": "misfortune",
-        "initHR": 80,
-        "maxHR": 270,
-        "minHR": 80,
-        "heartTierBoundaries": [110, 170, 200, 250],
-        "successionAdrenalAdd": [9, 7, 5, 4],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "whitty",
-        "initHR": 100,
-        "maxHR": 1000,
-        "minHR": 100,
-        "heartTierBoundaries": [200, 300, 500, 800],
-        "successionAdrenalAdd": [50, 25, 10, 5],
-        "fearShockAdd": [500, 250, 100, 50],
-        "relaxMinusPerBeat": [1, 1, 1, 1]
-    }, {
-        "character": "carol",
-        "initHR": 70,
-        "maxHR": 250,
-        "minHR": 70,
-        "heartTierBoundaries": [100, 150, 175, 225],
-        "successionAdrenalAdd": [6, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "momi",
-        "initHR": 70,
-        "maxHR": 255,
-        "minHR": 70,
-        "heartTierBoundaries": [100, 150, 175, 225],
-        "successionAdrenalAdd": [6, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "sunday",
-        "initHR": 70,
-        "maxHR": 260,
-        "minHR": 70,
-        "heartTierBoundaries": [100, 150, 175, 225],
-        "successionAdrenalAdd": [6, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "sky",
-        "initHR": 70,
-        "maxHR": 400,
-        "minHR": 70,
-        "heartTierBoundaries": [100, 150, 200, 300],
-        "successionAdrenalAdd": [6, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "sarv",
-        "initHR": 50,
-        "maxHR": 500,
-        "minHR": 50,
-        "heartTierBoundaries": [100, 200, 300, 400],
-        "successionAdrenalAdd": [6, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "ruv",
-        "initHR": 45,
-        "maxHR": 500,
-        "minHR": 45,
-        "heartTierBoundaries": [100, 200, 300, 400],
-        "successionAdrenalAdd": [6, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "selever",
-        "initHR": 80,
-        "maxHR": 600,
-        "minHR": 80,
-        "heartTierBoundaries": [100, 200, 300, 400],
-        "successionAdrenalAdd": [6, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "puella",
-        "initHR": 70,
-        "maxHR": 1200,
-        "minHR": 70,
-        "heartTierBoundaries": [100, 150, 200, 500],
-        "successionAdrenalAdd": [10, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "coatin",
-        "initHR": 70,
-        "maxHR": 230,
-        "minHR": 70,
-        "heartTierBoundaries": [90, 100, 150, 200],
-        "successionAdrenalAdd": [7, 4, 3, 3],
-        "fearShockAdd": [25, 15, 10, 5],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "paulla",
-        "initHR": 70,
-        "maxHR": 1200,
-        "minHR": 70,
-        "heartTierBoundaries": [100, 150, 200, 500],
-        "successionAdrenalAdd": [10, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "timmy",
-        "initHR": 65,
-        "maxHR": 1200,
-        "minHR": 65,
-        "heartTierBoundaries": [100, 150, 200, 500],
-        "successionAdrenalAdd": [10, 5, 4, 3],
-        "fearShockAdd": [50, 30, 20, 15],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }, {
-        "character": "placeholder",
-        "initHR": 1,
-        "maxHR": 9999,
-        "minHR": 1,
-        "heartTierBoundaries": [100, 1000, 5000, 9000],
-        "successionAdrenalAdd": [100, 50, 25, 10],
-        "fearShockAdd": [5000, 1000, 500, 100],
-        "relaxMinusPerBeat": [1, 2, 2, 3]
-    }],
+            "character": "bf",
+            "initHR": 70,
+            "maxHR": 220,
+            "minHR": 70,
+            "heartTierBoundaries": [90, 120, 150, 200],
+            "successionAdrenalAdd": [4, 3, 2, 1],
+            "fearShockAdd": [10, 8, 7, 5],
+            "relaxMinusPerBeat": [1, 2, 4, 7]
+        }, {
+            "character": "gf",
+            "initHR": 80,
+            "maxHR": 400,
+            "minHR": 80,
+            "heartTierBoundaries": [100, 150, 200, 300],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        },
+        {
+            "character": "bf-covid",
+            "initHR": 70,
+            "maxHR": 220,
+            "minHR": 70,
+            "heartTierBoundaries": [90, 120, 150, 200],
+            "successionAdrenalAdd": [4, 3, 2, 1],
+            "fearShockAdd": [10, 8, 7, 5],
+            "relaxMinusPerBeat": [1, 2, 4, 7]
+        }, {
+            "character": "gf-covid",
+            "initHR": 80,
+            "maxHR": 400,
+            "minHR": 80,
+            "heartTierBoundaries": [100, 150, 200, 300],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        },
+        {
+            "character": "dad",
+            "initHR": 60,
+            "maxHR": 190,
+            "minHR": 50,
+            "heartTierBoundaries": [80, 100, 125, 180],
+            "successionAdrenalAdd": [2, 2, 1, 1],
+            "fearShockAdd": [10, 10, 8, 5],
+            "relaxMinusPerBeat": [2, 8, 10, 15]
+        }, {
+            "character": "pico",
+            "initHR": 80,
+            "maxHR": 240,
+            "minHR": 80,
+            "heartTierBoundaries": [80, 100, 125, 180],
+            "successionAdrenalAdd": [2, 2, 1, 1],
+            "fearShockAdd": [50, 20, 10, 5],
+            "relaxMinusPerBeat": [1, 2, 2, 2]
+        }, {
+            "character": "mom",
+            "initHR": 60,
+            "maxHR": 200,
+            "minHR": 50,
+            "heartTierBoundaries": [80, 100, 125, 180],
+            "successionAdrenalAdd": [2, 2, 1, 1],
+            "fearShockAdd": [10, 10, 8, 5],
+            "relaxMinusPerBeat": [2, 8, 10, 15]
+        }, {
+            "character": "senpai",
+            "initHR": 70,
+            "maxHR": 200,
+            "minHR": 60,
+            "heartTierBoundaries": [80, 100, 125, 180],
+            "successionAdrenalAdd": [2, 2, 1, 1],
+            "fearShockAdd": [10, 10, 8, 5],
+            "relaxMinusPerBeat": [2, 8, 10, 15]
+        }, {
+            "character": "hookx",
+            "initHR": 70,
+            "maxHR": 400,
+            "minHR": 70,
+            "heartTierBoundaries": [100, 150, 200, 300],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "tankman",
+            "initHR": 70,
+            "maxHR": 250,
+            "minHR": 50,
+            "heartTierBoundaries": [80, 100, 125, 180],
+            "successionAdrenalAdd": [2, 2, 1, 1],
+            "fearShockAdd": [10, 10, 8, 5],
+            "relaxMinusPerBeat": [2, 8, 10, 15]
+        }, {
+            "character": "misfortune",
+            "initHR": 80,
+            "maxHR": 270,
+            "minHR": 80,
+            "heartTierBoundaries": [110, 170, 200, 250],
+            "successionAdrenalAdd": [9, 7, 5, 4],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "whitty",
+            "initHR": 100,
+            "maxHR": 1000,
+            "minHR": 100,
+            "heartTierBoundaries": [200, 300, 500, 800],
+            "successionAdrenalAdd": [50, 25, 10, 5],
+            "fearShockAdd": [500, 250, 100, 50],
+            "relaxMinusPerBeat": [1, 1, 1, 1]
+        }, {
+            "character": "carol",
+            "initHR": 70,
+            "maxHR": 250,
+            "minHR": 70,
+            "heartTierBoundaries": [100, 150, 175, 225],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "momi",
+            "initHR": 70,
+            "maxHR": 255,
+            "minHR": 70,
+            "heartTierBoundaries": [100, 150, 175, 225],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "sunday",
+            "initHR": 70,
+            "maxHR": 260,
+            "minHR": 70,
+            "heartTierBoundaries": [100, 150, 175, 225],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "sky",
+            "initHR": 70,
+            "maxHR": 400,
+            "minHR": 70,
+            "heartTierBoundaries": [100, 150, 200, 300],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "sarv",
+            "initHR": 50,
+            "maxHR": 500,
+            "minHR": 50,
+            "heartTierBoundaries": [100, 200, 300, 400],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "ruv",
+            "initHR": 45,
+            "maxHR": 500,
+            "minHR": 45,
+            "heartTierBoundaries": [100, 200, 300, 400],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "selever",
+            "initHR": 80,
+            "maxHR": 600,
+            "minHR": 80,
+            "heartTierBoundaries": [100, 200, 300, 400],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "puella",
+            "initHR": 70,
+            "maxHR": 1200,
+            "minHR": 70,
+            "heartTierBoundaries": [100, 150, 200, 500],
+            "successionAdrenalAdd": [10, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "coatin",
+            "initHR": 70,
+            "maxHR": 230,
+            "minHR": 70,
+            "heartTierBoundaries": [90, 100, 150, 200],
+            "successionAdrenalAdd": [7, 4, 3, 3],
+            "fearShockAdd": [25, 15, 10, 5],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "paulla",
+            "initHR": 70,
+            "maxHR": 1200,
+            "minHR": 70,
+            "heartTierBoundaries": [100, 150, 200, 500],
+            "successionAdrenalAdd": [10, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "timmy",
+            "initHR": 65,
+            "maxHR": 1200,
+            "minHR": 65,
+            "heartTierBoundaries": [100, 150, 200, 500],
+            "successionAdrenalAdd": [10, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }, {
+            "character": "placeholder",
+            "initHR": 1,
+            "maxHR": 9999,
+            "minHR": 1,
+            "heartTierBoundaries": [100, 1000, 5000, 9000],
+            "successionAdrenalAdd": [100, 50, 25, 10],
+            "fearShockAdd": [5000, 1000, 500, 100],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        }
+    ],
     "heartOrders": [
         "bf",
         "gf",

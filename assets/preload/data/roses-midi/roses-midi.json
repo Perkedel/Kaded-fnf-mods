@@ -756,6 +756,7 @@
             "mustHitSection": true
         }, { "typeOfSection": 0, "sectionNotes": [], "lengthInSteps": 16, "altAnim": false, "bpm": 120, "changeBPM": false, "mustHitSection": true }, { "typeOfSection": 0, "sectionNotes": [], "lengthInSteps": 16, "altAnim": false, "bpm": 120, "changeBPM": false, "mustHitSection": true }, { "typeOfSection": 0, "sectionNotes": [], "lengthInSteps": 16, "altAnim": false, "bpm": 120, "changeBPM": false, "mustHitSection": true }, { "typeOfSection": 0, "sectionNotes": [], "lengthInSteps": 16, "altAnim": false, "bpm": 120, "changeBPM": false, "mustHitSection": true }, { "typeOfSection": 0, "sectionNotes": [], "lengthInSteps": 16, "altAnim": false, "bpm": 120, "changeBPM": false, "mustHitSection": true }, { "lengthInSteps": 16, "typeOfSection": 0, "sectionNotes": [], "altAnim": false, "bpm": 120, "changeBPM": false, "mustHitSection": true }, { "sectionNotes": [], "typeOfSection": 0, "lengthInSteps": 16, "altAnim": false, "mustHitSection": true, "changeBPM": false, "bpm": 120 }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 120, "changeBPM": false, "mustHitSection": true }],
         "song": "Roses-midi",
+        "artist": "SeaNothing",
         "validScore": true,
         "stage": "school",
         "needsVoices": true,

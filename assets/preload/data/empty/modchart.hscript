@@ -16,6 +16,11 @@ function start(song)
 
 }
 
+function songStart()
+{
+
+}
+
 function update(elapsed)
 {
 

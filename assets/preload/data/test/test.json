@@ -1,6 +1,7 @@
 {
     "song": {
         "song": "Test",
+        "artist": "KadeDev",
         "notes": [{
             "lengthInSteps": 16,
             "bpm": 95.0,
@@ -512,6 +513,8 @@
         "player1": "bf",
         "player2": "gf",
         "sectionLengths": [],
-        "speed": 3
+        "speed": 3,
+        "useCustomNoteStyle": true,
+        "noteStyle": "circle"
     }
 }

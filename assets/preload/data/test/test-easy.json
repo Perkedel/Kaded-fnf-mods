@@ -1,6 +1,7 @@
 {
     "song": {
         "song": "Test",
+        "artist": "KadeDev",
         "notes": [{
             "lengthInSteps": 16,
             "bpm": 95.0,
@@ -509,12 +510,14 @@
         "bpm": 95.0,
         "sections": 0,
         "needsVoices": false,
-        "player1": "bf",
-        "player2": "gf",
-        "stage": "komsel",
+        "player1": "bf-covid",
+        "player2": "gf-covid",
+        "stage": "view-of-the-world",
         "reversedCountdown": true,
         "useCustomStage": true,
         "sectionLengths": [],
-        "speed": 3
+        "speed": 3,
+        "useCustomNoteStyle": true,
+        "noteStyle": "stepmania"
     }
 }

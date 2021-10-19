@@ -20,7 +20,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/tools/7015 FileDaddy. easily install mod for FNF
 - https://gamebanana.com/wips/55046 contains all character from almost most mods of FNF communities, all playable yay! maybe I should do the same here?
 - https://gamejolt.com/games/unipla/616582  contains all character from almost most mods of FNF communities, all playable yay! maybe I should do the same here?
-- https://gamebanana.com/mods/44236 Mic'd up FNF yess. with wholely different UI UX.
+- https://gamebanana.com/mods/44236 Verwex Mic'd up FNF yess. with wholely different UI UX.
 - https://gamebanana.com/mods/44140 GenoX FNF UTAU cover
 - https://hdboye.github.io/FnfModAttempt/ list of fnf mods & play nows (no longer updated) capu wattomp
 - https://github.com/NyxTheShield/MIDI2FNF the MIDI chart to FNF chart json wow
@@ -317,6 +317,11 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://api.haxeflixel.com/flixel/math/FlxMath.html FlxMath the Math utilities
 - https://api.haxeflixel.com/flixel/util/FlxColor.html color again
 - https://www.w3schools.com/colors/colors_picker.asp color picker
+- https://gamebanana.com/questions/16557 can I use copyrighted music? opinions says yes though it's not safe for YouTube.
+- https://gamebanana.com/tuts/14218 HOW TO ADD CHARACTER SELECTION MENU tuts TorchTheDragon
+- https://gamebanana.com/questions/17887 Note mine how do i add this
+- https://www.youtube.com/watch?v=iiQfjYcpJfQ use this video man
+- https://gamebanana.com/mods/328733?post=9535558 gff inspiration. `shitty mod didn't get downloaded get angry`. name the update `The Poopiest Mod of the year` `The Poopiest Update of the year`.
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -428,6 +433,21 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://api.haxeflixel.com/flixel/system/FlxPreloader.html polgon Preloadering
 - https://gamebanana.com/blogs/19216 BonkMayker's meme of Old web. Check this project's README.md to see in action. you can implement yourself too in comments and post anywhere that complies with the HTML syntaxes.
 - https://en.wikipedia.org/wiki/File:Flag_of_Indonesia.svg flag of Indonesia.
+- https://gamebanana.com/mods/30863 (`Pls Credit`) AetherLynx Noteskin pack. can use if you credit him/her. PECKING FINALLY asset we can use right ahead woohoo thancc cool and good awesome div by zero!!!
+- https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support BrightFyre friggin Haxe VLC. FlxSprite video MP4 support guys!
+- https://github.com/ShadowMario/FNF-PsychEngine/ https://gamebanana.com/mods/309789 Shadow Mario. Psyched inspirations such as blinking botplay text & stuff. bbpanzu had used this and the showcase shows it that.
+- pls insert TheFatRat - Mayday credit https://lnk.to/thefatratmayday
+- pls insert Sub Urban - Cradles (NCS Release)
+```
+Track: Sub Urban - Cradles [NCS Release]
+Music provided by NoCopyrightSounds.
+Watch: https://youtu.be/Hn4sfC2PbhI
+Free Download / Stream: http://ncs.io/CradlesYO
+```
+- https://www.youtube.com/watch?v=iiQfjYcpJfQ https://pastebin.com/eLy6Mxte . add mine note type
+- https://github.com/TentaRJ/GameJolt-FNF-Integration https://github.com/TentaRJ/tentools TentaRJ. Stuffs like GameJolt Achievements and perhaps other things later.
+- https://design.ubuntu.com/font/ Canonical. Ubuntu font set yeay!
+- https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Conso ah this tool right here to get hex color. 
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

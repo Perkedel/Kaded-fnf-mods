@@ -11,7 +11,8 @@
         ["Senpai-midi", "Roses-midi", "Thorns-midi"],
         ["fortritri"],
         ["Getting-Freaky", "breakfast", "Dont Stop", "Title Classic", "Test-vanilla"],
-        ["Indonesia Raya"]
+        ["Indonesia Raya"],
+        ["doremi", "cradles", "mayday"]
     ],
     "weekUnlocked": [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true],
     "weekCharacters": [
@@ -26,7 +27,8 @@
         ["senpai", "bf", "gf"],
         ["hookx", "bf", "gf"],
         ["hookx", "bf", "gf"],
-        ["", "", ""]
+        ["", "", ""],
+        ["hookx", "bf", "gf"]
     ],
     "weekNames": [
         "How to Funk",
@@ -40,7 +42,8 @@
         "Hating_Simulator_nokia.jar Microemulator",
         "Silence is music",
         "Waiting for Something idk",
-        "Indonesia Raya"
+        "Indonesia Raya",
+        "Wars on the realm"
     ],
     "weekColor": [
         "#F9CF51",
@@ -54,6 +57,7 @@
         "pink",
         "white",
         "#ffff99",
-        "red"
+        "red",
+        "#0050BB"
     ]
 }

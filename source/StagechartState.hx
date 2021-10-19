@@ -52,6 +52,13 @@ typedef SwagBackground = {
     var initVisible:Bool;
     var antialiasing:Bool;
     var hasTrail:Bool;
+    var layInFrontNow:Bool; // Lay this in front
+    var inFrontOfWhich:Int; // in front of which?
+    /* in Front of which index?
+    0 = gf
+    1 = dad
+    2 = bf
+    */
 };
 
 typedef SwagStage = {

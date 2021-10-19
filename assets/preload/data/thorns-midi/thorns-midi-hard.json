@@ -1344,6 +1344,7 @@
             "mustHitSection": true
         }, { "typeOfSection": 0, "sectionNotes": [], "lengthInSteps": 16, "altAnim": false, "bpm": 190, "changeBPM": false, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 190, "changeBPM": false, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 190, "changeBPM": false, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 190, "changeBPM": false, "mustHitSection": true }, { "lengthInSteps": 16, "altAnim": false, "typeOfSection": 0, "sectionNotes": [], "bpm": 190, "changeBPM": false, "mustHitSection": true }],
         "song": "Thorns-midi",
+        "artist": "SeaNothing",
         "gfVersion": "gf-pixel",
         "stage": "schoolEvil",
         "noteStyle": "pixel",

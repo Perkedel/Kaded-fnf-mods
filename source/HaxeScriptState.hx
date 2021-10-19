@@ -237,10 +237,10 @@ class HaxeScriptState {
             }
 
         var patho = Paths.hscript(songLowercase + "/modchart");
-        #if sys
+        // #if sys
         if (PlayState.isSM)
             patho = PlayState.pathToSm + "/modchart.hscript";
-        #end
+        // #end
     
         script = Assets.getText(rawMode? Paths.hscript(path) :patho).trim();
         trace(script);
@@ -329,8 +329,8 @@ class HaxeScriptState {
 
         //JOELwindows7: mirror the variables here!
         //Colored bg
-        setVar("originalColor", PlayState.instance.originalColor);
-        setVar("isChromaScreen", PlayState.instance.isChromaScreen);
+        setVar("originalColor", PlayState.Stage.originalColor);
+        setVar("isChromaScreen", PlayState.Stage.isChromaScreen);
         //end mirror variables
         
         //init just in case
@@ -364,7 +364,7 @@ class HaxeScriptState {
         setVar("add", PlayState.instance.add);
         setVar("remove", PlayState.instance.remove);
         setVar("insert", PlayState.instance.insert);
-        setVar("setDefaultZoom", function(zoom) {PlayState.instance.defaultCamZoom = zoom;});
+        setVar("setDefaultZoom", function(zoom) {PlayState.Stage.camZoom = zoom;});
         setVar("removeSprite", function(sprite) {
 			PlayState.instance.remove(sprite);
 		});
@@ -393,6 +393,7 @@ class HaxeScriptState {
         addCallback("start", function (song) {});
 		addCallback("beatHit", function (beat) {});
 		addCallback("update", function (elapsed) {});
+        addCallback("songStart", function (elapsed) {});
 		addCallback("stepHit", function(step) {});
 		addCallback("playerTwoTurn", function () {});
 		addCallback("playerTwoMiss", function (note, position, beatOf, stepOf) {});
@@ -500,8 +501,11 @@ class HaxeScriptState {
             return PlayState.instance.camHUD.y;
         });
         addCallback("setCamPosition", function (x:Int, y:Int) {
-            FlxG.camera.x = x;
-            FlxG.camera.y = y;
+            // JOELwindows7: pls werk again wtf man
+            // FlxG.camera.x = x;
+            // FlxG.camera.y = y;
+            PlayState.instance.camGame.x = x;
+            PlayState.instance.camGame.y = y;
         });
         addCallback("getCameraX", function () {
             return FlxG.camera.x;
@@ -510,7 +514,10 @@ class HaxeScriptState {
             return FlxG.camera.y;
         });
         addCallback("setCamZoom", function(zoomAmount:Float) {
-            FlxG.camera.zoom = zoomAmount;
+            //JOELwindows7: was go refer to FlxG.camera directly.
+            //C'mon it was working before 1.7 wtf man?!
+            // FlxG.camera.zoom = zoomAmount;
+            PlayState.instance.camGame.zoom = zoomAmount;
         });
         addCallback("setHudZoom", function(zoomAmount:Float) {
             PlayState.instance.camHUD.zoom = zoomAmount;
@@ -734,15 +741,19 @@ class HaxeScriptState {
 
         // tweens
         addCallback("tweenCameraPos", function(toX:Int, toY:Int, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
+            //JOELwindows7: was using FlxG.camera directly.
+            // Now this no longer work let's go through the variable camGame instead.
+            FlxTween.tween(PlayState.instance.camGame, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenCameraAngle", function(toAngle:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
+            //JOELwindows7: this too
+            FlxTween.tween(PlayState.instance.camGame, {angle:toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenCameraZoom", function(toZoom:Float, time:Float, onComplete:String) {
-            FlxTween.tween(FlxG.camera, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
+            //JOELwindows7: and another.
+            FlxTween.tween(PlayState.instance.camGame, {zoom:toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {callHscript(onComplete,["camera"]);}}});
         });
 
         addCallback("tweenHudPos", function(toX:Int, toY:Int, time:Float, onComplete:String) {
@@ -937,7 +948,7 @@ class HaxeScriptState {
             scrollFactorX:Float = .5, scrollFactorY:Float = .5,
             active:Bool = false, callNow:Bool = true, unique:Bool = false
         ){
-            PlayState.instance.prepareColorableBg(
+            PlayState.Stage.prepareColorableBg(
                 useImage,
                 positionX,positionY,
                 imagePath,animated,
@@ -957,14 +968,16 @@ class HaxeScriptState {
         });
 
         addCallback( "randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
-            PlayState.instance.randomizeColoring(justOne, toWhichBg);
+            trace("wattempt script randomize color");
+            PlayState.Stage.randomizeColoring(justOne, toWhichBg);
             //ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
             //and you, Haxe Language Server laggs on purpose
             //hence I blinded & mistyped!!! C'MON!!!! REALLY??!?!
         });
 
         addCallback( "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0){
-            PlayState.instance.chooseColoringColor(FlxColor.fromString(color), justOne, toWhichBg);
+            trace("wattempt script choose color " + color);
+            PlayState.Stage.chooseColoringColor(FlxColor.fromString(color.trim()), justOne, toWhichBg);
             //hmm, I am afraid using raw FlxColor data doing won't work.
             //You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
             //so, maybe you should use the.. string version?
@@ -972,7 +985,7 @@ class HaxeScriptState {
         });
 
         addCallback("hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0){
-            PlayState.instance.hideColoring(justOne,toWhichBg);
+            PlayState.Stage.hideColoring(justOne,toWhichBg);
             //hide the colorings
         });
 

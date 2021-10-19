@@ -14,6 +14,10 @@ var trogger = false;
 var troggir = false;
 var troggur = false;
 
+var appearTheRalsei = false;
+// https://gamebanana.com/mods/323526
+// press F1 or R3 for help
+
 function loaded(song)
 {
 

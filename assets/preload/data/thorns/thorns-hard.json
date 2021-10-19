@@ -970,6 +970,7 @@
         "speed": 1.5,
         "hasEpilogueVideo": true,
         "epilogueVideoPath": "after-week6",
-        "hasDialogueChat": true
+        "hasDialogueChat": true,
+        "artist": "Kawai Sprite"
     }
 }

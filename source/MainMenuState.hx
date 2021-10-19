@@ -1,5 +1,6 @@
 package;
 
+import GalleryAchievements;
 import flixel.ui.FlxSpriteButton;
 import flixel.ui.FlxButton;
 import flixel.addons.display.FlxExtendedSprite;
@@ -21,7 +22,7 @@ import io.newgrounds.NG;
 #end
 import lime.app.Application;
 
-#if (windows && cpp)
+#if (desktop && cpp)
 import Discord.DiscordClient;
 #end
 
@@ -48,9 +49,9 @@ class MainMenuState extends MusicBeatState
 	public static var nightly:String = "";
 	public static var larutMalam:String = ""; //JOELwindows7: Last Funkin Nightly mark
 
-	public static var kadeEngineVer:String = "1.6.2" + nightly;
+	public static var kadeEngineVer:String = "1.7" + nightly;
 	public static var gameVer:String = "0.2.7.1";
-	public static var lastFunkinMomentVer:String = "2021.08.162" + larutMalam; //JOELwindows7: last funkin moments version
+	public static var lastFunkinMomentVer:String = "2021.10.170" + larutMalam; //JOELwindows7: last funkin moments version
 	public static var yourModVer:String = "0.0.0.0"; //JOELwindows7: your own mod version
 
 	var magenta:FlxSprite;
@@ -60,7 +61,7 @@ class MainMenuState extends MusicBeatState
 	override function create()
 	{
 		clean();
-		#if (windows && cpp)
+		#if (desktop && cpp)
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
@@ -243,6 +244,7 @@ class MainMenuState extends MusicBeatState
 				{
 					FlxG.sound.play(Paths.sound('confirmMenu')); // JOELwindows7: hey, pls don't forget the confirm sound for Kickstarter go to one also!
 					fancyOpenURL("https://ninja-muffin24.itch.io/funkin");
+					AchievementUnlocked.whichIs("acknowledgement");
 				}
 				else
 				{

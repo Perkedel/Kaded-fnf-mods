@@ -1,5 +1,9 @@
 package;
 
+import GalleryAchievements;
+#if gamejolt
+import GameJolt;
+#end
 import experiments.AnMIDIyeay;
 import experiments.AnWebmer;
 import experiments.LimeAudioBufferTester;
@@ -275,6 +279,26 @@ class DistractionsAndEffectsOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Distractions " + (!FlxG.save.data.distractions ? "off" : "on");
+	}
+}
+
+class Colour extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+	public override function press():Bool
+	{
+		FlxG.save.data.colour = !FlxG.save.data.colour;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Color Health Bar By Character " + (!FlxG.save.data.colour ? "off" : "on");
 	}
 }
 
@@ -944,6 +968,7 @@ class ResetSettings extends Option
 		FlxG.save.data.watermark = null;
 		FlxG.save.data.ghost = null;
 		FlxG.save.data.distractions = null;
+		FlxG.save.data.colour = null;
 		FlxG.save.data.stepMania = null;
 		FlxG.save.data.flashing = null;
 		FlxG.save.data.resetButton = null;
@@ -1472,6 +1497,9 @@ class AdjustVolumeOption extends Option{
 
 	private override function updateDisplay():String
 	{
+		// achievements for it
+		AchievementUnlocked.whichIs("no_more_accident_volkeys");
+
 		// https://github.com/ninjamuffin99/SHOOM/blob/master/source/PlayState.hx
 		// lmao shoooooooooooooooooooooooooooooooooooooooooooooooooom
 		var shoomSays:String="SH";
@@ -1482,6 +1510,7 @@ class AdjustVolumeOption extends Option{
 		}
 		shoomSays += 'M';
 		if(remains < 0) remains = 0;
+		if(remains <= 0) AchievementUnlocked.whichIs("anBeethoven");
 		for(i in 0...(remains)){
 			shoomSays += 'U';
 		}
@@ -1593,7 +1622,7 @@ class AnMIDITestOption extends Option{
 		{
 			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 			//FlxG.switchState(new LoadReplayState()); //or open new state.
-			FlxG.switchState(new AnMIDIyeay());
+			// FlxG.switchState(new AnMIDIyeay());
 			return false;
 		}
 	
@@ -1682,6 +1711,7 @@ class OutOfSegsWarningOption extends Option{
 	}
 }
 
+//JOELwindows7: Print chart contents option while play
 class PrintSongChartContentOption extends Option{
 	public function new(desc:String)
 	{
@@ -1701,3 +1731,29 @@ class PrintSongChartContentOption extends Option{
 		return "Song Chart Content " + (FlxG.save.data.traceSongChart ? "Printed" : "SSSSHHHH");
 	}
 }
+
+//JOELwindows7: GameJolt login TentaRJ
+class LogGameJoltIn extends Option{
+	public function new(desc:String){
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		#if gamejolt
+		FlxG.switchState(new GameJoltLogin());
+		#end
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		#if gamejolt
+		return GameJoltAPI.getStatus() ? "GJ " + GameJoltAPI.getUserInfo(true) : "GameJolt Login";
+		#else
+		return "GameJolt not supported";
+		#end
+	}
+}
+

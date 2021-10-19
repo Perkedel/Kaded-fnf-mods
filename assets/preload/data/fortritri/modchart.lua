@@ -3,7 +3,7 @@
 -- templated by JOELwindows7, with yoinks from that documentation
 
 function start(song)
-    print("Song: " .. song .. " @ " .. bpm .. " downscroll: " .. downscroll)
+    -- print("Song: " .. song .. " @ " .. bpm .. " downscroll: " .. downscroll)
 end
 
 function update(elapsed)
@@ -23,13 +23,17 @@ function keyPressed(key)
     -- basically to change player2 character in swift in game. that's all.
     -- maybe we can add vocal change too one day?
     if key == "down" then
-        changeDadCharacter('hookx')
+        -- changeDadCharacter('hookx')
+        dad:changeCharacter('hookx', -30, 0)
     elseif key == "up" then
-        changeDadCharacter('pico')
+        -- changeDadCharacter('pico')
+        dad:changeCharacter('pico', -30, 0)
     elseif key == "left" then
-        changeDadCharacter('dad')
+        -- changeDadCharacter('dad')
+        dad:changeCharacter('dad', -30, 0)
     elseif key == "right" then
-        changeDadCharacter('mom')
+        -- changeDadCharacter('mom')
+        dad:changeCharacter('mom', -30, 0)
     end
     
 end

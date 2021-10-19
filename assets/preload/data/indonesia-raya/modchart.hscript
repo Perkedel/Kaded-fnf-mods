@@ -26,7 +26,8 @@ function start(song)
 }
 
 function flagHoistMeter(level,upTo){
-    setActorY(FlxMath.remapToRange(level,upTo,1300,-500),'flag');
+    //1800 was + 500.0 was
+    setActorY(-(FlxMath.remapToRange(level,upTo,0,1.1))+500,'flag');
     // https://api.haxeflixel.com/flixel/math/FlxMath.html
 }
 
@@ -45,7 +46,10 @@ function update(elapsed)
 
 function beatHit(beat)
 {
-    
+    trace("Pos flag Y");
+    trace(getActorY('flag'));
+    trace("song pos");
+    trace(songPos);
 }
 
 function stepHit(step)

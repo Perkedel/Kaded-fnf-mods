@@ -31,9 +31,12 @@ import io.newgrounds.NG;
 #end
 import lime.app.Application;
 import openfl.Assets;
-import grig.midi.MidiOut;
+#if gamejolt
+import GameJolt.GameJoltAPI;
+#end
+// import grig.midi.MidiOut;
 
-#if (windows && cpp)
+#if (desktop && cpp)
 import Discord.DiscordClient;
 #end
 
@@ -64,6 +67,8 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		
+
 		//JOELwindows7: luckydog7 added this, maybe to prevent absolute quit by back button.
 		// https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx
 		// https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088
@@ -105,7 +110,11 @@ class TitleState extends MusicBeatState
 		
 		#end
 
-
+		// JOELwindows7: TentaRJ GameJolter
+		#if gamejolt
+		GameJoltAPI.connect();
+		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+		#end
 				
 		Highscore.load();
 
@@ -344,7 +353,7 @@ class TitleState extends MusicBeatState
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
 			#end
-			AchievementUnlocked.whichIs("funkin_started");
+			AchievementUnlocked.whichIs("anFunkin");
 			if (Date.now().getDay() == 5)
 				AchievementUnlocked.whichIs("just_like_the_game");
 
@@ -363,7 +372,7 @@ class TitleState extends MusicBeatState
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				// Get current version of Kade Engine
-
+				
 				//JOELwindows7: do this if not mobile since in there this doesn't work
 				//according to the luckydog7 and mods that don't care update
 				#if !mobile
@@ -564,13 +573,13 @@ class TitleState extends MusicBeatState
 			// credTextShit.text = "Friday";
 			// credTextShit.screenCenter();
 			case 13:
-				addMoreText('Friday');
+				addMoreText(Main.perkedelMark? 'Last' : 'Friday');
 			// credTextShit.visible = true;
 			case 14:
-				addMoreText('Night');
+				addMoreText(Main.perkedelMark? 'Funkin' : 'Night');
 			// credTextShit.text += '\nNight';
 			case 15:
-				addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+				addMoreText(Main.perkedelMark? 'Moments' : 'Funkin'); // credTextShit.text += '\nFunkin';
 
 			case 16:
 				skipIntro();

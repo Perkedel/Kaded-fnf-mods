@@ -50,7 +50,8 @@ install:
   - haxelib run lime rebuild extension-webm windows
   # - haxelib install linc_luajit
   # - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
-  - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git
+  # - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git
+  - haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
   - haxelib install actuate 
   #- haxelib run lime rebuild extension-webm windows
   #why here's dublicate lmao
@@ -64,13 +65,21 @@ install:
   - haxelib install json2object #BulbyVR used this to convert JSON to object
   # - haxelib git haxevlc https://github.com/datee/HaxeVLC.git # for VLC.
   - haxelib install extension-webview #luckydog7 for Android
+  - haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
   - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
   - haxelib install haxe-files
   - haxelib install hxcpp-debug-server
   - haxelib install tink_core
   - haxelib install grig.audio
   - haxelib install grig.midi
+  # JOELwindows7: the GameJolt API
+  - haxelib git tentools https://github.com/TentaRJ/tentools.git
+  - haxelib git systools https://github.com/haya3218/systools
+  - haxelib run lime rebuild systools windows
   - haxelib list
+  - dir
+  # download placeholding keys
+  - wget --output-file=C:\projects\kaded-fnf-mods-windows32\source\GJKeys.hx https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
 
 # No tests idk lol
 build_script:
