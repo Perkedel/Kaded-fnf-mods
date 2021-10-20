@@ -12,6 +12,7 @@ jobs:
         with:
           haxe-version: 4.2.3
       - run: |
+          brew install wget
           haxe -version
           haxelib install hxnodejs
           haxelib install lime
