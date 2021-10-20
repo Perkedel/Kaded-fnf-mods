@@ -62,7 +62,6 @@ jobs:
           haxelib install tink_core
           haxelib install grig.audio
           haxelib install grig.midi
-          haxelib install linc_luajit
           haxelib install actuate 
           haxelib git tentools https://github.com/TentaRJ/tentools.git
           haxelib git systools https://github.com/haya3218/systools
