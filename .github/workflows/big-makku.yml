@@ -11,8 +11,8 @@ jobs:
         uses: krdlab/setup-haxe@v1.1.6
         with:
           haxe-version: 4.2.3
-      - run: |
-          brew install wget
+      - name: Make your dreams come true
+        run: |
           haxe -version
           haxelib install hxnodejs
           haxelib install lime
@@ -53,5 +53,20 @@ jobs:
           haxelib list
           ls
           pwd
+          ls ..
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv ./GJKeys.hx /Users/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
+          haxelib run lime build mac
+
+      - name: upload to itch
+        run: |
+          echo test
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: macOS Build
+          path: export/release/macos/bin
+      
+      - name: Yo, release now
+        uses: softprops/action-gh-release@v0.1.13
+        if: startsWith(github.ref, 'refs/tags/')

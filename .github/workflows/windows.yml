@@ -75,6 +75,7 @@ jobs:
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv .\GJKeys.hx D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx
           haxelib run lime build windows
+          haxelib run lime build windows -32 -D32bit
       - name: upload to itch
         run: |
           echo test
@@ -83,6 +84,11 @@ jobs:
         with:
           name: Windows Build
           path: export/release/windows/bin
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Windows 32 Bit Build
+          path: export/32Bit/windows/bin
       
       - name: Yo, release now
         uses: softprops/action-gh-release@v0.1.13

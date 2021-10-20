@@ -11,7 +11,8 @@ jobs:
         uses: krdlab/setup-haxe@v1.1.6
         with:
           haxe-version: 4.2.3
-      - run: |
+      - name: Make your dreams come true
+        run: |
           sudo apt install neko tar gcc g++ gcc-multilib g++-multilib -y
           sudo apt install neko tar gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
           haxe -version
@@ -55,5 +56,20 @@ jobs:
           ls
           pwd
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+          mv ./GJKeys.hx /home/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
+          haxelib run lime build linux
+
+      - name: upload to itch
+        run: |
+          echo test
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Linux Build
+          path: export/release/linux/bin
+      
+      - name: Yo, release now
+        uses: softprops/action-gh-release@v0.1.13
+        if: startsWith(github.ref, 'refs/tags/')
           
 
