@@ -12,7 +12,7 @@ install:
   # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
   - ps: Set-Service wuauserv -StartupType Manual
   # Install all Visual C++ versions package, uhh, we got vcredist140 here.
-  - cinst vcredist-all -y
+  # - cinst vcredist-all -y
   - choco install vcredist140
   # Install the neko chocolatey package (https://chocolatey.org/packages/neko)
   - cinst neko -y

@@ -22,7 +22,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: script run line haha
         run: |
-          cinst vcredist-all -y
           choco install vcredist140
           cinst neko -y
           cinst haxe -y
