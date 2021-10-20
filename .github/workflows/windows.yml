@@ -32,7 +32,6 @@ jobs:
           haxelib setup "%HAXELIB_ROOT%"
           haxelib install lime
           RefreshEnv
-          haxelib install hxnodejs
           haxelib install openfl
           haxelib install flixel
           haxelib run lime setup flixel -y
