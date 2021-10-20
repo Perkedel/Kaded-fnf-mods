@@ -70,7 +70,8 @@ jobs:
           haxelib list
           dir
           pwd
-          wget --output-document=C:\projects\kaded-fnf-mods-winDroid\source\GJKeys.hx https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+          wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+          mv .\GJKeys.hx D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx
           haxelib run lime build windows
           
       - uses: actions/upload-artifact@v2

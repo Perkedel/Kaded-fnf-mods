@@ -73,8 +73,9 @@ install:
   - pwd
   - ls
   - cd /home/appveyor/projects/kaded-fnf-mods-linux
-  - wget --output-document=/home/appveyor/projects/kaded-fnf-mods-linux/source/GJKeys.hx https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
-
+  # download GJKeys empty
+  - wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+  - mv ./GJKeys.hx /home/appveyor/projects/kaded-fnf-mods-linux/source/GJKeys.hx
 
 build_script:
   - cd /home/appveyor/projects/kaded-fnf-mods-linux
