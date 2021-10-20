@@ -3,6 +3,9 @@ name: CI-bigMakku
 # Controls when the workflow will run
 on: push
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: macos-latest

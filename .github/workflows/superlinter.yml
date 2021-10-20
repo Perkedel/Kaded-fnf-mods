@@ -3,6 +3,9 @@ name: CI-terkilir
 # Controls when the workflow will run
 on: push
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
