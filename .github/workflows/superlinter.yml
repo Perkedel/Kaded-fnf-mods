@@ -12,7 +12,6 @@ jobs:
         with:
           haxe-version: 4.2.3
       - run: |
-          sudo apt install build-essential libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev -y
           sudo apt install neko tar gcc g++ gcc-multilib g++-multilib -y
           sudo apt install neko tar gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
           haxe -version
@@ -55,5 +54,6 @@ jobs:
           haxelib list
           ls
           pwd
+          wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           
 
