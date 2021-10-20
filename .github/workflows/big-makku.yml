@@ -1,11 +1,11 @@
-name: CI-terkilir
+name: CI-bigMakku
 
 # Controls when the workflow will run
 on: push
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: krdlab/setup-haxe@v1.1.6
         with:
