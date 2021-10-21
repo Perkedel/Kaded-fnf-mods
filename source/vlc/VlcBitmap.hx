@@ -2,7 +2,7 @@ package vlc;
 
 import flixel.FlxG;
 import openfl.system.Capabilities;
-#if (cpp && !mobile)
+#if (cpp && !mobile && !mac && !linux) //JOELwindows7: it deosnt supported on mac and linux yet
 import cpp.NativeArray;
 import cpp.UInt8;
 import haxe.ValueException;

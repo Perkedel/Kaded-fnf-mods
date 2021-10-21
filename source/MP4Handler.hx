@@ -7,7 +7,9 @@ import openfl.events.Event;
 import openfl.media.Video;
 import openfl.net.NetConnection;
 import openfl.net.NetStream;
+#if (desktop && !mac && !linux)
 import vlc.VlcBitmap;
+#end
 import Controls.Control;
 import flixel.util.FlxTimer;
 import flixel.FlxSprite;
@@ -21,7 +23,7 @@ class MP4Handler
 	public static var netStream:NetStream;
 	public static var finishCallback:FlxState;
 	public var sprite:FlxSprite;
-	#if desktop
+	#if (desktop && !mac && !linux)
 	public static var vlcBitmap:VlcBitmap;
 	#end
 
@@ -64,6 +66,10 @@ class MP4Handler
 
 		netStream.play(path);
 		#elseif mobile
+
+		#elseif mac
+
+		#elseif linux
 		
 		#else
 		finishCallback = callback;
@@ -102,7 +108,7 @@ class MP4Handler
 		#end
 	}
 
-	#if desktop
+	#if (desktop && !mac && !linux)
 	function checkFile(fileName:String):String
 	{
 		var pDir = "";
