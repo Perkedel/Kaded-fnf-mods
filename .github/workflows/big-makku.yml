@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - name: Do it!
+      - name: Do it
         uses: actions/checkout@v2
       - name: Just do it
         uses: krdlab/setup-haxe@v1.1.6
@@ -37,6 +37,7 @@ jobs:
           haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
+          haxelib run lime rebuild linc_luajit mac
           haxelib run lime rebuild extension-webm mac
           haxelib install android6permissions
           haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
@@ -59,6 +60,9 @@ jobs:
           ls
           pwd
           ls ..
+          pwd ..
+          ls ../..
+          pwd ../..
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv ./GJkeys.hx /Users/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
           haxelib run lime build mac
