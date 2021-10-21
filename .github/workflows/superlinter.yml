@@ -39,6 +39,7 @@ jobs:
           haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
+          haxelib run lime rebuild linc_luajit linux
           haxelib run lime rebuild extension-webm linux
           haxelib install android6permissions
           haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
