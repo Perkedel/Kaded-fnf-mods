@@ -10,14 +10,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Do it!
+        uses: actions/checkout@v2
       - name: Just do it
         uses: krdlab/setup-haxe@v1.1.6
         with:
           haxe-version: 4.2.3
       - name: Make your dreams come true
         run: |
-          sudo apt install neko tar gcc g++ gcc-multilib g++-multilib -y
-          sudo apt install neko tar gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
+          sudo apt install gcc g++ gcc-multilib g++-multilib -y
+          sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
           haxe -version
           haxelib install hxnodejs
           haxelib install lime

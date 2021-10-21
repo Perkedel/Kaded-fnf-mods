@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
+      - name: Do it!
+        uses: actions/checkout@v2
       - name: Just do it
         uses: krdlab/setup-haxe@v1.1.6
         with:
