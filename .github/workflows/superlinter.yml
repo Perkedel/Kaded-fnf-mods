@@ -59,7 +59,9 @@ jobs:
           ls
           pwd
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
-          mv ./GJKeys.hx /home/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
+          ls
+          pwd
+          mv ./GJkeys.hx /home/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
           haxelib run lime build linux
 
       - name: upload to itch

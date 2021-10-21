@@ -30,6 +30,9 @@ jobs:
           cinst haxe -y
           cinst wget -y # downloader
           cinst butler -y # upload to itch io
+          cinst android-sdk -y
+          cinst android-ndk --version=16.2 -y
+          cinst adb -y
           RefreshEnv
           mkdir "%HAXELIB_ROOT%"
           haxelib setup "%HAXELIB_ROOT%"
@@ -73,9 +76,10 @@ jobs:
           dir
           pwd
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
-          mv .\GJKeys.hx D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx
+          mv .\GJkeys.hx D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx
           haxelib run lime build windows
-          haxelib run lime build windows -32 -D32bit
+          haxelib run lime build html5
+      
       - name: upload to itch
         run: |
           echo test
@@ -84,11 +88,11 @@ jobs:
         with:
           name: Windows Build
           path: export/release/windows/bin
-      
+
       - uses: actions/upload-artifact@v2
         with:
-          name: Windows 32 Bit Build
-          path: export/32Bit/windows/bin
+          name: HTML5 Build
+          path: export/release/html5/bin
       
       - name: Yo, release now
         uses: softprops/action-gh-release@v0.1.13

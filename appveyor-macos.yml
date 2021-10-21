@@ -70,7 +70,7 @@ install:
   - cd /Users/appveyor/projects/kaded-fnf-mods-macos
   # download placeholding keys
   - wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
-  - mv ./GJKeys.hx /Users/appveyor/projects/kaded-fnf-mods-macos/source/GJKeys.hx
+  - mv ./GJkeys.hx /Users/appveyor/projects/kaded-fnf-mods-macos/source/GJKeys.hx
 
 build_script:
   # - haxelib run lime rebuild discord_rpc macos
