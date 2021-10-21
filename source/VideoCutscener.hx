@@ -23,6 +23,8 @@ class VideoCutscener{
         FlxG.switchState(
             #if mobile
             new VideoSelfContained(source, toTrans, frameSkipLimit, autopause)
+            #elseif (windows)
+            new VLCState(Paths.video(source), toTrans, frameSkipLimit, autopause)
             #else
             new VideoState(Paths.video(source), toTrans, frameSkipLimit, autopause)
             #end
@@ -33,7 +35,7 @@ class VideoCutscener{
         return
         #if mobile
         new VideoSelfContained(source, toTrans, frameSkipLimit, autopause)
-        #elseif (windows || web)
+        #elseif (windows)
         new VLCState(Paths.video(source), toTrans, frameSkipLimit, autopause)
         #else
         new VideoState(Paths.video(source), toTrans, frameSkipLimit, autopause)
@@ -122,7 +124,9 @@ class VideoSelfContained extends MusicBeatState{
 }
 
 class VLCState extends MusicBeatState{
+    #if (cpp && !mobile && !mac && !linux)
     var theVLC:MP4Handler;
+    #end
     var videoSprite:FlxSprite;
     var toTrans:FlxState;
     var source:String;
@@ -140,7 +144,10 @@ class VLCState extends MusicBeatState{
         this.source = source;
         // videoSprite = new FlxSprite(0,0);
         // VideoPlayer.SKIP_STEP_LIMIT = frameSkipLimit;
+        #if (cpp && !mobile && !mac && !linux)
         theVLC = new MP4Handler();
+        theVLC.finishCallback = donedCallback;
+        #end
         // videoSprite.finishCallback = donedCallback;
     }
 
@@ -150,18 +157,20 @@ class VLCState extends MusicBeatState{
 
         FlxG.sound.music.stop();
         peckingVolume = FlxG.sound.music.volume;
+
+        #if (cpp && !mobile && !mac && !linux)
         // FlxG.sound.music.volume = 0;
         try {
             if(videoSprite != null){
                 new FlxTimer().start(0.1, function(tmr:FlxTimer){
-                    theVLC.playMP4(source,toTrans,videoSprite);
+                    theVLC.playMP4(source, false ,videoSprite);
                     // videoSprite.play();
                 });
                 // add(videoSprite);
             } else {
                 trace("Werror VLC null, just peck this out");
                 new FlxTimer().start(0.1, function(tmr:FlxTimer){
-                    theVLC.playMP4(source,toTrans);
+                    theVLC.playMP4(source);
                 });
                 // donedCallback();
             }
@@ -170,13 +179,16 @@ class VLCState extends MusicBeatState{
             trace("Werror faile video!\n\n" + Std.string(e));
             donedCallback();
         }
+        #else
+        donedCallback();
+        #end
         
         txt = new FlxText(0, 0, FlxG.width,
 			defaultText,
 			32);
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
-		add(txt);
+		add(txt); 
     }
 
     override function update(elapsed:Float){
@@ -201,13 +213,16 @@ class VLCState extends MusicBeatState{
         FlxG.autoPause = true;
         FlxG.sound.music.volume = peckingVolume;
         FlxG.switchState(toTrans);
+        // LoadingState.loadAndSwitchState(toTrans);
     }
 
     override function onFocusLost(){
         super.onFocusLost();
+        #if (cpp && !mobile && !mac && !linux)
         if(theVLC != null){
             // pause the VLC
             //theVLC.pause();
         }
+        #end
     }
 }

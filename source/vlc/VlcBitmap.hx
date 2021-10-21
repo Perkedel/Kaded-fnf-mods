@@ -2,7 +2,7 @@ package vlc;
 
 import flixel.FlxG;
 import openfl.system.Capabilities;
-#if (cpp && !mobile && !mac && !linux) //JOELwindows7: it deosnt supported on mac and linux yet
+#if (cpp && !mobile && !mac && !linux) //JOELwindows7: unfortunately, no mac or linux support yet
 import cpp.NativeArray;
 import cpp.UInt8;
 import haxe.ValueException;
@@ -21,7 +21,7 @@ import vlc.LibVLC;
  * ...
  * @author Tommy S
  */
-#if (cpp && !mobile)
+#if (cpp && !mobile) 
 @:cppFileCode('#include "LibVLC.cpp"')
 #end
 class VlcBitmap extends Bitmap
@@ -286,8 +286,17 @@ class VlcBitmap extends Bitmap
 
 	function onResize(e:Event):Void
 	{
-		set_height(FlxG.stage.stageHeight);
-		set_width(FlxG.stage.stageHeight * (16 / 9));
+		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+		{
+			set_width(FlxG.stage.stageHeight * (16 / 9));
+			set_height(FlxG.stage.stageHeight);
+		}
+		else
+		{
+			set_width(FlxG.stage.stageWidth);
+			set_height(FlxG.stage.stageWidth / (16 / 9));
+		}
+		
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
