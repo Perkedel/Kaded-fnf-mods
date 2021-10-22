@@ -6713,7 +6713,7 @@ class PlayState extends MusicBeatState
 			}
 
 	//JOELwindows7: scronch Haxe script
-	function scronchHscript(){
+	public function scronchHscript(){
 		if (hscriptModchart != null)
 		{
 			hscriptModchart.die();
@@ -6726,7 +6726,7 @@ class PlayState extends MusicBeatState
 	}
 
 	//JOELwindows7: scronch Lua script
-	function scronchLuaScript(){
+	public function scronchLuaScript(){
 		#if (cpp && !mobile && !linux)
 		if (luaModchart != null)
 		{
@@ -6740,7 +6740,7 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	function scronchModcharts(){
+	public function scronchModcharts(){
 		scronchLuaScript();
 		scronchHscript();
 	}

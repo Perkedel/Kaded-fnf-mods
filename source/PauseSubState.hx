@@ -281,13 +281,14 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.save.data.downscroll = false;
 					}
 					PlayState.loadRep = false;
-					#if (desktop)
-					if (PlayState.luaModchart != null)
-					{
-						PlayState.luaModchart.die();
-						PlayState.luaModchart = null;
-					}
-					#end
+					// #if (cpp && !mobile)
+					// if (PlayState.luaModchart != null)
+					// {
+					// 	PlayState.luaModchart.die();
+					// 	PlayState.luaModchart = null;
+					// }
+					// #end
+					PlayState.instance.scronchModcharts(); //JOELwindows7: you must scronch both Lua modchart & stage modchart
 					//JOELwindows7: the controller destroy
 					// if (PlayState.instance.onScreenGameplayButtons != null){
 					// 	PlayState.instance.removeTouchScreenButtons();
