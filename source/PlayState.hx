@@ -3,12 +3,12 @@ package;
 import GalleryAchievements.AchievementUnlocked;
 import Controls;
 import TouchScreenControls;
-#if (cpp)
+#if (cpp && !mobile && !linux)
 import LuaClass.LuaCamera;
 import LuaClass.LuaCharacter;
 #end
 import lime.media.openal.AL;
-#if cpp
+#if (cpp && !mobile && !linux)
 import LuaClass.LuaNote;
 #end
 import Song.Event;
