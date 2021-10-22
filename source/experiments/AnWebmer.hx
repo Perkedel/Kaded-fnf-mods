@@ -59,11 +59,11 @@ class AnWebmer extends MusicBeatState{
         if(FlxG.keys.justPressed.V){
             #if (windows && cpp)
             // theVLC.play(Paths.sound("SurroundSoundTest"));
-            #end
             //attempt BrightFyre's MP4 support powered by all working VLC
             var anVideo:MP4Handler = new MP4Handler();
             anVideo.playMP4(Paths.videoVlc("Compilateur-justAlsa"));
             anVideo.stateCallback = new AnWebmer();
+            #end
         }
 
         if(FlxG.mouse.overlaps(backButton)){
