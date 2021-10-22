@@ -4,11 +4,13 @@
 //dang failed. I guess we go back to only Windows..
 import Controls;
 // Lua
+#if (cpp && sys && !linux) //JOELwindows7: error Linux
 import LuaClass.LuaGame;
 import LuaClass.LuaWindow;
 import LuaClass.LuaSprite;
 import LuaClass.LuaCamera;
 import LuaClass.LuaReceptor;
+#end
 import openfl.display3D.textures.VideoTexture;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;

@@ -1,5 +1,5 @@
 import flixel.FlxG;
-#if cpp
+#if (cpp && !linux) //JOELwindows7: linux error. lua hpp not found
 import llua.Convert;
 import llua.Lua;
 import llua.State;
@@ -22,7 +22,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import haxe.DynamicAccess;
 
-#if (cpp && sys)
+#if (cpp && sys && !linux)
 // completely yoinked from andromeda (thats what you get for stealing my callback inputs you fuckers /j)
 
 typedef LuaProperty = {
