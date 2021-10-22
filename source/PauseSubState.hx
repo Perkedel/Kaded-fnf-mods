@@ -2,7 +2,7 @@ package;
 
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
-#if desktop
+#if (desktop && cpp && !linux)
 import llua.Lua;
 #end
 import Controls.Control;
