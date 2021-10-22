@@ -6727,7 +6727,7 @@ class PlayState extends MusicBeatState
 
 	//JOELwindows7: scronch Lua script
 	function scronchLuaScript(){
-		#if ((windows || linux) && cpp)
+		#if (cpp && !mobile && !linux)
 		if (luaModchart != null)
 		{
 			luaModchart.die();
