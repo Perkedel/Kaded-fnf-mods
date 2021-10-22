@@ -2797,7 +2797,7 @@ class PlayState extends MusicBeatState
 
 					if (executeModchart)
 					{
-						#if cpp
+						#if (cpp && !mobile && !linux)
 						new LuaNote(dunceNote,currentLuaIndex);	
 						#end		
 						dunceNote.luaID = currentLuaIndex;
