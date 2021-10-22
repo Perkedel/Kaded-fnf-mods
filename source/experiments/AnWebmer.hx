@@ -62,7 +62,8 @@ class AnWebmer extends MusicBeatState{
             #end
             //attempt BrightFyre's MP4 support powered by all working VLC
             var anVideo:MP4Handler = new MP4Handler();
-            anVideo.playMP4(Paths.videoVlc("Compilateur-justAlsa"), new AnWebmer());
+            anVideo.playMP4(Paths.videoVlc("Compilateur-justAlsa"));
+            anVideo.stateCallback = new AnWebmer();
         }
 
         if(FlxG.mouse.overlaps(backButton)){
