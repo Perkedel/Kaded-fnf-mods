@@ -5,6 +5,11 @@ name: CI
 # Controls when the workflow will run
 on: push
 
+env:
+  ANDROID_SDK_LOC: C:\Android\android-sdk
+  ANDROID_NDK_ROOT_LOC: C:\Android
+  ANDROID_CMD_LOC: C:\projects\android-cmd
+
 permissions:
   contents: write
 
@@ -33,6 +38,22 @@ jobs:
           cinst android-sdk -y
           cinst android-ndk --version=16.2 -y
           cinst adb -y
+      
+      - name: first, lemme download android stuff
+        run: |
+          wget -q -O android_ndk.zip https://dl.google.com/android/repository/android-ndk-r15c-windows-x86_64.zip?hl=fi
+          wget -q -O android_cmd.zip https://dl.google.com/android/repository/commandlinetools-win-7302050_latest.zip
+          wget -q -O android_build-tools.zip https://dl.google.com/android/repository/build-tools_r30.0.1-windows.zip
+          wget -q -O android_platforms.zip https://dl.google.com/android/repository/android-19_r04.zip
+          wget -q -O android_platform-tools.zip https://dl.google.com/android/repository/platform-tools_r31.0.2-windows.zip
+          unzip -q .\android_ndk.zip -d "%ANDROID_NDK_ROOT_LOC%"
+          unzip -q .\android_cmd.zip -d "%ANDROID_SDK_LOC%"
+          unzip -q -n .\android_build-tools.zip -d %ANDROID_SDK_LOC%\build-tools
+          unzip -q .\android_platforms.zip -d "%ANDROID_SDK_LOC%"
+          unzip -q -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%" 
+
+      - name: script run line haha 2
+        run: |
           RefreshEnv
           mkdir "%HAXELIB_ROOT%"
           haxelib setup "%HAXELIB_ROOT%"
@@ -77,22 +98,63 @@ jobs:
           pwd
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv .\GJkeys.hx D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx
+      
+      - name: build Windows now!
+        run: |
           haxelib run lime build windows
+      
+      - name: build HTML5 now!
+        run: |
           haxelib run lime build html5
       
-      - name: upload to itch
+      - name: build Android now!
         run: |
-          echo test
+          haxelib run lime build android
           
-      - uses: actions/upload-artifact@v2
+      - name: Artifact Windows now
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: Windows Build
           path: export/release/windows/bin
 
-      - uses: actions/upload-artifact@v2
+      - name: Artifact HTML5 now
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: HTML5 Build
           path: export/release/html5/bin
+      
+      - name: Artifact Android now
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: Android Build
+          path: export/release/android/bin/app/build/output/apk/Last Funkin Moments-debug.apk
+        
+      - name: Push to Itch Windows
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: windows-GHAction
+          ITCH_GAME: last-funkin-moments
+          ITCH_USER: joelwindows7
+          PACKAGE: export/release/windows/bin
+      
+      - name: Push to Itch HTML5
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: html5-GHAction
+          ITCH_GAME: last-funkin-moments
+          ITCH_USER: joelwindows7
+          PACKAGE: export/release/html5/bin
+
+      - name: Push to Itch Android
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: android-GHAction
+          ITCH_GAME: last-funkin-moments
+          ITCH_USER: joelwindows7
+          PACKAGE: export/release/android/bin/app/build/output/apk/Last Funkin Moments-debug.apk
       
       - name: Yo, release now
         uses: softprops/action-gh-release@v0.1.13

@@ -72,16 +72,25 @@ jobs:
           ls ../..
           pwd ../..
           mv ./GJkeys.hx /home/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
-          haxelib run lime build linux
 
-      - name: upload to itch
-        run: |
-          echo test
+      - name: build Linux now!
+        run: | 
+          haxelib run lime build linux
           
-      - uses: actions/upload-artifact@v2
+      - name: Artifact Linux now
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: Linux Build
           path: export/release/linux/bin
+      
+      - name: Push to Itch Linux
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux-GHAction
+          ITCH_GAME: last-funkin-moments
+          ITCH_USER: joelwindows7
+          PACKAGE: export/release/linux/bin
       
       - name: Yo, release now
         uses: softprops/action-gh-release@v0.1.13

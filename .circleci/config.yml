@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   build:
     machine:
-      image: ubuntu-2004:202104-01
+      image: ubuntu-latest
     steps:
       - checkout
       - run:
@@ -13,7 +13,7 @@ jobs:
             sudo apt-get update
             sudo apt-get -y install wget zip unzip
       - run:
-          name: setup Haxe and libraries and built them all
+          name: setup Haxe and libraries and build them all
           environment:
             HAXELIB_ROOT: /home/circleci/haxelib
             HAXE_INSTALLDIR: /home/circleci/haxe
@@ -21,8 +21,11 @@ jobs:
             cd ~
             sudo add-apt-repository ppa:haxe/releases -y
             sudo apt update
+            sudo apt upgrade -y
+            sudo apt install luajit -y
             sudo apt install build-essential libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev -y
-            sudo apt install neko tar gcc-7 g++-7 gcc-7-multilib g++-7-multilib -y
+          # sudo apt install neko tar gcc-7 g++-7 gcc-7-multilib g++-7-multilib -y
+            sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
             wget https://github.com/HaxeFoundation/haxe/releases/download/4.2.3/haxe-4.2.3-linux64.tar.gz
             mkdir -p $HAXE_INSTALLDIR
             tar -xf haxe-4.2.3-linux64.tar.gz -C $HAXE_INSTALLDIR
@@ -30,6 +33,7 @@ jobs:
             ls
             pwd
             mkdir -p $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
+            haxelib install hxnodejs
             haxelib install lime
             haxelib install openfl
             haxelib install flixel
@@ -40,14 +44,32 @@ jobs:
             haxelib install flixel-ui
             haxelib install hscript
             haxelib install newgrounds
+            haxelib install flixel-addons
             haxelib git faxe https://github.com/uhrobots/faxe
             haxelib git polymod https://github.com/larsiusprime/polymod.git
             haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-            haxelib install linc_luajit
-            haxelib install actuate
             haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+            haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+            haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
+            haxelib run lime rebuild linc_luajit linux
+            haxelib run lime rebuild extension-webm linux
             haxelib install android6permissions
-            haxelib install androidhx
+            haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
+            haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
+            haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
+            haxelib install uniontypes #BulbyVR used this
+            haxelib install json2object #BulbyVR used this to convert JSON to object
+            haxelib install extension-webview #luckydog7 for Android
+            haxelib git xinput https://github.com/furusystems/openfl-xinput.git
+            haxelib install haxe-files
+            haxelib install hxcpp-debug-server
+            haxelib install tink_core
+            haxelib install grig.audio
+            haxelib install grig.midi
+            haxelib install actuate 
+            haxelib git tentools https://github.com/TentaRJ/tentools.git
+            haxelib git systools https://github.com/haya3218/systools
+            haxelib run lime rebuild systools linux
             haxelib list
             wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
             unzip butler.zip
@@ -55,9 +77,11 @@ jobs:
             pwd
             ls
             echo ha hi ha hu huha
-            haxelib run lime rebuild extension-webm linux
-            haxelib run lime rebuild linc_luajit linux
             cd ~/project/kaded-fnf-mods
+            wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+            ls
+            pwd
+            mv ./GJkeys.hx ~/project/kaded-fnf-mods/source/GJKeys.hx
 
       # - run:
       #     name: Rebuild GrowtopiaFli video cutsceners
@@ -71,8 +95,10 @@ jobs:
             haxelib run lime build linux -32 -D32bit
             tar -cvf last-funkin-moments.tar -C ~/project/kaded-fnf-mods/export/release/linux/bin .
             tar -cvf last-funkin-moments-32bit.tar -C ~/project/kaded-fnf-mods/export/32bit/linux/bin .
-            if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/project/kaded-fnf-mods/export/release/linux/bin joelwindows7/last-funkin-moments:linux-circleCI; fi
-            if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/project/kaded-fnf-mods/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-circleCI; fi
+            cd ~
+      #      if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/project/kaded-fnf-mods/export/release/linux/bin joelwindows7/last-funkin-moments:linux-circleCI; fi
+      #      if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/project/kaded-fnf-mods/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-circleCI; fi
+            ./butler push ~/project/kaded-fnf-mods/export/release/linux/bin joelwindows7/last-funkin-moments:linux-circleCI
       # - run:
       #     name: Just build this game already Windows
       #     command: |
@@ -91,5 +117,7 @@ jobs:
             cd ~/project/kaded-fnf-mods
             haxelib run lime build html5
             tar -cvf last-funkin-moments-html5.tar -C ~/project/kaded-fnf-mods/export/release/html5/bin
+            cd ~
+            ./butler push ~/project/kaded-fnf-mods/export/release/html5/bin joelwindows7/last-funkin-moments:html5-circleCI
       ########## unfortunately that each run did not recognize each other
 
