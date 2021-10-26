@@ -33,6 +33,7 @@ class DialogueBox extends FlxSpriteGroup
 	var portraitLeft:FlxSprite;
 	var portraitRight:FlxSprite;
 	var portraitMiddle:FlxSprite; //JOELwindows7: for gf
+	var portraitJustDoIt:FlxSprite; //JOELwindows7: for custom character beyond bf, dad, or gf. use in-game image from character folder I guess
 
 	var handSelect:FlxSprite;
 	var bgFade:FlxSprite;
@@ -382,10 +383,10 @@ class DialogueBox extends FlxSpriteGroup
 	var isEnding:Bool = false;
 
 	//JOELwindows7: let's just put some part of module as a function shall we?
-	function initiatePortraitLeft(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/senpaiPortrait', name:String = 'enter', prefix:String = 'Senpai Portrait Enter', frameRate:Int = 24, flip:Bool = false):Void
+	function initiatePortraitLeft(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/senpaiPortrait', name:String = 'enter', prefix:String = 'Senpai Portrait Enter', frameRate:Int = 24, flip:Bool = false, ?library = ''):Void
 	{
 		portraitLeft = new FlxSprite(newSpriteX, newSpriteY);
-		portraitLeft.frames = Paths.getSparrowAtlas(textureXmlPath);
+		portraitLeft.frames = Paths.getSparrowAtlas(textureXmlPath, library);
 		portraitLeft.animation.addByPrefix(name, prefix, frameRate, flip);
 		portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * zooming));
 		portraitLeft.updateHitbox();
@@ -395,16 +396,33 @@ class DialogueBox extends FlxSpriteGroup
 	}
 
 	//JOELwindows7: same for the bf too
-	function initiatePortraitRight(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/bfPortrait', name:String = 'enter', prefix:String = 'Boyfriend portrait Enter', frameRate:Int = 24, flip:Bool = false):Void
+	function initiatePortraitRight(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/bfPortrait', name:String = 'enter', prefix:String = 'Boyfriend portrait Enter', frameRate:Int = 24, flip:Bool = false, ?library = ''):Void
 	{
 		portraitRight = new FlxSprite(0, 40);
-		portraitRight.frames = Paths.getSparrowAtlas(textureXmlPath);
+		portraitRight.frames = Paths.getSparrowAtlas(textureXmlPath, library);
 		portraitRight.animation.addByPrefix(name, prefix, frameRate, flip);
 		portraitRight.setGraphicSize(Std.int(portraitRight.width * PlayState.daPixelZoom * zooming));
 		portraitRight.updateHitbox();
 		portraitRight.scrollFactor.set();
 		add(portraitRight);
 		portraitRight.visible = false;
+	}
+
+	function initiatePortraitMiddle(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/gfPortrait', name:String = 'enter', prefix:String = 'Girlfriend portrait enter', frameRate:Int = 24, flip:Bool = false, ?library = 'shared')
+	{
+		portraitMiddle = new FlxSprite(0, 40);
+		portraitMiddle.frames = Paths.getSparrowAtlas(textureXmlPath, library);
+		portraitMiddle.animation.addByPrefix(name, prefix, frameRate, flip);
+		portraitMiddle.setGraphicSize(Std.int(portraitMiddle.width * PlayState.daPixelZoom * zooming));
+		portraitMiddle.updateHitbox();
+		portraitMiddle.scrollFactor.set();
+		add(portraitMiddle);
+		portraitMiddle.visible = false;
+	}
+
+	function initiatePortraitCustom(character:String = 'dad', side:Int = 0)
+	{
+
 	}
 
 	function startDialogue():Void
@@ -488,7 +506,11 @@ class DialogueBox extends FlxSpriteGroup
 						swagDialogue.color = 0xFF3F2021;
 						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 				}
+			default:
+				//JOELwindows7: use character folder image fully instead
+				// initiatePortraitCustom();
 		}
+		swagDialogue.width = Std.int(FlxG.width * .6); //JOELwindows7: don't forget to refresh the width!
 	}
 
 	function cleanDialog():Void
