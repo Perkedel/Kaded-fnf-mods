@@ -5308,10 +5308,10 @@ class PlayState extends MusicBeatState
 		useVideo = true;
 
 		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
-		if (!mobile)
+		// #if (!mobile)
 		//WebmPlayer.SKIP_STEP_LIMIT = 90;
 		//GlobalVideo.getWebm().webm.SKIP_STEP_LIMIT = 90; //JOELwindows7: for original gwebdev
-		#end
+		// #end
 		// WebmPlayer.SKIP_STEP_LIMIT = 90;
 		var str1:String = "WEBM SHIT";
 		webmHandler = new WebmHandler();
@@ -6487,6 +6487,7 @@ class PlayState extends MusicBeatState
 			default:
 
 		}
+	}
 	
 	//JOELwindows7: manage mouse
 	override function manageMouse(){

@@ -201,15 +201,20 @@ class OutdatedSubState extends MusicBeatState
 	{
 		if (controls.ACCEPT && MainMenuState.nightly == "" && MainMenuState.larutMalam == "")
 		{
-			case 0:
-				fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
-			case 1:
-				fancyOpenURL("https://odysee.com/@JOELwindows7/LFM-changelog-" + needVerLast);
-			default:
-				fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
+			// JOELwindows7: accepted, go to which area should be updated
+			switch (whichAreaOutdated)
+			{
+				case 0:
+					fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
+				case 1:
+					fancyOpenURL("https://odysee.com/@JOELwindows7/LFM-changelog-" + needVerLast);
+				default:
+					fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
+			}
 		}
 		else if (controls.ACCEPT || haveClicked)
 		{
+			// JOELwindows7: accepted, go to which area is nightly
 			switch(whichAreaOutdated){
 				case 0: //Kade Engine
 					leftState = true;

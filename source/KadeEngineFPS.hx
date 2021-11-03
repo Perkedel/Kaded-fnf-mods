@@ -111,9 +111,25 @@ class KadeEngineFPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-			text = (FlxG.save.data.fps ? "FPS: "
-				+ currentFPS
-				+ (Main.watermarks ? "\nKE " + "v" + MainMenuState.kadeEngineVer : "") : (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer : ""));
+			/*
+				text = (FlxG.save.data.fps ? "FPS: "
+					+ currentFPS
+					+ (Main.watermarks ? "\nKE " + "v" + MainMenuState.kadeEngineVer : "") 
+					// JOELwindows7: time to add our watermark yey
+					+ (Main.perkedelMark ? "\nLFM " + MainMenuState.lastFunkinMomentVer : "")
+					: //JOELwindows7: if no show FPS
+					(Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer : "")
+					//JOELwindows7: time to add our watermark yey
+					+ (Main.perkedelMark ? "\nLFM " + MainMenuState.lastFunkinMomentVer : "")
+					);
+			 */
+			// JOELwindows7: Kade, STOP! this kind of comparison is cringe! why not do it like this:
+			text = (FlxG.save.data.fps ? "FPS: " + currentFPS + "\n" : "")
+				+ (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "")
+				+ (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer +
+					"\n" : ""); // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
+			// remember to have \n at the beginning of the line at available if case.
+			// No, at the end of line at available if case. + "\n" one.
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();
