@@ -17,12 +17,8 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-#if newgrounds
-import io.newgrounds.NG;
-#end
 import lime.app.Application;
-
-#if (desktop && cpp)
+#if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
 
@@ -44,24 +40,28 @@ class MainMenuState extends MusicBeatState
 
 	var newGaming:FlxText;
 	var newGaming2:FlxText;
+
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
 	public static var larutMalam:String = ""; //JOELwindows7: Last Funkin Nightly mark
 
-	public static var kadeEngineVer:String = "1.7" + nightly;
+	public static var kadeEngineVer:String = "1.8" + nightly;
 	public static var gameVer:String = "0.2.7.1";
-	public static var lastFunkinMomentVer:String = "2021.10.170" + larutMalam; //JOELwindows7: last funkin moments version
+	public static var lastFunkinMomentVer:String = "2021.11.180" + larutMalam; //JOELwindows7: last funkin moments version
 	public static var yourModVer:String = "0.0.0.0"; //JOELwindows7: your own mod version
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
+
 	public static var finishedFunnyMove:Bool = false;
 
 	override function create()
 	{
+		trace(0 / 2);
 		clean();
-		#if (desktop && cpp)
+		PlayState.inDaPlay = false;
+		#if FEATURE_DISCORD
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
@@ -73,7 +73,7 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('menuBG'));
+		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('menuBG'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.10;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
@@ -85,7 +85,7 @@ class MainMenuState extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
+		magenta = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuDesat'));
 		magenta.scrollFactor.x = 0;
 		magenta.scrollFactor.y = 0.10;
 		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
@@ -120,14 +120,14 @@ class MainMenuState extends MusicBeatState
 			menuItem.scrollFactor.set();
 			menuItem.antialiasing = FlxG.save.data.antialiasing;
 			if (firstStart)
-			{
-				FlxTween.tween(menuItem,{y: 60 + (i * 160)},1 + (i * 0.25) ,{ease: FlxEase.expoInOut, onComplete: function(flxTween:FlxTween) 
-					{ 
-						finishedFunnyMove = true; 
+				FlxTween.tween(menuItem, {y: 60 + (i * 160)}, 1 + (i * 0.25), {
+					ease: FlxEase.expoInOut,
+					onComplete: function(flxTween:FlxTween)
+					{
+						finishedFunnyMove = true;
 						changeItem();
-					}});
-				
-			}
+					}
+				});
 			else
 			{
 				menuItem.y = 60 + (i * 160);
@@ -148,21 +148,27 @@ class MainMenuState extends MusicBeatState
 
 		//JOELwindows7: hard code our download link in case illegally reuploaded no matter what sign given
 		//we also covered both Kade Engine and the vanilla itself
-		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 72, 0, "Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\noriginal Kade Engine at https://github.com/KadeDev/Kade-Engine,\nand vanilla Funkin at https://github.com/ninjamuffin99/Funkin .\nplay vanilla Funkin at https://www.newgrounds.com/portal/view/770371\n", 12);
+		var reuploadWord:String = 
+			"Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\n"
+			+ "original Kade Engine at https://github.com/KadeDev/Kade-Engine,\n"
+			+ "and vanilla Funkin at https://github.com/ninjamuffin99/Funkin .\n"
+			+ "play vanilla Funkin at https://www.newgrounds.com/portal/view/770371\n"
+			;
+		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 72, 0, reuploadWord, 12);
 		reuploadEdgeCase.scrollFactor.set();
 		reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(reuploadEdgeCase);
 		//Kade, ninja, you should do that too. follow this example!
 		//also somehow at the end of the paragraph above, you must `\n` it at the very end. idk why, but that's the workaround
 		//so the last line of text also shows.
-
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod v" + lastFunkinMomentVer : ""), 12);
+		
+		// var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod v" + lastFunkinMomentVer : ""), 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
-
 
 		if (FlxG.save.data.dfjk)
 			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
@@ -251,7 +257,7 @@ class MainMenuState extends MusicBeatState
 					FlxG.mouse.visible = false;
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
-					
+
 					if (FlxG.save.data.flashing)
 						FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
@@ -329,7 +335,7 @@ class MainMenuState extends MusicBeatState
 			spr.screenCenter(X);
 		});
 	}
-	
+
 	function goToState()
 	{
 		var daChoice:String = optionShit[curSelected];
@@ -345,7 +351,7 @@ class MainMenuState extends MusicBeatState
 				trace("Freeplay Menu Selected");
 
 			case 'options':
-				FlxG.switchState(new OptionsMenu());
+				FlxG.switchState(new OptionsDirect());
 		}
 	}
 
@@ -369,6 +375,8 @@ class MainMenuState extends MusicBeatState
 				spr.animation.play('selected');
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
+
+			spr.animation.curAnim.frameRate = 24 * (60 / FlxG.save.data.fpsCap);
 
 			spr.updateHitbox();
 		});

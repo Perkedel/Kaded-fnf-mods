@@ -26,6 +26,7 @@ class DialogueBox extends FlxSpriteGroup
 	var swagDialogue:FlxTypeText;
 
 	var dropText:FlxText;
+	var skipText:FlxText;
 
 	//public var finishThing:Void->Void;
 	public var finishThing:Void->Void;
@@ -68,15 +69,15 @@ class DialogueBox extends FlxSpriteGroup
 		// (just to grab its current value of a variable right now), not just the class itself. hoof! I am jealous!
 		if(!isEpilogue)
 		{
-			switch (PlayState.SONG.song.toLowerCase())
+			switch (PlayState.SONG.songId.toLowerCase())
 			{
 				case 'senpai':
-					sound = new FlxSound().loadEmbedded(Paths.music('Lunchbox'),true);
+					sound = new FlxSound().loadEmbedded(Paths.music('Lunchbox'), true);
 					sound.volume = 0;
 					FlxG.sound.list.add(sound);
 					sound.fadeIn(1, 0, 0.8);
 				case 'thorns':
-					sound = new FlxSound().loadEmbedded(Paths.music('LunchboxScary'),true);
+					sound = new FlxSound().loadEmbedded(Paths.music('LunchboxScary'), true);
 					sound.volume = 0;
 					FlxG.sound.list.add(sound);
 					sound.fadeIn(1, 0, 0.8);
@@ -125,10 +126,10 @@ class DialogueBox extends FlxSpriteGroup
 		}, 5);
 
 		box = new FlxSprite(-20, 45);
-		
+
 		var hasDialog = false;
 		trace("song is: " + PlayState.SONG.song.toLowerCase() + " so pls check dialog!");
-		switch (PlayState.SONG.song.toLowerCase())
+		switch (PlayState.SONG.songId.toLowerCase())
 		{
 			case 'senpai' | 'senpai-midi':
 				//JOELwindows7: pls add week 6 library makering.
@@ -152,7 +153,7 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByPrefix('normalOpen', 'Spirit Textbox spawn', 24, false);
 				box.animation.addByIndices('normal', 'Spirit Textbox spawn', [11], "", 24);
 
-				var face:FlxSprite = new FlxSprite(320, 170).loadGraphic(Paths.image('weeb/spiritFaceForward', 'week6'));
+				var face:FlxSprite = new FlxSprite(320, 170).loadGraphic(Paths.loadImage('weeb/spiritFaceForward'));
 				face.setGraphicSize(Std.int(face.width * 6));
 				add(face);
 			
@@ -205,22 +206,22 @@ class DialogueBox extends FlxSpriteGroup
 		}
 
 		this.dialogueList = dialogueList;
-		
-		if (!hasDialog){
+
+		if (!hasDialog)
 			trace("yeah no dialog.");
 			return;
 		}
 		else
 			trace("You should have dialog man");
-		
+
 		//JOELwindows7: doned the heuristic sort of
 		//for dad player
 		if(!customCharPls)
 		{
 			portraitLeft = new FlxSprite(-20, 40);
-			portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait', 'week6');
+			portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait');
 			portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);
-			portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
+			portraitLeft.setGraphicSize(Std.int(portraitLeft.width * CoolUtil.daPixelZoom * 0.9));
 			portraitLeft.updateHitbox();
 			portraitLeft.scrollFactor.set();
 			add(portraitLeft);
@@ -231,15 +232,15 @@ class DialogueBox extends FlxSpriteGroup
 		if(!customBfPls)
 		{
 			portraitRight = new FlxSprite(0, 40);
-			portraitRight.frames = Paths.getSparrowAtlas('weeb/bfPortrait', 'week6');
+			portraitRight.frames = Paths.getSparrowAtlas('weeb/bfPortrait');
 			portraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter', 24, false);
-			portraitRight.setGraphicSize(Std.int(portraitRight.width * PlayState.daPixelZoom * 0.9));
+			portraitRight.setGraphicSize(Std.int(portraitRight.width * CoolUtil.daPixelZoom * 0.9));
 			portraitRight.updateHitbox();
 			portraitRight.scrollFactor.set();
 			add(portraitRight);
 			portraitRight.visible = false;
 		}
-		
+
 		//last but not least the bf
 		if(!customGfPls){
 			portraitMiddle = new FlxSprite(0, 40);
@@ -254,6 +255,7 @@ class DialogueBox extends FlxSpriteGroup
 
 		//JOELwindows7: I've added a heuristic to size width accordingly between nonPixel and pixel level.
 		box.animation.play('normalOpen');
+		// box.setGraphicSize(Std.int(box.width * CoolUtil.daPixelZoom * 0.9));
 		if(nonPixel)
 			{
 				box.setPosition(FlxG.width * .5,FlxG.height - 300); //correct shoot is 300 behind screen height
@@ -273,10 +275,13 @@ class DialogueBox extends FlxSpriteGroup
 
 		box.screenCenter(X);
 		portraitLeft.screenCenter(X);
-
-		handSelect = new FlxSprite(FlxG.width * 0.9, FlxG.height * 0.9).loadGraphic(Paths.image('weeb/pixelUI/hand_textbox', 'week6'));
+		skipText = new FlxText(10, 10, Std.int(FlxG.width * 0.6), "", 16);
+		skipText.font = 'Pixel Arial 11 Bold';
+		skipText.color = 0x000000;
+		skipText.text = 'press back to skip';
+		add(skipText);
+		handSelect = new FlxSprite(FlxG.width * 0.9, FlxG.height * 0.9).loadGraphic(Paths.loadImage('weeb/pixelUI/hand_textbox'));
 		add(handSelect);
-
 
 		if (!talkingRight)
 		{
@@ -305,9 +310,9 @@ class DialogueBox extends FlxSpriteGroup
 	override function update(elapsed:Float)
 	{
 		// HARD CODING CUZ IM STUPDI
-		if (PlayState.SONG.song.toLowerCase() == 'roses' || PlayState.SONG.song.toLowerCase() == 'roses-midi')
+		if (PlayState.SONG.songId.toLowerCase() == 'roses' || PlayState.SONG.song.toLowerCase() == 'roses-midi')
 			portraitLeft.visible = false;
-		if (PlayState.SONG.song.toLowerCase() == 'thorns' || PlayState.SONG.song.toLowerCase() == 'thorns-midi')
+		if (PlayState.SONG.songId.toLowerCase() == 'thorns' || PlayState.SONG.song.toLowerCase() == 'thorns-midi')
 		{
 			portraitLeft.visible = false;
 			swagDialogue.color = FlxColor.WHITE;
@@ -330,12 +335,40 @@ class DialogueBox extends FlxSpriteGroup
 			startDialogue();
 			dialogueStarted = true;
 		}
+		if (PlayerSettings.player1.controls.BACK && isEnding != true)
+		{
+			remove(dialogue);
+			isEnding = true;
+			switch (PlayState.SONG.songId.toLowerCase())
+			{
+				case "senpai" | "thorns":
+					sound.fadeOut(2.2, 0);
+				case "roses":
+					trace("roses");
+				default:
+					trace("other song");
+			}
+			new FlxTimer().start(0.2, function(tmr:FlxTimer)
+			{
+				box.alpha -= 1 / 5;
+				bgFade.alpha -= 1 / 5 * 0.7;
+				portraitLeft.visible = false;
+				portraitRight.visible = false;
+				swagDialogue.alpha -= 1 / 5;
+				dropText.alpha = swagDialogue.alpha;
+			}, 5);
 
+			new FlxTimer().start(1.2, function(tmr:FlxTimer)
+			{
+				finishThing();
+				kill();
+			});
+		}
 		//JOELwindows7: add mouse click t continue
 		if ((PlayerSettings.player1.controls.ACCEPT || FlxG.mouse.justPressed) && dialogueStarted == true)
 		{
 			remove(dialogue);
-				
+
 			FlxG.sound.play(Paths.sound('clickText'), 0.8);
 
 			if (dialogueList[1] == null && dialogueList[0] != null)
@@ -344,7 +377,7 @@ class DialogueBox extends FlxSpriteGroup
 				{
 					isEnding = true;
 
-					if (PlayState.SONG.song.toLowerCase() == 'senpai' || PlayState.SONG.song.toLowerCase() == 'thorns' 
+					if (PlayState.SONG.songId.toLowerCase() == 'senpai' || PlayState.SONG.songId.toLowerCase() == 'thorns'
 						|| PlayState.SONG.song.toLowerCase() == 'senpai-midi' || PlayState.SONG.song.toLowerCase() == 'thorns-midi')
 						sound.fadeOut(2.2, 0);
 
@@ -376,7 +409,7 @@ class DialogueBox extends FlxSpriteGroup
 				startDialogue();
 			}
 		}
-		
+
 		super.update(elapsed);
 	}
 

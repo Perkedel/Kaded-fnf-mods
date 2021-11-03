@@ -1,9 +1,9 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Windows Build CI
 
 # Controls when the workflow will run
-on: push
+on: [push, pull_request]
 
 env:
   ANDROID_SDK_LOC: C:\Android\android-sdk
@@ -28,7 +28,8 @@ jobs:
         with:
           haxe-version: 4.2.3
       # Runs a set of commands using the runners shell
-      - name: script run line haha
+
+      - name: Schlob Chocolatey
         run: |
           choco install vcredist140
           cinst neko -y
@@ -38,7 +39,7 @@ jobs:
           cinst android-sdk -y
           cinst android-ndk --version=16.2 -y
           cinst adb -y
-      
+
       - name: first, lemme download android stuff
         run: |
           wget -q -O android_ndk.zip https://dl.google.com/android/repository/android-ndk-r15c-windows-x86_64.zip?hl=fi
@@ -52,8 +53,9 @@ jobs:
           unzip -q .\android_platforms.zip -d "%ANDROID_SDK_LOC%"
           unzip -q -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%" 
 
-      - name: script run line haha 2
+      - name: script run line haha
         run: |
+          cinst haxe -y
           RefreshEnv
           mkdir "%HAXELIB_ROOT%"
           haxelib setup "%HAXELIB_ROOT%"
@@ -67,14 +69,11 @@ jobs:
           haxelib install flixel-addons
           haxelib install flixel-ui
           haxelib install hscript
-          haxelib install newgrounds
           haxelib install flixel-addons
           haxelib git faxe https://github.com/uhrobots/faxe
-          haxelib git polymod https://github.com/larsiusprime/polymod.git
+          haxelib git polymod https://github.com/MasterEric/polymod.git
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
-          haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib run lime rebuild extension-webm windows
           haxelib install android6permissions
           haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
@@ -89,6 +88,8 @@ jobs:
           haxelib install tink_core
           haxelib install grig.audio
           haxelib install grig.midi
+          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+          haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib install actuate 
           haxelib git tentools https://github.com/TentaRJ/tentools.git
           haxelib git systools https://github.com/haya3218/systools

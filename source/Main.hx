@@ -8,11 +8,12 @@ import flixel.util.FlxTimer;
 #if !debug
 import com.player03.android6.Permissions;
 #end
-#if cpp
+#if FEATURE_WEBM_NATIVE
 import webm.WebmPlayer;
 #end
+import openfl.display.Bitmap;
 import lime.app.Application;
-#if desktop
+#if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
 import openfl.display.BlendMode;
@@ -39,6 +40,10 @@ class Main extends Sprite
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 
+	public static var bitmapFPS:Bitmap;
+
+	public static var instance:Main;
+
 	public static var watermarks = true; // Whether to put Kade Engine literally anywhere
 	public static var odyseeMark = true; // Whether to put Odysee mark literally anywhere
 	public static var perkedelMark = true; // Whether to put Perkedel Technologies literally anywhere
@@ -53,14 +58,15 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
-
-		// quick checks 
+		// quick checks
 
 		Lib.current.addChild(new Main());
 	}
 
 	public function new()
 	{
+		instance = this;
+
 		super();
 
 		//JOELwindows7: Grig midi pls
@@ -128,18 +134,6 @@ class Main extends Sprite
 		framerate = 60;
 		#end
 
-		#if (cpp && !mobile)
-		initialState = Caching; //JOELwindows7: remember! it doesn't work in Android! make sure !mobile first
-		trace("Go to caching first");
-		#else
-		trace("Just straight to the game anyway");
-		#end
-		trace("put game");
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
-		//JOELwindows7: nope, Caching still crashes in Android.
-		addChild(game);
-		trace("added game");
-
 		//JOELwindows7: Friggin Screen Grab functions
 		//inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
 		//it had screenshoter so why not?
@@ -147,7 +141,7 @@ class Main extends Sprite
 		#if !js
 		FlxScreenGrab.defineHotKeys([FlxKey.PRINTSCREEN, FlxKey.F6], true, false);
 		#end
-
+		
 		//GrowtopiaFli's Video Cutscener
 		//The code https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/
 		//added by JOELwindows7
@@ -156,17 +150,17 @@ class Main extends Sprite
 		var ourSource:String = "assets/videos/DO NOT DELETE OR GAME WILL CRASH/dontDelete.webm";
 
 		//JOELwindows7: an check whether isWebm or not
-		#if (web)
+		#if FEATURE_WEBM_JS
 		trace("vid isWeb");
 		GlobalVideo.isWebm = false;
-		#elseif (desktop)
+		#elseif FEATURE_WEBM_NATIVE
 		trace("vid isNative");
 		GlobalVideo.isWebm = true;
 		#end
 		trace("is GlobalVideo a webm? " + Std.string(GlobalVideo.isWebm));
 		// https://github.com/Raltyro/VideoState.hx-Kade-Engine-1.5-Patch
 		
-		#if (web)
+		#if FEATURE_WEBM_JS
 		trace("Video Cutscener is built-in Browser's");
 		var str1:String = "HTML CRAP";
 		var vHandler = new VideoHandler();
@@ -176,7 +170,7 @@ class Main extends Sprite
 		vHandler.init2();
 		GlobalVideo.setVid(vHandler);
 		vHandler.source(ourSource);
-		#elseif ((desktop) && cpp)
+		#elseif FEATURE_WEBM_NATIVE
 		trace("Video Cutscener is external webm player");
 		var str1:String = "WEBM SHIT"; 
 		var webmHandle = new WebmHandler();
@@ -189,23 +183,36 @@ class Main extends Sprite
 		#end
 		//end GrowtopiaFli Video Cutscener
 		
-		#if (desktop && cpp)
-		DiscordClient.initialize();
+		// Run this first so we can see logs.
+		Debug.onInitProgram();
 
-		Application.current.onExit.add (function (exitCode) {
-			DiscordClient.shutdown();
-		 });
-		 
-		#end
-		
+		// Gotta run this before any assets get loaded.
+		ModCore.initialize();
+
 		trace("init FPS counter");
-		fpsCounter = new FPS(10, 3, 0xFFFFFF);
+		#if !mobile
+		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);
+		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
+		bitmapFPS.smoothing = true;
+		#end
+
+		// #if FEATURE_THREADING
+		// initialState = Caching; //JOELwindows7: remember! it doesn't work in Android! make sure !mobile first
+		// trace("Go to caching first");
+		// #else
+		// trace("Just straight to the game anyway");
+		// #end
+		// trace("put game");
+
+		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		addChild(game);
+
+		#if !mobile
 		addChild(fpsCounter);
-		// #if !mobile
 		new FlxTimer().start(1,function (timer:FlxTimer) {
 			toggleFPS(FlxG.save.data.fps);
 		});
-		// #end
+		#end
 
 		//JOELwindows7: GameBanana seems notorious.
 		//let's just hide everything that "trashworthy" / "blammworthy"
@@ -226,20 +233,41 @@ class Main extends Sprite
 		#end
 
 		//JOELwindows7: stop the accidentally press numpad 0 during arrow key on keyboard
-		destroyAccidentVolKeys();
+		// destroyAccidentVolKeys();
 
 		//JOELwindows7: mini scanners for platform detections
 		ScanPlatform.getPlatform();
+
+		// Finish up loading debug tools.
+		Debug.onGameStart();
 	}
 
 	var game:FlxGame;
 
-	var fpsCounter:FPS;
+	var fpsCounter:KadeEngineFPS;
 
-	public function toggleFPS(fpsEnabled:Bool):Void {
-		trace("Toggle FPS counter " + Std.string(fpsEnabled));
-		fpsCounter.visible = fpsEnabled;
-		trace("doned toggling FPS counter");
+	// taken from forever engine, cuz optimization very pog.
+	// thank you shubs :)
+	public static function dumpCache()
+	{
+		///* SPECIAL THANKS TO HAYA
+		@:privateAccess
+		for (key in FlxG.bitmap._cache.keys())
+		{
+			var obj = FlxG.bitmap._cache.get(key);
+			if (obj != null)
+			{
+				Assets.cache.removeBitmapData(key);
+				FlxG.bitmap._cache.remove(key);
+				obj.destroy();
+			}
+		}
+		Assets.cache.clear("songs");
+		// */
+	}
+
+	public function toggleFPS(fpsEnabled:Bool):Void
+	{
 	}
 
 	public function changeFPSColor(color:FlxColor)

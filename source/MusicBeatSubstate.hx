@@ -2,6 +2,10 @@ package;
 
 import flixel.FlxCamera;
 import flixel.FlxSprite;
+import lime.app.Application;
+import openfl.Lib;
+import flixel.text.FlxText;
+import flixel.input.gamepad.FlxGamepad;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.FlxSubState;
@@ -35,6 +39,20 @@ class MusicBeatSubstate extends FlxSubState
 	var retryButton:FlxSprite; //JOELwindows7: the retry button here
 	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
 
+	override function destroy()
+	{
+		Application.current.window.onFocusIn.remove(onWindowFocusOut);
+		Application.current.window.onFocusIn.remove(onWindowFocusIn);
+		super.destroy();
+	}
+
+	override function create()
+	{
+		super.create();
+		Application.current.window.onFocusIn.add(onWindowFocusIn);
+		Application.current.window.onFocusOut.add(onWindowFocusOut);
+	}
+
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
 
@@ -49,7 +67,7 @@ class MusicBeatSubstate extends FlxSubState
 
 	override function update(elapsed:Float)
 	{
-		//everyStep();
+		// everyStep();
 		var nextStep = updateCurStep();
 
 		if (nextStep >= 0)
@@ -65,14 +83,22 @@ class MusicBeatSubstate extends FlxSubState
 			}
 			else if (nextStep < curStep)
 			{
-				//Song reset?
+				// Song reset?
 				curStep = nextStep;
 				updateBeat();
 				stepHit();
 			}
 		}
 
+		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+		if (gamepad != null)
+			KeyBinds.gamepad = true;
+		else
+			KeyBinds.gamepad = false;
+
 		super.update(elapsed);
+
+		manageMouse();
 	}
 
 	private function updateBeat():Void
@@ -105,7 +131,33 @@ class MusicBeatSubstate extends FlxSubState
 
 	public function beatHit():Void
 	{
-		//do literally nothing dumbass
+		// do literally nothing dumbass
+	}
+
+	function onWindowFocusOut():Void
+	{
+		if (PlayState.inDaPlay)
+		{
+			if (!PlayState.instance.paused && !PlayState.instance.endingSong && PlayState.instance.songStarted)
+			{
+				Debug.logTrace("Lost Focus");
+				PlayState.instance.openSubState(new PauseSubState());
+				PlayState.boyfriend.stunned = true;
+
+				PlayState.instance.persistentUpdate = false;
+				PlayState.instance.persistentDraw = true;
+				PlayState.instance.paused = true;
+
+				PlayState.instance.vocals.stop();
+				FlxG.sound.music.stop();
+			}
+		}
+	}
+
+	function onWindowFocusIn():Void
+	{
+		Debug.logTrace("IM BACK!!!");
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 	}
 
 	//JOELwindows7: init dedicated touchscreen buttons camera
@@ -215,5 +267,10 @@ class MusicBeatSubstate extends FlxSubState
 			viewReplayButton.cameras = [camControl];
 		add(viewReplayButton);
 		return viewReplayButton;
+	}
+
+	function manageMouse():Void
+	{
+		// JOELwindows7: nothing. use this to manage mouse
 	}
 }
