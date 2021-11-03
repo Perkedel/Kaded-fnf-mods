@@ -36,7 +36,7 @@ class NoteskinHelpers
 			noteskinArray.push(i.replace(".png", ""));
 		}
 		#else
-		noteskinArray = ["Arrows", "Circles"];
+		noteskinArray = ["Arrows", "Circles", "Saubo"]; // JOELwindows7: lemme pecking try this. ugh so confusing!
 		#end
 
 		return noteskinArray;

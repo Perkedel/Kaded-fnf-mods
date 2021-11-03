@@ -208,6 +208,7 @@ class DialogueBox extends FlxSpriteGroup
 		this.dialogueList = dialogueList;
 
 		if (!hasDialog)
+		{
 			trace("yeah no dialog.");
 			return;
 		}
@@ -246,7 +247,7 @@ class DialogueBox extends FlxSpriteGroup
 			portraitMiddle = new FlxSprite(0, 40);
 			portraitMiddle.frames = Paths.getSparrowAtlas('weeb/gfPortrait', 'shared');
 			portraitMiddle.animation.addByPrefix('enter', 'Girlfriend portrait enter', 24, false);
-			portraitMiddle.setGraphicSize(Std.int(portraitMiddle.width * PlayState.daPixelZoom * 0.9));
+			portraitMiddle.setGraphicSize(Std.int(portraitMiddle.width * CoolUtil.daPixelZoom * 0.9));
 			portraitMiddle.updateHitbox();
 			portraitMiddle.scrollFactor.set();
 			add(portraitMiddle);
@@ -268,7 +269,7 @@ class DialogueBox extends FlxSpriteGroup
 				//ok ladies and gentlemen. how in the world did we overshot that?
 				//it wasn't like that before, and the same 20 behind screen height was fine!
 				// who Haxe part fault this is?
-				box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
+			box.setGraphicSize(Std.int(box.width * CoolUtil.daPixelZoom * 0.9));
 			}
 		box.updateHitbox();
 		add(box);
@@ -310,9 +311,9 @@ class DialogueBox extends FlxSpriteGroup
 	override function update(elapsed:Float)
 	{
 		// HARD CODING CUZ IM STUPDI
-		if (PlayState.SONG.songId.toLowerCase() == 'roses' || PlayState.SONG.song.toLowerCase() == 'roses-midi')
+		if (PlayState.SONG.songId.toLowerCase() == 'roses' || PlayState.SONG.songId.toLowerCase() == 'roses-midi')
 			portraitLeft.visible = false;
-		if (PlayState.SONG.songId.toLowerCase() == 'thorns' || PlayState.SONG.song.toLowerCase() == 'thorns-midi')
+		if (PlayState.SONG.songId.toLowerCase() == 'thorns' || PlayState.SONG.songId.toLowerCase() == 'thorns-midi')
 		{
 			portraitLeft.visible = false;
 			swagDialogue.color = FlxColor.WHITE;
@@ -378,7 +379,7 @@ class DialogueBox extends FlxSpriteGroup
 					isEnding = true;
 
 					if (PlayState.SONG.songId.toLowerCase() == 'senpai' || PlayState.SONG.songId.toLowerCase() == 'thorns'
-						|| PlayState.SONG.song.toLowerCase() == 'senpai-midi' || PlayState.SONG.song.toLowerCase() == 'thorns-midi')
+						|| PlayState.SONG.songId.toLowerCase() == 'senpai-midi' || PlayState.SONG.songId.toLowerCase() == 'thorns-midi')
 						sound.fadeOut(2.2, 0);
 
 					//JOELwindows7: Do this after that music faded out
@@ -421,7 +422,7 @@ class DialogueBox extends FlxSpriteGroup
 		portraitLeft = new FlxSprite(newSpriteX, newSpriteY);
 		portraitLeft.frames = Paths.getSparrowAtlas(textureXmlPath, library);
 		portraitLeft.animation.addByPrefix(name, prefix, frameRate, flip);
-		portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * zooming));
+		portraitLeft.setGraphicSize(Std.int(portraitLeft.width * CoolUtil.daPixelZoom * zooming));
 		portraitLeft.updateHitbox();
 		portraitLeft.scrollFactor.set();
 		add(portraitLeft);
@@ -434,7 +435,7 @@ class DialogueBox extends FlxSpriteGroup
 		portraitRight = new FlxSprite(0, 40);
 		portraitRight.frames = Paths.getSparrowAtlas(textureXmlPath, library);
 		portraitRight.animation.addByPrefix(name, prefix, frameRate, flip);
-		portraitRight.setGraphicSize(Std.int(portraitRight.width * PlayState.daPixelZoom * zooming));
+		portraitRight.setGraphicSize(Std.int(portraitRight.width * CoolUtil.daPixelZoom * zooming));
 		portraitRight.updateHitbox();
 		portraitRight.scrollFactor.set();
 		add(portraitRight);
@@ -446,7 +447,7 @@ class DialogueBox extends FlxSpriteGroup
 		portraitMiddle = new FlxSprite(0, 40);
 		portraitMiddle.frames = Paths.getSparrowAtlas(textureXmlPath, library);
 		portraitMiddle.animation.addByPrefix(name, prefix, frameRate, flip);
-		portraitMiddle.setGraphicSize(Std.int(portraitMiddle.width * PlayState.daPixelZoom * zooming));
+		portraitMiddle.setGraphicSize(Std.int(portraitMiddle.width * CoolUtil.daPixelZoom * zooming));
 		portraitMiddle.updateHitbox();
 		portraitMiddle.scrollFactor.set();
 		add(portraitMiddle);

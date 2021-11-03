@@ -308,7 +308,7 @@
 	<haxelib name="systools" unless = "mobile"/>
 	<ndll name="systools" haxelib="systools" unless = "mobile"/>
 	<!-- Final touch to have this -->
-	<haxedef name="gamejolt" if="tentools systools"/>
+	<haxedef name="gamejolt" if="tentools systools" unless= "mobile"/>
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->

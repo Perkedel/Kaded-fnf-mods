@@ -1277,7 +1277,7 @@ class ReplayOption extends Option
 	public override function press():Bool
 	{
 		trace("switch");
-		FlxG.switchState(new LoadReplayState());
+		OptionsMenu.switchState(new LoadReplayState()); //JOELwindows7: hey, check if you are in game before hand!
 		return false;
 	}
 
@@ -2392,7 +2392,7 @@ class SurroundTestOption extends Option{
 	{
 		//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		//FlxG.switchState(new LoadReplayState()); //or open new state.
-		FlxG.switchState(new LimeAudioBufferTester());
+		OptionsMenu.switchState(new LimeAudioBufferTester());
 		return false;
 	}
 
@@ -2414,7 +2414,7 @@ class AnVideoCutscenerTestOption extends Option{
 		{
 			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 			//FlxG.switchState(new LoadReplayState()); //or open new state.
-			FlxG.switchState(new AnWebmer());
+			OptionsMenu.switchState(new AnWebmer());
 			return false;
 		}
 	
@@ -2436,7 +2436,7 @@ class AnStarfieldTestOption extends Option{
 		{
 			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 			//FlxG.switchState(new LoadReplayState()); //or open new state.
-			FlxG.switchState(new AnStarfielde());
+			OptionsMenu.switchState(new AnStarfielde());
 			return false;
 		}
 	
@@ -2458,7 +2458,7 @@ class AnDefaultBekgronTestOption extends Option{
 		{
 			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 			//FlxG.switchState(new LoadReplayState()); //or open new state.
-			FlxG.switchState(new AnDefaultBekgronde());
+			OptionsMenu.switchState(new AnDefaultBekgronde());
 			return false;
 		}
 	
@@ -2600,7 +2600,7 @@ class LogGameJoltIn extends Option{
 	public override function press():Bool
 	{
 		#if gamejolt
-		FlxG.switchState(new GameJoltLogin());
+		OptionsMenu.switchState(new GameJoltLogin());
 		#end
 		return false;
 	}

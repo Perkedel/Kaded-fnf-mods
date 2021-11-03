@@ -1,5 +1,6 @@
 package;
 
+import CoreState;
 import MusicBeatState;
 import GalleryAchievements;
 import flixel.tweens.FlxEase;
@@ -61,12 +62,12 @@ class FreeplayState extends MusicBeatState
 
 	public static var songData:Map<String, Array<SongData>> = [];
 
-	//JOELwindows7: globalize bg variable to be refered for color change
+	// JOELwindows7: globalize bg variable to be refered for color change
 	var bg:FlxSprite;
 
-	//JOELwindows7: week data here
+	// JOELwindows7: week data here
 	var weekInfo:SwagWeeks;
-	
+
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
 		var diffName:String = "";
@@ -89,21 +90,25 @@ class FreeplayState extends MusicBeatState
 			weekDatas = StoryMenuState.loadFromJson('weekList');
 			return weekDatas;
 		}
-		catch(ex)
+		catch (ex)
 		{
-			//werror
+			// werror
 			FlxG.log.error("wError " + ex + "\n unable to load weeklist");
 			return null;
 		}
 	}
+
 	public static var list:Array<String> = [];
+
+	// JOELwindows7: globalize button variables.
+	var accepted:Bool;
+	var charting:Bool;
 
 	override function create()
 	{
-
-		//JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
+		// JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
-		//JOELwindows7: pls install weekData
+		// JOELwindows7: pls install weekData
 		weekInfo = FreeplayState.loadWeekDatas(weekInfo);
 
 		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
@@ -119,7 +124,7 @@ class FreeplayState extends MusicBeatState
 		#elseif FEATURE_STEPMANIA
 		// TODO: Refactor this to use OpenFlAssets.
 		trace("tryin to load sm files");
-		//JOELwindows7: android crash if attempt FileSystem stuffs
+		// JOELwindows7: android crash if attempt FileSystem stuffs
 		for (i in FileSystem.readDirectory("assets/sm/"))
 		{
 			trace(i);
@@ -155,12 +160,10 @@ class FreeplayState extends MusicBeatState
 					}
 				}
 			}
-
-			
 		}
 		#end
 
-		//JOELwindows7: propose odysee and thief song list
+		// JOELwindows7: propose odysee and thief song list
 		#if odysee
 		trace("Pls pull Odysee song list");
 		#end
@@ -187,25 +190,25 @@ class FreeplayState extends MusicBeatState
 		// LOAD CHARACTERS
 
 		// var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('menuBGBlue'));
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat')); //JOELwindows7: here global
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat')); // JOELwindows7: here global
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
-		//JOELwindows7: back button
-		addBackButton(20,FlxG.height);
-		//JOELwindows7: and difficulty button
-		addLeftButton(FlxG.width-350,-100);
-		addRightButton(FlxG.width-100,-100);
+		// JOELwindows7: back button
+		addBackButton(20, FlxG.height);
+		// JOELwindows7: and difficulty button
+		addLeftButton(FlxG.width - 350, -100);
+		addRightButton(FlxG.width - 100, -100);
 
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
 			songText.isMenuItem = true;
 			songText.targetY = i;
-			songText.ID = i; //ID the song text to compare curSelected song.
+			songText.ID = i; // ID the song text to compare curSelected song.
 			grpSongs.add(songText);
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
@@ -262,12 +265,12 @@ class FreeplayState extends MusicBeatState
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
 
 		super.create();
-		
-		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
-		FlxTween.tween(leftButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left button!
-		FlxTween.tween(rightButton,{y:90},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween right button!
 
-		//JOELwindows7: stuff
+		FlxTween.tween(backButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton, {y: 90}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left button!
+		FlxTween.tween(rightButton, {y: 90}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween right button!
+
+		// JOELwindows7: stuff
 		AchievementUnlocked.whichIs("freeplay_mode");
 	}
 
@@ -279,7 +282,10 @@ class FreeplayState extends MusicBeatState
 	static function populateSongData()
 	{
 		cached = false;
+		//TODO: JOELwindows7: make this loading procedural & automatic
 		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+		//JOELwindows7: hey, you must say goodbye to this. just load this one up from directory shall we?
+		//right, how do we do this..
 
 		songData = [];
 		songs = [];
@@ -377,14 +383,14 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.music.volume -= 0.5 * FlxG.elapsed;
 		}
 
-		//JOELwindows7: add mouse support in here
-		//huh, how inconsistent. now the keypress bools are syndicated via
+		// JOELwindows7: add mouse support in here
+		// huh, how inconsistent. now the keypress bools are syndicated via
 		// each variable. interesting.
 		var upP = FlxG.keys.justPressed.UP || FlxG.mouse.wheel == 1;
-		var downP = FlxG.keys.justPressed.DOWN || FlxG.mouse.wheel ==-1;
-		var accepted = FlxG.keys.justPressed.ENTER || haveClicked;
+		var downP = FlxG.keys.justPressed.DOWN || FlxG.mouse.wheel == -1;
+		accepted = FlxG.keys.justPressed.ENTER || haveClicked; // JOELwindows7: pls globalize
 		var dadDebug = FlxG.keys.justPressed.SIX;
-		var charting = FlxG.keys.justPressed.SEVEN || haveDebugSevened;
+		charting = FlxG.keys.justPressed.SEVEN || haveDebugSevened; // JOELwindows7: pls globalize
 		var bfDebug = FlxG.keys.justPressed.ZERO;
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
@@ -577,12 +583,7 @@ class FreeplayState extends MusicBeatState
 		#else
 		PlayState.isSM = false;
 		#end
-		trace("Loaded Song into Playstate " + (
-			FlxG.save.data.traceSongChart?
-			Std.string(hmm):
-			"bla bla bla"
-			)
-			); //JOELwindows7: what hapened
+		trace("Loaded Song into Playstate " + (FlxG.save.data.traceSongChart ? Std.string(hmm) : "bla bla bla")); // JOELwindows7: what hapened
 
 		PlayState.songMultiplier = rate;
 
@@ -675,12 +676,14 @@ class FreeplayState extends MusicBeatState
 		#if PRELOAD_ALL
 		if (songs[curSelected].songCharacter == "sm")
 		{
+			#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
 			var data = songs[curSelected];
 			trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
 			var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
 			var sound = new Sound();
 			sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
 			FlxG.sound.playMusic(sound);
+			#end
 		}
 		else
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
@@ -736,12 +739,13 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		//JOELwindows7: now change bg color based on what week did this on
+		// JOELwindows7: now change bg color based on what week did this on
 		changeColorByWeekOf(curSelected);
 	}
 
-	//JOELwindows7: copy from above but this time it set selection number
-	function goToSelection(change:Int = 0){
+	// JOELwindows7: copy from above but this time it set selection number
+	function goToSelection(change:Int = 0)
+	{
 		#if newgrounds
 		// NGio.logEvent('Fresh');
 		#end
@@ -791,125 +795,148 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		//JOELwindows7: now change bg color based on what week did this on
+		// JOELwindows7: now change bg color based on what week did this on
 		changeColorByWeekOf(curSelected);
 	}
 
-	function changeColorByWeekOf(which:Int = 0){
-		if(bg != null)
-			if(which <= -1) bg.color = FlxColor.fromString("purple")
+	function changeColorByWeekOf(which:Int = 0)
+	{
+		if (bg != null)
+			if (which <= -1)
+				bg.color = FlxColor.fromString("purple")
 			else
+			{
+				try
 				{
-					try
-					{
-						bg.color = FlxColor.fromString(weekInfo.weekColor[songs[which].week]);
-					}
-					catch(e)
-					{
-						trace("error Week color selection no. " + Std.string(curSelected) + ". " + e);
-						trace("Week datas " + Std.string(weekInfo));
-						FlxG.log.warn(e);
-						bg.color = FlxColor.fromString("purple");
-					}
+					bg.color = FlxColor.fromString(weekInfo.weekColor[songs[which].week]);
 				}
+				catch (e)
+				{
+					trace("error Week color selection no. " + Std.string(curSelected) + ". " + e);
+					trace("Week datas " + Std.string(weekInfo));
+					FlxG.log.warn(e);
+					bg.color = FlxColor.fromString("purple");
+				}
+			}
 	}
 
-	override function manageMouse(){
-		if(accepted || charting){
-			//JOELwindows7: invisiblize the mouse after accepted
-			FlxG.mouse.visible = false;	
+	override function manageMouse()
+	{
+		if (accepted || charting)
+		{
+			// JOELwindows7: invisiblize the mouse after accepted
+			FlxG.mouse.visible = false;
 
 			haveClicked = false;
 			haveDebugSevened = false;
-		} else {
-			//JOELwindows7: make mouse visible when moved.
-			if(FlxG.mouse.justMoved){
-				//trace("mouse moved");
+		}
+		else
+		{
+			// JOELwindows7: make mouse visible when moved.
+			if (FlxG.mouse.justMoved)
+			{
+				// trace("mouse moved");
 				FlxG.mouse.visible = true;
 			}
-			//JOELwindows7: detect any keypresses or any button presses
-			if(FlxG.keys.justPressed.ANY){
-				//lmao! inspire from GameOverState.hx!
+			// JOELwindows7: detect any keypresses or any button presses
+			if (FlxG.keys.justPressed.ANY)
+			{
+				// lmao! inspire from GameOverState.hx!
 				FlxG.mouse.visible = false;
 			}
-			if(FlxG.gamepads.lastActive != null){
-				if(FlxG.gamepads.lastActive.justPressed.ANY){
+			if (FlxG.gamepads.lastActive != null)
+			{
+				if (FlxG.gamepads.lastActive.justPressed.ANY)
+				{
 					FlxG.mouse.visible = false;
 				}
-				//peck this I'm tired! plns work lol
+				// peck this I'm tired! plns work lol
 			}
 		}
 
-		//if Mouse mode is active (detecting by when it's visible now)
-		//do something for mouse
-		if(FlxG.mouse.visible)
+		// if Mouse mode is active (detecting by when it's visible now)
+		// do something for mouse
+		if (FlxG.mouse.visible)
 		{
 			var givThing:Bool = false;
 			var givIcon:Bool = false;
 
-			//JOELwindows7: mouse support
-			grpSongs.forEach(function(thing:Alphabet){
-				if(FlxG.mouse.overlaps(thing) && !FlxG.mouse.overlaps(backButton)
-					&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
+			// JOELwindows7: mouse support
+			grpSongs.forEach(function(thing:Alphabet)
+			{
+				if (FlxG.mouse.overlaps(thing) && !FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton))
+				{
 					givThing = true;
-					if(FlxG.mouse.justPressed){
-						if(thing.ID == curSelected){
-							//run the song
+					if (FlxG.mouse.justPressed)
+					{
+						if (thing.ID == curSelected)
+						{
+							// run the song
 							haveClicked = true;
-						} else {
-							//go to the song
+						}
+						else
+						{
+							// go to the song
 							goToSelection(thing.ID);
 						}
 					}
 				}
-
-				
 			});
 
-			//JOELwindows7: same mouse support, for icons too as well!
-			for (i in 0...iconArray.length) {
-				if(FlxG.mouse.overlaps(iconArray[i]) && !FlxG.mouse.overlaps(backButton)
-					&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
+			// JOELwindows7: same mouse support, for icons too as well!
+			for (i in 0...iconArray.length)
+			{
+				if (FlxG.mouse.overlaps(iconArray[i]) && !FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(leftButton)
+					&& !FlxG.mouse.overlaps(rightButton))
+				{
 					givIcon = true;
-					if(FlxG.mouse.justPressed){
-						if(iconArray[i].ID == curSelected){
-							//run the song
+					if (FlxG.mouse.justPressed)
+					{
+						if (iconArray[i].ID == curSelected)
+						{
+							// run the song
 							haveClicked = true;
-						} else {
-							//go to the song
+						}
+						else
+						{
+							// go to the song
 							goToSelection(iconArray[i].ID);
 						}
 					}
 				}
 			}
-			//I'm afraid adding more `for` could kill performance here
-			//help!
-			//Back buttoner
-			if(FlxG.mouse.overlaps(backButton) && !givThing && !givIcon){
-				if(FlxG.mouse.justPressed)
-					if(!haveBacked){
+			// I'm afraid adding more `for` could kill performance here
+			// help!
+			// Back buttoner
+			if (FlxG.mouse.overlaps(backButton) && !givThing && !givIcon)
+			{
+				if (FlxG.mouse.justPressed)
+					if (!haveBacked)
+					{
 						haveBacked = true;
 					}
 			}
 
-			//Diff Buttoner
-			if(FlxG.mouse.overlaps(leftButton) && !givThing && !givIcon){
-				if(FlxG.mouse.justPressed)
-					if(!haveLefted){
+			// Diff Buttoner
+			if (FlxG.mouse.overlaps(leftButton) && !givThing && !givIcon)
+			{
+				if (FlxG.mouse.justPressed)
+					if (!haveLefted)
+					{
 						haveLefted = true;
 					}
 			}
-			if(FlxG.mouse.overlaps(rightButton) && !givThing && !givIcon){
-				if(FlxG.mouse.justPressed)
-					if(!haveRighted){
+			if (FlxG.mouse.overlaps(rightButton) && !givThing && !givIcon)
+			{
+				if (FlxG.mouse.justPressed)
+					if (!haveRighted)
+					{
 						haveRighted = true;
 					}
 			}
 		}
 		super.manageMouse();
 	}
-
-	
 }
 
 class FreeplaySongMetadata

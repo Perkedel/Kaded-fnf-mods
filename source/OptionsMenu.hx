@@ -1,5 +1,7 @@
 package;
 
+import CoreState;
+import flixel.FlxState;
 import GalleryAchievements;
 #if gamejolt
 import GameJolt;
@@ -83,7 +85,9 @@ class OptionCata extends FlxSprite
 	}
 }
 
-class OptionsMenu extends FlxSubState
+// JOELwindows7: I disagree. let's inherit from MusicBeatSubstate can we? no wait.
+// peck this. let's just do it.
+class OptionsMenu extends CoreSubState
 {
 	public static var instance:OptionsMenu;
 
@@ -137,7 +141,7 @@ class OptionsMenu extends FlxSubState
 				new DFJKOption(),
 				new Judgement("Create a custom judgement preset"),
 				new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!"),
-				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
+
 			]),
 			new OptionCata(345, 40, "Appearance", [
 				new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),
@@ -153,43 +157,39 @@ class OptionsMenu extends FlxSubState
 				new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
 				new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
 			]),
-			//JOELwindows7: Audio
-			new OptionCata(640,40, 'Audio', [
+			// JOELwindows7: Audio
+			new OptionCata(640, 40, 'Audio', [
 				new AdjustVolumeOption("Adjust Audio volume"),
+				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
 				new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
 				// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
 			]),
-			//JOELwindows7: Account options
-			new OptionCata(935,40, 'Accounts',[
-				#if gamejolt
-				new LogGameJoltIn("(" + GameJoltAPI.getUserInfo(true) + ") Log your GameJolt account in")
+			// JOELwindows7: Account options
+			new OptionCata(935, 40, 'Accounts', [
+				#if gamejolt new LogGameJoltIn("(" + GameJoltAPI.getUserInfo(true) + ") Log your GameJolt account in")
 				#end
 			]),
-			//JOELwindows7: was 640, 40
+			// JOELwindows7: was 640, 40
 			new OptionCata(1040, 40, "Misc", [
-				new FPSOption("Toggle the FPS Counter"),
-				new CardiophileOption("Toggle heartbeat features that contains doki-doki stuffs"),
-				new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), //JOELwindows7: make this Odysee exclusive pls. how!
+				new FPSOption("Toggle the FPS Counter"), new CardiophileOption("Toggle heartbeat features that contains doki-doki stuffs"),
+				new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), // JOELwindows7: make this Odysee exclusive pls. how!
 				new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 				new VibrationOption("Toggle Vibration that let your gamepade / device vibrates."),
-				new VibrationOffsetOption("Adjust Vibration offset delaying"),
-				new WatermarkOption("Enable and disable all watermarks from the engine."),
+				new VibrationOffsetOption("Adjust Vibration offset delaying"), new WatermarkOption("Enable and disable all watermarks from the engine."),
 				new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
-				new OdyseemarkOption("Turn off all Odysee watermarks from the engine."), //JOELwindows7: yep Odysee.
+				new OdyseemarkOption("Turn off all Odysee watermarks from the engine."), // JOELwindows7: yep Odysee.
 				new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 				new WatermarkOption("Enable and disable all watermarks from the engine."),
 				new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty."),
 				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
-				new ScoreScreen("Show the score screen after the end of a song"),
-				new ShowInput("Display every single input on the score screen."),
+				new ScoreScreen("Show the score screen after the end of a song"), new ShowInput("Display every single input on the score screen."),
 				new ExportSaveToJson("BETA! Export entire save data into JSON file"),
-				new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"),
-				new AnStarfieldTestOption("EXPERIMENTAL! Test FlxStarfield"),
+				new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"), new AnStarfieldTestOption("EXPERIMENTAL! Test FlxStarfield"),
 				new AnDefaultBekgronTestOption("EXPERIMENTAL! Test default background of Hexagon Engine"),
 				new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
 			]),
-			//JOELwindows7: was 935, 40
+			// JOELwindows7: was 935, 40
 			new OptionCata(1100, 40, "Saves", [
 				#if desktop // new ReplayOption("View saved song replays."),
 				#end
@@ -227,9 +227,9 @@ class OptionsMenu extends FlxSubState
 		descBack.scrollFactor.set();
 		menu.add(descBack);
 
-		addBackButton(20,FlxG.height);
-		addLeftButton(FlxG.width-400,FlxG.height);
-		addRightButton(FlxG.width-200,FlxG.height);
+		// addBackButton(20,FlxG.height);
+		// addLeftButton(FlxG.width-400,FlxG.height);
+		// addRightButton(FlxG.width-200,FlxG.height);
 
 		if (isInPause)
 		{
@@ -274,13 +274,13 @@ class OptionsMenu extends FlxSubState
 
 		selectedOption = selectedCat.options[0];
 
-		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
-		FlxTween.tween(leftButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left right button
-		FlxTween.tween(rightButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: yeah.
+		FlxTween.tween(backButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left right button
+		FlxTween.tween(rightButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: yeah.
 
 		super.create();
 
-		//JOELwindows7: stuffs
+		// JOELwindows7: stuffs
 		AchievementUnlocked.whichIs("anOption");
 	}
 
@@ -515,7 +515,7 @@ class OptionsMenu extends FlxSubState
 
 							object.text = "> " + selectedOption.getValue();
 						}
-						haveClicked=false; //JOELwindows7: mouse supports
+						haveClicked = false; // JOELwindows7: mouse supports
 					}
 
 					if (down)
@@ -657,7 +657,6 @@ class OptionsMenu extends FlxSubState
 						if (selectedCat.middle)
 							switchCat(options[0]);
 					}
-					
 				}
 			}
 		}
@@ -678,112 +677,136 @@ class OptionsMenu extends FlxSubState
 				isInCat = true;
 			}
 		}
+
+		// JOELwindows7: wtf, FlxSubstate? not MusicBeatSubstate?!
+		manageMouse(); // JOELwindows7: WHY THE PECK INHERIT FROM FlxSubState?!?!?!?
 	}
 
-	//JOELwindows7: copy from above but this time set the selection number
-	function goToSelection(change:Int = 0){
+	// JOELwindows7: copy from above but this time set the selection number
+	function goToSelection(change:Int = 0)
+	{
 		#if !switch
 		#if newgrounds
 		// NGio.logEvent("Fresh");
 		#end
 		#end
-		
+
 		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
 
-		curSelected = change;
+		/*
+			curSelected = change;
 
-		if (curSelected < 0)
-			curSelected = grpControls.length - 1;
-		if (curSelected >= grpControls.length)
-			curSelected = 0;
+			if (curSelected < 0)
+				curSelected = grpControls.length - 1;
+			if (curSelected >= grpControls.length)
+				curSelected = 0;
 
-		if (isCat)
-			currentDescription = currentSelectedCat.getOptions()[curSelected].getDescription();
-		else
-			currentDescription = "Please select a category";
-		if (isCat)
-		{
-			if (currentSelectedCat.getOptions()[curSelected].getAccept())
-				versionShit.text =  currentSelectedCat.getOptions()[curSelected].getValue() + " - Description - " + currentDescription;
+			if (isCat)
+				currentDescription = currentSelectedCat.getOptions()[curSelected].getDescription();
+			else
+				currentDescription = "Please select a category";
+			if (isCat)
+			{
+				if (currentSelectedCat.getOptions()[curSelected].getAccept())
+					versionShit.text =  currentSelectedCat.getOptions()[curSelected].getValue() + " - Description - " + currentDescription;
+				else
+					versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+			}
 			else
 				versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
-		}
-		else
-			versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
-		// selector.y = (70 * curSelected) + 30;
+			// selector.y = (70 * curSelected) + 30;
+		 */
 
 		var bullShit:Int = 0;
 
-		for (item in grpControls.members)
-		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
-
-			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
-
-			if (item.targetY == 0)
+		/*
+			for (item in grpControls.members)
 			{
-				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
+				item.targetY = bullShit - curSelected;
+				bullShit++;
+
+				item.alpha = 0.6;
+				// item.setGraphicSize(Std.int(item.width * 0.8));
+
+				if (item.targetY == 0)
+				{
+					item.alpha = 1;
+					// item.setGraphicSize(Std.int(item.width));
+				}
 			}
-		}
+		 */
 	}
 
-	override function manageMouse(){
-		//JOELwindows7: make mouse visible when moved.
-		if(FlxG.mouse.justMoved){
-			//trace("mouse moved");
+	// JOELwindows7: go to flxState. prevent go to there if you are in gameplay.
+	public static function switchState(ofHere:FlxState)
+	{
+		if (isInPause)
+			return;
+		FlxG.switchState(ofHere);
+	}
+
+	// JOELwindows7: darn you Kade!!! why let anyone inherit from FlxSubState instead of MusicBeat Substate?!?!??!
+	override function manageMouse()
+	{
+		// JOELwindows7: make mouse visible when moved.
+		if (FlxG.mouse.justMoved)
+		{
+			// trace("mouse moved");
 			FlxG.mouse.visible = true;
 		}
-		//JOELwindows7: detect any keypresses or any button presses
-		if(FlxG.keys.justPressed.ANY){
-			//lmao! inspire from GameOverState.hx!
+		// JOELwindows7: detect any keypresses or any button presses
+		if (FlxG.keys.justPressed.ANY)
+		{
+			// lmao! inspire from GameOverState.hx!
 			FlxG.mouse.visible = false;
 		}
-		if(FlxG.gamepads.lastActive != null){
-			if(FlxG.gamepads.lastActive.justPressed.ANY){
+		if (FlxG.gamepads.lastActive != null)
+		{
+			if (FlxG.gamepads.lastActive.justPressed.ANY)
+			{
 				FlxG.mouse.visible = false;
 			}
-			//peck this I'm tired! plns work lol
+			// peck this I'm tired! plns work lol
 		}
 
-		//JOELwindows7: query every single menu category and each items
-		//inspire this from MainMenuState like before!
-		grpControls.forEach(function(alphabet:Alphabet){
-			if(FlxG.mouse.overlaps(alphabet) && !FlxG.mouse.overlaps(backButton)
-				&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
-				if(FlxG.mouse.justPressed){
-					if(alphabet.ID == curSelected){
-						haveClicked = true;
-					} else {
-						goToSelection(alphabet.ID);
+		// JOELwindows7: query every single menu category and each items
+		// inspire this from MainMenuState like before!
+		/*
+			grpControls.forEach(function(alphabet:Alphabet){
+				if(FlxG.mouse.overlaps(alphabet) && !FlxG.mouse.overlaps(backButton)
+					&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
+					if(FlxG.mouse.justPressed){
+						if(alphabet.ID == curSelected){
+							haveClicked = true;
+						} else {
+							goToSelection(alphabet.ID);
+						}
 					}
 				}
-			}
 
-			//JOELwindows7: back button for no keyboard
-			if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(alphabet)){
-				if(FlxG.mouse.justPressed){
-					if(!haveBacked){
-						haveBacked = true;
+				//JOELwindows7: back button for no keyboard
+				if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(alphabet)){
+					if(FlxG.mouse.justPressed){
+						if(!haveBacked){
+							haveBacked = true;
+						}
 					}
 				}
-			}
-			if(FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(alphabet)){
-				if(FlxG.mouse.justPressed){
-					if(!haveLefted){
-						haveLefted = true;
+				if(FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(alphabet)){
+					if(FlxG.mouse.justPressed){
+						if(!haveLefted){
+							haveLefted = true;
+						}
 					}
 				}
-			}
-			if(FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(alphabet)){
-				if(FlxG.mouse.justPressed){
-					if(!haveRighted){
-						haveRighted = true;
+				if(FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(alphabet)){
+					if(FlxG.mouse.justPressed){
+						if(!haveRighted){
+							haveRighted = true;
+						}
 					}
 				}
-			}
-		});
+			});
+		 */
 	}
 }

@@ -161,6 +161,7 @@ class KadeEngineData
 		//JOELwindows7: Print Song Chart content
 		if (FlxG.save.data.traceSongChart == null){
 			FlxG.save.data.traceSongChart = false;
+		}
 
 		FlxG.save.data.cacheImages = false;
 

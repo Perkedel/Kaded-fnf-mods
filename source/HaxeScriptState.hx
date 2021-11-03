@@ -996,28 +996,28 @@ class HaxeScriptState {
 
         addCallback( "trainStart", function () {
             //Manually start the train right from the modchart anyway.
-            PlayState.instance.trainStart();
+            PlayState.Stage.trainStart();
         });
 
         addCallback( "trainReset", function(){
             //Also reset the train from modchart as well
-            PlayState.instance.trainReset();
+            PlayState.Stage.trainReset();
         });
 
         addCallback( "lightningStrikeHit", function(){
             //Now you can abuse the lightning lol!!!
-            PlayState.instance.lightningStrikeShit();
+            PlayState.Stage.lightningStrikeShit();
         }); //what the heck, Haxe Language server? you didn't quickly tell me
         //That I missed semicolon? what cause of all these lags?
 
         addCallback( "fastCarDrive", function(){
             //haha fast car go brrrrr!!!
-            PlayState.instance.fastCarDrive();
+            PlayState.Stage.fastCarDrive();
         });
 
         addCallback( "resetFastCar", function(){
             //reset da cars! now!!
-            PlayState.instance.resetFastCar();
+            PlayState.Stage.resetFastCar();
         });
 
         addCallback( "vibrate", function(player:Int = 0, duration:Float = 100, period:Float = 0, strengthLeft:Float = 0, strengthRight:Float = 0){

@@ -1,8 +1,8 @@
 package;
 
+import CoreState;
 import GalleryAchievements;
 import flixel.tweens.FlxEase;
-import MusicBeatState.SwagWeeks;
 import lime.utils.Assets;
 import flixel.input.actions.FlxActionManager.ActionSetJson;
 import flixel.input.gamepad.FlxGamepad;

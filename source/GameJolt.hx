@@ -52,7 +52,7 @@ Hope this helps! -tenta
 And yes, I run Mac. A fate worse than death.
 */
 
-#if !mobile //JOELwindows7: unfortunately the systool does not have arm support.
+#if gamejolt //JOELwindows7: unfortunately the systool does not have arm support.
 import flixel.tile.FlxTile;
 import haxe.ds.ReadOnlyArray;
 import tentools.api.FlxGameJolt as GJApi;

@@ -1172,28 +1172,28 @@ class ModchartState
 
 		Lua_helper.add_callback(lua, "trainStart", function () {
 			//Manually start the train right from the modchart anyway.
-			PlayState.instance.trainStart();
+			PlayState.Stage.trainStart();
 		});
 
 		Lua_helper.add_callback(lua, "trainReset", function(){
 			//Also reset the train from modchart as well
-			PlayState.instance.trainReset();
+			PlayState.Stage.trainReset();
 		});
 
 		Lua_helper.add_callback(lua, "lightningStrikeHit", function(){
 			//Now you can abuse the lightning lol!!!
-			PlayState.instance.lightningStrikeShit();
+			PlayState.Stage.lightningStrikeShit();
 		}); //what the heck, Haxe Language server? you didn't quickly tell me
 		//That I missed semicolon? what cause of all these lags?
 
 		Lua_helper.add_callback(lua, "fastCarDrive", function(){
 			//haha fast car go brrrrr!!!
-			PlayState.instance.fastCarDrive();
+			PlayState.Stage.fastCarDrive();
 		});
 
 		Lua_helper.add_callback(lua, "resetFastCar", function(){
 			//reset da cars! now!!
-			PlayState.instance.resetFastCar();
+			PlayState.Stage.resetFastCar();
 		});
 
 		Lua_helper.add_callback(lua, "vibrate", function(player:Int = 0, duration:Float = 100, period:Float = 0, strengthLeft:Float = 0, strengthRight:Float = 0){
