@@ -188,7 +188,7 @@ class OptionsMenu extends CoreSubState
 				new ExportSaveToJson("BETA! Export entire save data into JSON file"),
 				new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"), new AnStarfieldTestOption("EXPERIMENTAL! Test FlxStarfield"),
 				new AnDefaultBekgronTestOption("EXPERIMENTAL! Test default background of Hexagon Engine"),
-				new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
+				// new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
 			]),
 			// JOELwindows7: was 935, 40
@@ -711,49 +711,6 @@ class OptionsMenu extends CoreSubState
 	{
 		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
 
-		/*
-			curSelected = change;
-
-			if (curSelected < 0)
-				curSelected = grpControls.length - 1;
-			if (curSelected >= grpControls.length)
-				curSelected = 0;
-
-			if (isCat)
-				currentDescription = currentSelectedCat.getOptions()[curSelected].getDescription();
-			else
-				currentDescription = "Please select a category";
-			if (isCat)
-			{
-				if (currentSelectedCat.getOptions()[curSelected].getAccept())
-					versionShit.text =  currentSelectedCat.getOptions()[curSelected].getValue() + " - Description - " + currentDescription;
-				else
-					versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
-			}
-			else
-				versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
-			// selector.y = (70 * curSelected) + 30;
-		 */
-
-		var bullShit:Int = 0;
-
-		/*
-			for (item in grpControls.members)
-			{
-				item.targetY = bullShit - curSelected;
-				bullShit++;
-
-				item.alpha = 0.6;
-				// item.setGraphicSize(Std.int(item.width * 0.8));
-
-				if (item.targetY == 0)
-				{
-					item.alpha = 1;
-					// item.setGraphicSize(Std.int(item.width));
-				}
-			}
-		 */
-
 		// JOELwindows7: just change the index number
 		selectedOptionIndex = change;
 		selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
@@ -788,11 +745,6 @@ class OptionsMenu extends CoreSubState
 	{
 		for (i in 0...options.length - 1)
 		{
-			// if (options[i].options.length == 0)
-			// {
-			// 	options.splice(i, 1);
-			// 	i--;
-			// }
 			options[i].width = background.width / upToHowManyCatsOnScreen;
 			options[i].x = (background.width / upToHowManyCatsOnScreen) * i;
 			// I guess..
@@ -829,43 +781,6 @@ class OptionsMenu extends CoreSubState
 
 		// JOELwindows7: query every single menu category and each items
 		// inspire this from MainMenuState like before!
-		/*
-			grpControls.forEach(function(alphabet:Alphabet){
-				if(FlxG.mouse.overlaps(alphabet) && !FlxG.mouse.overlaps(backButton)
-					&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
-					if(FlxG.mouse.justPressed){
-						if(alphabet.ID == curSelected){
-							haveClicked = true;
-						} else {
-							goToSelection(alphabet.ID);
-						}
-					}
-				}
-
-				//JOELwindows7: back button for no keyboard
-				if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(alphabet)){
-					if(FlxG.mouse.justPressed){
-						if(!haveBacked){
-							haveBacked = true;
-						}
-					}
-				}
-				if(FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(alphabet)){
-					if(FlxG.mouse.justPressed){
-						if(!haveLefted){
-							haveLefted = true;
-						}
-					}
-				}
-				if(FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(alphabet)){
-					if(FlxG.mouse.justPressed){
-						if(!haveRighted){
-							haveRighted = true;
-						}
-					}
-				}
-			});
-		 */
 
 		// JOELwindows7: check if you have clicked on a category. whoah, GitHub Copilot sentience finally kicks in!
 		for (i in 0...options.length - 1)
@@ -893,40 +808,6 @@ class OptionsMenu extends CoreSubState
 			{
 				if (FlxG.mouse.justPressed)
 				{
-					/*
-						if (stuff.text == "Back")
-						{
-							if (!haveBacked)
-							{
-								haveBacked = true;
-							}
-						}
-						else if (stuff.text == "Left")
-						{
-							if (!haveLefted)
-							{
-								haveLefted = true;
-							}
-						}
-						else if (stuff.text == "Right")
-						{
-							if (!haveRighted)
-							{
-								haveRighted = true;
-							}
-						}
-						else
-						{
-							// if (stuff.text == currentSelectedCat.getName())
-							// {
-							// 	haveClicked = true;
-							// }
-							// else
-							// {
-							// 	// goToSelection(stuff.text);
-							// }
-						}
-					 */
 					if(stuff.ID == selectedOptionIndex){
 						haveClicked = true;
 					} else {

@@ -205,8 +205,6 @@ class PlayState extends MusicBeatState
 	private static var prevCamFollow:FlxObject;
 
 	// JOELwindows7: flag to let stage or whatever override camFollow position
-	// private var overrideCamFollowP1:Bool = false;
-	// private var overrideCamFollowP2:Bool = false;
 	private var manualCamFollowPosP1:Array<Float> = [0, 0];
 	private var manualCamFollowPosP2:Array<Float> = [0, 0];
 
@@ -279,30 +277,11 @@ class PlayState extends MusicBeatState
 	public var dialogue:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
 	public var epilogue:Array<String> = ['dad:oh no I lose', 'bf: beep boop baaa hey!']; // JOELwindows7: same dialoguer but for after song done
 
-	// JOELwindows7: old halloween
-	// var halloweenBG:FlxSprite;
-	// var isHalloween:Bool = false;
-	// end old halloween
 	var useStageScript:Bool = false; // JOELwindows7: flag to start try the stage Lua script
 	var attemptStageScript:Bool = false; // JOELwindows7: flag to start prepare stage script after all stuffs loaded.
 
-	// JOELwindows7: old train vars
-	// var phillyCityLights:FlxTypedGroup<FlxSprite>;
-	// var phillyTrain:FlxSprite;
-	// end old train vars
-	// public static var trainSound:FlxSound;
-	// JOELwindows7: limo old
-	// var limo:FlxSprite;
-	// var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
-	// var fastCar:FlxSprite;
-	// end limo old
 	var songName:FlxText;
 
-	// JOELwindows7: old boopers
-	// var upperBoppers:FlxSprite;
-	// var bottomBoppers:FlxSprite;
-	// var santa:FlxSprite;
-	// end old boopers
 	var altSuffix:String = "";
 
 	public var currentSection:SwagSection;
@@ -456,18 +435,6 @@ class PlayState extends MusicBeatState
 			executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
 		if (executeModchart)
 			PlayStateChangeables.Optimize = false;
-		/*
-			#elseif (cpp)
-			//JOELwindows7: for not sys. use vergadit's filesystemers.
-			p = Path.of(Paths.lua("./" + PlayState.SONG.songId  + "/modchart"));
-			executeModchart = p.exists();
-			trace("is modchart file exist? " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
-			if (executeModchart)
-				PlayStateChangeables.Optimize = false;
-			#else
-			executeModchart = false; // JOELwindows7: FORCE disable for non sys && cpp targets
-			executeStageScript = false; 
-		 */
 		#end
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
@@ -478,23 +445,9 @@ class PlayState extends MusicBeatState
 		Debug.logInfo('Searching for mod chart? ($executeModchart) at ${Paths.lua('songs/${PlayState.SONG.songId}/modchart')}');
 
 		// JOELwindows7: now for the hscript
-		/*
-		#if !web
-		p = Path.of("./" + Paths.hscript(PlayState.SONG.songId + "/modchart"));
-		executeModHscript = p.exists() || SONG.forceHscriptModchart;
-		trace("is hscript modchart file exist? " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
-		#else
-		executeModHscript = SONG.forceHscriptModchart;
-		#end
-		*/
-		//JOELwindows7: new exists
-		executeModHscript = 
-			Paths.doesTextAssetExist(Paths.hscript('songs/${PlayState.SONG.songId}/modchart'))
-			|| SONG.forceHscriptModchart
-			;
-		// if(SONG.forceHscriptModchart == null){
-		// 	executeModHscript = SONG.forceHscriptModchart = false;
-		// }
+		// JOELwindows7: new exists
+		executeModHscript = Paths.doesTextAssetExist(Paths.hscript('songs/${PlayState.SONG.songId}/modchart'))
+			|| SONG.forceHscriptModchart;
 		// trace("forced hscript exist is " + Std.string(SONG.forceHscriptModchart));
 		if (executeModHscript)
 			PlayStateChangeables.Optimize = false;
@@ -1223,15 +1176,8 @@ class PlayState extends MusicBeatState
 		scoreTxt.screenCenter(X);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxt.text = Ratings.CalculateRanking(
-			songScore, 
-			songScoreDef, 
-			nps, 
-			maxNPS, 
-			accuracy, 
-			heartRate[0],
-			heartTierIsRightNow[0]
-			); // JOELwindows7: this is just recently popped up.
+		scoreTxt.text = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy, heartRate[0],
+			heartTierIsRightNow[0]); // JOELwindows7: this is just recently popped up.
 		if (!FlxG.save.data.healthBar)
 			scoreTxt.y = healthBarBG.y;
 
@@ -1485,13 +1431,13 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: Now Init CustomStage scripts if had to.
 		if (attemptStageScript)
 		{
-			Stage.spawnStageScript("stages/" + toCompatCase(SONG.stage) + "/stageScript");
+			Stage.spawnStageScript("stages/" + CoolUtil.toCompatCase(SONG.stage) + "/stageScript");
 		}
 
 		// JOELwindows7: show credit rollouts if the song has to do so
 		if (SONG.isCreditRoll)
 		{
-			creditRollout.loadCreditData(Paths.creditFlashBlink(SONG.song), SONG.creditRunsOnce);
+			creditRollout.loadCreditData(Paths.creditFlashBlink(SONG.songId), SONG.creditRunsOnce);
 		}
 
 		FlxG.autoPause = true; // JOELwindows7: because somehow the film does not return it back
@@ -1561,16 +1507,16 @@ class PlayState extends MusicBeatState
 							{
 								senpaiEvil.animation.play('idle');
 								// JOELwindows7: detect MIDI version
-								FlxG.sound.play(Paths.sound(PlayState.SONG.songId.contains('midi') ? 'Senpai_Dies-midi' : 'Senpai_Dies'), 1, false, null, true,
-									function()
+								FlxG.sound.play(Paths.sound(PlayState.SONG.songId.contains('midi') ? 'Senpai_Dies-midi' : 'Senpai_Dies'), 1, false, null,
+									true, function()
+								{
+									remove(senpaiEvil);
+									remove(red);
+									FlxG.camera.fade(FlxColor.WHITE, 0.01, true, function()
 									{
-										remove(senpaiEvil);
-										remove(red);
-										FlxG.camera.fade(FlxColor.WHITE, 0.01, true, function()
-										{
-											add(dialogueBox);
-										}, true);
-									});
+										add(dialogueBox);
+									}, true);
+								});
 								new FlxTimer().start(3.2, function(deadTime:FlxTimer)
 								{
 									FlxG.camera.fade(FlxColor.WHITE, 1.6, false);
@@ -1622,7 +1568,7 @@ class PlayState extends MusicBeatState
 		// vocals.stop();
 
 		// Pay attention for the pre-dialogue effect show like in Rose, senpai got mad thingy
-		switch (SONG.song.toLowerCase())
+		switch (SONG.songId.toLowerCase())
 		{
 			default:
 				{}
@@ -1633,7 +1579,7 @@ class PlayState extends MusicBeatState
 			inCutscene = true;
 
 			// omg what?
-			switch (SONG.song.toLowerCase())
+			switch (SONG.songId.toLowerCase())
 			{
 				default:
 					add(dialogueBox);
@@ -1814,27 +1760,7 @@ class PlayState extends MusicBeatState
 						FlxG.sound.play(Paths.sound('introGo' + altSuffix), 0.6);
 
 					// JOELwindows7: now visiblize the touchscreen buttons
-					/*
-						if(touchscreenButtons != null){
-							touchscreenButtons.visible = true;
-						}
-					 */
-					// if(onScreenGameplayButtons != null){
-					// 	onScreenGameplayButtons.visible = true;
-					// 	//and add cool animations
-					// 	//FlxTween.tween(onScreenGameplayButtons,{alpha:1}, 1, {ease:FlxEase.circInOut});
-					// 	//try luckydog7's renditions
-					// 	//well, apparently, adjusting parent's alpha also affects all children's alpha
-					// 	//inside it. right, where the peck is self modulate alpha?!??!!?
-					// 	/*
-					// 	FlxTween.num(onScreenGameplayButtons.alpha, 1, 1,
-					// 		{ease: FlxEase.circInOut},
-					// 		function (a:Float) {
-					// 			onScreenGameplayButtons.alpha = a;
-					// 		});
-					// 	*/
-					// }
-					trace("visiblize touchscreen button now");
+					// trace("visiblize touchscreen button now");
 					showOnScreenGameplayButtons();
 					// case 4: //JOELwindows7: don't delete SONG start case!
 					// JOELwindows7: just add trace for fun
@@ -2063,7 +1989,7 @@ class PlayState extends MusicBeatState
 		// Song check real quick
 		switch (curSong)
 		{
-			//JOELwindows7: frogot to change convention lmao
+			// JOELwindows7: frogot to change convention lmao
 			case 'bopeebo' | 'philly' | 'blammed' | 'cocoa' | 'eggnog':
 				allowedToCheer = true;
 			default:
@@ -2090,7 +2016,7 @@ class PlayState extends MusicBeatState
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText
 			+ " "
-			+ SONG.song
+			+ SONG.songId
 			+ " ("
 			+ storyDifficultyText
 			+ ") "
@@ -2567,7 +2493,7 @@ class PlayState extends MusicBeatState
 
 			#if FEATURE_DISCORD
 			DiscordClient.changePresence("PAUSED on "
-				+ SONG.song
+				+ SONG.songId
 				+ " ("
 				+ storyDifficultyText
 				+ ") "
@@ -2628,7 +2554,7 @@ class PlayState extends MusicBeatState
 			{
 				DiscordClient.changePresence(detailsText
 					+ " "
-					+ SONG.song
+					+ SONG.songId
 					+ " ("
 					+ storyDifficultyText
 					+ ") "
@@ -2687,7 +2613,7 @@ class PlayState extends MusicBeatState
 		#if FEATURE_DISCORD
 		DiscordClient.changePresence(detailsText
 			+ " "
-			+ SONG.song
+			+ SONG.songId
 			+ " ("
 			+ storyDifficultyText
 			+ ") "
@@ -3441,8 +3367,9 @@ class PlayState extends MusicBeatState
 				if (secondsTotal < 0)
 					secondsTotal = 0;
 
+				// JOELwindows7: sneaky sneaky songName thingy
 				if (FlxG.save.data.songPosition)
-					songName.text = SONG.songName + ' (' + FlxStringUtil.formatTime((songLength - secondsTotal), false) + ')';
+					songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime((songLength - secondsTotal), false) + ')';
 			}
 
 			// Conductor.lastSongPos = FlxG.sound.music.time;
@@ -3461,7 +3388,7 @@ class PlayState extends MusicBeatState
 					// Per song treatment since some songs will only have the 'Hey' at certain times
 					switch (curSong)
 					{
-						//JOELwindows7: frogot change convention to all lmao!!
+						// JOELwindows7: frogot change convention to all lmao!!
 						case 'philly':
 							{
 								// General duration of the song
@@ -3791,7 +3718,7 @@ class PlayState extends MusicBeatState
 			FlxG.watch.addQuick("Must hit", currentSection.mustHitSection);
 		}
 
-		//JOELwindows7: bruh, don't forget new convention lol
+		// JOELwindows7: bruh, don't forget new convention lol
 		if (curSong == 'fresh')
 		{
 			switch (curBeat)
@@ -3836,7 +3763,7 @@ class PlayState extends MusicBeatState
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here
 				DiscordClient.changePresence("GAME OVER -- "
-					+ SONG.song
+					+ SONG.songId
 					+ " ("
 					+ storyDifficultyText
 					+ ") "
@@ -3882,7 +3809,7 @@ class PlayState extends MusicBeatState
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here
 				DiscordClient.changePresence("GAME OVER -- "
-					+ SONG.song
+					+ SONG.songId
 					+ " ("
 					+ storyDifficultyText
 					+ ") "
@@ -6217,17 +6144,6 @@ class PlayState extends MusicBeatState
 	// JOELwindows7: fake countdowns! also countups too!
 	public function startFakeCountdown(silent:Bool = false, invisible:Bool = false, reversed:Bool = false)
 	{
-		// JOELwindows7: install songLowercaser and its heurestic for specific songs bellow
-		// pre lowercasing the song name (create)
-		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
-		// switch (songLowercase)
-		// {
-		// 	case 'dad-battle':
-		// 		songLowercase = 'dadbattle';
-		// 	case 'philly-nice':
-		// 		songLowercase = 'philly';
-		// }
-
 		startedFakeCounting = true;
 
 		var swagCounter:Int = 0;
@@ -6337,12 +6253,6 @@ class PlayState extends MusicBeatState
 			}
 			swagCounter += 1;
 		}, 5);
-	}
-
-	// JOELwindows7: the compatibility conversion case
-	public function toCompatCase(daString:String):String
-	{
-		return StringTools.replace(daString, " ", "-").toLowerCase();
 	}
 
 	// JOELwindows7: Ugh, fine, I guess you are my littler pogchamp, come here.

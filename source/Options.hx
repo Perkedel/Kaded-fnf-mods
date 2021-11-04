@@ -94,7 +94,7 @@ class DFJKOption extends Option
 
 	public override function press():Bool
 	{
-		OptionsMenu.instance.selectedCatIndex = 6; //JOELwindows7: was 4. really, why order number?!
+		OptionsMenu.instance.selectedCatIndex = 6; // JOELwindows7: was 4. really, why order number?!
 		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[4], false);
 		return false;
 	}
@@ -1051,7 +1051,7 @@ class Judgement extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		OptionsMenu.instance.selectedCatIndex = 7; //JOELwindows7: was 5. don't use order!!!!
+		OptionsMenu.instance.selectedCatIndex = 7; // JOELwindows7: was 5. don't use order!!!!
 		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[5], false);
 		return true;
 	}
@@ -1277,7 +1277,7 @@ class ReplayOption extends Option
 	public override function press():Bool
 	{
 		trace("switch");
-		OptionsMenu.switchState(new LoadReplayState()); //JOELwindows7: hey, check if you are in game before hand!
+		OptionsMenu.switchState(new LoadReplayState()); // JOELwindows7: hey, check if you are in game before hand!
 		return false;
 	}
 
@@ -1854,7 +1854,7 @@ class ResetSettings extends Option
 	}
 }
 
-//JOELwindows7: for future use in case it is necessary
+// JOELwindows7: for future use in case it is necessary
 class NoMidClickOption extends Option
 {
 	public function new(desc:String)
@@ -1862,7 +1862,7 @@ class NoMidClickOption extends Option
 		super();
 		description = desc;
 	}
-	
+
 	public override function press():Bool
 	{
 		FlxG.save.data.noMidClick = !FlxG.save.data.noMidClick;
@@ -1870,20 +1870,21 @@ class NoMidClickOption extends Option
 		display = updateDisplay();
 		return true;
 	}
-	
+
 	private override function updateDisplay():String
 		return "No Middle click " + (FlxG.save.data.noMidClick ? "on" : "off");
 }
 
-//JOELwindows7: idk, that on the original game newgrounds week 7
-//it had this. apparently this doesn't do anything yet.
-class NaughtinessOption extends Option {
+// JOELwindows7: idk, that on the original game newgrounds week 7
+// it had this. apparently this doesn't do anything yet.
+class NaughtinessOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
 	}
-	
+
 	public override function press():Bool
 	{
 		FlxG.save.data.naughtiness = !FlxG.save.data.naughtiness;
@@ -1891,15 +1892,17 @@ class NaughtinessOption extends Option {
 		display = updateDisplay();
 		return true;
 	}
-	
+
 	private override function updateDisplay():String
 		return "Naughtiness " + (FlxG.save.data.naughtiness ? "on" : "off");
 }
 
-//JOELwindows7: export setting data to JSON
-class ExportSaveToJson extends Option{
+// JOELwindows7: export setting data to JSON
+class ExportSaveToJson extends Option
+{
 	var _file:FileReference;
-	//copy over form ChartingState.hx, where JSON file is saved at.
+
+	// copy over form ChartingState.hx, where JSON file is saved at.
 
 	public function new(desc:String)
 	{
@@ -1911,9 +1914,9 @@ class ExportSaveToJson extends Option{
 	{
 		FlxG.save.flush();
 
-		//JOELwindows7: make save JSON pretty
+		// JOELwindows7: make save JSON pretty
 		// https://haxe.org/manual/std-Json-encoding.html
-		var data:String = Json.stringify(FlxG.save.data,"\t");
+		var data:String = Json.stringify(FlxG.save.data, "\t");
 
 		if ((data != null) && (data.length > 0))
 		{
@@ -1937,7 +1940,7 @@ class ExportSaveToJson extends Option{
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved BACKUP DATA.");
-		//JOELwindows7: trace the success
+		// JOELwindows7: trace the success
 		trace("Yay data backup saved! cool and good");
 		FlxG.sound.play(Paths.sound("saveSuccess"));
 	}
@@ -1951,7 +1954,7 @@ class ExportSaveToJson extends Option{
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
-		//JOELwindows7: trace cancel
+		// JOELwindows7: trace cancel
 		trace("nvm! save canceled");
 		FlxG.sound.play(Paths.sound('cancelMenu'));
 	}
@@ -1966,16 +1969,18 @@ class ExportSaveToJson extends Option{
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving backup data");
-		//JOELwindows7: also trace the error
+		// JOELwindows7: also trace the error
 		trace("Weror! problem saving backup data");
 		FlxG.sound.play(Paths.sound('cancelMenu'));
 	}
 }
 
-//JOELwindows7: also the import JSON save BACKUP
-class ImportSaveFromJSON extends Option {
+// JOELwindows7: also the import JSON save BACKUP
+class ImportSaveFromJSON extends Option
+{
 	var _file:FileReference;
-	//copy over form ChartingState.hx, where JSON file is saved at.
+
+	// copy over form ChartingState.hx, where JSON file is saved at.
 
 	public function new(desc:String)
 	{
@@ -1984,82 +1989,84 @@ class ImportSaveFromJSON extends Option {
 	}
 
 	public override function press():Bool
+	{
+		FlxG.save.flush();
+
+		// JOELwindows7: make save JSON pretty
+		// https://haxe.org/manual/std-Json-encoding.html
+		var data;
+
+		_file = new FileReference();
+		_file.addEventListener(Event.COMPLETE, onLoadComplete);
+		_file.addEventListener(Event.CANCEL, onLoadCancel);
+		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+
+		if (_file.browse([new FileFilter("JSON file", "json")]))
 		{
-			FlxG.save.flush();
-	
-			//JOELwindows7: make save JSON pretty
-			// https://haxe.org/manual/std-Json-encoding.html
-			var data;
-	
-			_file = new FileReference();
-			_file.addEventListener(Event.COMPLETE, onLoadComplete);
-			_file.addEventListener(Event.CANCEL, onLoadCancel);
-			_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+			_file.load();
+			data = Json.parse(cast _file.data);
 
-			if(_file.browse([new FileFilter("JSON file", "json")])){
-				_file.load();
-				data = Json.parse(cast _file.data);
-
-				//FlxG.save.data = data;
-			}
-
-			return true;
+			// FlxG.save.data = data;
 		}
+
+		return true;
+	}
 
 	private override function updateDisplay():String
 		return "Import save data from JSON";
 
 	function onLoadComplete(_):Void
-		{
-			_file.removeEventListener(Event.COMPLETE, onLoadComplete);
-			_file.removeEventListener(Event.CANCEL, onLoadCancel);
-			_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-			_file = null;
-			FlxG.log.notice("Successfully loaded BACKUP DATA.");
-			//JOELwindows7: trace the success
-			trace("Yay data backup saved! cool and good");
-			// FlxG.sound.play(Paths.sound("saveSuccess"));
-		}
-	
-		/**
-		 * Called when the save file dialog is cancelled.
-		 */
-		function onLoadCancel(_):Void
-		{
-			_file.removeEventListener(Event.COMPLETE, onLoadComplete);
-			_file.removeEventListener(Event.CANCEL, onLoadCancel);
-			_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-			_file = null;
-			//JOELwindows7: trace cancel
-			trace("nvm! load canceled");
-			FlxG.sound.play(Paths.sound('cancelMenu'));
-		}
-	
-		/**
-		 * Called if there is an error while saving the gameplay recording.
-		 */
-		function onLoadError(_):Void
-		{
-			_file.removeEventListener(Event.COMPLETE, onLoadComplete);
-			_file.removeEventListener(Event.CANCEL, onLoadCancel);
-			_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-			_file = null;
-			FlxG.log.error("Problem loading backup data");
-			//JOELwindows7: also trace the error
-			trace("Weror! problem loading backup data");
-			FlxG.sound.play(Paths.sound('cancelMenu'));
-		}
+	{
+		_file.removeEventListener(Event.COMPLETE, onLoadComplete);
+		_file.removeEventListener(Event.CANCEL, onLoadCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+		_file = null;
+		FlxG.log.notice("Successfully loaded BACKUP DATA.");
+		// JOELwindows7: trace the success
+		trace("Yay data backup saved! cool and good");
+		// FlxG.sound.play(Paths.sound("saveSuccess"));
+	}
+
+	/**
+	 * Called when the save file dialog is cancelled.
+	 */
+	function onLoadCancel(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onLoadComplete);
+		_file.removeEventListener(Event.CANCEL, onLoadCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+		_file = null;
+		// JOELwindows7: trace cancel
+		trace("nvm! load canceled");
+		FlxG.sound.play(Paths.sound('cancelMenu'));
+	}
+
+	/**
+	 * Called if there is an error while saving the gameplay recording.
+	 */
+	function onLoadError(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onLoadComplete);
+		_file.removeEventListener(Event.CANCEL, onLoadCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+		_file = null;
+		FlxG.log.error("Problem loading backup data");
+		// JOELwindows7: also trace the error
+		trace("Weror! problem loading backup data");
+		FlxG.sound.play(Paths.sound('cancelMenu'));
+	}
 }
 
-//JOELwindows7: pls don't forget full screen mode!
-//Rediscovered press F in title state to toggle full screen?!?!
-class FullScreenOption extends Option{
+// JOELwindows7: pls don't forget full screen mode!
+// Rediscovered press F in title state to toggle full screen?!?!
+class FullScreenOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
 	}
-	
+
 	public override function press():Bool
 	{
 		FlxG.fullscreen = !FlxG.fullscreen;
@@ -2075,13 +2082,25 @@ class FullScreenOption extends Option{
 	}
 }
 
-//JOELwindows7: copy paste the toggle from above to here
+// JOELwindows7: copy paste the toggle from above to here
 class OdyseemarkOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left(); // same as left
+		return true;
 	}
 
 	public override function press():Bool
@@ -2095,17 +2114,29 @@ class OdyseemarkOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Odysee Watermarks " + (Main.odyseeMark ? "on" : "off");
+		return "Odysee Watermarks <" + (Main.odyseeMark ? "on" : "off") + ">";
 	}
 }
 
-//JOELwindows7: again do the same. change the purpose option target yeay
+// JOELwindows7: again do the same. change the purpose option target yeay
 class PerkedelmarkOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left(); // same as left
+		return true;
 	}
 
 	public override function press():Bool
@@ -2123,62 +2154,74 @@ class PerkedelmarkOption extends Option
 	}
 }
 
-//JOELwindows7: okay. we got to think ahead. there will be many watermarkers so we need to scroll choose the left right.
-//here we go!
+// JOELwindows7: okay. we got to think ahead. there will be many watermarkers so we need to scroll choose the left right.
+// here we go!
 class ChooseWatermark extends Option
 {
-	//JOELwindows7: copy from Scroll speed option!
+	// JOELwindows7: copy from Scroll speed option!
 	public function new(desc:String)
-		{
-			super();
-			description = desc;
-			acceptValues = true;
-		}
+	{
+		super();
+		description = desc;
+		acceptValues = true;
+	}
 
-		//Hey, add your watermark id here
-		var availableWatermark =[
-			'odysee',
-			'pekedel',
-		];
+	// Hey, add your watermark id here
+	var availableWatermark = ['odysee', 'pekedel',];
 
-		//Then add the path where it goes
-		var watermarkPath =[
+	// Then add the path where it goes
+	var watermarkPath = [];
 
-		];
-	
-		public override function press():Bool
-		{
-			return false;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "Chosen Watermark " + Main.chosenMark;
-		}
-	
-		override function right():Bool {
-			Main.chosenMarkNum ++;
-			Main.chosenMark = availableWatermark[Main.chosenMarkNum];
-			display = updateDisplay();
-			return true;
-		}
-	
-		override function left():Bool {
-			Main.chosenMarkNum --;
-			Main.chosenMark = availableWatermark[Main.chosenMarkNum];
-			display = updateDisplay();
-			return true;
-		}
+	public override function press():Bool
+	{
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Chosen Watermark " + Main.chosenMark;
+	}
+
+	override function right():Bool
+	{
+		Main.chosenMarkNum++;
+		Main.chosenMark = availableWatermark[Main.chosenMarkNum];
+		display = updateDisplay();
+		return true;
+	}
+
+	override function left():Bool
+	{
+		Main.chosenMarkNum--;
+		Main.chosenMark = availableWatermark[Main.chosenMarkNum];
+		display = updateDisplay();
+		return true;
+	}
 }
 
-//JOELwindows7: Cardiophille options! enable heartbeat fetish features
-class CardiophileOption extends Option{
+// JOELwindows7: Cardiophille options! enable heartbeat fetish features
+class CardiophileOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
 	}
-	
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left(); // same as left
+		return true;
+	}
+
+	// sentient GitHub Copilot
+
 	public override function press():Bool
 	{
 		FlxG.save.data.cardiophile = !FlxG.save.data.cardiophile;
@@ -2192,12 +2235,25 @@ class CardiophileOption extends Option{
 	}
 }
 
-//JOELwindows7: touchscreen buttons options
-class UseTouchScreenButtons extends Option{
+// JOELwindows7: touchscreen buttons options
+class UseTouchScreenButtons extends Option
+{
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left(); // same as left
+		return true;
 	}
 
 	public override function press():Bool
@@ -2209,12 +2265,14 @@ class UseTouchScreenButtons extends Option{
 
 	private override function updateDisplay():String
 	{
-		return (FlxG.save.data.useTouchScreenButtons ? "Use Touch Screen Buttons" : "No Touch Screen Buttons");
+		// return (FlxG.save.data.useTouchScreenButtons ? "Use Touch Screen Buttons" : "No Touch Screen Buttons");
+		return "Touch Screen Buttons" + (FlxG.save.data.useTouchScreenButtons ? "ON" : "OFF");
 	}
 }
 
-class SelectTouchScreenButtons extends Option{
-	var max=1;
+class SelectTouchScreenButtons extends Option
+{
+	var max = 1;
 
 	public function new(desc:String)
 	{
@@ -2223,40 +2281,49 @@ class SelectTouchScreenButtons extends Option{
 		acceptValues = true;
 	}
 
-	public override function press():Bool{
+	public override function press():Bool
+	{
 		return false;
 	}
 
-	override function right():Bool{
+	override function right():Bool
+	{
 		changeModes(1);
 		display = updateDisplay();
 		return true;
 	}
 
-	override function left():Bool{
+	override function left():Bool
+	{
 		changeModes(-1);
 		display = updateDisplay();
 		return true;
 	}
 
-	function changeModes(number:Int = 0, isMoveTo:Bool = false) {
+	function changeModes(number:Int = 0, isMoveTo:Bool = false)
+	{
 		var cur:Int = Std.int(FlxG.save.data.selectTouchScreenButtons);
-		if(isMoveTo){
+		if (isMoveTo)
+		{
 			cur = number;
-		} else {
+		}
+		else
+		{
 			cur += number;
 		}
-		if(cur>max)
+		if (cur > max)
 			cur = 0;
-		else if(cur<0)
+		else if (cur < 0)
 			cur = max;
 		FlxG.save.data.selectTouchScreenButtons = cur;
 
 		display = updateDisplay();
 	}
 
-	function sayTheThing():String{
-		switch(Std.int(FlxG.save.data.selectTouchScreenButtons)){
+	function sayTheThing():String
+	{
+		switch (Std.int(FlxG.save.data.selectTouchScreenButtons))
+		{
 			case 0:
 				return "OFF";
 			case 1:
@@ -2274,22 +2341,35 @@ class SelectTouchScreenButtons extends Option{
 		}
 	}
 
-	override function getValue():String {
+	override function getValue():String
+	{
 		return "Current Touchscreen Button: " + sayTheThing();
 	}
 
 	private override function updateDisplay():String
-	{		
-		return ("Touchscreen button type " + sayTheThing());
+	{
+		return ("Touchscreen button type <" + sayTheThing() + ">");
 	}
 }
 
-class VibrationOption extends Option{
-
+class VibrationOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left(); // same as left
+		return true;
 	}
 
 	public override function press():Bool
@@ -2300,14 +2380,15 @@ class VibrationOption extends Option{
 	}
 
 	private override function updateDisplay():String
-	{		
-		return "Vibration " + (FlxG.save.data.vibration ? "ON" : "OFF");
+	{
+		return "Vibration <" + (FlxG.save.data.vibration ? "ON" : "OFF") + ">";
 	}
 }
 
-//JOELwindows7: view achievements unlocked. 
-//inspired from that 69420 runner (N word version) ninjamuffin99 made before.
-class GalleryOption extends Option{
+// JOELwindows7: view achievements unlocked.
+// inspired from that 69420 runner (N word version) ninjamuffin99 made before.
+class GalleryOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
@@ -2316,8 +2397,8 @@ class GalleryOption extends Option{
 
 	public override function press():Bool
 	{
-		//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
-		//FlxG.switchState(new LoadReplayState()); //or open new state.
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		return false;
 	}
 
@@ -2327,8 +2408,9 @@ class GalleryOption extends Option{
 	}
 }
 
-//JOELwindows7: adjust volume
-class AdjustVolumeOption extends Option{
+// JOELwindows7: adjust volume
+class AdjustVolumeOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
@@ -2336,18 +2418,21 @@ class AdjustVolumeOption extends Option{
 		acceptValues = true;
 	}
 
-	public override function press():Bool{
+	public override function press():Bool
+	{
 		display = updateDisplay();
 		return true;
 	}
 
-	override function right():Bool{
+	override function right():Bool
+	{
 		FlxG.sound.changeVolume(.1);
 		display = updateDisplay();
 		return true;
 	}
 
-	override function left():Bool{
+	override function left():Bool
+	{
 		FlxG.sound.changeVolume(-.1);
 		display = updateDisplay();
 		return true;
@@ -2360,28 +2445,34 @@ class AdjustVolumeOption extends Option{
 
 		// https://github.com/ninjamuffin99/SHOOM/blob/master/source/PlayState.hx
 		// lmao shoooooooooooooooooooooooooooooooooooooooooooooooooom
-		var shoomSays:String="SH";
+		var shoomSays:String = "SH";
 		var remains:Int = 10;
-		for(i in 0...(Std.int(FlxG.sound.volume*10))){
+		for (i in 0...(Std.int(FlxG.sound.volume * 10)))
+		{
 			shoomSays += 'O';
 			remains--;
 		}
 		shoomSays += 'M';
-		if(remains < 0) remains = 0;
-		if(remains <= 0) AchievementUnlocked.whichIs("anBeethoven");
-		for(i in 0...(remains)){
-			shoomSays += 'U';
+		if (remains < 0)
+			remains = 0;
+		if (remains <= 0)
+			AchievementUnlocked.whichIs("anBeethoven");
+		for (i in 0...(remains))
+		{
+			shoomSays += ' '; // was `U` before. now space supported so yeah.
 		}
-		return "Volume " + shoomSays;
+		return "Volume <" + shoomSays + " (" + Std.string(Std.int(FlxG.sound.volume * 100)) + "%)" + ">";
 	}
 
-	override function getValue():String {
-		return "Volume: " + Std.string(FlxG.sound.volume);
+	override function getValue():String
+	{
+		return "Volume: " + Std.string(FlxG.sound.volume * 100) + "%";
 	}
 }
 
-//JOELwindows7: attempt the surround sound test using Lime audio source.
-class SurroundTestOption extends Option{
+// JOELwindows7: attempt the surround sound test using Lime audio source.
+class SurroundTestOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
@@ -2390,8 +2481,8 @@ class SurroundTestOption extends Option{
 
 	public override function press():Bool
 	{
-		//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
-		//FlxG.switchState(new LoadReplayState()); //or open new state.
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		OptionsMenu.switchState(new LimeAudioBufferTester());
 		return false;
 	}
@@ -2402,100 +2493,117 @@ class SurroundTestOption extends Option{
 	}
 }
 
-//JOELwindows7: quick way testing Webmer
-class AnVideoCutscenerTestOption extends Option{
-	public function new(desc:String)
-		{
-			super();
-			description = desc;
-		}
-	
-		public override function press():Bool
-		{
-			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
-			//FlxG.switchState(new LoadReplayState()); //or open new state.
-			OptionsMenu.switchState(new AnWebmer());
-			return false;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "Video Cutscener Test";
-		}
-}
-
-//JOELwindows7: quick way testing Starfield
-class AnStarfieldTestOption extends Option{
-	public function new(desc:String)
-		{
-			super();
-			description = desc;
-		}
-	
-		public override function press():Bool
-		{
-			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
-			//FlxG.switchState(new LoadReplayState()); //or open new state.
-			OptionsMenu.switchState(new AnStarfielde());
-			return false;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "Starfield Test";
-		}
-}
-
-//JOELwindows7: quick way testing default bekgrond
-class AnDefaultBekgronTestOption extends Option{
-	public function new(desc:String)
-		{
-			super();
-			description = desc;
-		}
-	
-		public override function press():Bool
-		{
-			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
-			//FlxG.switchState(new LoadReplayState()); //or open new state.
-			OptionsMenu.switchState(new AnDefaultBekgronde());
-			return false;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "Default Background Test";
-		}
-}
-
-//JOELwindows7: quick way testing MIDI
-class AnMIDITestOption extends Option{
-	public function new(desc:String)
-		{
-			super();
-			description = desc;
-		}
-	
-		public override function press():Bool
-		{
-			//OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
-			//FlxG.switchState(new LoadReplayState()); //or open new state.
-			// FlxG.switchState(new AnMIDIyeay());
-			return false;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "MIDI Test";
-		}
-}
-
-//JOELwindows7: Force all weeks to unlock
-class PreUnlockAllWeeksOption extends Option{
+// JOELwindows7: quick way testing Webmer
+class AnVideoCutscenerTestOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.switchState(new AnWebmer());
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Video Cutscener Test";
+	}
+}
+
+// JOELwindows7: quick way testing Starfield
+class AnStarfieldTestOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.switchState(new AnStarfielde());
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Starfield Test";
+	}
+}
+
+// JOELwindows7: quick way testing default bekgrond
+class AnDefaultBekgronTestOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.switchState(new AnDefaultBekgronde());
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Default Background Test";
+	}
+}
+
+// JOELwindows7: quick way testing MIDI
+class AnMIDITestOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		// FlxG.switchState(new AnMIDIyeay());
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "MIDI Test";
+	}
+}
+
+// JOELwindows7: Force all weeks to unlock
+class PreUnlockAllWeeksOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); //same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); //same as press
+		return false;
 	}
 
 	public override function press():Bool
@@ -2506,13 +2614,14 @@ class PreUnlockAllWeeksOption extends Option{
 	}
 
 	private override function updateDisplay():String
-	{		
-		return "All Weeks " + (FlxG.save.data.preUnlocked ? "PreUnlocked" : "Lock Progress");
+	{
+		return "All Weeks <" + (FlxG.save.data.preUnlocked ? "PreUnlocked" : "Lock Progress") + ">";
 	}
 }
 
-//JOELwindows7: Vibration had delay. offset it this
-class VibrationOffsetOption extends Option{
+// JOELwindows7: Vibration had delay. offset it this
+class VibrationOffsetOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
@@ -2520,20 +2629,23 @@ class VibrationOffsetOption extends Option{
 		acceptValues = true;
 	}
 
-	public override function press():Bool{
+	public override function press():Bool
+	{
 		display = updateDisplay();
 		return true;
 	}
 
-	override function right():Bool{
+	override function right():Bool
+	{
 		FlxG.save.data.vibrationOffset += .01;
 		display = updateDisplay();
 		return true;
 	}
 
-	override function left():Bool{
+	override function left():Bool
+	{
 		FlxG.save.data.vibrationOffset -= .01;
-		if(FlxG.save.data.vibrationOffset < 0.0)
+		if (FlxG.save.data.vibrationOffset < 0.0)
 			FlxG.save.data.vibrationOfset = 0.0;
 		display = updateDisplay();
 		return true;
@@ -2541,19 +2653,33 @@ class VibrationOffsetOption extends Option{
 
 	private override function updateDisplay():String
 	{
-		return "Vibration Offset";
+		return "Vibration Offset <" + Std.string(FlxG.save.data.vibrationOffset) + ">";
 	}
 
-	override function getValue():String {
+	override function getValue():String
+	{
 		return "Vibration Offset: " + Std.string(FlxG.save.data.vibrationOffset);
 	}
 }
 
-class OutOfSegsWarningOption extends Option{
+class OutOfSegsWarningOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); //same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); //same as press
+		return false;
 	}
 
 	public override function press():Bool
@@ -2564,17 +2690,30 @@ class OutOfSegsWarningOption extends Option{
 	}
 
 	private override function updateDisplay():String
-	{		
+	{
 		return "Out of segs " + (FlxG.save.data.outOfSegsWarning ? "Printed" : "SSSSHHHH");
 	}
 }
 
-//JOELwindows7: Print chart contents option while play
-class PrintSongChartContentOption extends Option{
+// JOELwindows7: Print chart contents option while play
+class PrintSongChartContentOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); //same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); //same as press
+		return false;
 	}
 
 	public override function press():Bool
@@ -2585,14 +2724,16 @@ class PrintSongChartContentOption extends Option{
 	}
 
 	private override function updateDisplay():String
-	{		
-		return "Song Chart Content " + (FlxG.save.data.traceSongChart ? "Printed" : "SSSSHHHH");
+	{
+		return "Song Chart Content <" + (FlxG.save.data.traceSongChart ? "Printed" : "SSSSHHHH") + ">";
 	}
 }
 
-//JOELwindows7: GameJolt login TentaRJ
-class LogGameJoltIn extends Option{
-	public function new(desc:String){
+// JOELwindows7: GameJolt login TentaRJ
+class LogGameJoltIn extends Option
+{
+	public function new(desc:String)
+	{
 		super();
 		description = desc;
 	}
@@ -2612,5 +2753,10 @@ class LogGameJoltIn extends Option{
 		#else
 		return "GameJolt not supported";
 		#end
+	}
+
+	override function getValue():String
+	{
+		return "GameJolt is: " + (GameJoltAPI.getStatus() ? GameJoltAPI.getUserInfo(true) : "<logged out>");
 	}
 }

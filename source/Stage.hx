@@ -1147,7 +1147,7 @@ class Stage extends MusicBeatState
 			trace('stage script: ' + executeStageScript + " - " + Paths.lua(daPath)); // JOELwindows7: check too
 
 			PlayState.stageScript = ModchartState.createModchartState(PlayState.isStoryMode, true, daPath);
-			PlayState.stageScript.executeState('loaded', [CoolUtil.toCompatCase(PlayState.SONG.song)]);
+			PlayState.stageScript.executeState('loaded', [PlayState.SONG.songId]);
 			trace("loaded it up stage lua script");
 			PlayState.stageScript.setVar("originalColors", multiOriginalColor);
 			PlayState.stageScript.setVar("areChromaScreen", multiIsChromaScreen);
@@ -1158,7 +1158,7 @@ class Stage extends MusicBeatState
 			trace('stage Hscript: ' + executeStageHscript + " - " + Paths.hscript(daPath)); // JOELwindows7: check too
 
 			PlayState.stageHscript = HaxeScriptState.createModchartState(true, daPath);
-			PlayState.stageHscript.executeState('loaded', [CoolUtil.toCompatCase(PlayState.SONG.song)]);
+			PlayState.stageHscript.executeState('loaded', [PlayState.SONG.songId]);
 			trace("loaded it up stage haxe script");
 			PlayState.stageHscript.setVar("originalColors", multiOriginalColor);
 			PlayState.stageHscript.setVar("areChromaScreen", multiIsChromaScreen);
