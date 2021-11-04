@@ -83,17 +83,6 @@ jobs:
           name: Linux Build
           path: export/release/linux/bin
       
-      - name: Push to Itch Linux
-        uses: josephbmanley/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: linux-GHAction
-          ITCH_GAME: last-funkin-moments
-          ITCH_USER: joelwindows7
-          PACKAGE: export/release/linux/bin
       
-      - name: Yo, release now
-        uses: softprops/action-gh-release@v0.1.13
-        if: startsWith(github.ref, 'refs/tags/')
           
 

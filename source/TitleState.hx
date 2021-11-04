@@ -164,6 +164,9 @@ class TitleState extends MusicBeatState
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
 
+	//JOELwindows7: globalize button
+	var pressedEnter:Bool = false;
+
 	function startIntro()
 	{
 		persistentUpdate = true;
@@ -335,7 +338,8 @@ class TitleState extends MusicBeatState
 			FlxG.save.flush(); // JOELwindows7: from OptionMenu.hx it constantly save data.
 		}
 
-		var pressedEnter:Bool = controls.ACCEPT;
+		//JOELwindows7: globalize this
+		pressedEnter = controls.ACCEPT;
 
 		#if mobile
 		for (touch in FlxG.touches.list)

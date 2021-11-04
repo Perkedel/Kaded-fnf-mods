@@ -583,7 +583,7 @@ class FreeplayState extends MusicBeatState
 		#else
 		PlayState.isSM = false;
 		#end
-		trace("Loaded Song into Playstate " + (FlxG.save.data.traceSongChart ? Std.string(hmm) : "bla bla bla")); // JOELwindows7: what hapened
+		// trace("Loaded Song into Playstate " + (FlxG.save.data.traceSongChart ? Std.string(hmm) : "bla bla bla")); // JOELwindows7: what hapened
 
 		PlayState.songMultiplier = rate;
 

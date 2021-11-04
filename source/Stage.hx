@@ -1289,8 +1289,8 @@ class Stage extends MusicBeatState
 			// colorableGround.visible = true;
 			swagBacks['colorableGround'].visible = true;
 			swagBacks['colorableGround'].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
-			colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
-			trace("now colorable color is " + colorableGround.color.toHexString());
+			// colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
+			// trace("now colorable color is " + colorableGround.color.toHexString());
 		}
 		if (swagGroup['bgAll'] != null)
 			if (justOne)
@@ -1298,10 +1298,12 @@ class Stage extends MusicBeatState
 				swagGroup['bgAll'].members[toWhichBg].visible = true;
 				swagGroup['bgAll'].members[toWhichBg].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0),
 					FlxG.random.float(0.0, 1.0));
+					/*
 				trace("now bg "
 					+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
 					+ " color is "
 					+ swagBacks['colorableGround'].color.toHexString());
+					*/
 			}
 			else
 			{
@@ -1310,8 +1312,8 @@ class Stage extends MusicBeatState
 					if (multiColorable[theBg.ID])
 					{
 						theBg.visible = true;
-						theBg.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
-						trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+						// theBg.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
+						// trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
 					}
 				});
 			}
@@ -1324,8 +1326,8 @@ class Stage extends MusicBeatState
 		{
 			swagBacks['colorableGround'].visible = true;
 			swagBacks['colorableGround'].color = color;
-			colorableGround.color = color;
-			trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
+			// colorableGround.color = color;
+			// trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
 		}
 		if (swagGroup['bgAll'] != null)
 		{
@@ -1333,10 +1335,12 @@ class Stage extends MusicBeatState
 			{
 				swagGroup['bgAll'].members[toWhichBg].visible = true;
 				swagGroup['bgAll'].members[toWhichBg].color = color;
+				/*
 				trace("now bg "
 					+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
 					+ " color is "
 					+ swagBacks['colorableGround'].color.toHexString());
+					*/
 			}
 			else
 			{
@@ -1345,8 +1349,8 @@ class Stage extends MusicBeatState
 					if (multiColorable[theBg.ID])
 					{
 						theBg.visible = true;
-						theBg.color = color;
-						trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
+						// theBg.color = color;
+						// trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
 					}
 				});
 			}

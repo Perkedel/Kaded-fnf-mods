@@ -108,7 +108,9 @@ class OptionsMenu extends CoreSubState
 
 	public var shownStuff:FlxTypedGroup<FlxText>;
 
-	public static var visibleRange = [114, 640];
+	public static var visibleRange = [114, 640]; // JOELwindows7: was 640
+
+	public var upToHowManyCatsOnScreen:Int = 6; // JOELwindows7: by default there was 4 categories.
 
 	public function new(pauseMenu:Bool = false)
 	{
@@ -160,7 +162,7 @@ class OptionsMenu extends CoreSubState
 			// JOELwindows7: Audio
 			new OptionCata(640, 40, 'Audio', [
 				new AdjustVolumeOption("Adjust Audio volume"),
-				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
+				// new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."), //JOELwindows7: how about move it here?
 				new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
 				// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
 			]),
@@ -217,6 +219,7 @@ class OptionsMenu extends CoreSubState
 
 		shownStuff = new FlxTypedGroup<FlxText>();
 
+		// JOELwindows7: pinpoint, this is inner square
 		background = new FlxSprite(50, 40).makeGraphic(1180, 640, FlxColor.BLACK);
 		background.alpha = 0.5;
 		background.scrollFactor.set();
@@ -227,12 +230,9 @@ class OptionsMenu extends CoreSubState
 		descBack.scrollFactor.set();
 		menu.add(descBack);
 
-		// addBackButton(20,FlxG.height);
-		// addLeftButton(FlxG.width-400,FlxG.height);
-		// addRightButton(FlxG.width-200,FlxG.height);
-
 		if (isInPause)
 		{
+			// JOELwindows7: pinpoint, this is outer square that fill entire game screen when in Pause.
 			var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 			bg.alpha = 0;
 			bg.scrollFactor.set();
@@ -248,17 +248,23 @@ class OptionsMenu extends CoreSubState
 
 		selectedOption = selectedCat.options[0];
 
+		// JOELwindows7: assign ID to category
+		assignIDToCats();
+
 		add(menu);
 
 		add(shownStuff);
 
 		for (i in 0...options.length - 1)
 		{
-			if (i >= 4)
+			// JOELwindows7: what is this thing doing? skip adding it that after 4th?
+			if (i >= upToHowManyCatsOnScreen)
 				continue;
 			var cat = options[i];
 			add(cat);
-			add(cat.titleObject);
+			add(cat.titleObject); // JOELwindows7: pinpoint, so you must take of this too.
+			// Remember, this is not Godot where you can have node inside node recursively.
+			// So, you can only have this title text thingy side by side, on top of the cat FlxSprite itself.
 		}
 
 		descText = new FlxText(62, 648);
@@ -274,9 +280,18 @@ class OptionsMenu extends CoreSubState
 
 		selectedOption = selectedCat.options[0];
 
-		FlxTween.tween(backButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
-		FlxTween.tween(leftButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left right button
-		FlxTween.tween(rightButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: yeah.
+		// JOELwindows7: now tidy the category
+		tidyThoseCats();
+
+		// JOELwindows7: now add these all up
+		addBackButton(10, FlxG.height, .4);
+		addLeftButton(FlxG.width - 400, FlxG.height, .4);
+		addRightButton(FlxG.width - 200, FlxG.height, .4);
+
+		// JOELwindows7: Then animate them.
+		FlxTween.tween(backButton, {y: FlxG.height - 80}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton, {y: FlxG.height - 80}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left right button
+		FlxTween.tween(rightButton, {y: FlxG.height - 80}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: yeah.
 
 		super.create();
 
@@ -288,9 +303,9 @@ class OptionsMenu extends CoreSubState
 	{
 		try
 		{
-			visibleRange = [114, 640];
+			visibleRange = [114, 640]; // JOELwindows7: expand check visible range. was [114, 640]
 			if (cat.middle)
-				visibleRange = [Std.int(cat.titleObject.y), 640];
+				visibleRange = [Std.int(cat.titleObject.y), 640]; // JOELwindows7: was [the value, 640]
 			if (selectedOption != null)
 			{
 				var object = selectedCat.optionObjects.members[selectedOptionIndex];
@@ -333,6 +348,7 @@ class OptionsMenu extends CoreSubState
 				for (i in 0...selectedCat.options.length)
 				{
 					var opt = selectedCat.optionObjects.members[i];
+					opt.ID = i; // JOELwindows7: assign ID to each option member.
 					opt.y = selectedCat.titleObject.y + 54 + (46 * i);
 				}
 			}
@@ -342,6 +358,7 @@ class OptionsMenu extends CoreSubState
 			if (!isInCat)
 				selectOption(selectedOption);
 
+			// JOELwindows7: pinpoint, this is to invisiblize outside visible range and revisible in range.
 			for (i in selectedCat.optionObjects.members)
 			{
 				if (i.y < visibleRange[0] - 24)
@@ -394,11 +411,18 @@ class OptionsMenu extends CoreSubState
 		var any = false;
 		var escape = false;
 
+		// JOELwindows7: add mouseoid.
 		accept = FlxG.keys.justPressed.ENTER || (gamepad != null ? gamepad.justPressed.A : false) || haveClicked;
 		right = FlxG.keys.justPressed.RIGHT || (gamepad != null ? gamepad.justPressed.DPAD_RIGHT : false) || haveRighted;
 		left = FlxG.keys.justPressed.LEFT || (gamepad != null ? gamepad.justPressed.DPAD_LEFT : false) || haveLefted;
-		up = FlxG.keys.justPressed.UP || (gamepad != null ? gamepad.justPressed.DPAD_UP : false) || haveDowned;
-		down = FlxG.keys.justPressed.DOWN || (gamepad != null ? gamepad.justPressed.DPAD_DOWN : false) || haveUpped;
+		up = FlxG.keys.justPressed.UP
+			|| (gamepad != null ? gamepad.justPressed.DPAD_UP : false)
+			|| haveDowned
+			|| FlxG.mouse.wheel > 0;
+		down = FlxG.keys.justPressed.DOWN
+			|| (gamepad != null ? gamepad.justPressed.DPAD_DOWN : false)
+			|| haveUpped
+			|| FlxG.mouse.wheel < 0;
 
 		any = FlxG.keys.justPressed.ANY || (gamepad != null ? gamepad.justPressed.ANY : false);
 		escape = FlxG.keys.justPressed.ESCAPE || (gamepad != null ? gamepad.justPressed.B : false) || haveBacked;
@@ -685,12 +709,6 @@ class OptionsMenu extends CoreSubState
 	// JOELwindows7: copy from above but this time set the selection number
 	function goToSelection(change:Int = 0)
 	{
-		#if !switch
-		#if newgrounds
-		// NGio.logEvent("Fresh");
-		#end
-		#end
-
 		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
 
 		/*
@@ -735,6 +753,17 @@ class OptionsMenu extends CoreSubState
 				}
 			}
 		 */
+
+		// JOELwindows7: just change the index number
+		selectedOptionIndex = change;
+		selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
+	}
+
+	function goToCategory(change:Int = 0)
+	{
+		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
+		selectedCatIndex = change;
+		switchCat(options[selectedCatIndex], false);
 	}
 
 	// JOELwindows7: go to flxState. prevent go to there if you are in gameplay.
@@ -743,6 +772,35 @@ class OptionsMenu extends CoreSubState
 		if (isInPause)
 			return;
 		FlxG.switchState(ofHere);
+	}
+
+	// JOELwindows7: assign ID to category on screen
+	function assignIDToCats()
+	{
+		for (i in 0...options.length - 1)
+		{
+			options[i].ID = i;
+		}
+	}
+
+	// JOELwindows7: we need to tidy the categories first
+	function tidyThoseCats()
+	{
+		for (i in 0...options.length - 1)
+		{
+			// if (options[i].options.length == 0)
+			// {
+			// 	options.splice(i, 1);
+			// 	i--;
+			// }
+			options[i].width = background.width / upToHowManyCatsOnScreen;
+			options[i].x = (background.width / upToHowManyCatsOnScreen) * i;
+			// I guess..
+			// oh almost forgot!
+			options[i].titleObject.x = options[i].x + (options[i].width / 2) - (options[i].titleObject.width / 2);
+			options[i].titleObject.y = options[i].y + 10;
+			// Wow, GitHub Copilot sentience yeay!
+		}
 	}
 
 	// JOELwindows7: darn you Kade!!! why let anyone inherit from FlxSubState instead of MusicBeat Substate?!?!??!
@@ -808,5 +866,110 @@ class OptionsMenu extends CoreSubState
 				}
 			});
 		 */
+
+		// JOELwindows7: check if you have clicked on a category. whoah, GitHub Copilot sentience finally kicks in!
+		for (i in 0...options.length - 1)
+		{
+			if (FlxG.mouse.overlaps(options[i]) && !FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton))
+			{
+				if (FlxG.mouse.justPressed)
+				{
+					if (options[i].ID == selectedCatIndex)
+					{
+						haveClicked = true;
+					}
+					else
+					{
+						goToCategory(options[i].ID);
+					}
+				}
+			}
+		}
+
+		// JOELwindows7: check if you have clicked on an item.
+		shownStuff.forEach(function(stuff:FlxText)
+		{
+			if (FlxG.mouse.overlaps(stuff))
+			{
+				if (FlxG.mouse.justPressed)
+				{
+					/*
+						if (stuff.text == "Back")
+						{
+							if (!haveBacked)
+							{
+								haveBacked = true;
+							}
+						}
+						else if (stuff.text == "Left")
+						{
+							if (!haveLefted)
+							{
+								haveLefted = true;
+							}
+						}
+						else if (stuff.text == "Right")
+						{
+							if (!haveRighted)
+							{
+								haveRighted = true;
+							}
+						}
+						else
+						{
+							// if (stuff.text == currentSelectedCat.getName())
+							// {
+							// 	haveClicked = true;
+							// }
+							// else
+							// {
+							// 	// goToSelection(stuff.text);
+							// }
+						}
+					 */
+					if(stuff.ID == selectedOptionIndex){
+						haveClicked = true;
+					} else {
+						goToSelection(stuff.ID);
+					}
+					
+					// JOELwindows7: but it's not perfect.
+				}
+			}
+			else
+			{
+				// JOELwindows7: back button for no keyboard
+				if (FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(stuff))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (!haveBacked)
+						{
+							haveBacked = true;
+						}
+					}
+				}
+				if (FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(stuff))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (!haveLefted)
+						{
+							haveLefted = true;
+						}
+					}
+				}
+				if (FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(stuff))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (!haveRighted)
+						{
+							haveRighted = true;
+						}
+					}
+				}
+			}
+		});
 	}
 }

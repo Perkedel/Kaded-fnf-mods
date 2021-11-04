@@ -45,10 +45,50 @@ jobs:
           haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
           haxelib install actuate 
+          haxelib git faxe https://github.com/uhrobots/faxe
+          haxelib git polymod https://github.com/MasterEric/polymod.git
+          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+          haxelib git extension-webm https://github.com/KadeDev/extension-webm
+          haxelib run lime rebuild extension-webm linux
+          haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
+          haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
+          haxelib install actuate 
+          haxelib install android6permissions
+          haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
+          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
+          haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
+          haxelib install uniontypes #BulbyVR used this
+          haxelib install json2object #BulbyVR used this to convert JSON to object
+          haxelib install extension-webview #luckydog7 for Android
+          haxelib git xinput https://github.com/furusystems/openfl-xinput.git
+          haxelib install haxe-files
+          haxelib install hxcpp-debug-server
+          haxelib install tink_core
+          haxelib install grig.audio
+          haxelib install grig.midi
+          haxelib git tentools https://github.com/TentaRJ/tentools.git
+          haxelib git systools https://github.com/haya3218/systools
+          haxelib run lime rebuild systools linux
           haxelib list
+          wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+          mv ./GJkeys.hx /home/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
           haxelib run lime build linux
           
       - uses: actions/upload-artifact@v2
         with:
           name: Linux Build
           path: export/release/linux/bin
+
+      - name: Push to Itch Linux
+        if: ${{github.event.action = "push"}}
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux-GHAction
+          ITCH_GAME: last-funkin-moments
+          ITCH_USER: joelwindows7
+          PACKAGE: export/release/linux/bin
+      
+      - name: Yo, release now
+        uses: softprops/action-gh-release@v0.1.13
+        if: startsWith(github.ref, 'refs/tags/')

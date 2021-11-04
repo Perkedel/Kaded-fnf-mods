@@ -94,7 +94,7 @@ class DFJKOption extends Option
 
 	public override function press():Bool
 	{
-		OptionsMenu.instance.selectedCatIndex = 4;
+		OptionsMenu.instance.selectedCatIndex = 6; //JOELwindows7: was 4. really, why order number?!
 		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[4], false);
 		return false;
 	}
@@ -1051,7 +1051,7 @@ class Judgement extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		OptionsMenu.instance.selectedCatIndex = 5;
+		OptionsMenu.instance.selectedCatIndex = 7; //JOELwindows7: was 5. don't use order!!!!
 		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[5], false);
 		return true;
 	}

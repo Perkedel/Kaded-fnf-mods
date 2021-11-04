@@ -21,24 +21,24 @@ import openfl.utils.AssetType;
 class VideoCutscener{
     public static function startThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = true){
         FlxG.switchState(
-            #if mobile
-            new VideoSelfContained(source, toTrans, frameSkipLimit, autopause)
-            #elseif (windows)
+            #if FEATURE_VLC
             new VLCState(Paths.video(source), toTrans, frameSkipLimit, autopause)
-            #else
+            #elseif (!FEATURE_VLC && FEATURE_WEBM_NATIVE && !android)
             new VideoState(Paths.video(source), toTrans, frameSkipLimit, autopause)
+            #else
+            new VideoSelfContained(source, toTrans, frameSkipLimit, autopause)
             #end
         );
     }
 
     public static function getThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = true):MusicBeatState{
         return
-        #if mobile
-        new VideoSelfContained(source, toTrans, frameSkipLimit, autopause)
-        #elseif (windows)
+        #if FEATURE_VLC
         new VLCState(Paths.video(source), toTrans, frameSkipLimit, autopause)
-        #else
+		#elseif (!FEATURE_VLC && (FEATURE_WEBM_NATIVE || FEATURE_WEBM_JS))
         new VideoState(Paths.video(source), toTrans, frameSkipLimit, autopause)
+        #else
+        new VideoSelfContained(source, toTrans, frameSkipLimit, autopause)
         #end
         ;
     }
@@ -88,6 +88,7 @@ class VideoSelfContained extends MusicBeatState{
             }
         } catch(e){
             trace("Werror faile video!\n\n" + Std.string(e));
+			Debug.logError("Werror faile video!\n\n" + e);
             donedCallback();
         }
         
@@ -124,7 +125,7 @@ class VideoSelfContained extends MusicBeatState{
 }
 
 class VLCState extends MusicBeatState{
-    #if (cpp && !mobile && !mac && !linux)
+    #if FEATURE_VLC
     var theVLC:MP4Handler;
     #end
     var videoSprite:FlxSprite;
@@ -144,7 +145,7 @@ class VLCState extends MusicBeatState{
         this.source = source;
         // videoSprite = new FlxSprite(0,0);
         // VideoPlayer.SKIP_STEP_LIMIT = frameSkipLimit;
-        #if (cpp && !mobile && !mac && !linux)
+        #if FEATURE_VLC
         theVLC = new MP4Handler();
         theVLC.finishCallback = donedCallback;
         #end
@@ -158,7 +159,7 @@ class VLCState extends MusicBeatState{
         FlxG.sound.music.stop();
         peckingVolume = FlxG.sound.music.volume;
 
-        #if (cpp && !mobile && !mac && !linux)
+        #if FEATURE_VLC
         // FlxG.sound.music.volume = 0;
         try {
             if(videoSprite != null){
@@ -177,6 +178,7 @@ class VLCState extends MusicBeatState{
             
         } catch(e){
             trace("Werror faile video!\n\n" + Std.string(e));
+			Debug.logError("Werror faile video!\n\n" + e);
             donedCallback();
         }
         #else
@@ -218,7 +220,7 @@ class VLCState extends MusicBeatState{
 
     override function onFocusLost(){
         super.onFocusLost();
-        #if (cpp && !mobile && !mac && !linux)
+        #if FEATURE_VLC
         if(theVLC != null){
             // pause the VLC
             //theVLC.pause();

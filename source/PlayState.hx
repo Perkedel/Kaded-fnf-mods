@@ -459,7 +459,7 @@ class PlayState extends MusicBeatState
 		/*
 			#elseif (cpp)
 			//JOELwindows7: for not sys. use vergadit's filesystemers.
-			p = Path.of(Paths.lua("./" + songLowercase  + "/modchart"));
+			p = Path.of(Paths.lua("./" + PlayState.SONG.songId  + "/modchart"));
 			executeModchart = p.exists();
 			trace("is modchart file exist? " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 			if (executeModchart)
@@ -478,20 +478,27 @@ class PlayState extends MusicBeatState
 		Debug.logInfo('Searching for mod chart? ($executeModchart) at ${Paths.lua('songs/${PlayState.SONG.songId}/modchart')}');
 
 		// JOELwindows7: now for the hscript
+		/*
 		#if !web
-		p = Path.of("./" + Paths.hscript(songLowercase + "/modchart"));
+		p = Path.of("./" + Paths.hscript(PlayState.SONG.songId + "/modchart"));
 		executeModHscript = p.exists() || SONG.forceHscriptModchart;
 		trace("is hscript modchart file exist? " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
 		#else
 		executeModHscript = SONG.forceHscriptModchart;
 		#end
+		*/
+		//JOELwindows7: new exists
+		executeModHscript = 
+			Paths.doesTextAssetExist(Paths.hscript('songs/${PlayState.SONG.songId}/modchart'))
+			|| SONG.forceHscriptModchart
+			;
 		// if(SONG.forceHscriptModchart == null){
 		// 	executeModHscript = SONG.forceHscriptModchart = false;
 		// }
-		trace("forced hscript exist is " + Std.string(SONG.forceHscriptModchart));
+		// trace("forced hscript exist is " + Std.string(SONG.forceHscriptModchart));
 		if (executeModHscript)
 			PlayStateChangeables.Optimize = false;
-		trace('Mod hscript chart: ' + executeModHscript + " - " + Paths.hscript(songLowercase + "/modchart"));
+		// trace('Mod hscript chart: ' + executeModHscript + " - " + Paths.hscript('songs/${PlayState.SONG.songId}/modchart');
 
 		if (executeModchart)
 			songMultiplier = 1;
@@ -1006,7 +1013,7 @@ class PlayState extends MusicBeatState
 		}
 		if (executeStageScript && stageScript != null)
 		{
-			stageScript.executeState('start', [songLowercase]);
+			stageScript.executeState('start', [PlayState.SONG.songId]);
 			stageScript.setVar('songLength', songLength);
 		}
 		#end
@@ -1014,14 +1021,14 @@ class PlayState extends MusicBeatState
 		if (executeModHscript)
 		{
 			hscriptModchart = HaxeScriptState.createModchartState();
-			hscriptModchart.executeState('start', [songLowercase]);
+			hscriptModchart.executeState('start', [PlayState.SONG.songId]);
 			hscriptModchart.setVar('executeModchart', executeModchart);
 			hscriptModchart.setVar('executeModHscript', executeModHscript);
 			hscriptModchart.setVar('songLength', songLength);
 		}
 		if (executeStageHscript && stageHscript != null)
 		{
-			stageHscript.executeState('start', [songLowercase]);
+			stageHscript.executeState('start', [PlayState.SONG.songId]);
 			stageHscript.setVar('songLength', songLength);
 		}
 		// JOELwindows7: tell Lua script whether hscript is running too
@@ -1216,7 +1223,15 @@ class PlayState extends MusicBeatState
 		scoreTxt.screenCenter(X);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxt.text = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy);
+		scoreTxt.text = Ratings.CalculateRanking(
+			songScore, 
+			songScoreDef, 
+			nps, 
+			maxNPS, 
+			accuracy, 
+			heartRate[0],
+			heartTierIsRightNow[0]
+			); // JOELwindows7: this is just recently popped up.
 		if (!FlxG.save.data.healthBar)
 			scoreTxt.y = healthBarBG.y;
 
@@ -1546,7 +1561,7 @@ class PlayState extends MusicBeatState
 							{
 								senpaiEvil.animation.play('idle');
 								// JOELwindows7: detect MIDI version
-								FlxG.sound.play(Paths.sound(songLowercase.contains('midi') ? 'Senpai_Dies-midi' : 'Senpai_Dies'), 1, false, null, true,
+								FlxG.sound.play(Paths.sound(PlayState.SONG.songId.contains('midi') ? 'Senpai_Dies-midi' : 'Senpai_Dies'), 1, false, null, true,
 									function()
 									{
 										remove(senpaiEvil);
@@ -1720,7 +1735,7 @@ class PlayState extends MusicBeatState
 			}
 
 			// JOELwindows7: scan MIDI suffix in the song name
-			if (songLowercase.contains(detectMidiSuffix.trim()))
+			if (PlayState.SONG.songId.contains(detectMidiSuffix.trim()))
 			{
 				midiSuffix = detectMidiSuffix;
 			}
@@ -2048,7 +2063,8 @@ class PlayState extends MusicBeatState
 		// Song check real quick
 		switch (curSong)
 		{
-			case 'Bopeebo' | 'Philly Nice' | 'Blammed' | 'Cocoa' | 'Eggnog':
+			//JOELwindows7: frogot to change convention lmao
+			case 'bopeebo' | 'philly' | 'blammed' | 'cocoa' | 'eggnog':
 				allowedToCheer = true;
 			default:
 				allowedToCheer = SONG.allowedToHeadbang; // JOELwindows7: define by the JSON chart instead
@@ -2434,25 +2450,25 @@ class PlayState extends MusicBeatState
 						babyArrow.animation.add('dirCon' + j, [12 + j, 16 + j], 24, false);
 					}
 				/*
-								case 'saubo':
-									//JOELwindows7: LFM original noteskin
-									babyArrow.frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-									for (j in 0...4)
-									{
-										babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);	
-										babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
-									}
+					case 'saubo':
+						//JOELwindows7: LFM original noteskin
+						babyArrow.frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+						for (j in 0...4)
+						{
+							babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);	
+							babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
+						}
 
-									var lowerDir:String = dataSuffix[i].toLowerCase();
+						var lowerDir:String = dataSuffix[i].toLowerCase();
 
-									babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
-									babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
-									babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
+						babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
+						babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
+						babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
 
-									babyArrow.x += Note.swagWidth * i;
+						babyArrow.x += Note.swagWidth * i;
 
-									babyArrow.antialiasing = FlxG.save.data.antialiasing;
-									babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
+						babyArrow.antialiasing = FlxG.save.data.antialiasing;
+						babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
 				 */
 
 				default:
@@ -3445,7 +3461,8 @@ class PlayState extends MusicBeatState
 					// Per song treatment since some songs will only have the 'Hey' at certain times
 					switch (curSong)
 					{
-						case 'Philly Nice':
+						//JOELwindows7: frogot change convention to all lmao!!
+						case 'philly':
 							{
 								// General duration of the song
 								if (curBeat < 250)
@@ -3467,7 +3484,7 @@ class PlayState extends MusicBeatState
 									}
 								}
 							}
-						case 'Bopeebo':
+						case 'bopeebo':
 							{
 								// Where it starts || where it ends
 								if (curBeat > 5 && curBeat < 130)
@@ -3485,7 +3502,7 @@ class PlayState extends MusicBeatState
 										triggeredAlready = false;
 								}
 							}
-						case 'Blammed':
+						case 'blammed':
 							{
 								if (curBeat > 30 && curBeat < 190)
 								{
@@ -3505,7 +3522,7 @@ class PlayState extends MusicBeatState
 									}
 								}
 							}
-						case 'Cocoa':
+						case 'cocoa':
 							{
 								if (curBeat < 170)
 								{
@@ -3524,7 +3541,7 @@ class PlayState extends MusicBeatState
 									}
 								}
 							}
-						case 'Eggnog':
+						case 'eggnog':
 							{
 								if (curBeat > 10 && curBeat != 111 && curBeat < 220)
 								{
@@ -3540,7 +3557,7 @@ class PlayState extends MusicBeatState
 										triggeredAlready = false;
 								}
 							}
-						case 'Rule The World':
+						case 'rule-the-world':
 							{
 								// JOELwindows7: okay how do I supposed to cheer?
 								// copy from above and adjust beat.
@@ -3565,7 +3582,7 @@ class PlayState extends MusicBeatState
 										triggeredAlready = false;
 								}
 							}
-						case 'Well Meet Again':
+						case 'well-meet-again':
 							{
 								// JOELwindows7: cheer on the beatdrop yeay
 								if (!inCutscene && curBeat < 307) // make sure do this only when not in cutscene, & song still going
@@ -3774,7 +3791,8 @@ class PlayState extends MusicBeatState
 			FlxG.watch.addQuick("Must hit", currentSection.mustHitSection);
 		}
 
-		if (curSong == 'Fresh')
+		//JOELwindows7: bruh, don't forget new convention lol
+		if (curSong == 'fresh')
 		{
 			switch (curBeat)
 			{
@@ -5755,7 +5773,7 @@ class PlayState extends MusicBeatState
 			}
 
 			// JOELwindows7: HARDCODING FOR WE'LL MEET YOU AGAIN ZOOMS!
-			if (curSong.toLowerCase() == 'well meet again'
+			if (curSong.toLowerCase() == 'well-meet-again'
 				&& FlxG.camera.zoom < 1.35
 				&& curBeat % 4 == 2
 				&& curBeat < 307
@@ -5805,7 +5823,7 @@ class PlayState extends MusicBeatState
 				gf.dance();
 			}
 
-			if (curBeat % 8 == 7 && curSong == 'Bopeebo')
+			if (curBeat % 8 == 7 && curSong == 'bopeebo')
 			{
 				boyfriend.playAnim('hey', true);
 			}
@@ -6201,14 +6219,14 @@ class PlayState extends MusicBeatState
 	{
 		// JOELwindows7: install songLowercaser and its heurestic for specific songs bellow
 		// pre lowercasing the song name (create)
-		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
-		switch (songLowercase)
-		{
-			case 'dad-battle':
-				songLowercase = 'dadbattle';
-			case 'philly-nice':
-				songLowercase = 'philly';
-		}
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// }
 
 		startedFakeCounting = true;
 
@@ -6237,7 +6255,7 @@ class PlayState extends MusicBeatState
 			}
 
 			// JOELwindows7: scan MIDI suffix in the song name
-			if (songLowercase.contains(detectMidiSuffix.trim()))
+			if (PlayState.SONG.songId.contains(detectMidiSuffix.trim()))
 			{
 				midiSuffix = detectMidiSuffix;
 			}
@@ -6255,7 +6273,7 @@ class PlayState extends MusicBeatState
 					ready.updateHitbox();
 
 					if (curStage.startsWith('school'))
-						ready.setGraphicSize(Std.int(ready.width * daPixelZoom));
+						ready.setGraphicSize(Std.int(ready.width * CoolUtil.daPixelZoom));
 
 					ready.screenCenter();
 					add(ready);
@@ -6275,7 +6293,7 @@ class PlayState extends MusicBeatState
 					set.scrollFactor.set();
 
 					if (curStage.startsWith('school'))
-						set.setGraphicSize(Std.int(set.width * daPixelZoom));
+						set.setGraphicSize(Std.int(set.width * CoolUtil.daPixelZoom));
 
 					set.screenCenter();
 					add(set);
@@ -6295,7 +6313,7 @@ class PlayState extends MusicBeatState
 					go.scrollFactor.set();
 
 					if (curStage.startsWith('school'))
-						go.setGraphicSize(Std.int(go.width * daPixelZoom));
+						go.setGraphicSize(Std.int(go.width * CoolUtil.daPixelZoom));
 
 					go.updateHitbox();
 

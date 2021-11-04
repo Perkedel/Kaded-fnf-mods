@@ -322,6 +322,11 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/questions/17887 Note mine how do i add this
 - https://www.youtube.com/watch?v=iiQfjYcpJfQ use this video man
 - https://gamebanana.com/mods/328733?post=9535558 gff inspiration. `shitty mod didn't get downloaded get angry`. name the update `The Poopiest Mod of the year` `The Poopiest Update of the year`.
+- https://stackoverflow.com/questions/60916931/github-action-does-the-if-have-an-else
+- https://docs.github.com/en/actions/learn-github-actions/contexts#operators
+- https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idif
+- https://docs.github.com/en/actions/learn-github-actions/expressions
+- https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference REGEX references
 
 # in event of git merge conflict
 use VScode and Github desktop!

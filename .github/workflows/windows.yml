@@ -104,10 +104,6 @@ jobs:
         run: |
           haxelib run lime build windows
       
-      - name: build HTML5 now!
-        run: |
-          haxelib run lime build html5
-      
       - name: build Android now!
         run: |
           haxelib run lime build android
@@ -117,12 +113,6 @@ jobs:
         with:
           name: Windows Build
           path: export/release/windows/bin
-
-      - name: Artifact HTML5 now
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: HTML5 Build
-          path: export/release/html5/bin
       
       - name: Artifact Android now
         uses: actions/upload-artifact@v2.2.4
@@ -131,6 +121,7 @@ jobs:
           path: export/release/android/bin/app/build/output/apk/Last Funkin Moments-debug.apk
         
       - name: Push to Itch Windows
+        if: ${{github.event.name == "push"}}
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
@@ -138,17 +129,9 @@ jobs:
           ITCH_GAME: last-funkin-moments
           ITCH_USER: joelwindows7
           PACKAGE: export/release/windows/bin
-      
-      - name: Push to Itch HTML5
-        uses: josephbmanley/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: html5-GHAction
-          ITCH_GAME: last-funkin-moments
-          ITCH_USER: joelwindows7
-          PACKAGE: export/release/html5/bin
 
       - name: Push to Itch Android
+        if: ${{github.event.name == "push"}}
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
