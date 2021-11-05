@@ -94,9 +94,23 @@ jobs:
           haxelib git tentools https://github.com/TentaRJ/tentools.git
           haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools windows
+          haxelib install hxp
+          haxelib install svg
+          haxelib install format
+          haxelib install lime-tools
           haxelib list
           dir
           pwd
+      
+      - name: Setup Android support
+        run: |
+          haxelib run lime config ANDROID_SDK "%ANDROID_SDK_LOC%"
+          haxelib run lime config ANDROID_NDK_ROOT "%ANDROID_NDK_ROOT_LOC%\android-ndk-r15c"
+          haxelib run lime config ANDROID_SETUP true
+          haxelib run lime config JAVA_HOME C:\Program Files\Java\jdk1.8.0_211
+        
+      - name: Obtain Gamejolt empty key
+        run : |
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv .\GJkeys.hx D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx
       

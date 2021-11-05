@@ -1,7 +1,7 @@
-name: CI-bigMakku
+name: macOS Build CI
 
 # Controls when the workflow will run
-on: push
+on: [push, pull_request]
 
 permissions:
   contents: write
@@ -56,6 +56,10 @@ jobs:
           haxelib git tentools https://github.com/TentaRJ/tentools.git
           haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools mac
+          haxelib install hxp
+          haxelib install svg
+          haxelib install format
+          haxelib install lime-tools
           haxelib list
           ls
           pwd
@@ -63,6 +67,9 @@ jobs:
           pwd ..
           ls ../..
           pwd ../..
+      
+      - name: Obtain GameJolt empty key
+        run: |
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv ./GJkeys.hx /Users/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
 

@@ -1,4 +1,16 @@
 {
+    "name": "Empty",
     "offset": 0,
-    "artist": "empty"
+    "artist": "none",
+    "isCreditRoll": false,
+    "creditRunsOnce": false,
+    "delayBeforeStart": 0.0,
+    "delayAfterFinish": 0.0,
+    "hasVideo": false,
+    "videoPath": "",
+    "hasEpilogueVideo": false,
+    "epilogueVideoPath": "",
+    "hasDialogueChat": false,
+    "hasEpilogueChat": false,
+    "allowedToHeadbang": false
 }

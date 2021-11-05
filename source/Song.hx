@@ -55,13 +55,13 @@ typedef SongData =
 	var gfVersion:String;
 	var noteStyle:String;
 	var stage:String;
-	var hasVideo:Bool; // JOELwindows7: mark that this has video
-	var videoPath:String; // JOELwindows7: the video file path
-	var hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
-	var epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
-	var hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
-	var hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
-	var allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
+	var ?hasVideo:Bool; // JOELwindows7: mark that this has video
+	var ?videoPath:String; // JOELwindows7: the video file path
+	var ?hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
+	var ?epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
+	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
+	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
+	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
 	var useCustomStage:Bool; // JOELwindows7: should use custom stage?
 	// be allowed at certain moments in time
 	var forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
@@ -74,10 +74,10 @@ typedef SongData =
 	// JOELwindows7: more configs
 	var useCustomNoteStyle:Bool; // enable to custom noteskin
 	// JOELwindows7: Delays
-	var delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
-	var delayAfterFinish:Float; // Delay after song finish before load next song. for cutscene before epilogue video
-	var isCreditRoll:Bool; // JOELwindows7: is this credit roll? if yes then roll credit.
-	var creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
+	var ?delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
+	var ?delayAfterFinish:Float; // Delay after song finish before load next song. for cutscene before epilogue video
+	var ?isCreditRoll:Bool; // JOELwindows7: is this credit roll? if yes then roll credit.
+	var ?creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
 	var ?validScore:Bool;
 	var ?offset:Int;
 }
@@ -87,6 +87,20 @@ typedef SongMeta =
 	var ?artist:String;
 	var ?offset:Int;
 	var ?name:String;
+
+	var ?hasVideo:Bool; // JOELwindows7: mark that this has video
+	var ?videoPath:String; // JOELwindows7: the video file path
+	var ?hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
+	var ?epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
+	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
+	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
+
+	var ?delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
+	var ?delayAfterFinish:Float; // Delay after song finish before load next song. for cutscene before epilogue video
+	var ?isCreditRoll:Bool; // JOELwindows7: is this credit roll? if yes then roll credit.
+	var ?creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
+
+	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
 }
 
 class Song
@@ -245,6 +259,104 @@ class Song
 		{
 			// JOELwindows7: fill the gap on it.
 			songData.artist = songData.artist != null ? songData.artist : "Unknown";
+		}
+
+		//JOELwindows7: more too
+		if (songMetaData.isCreditRoll != null)
+		{
+			songData.isCreditRoll = songMetaData.isCreditRoll;
+		}
+		else
+		{
+
+		}
+
+		//JOELwindows7: yut
+		if (songMetaData.creditRunsOnce != null)
+		{
+			songData.creditRunsOnce = songMetaData.creditRunsOnce;
+		}
+		else
+		{
+		}
+
+		//JOELwindows7: dude, is there a procedural way to fill these all up?
+		if (songMetaData.hasVideo != null)
+		{
+			songData.hasVideo = songMetaData.hasVideo;
+		}
+		else
+		{
+		}
+
+		//JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
+		if (songMetaData.videoPath != null)
+		{
+			songData.videoPath = songMetaData.videoPath;
+		}
+		else
+		{
+		}
+
+		//JOELwindows7: haaaaaaaaaaaaaaaa!!!!
+		if(songMetaData.hasEpilogueVideo != null)
+		{
+			songData.hasEpilogueVideo = songMetaData.hasEpilogueVideo;
+		}
+		else
+		{
+		}
+
+		//JOELwindows7: boooooooof
+		if(songMetaData.epilogueVideoPath != null)
+		{
+			songData.epilogueVideoPath = songMetaData.epilogueVideoPath;
+		}
+		else
+		{
+		}
+
+		//JOELwindows7: yay GitHub Copilot yey
+		if(songMetaData.hasDialogueChat != null)
+		{
+			songData.hasDialogueChat = songMetaData.hasDialogueChat;
+		}
+		else
+		{
+		}
+
+		//JOELwindows7: yay GitHub Copilot yeyu
+		if(songMetaData.hasEpilogueChat != null)
+		{
+			songData.hasEpilogueChat = songMetaData.hasEpilogueChat;
+		}
+		else
+		{
+		}
+
+		//JOELwindows7: try casting, but no. that's aggressive and destroys per difficulty basis.
+		if(songMetaData.delayBeforeStart != null)
+		{
+			songData.delayBeforeStart = songMetaData.delayBeforeStart;
+		}
+		else
+		{
+		}
+		if(songMetaData.delayAfterFinish != null)
+		{
+			songData.delayAfterFinish = songMetaData.delayAfterFinish;
+		}
+		else
+		{
+		}
+
+		//JOELwindows7: right, these are all we have.
+		if(songMetaData.allowedToHeadbang != null)
+		{
+			songData.allowedToHeadbang = songMetaData.allowedToHeadbang;
+		}
+		else
+		{
 		}
 
 		songData.offset = songMetaData.offset != null ? songMetaData.offset : 0;
