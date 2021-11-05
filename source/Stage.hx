@@ -119,7 +119,7 @@ class Stage extends MusicBeatState
 
 		trace("Load da stage here ya"); // JOELwindows7: wtf happened
 
-		if (PlayState.SONG.useCustomStage)
+		if (PlayState.SONG != null && PlayState.SONG.useCustomStage)
 		{
 			// JOELwindows7: Here's the switchover!
 			initDaCustomStage(PlayState.SONG.stage);
@@ -1185,26 +1185,6 @@ class Stage extends MusicBeatState
 			// trailAll = new FlxTypedGroup<FlxTrail>();
 			// add(trailAll);
 			#if FEATURE_LUAMODCHART
-			/*
-				if (!PlayStateChangeables.Optimize && PlayState.SONG.useCustomStage && customStage.useStageScript)
-					executeStageScript = FileSystem.exists(
-						Paths.lua("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) +"/stageScript")) ||
-						customStage.forceLuaModchart
-						;
-				#elseif (windows || linux)
-				if (!PlayStateChangeables.Optimize && PlayState.SONG.useCustomStage && customStage.useStageScript)
-				{
-					#if !web
-					p = Path.of(Paths.lua("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) +"/stageScript"));
-					trace("Stage file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
-					executeStageScript = p.exists() || customStage.forceLuaModchart;
-					#else
-					executeStageScript = customStage.forceLuaModchart;
-					#end
-				}
-				#else
-					executeStageScript = false;
-			 */
 			executeStageScript = !PlayStateChangeables.Optimize
 				&& PlayState.SONG.useCustomStage
 				&& customStage.useStageScript
@@ -1216,17 +1196,6 @@ class Stage extends MusicBeatState
 			#end
 
 			// for hscript pls
-			/*
-				#if !web
-				p = Path.of(Paths.hscript("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) +"/stageScript"));
-				if (!PlayStateChangeables.Optimize && PlayState.SONG.useCustomStage && customStage.useStageScript)
-					executeStageHscript = p.exists() || customStage.forceHscriptModchart;
-				trace("Stage hscript file checking is " + Std.string(p.exists()) + " as " + p.getAbsolutePath());
-				#else
-				if (!PlayStateChangeables.Optimize && PlayState.SONG.useCustomStage && customStage.useStageScript)
-					executeStageHscript = customStage.forceHscriptModchart;
-				#end
-			 */
 			executeStageHscript = !PlayStateChangeables.Optimize
 				&& PlayState.SONG.useCustomStage
 				&& customStage.useStageScript

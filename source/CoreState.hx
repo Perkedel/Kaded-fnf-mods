@@ -78,6 +78,9 @@ class CoreState extends FlxUIState{
 	// var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
 	var hourGlass:FlxSprite; // JOELwindows7: animated gravity hourglass Piskel
 
+	//JOELwindows7: raw button situations
+	var rawMouseHeld:Bool = false;
+
 	public var onScreenGameplayButtons:OnScreenGameplayButtons; // JOELwindows7: the touchscreen buttons here
 
 	public static var dueAdded:Bool = false;
@@ -471,6 +474,16 @@ class CoreState extends FlxUIState{
 	function manageMouse():Void
 	{
 		// JOELwindows7: nothing. use this special update to manage mouse
+
+		// JOELwindows7: check hold & release mouse
+		if (FlxG.mouse.justPressed)
+		{
+			rawMouseHeld = true;
+		}
+		if (FlxG.mouse.justReleased)
+		{
+			rawMouseHeld = false;
+		}
 	}
 
 	
@@ -504,6 +517,9 @@ class CoreSubState extends FlxSubState{
 	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
 
 	public var camControl:FlxCamera;
+
+	// JOELwindows7: raw button situations
+	var rawMouseHeld:Bool = false;
 
     //JOELwindows7: steal control in order to make it work
 	private var controls(get, never):Controls;
@@ -659,5 +675,15 @@ class CoreSubState extends FlxSubState{
 	function manageMouse():Void
 	{
 		// JOELwindows7: nothing. use this to manage mouse
+
+		// JOELwindows7: check hold & release mouse
+		if(FlxG.mouse.justPressed)
+		{
+			rawMouseHeld = true;
+		}
+		if(FlxG.mouse.justReleased)
+		{
+			rawMouseHeld = false;
+		}
 	}
 }

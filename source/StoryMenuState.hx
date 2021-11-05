@@ -425,31 +425,6 @@ class StoryMenuState extends MusicBeatState
 			Conductor.songPosition = FlxG.sound.music.time;
 
 		super.update(elapsed);
-
-		//JOELwindows7: mouse support
-		grpWeekText.forEach(function(item:MenuItem){
-			if(!selectedWeek){
-				if(FlxG.mouse.overlaps(item) && !FlxG.mouse.overlaps(backButton)){
-					if(FlxG.mouse.justPressed){
-						if(item.ID == curWeek){
-							haveClicked = true;
-						} else {
-							//go to week which
-							goToWeek(item.ID);
-						}
-					}
-				}
-			}
-
-			//back Buttoning
-			if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(item)){
-				if(FlxG.mouse.justPressed)
-					if(!haveBacked){
-						haveBacked = true;
-					}
-			}
-		});
-		
 	}
 
 	var movedBack:Bool = false;
@@ -672,5 +647,41 @@ class StoryMenuState extends MusicBeatState
 
 		if (weekCharacters[curWeek][2] == 'spooky' || weekCharacters[curWeek][2] == 'gf')
 			grpWeekCharacters.members[2].bopHead();
+	}
+
+	//JOELwindows7: put mouse function here yea
+	override function manageMouse(){
+		// JOELwindows7: mouse support
+		grpWeekText.forEach(function(item:MenuItem)
+		{
+			if (!selectedWeek)
+			{
+				if (FlxG.mouse.overlaps(item) && !FlxG.mouse.overlaps(backButton))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (item.ID == curWeek)
+						{
+							haveClicked = true;
+						}
+						else
+						{
+							// go to week which
+							goToWeek(item.ID);
+						}
+					}
+				}
+			}
+
+			// back Buttoning
+			if (FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(item))
+			{
+				if (FlxG.mouse.justPressed)
+					if (!haveBacked)
+					{
+						haveBacked = true;
+					}
+			}
+		});
 	}
 }

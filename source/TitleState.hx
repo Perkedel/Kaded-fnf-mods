@@ -351,6 +351,15 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
+		// JOELwindows7: add mouse click to press enter
+		if (FlxG.mouse.justPressed)
+		{
+			pressedEnter = true;
+		}
+		// Well sure enough guys. on my Samsung Galaxy S since Dex support
+		// the mouse and touch is different. you need this ON all the time in case
+		// somebody uses mouse in Android device.
+
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
 			// JOELwindows7: start game on friday real time

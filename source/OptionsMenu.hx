@@ -173,20 +173,24 @@ class OptionsMenu extends CoreSubState
 			]),
 			// JOELwindows7: was 640, 40
 			new OptionCata(1040, 40, "Misc", [
-				new FPSOption("Toggle the FPS Counter"), new CardiophileOption("Toggle heartbeat features that contains doki-doki stuffs"),
+				new FPSOption("Toggle the FPS Counter"),
+				new CardiophileOption("Toggle heartbeat features that contains doki-doki stuffs"),
 				new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), // JOELwindows7: make this Odysee exclusive pls. how!
 				new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 				new VibrationOption("Toggle Vibration that let your gamepade / device vibrates."),
-				new VibrationOffsetOption("Adjust Vibration offset delaying"), new WatermarkOption("Enable and disable all watermarks from the engine."),
+				new VibrationOffsetOption("Adjust Vibration offset delaying"),
+				new WatermarkOption("Enable and disable all watermarks from the engine."),
 				new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
 				new OdyseemarkOption("Turn off all Odysee watermarks from the engine."), // JOELwindows7: yep Odysee.
 				new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 				new WatermarkOption("Enable and disable all watermarks from the engine."),
 				new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty."),
 				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
-				new ScoreScreen("Show the score screen after the end of a song"), new ShowInput("Display every single input on the score screen."),
+				new ScoreScreen("Show the score screen after the end of a song"),
+				new ShowInput("Display every single input on the score screen."),
 				new ExportSaveToJson("BETA! Export entire save data into JSON file"),
-				new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"), new AnStarfieldTestOption("EXPERIMENTAL! Test FlxStarfield"),
+				new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"),
+				new AnStarfieldTestOption("EXPERIMENTAL! Test FlxStarfield"),
 				new AnDefaultBekgronTestOption("EXPERIMENTAL! Test default background of Hexagon Engine"),
 				// new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
@@ -284,14 +288,14 @@ class OptionsMenu extends CoreSubState
 		tidyThoseCats();
 
 		// JOELwindows7: now add these all up
-		addBackButton(10, FlxG.height, .4);
-		addLeftButton(FlxG.width - 400, FlxG.height, .4);
-		addRightButton(FlxG.width - 200, FlxG.height, .4);
+		addBackButton(1, FlxG.height, .3);
+		addLeftButton(FlxG.width - 400, FlxG.height, .3);
+		addRightButton(FlxG.width - 200, FlxG.height, .3);
 
 		// JOELwindows7: Then animate them.
-		FlxTween.tween(backButton, {y: FlxG.height - 80}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
-		FlxTween.tween(leftButton, {y: FlxG.height - 80}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left right button
-		FlxTween.tween(rightButton, {y: FlxG.height - 80}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: yeah.
+		FlxTween.tween(backButton, {y: FlxG.height - backButton.height - 10}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton, {y: FlxG.height - leftButton.height - 10}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left right button
+		FlxTween.tween(rightButton, {y: FlxG.height - rightButton.height - 10}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: yeah.
 
 		super.create();
 
@@ -348,10 +352,13 @@ class OptionsMenu extends CoreSubState
 				for (i in 0...selectedCat.options.length)
 				{
 					var opt = selectedCat.optionObjects.members[i];
-					opt.ID = i; // JOELwindows7: assign ID to each option member.
+					// opt.ID = i; // JOELwindows7: assign ID to each option member.
 					opt.y = selectedCat.titleObject.y + 54 + (46 * i);
 				}
 			}
+
+			// JOELwindows7: nope, try again Assign ID
+			assignIDToOptions();
 
 			selectedOptionIndex = 0;
 
@@ -489,6 +496,8 @@ class OptionsMenu extends CoreSubState
 					selectedOptionIndex = 0;
 					isInCat = false;
 					selectOption(selectedCat.options[0]);
+
+					haveClicked = false; // JOELwindows7: don't forget
 				}
 
 				if (escape)
@@ -501,6 +510,8 @@ class OptionsMenu extends CoreSubState
 						PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * PlayState.songMultiplier;
 						close();
 					}
+
+					haveBacked = false; // JOELwindows7: don't forget
 				}
 			}
 			else
@@ -515,6 +526,7 @@ class OptionsMenu extends CoreSubState
 							var object = selectedCat.optionObjects.members[selectedOptionIndex];
 							object.text = "> " + selectedOption.getValue();
 							Debug.logTrace("New text: " + object.text);
+							haveBacked = false; // JOELwindows7: whie
 							return;
 						}
 						else if (any)
@@ -574,6 +586,7 @@ class OptionsMenu extends CoreSubState
 						}
 
 						selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
+						haveDowned = false; // JOELwindows7: yea
 					}
 					else if (up)
 					{
@@ -615,6 +628,7 @@ class OptionsMenu extends CoreSubState
 						}
 
 						selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
+						haveUpped = false; // JOELwindows7: yep
 					}
 
 					if (right)
@@ -627,6 +641,8 @@ class OptionsMenu extends CoreSubState
 
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
+
+						haveRighted = false; // JOELwindows7: oye
 					}
 					else if (left)
 					{
@@ -638,6 +654,8 @@ class OptionsMenu extends CoreSubState
 
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
+
+						haveLefted = false; // JOELwindows7: ok
 					}
 
 					if (escape)
@@ -680,6 +698,8 @@ class OptionsMenu extends CoreSubState
 							}
 						if (selectedCat.middle)
 							switchCat(options[0]);
+
+						haveBacked = false; // JOELwindows7: okeh.
 					}
 				}
 			}
@@ -709,11 +729,41 @@ class OptionsMenu extends CoreSubState
 	// JOELwindows7: copy from above but this time set the selection number
 	function goToSelection(change:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
+		if (!rawMouseHeld) // Only if you had not held mouse.
+		{
+			if (selectedOption.acceptType)
+				selectedOption.waitingType = false;
+			FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
+			selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
+			// JOELwindows7: just change the index number
+			selectedOptionIndex = change;
 
-		// JOELwindows7: just change the index number
-		selectedOptionIndex = change;
-		selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
+			// JOELwindows7: copy from above up & down
+			// just kinda ignore this math lol
+
+			if (selectedOptionIndex > options[selectedCatIndex].options.length - 1)
+			{
+				for (i in 0...selectedCat.options.length)
+				{
+					var opt = selectedCat.optionObjects.members[i];
+					opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+				}
+				selectedOptionIndex = 0;
+			}
+
+			if (selectedOptionIndex != 0
+				&& selectedOptionIndex != options[selectedCatIndex].options.length - 1
+				&& options[selectedCatIndex].options.length > 6)
+			{
+				if (selectedOptionIndex >= (options[selectedCatIndex].options.length - 1) / 2)
+					for (i in selectedCat.optionObjects.members)
+					{
+						i.y -= 46;
+					}
+			}
+
+			selectOption(selectedCat.options[selectedOptionIndex]);
+		}
 	}
 
 	function goToCategory(change:Int = 0)
@@ -740,12 +790,24 @@ class OptionsMenu extends CoreSubState
 		}
 	}
 
+	// JOELwindows7: assign ID to option on screen
+	function assignIDToOptions()
+	{
+		var count = 0;
+		selectedCat.optionObjects.forEach(function(option:FlxText)
+		{
+			option.ID = count;
+			count++;
+		});
+	}
+
 	// JOELwindows7: we need to tidy the categories first
 	function tidyThoseCats()
 	{
 		for (i in 0...options.length - 1)
 		{
-			options[i].width = background.width / upToHowManyCatsOnScreen;
+			// options[i].width = background.width / upToHowManyCatsOnScreen; //Unfortunately this only adjust the hitbox, not the graphic.
+			options[i].setGraphicSize(Std.int(background.width / upToHowManyCatsOnScreen), Std.int(options[i].height));
 			options[i].x = (background.width / upToHowManyCatsOnScreen) * i;
 			// I guess..
 			// oh almost forgot!
@@ -808,13 +870,20 @@ class OptionsMenu extends CoreSubState
 			{
 				if (FlxG.mouse.justPressed)
 				{
-					if(stuff.ID == selectedOptionIndex){
+					if (stuff.ID == selectedOptionIndex)
+					{
 						haveClicked = true;
-					} else {
+					}
+					else
+					{
 						goToSelection(stuff.ID);
 					}
-					
+
 					// JOELwindows7: but it's not perfect.
+				}
+				else
+				{
+					haveClicked = false;
 				}
 			}
 			else
@@ -824,30 +893,33 @@ class OptionsMenu extends CoreSubState
 				{
 					if (FlxG.mouse.justPressed)
 					{
-						if (!haveBacked)
-						{
-							haveBacked = true;
-						}
+						haveBacked = true;
+					}
+					else
+					{
+						haveBacked = false;
 					}
 				}
 				if (FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(stuff))
 				{
 					if (FlxG.mouse.justPressed)
 					{
-						if (!haveLefted)
-						{
-							haveLefted = true;
-						}
+						haveLefted = true;
+					}
+					else
+					{
+						haveLefted = false;
 					}
 				}
 				if (FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(stuff))
 				{
 					if (FlxG.mouse.justPressed)
 					{
-						if (!haveRighted)
-						{
-							haveRighted = true;
-						}
+						haveRighted = true;
+					}
+					else
+					{
+						haveRighted = false;
 					}
 				}
 			}

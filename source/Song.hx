@@ -42,7 +42,7 @@ typedef SongData =
 	/**
 	 * The artist for the song
 	 */
-	var artist:String; //JOELwindows7: the artist of it
+	var artist:String; // JOELwindows7: the artist of it
 
 	var chartVersion:String;
 	var notes:Array<SwagSection>;
@@ -55,43 +55,36 @@ typedef SongData =
 	var gfVersion:String;
 	var noteStyle:String;
 	var stage:String;
-	var hasVideo:Bool; //JOELwindows7: mark that this has video
-	var videoPath:String; //JOELwindows7: the video file path
-	var hasEpilogueVideo:Bool; //JOELwindows7: mark that this has Epilogue video
-	var epilogueVideoPath:String; //JOELwindows7: the epilogue video file path;
-	
-	var hasDialogueChat:Bool; //JOELwindows7: mark that this has Dialogue chat
-	var hasEpilogueChat:Bool; //JOELwindows7: mark that this has Epologue chat
-
-	var allowedToHeadbang:Bool; //JOELwindows7: mark whether heys, color change, etc.
-	var useCustomStage:Bool; //JOELwindows7: should use custom stage?
-	//be allowed at certain moments in time
-
-	var forceLuaModchart:Bool; //JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
-	var forceHscriptModchart:Bool; //JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
-
-	//JOELwindows7: Countdown funny configs
+	var hasVideo:Bool; // JOELwindows7: mark that this has video
+	var videoPath:String; // JOELwindows7: the video file path
+	var hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
+	var epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
+	var hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
+	var hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
+	var allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
+	var useCustomStage:Bool; // JOELwindows7: should use custom stage?
+	// be allowed at certain moments in time
+	var forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	var forceHscriptModchart:Bool; // JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
+	// JOELwindows7: Countdown funny configs
 	var reversedCountdown:Bool;
 	var invisibleCountdown:Bool;
 	var silentCountdown:Bool;
 	var skipCountdown:Bool;
-
-	//JOELwindows7: more configs
+	// JOELwindows7: more configs
 	var useCustomNoteStyle:Bool; // enable to custom noteskin
-
-	//JOELwindows7: Delays
-	var delayBeforeStart:Float; //Delay before the song start. for cutscene after dia video
-	var delayAfterFinish:Float; //Delay after song finish before load next song. for cutscene before epilogue video
-
-	var isCreditRoll:Bool; //JOELwindows7: is this credit roll? if yes then roll credit.
-	var creditRunsOnce:Bool; //JOELwindows7: is this credit runs once?
-
+	// JOELwindows7: Delays
+	var delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
+	var delayAfterFinish:Float; // Delay after song finish before load next song. for cutscene before epilogue video
+	var isCreditRoll:Bool; // JOELwindows7: is this credit roll? if yes then roll credit.
+	var creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
 	var ?validScore:Bool;
 	var ?offset:Int;
 }
 
 typedef SongMeta =
 {
+	var ?artist:String;
 	var ?offset:Int;
 	var ?name:String;
 }
@@ -130,7 +123,7 @@ class Song
 		var ba = song.bpm;
 
 		var index = 0;
-		trace("conversion stuff " + song.songId + " " + song.notes.length);
+		Debug.logTrace("conversion stuff " + song.songId + " " + song.notes.length);
 		var convertedStuff:Array<Song.Event> = [];
 
 		if (song.eventObjects == null)
@@ -197,7 +190,7 @@ class Song
 
 			if (i.changeBPM && i.bpm != ba)
 			{
-				trace("converting changebpm for section " + index);
+				Debug.logTrace("converting changebpm for section " + index);
 				ba = i.bpm;
 				song.eventObjects.push(new Song.Event("FNF BPM Change " + index, beat, i.bpm, "BPM Change"));
 			}
@@ -227,7 +220,7 @@ class Song
 		var songData:SongData = cast jsonData.song;
 
 		songData.songId = songId;
-		trace("parsened"); //JOELwindows7: wtf happening.
+		trace("parsened"); // JOELwindows7: wtf happening.
 
 		// Enforce default values for optional fields.
 		if (songData.validScore == null)
@@ -242,6 +235,16 @@ class Song
 		else
 		{
 			songData.songName = songId.split('-').join(' ');
+		}
+		// JOELwindows7: the artist too
+		if (songMetaData.artist != null)
+		{
+			songData.artist = songMetaData.artist;
+		}
+		else
+		{
+			// JOELwindows7: fill the gap on it.
+			songData.artist = songData.artist != null ? songData.artist : "Unknown";
 		}
 
 		songData.offset = songMetaData.offset != null ? songMetaData.offset : 0;

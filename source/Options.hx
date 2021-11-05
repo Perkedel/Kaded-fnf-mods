@@ -95,7 +95,7 @@ class DFJKOption extends Option
 	public override function press():Bool
 	{
 		OptionsMenu.instance.selectedCatIndex = 6; // JOELwindows7: was 4. really, why order number?!
-		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[4], false);
+		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[6], false); // JOELwindows7: don't forget this too
 		return false;
 	}
 
@@ -1052,7 +1052,7 @@ class Judgement extends Option
 		if (OptionsMenu.isInPause)
 			return false;
 		OptionsMenu.instance.selectedCatIndex = 7; // JOELwindows7: was 5. don't use order!!!!
-		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[5], false);
+		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[7], false); // JOELwindows7: don't forget this too
 		return true;
 	}
 
@@ -2231,7 +2231,7 @@ class CardiophileOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Cardiophile " + (FlxG.save.data.cardiophile ? "ON" : "OFF");
+		return "Cardiophile < " + (FlxG.save.data.cardiophile ? "ON" : "OFF") + " >";
 	}
 }
 
@@ -2266,7 +2266,7 @@ class UseTouchScreenButtons extends Option
 	private override function updateDisplay():String
 	{
 		// return (FlxG.save.data.useTouchScreenButtons ? "Use Touch Screen Buttons" : "No Touch Screen Buttons");
-		return "Touch Screen Buttons" + (FlxG.save.data.useTouchScreenButtons ? "ON" : "OFF");
+		return "Touch Screen Buttons < " + (FlxG.save.data.useTouchScreenButtons ? "ON" : "OFF") + " >";
 	}
 }
 
@@ -2343,12 +2343,13 @@ class SelectTouchScreenButtons extends Option
 
 	override function getValue():String
 	{
-		return "Current Touchscreen Button: " + sayTheThing();
+		// return "Current Touchscreen Button: " + sayTheThing();
+		return updateDisplay();
 	}
 
 	private override function updateDisplay():String
 	{
-		return ("Touchscreen button type <" + sayTheThing() + ">");
+		return ("Touchscreen button type < " + sayTheThing() + " >");
 	}
 }
 
@@ -2381,7 +2382,7 @@ class VibrationOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Vibration <" + (FlxG.save.data.vibration ? "ON" : "OFF") + ">";
+		return "Vibration < " + (FlxG.save.data.vibration ? "ON" : "OFF") + " >";
 	}
 }
 
@@ -2461,12 +2462,13 @@ class AdjustVolumeOption extends Option
 		{
 			shoomSays += ' '; // was `U` before. now space supported so yeah.
 		}
-		return "Volume <" + shoomSays + " (" + Std.string(Std.int(FlxG.sound.volume * 100)) + "%)" + ">";
+		return "Volume < " + shoomSays + " (" + Std.string(Std.int(FlxG.sound.volume * 100)) + "%)" + " >";
 	}
 
 	override function getValue():String
 	{
-		return "Volume: " + Std.string(FlxG.sound.volume * 100) + "%";
+		// return "Volume: " + Std.string(FlxG.sound.volume * 100) + "%";
+		return updateDisplay();
 	}
 }
 
@@ -2596,13 +2598,13 @@ class PreUnlockAllWeeksOption extends Option
 
 	public override function left():Bool
 	{
-		press(); //same as press
+		press(); // same as press
 		return false;
 	}
 
 	public override function right():Bool
 	{
-		press(); //same as press
+		press(); // same as press
 		return false;
 	}
 
@@ -2615,7 +2617,7 @@ class PreUnlockAllWeeksOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "All Weeks <" + (FlxG.save.data.preUnlocked ? "PreUnlocked" : "Lock Progress") + ">";
+		return "All Weeks < " + (FlxG.save.data.preUnlocked ? "PreUnlocked" : "Lock Progress") + " >";
 	}
 }
 
@@ -2653,12 +2655,13 @@ class VibrationOffsetOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Vibration Offset <" + Std.string(FlxG.save.data.vibrationOffset) + ">";
+		return "Vibration Offset < " + Std.string(FlxG.save.data.vibrationOffset) + " >";
 	}
 
 	override function getValue():String
 	{
-		return "Vibration Offset: " + Std.string(FlxG.save.data.vibrationOffset);
+		// return "Vibration Offset: " + Std.string(FlxG.save.data.vibrationOffset);
+		return updateDisplay();
 	}
 }
 
@@ -2672,13 +2675,13 @@ class OutOfSegsWarningOption extends Option
 
 	public override function left():Bool
 	{
-		press(); //same as press
+		press(); // same as press
 		return false;
 	}
 
 	public override function right():Bool
 	{
-		press(); //same as press
+		press(); // same as press
 		return false;
 	}
 
@@ -2691,7 +2694,7 @@ class OutOfSegsWarningOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Out of segs " + (FlxG.save.data.outOfSegsWarning ? "Printed" : "SSSSHHHH");
+		return "Out of segs < " + (FlxG.save.data.outOfSegsWarning ? "Printed" : "SSSSHHHH" + " >");
 	}
 }
 
@@ -2706,13 +2709,13 @@ class PrintSongChartContentOption extends Option
 
 	public override function left():Bool
 	{
-		press(); //same as press
+		press(); // same as press
 		return false;
 	}
 
 	public override function right():Bool
 	{
-		press(); //same as press
+		press(); // same as press
 		return false;
 	}
 
@@ -2725,7 +2728,7 @@ class PrintSongChartContentOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Song Chart Content <" + (FlxG.save.data.traceSongChart ? "Printed" : "SSSSHHHH") + ">";
+		return "Song Chart Content < " + (FlxG.save.data.traceSongChart ? "Printed" : "SSSSHHHH") + " >";
 	}
 }
 
@@ -2757,6 +2760,7 @@ class LogGameJoltIn extends Option
 
 	override function getValue():String
 	{
-		return "GameJolt is: " + (GameJoltAPI.getStatus() ? GameJoltAPI.getUserInfo(true) : "<logged out>");
+		// return "GameJolt is: " + (GameJoltAPI.getStatus() ? GameJoltAPI.getUserInfo(true) : "[logged out]");
+		return updateDisplay();
 	}
 }

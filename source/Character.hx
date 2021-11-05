@@ -32,34 +32,36 @@ class Character extends FlxSprite
 
 		var tex:FlxAtlasFrames;
 		antialiasing = FlxG.save.data.antialiasing;
-		
-		//JOELwindows7: bruh you forgot to lowercase curCharacter case name. that's why it crash if I capital one of the letter.
-		//please toLowerCase, should I do that?
+
+		// JOELwindows7: bruh you forgot to lowercase curCharacter case name. that's why it crash if I capital one of the letter.
+		// please toLowerCase, should I do that?
 		switch (curCharacter)
 		{
 			/*
-			case 'gf':
-				// GIRLFRIEND CODE
-				tex = Paths.getSparrowAtlas('GF_assets','shared',true);
-				frames = tex;
-				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
-				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
-				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
-				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
-				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-				animation.addByPrefix('scared', 'GF FEAR', 24);
+				case 'gf':
+					//JOELwindows7: deprecated, use JSON file at preload/data/characters/gf.json and so on.
+					// GIRLFRIEND CODE
+					tex = Paths.getSparrowAtlas('GF_assets','shared',true);
+					frames = tex;
+					animation.addByPrefix('cheer', 'GF Cheer', 24, false);
+					animation.addByPrefix('singLEFT', 'GF left note', 24, false);
+					animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
+					animation.addByPrefix('singUP', 'GF Up Note', 24, false);
+					animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
+					animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
+					animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+					animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+					animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
+					animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
+					animation.addByPrefix('scared', 'GF FEAR', 24);
 
-				loadOffsetFile(curCharacter);
+					loadOffsetFile(curCharacter);
 
-				playAnim('danceRight');
-				*/
+					playAnim('danceRight');
+			 */
+
 			case 'gf-ht':
-				//JOELwindows7: copy from above GIRLFRIEND CODE
+				// JOELwindows7: copy from above GIRLFRIEND CODE
 				tex = Paths.getSparrowAtlas('characters/gfHomeTheater');
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
@@ -74,27 +76,28 @@ class Character extends FlxSprite
 				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
 				animation.addByPrefix('scared', 'GF FEAR', 24);
 
+				// addOffset('cheer', 0, 2);
+				// addOffset('sad', 0, 2);
+				// addOffset('danceLeft', 0, 2);
+				// addOffset('danceRight', 0, 2);
 
-				addOffset('cheer',0,2);
-				addOffset('sad',0,2);
-				addOffset('danceLeft',0,2);
-				addOffset('danceRight',0,2);
+				// addOffset("singUP", 0, 2);
+				// addOffset("singRIGHT", 0, 2);
+				// addOffset("singLEFT", 0, 2);
+				// addOffset("singDOWN", 0, 2);
+				// addOffset('hairBlow', 0, 2);
+				// addOffset('hairFall', 0, 2);
 
-				addOffset("singUP",0,2);
-				addOffset("singRIGHT",0,2);
-				addOffset("singLEFT",0,2);
-				addOffset("singDOWN",0,2);
-				addOffset('hairBlow',0,2);
-				addOffset('hairFall',0,2);
-
-				addOffset('scared',0,2);
+				// addOffset('scared', 0, 2);
+				loadOffsetFile(curCharacter);
+				// JOELwindows7: this should be deprecated because of Characters JSON file
 
 				playAnim('danceRight');
 
 				barColor = 0xFFFF0000;
 			case 'gf-covid':
 				// JOELwindows7: copy from that GIRLFRIEND CODE
-				tex = Paths.getSparrowAtlas('GF-covid_assets','shared',true);
+				tex = Paths.getSparrowAtlas('GF-covid_assets', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
 				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
@@ -177,7 +180,7 @@ class Character extends FlxSprite
 				playAnim('idle');
 			case 'hookx':
 				// HOOKX ANIMATION LOADING CODE
-				//JOELwindows7: bruh you forgot to lowecase the character case name!
+				// JOELwindows7: bruh you forgot to lowecase the character case name!
 				tex = Paths.getSparrowAtlas('characters/Hookx');
 				frames = tex;
 				animation.addByPrefix('idle', 'Hookx idle dance', 24);
@@ -186,13 +189,15 @@ class Character extends FlxSprite
 				animation.addByPrefix('singDOWN', 'Hookx Sing Note DOWN', 24);
 				animation.addByPrefix('singLEFT', 'Hookx Sing Note LEFT', 24);
 
-				addOffset('idle');
-				addOffset("singUP");
-				addOffset("singRIGHT");
-				addOffset("singLEFT");
-				addOffset("singDOWN");
+				loadOffsetFile(curCharacter);
 
-				barColor = 0xFF5000E6; //Also: Sky, Carol
+				// addOffset('idle');
+				// addOffset("singUP");
+				// addOffset("singRIGHT");
+				// addOffset("singLEFT");
+				// addOffset("singDOWN");
+
+				barColor = 0xFF5000E6; // Also: Sky, Carol
 
 				playAnim('idle');
 			case 'spooky':
@@ -330,7 +335,7 @@ class Character extends FlxSprite
 				barColor = 0xFF31b0d1;
 
 				flipX = true;
-			
+
 			case 'bf-covid':
 				// JOELwindows7: copy paste the bf above, add masker in his face, and mic. also add vaccine injection mark plaster in left arm
 				// TODO install masker and vaccine injection
@@ -353,20 +358,21 @@ class Character extends FlxSprite
 
 				animation.addByPrefix('scared', 'BF idle shaking', 24);
 
-				addOffset('idle', -5);
-				addOffset("singUP", -29, 27);
-				addOffset("singRIGHT", -38, -7);
-				addOffset("singLEFT", 12, -6);
-				addOffset("singDOWN", -10, -50);
-				addOffset("singUPmiss", -29, 27);
-				addOffset("singRIGHTmiss", -30, 21);
-				addOffset("singLEFTmiss", 12, 24);
-				addOffset("singDOWNmiss", -11, -19);
-				addOffset("hey", 7, 4);
-				addOffset('firstDeath', 37, 11);
-				addOffset('deathLoop', 37, 5);
-				addOffset('deathConfirm', 37, 69);
-				addOffset('scared', -4);
+				// addOffset('idle', -5);
+				// addOffset("singUP", -29, 27);
+				// addOffset("singRIGHT", -38, -7);
+				// addOffset("singLEFT", 12, -6);
+				// addOffset("singDOWN", -10, -50);
+				// addOffset("singUPmiss", -29, 27);
+				// addOffset("singRIGHTmiss", -30, 21);
+				// addOffset("singLEFTmiss", 12, 24);
+				// addOffset("singDOWNmiss", -11, -19);
+				// addOffset("hey", 7, 4);
+				// addOffset('firstDeath', 37, 11);
+				// addOffset('deathLoop', 37, 5);
+				// addOffset('deathConfirm', 37, 69);
+				// addOffset('scared', -4);
+				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
 
@@ -528,9 +534,9 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 			case 'placeholder' | 'gf-placeholder':
-				//JOELwindows7: Placeholder character
-				//For temporary placeholder & gone mods cope machine
-				frames = Paths.getSparrowAtlas('Placeholder','shared',true);
+				// JOELwindows7: Placeholder character
+				// For temporary placeholder & gone mods cope machine
+				frames = Paths.getSparrowAtlas('Placeholder', 'shared', true);
 				animation.addByPrefix('idle', 'Placeholder idle', 24, false);
 				animation.addByPrefix('singUP', 'Placeholder Sing Note UP', 24, false);
 				animation.addByPrefix('singDOWN', 'Placeholder Sing Note DOWN', 24, false);
@@ -561,15 +567,14 @@ class Character extends FlxSprite
 				animation.addByPrefix('hairBlow', "Placeholder Hair Blowing", 24);
 				animation.addByPrefix('hairFall', "Placeholder Hair Falling", 24, false);
 				trace("Added Placeholderizing frames");
-				//loadOffsetFile(curCharacter);
+				loadOffsetFile(curCharacter);
 
 				barColor = 0xFF0D0D0D;
 
-				if(!curCharacter.contains('gf'))
+				if (!curCharacter.contains('gf'))
 					playAnim('idle')
 				else
-					playAnim('danceLeft')
-				;
+					playAnim('danceLeft');
 				trace("Go placeholdering");
 			default:
 				parseDataFile();
@@ -692,7 +697,7 @@ class Character extends FlxSprite
 		switch (curCharacter)
 		{
 			case 'gf' | 'gf-ht' | 'gf-covid' | 'gf-placeholder':
-				//JOELwindows7: okay idk how to make this work at all!
+				// JOELwindows7: okay idk how to make this work at all!
 				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 				{
 					danced = true;
@@ -714,12 +719,9 @@ class Character extends FlxSprite
 		{
 			switch (curCharacter)
 			{
-				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' |
-					'gf-covid' | 
-					'gf-placeholder' | 
-					'gf-ht':
-					//JOELwindows7: copy this if from above case
-					//well we can just add OR to this.
+				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-covid' | 'gf-placeholder' | 'gf-ht':
+					// JOELwindows7: copy this if from above case
+					// well we can just add OR to this.
 					if (!animation.curAnim.name.startsWith('hair') && !animation.curAnim.name.startsWith('sing'))
 					{
 						danced = !danced;
@@ -775,9 +777,7 @@ class Character extends FlxSprite
 		else
 			offset.set(0, 0);
 
-		if (curCharacter == 'gf' || 
-			curCharacter == 'gf-ht' ||
-			curCharacter == 'gf-placeholder')
+		if (curCharacter == 'gf' || curCharacter == 'gf-ht' || curCharacter == 'gf-placeholder')
 		{
 			if (AnimName == 'singLEFT')
 			{

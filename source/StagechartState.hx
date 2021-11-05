@@ -64,19 +64,6 @@ typedef SwagBackground = {
 typedef SwagStage = {
     var name:String;
 
-    /*
-    var bg:String;
-    var stageFront:String;
-    var stageCurtain:String;
-    var colorableBg:String;
-
-    var bgScrollFactor:Array<Float>;
-    var stageFrontScrollFactor:Array<Float>;
-    var stageCurtainScrollFactor:Array<Float>;
-    var colorableBgScrollFactor:Array<Float>;
-
-    var useImagesMethodic:Bool;
-    */
     var useStageScript:Bool;
     var backgroundImages:Array<SwagBackground>;
     var isHalloween:Bool;

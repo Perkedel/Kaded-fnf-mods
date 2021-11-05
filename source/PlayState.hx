@@ -816,6 +816,15 @@ class PlayState extends MusicBeatState
 
 		Stage.update(0);
 
+		// JOELwindows7: reposition per stage was here. now we must reposition for custom stage.
+		if (SONG.useCustomStage)
+		{
+			Stage.repositionThingsInStage(curStage);
+		}
+		else
+		{
+		}
+
 		if (loadRep)
 		{
 			FlxG.watch.addQuick('rep rpesses', repPresses);
@@ -1440,7 +1449,7 @@ class PlayState extends MusicBeatState
 			creditRollout.loadCreditData(Paths.creditFlashBlink(SONG.songId), SONG.creditRunsOnce);
 		}
 
-		FlxG.autoPause = true; // JOELwindows7: because somehow the film does not return it back
+		// FlxG.autoPause = true; // JOELwindows7: because somehow the film does not return it back
 
 		// JOELwindows7: why the peck with touchscreen button game crash on second run?!
 		trace("finish create PlayState");
@@ -2183,7 +2192,8 @@ class PlayState extends MusicBeatState
 			songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			songName.scrollFactor.set();
 
-			songName.text = SONG.songName + ' (' + FlxStringUtil.formatTime(songLength, false) + ')';
+			// JOELwindows7: YOU SNEAKY LITTLE PUNK!!! WHY TEXT CHANGE AGAIN HERE?!??!
+			songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime(songLength, false) + ')';
 			songName.y = songPosBG.y + (songPosBG.height / 3);
 
 			add(songName);
@@ -2375,31 +2385,31 @@ class PlayState extends MusicBeatState
 					{
 						babyArrow.animation.add('dirCon' + j, [12 + j, 16 + j], 24, false);
 					}
-				/*
-					case 'saubo':
-						//JOELwindows7: LFM original noteskin
-						babyArrow.frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-						for (j in 0...4)
-						{
-							babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);	
-							babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
-						}
+				case 'saubo':
+					// JOELwindows7: LFM original noteskin
+					babyArrow.frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+					for (j in 0...4)
+					{
+						babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
+						babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
+					}
 
-						var lowerDir:String = dataSuffix[i].toLowerCase();
+					var lowerDir:String = dataSuffix[i].toLowerCase();
 
-						babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
-						babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
-						babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
+					babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
+					babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
+					babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
 
-						babyArrow.x += Note.swagWidth * i;
+					babyArrow.x += Note.swagWidth * i;
 
-						babyArrow.antialiasing = FlxG.save.data.antialiasing;
-						babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
-				 */
+					babyArrow.antialiasing = FlxG.save.data.antialiasing;
+					babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
 
 				default:
 					babyArrow.frames = noteskinSprite;
-					Debug.logTrace(babyArrow.frames);
+					if (FlxG.save.data.traceSongChart) // JOELwindows7: this is gets bigger, the bigger Chart JSON is.
+						// may cause lag! turn off to have clean Trace.
+						Debug.logTrace(babyArrow.frames);
 					for (j in 0...4)
 					{
 						babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
@@ -2720,7 +2730,7 @@ class PlayState extends MusicBeatState
 					Debug.logTrace("we're fuckin ending the song ");
 
 					endingSong = true;
-					new FlxTimer().start(2, function(timer)
+					new FlxTimer().start(5, function(timer) // JOELwindows7: it was 2, now extend to 5!!!
 					{
 						// endSong();
 						checkEpilogueChat(); // JOELwindows7: you sneaky little punk!
@@ -4229,7 +4239,7 @@ class PlayState extends MusicBeatState
 		songStarted = false; // try to do this?
 		// startingSong = true; //Oh maybe this helps simulate like if the song is on preparation?
 		finishingSong = true; // fine let's phreaking do redundancy.
-		FlxG.sound.music.stop(); // Stop the music now man.
+		// FlxG.sound.music.stop(); // Stop the music now man.
 		trace("Check Epilogue " + Std.string(SONG.hasEpilogueChat) + "\n and isStoryMode " + Std.string(isStoryMode));
 		// fade and hide the touchscreen button
 		removeTouchScreenButtons();
@@ -5758,21 +5768,23 @@ class PlayState extends MusicBeatState
 			// JOELwindows7: temporary degradation fix
 			if (curSong == 'getting-freaky')
 			{
-				if (curBeat == 7 || curBeat == 23 || curBeat == 39 || curBeat == 55 || curBeat == 71 || curBeat == 87 || curBeat == 103 || curBeat == 119
-					|| curBeat == 135 || curBeat == 151 || curBeat == 167 || curBeat == 183)
-				{
-					// if(!triggeredAlready){
-					// 	trace("ayy!");
-					// 	justCheer(true);
-					// 	justHey(true);
-					// 	triggeredAlready = true;
-					// }
-					justCheer(true);
-					justHey(true);
-					// C'mon work wtf
-					boyfriend.playAnim('hey', true);
-					gf.playAnim('cheer', true);
-				} /*else triggeredAlready = false;*/
+				// if (curBeat == 7 || curBeat == 23 || curBeat == 39 || curBeat == 55 || curBeat == 71 || curBeat == 87 || curBeat == 103 || curBeat == 119
+				// 	|| curBeat == 135 || curBeat == 151 || curBeat == 167 || curBeat == 183)
+				// {
+				// 	// if(!triggeredAlready){
+				// 	// 	trace("ayy!");
+				// 	// 	justCheer(true);
+				// 	// 	justHey(true);
+				// 	// 	triggeredAlready = true;
+				// 	// }
+				// 	justCheer(true);
+				// 	justHey(true);
+				// 	// C'mon work wtf
+				// 	boyfriend.playAnim('hey', true);
+				// 	gf.playAnim('cheer', true);
+				// } /*else triggeredAlready = false;*/
+
+				// Some how the hey works again lmao idk how.
 			}
 
 			// JOELwindows7: found pay attention to this if player 2 is gf.
