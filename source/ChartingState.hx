@@ -616,9 +616,11 @@ class ChartingState extends MusicBeatState
 			"Cheer Now",
 			"Hey Now",
 			"Cheer Hey Now",
-			"BPM Change", 
+			"Lightning Strike",
 			"BPM Change", 
 			"Scroll Speed Change",
+			"Vibrate for",
+			"LED ON for",
 			], true));
 		var valueLabel = new FlxText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");

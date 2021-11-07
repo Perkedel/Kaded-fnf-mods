@@ -2816,12 +2816,18 @@ class PlayState extends MusicBeatState
 							justCheer(true);
 						if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
 							justHey(true);
+					case "Lightning Strike":
+						Stage.lightningStrikeShit();
 					case "Camera Zoom in":
 						camZoomNow(i.value);
 					case "HUD Zoom in":
 						camZoomNow(0, i.value);
 					case "Both Zoom in":
 						camZoomNow(i.value, i.value);
+					case "LED ON for":
+						//JOELwindows7: turn LED on for how long second
+					case "Vibrate for":
+						Controls.vibrate(0, i.value);
 				}
 			}
 
