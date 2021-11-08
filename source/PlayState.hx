@@ -2825,7 +2825,7 @@ class PlayState extends MusicBeatState
 					case "Both Zoom in":
 						camZoomNow(i.value, i.value);
 					case "LED ON for":
-						//JOELwindows7: turn LED on for how long second
+						//JOELwindows7: turn LED on for how long second i.value
 					case "Vibrate for":
 						Controls.vibrate(0, i.value);
 				}
