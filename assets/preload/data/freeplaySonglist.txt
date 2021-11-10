@@ -34,3 +34,4 @@ indonesia-raya:placeholder:11
 doremi:hookx:12
 cradles:hookx:12
 mayday:hookx:12
+ku-tetap-cinta-yesus:placeholder:-1
