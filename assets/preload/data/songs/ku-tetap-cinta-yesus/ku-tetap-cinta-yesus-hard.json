@@ -8,7 +8,7 @@
         "stage": "komsel",
         "gfVersion": "gf-covid",
         "speed": 1,
-        "needsVoices": false,
+        "needsVoices": true,
         "sectionLengths": [],
         "song": "ku-tetap-cinta-yesus",
         "songId": "ku-tetap-cinta-yesus",
