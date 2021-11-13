@@ -12,5 +12,11 @@
     "epilogueVideoPath": "",
     "hasDialogueChat": false,
     "hasEpilogueChat": false,
-    "allowedToHeadbang": false
+    "allowedToHeadbang": false,
+    "forceLuaModchart": false,
+    "forceHscriptModchart": false,
+    "reversedCountdown": false,
+    "invisibleCountdown": false,
+    "silentCountdown": false,
+    "noteStyle": "normal"
 }

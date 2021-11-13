@@ -250,26 +250,16 @@ class Song
 		{
 			songData.songName = songId.split('-').join(' ');
 		}
+
 		// JOELwindows7: the artist too
-		if (songMetaData.artist != null)
-		{
-			songData.artist = songMetaData.artist;
-		}
-		else
-		{
-			// JOELwindows7: fill the gap on it.
-			songData.artist = songData.artist != null ? songData.artist : "Unknown";
-		}
+		songData.artist = songMetaData.artist != null ? 
+			songMetaData.artist :
+			songData.artist != null ? songData.artist : "Unknown";
 
 		//JOELwindows7: more too
-		if (songMetaData.isCreditRoll != null)
-		{
-			songData.isCreditRoll = songMetaData.isCreditRoll;
-		}
-		else
-		{
-
-		}
+		songData.isCreditRoll = songMetaData.isCreditRoll != null ? 
+			songMetaData.isCreditRoll : 
+			songData.isCreditRoll != null? songData.isCreditRoll : false;
 
 		//JOELwindows7: yut
 		if (songMetaData.creditRunsOnce != null)
@@ -358,6 +348,8 @@ class Song
 		else
 		{
 		}
+
+		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!
 
 		songData.offset = songMetaData.offset != null ? songMetaData.offset : 0;
 
