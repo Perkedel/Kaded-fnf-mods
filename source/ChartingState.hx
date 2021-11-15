@@ -200,7 +200,7 @@ class ChartingState extends MusicBeatState
 			{
 				var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
-			} //JOELwindows7: so it has to be anything supported by sys
+			} // JOELwindows7: so it has to be anything supported by sys
 		}
 		else
 		{
@@ -227,14 +227,14 @@ class ChartingState extends MusicBeatState
 				hasDialogueChat: false,
 				hasEpilogueChat: false,
 				allowedToHeadbang: false,
-				useCustomStage:false,
-				forceLuaModchart:false,
-				forceHscriptModchart:false,
-				reversedCountdown:false,
-				invisibleCountdown:false,
-				silentCountdown:false,
-				skipCountdown:false,
-				useCustomNoteStyle:false,
+				useCustomStage: false,
+				forceLuaModchart: false,
+				forceHscriptModchart: false,
+				reversedCountdown: false,
+				invisibleCountdown: false,
+				silentCountdown: false,
+				skipCountdown: false,
+				useCustomNoteStyle: false,
 				delayBeforeStart: 0.0,
 				delayAfterFinish: 0.0,
 				isCreditRoll: false,
@@ -608,20 +608,11 @@ class ChartingState extends MusicBeatState
 		var nameLabel = new FlxText(150, 5, 'Event Name');
 		var eventName = new FlxUIInputText(150, 20, 80, "");
 		var typeLabel = new FlxText(10, 45, 'Type of Event');
-		//JOELwindows7: list of event here
+		// JOELwindows7: list of event here
 		var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray([
-			"Camera Zoom in",
-			"HUD Zoom in",
-			"Both Zoom in",
-			"Cheer Now",
-			"Hey Now",
-			"Cheer Hey Now",
-			"Lightning Strike",
-			"BPM Change", 
-			"Scroll Speed Change",
-			"Vibrate for",
-			"LED ON for",
-			], true));
+			"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change", "Scroll Speed Change",
+			"Vibrate for", "LED ON for",
+		], true));
 		var valueLabel = new FlxText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");
 		var eventSave = new FlxButton(10, 155, "Save Event", function()
@@ -1141,7 +1132,7 @@ class ChartingState extends MusicBeatState
 
 		var noteStyleLabel = new FlxText(10, 280, 64, 'Note Skin');
 
-		//JOELwindows7: pinpoint the UI group tab window. do add your stuff here I guess
+		// JOELwindows7: pinpoint the UI group tab window. do add your stuff here I guess
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
@@ -1576,7 +1567,7 @@ class ChartingState extends MusicBeatState
 			{
 				var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
-			} //JOELwindows7: must be sys compatible
+			} // JOELwindows7: must be sys compatible
 		}
 		else
 		{
@@ -1980,7 +1971,7 @@ class ChartingState extends MusicBeatState
 				{
 					@:privateAccess
 					{
-						#if desktop //JOELwindows7: must be cpp
+						#if desktop // JOELwindows7: must be cpp
 						// The __backend.handle attribute is only available on native.
 						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
 						try
@@ -3047,8 +3038,8 @@ class ChartingState extends MusicBeatState
 				var daNoteInfo = i[1];
 				var daStrumTime = i[0];
 				var daSus = i[2];
-				var daType = i[5]; //JOELwindows7: da type yeahhhh
-				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4]);
+				var daType = i[5]; // JOELwindows7: da type yeahhhh
+				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], daType); // JOELwindows7: note type pls mine duar.
 				note.rawNoteData = daNoteInfo;
 				note.sustainLength = daSus;
 				note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -3371,7 +3362,7 @@ class ChartingState extends MusicBeatState
 		var noteStrum = strum;
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
-		var noteType = 0; //JOELwindows7: press hold? alt + add note (1 2 3 4 or click collumn to add) to add mine.
+		var noteType = 0; // JOELwindows7: press hold? alt + add note (1 2 3 4 or click collumn to add) to add mine.
 		if (FlxG.keys.pressed.ONE)
 			noteType = 1;
 		if (FlxG.keys.pressed.ALT)
@@ -3379,18 +3370,25 @@ class ChartingState extends MusicBeatState
 
 		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData);
 
-		//JOELwindows7: push noteType too
+		// JOELwindows7: push noteType too
 		if (n != null)
 			section.sectionNotes.push([
 				n.strumTime,
 				n.noteData,
 				n.sustainLength,
 				false,
-				TimingStruct.getBeatFromTime(n.strumTime), 
+				TimingStruct.getBeatFromTime(n.strumTime),
 				n.noteType
 			]);
 		else
-			section.sectionNotes.push([noteStrum, noteData, noteSus, false, TimingStruct.getBeatFromTime(noteStrum), noteType]);
+			section.sectionNotes.push([
+				noteStrum,
+				noteData,
+				noteSus,
+				false,
+				TimingStruct.getBeatFromTime(noteStrum),
+				noteType
+			]);
 
 		var thingy = section.sectionNotes[section.sectionNotes.length - 1];
 
@@ -3643,9 +3641,9 @@ class ChartingState extends MusicBeatState
 			"song": _song
 		};
 
-		//JOELwindows7: make save JSON pretty
+		// JOELwindows7: make save JSON pretty
 		// https://haxe.org/manual/std-Json-encoding.html
-		//var data:String = Json.stringify(json, "\t");
+		// var data:String = Json.stringify(json, "\t");
 		var data:String = Json.stringify(json, null, " ");
 
 		if ((data != null) && (data.length > 0))
@@ -3665,7 +3663,7 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
-		//JOELwindows7: trace the success & sound it
+		// JOELwindows7: trace the success & sound it
 		trace("Yay level saved! cool and good");
 		FlxG.sound.play(Paths.sound("saveSuccess"));
 	}
@@ -3679,7 +3677,7 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
-		//JOELwindows7: trace cancel
+		// JOELwindows7: trace cancel
 		trace("nvm! save canceled");
 	}
 
@@ -3693,7 +3691,7 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
-		//JOELwindows7: also trace the error & sound it
+		// JOELwindows7: also trace the error & sound it
 		trace("Weror! problem saving data");
 		FlxG.sound.play(Paths.sound('cancelMenu'));
 	}
