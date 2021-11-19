@@ -455,6 +455,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Conso ah this tool right here to get hex color. 
 - https://github.com/marketplace/actions/butler-push push to itch and
 - https://github.com/marketplace/actions/setup-haxe-environment setup da haxe CI now
+- https://gamebanana.com/mods/336567 https://twitter.com/RedstyP/status/1460982660751257601?s=20 (WARNING: CC4.0-BY-NC-ND, but can reuse if you credit all these 3 on credit sidebar) Redsty Phoenix (everything this thing, Co-Animator, Artis), P (16th letter), & IronB (banner). The Playable Standalone GF yess! 
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
