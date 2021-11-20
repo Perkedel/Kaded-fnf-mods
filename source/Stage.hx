@@ -83,9 +83,21 @@ class Stage extends MusicBeatState
 			'senpai-angry' => [250, 460]
 		],
 		'schoolEvil' => ['gf-pixel' => [580, 430], 'bf-pixel' => [970, 670], 'spirit' => [-50, 200]],
-		'jakartaFair' => [],
-		'qmoveph' => [],
-		'cruelThesis' => [],
+		'jakartaFair' => [
+			'hookx' => [-100, 100],
+			'gf-ht' => [-10,0],
+			'bf' => [50, 10],
+			'bf-covid' => [50, 10],
+		],
+		'qmoveph' => [
+			'hookx' => [-100, 100],
+			'gf-ht' => [-10, 0],
+			'bf' => [50, 10],
+			'bf-covid' => [50, 10],
+		],
+		'cruelThesis' => [
+
+		],
 		'lapanganParalax' => [],
 		'blank' => [],
 		'greenscreen' => [],

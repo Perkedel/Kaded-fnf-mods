@@ -1280,7 +1280,7 @@ class HaxeScriptState
 
 		addCallback("randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0)
 		{
-			trace("wattempt script randomize color");
+			// trace("wattempt script randomize color");
 			PlayState.Stage.randomizeColoring(justOne, toWhichBg);
 			// ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
 			// and you, Haxe Language Server laggs on purpose
