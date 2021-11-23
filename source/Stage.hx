@@ -69,46 +69,73 @@ class Stage extends MusicBeatState
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
 	// All of the above must be set or used in your stage case code block!!
+	// JOELwindows7: wtf, where's default position????!!!
+	// why do I have to do this every character????
+	// JOELwindows7: add to here pls. here NULL-bf, NULL-gf, NULL-dad for default fallbacks
 	public var positions:Map<String, Map<String, Array<Int>>> = [
 		// Assign your characters positions on stage here!
-		'halloween' => ['spooky' => [100, 300], 'monster' => [100, 200]],
-		'philly' => ['pico' => [100, 400]],
-		'limo' => ['bf-car' => [1030, 230]],
-		'mall' => ['bf-christmas' => [970, 450], 'parents-christmas' => [-400, 100]],
-		'mallEvil' => ['bf-christmas' => [1090, 450], 'monster-christmas' => [100, 150]],
+		'halloween' => ['spooky' => [100, 300], 'monster' => [100, 200], 'NULL-dad' => [100, 300]],
+		'philly' => ['pico' => [100, 400], 'NULL-dad' => [100, 400]],
+		'limo' => ['bf-car' => [1030, 230], 'NULL-bf' => [1030, 230]],
+		'mall' => [
+			'bf-christmas' => [970, 450],
+			'parents-christmas' => [-400, 100],
+			'NULL-bf' => [970, 450],
+			'NULL-dad' => [-400, 100]
+		],
+		'mallEvil' => [
+			'bf-christmas' => [1090, 450],
+			'monster-christmas' => [100, 150],
+			'NULL-bf' => [1090, 450],
+			'NULL-dad' => [100, 150]
+		],
 		'school' => [
 			'gf-pixel' => [580, 430],
 			'bf-pixel' => [970, 670],
 			'senpai' => [250, 460],
-			'senpai-angry' => [250, 460]
+			'senpai-angry' => [250, 460],
+			'NULL-bf' => [970, 670],
+			'NULL-gf' => [580, 430],
+			'NULL-dad' => [250, 460],
 		],
-		'schoolEvil' => ['gf-pixel' => [580, 430], 'bf-pixel' => [970, 670], 'spirit' => [-50, 200]],
+		'schoolEvil' => [
+			'gf-pixel' => [580, 430],
+			'bf-pixel' => [970, 670],
+			'spirit' => [-50, 200],
+			'NULL-bf' => [970, 670],
+			'NULL-gf' => [580, 430],
+			'NULL-dad' => [-50, 200]
+		],
 		'jakartaFair' => [
-			'hookx' => [-100, 100],
-			'gf-ht' => [-10,0],
-			'bf' => [50, 10],
-			'bf-covid' => [50, 10],
+			'hookx' => [0, 100],
+			'gf-ht' => [300, 80],
+			'bf' => [1020, 450],
+			'bf-covid' => [1020, 450],
+			'NULL-bf' => [1020, 450],
+			'NULL-gf' => [300, 80],
+			'NULL-dad' => [0, 100]
 		],
 		'qmoveph' => [
-			'hookx' => [-100, 100],
+			'hookx' => [0, 100],
 			'gf-ht' => [-10, 0],
-			'bf' => [50, 10],
-			'bf-covid' => [50, 10],
+			'bf' => [1070, 450],
+			'bf-covid' => [1070, 450],
+			'NULL-bf' => [1070, 450],
+			'NULL-gf' => [400, 130],
+			'NULL-dad' => [0, 100]
 		],
-		'cruelThesis' => [
-
-		],
-		'lapanganParalax' => [],
-		'blank' => [],
-		'greenscreen' => [],
-		'bluechroma' => [],
-		'semple' => [],
-		'whitening' => [],
-		'kuning' => [],
-		'blood' => [],
+		'cruelThesis' => ['NULL-bf' => [1070, 500], 'NULL-gf' => [400, 130], 'NULL-dad' => [-100, 150]],
+		'lapanganParalax' => ['NULL-bf' => [970, 450], 'NULL-gf' => [400, 130], 'NULL-dad' => [0, 100]],
+		'blank' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
+		'greenscreen' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
+		'bluechroma' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
+		'semple' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
+		'whitening' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
+		'kuning' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
+		'blood' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
+		'NULL' => ['NULL-bf' => [770, 450], 'NULL-gf' => [400, 130], 'NULL-dad' => [100, 100]] //JOELwindows7: default fallback, don't change!
 	];
 
-	// JOELwindows7: add to here pls
 	public function addThe(object:Dynamic, mapName:String, layFront:Bool = false, whichLayerFront:Int = 0)
 	{
 		swagBacks[mapName] = object;
@@ -1279,12 +1306,12 @@ class Stage extends MusicBeatState
 				swagGroup['bgAll'].members[toWhichBg].visible = true;
 				swagGroup['bgAll'].members[toWhichBg].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0),
 					FlxG.random.float(0.0, 1.0));
-					/*
-				trace("now bg "
-					+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
-					+ " color is "
-					+ swagBacks['colorableGround'].color.toHexString());
-					*/
+				/*
+					trace("now bg "
+						+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
+						+ " color is "
+						+ swagBacks['colorableGround'].color.toHexString());
+				 */
 			}
 			else
 			{
@@ -1317,11 +1344,11 @@ class Stage extends MusicBeatState
 				swagGroup['bgAll'].members[toWhichBg].visible = true;
 				swagGroup['bgAll'].members[toWhichBg].color = color;
 				/*
-				trace("now bg "
-					+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
-					+ " color is "
-					+ swagBacks['colorableGround'].color.toHexString());
-					*/
+					trace("now bg "
+						+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
+						+ " color is "
+						+ swagBacks['colorableGround'].color.toHexString());
+				 */
 			}
 			else
 			{

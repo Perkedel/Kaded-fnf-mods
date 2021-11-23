@@ -699,13 +699,33 @@ class PlayState extends MusicBeatState
 		if (!stageTesting)
 			Stage = new Stage(SONG.stage);
 
-		var positions = Stage.positions[Stage.curStage];
+		var positions:Map<String,Array<Int>> = Stage.positions[Stage.curStage]; //JOELwindows7: declare type also
 		if (positions != null && !stageTesting)
 		{
+			var positionFound:Array<Bool> = [false, false, false]; // JOELwindows7: flag of each found position
 			for (char => pos in positions)
+			{
+				var count:Int = 0; // JOELwindows7: count of found bf, gf, dad
 				for (person in [boyfriend, gf, dad])
-					if (person.curCharacter == char)
+				{
+					if (person.curCharacter == char){
 						person.setPosition(pos[0], pos[1]);
+						positionFound[count] = true; //JOELwindows7: If this found, then mark it true
+					}
+					count++;
+				}
+			}
+
+			//JOELwindows7: if any of person position not found
+			var counte:Int = 0; // JOELwindows7: count of not found bf, gf, dad
+			for (person in [boyfriend, gf, dad])
+			{
+				var nullWord:String = 'NULL-' ;
+				nullWord += counte==0? 'bf': counte==1? 'gf': 'dad';
+				if (positions.exists(nullWord) && !positionFound[counte])
+					person.setPosition(positions[nullWord][0], positions[nullWord][1]);
+				counte++;
+			}
 		}
 		for (i in Stage.toAdd)
 		{
@@ -2825,7 +2845,7 @@ class PlayState extends MusicBeatState
 					case "Both Zoom in":
 						camZoomNow(i.value, i.value);
 					case "LED ON for":
-						//JOELwindows7: turn LED on for how long second i.value
+					// JOELwindows7: turn LED on for how long second i.value
 					case "Vibrate for":
 						Controls.vibrate(0, i.value);
 				}
