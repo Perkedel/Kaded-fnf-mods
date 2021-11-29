@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.typeLimit.OneOfTwo;
+import flixel.util.typeLimit.OneOfFour;
 import flixel.addons.effects.FlxTrail;
 import StagechartState;
 import flixel.util.FlxColor;
@@ -34,6 +36,7 @@ class Stage extends MusicBeatState
 		Dynamic> = []; // Store BGs here to use them later (for example with slowBacks, using your custom stage event or to adjust position in stage debug menu(press 8 while in PlayState with debug build of the game))
 	// JOELwindows7: why the peck Dynamic? you obviously know it's gonna be FlxSprite. Peck, because it errors for special function found in child class based on FlxSprite even.
 	public var swagGroup:Map<String, FlxTypedGroup<Dynamic>> = []; // Store Groups
+	// public var swagGroup:Map<String, FlxTypedGroup<OneOfFour<Character,BackgroundDancer,BackgroundGirls,OneOfTwo<FlxSprite,Dynamic>>>> = []; // Store Groups //JOELwindows7: ultimate attempt
 	// JOELwindows7: that too, why Dynamic?! Everyone would fill those with FlxSprite exclusively.
 	public var animatedBacks:Array<FlxSprite> = []; // Store animated backgrounds and make them play animation(Animation must be named Idle!! Else use swagGroup/swagBacks and script it in stepHit/beatHit function of this file!!)
 	public var layInFront:Array<Array<FlxSprite>> = [[], [], []]; // BG layering, format: first [0] - in front of GF, second [1] - in front of opponent, third [2] - in front of boyfriend(and technically also opponent since Haxe layering moment)
