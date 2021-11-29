@@ -32,7 +32,9 @@ class Stage extends MusicBeatState
 	// Layering algorithm for noobs: Everything loads by the method of "On Top", example: You load wall first(Every other added BG layers on it), then you load road(comes on top of wall and doesn't clip through it), then loading street lights(comes on top of wall and road)
 	public var swagBacks:Map<String,
 		Dynamic> = []; // Store BGs here to use them later (for example with slowBacks, using your custom stage event or to adjust position in stage debug menu(press 8 while in PlayState with debug build of the game))
+	// JOELwindows7: why the peck Dynamic? you obviously know it's gonna be FlxSprite. Peck, because it errors for special function found in child class based on FlxSprite even.
 	public var swagGroup:Map<String, FlxTypedGroup<Dynamic>> = []; // Store Groups
+	// JOELwindows7: that too, why Dynamic?! Everyone would fill those with FlxSprite exclusively.
 	public var animatedBacks:Array<FlxSprite> = []; // Store animated backgrounds and make them play animation(Animation must be named Idle!! Else use swagGroup/swagBacks and script it in stepHit/beatHit function of this file!!)
 	public var layInFront:Array<Array<FlxSprite>> = [[], [], []]; // BG layering, format: first [0] - in front of GF, second [1] - in front of opponent, third [2] - in front of boyfriend(and technically also opponent since Haxe layering moment)
 	public var slowBacks:Map<Int,
@@ -107,13 +109,13 @@ class Stage extends MusicBeatState
 			'NULL-dad' => [-50, 200]
 		],
 		'jakartaFair' => [
-			'hookx' => [0, 100],
-			'gf-ht' => [300, 80],
+			'hookx' => [-95, 100],
+			'gf-ht' => [290, 80],
 			'bf' => [1020, 450],
 			'bf-covid' => [1020, 450],
 			'NULL-bf' => [1020, 450],
-			'NULL-gf' => [300, 80],
-			'NULL-dad' => [0, 100]
+			'NULL-gf' => [290, 80],
+			'NULL-dad' => [-95, 100]
 		],
 		'qmoveph' => [
 			'hookx' => [0, 100],
@@ -133,7 +135,7 @@ class Stage extends MusicBeatState
 		'whitening' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
 		'kuning' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
 		'blood' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
-		'NULL' => ['NULL-bf' => [770, 450], 'NULL-gf' => [400, 130], 'NULL-dad' => [100, 100]] //JOELwindows7: default fallback, don't change!
+		'NULL' => ['NULL-bf' => [770, 450], 'NULL-gf' => [400, 130], 'NULL-dad' => [100, 100]] // JOELwindows7: default fallback, don't change!
 	];
 
 	public function addThe(object:Dynamic, mapName:String, layFront:Bool = false, whichLayerFront:Int = 0)
@@ -1292,12 +1294,21 @@ class Stage extends MusicBeatState
 	// JOELwindows7: randomize the color of the colorableGround
 	public function randomizeColoring(justOne:Bool = false, toWhichBg:Int = 0)
 	{
+		var red:Float = FlxG.random.float(0.0, 1.0);
+		var green:Float = FlxG.random.float(0.0, 1.0);
+		var blue:Float = FlxG.random.float(0.0, 1.0);
 		if (swagBacks['colorableGround'] != null)
 		{
 			// colorableGround.visible = true;
-			swagBacks['colorableGround'].visible = true;
-			swagBacks['colorableGround'].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
 			// colorableGround.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
+			// colorableGround.color.redFloat = red;
+			// colorableGround.color.greenFloat = green;
+			// colorableGround.color.blueFloat = blue;
+			swagBacks['colorableGround'].visible = true;
+			// swagBacks['colorableGround'].color = FlxColor.fromRGBFloat(red, green, blue);
+			swagBacks['colorableGround'].color.redFloat = red;
+			swagBacks['colorableGround'].color.greenFloat = green;
+			swagBacks['colorableGround'].color.blueFloat = blue;
 			// trace("now colorable color is " + colorableGround.color.toHexString());
 		}
 		if (swagGroup['bgAll'] != null)
@@ -1306,6 +1317,9 @@ class Stage extends MusicBeatState
 				swagGroup['bgAll'].members[toWhichBg].visible = true;
 				swagGroup['bgAll'].members[toWhichBg].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0),
 					FlxG.random.float(0.0, 1.0));
+				swagGroup['bgAll'].members[toWhichBg].color.redFloat = FlxG.random.float(0.0, 1.0);
+				swagGroup['bgAll'].members[toWhichBg].color.greenFloat = FlxG.random.float(0.0, 1.0);
+				swagGroup['bgAll'].members[toWhichBg].color.blueFloat = FlxG.random.float(0.0, 1.0);
 				/*
 					trace("now bg "
 						+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
@@ -1321,6 +1335,9 @@ class Stage extends MusicBeatState
 					{
 						theBg.visible = true;
 						// theBg.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
+						theBg.color.redFloat = FlxG.random.float(0.0, 1.0);
+						theBg.color.greenFloat = FlxG.random.float(0.0, 1.0);
+						theBg.color.blueFloat = FlxG.random.float(0.0, 1.0);
 						// trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
 					}
 				});
@@ -1333,7 +1350,10 @@ class Stage extends MusicBeatState
 		if (swagBacks['colorableGround'] != null)
 		{
 			swagBacks['colorableGround'].visible = true;
-			swagBacks['colorableGround'].color = color;
+			// swagBacks['colorableGround'].color = color;
+			swagBacks['colorableGround'].color.redFloat = color.redFloat;
+			swagBacks['colorableGround'].color.greenFloat = color.greenFloat;
+			swagBacks['colorableGround'].color.blueFloat = color.blueFloat;
 			// colorableGround.color = color;
 			// trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
 		}
@@ -1342,7 +1362,10 @@ class Stage extends MusicBeatState
 			if (justOne)
 			{
 				swagGroup['bgAll'].members[toWhichBg].visible = true;
-				swagGroup['bgAll'].members[toWhichBg].color = color;
+				// swagGroup['bgAll'].members[toWhichBg].color = color;
+				swagGroup['bgAll'].members[toWhichBg].color.redFloat = color.redFloat;
+				swagGroup['bgAll'].members[toWhichBg].color.greenFloat = color.greenFloat;
+				swagGroup['bgAll'].members[toWhichBg].color.blueFloat = color.blueFloat;
 				/*
 					trace("now bg "
 						+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
@@ -1358,6 +1381,9 @@ class Stage extends MusicBeatState
 					{
 						theBg.visible = true;
 						// theBg.color = color;
+						theBg.color.redFloat = color.redFloat;
+						theBg.color.greenFloat = color.greenFloat;
+						theBg.color.blueFloat = color.blueFloat;
 						// trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
 					}
 				});
@@ -1371,21 +1397,30 @@ class Stage extends MusicBeatState
 		if (swagBacks['colorableGround'] != null)
 			if (isChromaScreen)
 			{
-				swagBacks['colorableGround'].color = originalColor;
+				// swagBacks['colorableGround'].color = originalColor;
+				swagBacks['colorableGround'].color.redFloat = originalColor.redFloat;
+				swagBacks['colorableGround'].color.greenFloat = originalColor.greenFloat;
+				swagBacks['colorableGround'].color.blueFloat = originalColor.blueFloat;
 			}
 			else
 				swagBacks['colorableGround'].visible = false;
 		if (swagGroup['bgAll'] != null)
 			if (justOne)
 			{
-				swagGroup['bgAll'].members[toWhichBg].color = multiOriginalColor[toWhichBg];
+				// swagGroup['bgAll'].members[toWhichBg].color = multiOriginalColor[toWhichBg];
+				swagGroup['bgAll'].members[toWhichBg].color.redFloat = multiOriginalColor[toWhichBg].redFloat;
+				swagGroup['bgAll'].members[toWhichBg].color.greenFloat = multiOriginalColor[toWhichBg].greenFloat;
+				swagGroup['bgAll'].members[toWhichBg].color.blueFloat = multiOriginalColor[toWhichBg].blueFloat;
 				if (multiIsChromaScreen[toWhichBg])
 					swagGroup['bgAll'].members[toWhichBg].visible = false;
 			}
 			else
 				swagGroup['bgAll'].forEach(function(theBg:FlxSprite)
 				{
-					theBg.color = multiOriginalColor[theBg.ID];
+					// theBg.color = multiOriginalColor[theBg.ID];
+					theBg.color.redFloat = multiOriginalColor[theBg.ID].redFloat;
+					theBg.color.greenFloat = multiOriginalColor[theBg.ID].greenFloat;
+					theBg.color.blueFloat = multiOriginalColor[theBg.ID].greenFloat;
 					if (multiIsChromaScreen[theBg.ID])
 						theBg.visible = false;
 				});

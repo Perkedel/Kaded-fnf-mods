@@ -151,7 +151,7 @@ class DialogueBox extends FlxSpriteGroup
 				face.setGraphicSize(Std.int(face.width * 6));
 				add(face);
 
-			case 'windfall' | 'rule the world' | 'well meet again' | 'getting-freaky' | 'breakfast' | 'dont stop' | 'title classic' | 'mayday' | 'cradles' |
+			case 'windfall' | 'rule-the-world' | 'well-meet-again' | 'getting-freaky' | 'breakfast' | 'dont-stop' | 'title-classic' | 'mayday' | 'cradles' |
 				'doremi' | 'test-vanilla':
 				// JOELwindows7: the dialogue normalizations
 				hasDialog = true;

@@ -180,10 +180,9 @@ class OptionsMenu extends CoreSubState
 				new VibrationOption("Toggle Vibration that let your gamepade / device vibrates."),
 				new VibrationOffsetOption("Adjust Vibration offset delaying"),
 				new WatermarkOption("Enable and disable all watermarks from the engine."),
-				new PerkedelmarkOption("Turn off all Perkedel watermarks from the engine."),
-				new OdyseemarkOption("Turn off all Odysee watermarks from the engine."), // JOELwindows7: yep Odysee.
+				new PerkedelmarkOption("Enable and disable all Perkedel watermarks from the engine."),
+				new OdyseemarkOption("Enable and disable all Odysee watermarks from the engine."), // JOELwindows7: yep Odysee.
 				new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
-				new WatermarkOption("Enable and disable all watermarks from the engine."),
 				new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty."),
 				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
 				new ScoreScreen("Show the score screen after the end of a song"),
@@ -291,11 +290,18 @@ class OptionsMenu extends CoreSubState
 		addBackButton(1, FlxG.height, .3);
 		addLeftButton(FlxG.width - 400, FlxG.height, .3);
 		addRightButton(FlxG.width - 200, FlxG.height, .3);
+		addUpButton(FlxG.width, Std.int(FlxG.height / 2) - 200, .4);
+		addAcceptButton(FlxG.width, Std.int(FlxG.height / 2), .4);
+		addDownButton(FlxG.width, Std.int(FlxG.height / 2) + 200, .4);
 
 		// JOELwindows7: Then animate them.
 		FlxTween.tween(backButton, {y: FlxG.height - backButton.height - 10}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
 		FlxTween.tween(leftButton, {y: FlxG.height - leftButton.height - 10}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left right button
 		FlxTween.tween(rightButton, {y: FlxG.height - rightButton.height - 10}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: yeah.
+		// JOEL:windows7: rest of side buttons tweenegh
+		FlxTween.tween(upButton, {x: FlxG.width - upButton.width - 10}, 2, {ease: FlxEase.elasticInOut});
+		FlxTween.tween(acceptButton, {x: FlxG.width - acceptButton.width - 10}, 2, {ease: FlxEase.elasticInOut});
+		FlxTween.tween(downButton, {x: FlxG.width - downButton.width - 10}, 2, {ease: FlxEase.elasticInOut});
 
 		super.create();
 
@@ -342,8 +348,13 @@ class OptionsMenu extends CoreSubState
 			if (selectedCat.middle)
 				add(selectedCat.titleObject);
 
+			var count:Int = 0;
 			for (i in selectedCat.optionObjects)
+			{
+				i.ID = count; // JOELwindows7: brute forced ID assign
 				shownStuff.add(i);
+				count++; // JOELwindows7: yep, idk the code anymore.
+			}
 
 			selectedOption = selectedCat.options[0];
 
@@ -352,7 +363,7 @@ class OptionsMenu extends CoreSubState
 				for (i in 0...selectedCat.options.length)
 				{
 					var opt = selectedCat.optionObjects.members[i];
-					// opt.ID = i; // JOELwindows7: assign ID to each option member.
+					opt.ID = i; // JOELwindows7: assign ID to each option member.
 					opt.y = selectedCat.titleObject.y + 54 + (46 * i);
 				}
 			}
@@ -402,6 +413,7 @@ class OptionsMenu extends CoreSubState
 		Debug.logTrace("Changed opt: " + selectedOptionIndex);
 
 		Debug.logTrace("Bounds: " + visibleRange[0] + "," + visibleRange[1]);
+		haveClicked = false; // JOELwindows7: mouse supports
 	}
 
 	override function update(elapsed:Float)
@@ -587,6 +599,7 @@ class OptionsMenu extends CoreSubState
 
 						selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
 						haveDowned = false; // JOELwindows7: yea
+						haveClicked = false; // JOELwindows7: mouse supports
 					}
 					else if (up)
 					{
@@ -629,6 +642,7 @@ class OptionsMenu extends CoreSubState
 
 						selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
 						haveUpped = false; // JOELwindows7: yep
+						haveClicked = false; // JOELwindows7: mouse supports
 					}
 
 					if (right)
@@ -734,8 +748,8 @@ class OptionsMenu extends CoreSubState
 			if (selectedOption.acceptType)
 				selectedOption.waitingType = false;
 			FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
-			selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
 			// JOELwindows7: just change the index number
+			selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
 			selectedOptionIndex = change;
 
 			// JOELwindows7: copy from above up & down
@@ -763,6 +777,8 @@ class OptionsMenu extends CoreSubState
 			}
 
 			selectOption(selectedCat.options[selectedOptionIndex]);
+			haveClicked = false; // JOELwindows7: mouse supports
+			rawMouseHeld = true;
 		}
 	}
 
@@ -847,7 +863,8 @@ class OptionsMenu extends CoreSubState
 		// JOELwindows7: check if you have clicked on a category. whoah, GitHub Copilot sentience finally kicks in!
 		for (i in 0...options.length - 1)
 		{
-			if (FlxG.mouse.overlaps(options[i]) && !FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton))
+			if (FlxG.mouse.overlaps(options[i]) && !FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(leftButton)
+				&& !FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(upButton) && !FlxG.mouse.overlaps(downButton))
 			{
 				if (FlxG.mouse.justPressed)
 				{
@@ -877,6 +894,7 @@ class OptionsMenu extends CoreSubState
 					else
 					{
 						goToSelection(stuff.ID);
+						haveClicked = false;
 					}
 
 					// JOELwindows7: but it's not perfect.
@@ -897,7 +915,7 @@ class OptionsMenu extends CoreSubState
 					}
 					else
 					{
-						haveBacked = false;
+						// haveBacked = false;
 					}
 				}
 				if (FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(stuff))
@@ -920,6 +938,28 @@ class OptionsMenu extends CoreSubState
 					else
 					{
 						haveRighted = false;
+					}
+				}
+				if (FlxG.mouse.overlaps(upButton) && !FlxG.mouse.overlaps(stuff))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						haveUpped = true;
+					}
+					else
+					{
+						haveUpped = false;
+					}
+				}
+				if (FlxG.mouse.overlaps(downButton) && !FlxG.mouse.overlaps(stuff))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						haveDowned = true;
+					}
+					else
+					{
+						haveDowned = false;
 					}
 				}
 			}

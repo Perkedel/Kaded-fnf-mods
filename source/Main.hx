@@ -1,5 +1,6 @@
 package;
 
+import GameJolt;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.input.keyboard.FlxKey;
 // import grig.midi.MidiOut;
@@ -47,15 +48,17 @@ class Main extends Sprite
 	public static var watermarks = true; // Whether to put Kade Engine literally anywhere
 	public static var odyseeMark = true; // Whether to put Odysee mark literally anywhere
 	public static var perkedelMark = true; // Whether to put Perkedel Technologies literally anywhere
-	public static var chosenMark:String = 'odysee'; //Whether to put chosen watermark litterally anywhere
+	public static var chosenMark:String = 'odysee'; // Whether to put chosen watermark litterally anywhere
 	public static var chosenMarkNum:Int = 0;
-	//JOELwindows7: Please no demonic reference about Mark of what the peck!
 
-	// public static var midiIn:MidiIn; //JOELwindows7: Grig MIDI in
-	// public static var midiOut:MidiOut; //JOELwindows7: Grig MIDI out
+	public static var gjToastManager:GJToastManager; // JOELwindows7: TentaRJ Gamejolter now has Toast yey! FORMATTER STOP PECK THIS UP FEMALE DOG!!!
 
+	// JOELwindows7: Please no demonic reference about Mark of what the peck!
+	/*
+		// public static var midiIn:MidiIn; //JOELwindows7: Grig MIDI in
+		// public static var midiOut:MidiOut; //JOELwindows7: Grig MIDI out
+	 */
 	// You can pretty much ignore everything from here on - your code should go in your states.
-
 	public static function main():Void
 	{
 		// quick checks
@@ -69,30 +72,29 @@ class Main extends Sprite
 
 		super();
 
-		//JOELwindows7: Grig midi pls
+		// JOELwindows7: Grig midi pls
 		// trace("MIDI out APIs:\n" + MidiOut.getApis());
 		// midiIn = new MidiIn(grig.midi.Api.Unspecified);
 		// midiOut = new MidiOut(grig.midi.Api.Unspecified);
 
-		//JOELwindows7: pecking ask permission on Android 6 and forth
+		// JOELwindows7: pecking ask permission on Android 6 and forth
 		#if (android && !debug)
 		var askPermNum:Int = 0;
 		var timeoutPermNum:Int = 10;
-		while(!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE) ||
-			 !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE)){
-			Permissions.requestPermissions([
-				Permissions.WRITE_EXTERNAL_STORAGE,
-				Permissions.READ_EXTERNAL_STORAGE,
-			]);
+		while (!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE)
+			|| !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE))
+		{
+			Permissions.requestPermissions([Permissions.WRITE_EXTERNAL_STORAGE, Permissions.READ_EXTERNAL_STORAGE,]);
 
-			//count how many attempts. if after timeout num still not work, peck this poop
-			//I gave up!
+			// count how many attempts. if after timeout num still not work, peck this poop
+			// I gave up!
 			trace("Num of Attempt ask permissions: " + Std.string(askPermNum));
 			askPermNum++;
-			if(askPermNum > timeoutPermNum) break;
+			if (askPermNum > timeoutPermNum)
+				break;
 		}
 		#end
-		//wtf, it doesn't work if Debug situation?! I don't get it!
+		// wtf, it doesn't work if Debug situation?! I don't get it!
 
 		if (stage != null)
 		{
@@ -134,22 +136,26 @@ class Main extends Sprite
 		framerate = 60;
 		#end
 
-		//JOELwindows7: Friggin Screen Grab functions
-		//inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
-		//it had screenshoter so why not?
-		// 
+		// JOELwindows7: install the toast for GameJolter
+		gjToastManager = new GJToastManager();
+		addChild(gjToastManager);
+
+		// JOELwindows7: Friggin Screen Grab functions
+		// inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
+		// it had screenshoter so why not?
+		//
 		#if !js
 		FlxScreenGrab.defineHotKeys([FlxKey.PRINTSCREEN, FlxKey.F6], true, false);
 		#end
-		
-		//GrowtopiaFli's Video Cutscener
-		//The code https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/
-		//added by JOELwindows7
-		//use this video from bbpanzu https://www.youtube.com/watch?v=2B7dqNB6GcE
-		//to figure out how supposed it be.
+
+		// GrowtopiaFli's Video Cutscener
+		// The code https://github.com/GrowtopiaFli/openfl-haxeflixel-video-code/
+		// added by JOELwindows7
+		// use this video from bbpanzu https://www.youtube.com/watch?v=2B7dqNB6GcE
+		// to figure out how supposed it be.
 		var ourSource:String = "assets/videos/DO NOT DELETE OR GAME WILL CRASH/dontDelete.webm";
 
-		//JOELwindows7: an check whether isWebm or not
+		// JOELwindows7: an check whether isWebm or not
 		#if FEATURE_WEBM_JS
 		trace("vid isWeb");
 		GlobalVideo.isWebm = false;
@@ -159,7 +165,7 @@ class Main extends Sprite
 		#end
 		trace("is GlobalVideo a webm? " + Std.string(GlobalVideo.isWebm));
 		// https://github.com/Raltyro/VideoState.hx-Kade-Engine-1.5-Patch
-		
+
 		#if FEATURE_WEBM_JS
 		trace("Video Cutscener is built-in Browser's");
 		var str1:String = "HTML CRAP";
@@ -172,7 +178,7 @@ class Main extends Sprite
 		vHandler.source(ourSource);
 		#elseif FEATURE_WEBM_NATIVE
 		trace("Video Cutscener is external webm player");
-		var str1:String = "WEBM SHIT"; 
+		var str1:String = "WEBM SHIT";
 		var webmHandle = new WebmHandler();
 		webmHandle.source(ourSource);
 		webmHandle.makePlayer();
@@ -181,8 +187,8 @@ class Main extends Sprite
 		addChild(webmHandle.webm);
 		GlobalVideo.setWebm(webmHandle);
 		#end
-		//end GrowtopiaFli Video Cutscener
-		
+		// end GrowtopiaFli Video Cutscener
+
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
 
@@ -209,33 +215,34 @@ class Main extends Sprite
 
 		#if !mobile
 		addChild(fpsCounter);
-		new FlxTimer().start(1,function (timer:FlxTimer) {
+		new FlxTimer().start(1, function(timer:FlxTimer)
+		{
 			toggleFPS(FlxG.save.data.fps);
 		});
 		#end
 
-		//JOELwindows7: GameBanana seems notorious.
-		//let's just hide everything that "trashworthy" / "blammworthy"
-		//if we're not in Odysee.
-		//sorry guys, I've used ninja's inspiration (timed exclusive on newgrounds).
-		//pls don't cancel me, I beg you!
+		// JOELwindows7: GameBanana seems notorious.
+		// let's just hide everything that "trashworthy" / "blammworthy"
+		// if we're not in Odysee.
+		// sorry guys, I've used ninja's inspiration (timed exclusive on newgrounds).
+		// pls don't cancel me, I beg you!
 		#if odysee
 		trace("We are in Odysee");
 		#else
 		trace("We are not in Odysee. are we? or forgot Odysee define compile.. idk");
 		#end
 
-		//JOELwindows7: steal the mods (including ND without permission)
+		// JOELwindows7: steal the mods (including ND without permission)
 		#if thief
 		trace("IT'S YOINK TIME");
 		#else
 		trace("no yoink time.");
 		#end
 
-		//JOELwindows7: stop the accidentally press numpad 0 during arrow key on keyboard
+		// JOELwindows7: stop the accidentally press numpad 0 during arrow key on keyboard
 		// destroyAccidentVolKeys();
 
-		//JOELwindows7: mini scanners for platform detections
+		// JOELwindows7: mini scanners for platform detections
 		ScanPlatform.getPlatform();
 
 		// Finish up loading debug tools.
@@ -290,17 +297,17 @@ class Main extends Sprite
 		return fpsCounter.currentFPS;
 	}
 
-	//JOELwindows7: Pusholl! Disable vol keys pls! it annoys me!!!
-	public function destroyAccidentVolKeys(){
+	// JOELwindows7: Pusholl! Disable vol keys pls! it annoys me!!!
+	public function destroyAccidentVolKeys()
+	{
 		FlxG.sound.volumeUpKeys = null;
 		FlxG.sound.volumeDownKeys = null;
 		FlxG.sound.muteKeys = null;
 	}
 
-	//JOELwindows7: mini platform scanner
+	// JOELwindows7: mini platform scanner
 }
-
-//JOELwindows7: Oh my God. extremely complicated since 1.7 changes here yeauw.
+// JOELwindows7: Oh my God. extremely complicated since 1.7 changes here yeauw.
 /**
  * A lot of stuffs has been moved into its own dedicated area.
  * I hope this works here.

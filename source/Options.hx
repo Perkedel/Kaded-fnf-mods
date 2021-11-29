@@ -2150,7 +2150,7 @@ class PerkedelmarkOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Perkedel Watermarks " + (Main.perkedelMark ? "on" : "off");
+		return "Perkedel Watermarks < " + (Main.perkedelMark ? "ON" : "OFF") + " >";
 	}
 }
 

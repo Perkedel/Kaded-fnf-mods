@@ -164,7 +164,7 @@ class TitleState extends MusicBeatState
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
 
-	//JOELwindows7: globalize button
+	// JOELwindows7: globalize button
 	var pressedEnter:Bool = false;
 
 	function startIntro()
@@ -301,6 +301,9 @@ class TitleState extends MusicBeatState
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);
+
+			Main.gjToastManager.createToast(); // JOELwindows7: create GameJolt Toast here.
+
 			initialized = true;
 		}
 
@@ -338,7 +341,7 @@ class TitleState extends MusicBeatState
 			FlxG.save.flush(); // JOELwindows7: from OptionMenu.hx it constantly save data.
 		}
 
-		//JOELwindows7: globalize this
+		// JOELwindows7: globalize this
 		pressedEnter = controls.ACCEPT;
 
 		#if mobile

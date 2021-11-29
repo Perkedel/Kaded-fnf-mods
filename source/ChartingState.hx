@@ -1322,6 +1322,8 @@ class ChartingState extends MusicBeatState
 
 	var stepperSusLength:FlxUINumericStepper;
 
+	var stepperNoteType:FlxUINumericStepper; // JOELwindows7: spin number choose note type
+
 	var tab_group_note:FlxUI;
 
 	function goToSection(section:Int)
@@ -1360,6 +1362,11 @@ class ChartingState extends MusicBeatState
 		stepperSusLength.value = 0;
 		stepperSusLength.name = 'note_susLength';
 
+		// JOELwindows7: number roller for note type notetype
+		stepperNoteType = new FlxUINumericStepper(10, 15, 1, 0, 0, 2);
+		stepperNoteType.value = 0;
+		stepperNoteType.name = 'note_noteType';
+
 		check_naltAnim = new FlxUICheckBox(10, 150, null, null, "Toggle Alternative Animation", 100);
 		check_naltAnim.callback = function()
 		{
@@ -1381,10 +1388,14 @@ class ChartingState extends MusicBeatState
 
 		var stepperSusLengthLabel = new FlxText(74, 10, 'Note Sustain Length');
 
+		var stepperNoteTypeLabel = new FlxText(74, 15, 'Note Sustain Length'); // JOELwindows7: note type label
+
 		var applyLength:FlxButton = new FlxButton(10, 100, 'Apply Data');
 
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(stepperSusLengthLabel);
+		tab_group_note.add(stepperNoteType); // JOELwindows7: now add it this note type numberer
+		tab_group_note.add(stepperNoteTypeLabel); // JOELwindows7: and also that label.
 		tab_group_note.add(applyLength);
 		tab_group_note.add(check_naltAnim);
 
@@ -1416,12 +1427,12 @@ class ChartingState extends MusicBeatState
 				{
 					Debug.logTrace("new strum " + strum + " - at section " + section);
 					// alright we're in this section lets paste the note here.
-					var newData = [strum, i[1], i[2], i[3], i[4]];
+					var newData = [strum, i[1], i[2], i[3], i[4], i[5]]; // JOELwindows7: here notetype I hope
 					ii.sectionNotes.push(newData);
 
 					var thing = ii.sectionNotes[ii.sectionNotes.length - 1];
 
-					var note:Note = new Note(strum, Math.floor(i[1] % 4), null, false, true, i[3], i[4]);
+					var note:Note = new Note(strum, Math.floor(i[1] % 4), null, false, true, i[3], i[4], i[5]); // JOELwindows7: here notetype I hope
 					note.rawNoteData = i[1];
 					note.sustainLength = i[2];
 					note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -1482,14 +1493,15 @@ class ChartingState extends MusicBeatState
 						originalNote.rawNoteData,
 						originalNote.sustainLength,
 						originalNote.isAlt,
-						originalNote.beat
+						originalNote.beat,
+						originalNote.noteType
 					];
 					ii.sectionNotes.push(newData);
 
 					var thing = ii.sectionNotes[ii.sectionNotes.length - 1];
 
 					var note:Note = new Note(strum, originalNote.noteData, originalNote.prevNote, originalNote.isSustainNote, true, originalNote.isAlt,
-						originalNote.beat);
+						originalNote.beat, originalNote.noteType); // JOELwindows7: put notetype woohoo
 					note.rawNoteData = originalNote.rawNoteData;
 					note.sustainLength = originalNote.sustainLength;
 					note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -1715,6 +1727,18 @@ class ChartingState extends MusicBeatState
 					if (nums.value <= 0)
 						nums.value = 0;
 					curSelectedNote[2] = nums.value;
+					updateGrid();
+				
+				case 'note_noteType':
+					//JOELwindows7: the note type! mine or normal!
+					if (curSelectedNote == null)
+						return;
+
+					if (nums.value <= 0)
+						nums.value = 0;
+					curSelectedNote[5] = nums.value;
+					curSelectedNoteObject.noteType = curSelectedNote[5];
+					curSelectedNoteObject.refreshNoteLook();
 					updateGrid();
 
 				case 'section_bpm':
@@ -2254,8 +2278,10 @@ class ChartingState extends MusicBeatState
 								i.connectedNote.rawNoteData,
 								i.connectedNote.sustainLength,
 								i.connectedNote.isAlt,
-								i.connectedNote.beat
+								i.connectedNote.beat,
+								i.connectedNote.noteType
 							]);
+						// JOELwindows7: note type copy
 
 						var firstNote = copiedNotes[0][0];
 
@@ -2465,8 +2491,25 @@ class ChartingState extends MusicBeatState
 				+ snap
 				+ "\n"
 				+ (doSnapShit ? "Snap enabled" : "Snap disabled")
-				+
-				(FlxG.save.data.showHelp ? "\n\nHelp:\nCtrl-MWheel : Zoom in/out\nShift-Left/Right :\nChange playback speed\nCtrl-Drag Click : Select notes\nCtrl-C : Copy notes\nCtrl-V : Paste notes\nCtrl-Z : Undo\nDelete : Delete selection\nCTRL-Left/Right :\n  Change Snap\nHold Shift : Disable Snap\nClick or 1/2/3/4/5/6/7/8 :\n  Place notes\nUp/Down :\n  Move selected notes 1 step\nShift-Up/Down :\n  Move selected notes 1 beat\nSpace: Play Music\nEnter : Preview\nPress F1 to hide/show this!" : "");
+				+ // JOELwindows7: helep! string hard to read!!!
+				(FlxG.save.data.showHelp ? "\n\n
+					Help:\n
+					Ctrl-MWheel : Zoom in/out\n
+					Shift-Left/Right :\nChange playback speed\n
+					Ctrl-Drag Click : Select notes\n
+					Ctrl-C : Copy notes\n
+					Ctrl-V : Paste notes\n
+					Ctrl-Z : Undo\n
+					Delete : Delete selection\n
+					CTRL-Left/Right :\n  Change Snap\n
+					  Hold Shift : Disable Snap\n
+					  Click or 1/2/3/4/5/6/7/8 :\nPlace notes\n
+					  Place Note + ALT: Place mines
+					Up/Down :\n  Move selected notes 1 step\n
+					Shift-Up/Down :\nMove selected notes 1 beat\n
+					Space: Play Music\n
+					Enter : Preview\n
+					Press F1 to hide/show this!" : "");
 
 			var left = FlxG.keys.justPressed.ONE;
 			var down = FlxG.keys.justPressed.TWO;
@@ -2498,7 +2541,7 @@ class ChartingState extends MusicBeatState
 					var i = pressArray[p];
 					if (i && !delete)
 					{
-						addNote(new Note(Conductor.songPosition, p));
+						addNote(new Note(Conductor.songPosition, p, null, null, null, null, null)); // JOELwindows7: traverse to notetype
 					}
 				}
 			}
@@ -2820,6 +2863,22 @@ class ChartingState extends MusicBeatState
 		super.update(elapsed);
 	}
 
+	// JOELwindows7: change note type
+	function changeNoteType(value:Int):Void
+	{
+		if (curSelectedNote != null)
+		{
+			if (curSelectedNote[5] != null)
+			{
+				curSelectedNote[5] += value;
+				curSelectedNote[5] = Math.max(curSelectedNote[5], 0); //make sure not go minus
+
+			}
+		}
+
+		updateNoteUI();
+	}
+
 	function changeNoteSustain(value:Float):Void
 	{
 		if (curSelectedNote != null)
@@ -2999,6 +3058,16 @@ class ChartingState extends MusicBeatState
 				curSelectedNote[3] = false;
 				check_naltAnim.checked = false;
 			}
+
+			stepperNoteType.value = curSelectedNote[5];
+			// if (stepperNoteType.value != null)
+			// {
+			// }
+			// else
+			// {
+			// 	curSelectedNote[5] = 0;
+			// 	stepperNoteType.value = 0;
+			// }
 		}
 	}
 
@@ -3363,8 +3432,8 @@ class ChartingState extends MusicBeatState
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
 		var noteType = 0; // JOELwindows7: press hold? alt + add note (1 2 3 4 or click collumn to add) to add mine.
-		if (FlxG.keys.pressed.ONE)
-			noteType = 1;
+		// if (FlxG.keys.pressed.ONE)
+		// 	noteType = 1;
 		if (FlxG.keys.pressed.ALT)
 			noteType = 2;
 
@@ -3398,7 +3467,8 @@ class ChartingState extends MusicBeatState
 
 		if (n == null)
 		{
-			var note:Note = new Note(noteStrum, noteData % 4, null, false, true, TimingStruct.getBeatFromTime(noteStrum));
+			// JOELwindows7: put notetype yea
+			var note:Note = new Note(noteStrum, noteData % 4, null, false, true, TimingStruct.getBeatFromTime(noteStrum), noteType);
 			note.rawNoteData = noteData;
 			note.sustainLength = noteSus;
 			note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -3428,7 +3498,8 @@ class ChartingState extends MusicBeatState
 		}
 		else
 		{
-			var note:Note = new Note(n.strumTime, n.noteData % 4, null, false, true, n.isAlt, TimingStruct.getBeatFromTime(n.strumTime));
+			// JOELwindows7: put notetype
+			var note:Note = new Note(n.strumTime, n.noteData % 4, null, false, true, n.isAlt, TimingStruct.getBeatFromTime(n.strumTime), noteType);
 			note.beat = TimingStruct.getBeatFromTime(n.strumTime);
 			note.rawNoteData = n.noteData;
 			note.sustainLength = noteSus;
