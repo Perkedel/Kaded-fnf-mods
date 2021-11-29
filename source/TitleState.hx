@@ -302,7 +302,7 @@ class TitleState extends MusicBeatState
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);
 
-			Main.gjToastManager.createToast(); // JOELwindows7: create GameJolt Toast here.
+			//Main.gjToastManager.createToast(); // JOELwindows7: create GameJolt Toast here.
 
 			initialized = true;
 		}
