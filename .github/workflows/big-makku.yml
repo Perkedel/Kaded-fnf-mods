@@ -15,7 +15,7 @@ jobs:
       - name: Just do it
         uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.3
+          haxe-version: 4.2.4
       - name: Make your dreams come true
         run: |
           haxe -version

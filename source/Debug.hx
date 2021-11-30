@@ -193,8 +193,14 @@ class Debug
 				}
 			}
 
+			// JOELwindows7: cmon what happened?
+			// trace("Attempt Override trace");
+
 			logTrace(paramArray, info);
 		};
+
+		// JOELwindows7: what happening?
+		trace("Overriden the trace thing");
 
 		// Start the log file writer.
 		// We have to set it to TRACE for now.

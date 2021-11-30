@@ -6480,7 +6480,7 @@ class PlayState extends MusicBeatState
 		switch (curSong)
 		{
 			case 'ku-tetap-cinta-yesus':
-				createToast(null, "Forgiven", "Sarvente is not eligible to access Heaven again! Welcome home.");
+				createToast(null, "Forgiven", "Sarvente is now eligible to access Heaven again! Welcome home.");
 			default:
 				trace("an song complete");
 		}
