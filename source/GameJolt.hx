@@ -912,7 +912,12 @@ class Toast extends Sprite
 
 		desc = new TextField();
 		desc.text = description;
+		// JOELwindows7: make fallback for if GameJolt not supported! Don't depend on GameJolt stuff if not supported here too
+        #if gamejolt
 		desc.setTextFormat(new TextFormat(openfl.utils.Assets.getFont(GameJoltInfo.fontPath).fontName, 18, 0xFFFFFF));
+        #else
+		desc.setTextFormat(new TextFormat(openfl.utils.Assets.getFont("assets/fonts/vcr.ttf").fontName, 18, 0xFFFFFF));
+        #end
 		desc.wordWrap = true;
 		desc.width = 360;
 		desc.height = 95;
