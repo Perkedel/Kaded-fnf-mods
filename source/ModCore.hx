@@ -113,10 +113,32 @@ class ModCore
 	static inline function buildFrameworkParams():polymod.FrameworkParams
 	{
 		return {
+			// JOELwindows7: wtf man,
+			/*
+				```
+				...
+					0:00.06 [INFO ] (ModCore/getModIds#95): Scanning the mods folder...
+					0:00.08 [INFO ] (ModCore/getModIds#97): Found 1 mods when scanning.
+					0:00.09 [INFO ] (ModCore/loadModsById#37): Attempting to load 1 mods...
+					0:00.10 [WARN ] Could not find mod icon file: "mods/introMod/_polymod_icon.png"
+					0:00.11 [INFO ]  user specified CUSTOM
+					0:00.11 [TRACE] (ModCoreBackend/new#167): Initialized custom asset loader backend.
+					0:00.12 [WARN ] (ModCoreBackend/clearCache#173): Custom asset cache has been cleared.
+					0:00.13 [ERROR] Preparing to load mod mods/introMod
+					0:00.14 [ERROR] Done loading mod mods/introMod
+					0:00.15 [ERROR] Your Lime/OpenFL configuration is using custom asset libraries, and you provided frameworkParams in Polymod.init(), but we couldn't find a match for this asset library: (week7)
+					PS C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods> 
+				```
+			 */
+			// JOELwindows7: Just what the peck?!
 			assetLibraryPaths: [
 				"default" => "./preload", // ./preload
 				"sm" => "./sm", "songs" => "./songs", "shared" => "./", "tutorial" => "./tutorial",
-				"week1" => "./week1", "week2" => "./week2", "week3" => "./week3", "week4" => "./week4", "week5" => "./week5", "week6" => "./week6"
+				"week1" => "./week1", "week2" => "./week2", "week3" => "./week3", "week4" => "./week4", "week5" => "./week5", "week6" => "./week6",
+				"week7" => "./week7", "week8" => "./week8", "week9" => "./week9", "week10" => "./week10", "week11" => "./week11", "week12" => "./week12",
+				"week13" => "./week13", "week14" => "./week14", "week15" => "./week15", "weeks" => "./weeks", "thief" => "./thief", "videos" => "./videos",
+				"preload_odysee" => "./preload_odysee", "preload_thief" => "./preload_thief", "fonts" => "./fonts", "bonusWeek" => "./bonusWeek",
+				"week-1" => "./week-1", "exclude" => "./exclude", "week5720NG" => "./week5720NG",
 			]
 		}
 	}

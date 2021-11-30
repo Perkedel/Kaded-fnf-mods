@@ -1894,7 +1894,7 @@ class NaughtinessOption extends Option
 	}
 
 	private override function updateDisplay():String
-		return "Naughtiness " + (FlxG.save.data.naughtiness ? "on" : "off");
+		return "Naughtiness < " + (FlxG.save.data.naughtiness ? "on" : "off") + " >";
 }
 
 // JOELwindows7: export setting data to JSON
@@ -2114,7 +2114,7 @@ class OdyseemarkOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Odysee Watermarks <" + (Main.odyseeMark ? "on" : "off") + ">";
+		return "Odysee Watermarks < " + (Main.odyseeMark ? "on" : "off") + " >";
 	}
 }
 
@@ -2150,7 +2150,7 @@ class PerkedelmarkOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Perkedel Watermarks < " + (Main.perkedelMark ? "ON" : "OFF") + " >";
+		return "Perkedel Watermarks < " + (Main.perkedelMark ? "on" : "off") + " >";
 	}
 }
 
@@ -2231,7 +2231,7 @@ class CardiophileOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Cardiophile < " + (FlxG.save.data.cardiophile ? "ON" : "OFF") + " >";
+		return "Cardiophile < " + (FlxG.save.data.cardiophile ? "on" : "off") + " >";
 	}
 }
 
@@ -2478,15 +2478,20 @@ class SurroundTestOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
 	}
 
 	public override function press():Bool
 	{
+		if (OptionsMenu.isInPause)
+			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		OptionsMenu.switchState(new LimeAudioBufferTester());
-		return false;
+		return true;
 	}
 
 	private override function updateDisplay():String
@@ -2501,15 +2506,20 @@ class AnVideoCutscenerTestOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
 	}
 
 	public override function press():Bool
 	{
+		if (OptionsMenu.isInPause)
+			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		OptionsMenu.switchState(new AnWebmer());
-		return false;
+		return true;
 	}
 
 	private override function updateDisplay():String
@@ -2524,15 +2534,20 @@ class AnStarfieldTestOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
 	}
 
 	public override function press():Bool
 	{
+		if (OptionsMenu.isInPause)
+			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		OptionsMenu.switchState(new AnStarfielde());
-		return false;
+		return true;
 	}
 
 	private override function updateDisplay():String
@@ -2547,15 +2562,20 @@ class AnDefaultBekgronTestOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
 	}
 
 	public override function press():Bool
 	{
+		if (OptionsMenu.isInPause)
+			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		OptionsMenu.switchState(new AnDefaultBekgronde());
-		return false;
+		return true;
 	}
 
 	private override function updateDisplay():String
@@ -2570,15 +2590,20 @@ class AnMIDITestOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
 	}
 
 	public override function press():Bool
 	{
+		if (OptionsMenu.isInPause)
+			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		// FlxG.switchState(new AnMIDIyeay());
-		return false;
+		return true;
 	}
 
 	private override function updateDisplay():String
@@ -2738,15 +2763,20 @@ class LogGameJoltIn extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
 	}
 
 	public override function press():Bool
 	{
+		if (OptionsMenu.isInPause)
+			return false;
 		#if gamejolt
 		OptionsMenu.switchState(new GameJoltLogin());
 		#end
-		return false;
+		return true;
 	}
 
 	private override function updateDisplay():String

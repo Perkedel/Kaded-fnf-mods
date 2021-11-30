@@ -46,10 +46,10 @@ function update(elapsed)
 
 function beatHit(beat)
 {
-    trace("Pos flag Y");
-    trace(getActorY('flag'));
-    trace("song pos");
-    trace(songPos);
+    //trace("Pos flag Y");
+    //trace(getActorY('flag'));
+    //trace("song pos");
+    //trace(songPos);
 }
 
 function stepHit(step)

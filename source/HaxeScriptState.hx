@@ -868,356 +868,452 @@ class HaxeScriptState
 		{
 			// JOELwindows7: was using FlxG.camera directly.
 			// Now this no longer work let's go through the variable camGame instead.
-			FlxTween.tween(PlayState.instance.camGame, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camGame, {x: toX, y: toY}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenCameraAngle", function(toAngle:Float, time:Float, onComplete:String)
 		{
 			// JOELwindows7: this too
-			FlxTween.tween(PlayState.instance.camGame, {angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camGame, {angle: toAngle}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenCameraZoom", function(toZoom:Float, time:Float, onComplete:String)
 		{
 			// JOELwindows7: and another.
-			FlxTween.tween(PlayState.instance.camGame, {zoom: toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camGame, {zoom: toZoom}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenHudPos", function(toX:Int, toY:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenHudAngle", function(toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(PlayState.instance.camHUD, {angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camHUD, {angle: toAngle}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenHudZoom", function(toZoom:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(PlayState.instance.camHUD, {zoom: toZoom}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camHUD, {zoom: toZoom}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenPos", function(id:String, toX:Int, toY:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenPosXAngle", function(id:String, toX:Int, toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenPosYAngle", function(id:String, toY:Int, toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenAngle", function(id:String, toAngle:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {
+				ease: FlxEase.linear,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenCameraPosOut", function(toX:Int, toY:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenCameraAngleOut", function(toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(FlxG.camera, {angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(FlxG.camera, {angle: toAngle}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenCameraZoomOut", function(toZoom:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(FlxG.camera, {zoom: toZoom}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(FlxG.camera, {zoom: toZoom}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenHudPosOut", function(toX:Int, toY:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenHudAngleOut", function(toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(PlayState.instance.camHUD, {angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camHUD, {angle: toAngle}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenHudZoomOut", function(toZoom:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(PlayState.instance.camHUD, {zoom: toZoom}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camHUD, {zoom: toZoom}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenPosOut", function(id:String, toX:Int, toY:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenPosXAngleOut", function(id:String, toX:Int, toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenPosYAngleOut", function(id:String, toY:Int, toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenAngleOut", function(id:String, toAngle:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.cubeOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenCameraPosIn", function(toX:Int, toY:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(FlxG.camera, {x: toX, y: toY}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenCameraAngleIn", function(toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(FlxG.camera, {angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(FlxG.camera, {angle: toAngle}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenCameraZoomIn", function(toZoom:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(FlxG.camera, {zoom: toZoom}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(FlxG.camera, {zoom: toZoom}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenHudPosIn", function(toX:Int, toY:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camHUD, {x: toX, y: toY}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenHudAngleIn", function(toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(PlayState.instance.camHUD, {angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camHUD, {angle: toAngle}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenHudZoomIn", function(toZoom:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(PlayState.instance.camHUD, {zoom: toZoom}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(PlayState.instance.camHUD, {zoom: toZoom}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, ["camera"]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, ["camera"]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenPosIn", function(id:String, toX:Int, toY:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {x: toX, y: toY}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenPosXAngleIn", function(id:String, toX:Int, toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {x: toX, angle: toAngle}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenPosYAngleIn", function(id:String, toY:Int, toAngle:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {y: toY, angle: toAngle}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenAngleIn", function(id:String, toAngle:Int, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {ease: FlxEase.cubeIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {angle: toAngle}, time, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenFadeIn", function(id:String, toAlpha:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {ease: FlxEase.circIn, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {
+				ease: FlxEase.circIn,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		addCallback("tweenFadeOut", function(id:String, toAlpha:Float, time:Float, onComplete:String)
 		{
-			FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {ease: FlxEase.circOut, onComplete: function(flxTween:FlxTween)
-			{
-				if (onComplete != '' && onComplete != null)
+			FlxTween.tween(getActorByName(id), {alpha: toAlpha}, time, {
+				ease: FlxEase.circOut,
+				onComplete: function(flxTween:FlxTween)
 				{
-					callHscript(onComplete, [id]);
+					if (onComplete != '' && onComplete != null)
+					{
+						callHscript(onComplete, [id]);
+					}
 				}
-			}});
+			});
 		});
 
 		// Shaders
@@ -1344,6 +1440,15 @@ class HaxeScriptState
 		{
 			// vibration, sensation, okeh self explanatory. lol TheFatRat - Electrified
 			Controls.vibrate(player, duration, period, strengthLeft, strengthRight);
+		});
+
+		addCallback("gameJoltToast", function(iconPath:String = "", title:String = "", description:String = "", sound:Bool = false)
+		{
+			// JOELwindows7: gamejolt toast
+			#if gamejolt
+			Main.gjToastManager.createToast(iconPath, title, description, sound);
+			#else
+			#end
 		});
 		// end more special functions
 		// So you don't have to hard code your cool effects.

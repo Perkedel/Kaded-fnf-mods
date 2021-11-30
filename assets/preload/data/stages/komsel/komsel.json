@@ -60,8 +60,8 @@
         "isHalloween": false,
         "defaultCamZoom": 0.9,
         "bfPosition": [100, 0],
-        "gfPosition": [0, 0],
-        "dadPosition": [-150, 0],
+        "gfPosition": [-75, 0],
+        "dadPosition": [-250, 0],
         "forceLuaModchart": false,
         "forceHscriptModchart": false
     }

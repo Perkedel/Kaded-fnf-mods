@@ -699,7 +699,7 @@ class PlayState extends MusicBeatState
 		if (!stageTesting)
 			Stage = new Stage(SONG.stage);
 
-		var positions:Map<String,Array<Int>> = Stage.positions[Stage.curStage]; //JOELwindows7: declare type also
+		var positions:Map<String, Array<Int>> = Stage.positions[Stage.curStage]; // JOELwindows7: declare type also
 		if (positions != null && !stageTesting)
 		{
 			var positionFound:Array<Bool> = [false, false, false]; // JOELwindows7: flag of each found position
@@ -708,20 +708,21 @@ class PlayState extends MusicBeatState
 				var count:Int = 0; // JOELwindows7: count of found bf, gf, dad
 				for (person in [boyfriend, gf, dad])
 				{
-					if (person.curCharacter == char){
+					if (person.curCharacter == char)
+					{
 						person.setPosition(pos[0], pos[1]);
-						positionFound[count] = true; //JOELwindows7: If this found, then mark it true
+						positionFound[count] = true; // JOELwindows7: If this found, then mark it true
 					}
 					count++;
 				}
 			}
 
-			//JOELwindows7: if any of person position not found
+			// JOELwindows7: if any of person position not found
 			var counte:Int = 0; // JOELwindows7: count of not found bf, gf, dad
 			for (person in [boyfriend, gf, dad])
 			{
-				var nullWord:String = 'NULL-' ;
-				nullWord += counte==0? 'bf': counte==1? 'gf': 'dad';
+				var nullWord:String = 'NULL-';
+				nullWord += counte == 0 ? 'bf' : counte == 1 ? 'gf' : 'dad';
 				if (positions.exists(nullWord) && !positionFound[counte])
 					person.setPosition(positions[nullWord][0], positions[nullWord][1]);
 				counte++;
@@ -5794,23 +5795,24 @@ class PlayState extends MusicBeatState
 			// JOELwindows7: temporary degradation fix
 			if (curSong == 'getting-freaky')
 			{
-				// if (curBeat == 7 || curBeat == 23 || curBeat == 39 || curBeat == 55 || curBeat == 71 || curBeat == 87 || curBeat == 103 || curBeat == 119
-				// 	|| curBeat == 135 || curBeat == 151 || curBeat == 167 || curBeat == 183)
-				// {
-				// 	// if(!triggeredAlready){
-				// 	// 	trace("ayy!");
-				// 	// 	justCheer(true);
-				// 	// 	justHey(true);
-				// 	// 	triggeredAlready = true;
-				// 	// }
-				// 	justCheer(true);
-				// 	justHey(true);
-				// 	// C'mon work wtf
-				// 	boyfriend.playAnim('hey', true);
-				// 	gf.playAnim('cheer', true);
-				// } /*else triggeredAlready = false;*/
+				if (curBeat == 7 || curBeat == 23 || curBeat == 39 || curBeat == 55 || curBeat == 71 || curBeat == 87 || curBeat == 103 || curBeat == 119
+					|| curBeat == 135 || curBeat == 151 || curBeat == 167 || curBeat == 183)
+				{
+					// if(!triggeredAlready){
+					// 	trace("ayy!");
+					// 	justCheer(true);
+					// 	justHey(true);
+					// 	triggeredAlready = true;
+					// }
+					justCheer(true);
+					justHey(true);
+					// C'mon work wtf
+					boyfriend.playAnim('hey', true);
+					gf.playAnim('cheer', true);
+				} /*else triggeredAlready = false;*/
 
 				// Some how the hey works again lmao idk how.
+				// NOW IT DOESN'T!!! WTF?!??!?
 			}
 
 			// JOELwindows7: found pay attention to this if player 2 is gf.
@@ -6464,6 +6466,7 @@ class PlayState extends MusicBeatState
 			case 1:
 				AchievementUnlocked.whichIs("anSpook");
 			case 6:
+				Main.gjToastManager.createToast(null, "No Tankman", "Week 7 still not released!!!");
 				AchievementUnlocked.whichIs("tankman_in_embargo");
 			default:
 				trace("week completa");
@@ -6476,6 +6479,8 @@ class PlayState extends MusicBeatState
 		trace("Song Complete " + curSong);
 		switch (curSong)
 		{
+			case 'ku-tetap-cinta-yesus':
+				Main.gjToastManager.createToast(null, "Forgiven", "Sarvente is not eligible to access Heaven again! Welcome home.");
 			default:
 				trace("an song complete");
 		}

@@ -282,10 +282,10 @@ class FreeplayState extends MusicBeatState
 	static function populateSongData()
 	{
 		cached = false;
-		//TODO: JOELwindows7: make this loading procedural & automatic
+		// TODO: JOELwindows7: make this loading procedural & automatic
 		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
-		//JOELwindows7: hey, you must say goodbye to this. just load this one up from directory shall we?
-		//right, how do we do this..
+		// JOELwindows7: hey, you must say goodbye to this. just load this one up from directory shall we?
+		// right, how do we do this..
 
 		songData = [];
 		songs = [];
@@ -801,23 +801,43 @@ class FreeplayState extends MusicBeatState
 
 	function changeColorByWeekOf(which:Int = 0)
 	{
+		var colores:FlxColor = FlxColor.fromString("purple");
 		if (bg != null)
 			if (which <= -1)
-				bg.color = FlxColor.fromString("purple")
+			{
+				colores = FlxColor.fromString("purple");
+				// bg.color = FlxColor.fromString("purple");
+			}
 			else
 			{
 				try
 				{
-					bg.color = FlxColor.fromString(weekInfo.weekColor[songs[which].week]);
+					colores = FlxColor.fromString(weekInfo.weekColor[songs[which].week]);
+					// bg.color = FlxColor.fromString(weekInfo.weekColor[songs[which].week]);
 				}
 				catch (e)
 				{
-					trace("error Week color selection no. " + Std.string(curSelected) + ". " + e);
-					trace("Week datas " + Std.string(weekInfo));
-					FlxG.log.warn(e);
-					bg.color = FlxColor.fromString("purple");
+					Debug.logError("error Week color selection no. " + Std.string(curSelected) + ". " + e);
+					Debug.logInfo("Week datas " + Std.string(weekInfo));
+					// FlxG.log.warn(e);
+					// bg.color = FlxColor.fromString("purple");
+					colores = FlxColor.fromString("purple");
 				}
 			}
+
+		// FlxTween.tween(bg.color, {redFloat: colores.redFloat, greenFloat: colores.greenFloat, blueFloat: colores.blueFloat}, 1, {ease: FlxEase.elasticInOut});
+		// FlxTween.tween(bg.color, {redFloat: colores.redFloat}, 1, {ease: FlxEase.elasticInOut});
+		// FlxTween.tween(bg.color, {greenFloat: colores.greenFloat}, 1, {ease: FlxEase.elasticInOut});
+		// FlxTween.tween(bg.color, {redFloat: colores.redFloat}, 1, {ease: FlxEase.elasticInOut});
+		// FlxTween.tween(bg, {
+		// 	color:{
+		// 	redFloat: colores.redFloat,
+		// 	greenFloat: colores.greenFloat,
+		// 	blueFloat: colores.blueFloat
+		// 	}
+		// }, 1, {ease: FlxEase.elasticInOut});
+		FlxTween.color(bg, 1, bg.color, colores, {ease: FlxEase.linear}); //JOELwindows7: FINALLY!!!
+		// bg.color = colores;
 	}
 
 	override function manageMouse()

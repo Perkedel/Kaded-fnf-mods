@@ -6,7 +6,7 @@ import flixel.FlxState;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import openfl.events.Event;
-#if (cpp && !mobile && !mac && !linux) //JOELwindows7: no mac or linux support yet unfortunately
+#if (FEATURE_VLC) //JOELwindows7: no mac or linux support yet unfortunately
 import vlc.VlcBitmap;
 #end
 
@@ -20,10 +20,10 @@ class MP4Handler
 	public var bitmap:VlcBitmap;
 
 	public var sprite:FlxSprite;
-	
+
 	public function new()
 	{
-		//FlxG.autoPause = false;
+		// FlxG.autoPause = false;
 
 		if (FlxG.sound.music != null)
 		{
@@ -55,8 +55,6 @@ class MP4Handler
 			bitmap.set_height(FlxG.stage.stageWidth / (16 / 9));
 		}
 
-		
-
 		bitmap.onVideoReady = onVLCVideoReady;
 		bitmap.onComplete = onVLCComplete;
 		bitmap.onError = onVLCError;
@@ -64,7 +62,7 @@ class MP4Handler
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
 		if (repeat)
-			bitmap.repeat = -1; 
+			bitmap.repeat = -1;
 		else
 			bitmap.repeat = 0;
 

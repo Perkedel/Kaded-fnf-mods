@@ -103,6 +103,8 @@ class TitleState extends MusicBeatState
 
 		// JOELwindows7: TentaRJ GameJolter
 		#if gamejolt
+		// Main.gjToastManager.createToast(Paths.image("art/LFMicon64"), "Cool and good", "Welcome to Last Funkin Moments",
+		// 	false); // JOELwindows7: create GameJolt Toast here.
 		GameJoltAPI.connect();
 		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
 		#end
@@ -301,8 +303,6 @@ class TitleState extends MusicBeatState
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);
-
-			//Main.gjToastManager.createToast(); // JOELwindows7: create GameJolt Toast here.
 
 			initialized = true;
 		}
