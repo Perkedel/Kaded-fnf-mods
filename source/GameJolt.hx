@@ -68,7 +68,9 @@ package;
 // GameJolt things
 import flixel.addons.ui.FlxUIState;
 import haxe.iterators.StringIterator;
+#if gamejolt //JOELwindows7: here gamejolt if definition
 import tentools.api.FlxGameJolt as GJApi;
+#end
 // Login things
 import flixel.ui.FlxButton;
 import flixel.text.FlxText;
@@ -93,6 +95,7 @@ import openfl.display.Sprite;
 
 using StringTools;
 
+#if gamejolt // JOELwindows7: unfortunately the systool does not have arm support.
 class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 {
 	/**
@@ -705,6 +708,7 @@ class GameJoltLogin extends MusicBeatSubstate
 		#end
 	}
 }
+#end // JOELwindows7: end here pls for Gamejolt if definitions
 
 /*The toast things, pulled from Hololive Funkin
  * Thank you Firubii for the code for this!
@@ -888,8 +892,12 @@ class Toast extends Sprite
 
 		title = new TextField();
 		title.text = titleText;
-		// TODO: JOELwindows7: make fallback for if GameJolt not supported! Don't depend on GameJolt stuff if not supported
+		// JOELwindows7: make fallback for if GameJolt not supported! Don't depend on GameJolt stuff if not supported
+		#if gamejolt
 		title.setTextFormat(new TextFormat(openfl.utils.Assets.getFont(GameJoltInfo.fontPath).fontName, 24, 0xFFFF00, true));
+		#else
+		title.setTextFormat(new TextFormat(openfl.utils.Assets.getFont("assets/fonts/vcr.ttf").fontName, 24, 0xFFFF00, true));
+		#end
 		title.wordWrap = true;
 		title.width = 360;
 		if (iconPath != null)

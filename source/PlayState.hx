@@ -6466,7 +6466,7 @@ class PlayState extends MusicBeatState
 			case 1:
 				AchievementUnlocked.whichIs("anSpook");
 			case 6:
-				Main.gjToastManager.createToast(null, "No Tankman", "Week 7 still not released!!!");
+				createToast(null, "No Tankman", "Week 7 still not released!!!");
 				AchievementUnlocked.whichIs("tankman_in_embargo");
 			default:
 				trace("week completa");
@@ -6480,7 +6480,7 @@ class PlayState extends MusicBeatState
 		switch (curSong)
 		{
 			case 'ku-tetap-cinta-yesus':
-				Main.gjToastManager.createToast(null, "Forgiven", "Sarvente is not eligible to access Heaven again! Welcome home.");
+				createToast(null, "Forgiven", "Sarvente is not eligible to access Heaven again! Welcome home.");
 			default:
 				trace("an song complete");
 		}

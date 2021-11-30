@@ -471,6 +471,19 @@ class CoreState extends FlxUIState{
 		qmovephBekgron.startDoing();
 	}
 
+	/**
+	 * Create Toast message using TentaRJ x Firubii technology
+	 * @author JOELwindows7
+	 * @param iconPath the path to the icon image file
+	 * @param title title of the toast message
+	 * @param description description of the toast message
+	 * @param sound whether to play a sound or not
+	 */
+	public function createToast(iconPath:String, title:String, description:String, sound:Bool = false)
+	{
+		Main.gjToastManager.createToast(iconPath, title, description, sound);
+	}
+
 	function manageMouse():Void
 	{
 		// JOELwindows7: nothing. use this special update to manage mouse
@@ -670,6 +683,10 @@ class CoreSubState extends FlxSubState{
 			viewReplayButton.cameras = [camControl];
 		add(viewReplayButton);
 		return viewReplayButton;
+	}
+
+	public function createToast(iconPath:String, title:String, description:String, sound:Bool = false){
+		Main.gjToastManager.createToast(iconPath, title, description, sound);
 	}
 
 	function manageMouse():Void

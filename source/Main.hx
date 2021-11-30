@@ -51,10 +51,8 @@ class Main extends Sprite
 	public static var chosenMark:String = 'odysee'; // Whether to put chosen watermark litterally anywhere
 	public static var chosenMarkNum:Int = 0;
 
-	#if gamejolt
 	public static var gjToastManager:GJToastManager; // JOELwindows7: TentaRJ Gamejolter now has Toast yey! FORMATTER STOP PECK THIS UP FEMALE DOG!!!
 
-	#end
 	// JOELwindows7: Please no demonic reference about Mark of what the peck!
 	/*
 		// public static var midiIn:MidiIn; //JOELwindows7: Grig MIDI in
@@ -139,9 +137,7 @@ class Main extends Sprite
 		#end
 
 		// JOELwindows7: install the toast for GameJolter
-		#if gamejolt
 		gjToastManager = new GJToastManager();
-		#end
 
 		// JOELwindows7: Friggin Screen Grab functions
 		// inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
@@ -224,10 +220,8 @@ class Main extends Sprite
 		});
 		#end
 		// JOELwindows7: finally, have a GameJolt toast
-		#if gamejolt
 		addChild(gjToastManager); // Needs to be added after the game. that's how stack workss
 		gjToastManager.createToast(Paths.image("art/LFMicon128"), "Cool and good", "Welcome to Last Funkin Moments", false);
-		#end
 
 		// JOELwindows7: GameBanana seems notorious.
 		// let's just hide everything that "trashworthy" / "blammworthy"
