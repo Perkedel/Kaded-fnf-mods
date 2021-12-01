@@ -1728,9 +1728,9 @@ class ChartingState extends MusicBeatState
 						nums.value = 0;
 					curSelectedNote[2] = nums.value;
 					updateGrid();
-				
+
 				case 'note_noteType':
-					//JOELwindows7: the note type! mine or normal!
+					// JOELwindows7: the note type! mine or normal!
 					if (curSelectedNote == null)
 						return;
 
@@ -2871,8 +2871,7 @@ class ChartingState extends MusicBeatState
 			if (curSelectedNote[5] != null)
 			{
 				curSelectedNote[5] += value;
-				curSelectedNote[5] = Math.max(curSelectedNote[5], 0); //make sure not go minus
-
+				curSelectedNote[5] = Math.max(curSelectedNote[5], 0); // make sure not go minus
 			}
 		}
 
@@ -3735,7 +3734,8 @@ class ChartingState extends MusicBeatState
 		_file = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
 		// JOELwindows7: trace the success & sound it
-		trace("Yay level saved! cool and good");
+		Debug.logInfo("Yay level saved! cool and good");
+		createToast(null, "Save Complete yay!", "Chart saved successfully! cool and good.");
 		FlxG.sound.play(Paths.sound("saveSuccess"));
 	}
 
@@ -3749,7 +3749,7 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		// JOELwindows7: trace cancel
-		trace("nvm! save canceled");
+		Debug.logInfo("nvm! save canceled");
 	}
 
 	/**
@@ -3763,7 +3763,8 @@ class ChartingState extends MusicBeatState
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
 		// JOELwindows7: also trace the error & sound it
-		trace("Weror! problem saving data");
+		Debug.logError("Weror! problem saving data");
+		createToast(null, "Oh no! Our table", "It's brogen! Problem saving level data. warm and bad!");
 		FlxG.sound.play(Paths.sound('cancelMenu'));
 	}
 }

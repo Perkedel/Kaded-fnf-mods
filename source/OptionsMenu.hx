@@ -793,7 +793,11 @@ class OptionsMenu extends CoreSubState
 	public static function switchState(ofHere:FlxState)
 	{
 		if (isInPause)
+		{
+			// JOELwindows7: it's static method, you cannot access any instance method of this class.
+			Main.gjToastManager.createToast(null, "Cannot access option", "Please leave the gameplay before accessing this option.");
 			return;
+		}
 		FlxG.switchState(ofHere);
 	}
 

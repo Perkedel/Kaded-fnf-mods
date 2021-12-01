@@ -2486,8 +2486,6 @@ class SurroundTestOption extends Option
 
 	public override function press():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		OptionsMenu.switchState(new LimeAudioBufferTester());
@@ -2514,8 +2512,6 @@ class AnVideoCutscenerTestOption extends Option
 
 	public override function press():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		OptionsMenu.switchState(new AnWebmer());
@@ -2542,8 +2538,6 @@ class AnStarfieldTestOption extends Option
 
 	public override function press():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		OptionsMenu.switchState(new AnStarfielde());
@@ -2570,8 +2564,6 @@ class AnDefaultBekgronTestOption extends Option
 
 	public override function press():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		OptionsMenu.switchState(new AnDefaultBekgronde());
@@ -2598,8 +2590,6 @@ class AnMIDITestOption extends Option
 
 	public override function press():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		// FlxG.switchState(new AnMIDIyeay());
@@ -2771,12 +2761,13 @@ class LogGameJoltIn extends Option
 
 	public override function press():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
 		#if gamejolt
 		OptionsMenu.switchState(new GameJoltLogin());
-		#end
 		return true;
+		#else
+		Main.gjToastManager.createToast(null,"GameJolt not supported","Sorry, your platform does not support GameJolt.");
+		return false;
+		#end
 	}
 
 	private override function updateDisplay():String
