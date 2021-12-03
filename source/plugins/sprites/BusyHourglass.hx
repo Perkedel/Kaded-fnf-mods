@@ -38,3 +38,8 @@ class BusyHourglass extends FlxSprite{
         updateHitbox();
     }
 }
+
+//Test import random stuff
+// import flixel.FlxG;
+// import plugins.sprites.DVDScreenSaver;
+//nope! this is not allowed after declaration

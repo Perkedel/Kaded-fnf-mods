@@ -102,6 +102,11 @@ jobs:
           dir
           pwd
       
+      - name: TEMP patch FlxAction.hx workaround
+        run: |
+          wget "https://gist.github.com/JOELwindows7/118b3a40a76d60e701399a61fb5e1c2d/raw/fef2b6649a4b51d76f912459ef3f107b4bd25905/FlxAction.hx" -O %HAXELIB_ROOT%\HaxeToolkit\haxe\lib\flixel\4,10,0\flixel\input\actions\FlxAction.hx
+
+      
       - name: Setup Android support
         run: |
           haxelib run lime config ANDROID_SDK "%ANDROID_SDK_LOC%"
