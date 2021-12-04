@@ -1447,9 +1447,10 @@ class Stage extends MusicBeatState
 					// theBg.color.greenFloat = multiOriginalColor[theBg.ID].greenFloat;
 					// theBg.color.blueFloat = multiOriginalColor[theBg.ID].greenFloat;
 					// FlxTween.color(theBg, inHowLong, theBg.color, multiOriginalColor[theBg.ID],
-					FlxTween.color(theBg, inHowLong, theBg.color, multiOriginalColor[counte], {ease: FlxEase.linear});
-					// if (multiIsChromaScreen[theBg.ID])
-					if (multiIsChromaScreen[counte])
+					FlxTween.color(theBg, inHowLong, theBg.color, multiOriginalColor[theBg.ID], {ease: FlxEase.linear});
+					// FlxTween.color(theBg, inHowLong, theBg.color, multiOriginalColor[counte], {ease: FlxEase.linear});
+					if (multiIsChromaScreen[theBg.ID])
+					// if (multiIsChromaScreen[counte])
 						theBg.visible = false;
 					counte++;
 				});
