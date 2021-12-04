@@ -1112,26 +1112,26 @@ class ModchartState
 				// Just don't touch this.
 			});
 
-		Lua_helper.add_callback(lua, "randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0)
+		Lua_helper.add_callback(lua, "randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0)
 		{
-			PlayState.Stage.randomizeColoring(justOne, toWhichBg);
+			PlayState.Stage.randomizeColoring(justOne, toWhichBg, inHowLong);
 			// ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
 			// and you, Haxe Language Server laggs on purpose
 			// hence I blinded & mistyped!!! C'MON!!!! REALLY??!?!
 		});
 
-		Lua_helper.add_callback(lua, "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0)
+		Lua_helper.add_callback(lua, "chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0, inHowLong:Float = 0)
 		{
-			PlayState.Stage.chooseColoringColor(FlxColor.fromString(color.trim()), justOne, toWhichBg);
+			PlayState.Stage.chooseColoringColor(FlxColor.fromString(color.trim()), justOne, toWhichBg, inHowLong);
 			// hmm, I am afraid using raw FlxColor data doing won't work.
 			// You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
 			// so, maybe you should use the.. string version?
 			// so here it is. the FlxCOlor.fromString() is magic. it can understand 0x000000, #FFFFFFFF, or even Name!!! wow!!
 		});
 
-		Lua_helper.add_callback(lua, "hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0)
+		Lua_helper.add_callback(lua, "hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0)
 		{
-			PlayState.Stage.hideColoring(justOne, toWhichBg);
+			PlayState.Stage.hideColoring(justOne, toWhichBg, inHowLong);
 			// hide the colorings
 		});
 
@@ -1179,13 +1179,10 @@ class ModchartState
 				Controls.vibrate(player, duration, period, strengthLeft, strengthRight);
 			});
 
-		Lua_helper.add_callback(lua, "gameJoltToast", function(iconPath:String = "", title:String = "", description:String = "", sound:Bool = false)
+		Lua_helper.add_callback(lua, "createToast", function(iconPath:String = "", title:String = "", description:String = "", sound:Bool = false)
 		{
 			// JOELwindows7: gamejolt toast
-			#if gamejolt
 			Main.gjToastManager.createToast(iconPath, title, description, sound);
-			#else
-			#end
 		});
 		// end more special functions
 		// So you don't have to hard code your cool effects.

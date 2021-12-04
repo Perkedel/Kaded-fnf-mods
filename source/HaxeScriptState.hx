@@ -1374,28 +1374,28 @@ class HaxeScriptState
 				// Just don't touch this.
 			});
 
-		addCallback("randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0)
+		addCallback("randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0)
 		{
 			// trace("wattempt script randomize color");
-			PlayState.Stage.randomizeColoring(justOne, toWhichBg);
+			PlayState.Stage.randomizeColoring(justOne, toWhichBg, inHowLong);
 			// ARE YOU SERIOUS??!?!? i SUPPOSED TO MEANT randomizeColoring not randomizeColor
 			// and you, Haxe Language Server laggs on purpose
 			// hence I blinded & mistyped!!! C'MON!!!! REALLY??!?!
 		});
 
-		addCallback("chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0)
+		addCallback("chooseColoringColor", function(color:String = "WHITE", justOne:Bool = true, toWhichBg:Int = 0, inHowLong:Float = 0)
 		{
 			trace("wattempt script choose color " + color);
-			PlayState.Stage.chooseColoringColor(FlxColor.fromString(color.trim()), justOne, toWhichBg);
+			PlayState.Stage.chooseColoringColor(FlxColor.fromString(color.trim()), justOne, toWhichBg, inHowLong);
 			// hmm, I am afraid using raw FlxColor data doing won't work.
 			// You see, I believe Lua can't have weird datatype other than Int, Float, String, Array, something like that.
 			// so, maybe you should use the.. string version?
 			// so here it is. the FlxCOlor.fromString() is magic. it can understand 0x000000, #FFFFFFFF, or even Name!!! wow!!
 		});
 
-		addCallback("hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0)
+		addCallback("hideColoring", function(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0)
 		{
-			PlayState.Stage.hideColoring(justOne, toWhichBg);
+			PlayState.Stage.hideColoring(justOne, toWhichBg, inHowLong);
 			// hide the colorings
 		});
 
@@ -1442,13 +1442,10 @@ class HaxeScriptState
 			Controls.vibrate(player, duration, period, strengthLeft, strengthRight);
 		});
 
-		addCallback("gameJoltToast", function(iconPath:String = "", title:String = "", description:String = "", sound:Bool = false)
+		addCallback("createToast", function(iconPath:String = "", title:String = "", description:String = "", sound:Bool = false)
 		{
 			// JOELwindows7: gamejolt toast
-			#if gamejolt
 			Main.gjToastManager.createToast(iconPath, title, description, sound);
-			#else
-			#end
 		});
 		// end more special functions
 		// So you don't have to hard code your cool effects.

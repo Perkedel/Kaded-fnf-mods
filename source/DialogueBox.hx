@@ -47,6 +47,12 @@ class DialogueBox extends FlxSpriteGroup
 	var customBfPls:Bool = false;
 	var customGfPls:Bool = false;
 
+	// JOELwindows7: We found out that there is prefix according to Flixel demo FlxType
+	// https://haxeflixel.com/demos/FlxTypeText/
+	var prefixDad:String = 'DialogueBox Dad';
+	var prefixBf:String = 'DialogueBox Bf';
+	var prefixGf:String = 'DialogueBox Gf';
+
 	// JOELwindows7: own FlxSound because generate song destroyed the intro music
 	var sound:FlxSound;
 
@@ -461,6 +467,10 @@ class DialogueBox extends FlxSpriteGroup
 		switch (curCharacter)
 		{
 			case 'dad':
+				// JOELwindows7: YEY the prefix
+				// prefixDad = PlayState.SONG.player2.toUpperCase();
+				prefixDad = PlayState.dad.name;
+				swagDialogue.prefix = prefixDad + ": ";
 				portraitRight.visible = false;
 				portraitMiddle.visible = false;
 				if (!portraitLeft.visible)
@@ -470,6 +480,18 @@ class DialogueBox extends FlxSpriteGroup
 				}
 				switch (PlayState.SONG.player2.toLowerCase())
 				{ // JOELwindows7: HAHA! different character sound go brrrrr!!!
+					// case 'bf-covid':
+					// 	// JOELwindows7: reconvert to regular name
+					// 	prefixDad = 'Boyfriend';
+					// 	swagDialogue.prefix = prefixDad + ": ";
+					// case 'gf-covid':
+					// 	// JOELwindows7: reconvert to regular name
+					// 	prefixDad = 'Girlfriend';
+					// 	swagDialogue.prefix = prefixDad + ": ";
+					// case 'gf-ht':
+					// 	// JOELwindows7: idk what's the name of this TV
+					// 	prefixDad = 'Television';
+					// 	swagDialogue.prefix = prefixDad + ": ";
 					case 'hookx':
 						dropText.font = 'Ubuntu Bold';
 						swagDialogue.font = 'Ubuntu Bold';
@@ -488,6 +510,11 @@ class DialogueBox extends FlxSpriteGroup
 						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 				}
 			case 'bf':
+				// JOELwindows7: YEY the prefix
+				// prefixBf = PlayState.SONG.player1.toUpperCase();
+				prefixBf = PlayState.boyfriend.name;
+				// TODO: JOELwindows7: use name field, not ID field
+				swagDialogue.prefix = prefixBf + ": ";
 				portraitLeft.visible = false;
 				portraitMiddle.visible = false;
 				if (!portraitRight.visible)
@@ -497,6 +524,18 @@ class DialogueBox extends FlxSpriteGroup
 				}
 				switch (PlayState.SONG.player1.toLowerCase())
 				{ // JOELwindows7: HAHA! different character sound go brrrrr!!!
+					// case 'bf-covid':
+					// 	// JOELwindows7: reconvert to regular name
+					// 	prefixBf = 'Boyfriend';
+					// 	swagDialogue.prefix = prefixBf + ": ";
+					// case 'gf-covid':
+					// 	// JOELwindows7: reconvert to regular name
+					// 	prefixBf = 'Girlfriend';
+					// 	swagDialogue.prefix = prefixBf + ": ";
+					// case 'gf-ht':
+					// 	// JOELwindows7: idk what's the name of this TV
+					// 	prefixBf = 'Television';
+					// 	swagDialogue.prefix = prefixBf + ": ";
 					case 'hookx':
 						dropText.font = 'Ubuntu Bold';
 						swagDialogue.font = 'Ubuntu Bold';
@@ -515,6 +554,10 @@ class DialogueBox extends FlxSpriteGroup
 						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 				}
 			case 'gf':
+				// JOELwindows7: YEY prefix
+				// prefixGf = PlayState.SONG.gfVersion.toUpperCase();
+				prefixGf = PlayState.gf.name;
+				swagDialogue.prefix = prefixGf + ": ";
 				portraitRight.visible = false;
 				portraitLeft.visible = false;
 				if (!portraitMiddle.visible)
@@ -524,6 +567,18 @@ class DialogueBox extends FlxSpriteGroup
 				}
 				switch (PlayState.SONG.gfVersion.toLowerCase())
 				{ // JOELwindows7: HAHA! different character sound go brrrrr!!!
+					// case 'bf-covid':
+					// 	// JOELwindows7: reconvert to regular name
+					// 	prefixGf = 'Boyfriend';
+					// 	swagDialogue.prefix = prefixGf + ": ";
+					// case 'gf-covid':
+					// 	// JOELwindows7: reconvert to regular name
+					// 	prefixDad = 'Girlfriend';
+					// 	swagDialogue.prefix = prefixGf + ": ";
+					// case 'gf-ht':
+					// 	// JOELwindows7: idk what's the name of this TV
+					// 	prefixGf = 'Television';
+					// 	swagDialogue.prefix = prefixGf + ": ";
 					default:
 						dropText.font = 'Pixel Arial 11 Bold';
 						swagDialogue.font = 'Pixel Arial 11 Bold';
@@ -534,6 +589,7 @@ class DialogueBox extends FlxSpriteGroup
 			default:
 				// JOELwindows7: use character folder image fully instead
 				// initiatePortraitCustom();
+				swagDialogue.prefix = curCharacter.toUpperCase() + ": ";
 		}
 		swagDialogue.width = Std.int(FlxG.width * .6); // JOELwindows7: don't forget to refresh the width!
 	}

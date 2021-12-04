@@ -1295,11 +1295,12 @@ class Stage extends MusicBeatState
 	}
 
 	// JOELwindows7: randomize the color of the colorableGround
-	public function randomizeColoring(justOne:Bool = false, toWhichBg:Int = 0)
+	public function randomizeColoring(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0)
 	{
 		var red:Float = FlxG.random.float(0.0, 1.0);
 		var green:Float = FlxG.random.float(0.0, 1.0);
 		var blue:Float = FlxG.random.float(0.0, 1.0);
+		// var color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
 		if (swagBacks['colorableGround'] != null)
 		{
 			// colorableGround.visible = true;
@@ -1309,9 +1310,13 @@ class Stage extends MusicBeatState
 			// colorableGround.color.blueFloat = blue;
 			swagBacks['colorableGround'].visible = true;
 			// swagBacks['colorableGround'].color = FlxColor.fromRGBFloat(red, green, blue);
-			swagBacks['colorableGround'].color.redFloat = red;
-			swagBacks['colorableGround'].color.greenFloat = green;
-			swagBacks['colorableGround'].color.blueFloat = blue;
+			// swagBacks['colorableGround'].color.redFloat = red;
+			// swagBacks['colorableGround'].color.greenFloat = green;
+			// swagBacks['colorableGround'].color.blueFloat = blue;
+			FlxTween.color(swagBacks['colorableGround'], inHowLong, swagBacks['colorableGround'].color,
+				FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0)), {
+					ease: FlxEase.linear
+				});
 			// trace("now colorable color is " + colorableGround.color.toHexString());
 		}
 		if (swagGroup['bgAll'] != null)
@@ -1320,9 +1325,13 @@ class Stage extends MusicBeatState
 				swagGroup['bgAll'].members[toWhichBg].visible = true;
 				swagGroup['bgAll'].members[toWhichBg].color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0),
 					FlxG.random.float(0.0, 1.0));
-				swagGroup['bgAll'].members[toWhichBg].color.redFloat = FlxG.random.float(0.0, 1.0);
-				swagGroup['bgAll'].members[toWhichBg].color.greenFloat = FlxG.random.float(0.0, 1.0);
-				swagGroup['bgAll'].members[toWhichBg].color.blueFloat = FlxG.random.float(0.0, 1.0);
+				// swagGroup['bgAll'].members[toWhichBg].color.redFloat = FlxG.random.float(0.0, 1.0);
+				// swagGroup['bgAll'].members[toWhichBg].color.greenFloat = FlxG.random.float(0.0, 1.0);
+				// swagGroup['bgAll'].members[toWhichBg].color.blueFloat = FlxG.random.float(0.0, 1.0);
+				FlxTween.color(swagGroup['bgAll'].members[toWhichBg], inHowLong, swagGroup['bgAll'].members[toWhichBg].color,
+					FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0)), {
+						ease: FlxEase.linear
+					});
 				/*
 					trace("now bg "
 						+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
@@ -1338,9 +1347,13 @@ class Stage extends MusicBeatState
 					{
 						theBg.visible = true;
 						// theBg.color = FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0));
-						theBg.color.redFloat = FlxG.random.float(0.0, 1.0);
-						theBg.color.greenFloat = FlxG.random.float(0.0, 1.0);
-						theBg.color.blueFloat = FlxG.random.float(0.0, 1.0);
+						// theBg.color.redFloat = FlxG.random.float(0.0, 1.0);
+						// theBg.color.greenFloat = FlxG.random.float(0.0, 1.0);
+						// theBg.color.blueFloat = FlxG.random.float(0.0, 1.0);
+						FlxTween.color(theBg, inHowLong, theBg.color,
+							FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0)), {
+								ease: FlxEase.linear
+							});
 						// trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
 					}
 				});
@@ -1348,15 +1361,16 @@ class Stage extends MusicBeatState
 	}
 
 	// JOELwindows7: copy above, but this let you choose color
-	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE, justOne:Bool = true, toWhichBg:Int = 0)
+	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE, justOne:Bool = true, toWhichBg:Int = 0, inHowLong:Float = 0)
 	{
 		if (swagBacks['colorableGround'] != null)
 		{
 			swagBacks['colorableGround'].visible = true;
 			// swagBacks['colorableGround'].color = color;
-			swagBacks['colorableGround'].color.redFloat = color.redFloat;
-			swagBacks['colorableGround'].color.greenFloat = color.greenFloat;
-			swagBacks['colorableGround'].color.blueFloat = color.blueFloat;
+			// swagBacks['colorableGround'].color.redFloat = color.redFloat;
+			// swagBacks['colorableGround'].color.greenFloat = color.greenFloat;
+			// swagBacks['colorableGround'].color.blueFloat = color.blueFloat;
+			FlxTween.color(swagBacks['colorableGround'], inHowLong, swagBacks['colorableGround'].color, color, {ease: FlxEase.linear});
 			// colorableGround.color = color;
 			// trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
 		}
@@ -1366,9 +1380,10 @@ class Stage extends MusicBeatState
 			{
 				swagGroup['bgAll'].members[toWhichBg].visible = true;
 				// swagGroup['bgAll'].members[toWhichBg].color = color;
-				swagGroup['bgAll'].members[toWhichBg].color.redFloat = color.redFloat;
-				swagGroup['bgAll'].members[toWhichBg].color.greenFloat = color.greenFloat;
-				swagGroup['bgAll'].members[toWhichBg].color.blueFloat = color.blueFloat;
+				// swagGroup['bgAll'].members[toWhichBg].color.redFloat = color.redFloat;
+				// swagGroup['bgAll'].members[toWhichBg].color.greenFloat = color.greenFloat;
+				// swagGroup['bgAll'].members[toWhichBg].color.blueFloat = color.blueFloat;
+				FlxTween.color(swagGroup['bgAll'].members[toWhichBg], inHowLong, swagGroup['bgAll'].members[toWhichBg].color, color, {ease: FlxEase.linear});
 				/*
 					trace("now bg "
 						+ Std.string(swagGroup['bgAll'].members[toWhichBg].ID)
@@ -1384,9 +1399,10 @@ class Stage extends MusicBeatState
 					{
 						theBg.visible = true;
 						// theBg.color = color;
-						theBg.color.redFloat = color.redFloat;
-						theBg.color.greenFloat = color.greenFloat;
-						theBg.color.blueFloat = color.blueFloat;
+						// theBg.color.redFloat = color.redFloat;
+						// theBg.color.greenFloat = color.greenFloat;
+						// theBg.color.blueFloat = color.blueFloat;
+						FlxTween.color(theBg, inHowLong, theBg.color, color, {ease: FlxEase.linear});
 						// trace("now bg " + Std.string(theBg.ID) + " color is " + theBg.color.toHexString());
 					}
 				});
@@ -1395,15 +1411,17 @@ class Stage extends MusicBeatState
 	}
 
 	// JOELwindows7: To hide coloring incase you don't need it anymore
-	public function hideColoring(justOne:Bool = false, toWhichBg:Int = 0)
+	public function hideColoring(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0)
 	{
+		
 		if (swagBacks['colorableGround'] != null)
 			if (isChromaScreen)
 			{
 				// swagBacks['colorableGround'].color = originalColor;
-				swagBacks['colorableGround'].color.redFloat = originalColor.redFloat;
-				swagBacks['colorableGround'].color.greenFloat = originalColor.greenFloat;
-				swagBacks['colorableGround'].color.blueFloat = originalColor.blueFloat;
+				// swagBacks['colorableGround'].color.redFloat = originalColor.redFloat;
+				// swagBacks['colorableGround'].color.greenFloat = originalColor.greenFloat;
+				// swagBacks['colorableGround'].color.blueFloat = originalColor.blueFloat;
+				FlxTween.color(swagBacks['colorableGround'], inHowLong, swagBacks['colorableGround'].color, originalColor, {ease: FlxEase.linear});
 			}
 			else
 				swagBacks['colorableGround'].visible = false;
@@ -1414,18 +1432,27 @@ class Stage extends MusicBeatState
 				swagGroup['bgAll'].members[toWhichBg].color.redFloat = multiOriginalColor[toWhichBg].redFloat;
 				swagGroup['bgAll'].members[toWhichBg].color.greenFloat = multiOriginalColor[toWhichBg].greenFloat;
 				swagGroup['bgAll'].members[toWhichBg].color.blueFloat = multiOriginalColor[toWhichBg].blueFloat;
+				FlxTween.color(swagGroup['bgAll'].members[toWhichBg], inHowLong, swagGroup['bgAll'].members[toWhichBg].color, multiOriginalColor[toWhichBg],
+					{ease: FlxEase.linear});
 				if (multiIsChromaScreen[toWhichBg])
 					swagGroup['bgAll'].members[toWhichBg].visible = false;
 			}
 			else
+			{
+				var counte:Int = 0;
 				swagGroup['bgAll'].forEach(function(theBg:FlxSprite)
 				{
 					// theBg.color = multiOriginalColor[theBg.ID];
-					theBg.color.redFloat = multiOriginalColor[theBg.ID].redFloat;
-					theBg.color.greenFloat = multiOriginalColor[theBg.ID].greenFloat;
-					theBg.color.blueFloat = multiOriginalColor[theBg.ID].greenFloat;
-					if (multiIsChromaScreen[theBg.ID])
+					// theBg.color.redFloat = multiOriginalColor[theBg.ID].redFloat;
+					// theBg.color.greenFloat = multiOriginalColor[theBg.ID].greenFloat;
+					// theBg.color.blueFloat = multiOriginalColor[theBg.ID].greenFloat;
+					// FlxTween.color(theBg, inHowLong, theBg.color, multiOriginalColor[theBg.ID],
+					FlxTween.color(theBg, inHowLong, theBg.color, multiOriginalColor[counte], {ease: FlxEase.linear});
+					// if (multiIsChromaScreen[theBg.ID])
+					if (multiIsChromaScreen[counte])
 						theBg.visible = false;
+					counte++;
 				});
+			}
 	}
 }

@@ -2746,12 +2746,13 @@ class PlayState extends MusicBeatState
 				// Song ends abruptly on slow rate even with second condition being deleted,
 				// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
 				// so no reason to delete it at all
-				if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 100))
+				//JOELwindows7: hey don't early songLength that 100 early wtf? was 100 less, now 50 less.. idk
+				if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 50))
 				{
 					Debug.logTrace("we're fuckin ending the song ");
 
 					endingSong = true;
-					new FlxTimer().start(5, function(timer) // JOELwindows7: it was 2, now extend to 5!!!
+					new FlxTimer().start(3, function(timer) // JOELwindows7: it was 2, now extend to 5!!! nvm, 3! yess.
 					{
 						// endSong();
 						checkEpilogueChat(); // JOELwindows7: you sneaky little punk!
