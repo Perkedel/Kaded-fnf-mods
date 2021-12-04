@@ -4576,7 +4576,7 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
-				trace('WENT BACK TO FREEPLAY??');
+				Debug.logInfo('WENT BACK TO FREEPLAY??');
 
 				paused = true;
 
