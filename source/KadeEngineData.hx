@@ -226,8 +226,8 @@ class KadeEngineData
 		Main.perkedelMark = FlxG.save.data.perkedelMark;
 		FlxG.fullscreen = FlxG.save.data.fullscreen;
 
-		trace("set FPS stuff from setting"); //JOELwindows7: trace this for android crashsures
+		Debug.logInfo("set FPS stuff from setting"); //JOELwindows7: trace this for android crashsures
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-		trace("successfully set FPS settings"); //JOELwindows7: see if Android version crash!
+		Debug.logInfo("successfully set FPS settings"); //JOELwindows7: see if Android version crash!
 	}
 }
