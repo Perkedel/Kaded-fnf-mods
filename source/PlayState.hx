@@ -1584,8 +1584,9 @@ class PlayState extends MusicBeatState
 		// first, hide these botom bars and their icosn
 		// healthBar.visible = false;
 		// healthBarBG.visible = false;
-		iconP1.visible = false;
-		iconP2.visible = false;
+		// iconP1.visible = false;
+		// iconP2.visible = false;
+		// JOELwindows7: no more invisiblize the health icon because that has already layered back now.
 
 		// First, mute the music and vocals. like endSong.
 		// also disable the pause to prevent accident pause by press enter which also moves the dialogue.
