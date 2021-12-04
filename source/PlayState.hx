@@ -2746,7 +2746,7 @@ class PlayState extends MusicBeatState
 				// Song ends abruptly on slow rate even with second condition being deleted,
 				// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
 				// so no reason to delete it at all
-				//JOELwindows7: hey don't early songLength that 100 early wtf? was 100 less, now 50 less.. idk
+				// JOELwindows7: hey don't early songLength that 100 early wtf? was 100 less, now 50 less.. idk
 				if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 50))
 				{
 					Debug.logTrace("we're fuckin ending the song ");
@@ -6481,7 +6481,7 @@ class PlayState extends MusicBeatState
 		switch (curSong)
 		{
 			case 'ku-tetap-cinta-yesus':
-				createToast(null, "Forgiven", "Sarvente is now eligible to access Heaven again! Welcome home.");
+				createToast(null, "Forgiven", "[REDACTED] is now eligible to access Heaven again! Welcome home.");
 			default:
 				trace("an song complete");
 		}

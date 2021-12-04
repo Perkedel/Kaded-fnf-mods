@@ -21,7 +21,8 @@ class Character extends FlxSprite
 
 	public var holdTimer:Float = 0;
 
-	public var name:String = 'Boyfriend'; // JOELwindows7: for showcase name on screen rather than ID
+	public var name:String = 'Boyfriend'; // JOELwindows7: JSON character name, with detaile.
+	public var displayName:String = 'Boyfriend'; // JOELwindows7: for showcase name on screen rather than ID
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -43,6 +44,7 @@ class Character extends FlxSprite
 				case 'gf':
 					//JOELwindows7: deprecated, use JSON file at preload/data/characters/gf.json and so on.
 					name = "Girlfriend"; // JOELwindows7: name it
+					displayName = "Girlfriend"; // JOELwindows7: display name it
 					// GIRLFRIEND CODE
 					tex = Paths.getSparrowAtlas('GF_assets','shared',true);
 					frames = tex;
@@ -66,6 +68,7 @@ class Character extends FlxSprite
 			case 'gf-ht':
 				// JOELwindows7: copy from above GIRLFRIEND CODE
 				name = "Television"; // JOELwindows7: name it
+				displayName = "Television"; // JOELwindows7: display name it
 				tex = Paths.getSparrowAtlas('characters/gfHomeTheater');
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
@@ -102,6 +105,7 @@ class Character extends FlxSprite
 			case 'gf-covid':
 				// JOELwindows7: copy from that GIRLFRIEND CODE
 				name = "Girlfriend"; // JOELwindows7: name it
+				displayName = "Girlfriend"; // JOELwindows7: display name it
 				tex = Paths.getSparrowAtlas('GF-covid_assets', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
@@ -122,7 +126,8 @@ class Character extends FlxSprite
 
 				barColor = 0xFFFF0000;
 			case 'gf-christmas':
-				name = "Girlfriend"; // JOELwindows7: name it
+				name = "Girlfriend (Christmas)"; // JOELwindows7: name it
+				displayName = "Girlfriend"; // JOELwindows7: display name it
 				tex = Paths.getSparrowAtlas('gfChristmas', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
@@ -142,7 +147,7 @@ class Character extends FlxSprite
 				playAnim('danceRight');
 
 			case 'gf-car':
-				name = "Girlfriend"; // JOELwindows7: name it
+				name = "Girlfriend (Car)"; // JOELwindows7: name it
 				tex = Paths.getSparrowAtlas('gfCar', 'shared', true);
 				frames = tex;
 				animation.addByIndices('singUP', 'GF Dancing Beat Hair blowing CAR', [0], "", 24, false);
@@ -157,6 +162,7 @@ class Character extends FlxSprite
 
 			case 'gf-pixel':
 				name = "Girlfriend"; // JOELwindows7: name it
+				displayName = "Girlfriend"; // JOELwindows7: display name it
 				tex = Paths.getSparrowAtlas('gfPixel', 'shared', true);
 				frames = tex;
 				animation.addByIndices('singUP', 'GF IDLE', [2], "", 24, false);
@@ -173,7 +179,8 @@ class Character extends FlxSprite
 
 			case 'dad':
 				// DAD ANIMATION LOADING CODE
-				name = "Daddy"; // JOELwindows7: name it
+				name = "Daddy Dearest"; // JOELwindows7: name it
+				displayName = "Daddy Dearest"; // JOELwindows7: display name it
 				tex = Paths.getSparrowAtlas('DADDY_DEAREST', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('idle', 'Dad idle dance', 24, false);
@@ -190,6 +197,7 @@ class Character extends FlxSprite
 			case 'hookx':
 				// HOOKX ANIMATION LOADING CODE
 				name = "Hookx"; // JOELwindows7: name it
+				displayName = "Hookx"; // JOELwindows7: display name it
 				// JOELwindows7: bruh you forgot to lowecase the character case name!
 				tex = Paths.getSparrowAtlas('characters/Hookx');
 				frames = tex;
@@ -211,7 +219,8 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 			case 'spooky':
-				name = "Skid & Pump"; // JOELwindows7: name them
+				name = "Skid and Pump"; // JOELwindows7: name them
+				displayName = "Skid and Pump"; // JOELwindows7: display name them
 				tex = Paths.getSparrowAtlas('spooky_kids_assets', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('singUP', 'spooky UP NOTE', 24, false);
@@ -226,7 +235,8 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 			case 'mom':
-				name = "Mommy"; // JOELwindows7: name it
+				name = "Mommy Mearest"; // JOELwindows7: name it
+				displayName = "Mommy Mearest"; // JOELwindows7: display name it
 				tex = Paths.getSparrowAtlas('Mom_Assets', 'shared', true);
 				frames = tex;
 
@@ -245,7 +255,8 @@ class Character extends FlxSprite
 				playAnim('idle');
 
 			case 'mom-car':
-				name = "Mommy"; // JOELwindows7: name it
+				name = "Mommy Mearest (Car)"; // JOELwindows7: name it
+				displayName = "Mommy Mearest"; // JOELwindows7: display name it
 				tex = Paths.getSparrowAtlas('momCar', 'shared', true);
 				frames = tex;
 
@@ -263,7 +274,8 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 			case 'monster':
-				name = "Lemon Demon"; // JOELwindows7: name it
+				name = "Monster"; // JOELwindows7: name it
+				displayName = "Monster"; // JOELwindows7: display name it
 				tex = Paths.getSparrowAtlas('Monster_Assets', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('idle', 'monster idle', 24, false);
@@ -276,7 +288,8 @@ class Character extends FlxSprite
 				barColor = 0xFFf3ff6e;
 				playAnim('idle');
 			case 'monster-christmas':
-				name = "Lemon Demon"; // JOELwindows7: name it
+				name = "Monster (Christmas)"; // JOELwindows7: name it
+				displayName = "Monster"; // JOELwindows7: name it
 				tex = Paths.getSparrowAtlas('monsterChristmas', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('idle', 'monster idle', 24, false);
@@ -290,6 +303,7 @@ class Character extends FlxSprite
 				playAnim('idle');
 			case 'pico':
 				name = "Pico"; // JOELwindows7: name it
+				displayName = "Pico"; // JOELwindows7: display name it
 				tex = Paths.getSparrowAtlas('Pico_FNF_assetss', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('idle', "Pico Idle Dance", 24, false);
@@ -323,6 +337,7 @@ class Character extends FlxSprite
 
 			case 'bf':
 				name = "Boyfriend"; // JOELwindows7: name it
+				displayName = "Boyfriend"; // JOELwindows7: display name it
 				var tex = Paths.getSparrowAtlas('BOYFRIEND', 'shared', true);
 				frames = tex;
 
@@ -355,7 +370,8 @@ class Character extends FlxSprite
 
 			case 'bf-covid':
 				// JOELwindows7: copy paste the bf above, add masker in his face, and mic. also add vaccine injection mark plaster in left arm
-				name = "Boyfriend"; // JOELwindows7: name it
+				name = "Boyfriend (Covid-19)"; // JOELwindows7: name it
+				displayName = "Boyfriend"; // JOELwindows7: display name it
 				// install masker and vaccine injection (all done) Hopefully can fight omicron in case of the worst
 				var tex = Paths.getSparrowAtlas('characters/BOYFRIEND-covid');
 				frames = tex;
@@ -398,7 +414,8 @@ class Character extends FlxSprite
 
 				flipX = true;
 			case 'bf-christmas':
-				name = "Boyfriend"; // JOELwindows7: name it
+				name = "Boyfriend (Christmas)"; // JOELwindows7: name it
+				displayName = "Boyfriend"; // JOELwindows7: display name it
 				var tex = Paths.getSparrowAtlas('bfChristmas', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
@@ -418,7 +435,8 @@ class Character extends FlxSprite
 
 				flipX = true;
 			case 'bf-car':
-				name = "Boyfriend"; // JOELwindows7: name it
+				name = "Boyfriend (Car)"; // JOELwindows7: name it
+				displayName = "Boyfriend"; // JOELwindows7: display name it
 				var tex = Paths.getSparrowAtlas('bfCar', 'shared', true);
 				frames = tex;
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
@@ -439,7 +457,8 @@ class Character extends FlxSprite
 
 				flipX = true;
 			case 'bf-pixel':
-				name = "Boyfriend"; // JOELwindows7: name it
+				name = "Boyfriend (Pixel Day)"; // JOELwindows7: name it
+				displayName = "Boyfriend"; // JOELwindows7: name it
 				frames = Paths.getSparrowAtlas('bfPixel', 'shared', true);
 				animation.addByPrefix('idle', 'BF IDLE', 24, false);
 				animation.addByPrefix('singUP', 'BF UP NOTE', 24, false);
@@ -467,7 +486,8 @@ class Character extends FlxSprite
 
 				flipX = true;
 			case 'bf-pixel-dead':
-				name = "Boyfriend"; // JOELwindows7: name it
+				name = "Boyfriend (Pixel Day) (Game Over)"; // JOELwindows7: name it
+				displayName = "Boyfriend"; // JOELwindows7: displayname it
 				frames = Paths.getSparrowAtlas('bfPixelsDEAD', 'shared', true);
 				animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
 				animation.addByPrefix('firstDeath', "BF Dies pixel", 24, false);
@@ -487,6 +507,7 @@ class Character extends FlxSprite
 
 			case 'senpai':
 				name = "Senpai"; // JOELwindows7: name it
+				displayName = "Senpai"; // JOELwindows7: name it
 				frames = Paths.getSparrowAtlas('senpai', 'shared', true);
 				animation.addByPrefix('idle', 'Senpai Idle', 24, false);
 				animation.addByPrefix('singUP', 'SENPAI UP NOTE', 24, false);
@@ -504,7 +525,8 @@ class Character extends FlxSprite
 
 				antialiasing = false;
 			case 'senpai-angry':
-				name = "Senpai"; // JOELwindows7: name it
+				name = "Senpai (Angry)"; // JOELwindows7: name it
+				displayName = "Senpai"; // JOELwindows7: name it
 				frames = Paths.getSparrowAtlas('senpai', 'shared', true);
 				animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);
 				animation.addByPrefix('singUP', 'Angry Senpai UP NOTE', 24, false);
@@ -522,7 +544,8 @@ class Character extends FlxSprite
 				antialiasing = false;
 
 			case 'spirit':
-				name = "Senpai"; // JOELwindows7: name it
+				name = "Spirit"; // JOELwindows7: name it
+				displayName = "Senpai"; // JOELwindows7: display name it
 				frames = Paths.getPackerAtlas('spirit', 'shared', true);
 				animation.addByPrefix('idle', "idle spirit_", 24, false);
 				animation.addByPrefix('singUP', "up_", 24, false);
@@ -541,7 +564,8 @@ class Character extends FlxSprite
 				antialiasing = false;
 
 			case 'parents-christmas':
-				name = "Mom & Dad"; // JOELwindows7: name it
+				name = "Parents (Christmas)"; // JOELwindows7: name them
+				name = "Mom and Dad"; // JOELwindows7: display name them
 				frames = Paths.getSparrowAtlas('mom_dad_christmas_assets', 'shared', true);
 				animation.addByPrefix('idle', 'Parent Christmas Idle', 24, false);
 				animation.addByPrefix('singUP', 'Parent Up Note Dad', 24, false);
@@ -560,7 +584,8 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 			case 'placeholder' | 'gf-placeholder':
-				name = "?????"; // JOELwindows7: name it
+				name = "Placeholder"; // JOELwindows7: name it
+				displayName = "?????"; // JOELwindows7: name it
 				// JOELwindows7: Placeholder character
 				// For temporary placeholder & gone mods cope machine
 				frames = Paths.getSparrowAtlas('Placeholder', 'shared', true);
@@ -648,6 +673,9 @@ class Character extends FlxSprite
 		var data:CharacterData = cast jsonData;
 
 		name = data.name; // JOELwindows7: name it. wow, Kade and friends prepared that already lol! thancc Eric Millyoja yey cool and good!
+		displayName = data.displayName;
+		if (data.displayName == null) // JOELwindows7: If displayName is empty, copy from name
+			displayName = name;
 		var tex:FlxAtlasFrames = Paths.getSparrowAtlas(data.asset, 'shared');
 		frames = tex;
 		if (frames != null)
@@ -832,6 +860,7 @@ class Character extends FlxSprite
 typedef CharacterData =
 {
 	var name:String;
+	var ?displayName:String; // JOELwindows7: If they have special name, reregular name, or whatever it should be displayed as.
 	var asset:String;
 	var startingAnim:String;
 

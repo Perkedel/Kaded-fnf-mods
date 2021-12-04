@@ -469,7 +469,7 @@ class DialogueBox extends FlxSpriteGroup
 			case 'dad':
 				// JOELwindows7: YEY the prefix
 				// prefixDad = PlayState.SONG.player2.toUpperCase();
-				prefixDad = PlayState.dad.name;
+				prefixDad = PlayState.dad.displayName;
 				swagDialogue.prefix = prefixDad + ": ";
 				portraitRight.visible = false;
 				portraitMiddle.visible = false;
@@ -512,7 +512,7 @@ class DialogueBox extends FlxSpriteGroup
 			case 'bf':
 				// JOELwindows7: YEY the prefix
 				// prefixBf = PlayState.SONG.player1.toUpperCase();
-				prefixBf = PlayState.boyfriend.name;
+				prefixBf = PlayState.boyfriend.displayName;
 				// TODO: JOELwindows7: use name field, not ID field
 				swagDialogue.prefix = prefixBf + ": ";
 				portraitLeft.visible = false;
@@ -556,7 +556,7 @@ class DialogueBox extends FlxSpriteGroup
 			case 'gf':
 				// JOELwindows7: YEY prefix
 				// prefixGf = PlayState.SONG.gfVersion.toUpperCase();
-				prefixGf = PlayState.gf.name;
+				prefixGf = PlayState.gf.displayName;
 				swagDialogue.prefix = prefixGf + ": ";
 				portraitRight.visible = false;
 				portraitLeft.visible = false;
@@ -589,7 +589,7 @@ class DialogueBox extends FlxSpriteGroup
 			default:
 				// JOELwindows7: use character folder image fully instead
 				// initiatePortraitCustom();
-				swagDialogue.prefix = curCharacter.toUpperCase() + ": ";
+				swagDialogue.prefix = curCharacter + ": ";
 		}
 		swagDialogue.width = Std.int(FlxG.width * .6); // JOELwindows7: don't forget to refresh the width!
 	}
