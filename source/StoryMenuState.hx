@@ -74,6 +74,14 @@ class StoryMenuState extends MusicBeatState
 
 	var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 
+	// JOELwindows7: and other text files for that yuss week list.
+	// Yep, in order to make mod core works and loading extra week just by appending the weeklines, we unfortunately
+	// have to abandon JSONed week loading `weekList.json` and use these two above.
+	var weekStuffs:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekStuffs')); // Week Display! Character & Color
+	var weekLoads:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekLoads')); // Week Loads! each lines represents songs in the week
+
+	var legacyJSONWeekList:Bool = false; // JOELwindows7: in case you want to use the old JSONed week list.
+
 	var weekColor:Array<String>;
 
 	var txtWeekTitle:FlxText;
@@ -121,6 +129,36 @@ class StoryMenuState extends MusicBeatState
 		return weeks;
 	}
 
+	function jsonWeekList()
+	{
+		// JOELwindows7: okay fine let's just json it.
+		var initWeekJson = loadFromJson('weekList');
+		weekDatas = initWeekJson.weekData;
+		// weekUnlocked = initWeekJson.weekUnlocked;
+		weekCharacters = initWeekJson.weekCharacters;
+		// weekNames = initWeekJson.weekNames;
+		weekColor = initWeekJson.weekColor;
+	}
+
+	// JOELwindows7: modcore compatible texted week list loading
+	function textedWeekList()
+	{
+		for (i in 0...weekLoads.length)
+		{
+			var weekLine:Array<String> = weekLoads[i].split(':');
+			for (j in 0...weekLine.length)
+			{
+				var song:String = weekLine[j];
+				weekDatas[i].push(song);
+			}
+			var lineStuffs:Array<String> = weekStuffs[i].split(':');
+			weekCharacters[i][0] = lineStuffs[0];
+			weekCharacters[i][1] = lineStuffs[1];
+			weekCharacters[i][2] = lineStuffs[2];
+			weekColor[i] = lineStuffs[3];
+		}
+	}
+
 	override function create()
 	{
 		// JOELwindows7: Do the work for the weeklist pls!
@@ -133,13 +171,11 @@ class StoryMenuState extends MusicBeatState
 			GLORY IS FOREVER
 			LOL wintergatan
 		 */
-		// JOELwindows7: okay fine let's just json it.
-		var initWeekJson = loadFromJson('weekList');
-		weekDatas = initWeekJson.weekData;
-		// weekUnlocked = initWeekJson.weekUnlocked;
-		weekCharacters = initWeekJson.weekCharacters;
-		// weekNames = initWeekJson.weekNames;
-		weekColor = initWeekJson.weekColor;
+		legacyJSONWeekList = true; // JOELwindows7: turn off after you completed new weeklist
+		if (legacyJSONWeekList)
+			jsonWeekList();
+		else
+			textedWeekList();
 
 		weekUnlocked = unlockWeeks();
 
