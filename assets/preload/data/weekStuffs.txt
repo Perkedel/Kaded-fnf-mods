@@ -1,0 +1,13 @@
+:bf:gf:#F9CF51
+dad:bf:gf:#3333ff
+spooky:bf:gf:#3333ff
+pico:bf:gf:#993399
+mom:bf:gf:#ff0066
+parents-christmas:bf:gf:#3366ff
+senpai:bf:gf:pink
+hookx:bf:gf:#66ccff
+senpai:bf:gf:pink
+hookx:bf:gf:white
+hookx:bf:gf:#ffff99
+:bf:gf:red
+hookx:bf:gf:#0050BB
