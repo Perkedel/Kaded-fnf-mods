@@ -50,7 +50,12 @@ typedef SwagWeeks = {
 	var weekCharacters:Array<Dynamic>;
 	var weekNames:Array<String>;
 	var weekColor:Array<String>;
+	var ?weekBannerPath:Array<String>;
+	var ?weekUnderlayPath:Array<String>;
 }
+
+//TODO: JOELwindows7: make granular week data like Psych
+// https://github.com/ShadowMario/FNF-PsychEngine
 
 /**
  * Alright, that's it. I'm pissed off. Let's settle this.

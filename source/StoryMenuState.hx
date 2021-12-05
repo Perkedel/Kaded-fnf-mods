@@ -1,5 +1,6 @@
 package;
 
+import Options.LockWeeksOption;
 import CoreState;
 import GalleryAchievements;
 import flixel.tweens.FlxEase;
@@ -77,12 +78,19 @@ class StoryMenuState extends MusicBeatState
 	// JOELwindows7: and other text files for that yuss week list.
 	// Yep, in order to make mod core works and loading extra week just by appending the weeklines, we unfortunately
 	// have to abandon JSONed week loading `weekList.json` and use these two above.
+	// TODO: week per JSON file Psychedly
+	/*
+		weekStuffs line represents = left char, mid char, right char, color, bannerPath, underlayPath
+	 */
 	var weekStuffs:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekStuffs')); // Week Display! Character & Color
 	var weekLoads:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekLoads')); // Week Loads! each lines represents songs in the week
 
 	var legacyJSONWeekList:Bool = false; // JOELwindows7: in case you want to use the old JSONed week list.
 
-	var weekColor:Array<String>;
+	// JOELwindows7: custom week parameters
+	var weekColor:Array<String>; // LED backlight color
+	var weekBannerPath:Array<String>; // Menu item banner image path
+	var weekUnderlayPath:Array<String>; // LCD underlay image path
 
 	var txtWeekTitle:FlxText;
 
@@ -101,6 +109,7 @@ class StoryMenuState extends MusicBeatState
 	var rightArrow:FlxSprite;
 
 	var yellowBG:FlxSprite; // JOELwindows7: globalize this bg so we can colorize it.
+	var underlayBG:FlxSprite; // JOELwindows7: for Underlay. the image appear between character & yellowBG.
 
 	function unlockWeeks():Array<Bool>
 	{
@@ -132,30 +141,40 @@ class StoryMenuState extends MusicBeatState
 	function jsonWeekList()
 	{
 		// JOELwindows7: okay fine let's just json it.
-		var initWeekJson = loadFromJson('weekList');
+		var initWeekJson:SwagWeeks = loadFromJson('weekList');
 		weekDatas = initWeekJson.weekData;
 		// weekUnlocked = initWeekJson.weekUnlocked;
 		weekCharacters = initWeekJson.weekCharacters;
 		// weekNames = initWeekJson.weekNames;
 		weekColor = initWeekJson.weekColor;
+		weekBannerPath = initWeekJson.weekBannerPath;
+		weekUnderlayPath = initWeekJson.weekUnderlayPath;
 	}
 
 	// JOELwindows7: modcore compatible texted week list loading
 	function textedWeekList()
 	{
+		weekDatas = new Array<Dynamic>();
+		weekCharacters = new Array<Dynamic>();
+		weekColor = new Array<String>();
+		weekBannerPath = new Array<String>();
+		weekUnderlayPath = new Array<String>();
 		for (i in 0...weekLoads.length)
 		{
 			var weekLine:Array<String> = weekLoads[i].split(':');
+			var weekSongs:Array<String> = new Array<String>();
 			for (j in 0...weekLine.length)
 			{
 				var song:String = weekLine[j];
-				weekDatas[i].push(song);
+				// weekDatas[i].push(song);
+				weekSongs.push(song);
 			}
+			weekDatas.insert(i, weekSongs);
 			var lineStuffs:Array<String> = weekStuffs[i].split(':');
-			weekCharacters[i][0] = lineStuffs[0];
-			weekCharacters[i][1] = lineStuffs[1];
-			weekCharacters[i][2] = lineStuffs[2];
-			weekColor[i] = lineStuffs[3];
+			weekCharacters.insert(i, [lineStuffs[0], lineStuffs[1], lineStuffs[2]]);
+			weekColor.insert(i, lineStuffs[3]);
+			weekBannerPath.insert(i, lineStuffs[4]);
+			weekUnderlayPath.insert(i, lineStuffs[5]);
 		}
 	}
 
@@ -171,7 +190,7 @@ class StoryMenuState extends MusicBeatState
 			GLORY IS FOREVER
 			LOL wintergatan
 		 */
-		legacyJSONWeekList = true; // JOELwindows7: turn off after you completed new weeklist
+		legacyJSONWeekList = false; // JOELwindows7: turn off after you completed new weeklist
 		if (legacyJSONWeekList)
 			jsonWeekList();
 		else
@@ -219,6 +238,13 @@ class StoryMenuState extends MusicBeatState
 		// original color was 0xFFF9CF51
 		// You must be white as a base colorable.
 
+		trace("Line smothing");
+		// JOELwindows7: add Underlay image first
+		underlayBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+		underlayBG.alpha = .3; // Just like the LCD watch game toy.
+		// 64 bit, 32 bit, 16 bit. 8 bit, 4 Bit, 2 BIt, 1 BiT, HALF bIT, QUARTER BIT, THE WRIST GAAAAAAAAAME!!!
+		// lmao angry game review lololol
+
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
 
@@ -234,7 +260,11 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in 0...weekData().length)
 		{
-			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
+			// JOELwindows7: first, check weekStuffs first.
+			var shouldCustomPath:Bool = weekBannerPath[i] != null && weekBannerPath[i] != "";
+
+			// JOELwindows7: then apply to another arguments
+			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i, shouldCustomPath, weekBannerPath[i]);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			weekThing.ID = i; // JOELwindows7: add ID to compare with curSelected week
@@ -299,6 +329,7 @@ class StoryMenuState extends MusicBeatState
 		trace("Line 150");
 
 		add(yellowBG);
+		add(underlayBG); // JOELwindows7: here add underlay
 		add(grpWeekCharacters);
 
 		txtTracklist = new FlxText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 100, 0, "Tracks", 32);
@@ -638,6 +669,27 @@ class StoryMenuState extends MusicBeatState
 		grpWeekCharacters.members[0].setCharacter(weekCharacters[curWeek][0]);
 		grpWeekCharacters.members[1].setCharacter(weekCharacters[curWeek][1]);
 		grpWeekCharacters.members[2].setCharacter(weekCharacters[curWeek][2]);
+
+		// JOELwindows7: set underlay image
+		if (weekUnderlayPath[curWeek] != null && weekUnderlayPath[curWeek] != "")
+		{
+			try
+			{
+				underlayBG.loadGraphic(Paths.image('menuBackgrounds/' + weekUnderlayPath[curWeek]));
+				underlayBG.alpha = .3;
+			}
+			catch (e)
+			{
+				Debug.logWarn("Werror " + e);
+				underlayBG.makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+				underlayBG.alpha = .3;
+			}
+		}
+		else
+		{
+			underlayBG.makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+			underlayBG.alpha = .3;
+		}
 
 		txtTracklist.text = "Tracks\n";
 		var stringThing:Array<String> = weekData()[curWeek];
