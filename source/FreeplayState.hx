@@ -68,6 +68,8 @@ class FreeplayState extends MusicBeatState
 	// JOELwindows7: week data here
 	var weekInfo:SwagWeeks;
 
+	static var legacyJSONWeekList:Bool = false; // JOELwindows7: in case you want to use the old JSONed week list.
+
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
 		var diffName:String = "";
@@ -87,7 +89,36 @@ class FreeplayState extends MusicBeatState
 	{
 		try
 		{
-			weekDatas = StoryMenuState.loadFromJson('weekList');
+			//JOELwindows7: load weeks
+			if(legacyJSONWeekList)
+				weekDatas = StoryMenuState.loadFromJson('weekList')
+			else
+			{
+				//JOELwindows7: copy from StoryMenuState.hx
+				var weekStuffs:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekStuffs')); // Week Display! Character & Color
+				var weekLoads:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekLoads')); // Week Loads! each lines represents songs in the week
+				var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames')); // Week Names! each lines represents the name of the week
+				var weekArray:Array<String> = new Array<String>();
+
+				//separate Week things
+				for (i in 0...weekLoads.length)
+				{
+					var weekLine:Array<String> = weekLoads[i].split(':');
+					var weekSongs:Array<String> = new Array<String>();
+					for (j in 0...weekLine.length)
+					{
+						var song:String = weekLine[j];
+						// weekArray.push(song);
+						weekSongs.push(song);
+					}
+					weekArray.insert(i, weekSongs);
+					var lineStuffs:Array<String> = weekStuffs[i].split(':');
+					weekCharacters.insert(i, [lineStuffs[0], lineStuffs[1], lineStuffs[2]]);
+					weekColor.insert(i, lineStuffs[3]);
+					weekBannerPath.insert(i, lineStuffs[4]);
+					weekUnderlayPath.insert(i, lineStuffs[5]);
+				}
+			}
 			return weekDatas;
 		}
 		catch (ex)
