@@ -6,6 +6,7 @@ import GameJolt;
 #end
 import experiments.AnMIDIyeay;
 import experiments.AnWebmer;
+import experiments.AnChangeChannel;
 import experiments.LimeAudioBufferTester;
 import experiments.*;
 import openfl.net.FileFilter;
@@ -2602,6 +2603,32 @@ class AnMIDITestOption extends Option
 	}
 }
 
+// JOELwindows7: quick way testing change channel
+class AnChangeChannelOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.switchState(new AnChangeChannel());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Change Channel Test";
+	}
+}
+
 // JOELwindows7: Force all weeks to unlock
 class PreUnlockAllWeeksOption extends Option
 {
@@ -2765,7 +2792,7 @@ class LogGameJoltIn extends Option
 		OptionsMenu.switchState(new GameJoltLogin());
 		return true;
 		#else
-		Main.gjToastManager.createToast(null,"GameJolt not supported","Sorry, your platform does not support GameJolt.");
+		Main.gjToastManager.createToast(null, "GameJolt not supported", "Sorry, your platform does not support GameJolt.");
 		return false;
 		#end
 	}

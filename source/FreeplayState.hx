@@ -85,22 +85,33 @@ class FreeplayState extends MusicBeatState
 		array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
 	}
 
+	// JOELwindows7: Load week datas
 	public static function loadWeekDatas(weekDatas:SwagWeeks):SwagWeeks
 	{
 		try
 		{
-			//JOELwindows7: load weeks
-			if(legacyJSONWeekList)
+			// JOELwindows7: load weeks
+			if (legacyJSONWeekList)
 				weekDatas = StoryMenuState.loadFromJson('weekList')
 			else
 			{
-				//JOELwindows7: copy from StoryMenuState.hx
+				// JOELwindows7: copy from StoryMenuState.hx
+				Debug.logInfo("Load texted week datas");
 				var weekStuffs:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekStuffs')); // Week Display! Character & Color
 				var weekLoads:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekLoads')); // Week Loads! each lines represents songs in the week
 				var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames')); // Week Names! each lines represents the name of the week
-				var weekArray:Array<String> = new Array<String>();
 
-				//separate Week things
+				// Chamber for datasoids
+				Debug.logInfo("Preparing Chamber");
+				var weekArray = new Array<Dynamic>();
+				var weekCharacters = new Array<Dynamic>();
+				var weekColor = new Array<String>();
+				var weekBannerPath = new Array<String>();
+				var weekUnderlayPath = new Array<String>();
+				var weekUnlocked = new Array<Bool>();
+
+				// separate Week things
+				Debug.logInfo("Fill chamber");
 				for (i in 0...weekLoads.length)
 				{
 					var weekLine:Array<String> = weekLoads[i].split(':');
@@ -117,14 +128,69 @@ class FreeplayState extends MusicBeatState
 					weekColor.insert(i, lineStuffs[3]);
 					weekBannerPath.insert(i, lineStuffs[4]);
 					weekUnderlayPath.insert(i, lineStuffs[5]);
+					weekUnlocked.push(true);
+					Debug.logInfo("Week " + Std.string(i) + ": " + weekSongs.toString() + "; line stuff = " + lineStuffs.toString());
+
+					//Just pecking insert them now directly immediately
+					// weekDatas.weekData.insert(i, weekSongs);
+					// weekDatas.weekCharacters.insert(i, [lineStuffs[0], lineStuffs[1], lineStuffs[2]]);
+					// weekDatas.weekColor.insert(i, lineStuffs[3]);
+					// weekDatas.weekBannerPath.insert(i, lineStuffs[4]);
+					// weekDatas.weekUnderlayPath.insert(i, lineStuffs[5]);
+					// weekDatas.weekUnlocked.push(true);
 				}
+
+				// Also init the weekDatas
+				Debug.logInfo("Preparing weekDatas");
+				weekDatas = {
+					weekData: weekArray,
+					weekCharacters: weekCharacters,
+					weekColor: weekColor,
+					weekBannerPath: weekBannerPath,
+					weekUnderlayPath: weekUnderlayPath,
+					weekUnlocked: weekUnlocked,
+					weekNames: weekNames
+				};
+				// weekDatas.weekData = new Array<Dynamic>();
+				// weekDatas.weekCharacters = new Array<String>();
+				// weekDatas.weekColor = new Array<String>();
+				// weekDatas.weekBannerPath = new Array<String>();
+				// weekDatas.weekUnderlayPath = new Array<String>();
+				// weekDatas.weekUnlocked = new Array<Bool>();
+
+				// Testing the chamber
+				// Debug.logInfo("Testing Chamber");
+				// for (i in 0...weekArray.length)
+				// {
+				// 	Debug.logInfo("Week " + Std.string(i) + ": " + weekArray[i].toString());
+				// }
+				
+
+				// Now insert them to here
+				// Debug.logInfo("Inserting into week datas");
+				// weekDatas.weekData = weekArray;
+				// Debug.logInfo(weekDatas.weekData.toString());
+				// weekDatas.weekUnlocked = weekUnlocked;
+				// Debug.logInfo(weekDatas.weekUnlocked.toString());
+				// weekDatas.weekCharacters = weekCharacters;
+				// Debug.logInfo(weekDatas.weekCharacters.toString());
+				// weekDatas.weekNames = weekNames;
+				// Debug.logInfo(weekDatas.weekNames.toString());
+				// weekDatas.weekColor = weekColor;
+				// Debug.logInfo(weekDatas.weekColor.toString());
+				// weekDatas.weekBannerPath = weekBannerPath;
+				// Debug.logInfo(weekDatas.weekBannerPath.toString());
+				// weekDatas.weekUnderlayPath = weekUnderlayPath;
+				// Debug.logInfo(weekDatas.weekUnderlayPath.toString());
+
+				Debug.logInfo("Week datas loaded");
 			}
 			return weekDatas;
 		}
 		catch (ex)
 		{
 			// werror
-			FlxG.log.error("wError " + ex + "\n unable to load weeklist");
+			Debug.logError("wError " + ex + "\n unable to load weeklist");
 			return null;
 		}
 	}
@@ -449,10 +515,12 @@ class FreeplayState extends MusicBeatState
 			// openSubState(new DiffOverview());
 		}
 
-		if (upP)
-		{
-			changeSelection(-1);
-		}
+		// JOELwindows7: prevent go if shift is being held
+		if (!FlxG.keys.pressed.SHIFT)
+			if (upP)
+			{
+				changeSelection(-1);
+			}
 		if (downP)
 		{
 			changeSelection(1);
@@ -463,20 +531,20 @@ class FreeplayState extends MusicBeatState
 
 		if (FlxG.keys.pressed.SHIFT)
 		{
-			if (FlxG.keys.justPressed.LEFT || haveLefted)
+			if (FlxG.keys.justPressed.LEFT || FlxG.mouse.wheel == -1 || haveLefted)
 			{
 				rate -= 0.05;
 				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
 				haveLefted = false;
 			}
-			if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
+			if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.wheel == 1 || haveRighted)
 			{
 				rate += 0.05;
 				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
 				haveRighted = false;
 			}
 
-			if (FlxG.keys.justPressed.R)
+			if (FlxG.keys.justPressed.R || FlxG.mouse.justPressedMiddle)
 			{
 				rate = 1;
 				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
@@ -509,7 +577,8 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		#if cpp
+		// JOELwindows7: there you are, audio manipulate lol
+		#if FEATURE_AUDIO_MANIPULATE
 		@:privateAccess
 		{
 			if (FlxG.sound.music.playing)
@@ -867,7 +936,7 @@ class FreeplayState extends MusicBeatState
 		// 	blueFloat: colores.blueFloat
 		// 	}
 		// }, 1, {ease: FlxEase.elasticInOut});
-		FlxTween.color(bg, 1, bg.color, colores, {ease: FlxEase.linear}); //JOELwindows7: FINALLY!!!
+		FlxTween.color(bg, 1, bg.color, colores, {ease: FlxEase.linear}); // JOELwindows7: FINALLY!!!
 		// bg.color = colores;
 	}
 
