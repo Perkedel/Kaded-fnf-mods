@@ -6,7 +6,7 @@ import flixel.FlxState;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import openfl.events.Event;
-#if (FEATURE_VLC) //JOELwindows7: no mac or linux support yet unfortunately
+#if (FEATURE_VLC) // JOELwindows7: no mac or linux support yet unfortunately
 import vlc.VlcBitmap;
 #end
 
@@ -14,10 +14,13 @@ import vlc.VlcBitmap;
 // DONT STEAL MY CODE >:(
 class MP4Handler
 {
+
 	public var finishCallback:Void->Void;
 	public var stateCallback:FlxState;
 
+	#if (FEATURE_VLC) // JOELwindows7: no mac or linux support yet unfortunately
 	public var bitmap:VlcBitmap;
+	#end
 
 	public var sprite:FlxSprite;
 
@@ -25,21 +28,22 @@ class MP4Handler
 	{
 		// FlxG.autoPause = false;
 
-		if (FlxG.sound.music != null)
-		{
-			FlxG.sound.music.stop();
-		}
+		// if (FlxG.sound.music != null)
+		// {
+		// 	FlxG.sound.music.stop();
+		// }
 	}
 
+	#if (FEATURE_VLC) // JOELwindows7: no mac or linux support yet unfortunately
 	public function playMP4(path:String, ?repeat:Bool = false, ?outputTo:FlxSprite = null, ?isWindow:Bool = false, ?isFullscreen:Bool = false,
 			?midSong:Bool = false):Void
 	{
 		if (!midSong)
 		{
-			if (FlxG.sound.music != null)
-			{
-				FlxG.sound.music.stop();
-			}
+			// if (FlxG.sound.music != null)
+			// {
+			// 	FlxG.sound.music.stop();
+			// }
 		}
 
 		bitmap = new VlcBitmap();
@@ -79,6 +83,18 @@ class MP4Handler
 
 			sprite = outputTo;
 		}
+	}
+
+	// JOELwindows7: pause
+	public function pause()
+	{
+		bitmap.pause();
+	}
+
+	// JOELwindows7: resume
+	public function resume()
+	{
+		bitmap.resume();
 	}
 
 	function checkFile(fileName:String):String
@@ -173,4 +189,6 @@ class MP4Handler
 		if (FlxG.sound.volume <= 0.1)
 			bitmap.volume = 0;
 	}
+	#else
+	#end
 }

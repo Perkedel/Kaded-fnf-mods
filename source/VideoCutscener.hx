@@ -219,8 +219,8 @@ class VLCState extends MusicBeatState
 		}
 		catch (e)
 		{
-			trace("Werror faile video!\n\n" + Std.string(e));
-			Debug.logError("Werror faile video!\n\n" + e);
+			Debug.logError("Werror faile video!\n\n" + Std.string(e));
+			// Debug.logError("Werror faile video!\n\n" + e);
 			donedCallback();
 		}
 		#else

@@ -5285,13 +5285,44 @@ class PlayState extends MusicBeatState
 
 	public static var webmHandler:WebmHandler;
 
+	public var vlcHandler:MP4Handler; //JOELwindows7: globalize VLC handler
+
 	public var playingDathing = false;
 
 	public var videoSprite:FlxSprite;
 
 	public function backgroundVideo(source:String) // for background videos
 	{
-		#if FEATURE_WEBM
+		#if FEATURE_VLC
+		// JOELwindows7: from that BrightFyre MP4 support, outputting to FlxSprite
+		// https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support#outputting-to-a-flxsprite
+		useVideo = true;
+
+		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
+
+		videoSprite = new FlxSprite(-470, -30);
+
+		vlcHandler = new MP4Handler();
+		vlcHandler.finishCallback = onVideoSpriteFinish;
+		vlcHandler.playMP4(source, null, videoSprite); // make the transition null so it doesn't take you out of this state
+
+		videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
+
+		remove(gf);
+		remove(boyfriend);
+		remove(dad);
+		add(videoSprite);
+		add(gf);
+		add(boyfriend);
+		add(dad);
+
+		Debug.logInfo('poggers');
+
+		if (!songStarted)
+			vlcHandler.pause();
+		else
+			vlcHandler.resume();
+		#elseif (FEATURE_WEBM && !FEATURE_VLC)
 		useVideo = true;
 
 		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
@@ -6524,6 +6555,30 @@ class PlayState extends MusicBeatState
 					}
 				});
 			default:
+		}
+	}
+
+	// JOELwindows7: on video sprite finish callback
+
+	function onVideoSpriteFinish()
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState('onVideoSpriteFinish', []);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState('onVideoSpriteFinish', []);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState('onVideoSpriteFinish', []);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState('onVideoSpriteFinish', []);
 		}
 	}
 
