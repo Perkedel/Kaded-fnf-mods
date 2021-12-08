@@ -610,8 +610,8 @@ class ChartingState extends MusicBeatState
 		var typeLabel = new FlxText(10, 45, 'Type of Event');
 		// JOELwindows7: list of event here
 		var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray([
-			"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change", "Scroll Speed Change",
-			"Vibrate for", "LED ON for",
+			"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
+			"Scroll Speed Change", "Vibrate for", "LED ON for",
 		], true));
 		var valueLabel = new FlxText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");

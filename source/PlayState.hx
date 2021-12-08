@@ -2830,6 +2830,7 @@ class PlayState extends MusicBeatState
 							trace("SCROLL SPEED CHANGE to " + i.value);
 							newScroll = i.value;
 						}
+					//JOELwindows7: moar effeks
 					case "Cheer Now":
 						justCheer(true);
 					case "Hey Now":
@@ -2843,6 +2844,9 @@ class PlayState extends MusicBeatState
 						Stage.lightningStrikeShit();
 					case "Camera Zoom in":
 						camZoomNow(i.value);
+					case "Shake camera":
+						FlxG.camera.shake(i.value, 1, null, true);
+						Controls.vibrate(0, i.value);
 					case "HUD Zoom in":
 						camZoomNow(0, i.value);
 					case "Both Zoom in":
@@ -6536,11 +6540,15 @@ class PlayState extends MusicBeatState
 		{
 			case 'mayday': // blacken the screen like going to Winter Horrorland but slowed and sadder
 				// to contemplate in memory of those 3 taken down mods. and more.
-				var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
-					-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
-				blackShit.scrollFactor.set();
-				blackShit.alpha = 0;
-				add(blackShit);
+				// var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
+				// 	-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+				// blackShit.scrollFactor.set();
+				// blackShit.alpha = 0;
+				// add(blackShit);
+
+				//JOELwindows7: better! use camera fade
+				FlxG.camera.fade(FlxColor.BLACK,5);
+
 				// camHUD.alpha = 0;
 				FlxTween.tween(camHUD, {alpha: 0}, 5, {
 					ease: FlxEase.linear,
@@ -6548,12 +6556,12 @@ class PlayState extends MusicBeatState
 					{
 					}
 				});
-				FlxTween.tween(blackShit, {alpha: 1}, 5, {
-					ease: FlxEase.linear,
-					onComplete: function(twn:FlxTween)
-					{
-					}
-				});
+				// FlxTween.tween(blackShit, {alpha: 1}, 5, {
+				// 	ease: FlxEase.linear,
+				// 	onComplete: function(twn:FlxTween)
+				// 	{
+				// 	}
+				// });
 			default:
 		}
 	}
