@@ -186,6 +186,8 @@
 	<assets path="assets/sm"    library="sm"    exclude="*.mp3" unless="web"/>
 
 	<assets path='example_mods' rename='mods' embed='false'/>
+	<!-- JOELwindows7: separate mods folder to not include at all unless debug or forced anyway -->
+	<assets path='separate_mods' rename='mods' embed='false' if='debug || FORCE_INCLUDE_DLC'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	<assets path='CREDIT.md' rename='CREDIT.txt'/>
@@ -423,5 +425,11 @@
 	<haxedef name="FEATURE_AUDIO_MANIPULATE" if="cpp"/>
 	<!-- JOELwindows7: Defines whether FPS change is possible safely -->
 	<haxedef name="FEATURE_DISPLAY_FPS_CHANGE" unless = "mobile"/>
+
+	<!-- JOELwindows7: here force defines to know. -->
+	<!-- Write override defines for development special features -->
+
+	<!-- FORCE_INCLUDE_DLC to include separate_mods anyway which previously included only in debug build -->
+	<haxedef name="FORCE_INCLUDE_DLC" if="debug"/>
 
 </project>

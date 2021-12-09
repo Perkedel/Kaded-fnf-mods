@@ -1,0 +1,8 @@
+{
+    "title": "Empty Template",
+    "description": "This is a template mod. base your work on this template to make Kade-LFM mods",
+    "author": "JOELwindows7",
+    "api_version": "0.1.0",
+    "mod_version": "2021.12.0",
+    "license": "GPLv3, CC-BY-SA-4.0"
+}

@@ -88,6 +88,18 @@ class ModCore
 		Debug.logInfo('Installed mods have replaced ${fileList.length} sound files.');
 		for (item in fileList)
 			Debug.logTrace('  * $item');
+
+		// JOELwindows7: extra types too, video
+		fileList = Polymod.listModFiles("VIDEO");
+		Debug.logInfo('Installed mods have replaced ${fileList.length} videos.');
+		for (item in fileList)
+			Debug.logTrace('  * $item');
+
+		//JOELwindows7: and fonts. maybe there's more
+		fileList = Polymod.listModFiles("FONT");
+		Debug.logInfo('Installed mods have replaced ${fileList.length} font files.');
+		for (item in fileList)
+			Debug.logTrace('  * $item');
 	}
 
 	static function getModIds():Array<String>
