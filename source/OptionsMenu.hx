@@ -794,7 +794,7 @@ class OptionsMenu extends CoreSubState
 		if (isInPause)
 		{
 			// JOELwindows7: it's static method, you cannot access any instance method of this class.
-			createToast(null, "Cannot access option", "Please leave the gameplay before accessing this option.");
+			Main.gjToastManager.createToast(null, "Cannot access option", "Please leave the gameplay before accessing this option.");
 			return;
 		}
 		FlxG.switchState(ofHere);
