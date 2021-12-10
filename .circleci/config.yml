@@ -48,6 +48,7 @@ jobs:
             haxelib git polymod https://github.com/larsiusprime/polymod.git
             haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
             haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+            haxelib run lime rebuild extension-webm linux
             haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
             haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
             haxelib run lime rebuild linc_luajit linux
@@ -82,10 +83,6 @@ jobs:
             pwd
             mv ./GJkeys.hx ~/project/kaded-fnf-mods/source/GJKeys.hx
 
-      # - run:
-      #     name: Rebuild GrowtopiaFli video cutsceners
-      #     command: |
-      #       haxelib run lime rebuild extension-webm linux
       - run:
           name: Just build this game already Linux
           command: |
@@ -95,21 +92,7 @@ jobs:
             tar -cvf last-funkin-moments.tar -C ~/project/kaded-fnf-mods/export/release/linux/bin .
             tar -cvf last-funkin-moments-32bit.tar -C ~/project/kaded-fnf-mods/export/32bit/linux/bin .
             cd ~
-      #      if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/project/kaded-fnf-mods/export/release/linux/bin joelwindows7/last-funkin-moments:linux-circleCI; fi
-      #      if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then ./butler push ~/project/kaded-fnf-mods/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-circleCI; fi
             ./butler push ~/project/kaded-fnf-mods/export/release/linux/bin joelwindows7/last-funkin-moments:linux-circleCI
-      # - run:
-      #     name: Just build this game already Windows
-      #     command: |
-      #       cd ~/projects/kaded-fnf-mods
-      #       haxelib run lime build windows
-      #       zip -r last-funkin-moments-windows.zip ~/projects/kaded-fnf-mods/export/release/windows/bin
-      # - run:
-      #     name: Just build this game already macOS
-      #     command: |
-      #       cd ~/projects/kaded-fnf-mods
-      #       haxelib run lime build mac
-      #       tar -cvf last-funkin-moments-mac.tar -C ~/projects/kaded-fnf-mods/export/release/macos/bin
       - run:
           name: Just build this game already HTML5
           command: |
