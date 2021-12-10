@@ -346,7 +346,12 @@ class AlphaCharacter extends FlxSprite
 	{
 		animation.addByPrefix(letter, letter.toUpperCase() + " bold", 24);
 		animation.play(letter);
+		// JOELwindows7: You sneaky little punk!
+		#if FEATURE_DISPLAY_FPS_CHANGE
 		animation.curAnim.frameRate = 24 * (60 / (cast(Lib.current.getChildAt(0), Main)).getFPS());
+		#else
+		animation.curAnim.frameRate = 24 * (60);
+		#end
 		updateHitbox();
 	}
 

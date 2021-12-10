@@ -6,6 +6,7 @@ import flixel.FlxState;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import openfl.events.Event;
+import openfl.media.Video; //Oh this exist?! https://github.com/polybiusproxy/PolyEngine/blob/master/source/VideoHandler.hx
 #if (FEATURE_VLC) // JOELwindows7: no mac or linux support yet unfortunately
 import vlc.VlcBitmap;
 #end

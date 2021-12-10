@@ -109,6 +109,7 @@ class FreeplayState extends MusicBeatState
 				var weekBannerPath = new Array<String>();
 				var weekUnderlayPath = new Array<String>();
 				var weekUnlocked = new Array<Bool>();
+				var weekClickSoundPath = new Array<String>();
 
 				// separate Week things
 				Debug.logInfo("Fill chamber");
@@ -128,6 +129,7 @@ class FreeplayState extends MusicBeatState
 					weekColor.insert(i, lineStuffs[3]);
 					weekBannerPath.insert(i, lineStuffs[4]);
 					weekUnderlayPath.insert(i, lineStuffs[5]);
+					weekClickSoundPath.insert(i, lineStuffs[6]);
 					weekUnlocked.push(true);
 					Debug.logInfo("Week " + Std.string(i) + ": " + weekSongs.toString() + "; line stuff = " + lineStuffs.toString());
 
@@ -149,7 +151,8 @@ class FreeplayState extends MusicBeatState
 					weekBannerPath: weekBannerPath,
 					weekUnderlayPath: weekUnderlayPath,
 					weekUnlocked: weekUnlocked,
-					weekNames: weekNames
+					weekNames: weekNames,
+					weekClickSoundPath: weekClickSoundPath
 				};
 				// weekDatas.weekData = new Array<Dynamic>();
 				// weekDatas.weekCharacters = new Array<String>();

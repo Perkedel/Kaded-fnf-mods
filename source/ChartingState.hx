@@ -2685,7 +2685,8 @@ class ChartingState extends MusicBeatState
 
 			if (doInput)
 			{
-				if (FlxG.keys.justPressed.ENTER)
+				//JOELwindows7: press back on Android to exit this chart editor lol
+				if (FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end)
 				{
 					lastSection = curSection;
 

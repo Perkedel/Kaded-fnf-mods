@@ -1,4 +1,5 @@
-![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-toxic-thumb.png )
+![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2021.11-thumb.png )
+<!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-toxic-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-merdeka-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-meta-thumb.png ) -->
@@ -11,7 +12,7 @@ collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 ## Download NOW
 - Odysee
   - [Linux x64](https://odysee.com/@JOELwindows7:a/last-funkin-moments:b?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
-  - [Linux 32 bit](https://odysee.com/@JOELwindows7:a/last-funkin-32bit )
+  - ~~[Linux 32 bit](https://odysee.com/@JOELwindows7:a/last-funkin-32bit )~~
   - [Win64](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows:c?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
   - [Win32](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows32 )
   - [macOS](https://odysee.com/@JOELwindows7:a/last-funkin-moments-macOS)

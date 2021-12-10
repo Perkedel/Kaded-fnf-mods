@@ -391,7 +391,7 @@ class PlayState extends MusicBeatState
 		if (FlxG.save.data.fpsCap > 290)
 		{
 			// JOELwindows7: android issue. cast lib current technic crash
-			#if !mobile
+			#if FEATURE_DISPLAY_FPS_CHANGE
 			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(800);
 			#end
 		}
@@ -1078,7 +1078,7 @@ class PlayState extends MusicBeatState
 
 		// trace("add cam follow");
 
-		#if !mobile
+		#if FEATURE_DISPLAY_FPS_CHANGE
 		// JOELwindows7: issue with Android version, this function crash!
 		FlxG.camera.follow(camFollow, LOCKON, 0.04 * (30 / (cast(Lib.current.getChildAt(0), Main)).getFPS()));
 		#else
@@ -2747,8 +2747,8 @@ class PlayState extends MusicBeatState
 				// Song ends abruptly on slow rate even with second condition being deleted,
 				// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
 				// so no reason to delete it at all
-				// JOELwindows7: hey don't early songLength that 100 early wtf? was 100 less, now 50 less.. idk
-				if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 50))
+				// JOELwindows7: hey don't early songLength that 100 early wtf? was 100 less, now 50 less.. idk. screw this! 0?
+				if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 0))
 				{
 					Debug.logTrace("we're fuckin ending the song ");
 

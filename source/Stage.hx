@@ -1295,7 +1295,8 @@ class Stage extends MusicBeatState
 	}
 
 	// JOELwindows7: randomize the color of the colorableGround
-	public function randomizeColoring(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0)
+	// also default inHowLong is recommended > 0 (not instant) to prevent Epilepsy
+	public function randomizeColoring(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0.01)
 	{
 		var red:Float = FlxG.random.float(0.0, 1.0);
 		var green:Float = FlxG.random.float(0.0, 1.0);
@@ -1313,7 +1314,11 @@ class Stage extends MusicBeatState
 			// swagBacks['colorableGround'].color.redFloat = red;
 			// swagBacks['colorableGround'].color.greenFloat = green;
 			// swagBacks['colorableGround'].color.blueFloat = blue;
-			FlxTween.color(swagBacks['colorableGround'], inHowLong, swagBacks['colorableGround'].color,
+			// FlxTween.color(swagBacks['colorableGround'], inHowLong, swagBacks['colorableGround'].color,
+			// 	FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0)), {
+			// 		ease: FlxEase.linear
+			// 	});
+			FlxTween.color(colorableGround, inHowLong, colorableGround.color,
 				FlxColor.fromRGBFloat(FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0), FlxG.random.float(0.0, 1.0)), {
 					ease: FlxEase.linear
 				});
@@ -1361,7 +1366,7 @@ class Stage extends MusicBeatState
 	}
 
 	// JOELwindows7: copy above, but this let you choose color
-	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE, justOne:Bool = true, toWhichBg:Int = 0, inHowLong:Float = 0)
+	public function chooseColoringColor(color:FlxColor = FlxColor.WHITE, justOne:Bool = true, toWhichBg:Int = 0, inHowLong:Float = 0.01)
 	{
 		if (swagBacks['colorableGround'] != null)
 		{
@@ -1370,7 +1375,8 @@ class Stage extends MusicBeatState
 			// swagBacks['colorableGround'].color.redFloat = color.redFloat;
 			// swagBacks['colorableGround'].color.greenFloat = color.greenFloat;
 			// swagBacks['colorableGround'].color.blueFloat = color.blueFloat;
-			FlxTween.color(swagBacks['colorableGround'], inHowLong, swagBacks['colorableGround'].color, color, {ease: FlxEase.linear});
+			// FlxTween.color(swagBacks['colorableGround'], inHowLong, swagBacks['colorableGround'].color, color, {ease: FlxEase.linear});
+			FlxTween.color(colorableGround, inHowLong, colorableGround.color, color, {ease: FlxEase.linear});
 			// colorableGround.color = color;
 			// trace("now colorable color is " + swagBacks['colorableGround'].color.toHexString());
 		}
@@ -1411,7 +1417,7 @@ class Stage extends MusicBeatState
 	}
 
 	// JOELwindows7: To hide coloring incase you don't need it anymore
-	public function hideColoring(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0)
+	public function hideColoring(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0.01)
 	{
 		
 		if (swagBacks['colorableGround'] != null)
@@ -1421,7 +1427,8 @@ class Stage extends MusicBeatState
 				// swagBacks['colorableGround'].color.redFloat = originalColor.redFloat;
 				// swagBacks['colorableGround'].color.greenFloat = originalColor.greenFloat;
 				// swagBacks['colorableGround'].color.blueFloat = originalColor.blueFloat;
-				FlxTween.color(swagBacks['colorableGround'], inHowLong, swagBacks['colorableGround'].color, originalColor, {ease: FlxEase.linear});
+				// FlxTween.color(swagBacks['colorableGround'], inHowLong, swagBacks['colorableGround'].color, originalColor, {ease: FlxEase.linear});
+				FlxTween.color(colorableGround, inHowLong, colorableGround.color, originalColor, {ease: FlxEase.linear});
 			}
 			else
 				swagBacks['colorableGround'].visible = false;

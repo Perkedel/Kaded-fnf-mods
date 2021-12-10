@@ -91,6 +91,7 @@ class StoryMenuState extends MusicBeatState
 	var weekColor:Array<String>; // LED backlight color
 	var weekBannerPath:Array<String>; // Menu item banner image path
 	var weekUnderlayPath:Array<String>; // LCD underlay image path
+	var weekClickSoundPath:Array<String>; // Click sound path
 
 	var txtWeekTitle:FlxText;
 
@@ -149,6 +150,7 @@ class StoryMenuState extends MusicBeatState
 		weekColor = initWeekJson.weekColor;
 		weekBannerPath = initWeekJson.weekBannerPath;
 		weekUnderlayPath = initWeekJson.weekUnderlayPath;
+		weekClickSoundPath = initWeekJson.weekClickSoundPath;
 	}
 
 	// JOELwindows7: modcore compatible texted week list loading
@@ -159,6 +161,7 @@ class StoryMenuState extends MusicBeatState
 		weekColor = new Array<String>();
 		weekBannerPath = new Array<String>();
 		weekUnderlayPath = new Array<String>();
+		weekClickSoundPath = new Array<String>();
 		for (i in 0...weekLoads.length)
 		{
 			var weekLine:Array<String> = weekLoads[i].split(':');
@@ -175,6 +178,7 @@ class StoryMenuState extends MusicBeatState
 			weekColor.insert(i, lineStuffs[3]);
 			weekBannerPath.insert(i, lineStuffs[4]);
 			weekUnderlayPath.insert(i, lineStuffs[5]);
+			weekClickSoundPath.insert(i, lineStuffs[6]);
 		}
 	}
 
@@ -533,7 +537,9 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (stopspamming == false)
 			{
-				FlxG.sound.play(Paths.sound('confirmMenu'));
+				// JOELwindows7: change click sound based on week selected
+				FlxG.sound.play(Paths.sound(weekClickSoundPath[curWeek] != null
+					&& weekClickSoundPath[curWeek] != '' ? weekClickSoundPath[curWeek] : 'confirmMenu'));
 
 				grpWeekText.members[curWeek].startFlashing();
 				grpWeekCharacters.members[1].animation.play('bfConfirm');

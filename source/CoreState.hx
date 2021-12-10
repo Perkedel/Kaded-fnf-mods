@@ -38,13 +38,15 @@ import flixel.addons.ui.FlxUIState;
 
 using StringTools;
 
-//JOELwindows7: let's inspire from Song.hx. 
-//here's the typedef for Json file of weekList yess.
+// JOELwindows7: let's inspire from Song.hx.
+// here's the typedef for Json file of weekList yess.
+
 /** let's inspire from Song.hx.
  * here's the typedef for Json file of weekList yess.
  * @author JOELwindows7
  */
-typedef SwagWeeks = {
+typedef SwagWeeks =
+{
 	var weekData:Array<Dynamic>;
 	var weekUnlocked:Array<Bool>;
 	var weekCharacters:Array<Dynamic>;
@@ -52,9 +54,10 @@ typedef SwagWeeks = {
 	var weekColor:Array<String>;
 	var ?weekBannerPath:Array<String>;
 	var ?weekUnderlayPath:Array<String>;
+	var ?weekClickSoundPath:Array<String>;
 }
 
-//TODO: JOELwindows7: make granular week data like Psych
+// TODO: JOELwindows7: make granular week data like Psych
 // https://github.com/ShadowMario/FNF-PsychEngine
 
 /**
@@ -66,8 +69,8 @@ typedef SwagWeeks = {
  * GNU GPL v3
  * @author JOELwindows7
  */
-class CoreState extends FlxUIState{
-
+class CoreState extends FlxUIState
+{
 	// JOELwindows7: copy screen size
 	private var screenWidth:Int = FlxG.width;
 	private var screenHeight:Int = FlxG.height;
@@ -101,7 +104,7 @@ class CoreState extends FlxUIState{
 	// var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
 	var hourGlass:FlxSprite; // JOELwindows7: animated gravity hourglass Piskel
 
-	//JOELwindows7: raw button situations
+	// JOELwindows7: raw button situations
 	var rawMouseHeld:Bool = false;
 
 	public var onScreenGameplayButtons:OnScreenGameplayButtons; // JOELwindows7: the touchscreen buttons here
@@ -118,26 +121,28 @@ class CoreState extends FlxUIState{
 
 	public var camControl:FlxCamera;
 
-    //JOELwindows7: steal control var in order to make it work
+	// JOELwindows7: steal control var in order to make it work
 	private var controls(get, never):Controls;
 
-    //JOELwindows7: and the control getter
+	// JOELwindows7: and the control getter
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-    override function create(){
-        super.create();
+	override function create()
+	{
+		super.create();
 
 		initCamControl(); // JOELwindows7: init the cam control now!
 		// dedicated touchscreen button container
-    }
+	}
 
-    override function update(elapsed:Float){
-        super.update(elapsed);
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
 
 		// JOELwindows7: manage Stuffs
 		manageMouse();
-    }
+	}
 
 	// JOELwindows7: week loader
 	// JOELwindows7: Okay so, cleanup Json? and then parse? okeh
@@ -521,16 +526,15 @@ class CoreState extends FlxUIState{
 			rawMouseHeld = false;
 		}
 	}
-
-	
 }
 
 /**Now for the FlxSubstate with my spice yeah!
  * 
  * @author JOELwindows7
  */
-class CoreSubState extends FlxSubState{
-    //JOELwindows7: mouse support flags
+class CoreSubState extends FlxSubState
+{
+	// JOELwindows7: mouse support flags
 	private var haveClicked:Bool = false;
 	private var haveBacked:Bool = false;
 	private var haveLefted:Bool = false;
@@ -542,44 +546,48 @@ class CoreSubState extends FlxSubState{
 	private var haveViewReplayed:Bool = false;
 	private var haveDebugSevened:Bool = false;
 
-	var backButton:FlxSprite; //JOELwindows7: the back button here
-	var leftButton:FlxSprite; //JOELwindows7: the left button here
-	var rightButton:FlxSprite; //JOELwindows7: the right button here
-	var upButton:FlxSprite; //JOELwindows7: the up button here
-	var downButton:FlxSprite; //JOELwindows7: the down button here
-	var pauseButton:FlxSprite; //JOELwindows7: the pause button here
-	var acceptButton:FlxSprite; //JOELwindows7: the accept button here
-	var retryButton:FlxSprite; //JOELwindows7: the retry button here
-	var viewReplayButton:FlxSprite; //JOELwindows7: the view replay button here
+	var backButton:FlxSprite; // JOELwindows7: the back button here
+	var leftButton:FlxSprite; // JOELwindows7: the left button here
+	var rightButton:FlxSprite; // JOELwindows7: the right button here
+	var upButton:FlxSprite; // JOELwindows7: the up button here
+	var downButton:FlxSprite; // JOELwindows7: the down button here
+	var pauseButton:FlxSprite; // JOELwindows7: the pause button here
+	var acceptButton:FlxSprite; // JOELwindows7: the accept button here
+	var retryButton:FlxSprite; // JOELwindows7: the retry button here
+	var viewReplayButton:FlxSprite; // JOELwindows7: the view replay button here
 
 	public var camControl:FlxCamera;
 
 	// JOELwindows7: raw button situations
 	var rawMouseHeld:Bool = false;
 
-    //JOELwindows7: steal control in order to make it work
+	// JOELwindows7: steal control in order to make it work
 	private var controls(get, never):Controls;
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-    public function new(){
-        super();
-    }
+	public function new()
+	{
+		super();
+	}
 
-    override function create(){
-        super.create();
-    }
+	override function create()
+	{
+		super.create();
+	}
 
-    override function update(elapsed:Float){
-        super.update(elapsed);
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
 
-        manageMouse();
-    }
+		manageMouse();
+	}
 
-    override function destroy(){
-        super.destroy();
-    }
+	override function destroy()
+	{
+		super.destroy();
+	}
 
 	// JOELwindows7: init dedicated touchscreen buttons camera
 	function initCamControl()
@@ -716,7 +724,8 @@ class CoreSubState extends FlxSubState{
 	 * @param description description of the toast message
 	 * @param sound whether to play a sound or not
 	 */
-	public function createToast(iconPath:String, title:String, description:String, sound:Bool = false){
+	public function createToast(iconPath:String, title:String, description:String, sound:Bool = false)
+	{
 		Main.gjToastManager.createToast(iconPath, title, description, sound);
 	}
 
@@ -725,11 +734,11 @@ class CoreSubState extends FlxSubState{
 		// JOELwindows7: nothing. use this to manage mouse
 
 		// JOELwindows7: check hold & release mouse
-		if(FlxG.mouse.justPressed)
+		if (FlxG.mouse.justPressed)
 		{
 			rawMouseHeld = true;
 		}
-		if(FlxG.mouse.justReleased)
+		if (FlxG.mouse.justReleased)
 		{
 			rawMouseHeld = false;
 		}

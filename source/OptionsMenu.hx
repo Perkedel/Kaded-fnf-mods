@@ -168,8 +168,8 @@ class OptionsMenu extends CoreSubState
 			]),
 			// JOELwindows7: Account options
 			new OptionCata(935, 40, 'Accounts', [
-				#if gamejolt new LogGameJoltIn("(" + GameJoltAPI.getUserInfo(true) + ") Log your GameJolt account in")
-				#end
+				new LogGameJoltIn(#if gamejolt "(" + GameJoltAPI.getUserInfo(true) +
+					") Log your GameJolt account in" #else "GameJolt not supported. SADD!" #end)
 			]),
 			// JOELwindows7: was 640, 40
 			new OptionCata(1040, 40, "Misc", [
@@ -203,6 +203,7 @@ class OptionsMenu extends CoreSubState
 				new LockWeeksOption("Reset your story mode progress. This is irreversible!"),
 				new ResetSettings("Reset ALL your settings. This is irreversible!")
 			]),
+			// TODO: JOELwindows7: Category about for credits a& acknowledgements
 			new OptionCata(-1, 125, "Editing Keybinds", [
 				new LeftKeybind("The left note's keybind"), new DownKeybind("The down note's keybind"), new UpKeybind("The up note's keybind"),
 				new RightKeybind("The right note's keybind"), new PauseKeybind("The keybind used to pause the game"),
@@ -435,13 +436,10 @@ class OptionsMenu extends CoreSubState
 		accept = FlxG.keys.justPressed.ENTER || (gamepad != null ? gamepad.justPressed.A : false) || haveClicked;
 		right = FlxG.keys.justPressed.RIGHT || (gamepad != null ? gamepad.justPressed.DPAD_RIGHT : false) || haveRighted;
 		left = FlxG.keys.justPressed.LEFT || (gamepad != null ? gamepad.justPressed.DPAD_LEFT : false) || haveLefted;
-		up = FlxG.keys.justPressed.UP
-			|| (gamepad != null ? gamepad.justPressed.DPAD_UP : false)
-			|| haveDowned
-			|| FlxG.mouse.wheel > 0;
+		up = FlxG.keys.justPressed.UP || (gamepad != null ? gamepad.justPressed.DPAD_UP : false) || haveUpped || FlxG.mouse.wheel > 0;
 		down = FlxG.keys.justPressed.DOWN
 			|| (gamepad != null ? gamepad.justPressed.DPAD_DOWN : false)
-			|| haveUpped
+			|| haveDowned
 			|| FlxG.mouse.wheel < 0;
 
 		any = FlxG.keys.justPressed.ANY || (gamepad != null ? gamepad.justPressed.ANY : false);
@@ -796,7 +794,7 @@ class OptionsMenu extends CoreSubState
 		if (isInPause)
 		{
 			// JOELwindows7: it's static method, you cannot access any instance method of this class.
-			Main.gjToastManager.createToast(null, "Cannot access option", "Please leave the gameplay before accessing this option.");
+			createToast(null, "Cannot access option", "Please leave the gameplay before accessing this option.");
 			return;
 		}
 		FlxG.switchState(ofHere);

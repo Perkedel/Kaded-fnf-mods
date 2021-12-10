@@ -219,7 +219,7 @@ class ResultsScreen extends CoreSubState
 
 		// keybinds
 
-		if (PlayerSettings.player1.controls.ACCEPT || haveClicked)
+		if (PlayerSettings.player1.controls.ACCEPT || haveClicked #if android || FlxG.android.justReleased.BACK #end)
 		{
 			if (music != null)
 				music.fadeOut(0.3);
@@ -277,4 +277,26 @@ class ResultsScreen extends CoreSubState
 	}
 
 	// JOELwindows7: new CoreState.hx yess
+	override function manageMouse()
+	{
+		super.manageMouse();
+		// JOELwindows7: mouse supports. bruh, why not extend from MusicBeatSubstate, wait, Kade? whoah.
+		// Didn't expect that. why FlxSubstate? not MusicBeat substate?
+		if (FlxG.mouse.overlaps(viewReplayButton))
+		{
+			if (FlxG.mouse.justPressed)
+				haveViewReplayed = true;
+		}
+		if (FlxG.mouse.overlaps(retryButton))
+		{
+			if (FlxG.mouse.justPressed)
+				haveRetryed = true;
+		}
+		if (FlxG.mouse.overlaps(acceptButton))
+		{
+			// trace("hover accept button");
+			if (FlxG.mouse.justPressed)
+				haveClicked = true;
+		}
+	}
 }

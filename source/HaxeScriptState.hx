@@ -1374,7 +1374,7 @@ class HaxeScriptState
 				// Just don't touch this.
 			});
 
-		addCallback("randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0)
+		addCallback("randomizeColoring", function(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0.01)
 		{
 			// trace("wattempt script randomize color");
 			PlayState.Stage.randomizeColoring(justOne, toWhichBg, inHowLong);

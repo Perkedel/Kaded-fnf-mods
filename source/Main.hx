@@ -190,6 +190,7 @@ class Main extends Sprite
 
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
+		trace("inited program");
 
 		// Gotta run this before any assets get loaded.
 		ModCore.initialize();
@@ -212,7 +213,7 @@ class Main extends Sprite
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
 
-		#if !mobile
+		#if FEATURE_DISPLAY_FPS_CHANGE
 		addChild(fpsCounter);
 		new FlxTimer().start(1, function(timer:FlxTimer)
 		{

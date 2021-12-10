@@ -261,6 +261,7 @@ class VLCState extends MusicBeatState
 		// LoadingState.loadAndSwitchState(toTrans);
 	}
 
+	/*
 	override function onFocusLost()
 	{
 		super.onFocusLost();
@@ -268,7 +269,44 @@ class VLCState extends MusicBeatState
 		if (theVLC != null)
 		{
 			// pause the VLC
-			// theVLC.pause();
+			theVLC.pause();
+		}
+		#end
+	}
+
+	override function onFocus()
+	{
+		super.onFocus();
+		#if FEATURE_VLC
+		if (theVLC != null)
+		{
+			// unpause the VLC
+			theVLC.resume();
+		}	
+		#end
+	}
+	*/
+
+	override function onWindowFocusOut()
+	{
+		super.onWindowFocusOut();
+		#if FEATURE_VLC
+		if (theVLC != null)
+		{
+			// pause the VLC
+			theVLC.pause();
+		}
+		#end
+	}
+
+	override function onWindowFocusIn()
+	{
+		super.onWindowFocusIn();
+		#if FEATURE_VLC
+		if (theVLC != null)
+		{
+			// unpause the VLC
+			theVLC.resume();
 		}
 		#end
 	}

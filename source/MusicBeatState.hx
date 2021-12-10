@@ -28,27 +28,25 @@ import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 
-using StringTools; 
+using StringTools;
 
-//JOELwindows7: now inherit from CoreState instead of FlxUIState
+// JOELwindows7: now inherit from CoreState instead of FlxUIState
 class MusicBeatState extends CoreState
 {
-	//JOELwindows7: all var I add moved to CoreState.hx
-
+	// JOELwindows7: all var I add moved to CoreState.hx
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
 
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
 	private var curDecimalBeat:Float = 0;
+
 	// private var controls(get, never):Controls; //JOELwindows7: steal controls
-
-	//JOELwindows7: stole this getter too
+	// JOELwindows7: stole this getter too
 	/*
-	inline function get_controls():Controls
-		return PlayerSettings.player1.controls;
-	*/
-
+		inline function get_controls():Controls
+			return PlayerSettings.player1.controls;
+	 */
 	public static var initSave:Bool = false;
 
 	private var assets:Array<FlxBasic> = [];
@@ -98,7 +96,7 @@ class MusicBeatState extends CoreState
 			trace('reg ' + transIn.region);
 
 		super.create();
-		//trace("created Music Beat State");
+		// trace("created Music Beat State");
 	}
 
 	override function update(elapsed:Float)
@@ -195,8 +193,6 @@ class MusicBeatState extends CoreState
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 
 		super.update(elapsed);
-
-		
 	}
 
 	private function updateBeat():Void
@@ -241,12 +237,14 @@ class MusicBeatState extends CoreState
 		#end
 	}
 
-	//JOELwindows7: everything I add has been moved to CoreState.hx
+	// JOELwindows7: everything I add has been moved to CoreState.hx
 
 	function onWindowFocusIn():Void
 	{
 		Debug.logTrace("IM BACK!!!");
+		#if FEATURE_DISPLAY_FPS_CHANGE // JOELwindows7: ooo, sneaky!
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		#end
 	}
 
 	function onWindowFocusOut():Void
