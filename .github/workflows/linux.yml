@@ -97,7 +97,7 @@ jobs:
           path: export/release/linux/bin
 
       - name: Push to Itch Linux
-        if: ${{github.event.action } == "push"}
+        if: ${{github.event.action == push}}
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}

@@ -140,7 +140,7 @@ jobs:
           path: export/release/android/bin/app/build/output/apk/Last Funkin Moments-debug.apk
         
       - name: Push to Itch Windows
-        if: ${{github.event.action } == "push"}
+        if: ${{github.event.action == push}}
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
@@ -150,7 +150,7 @@ jobs:
           PACKAGE: export/release/windows/bin
 
       - name: Push to Itch Android
-        if: ${{github.event.action } == "push"}
+        if: ${{github.event.action == push}}
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
