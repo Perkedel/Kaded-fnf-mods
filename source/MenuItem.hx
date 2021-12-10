@@ -13,10 +13,13 @@ class MenuItem extends FlxSpriteGroup
 	public var week:FlxSprite;
 	public var flashingInt:Int = 0;
 
-	public function new(x:Float, y:Float, weekNum:Int = 0)
+	public function new(x:Float, y:Float, weekNum:Int = 0, useCustomImagePath:Bool = false, imagePath:String = "")
 	{
+		// JOELwindows7: now useCustomImagePath & imagePath for custom Week image due to manual assignations.
 		super(x, y);
-		week = new FlxSprite().loadGraphic(Paths.image('storymenu/week' + weekNum));
+		// week = new FlxSprite().loadGraphic(Paths.loadImage('storymenu/week'+ weekNum)); // former
+		week = new FlxSprite().loadGraphic(Paths.loadImage('storymenu/' + (useCustomImagePath? imagePath : 'week'+ weekNum))); // JOELwindows7: there you go
+		week.antialiasing = FlxG.save.data.antialiasing;
 		add(week);
 	}
 
@@ -40,7 +43,7 @@ class MenuItem extends FlxSpriteGroup
 
 		if (isFlashing)
 			flashingInt += 1;
-	
+
 		if (flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2))
 			week.color = 0xFF33ffff;
 		else if (FlxG.save.data.flashing)

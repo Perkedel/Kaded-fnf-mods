@@ -1,7 +1,7 @@
-name: CI-bigMakku
+name: macOS Build CI
 
 # Controls when the workflow will run
-on: push
+on: [push, pull_request]
 
 permissions:
   contents: write
@@ -15,7 +15,7 @@ jobs:
       - name: Just do it
         uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.3
+          haxe-version: 4.2.4
       - name: Make your dreams come true
         run: |
           haxe -version
@@ -56,6 +56,10 @@ jobs:
           haxelib git tentools https://github.com/TentaRJ/tentools.git
           haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools mac
+          haxelib install hxp
+          haxelib install svg
+          haxelib install format
+          haxelib install lime-tools
           haxelib list
           ls
           pwd
@@ -63,18 +67,30 @@ jobs:
           pwd ..
           ls ../..
           pwd ../..
+      
+      - name: Obtain GameJolt empty key
+        run: |
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv ./GJkeys.hx /Users/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
-          haxelib run lime build mac
 
-      - name: upload to itch
+      - name: build macOS now!
         run: |
-          echo test
+          haxelib run lime build mac
           
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2.2.4
         with:
           name: macOS Build
           path: export/release/macos/bin
+      
+      - name: Push to Itch macOS
+        if: ${{github.event.action = "push"}}
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: macOS-GHAction
+          ITCH_GAME: last-funkin-moments
+          ITCH_USER: joelwindows7
+          PACKAGE: export/release/macos/bin
       
       - name: Yo, release now
         uses: softprops/action-gh-release@v0.1.13

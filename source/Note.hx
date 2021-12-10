@@ -13,18 +13,17 @@ import PlayState;
 
 using StringTools;
 
-//JOELwindows7: Applied mod based on
+// JOELwindows7: Applied mod based on
 /*
-- https://youtu.be/iiQfjYcpJfQ
-- https://gamebanana.com/questions/17887
-*/
-//Yes, noteTypes like mine or so.
-
+	- https://youtu.be/iiQfjYcpJfQ
+	- https://gamebanana.com/questions/17887
+ */
+// Yes, noteTypes like mine or so.
 class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
 	public var baseStrum:Float = 0;
-	
+
 	public var charterSelected:Bool = false;
 
 	public var rStrumTime:Float = 0;
@@ -41,7 +40,7 @@ class Note extends FlxSprite
 	public var isSustainNote:Bool = false;
 	public var originColor:Int = 0; // The sustain note's original note's color
 	public var noteSection:Int = 0;
-	public var noteType:Int = 0; //JOELwindows7: type of note.
+	public var noteType:Int = 0; // JOELwindows7: type of note.
 
 	public var luaID:Int = 0;
 
@@ -78,7 +77,11 @@ class Note extends FlxSprite
 
 	public var children:Array<Note> = [];
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0, ?noteType:Int = 0) //JOELwindows7: edge long noteType
+	public var inCharter:Bool = false; // JOELwindows7: globalize inCharter for all charting state detection
+	public var noteTypeCheck:String; // JOELwindows7: globalize noteTypeCheck for all noteSkin detection
+
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
+			?bet:Float = 0, ?noteType:Int = 0) // JOELwindows7: edge long noteType
 	{
 		super();
 
@@ -88,8 +91,9 @@ class Note extends FlxSprite
 		beat = bet;
 
 		this.isAlt = isAlt;
-		this.noteType = noteType; //JOELwindows7: oh yeah noteType
+		this.noteType = noteType; // JOELwindows7: oh yeah noteType
 		this.prevNote = prevNote;
+		this.inCharter = inCharter;
 		isSustainNote = sustainNote;
 
 		x += 50;
@@ -104,7 +108,7 @@ class Note extends FlxSprite
 		else
 		{
 			this.strumTime = strumTime;
-			#if sys
+			#if FEATURE_STEPMANIA
 			if (PlayState.isSM)
 			{
 				rStrumTime = strumTime;
@@ -116,8 +120,7 @@ class Note extends FlxSprite
 			#end
 		}
 
-
-		if (this.strumTime < 0 )
+		if (this.strumTime < 0)
 			this.strumTime = 0;
 
 		if (!inCharter)
@@ -125,14 +128,14 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-		var daStage:String = PlayState.Stage.curStage;
+		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.Optimize) ? PlayState.Stage.curStage : 'stage');
 
-		//defaults if no noteStyle was found in chart
-		var noteTypeCheck:String = 'normal';
+		// defaults if no noteStyle was found in chart
+		noteTypeCheck = 'normal';
 
 		if (inCharter)
 		{
-			//JOELwindows7: sussy frames for special noteType
+			// JOELwindows7: sussy frames for special noteType
 			// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
 			// for(amogus in fuckingSussy.frames)
 			// {
@@ -140,13 +143,15 @@ class Note extends FlxSprite
 			// }
 
 			// frames = Paths.getSparrowAtlas('NOTE_assets');
-			//JOELwindows7: noteType speziale
-			switch(noteType){
+			// JOELwindows7: noteType speziale
+			switch (noteType)
+			{
 				case 2:
 					frames = Paths.getSparrowAtlas('NOTE_assets_special');
 				default:
-					frames = Paths.getSparrowAtlas('NOTE_assets');
+					frames = PlayState.noteskinSprite;
 			}
+			// frames = PlayState.noteskinSprite;
 
 			for (i in 0...4)
 			{
@@ -161,139 +166,95 @@ class Note extends FlxSprite
 		}
 		else
 		{
-			if (PlayState.SONG.noteStyle == null) {
-				switch(PlayState.storyWeek) {case 6: noteTypeCheck = 'pixel';}
-			} else {noteTypeCheck = PlayState.SONG.noteStyle;}
-			
-			if(PlayState.SONG.useCustomNoteStyle){
-				frames = Paths.getSparrowAtlas("noteskins/" + noteTypeCheck + '/NOTE_assets');
-
-				for (i in 0...4)
+			if (PlayState.SONG.noteStyle == null)
+			{
+				switch (PlayState.storyWeek)
 				{
-					animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
-					animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
-					animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+					case 6:
+						noteTypeCheck = 'pixel';
 				}
+			}
+			else
+			{
+				noteTypeCheck = PlayState.SONG.noteStyle;
+			}
 
-				var widthSize = Std.int(width * 0.7);
-				if(PlayState.SONG.noteStyle.contains('pixel'))
-				{
-					widthSize = Std.int(
-						PlayState.curStage.startsWith('school') ? 
-						(width * PlayState.daPixelZoom) : 
-						(isSustainNote ? 
-							(width * (PlayState.daPixelZoom - 1.5)) : (
-								width * PlayState.daPixelZoom)
-								)
-								);
-				}
+			switch (noteTypeCheck)
+			{
+				case 'pixel':
+					loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
+					if (isSustainNote)
+						loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
 
-				setGraphicSize(widthSize);
-				updateHitbox();
-				antialiasing = FlxG.save.data.antialiasing && !noteTypeCheck.contains('pixel');
-			} else	
-				switch (noteTypeCheck)
+					for (i in 0...4)
 					{
-						case 'pixel':
-							loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels', 'week6'), true, 17, 17);
-							if (isSustainNote)
-								loadGraphic(Paths.image('weeb/pixelUI/arrowEnds', 'week6'), true, 7, 6);
-
-							for (i in 0...4)
-							{
-								//JOELwindows7: hacky special notetypes like mines
-								var chooseNormalNoteSet = 4;
-								switch(noteType){
-									case 2:
-										chooseNormalNoteSet = 20;
-									default:
-										chooseNormalNoteSet = 4;
-								}
-								// animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
-								animation.add(dataColor[i] + 'Scroll', [i + chooseNormalNoteSet]); // Normal notes / Mines notes
-								animation.add(dataColor[i] + 'hold', [i]); // Holds
-								animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
-
-								//JOELwindows7: special ones
-								// animation.add(dataColor[i] + 'Scroll', [i + 20]); // Mines (NoteType 2)
-								// animation.add(dataColor[i] + 'hold', [i]); // Mine Holds
-								// animation.add(dataColor[i] + 'holdend', [i + 20]); // Mine Tails
-							}
-
-							setGraphicSize(Std.int(width * PlayState.daPixelZoom));
-							updateHitbox();
-						case 'saubo':
-							//JOELwindows7: sussy frames for special noteType
-							// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
-							// for(amogus in fuckingSussy.frames)
-							// {
-							// 	this.frames.pushFrame(amogus);
-							// }
-
-							//JOELwindows7: LFM original noteskin
-							// frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-							//JOELwindows7: noteType speziale
-							switch(noteType){
-								case 2:
-									frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
-								default:
-									frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-							}
-			
-							// animation.addByPrefix('greenScroll', 'green0');
-							// animation.addByPrefix('redScroll', 'red0');
-							// animation.addByPrefix('blueScroll', 'blue0');
-							// animation.addByPrefix('purpleScroll', 'purple0');
-			
-							// animation.addByPrefix('purpleholdend', 'pruple end hold');
-							// animation.addByPrefix('greenholdend', 'green hold end');
-							// animation.addByPrefix('redholdend', 'red hold end');
-							// animation.addByPrefix('blueholdend', 'blue hold end');
-			
-							// animation.addByPrefix('purplehold', 'purple hold piece');
-							// animation.addByPrefix('greenhold', 'green hold piece');
-							// animation.addByPrefix('redhold', 'red hold piece');
-							// animation.addByPrefix('bluehold', 'blue hold piece');
-
-							for (i in 0...4)
-							{
-								animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
-								animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
-								animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
-							}
-			
-							setGraphicSize(Std.int(width * 0.7));
-							updateHitbox();
-							antialiasing = FlxG.save.data.antialiasing;
-						default:
-							//JOELwindows7: sussy frames for special noteType
-							// var fuckingSussy = Paths.getSparrowAtlas('NOTE_assets_special');
-							// for(amogus in fuckingSussy.frames)
-							// {
-							// 	this.frames.pushFrame(amogus);
-							// }
-
-							// frames = Paths.getSparrowAtlas('NOTE_assets');
-							//JOELwindows7: noteType speziale
-							switch(noteType){
-								case 2:
-									frames = Paths.getSparrowAtlas('NOTE_assets_special');
-								default:
-									frames = Paths.getSparrowAtlas('NOTE_assets');
-							}
-
-							for (i in 0...4)
-							{
-								animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
-								animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
-								animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
-							}
-
-							setGraphicSize(Std.int(width * 0.7));
-							updateHitbox();
-							
-							antialiasing = FlxG.save.data.antialiasing;
+						animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
+						animation.add(dataColor[i] + 'hold', [i]); // Holds
+						animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
 					}
+
+					setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+					updateHitbox();
+				case 'saubo':
+					// JOELwindows7: sussy frames for special noteType
+					// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+					// for(amogus in fuckingSussy.frames)
+					// {
+					// 	this.frames.pushFrame(amogus);
+					// }
+
+					// JOELwindows7: LFM original noteskin
+					frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+					// JOELwindows7: noteType speziale
+					switch (noteType)
+					{
+						case 2:
+							frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+						default:
+							frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+					}
+					// frames = PlayState.noteskinSprite;
+
+					for (i in 0...4)
+					{
+						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+					}
+
+					setGraphicSize(Std.int(width * 0.7));
+					updateHitbox();
+					antialiasing = FlxG.save.data.antialiasing;
+				default:
+					// JOELwindows7: sussy frames for special noteType
+					// var fuckingSussy = Paths.getSparrowAtlas('NOTE_assets_special');
+					// for(amogus in fuckingSussy.frames)
+					// {
+					// 	this.frames.pushFrame(amogus);
+					// }
+
+					// frames = Paths.getSparrowAtlas('NOTE_assets');
+					// JOELwindows7: noteType speziale
+					// switch(noteType){
+					// 	case 2:
+					// 		frames = Paths.getSparrowAtlas('NOTE_assets_special');
+					// 	default:
+					// 		frames = Paths.getSparrowAtlas('NOTE_assets');
+					// }
+					frames = PlayState.noteskinSprite;
+
+					for (i in 0...4)
+					{
+						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+					}
+
+					setGraphicSize(Std.int(width * 0.7));
+					updateHitbox();
+
+					antialiasing = FlxG.save.data.antialiasing;
+			}
 		}
 
 		x += swagWidth * noteData;
@@ -321,35 +282,34 @@ class Note extends FlxSprite
 			else if (beatRow % (192 / 32) == 0)
 				col = quantityColor[4];
 
-
 			animation.play(dataColor[col] + 'Scroll');
 			localAngle -= arrowAngles[col];
 			localAngle += arrowAngles[noteData];
 			originAngle = localAngle;
 			originColor = col;
 		}
-		
+
 		// we make sure its downscroll and its a SUSTAIN NOTE (aka a trail, not a note)
 		// and flip it so it doesn't look weird.
 		// THIS DOESN'T FUCKING FLIP THE NOTE, CONTRIBUTERS DON'T JUST COMMENT THIS OUT JESUS
 		// then what is this lol
 		// BRO IT LITERALLY SAYS IT FLIPS IF ITS A TRAIL AND ITS DOWNSCROLL
-		if (FlxG.save.data.downscroll && sustainNote) 
+		if (FlxG.save.data.downscroll && sustainNote)
 			flipY = true;
 
-		
-		var stepHeight = (((0.45 * Conductor.stepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed, 2));
-
-		// we can't divide step height cuz if we do uh it'll fucking lag the shit out of the game
+		var stepHeight = (((0.45 * Conductor.stepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
+			2)) / PlayState.songMultiplier;
 
 		if (isSustainNote && prevNote != null)
 		{
+			noteYOff = Math.round(-stepHeight + swagWidth * 0.5);
+
 			noteScore * 0.2;
 			alpha = 0.6;
 
 			x += width / 2;
 
-			originColor = prevNote.originColor; 
+			originColor = prevNote.originColor;
 			originAngle = prevNote.originAngle;
 
 			animation.play(dataColor[originColor] + 'holdend'); // This works both for normal colors and quantization colors
@@ -357,7 +317,7 @@ class Note extends FlxSprite
 
 			x -= width / 2;
 
-			//if (noteTypeCheck == 'pixel')
+			// if (noteTypeCheck == 'pixel')
 			//	x += 30;
 			if (inCharter)
 				x += 30;
@@ -367,14 +327,11 @@ class Note extends FlxSprite
 				prevNote.animation.play(dataColor[prevNote.originColor] + 'hold');
 				prevNote.updateHitbox();
 
-
-				prevNote.scale.y *= (stepHeight + 1) / prevNote.height; // + 1 so that there's no odd gaps as the notes scroll
+				prevNote.scale.y *= stepHeight / prevNote.height;
 				prevNote.updateHitbox();
-				prevNote.noteYOff = Math.round(-prevNote.offset.y);
 
-				// prevNote.setGraphicSize();
-
-				noteYOff = Math.round(-offset.y);
+				if (antialiasing)
+					prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
 			}
 		}
 	}
@@ -399,35 +356,154 @@ class Note extends FlxSprite
 		{
 			if (isSustainNote)
 			{
-				if (strumTime - Conductor.songPosition  <= (((166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1) * 0.5))
-					&& strumTime - Conductor.songPosition  >= (((-166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))))
+				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1) * 0.5))
+					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))))
 					canBeHit = true;
 				else
 					canBeHit = false;
 			}
 			else
 			{
-				if (strumTime - Conductor.songPosition  <= (((166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1)))
+				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1)))
 					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))))
 					canBeHit = true;
 				else
 					canBeHit = false;
 			}
 			/*if (strumTime - Conductor.songPosition < (-166 * Conductor.timeScale) && !wasGoodHit)
-				tooLate = true;*/
+				tooLate = true; */
 		}
 		else
 		{
 			canBeHit = false;
-
-			if (strumTime <= Conductor.songPosition)
-				wasGoodHit = true;
+			// if (strumTime <= Conductor.songPosition)
+			//	wasGoodHit = true;
 		}
 
 		if (tooLate && !wasGoodHit)
 		{
 			if (alpha > 0.3)
 				alpha = 0.3;
+		}
+	}
+
+	// JOELwindows7: refresh Note
+	public function refreshNoteLook()
+	{
+		if (inCharter)
+		{
+			// JOELwindows7: noteType speziale
+			switch (noteType)
+			{
+				case 2:
+					frames = Paths.getSparrowAtlas('NOTE_assets_special');
+				default:
+					frames = PlayState.noteskinSprite;
+			}
+			// frames = PlayState.noteskinSprite;
+
+			for (i in 0...4)
+			{
+				animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+				animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+				animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+			}
+
+			setGraphicSize(Std.int(width * 0.7));
+			updateHitbox();
+			antialiasing = FlxG.save.data.antialiasing;
+		}
+		else
+		{
+			if (PlayState.SONG.noteStyle == null)
+			{
+				switch (PlayState.storyWeek)
+				{
+					case 6:
+						noteTypeCheck = 'pixel';
+				}
+			}
+			else
+			{
+				noteTypeCheck = PlayState.SONG.noteStyle;
+			}
+
+			switch (noteTypeCheck)
+			{
+				case 'pixel':
+					loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
+					if (isSustainNote)
+						loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+
+					for (i in 0...4)
+					{
+						animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
+						animation.add(dataColor[i] + 'hold', [i]); // Holds
+						animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
+					}
+
+					setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+					updateHitbox();
+				case 'saubo':
+					// JOELwindows7: sussy frames for special noteType
+					// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+					// for(amogus in fuckingSussy.frames)
+					// {
+					// 	this.frames.pushFrame(amogus);
+					// }
+
+					// JOELwindows7: LFM original noteskin
+					frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+					// JOELwindows7: noteType speziale
+					switch (noteType)
+					{
+						case 2:
+							frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+						default:
+							frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+					}
+					// frames = PlayState.noteskinSprite;
+
+					for (i in 0...4)
+					{
+						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+					}
+
+					setGraphicSize(Std.int(width * 0.7));
+					updateHitbox();
+					antialiasing = FlxG.save.data.antialiasing;
+				default:
+					// JOELwindows7: sussy frames for special noteType
+					// var fuckingSussy = Paths.getSparrowAtlas('NOTE_assets_special');
+					// for(amogus in fuckingSussy.frames)
+					// {
+					// 	this.frames.pushFrame(amogus);
+					// }
+
+					// frames = Paths.getSparrowAtlas('NOTE_assets');
+					// JOELwindows7: noteType speziale
+					// switch(noteType){
+					// 	case 2:
+					// 		frames = Paths.getSparrowAtlas('NOTE_assets_special');
+					// 	default:
+					// 		frames = Paths.getSparrowAtlas('NOTE_assets');
+					// }
+					frames = PlayState.noteskinSprite;
+
+					for (i in 0...4)
+					{
+						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+					}
+
+					setGraphicSize(Std.int(width * 0.7));
+					updateHitbox();
+
+					antialiasing = FlxG.save.data.antialiasing;
+			}
 		}
 	}
 }

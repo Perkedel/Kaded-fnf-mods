@@ -1,9 +1,14 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Windows Build CI
 
 # Controls when the workflow will run
-on: push
+on: [push, pull_request]
+
+env:
+  ANDROID_SDK_LOC: C:\Android\android-sdk
+  ANDROID_NDK_ROOT_LOC: C:\Android
+  ANDROID_CMD_LOC: C:\projects\android-cmd
 
 permissions:
   contents: write
@@ -21,9 +26,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.3
+          haxe-version: 4.2.4
       # Runs a set of commands using the runners shell
-      - name: script run line haha
+
+      - name: Schlob Chocolatey
         run: |
           choco install vcredist140
           cinst neko -y
@@ -33,6 +39,23 @@ jobs:
           cinst android-sdk -y
           cinst android-ndk --version=16.2 -y
           cinst adb -y
+
+      - name: first, lemme download android stuff
+        run: |
+          wget -q -O android_ndk.zip https://dl.google.com/android/repository/android-ndk-r15c-windows-x86_64.zip?hl=fi
+          wget -q -O android_cmd.zip https://dl.google.com/android/repository/commandlinetools-win-7302050_latest.zip
+          wget -q -O android_build-tools.zip https://dl.google.com/android/repository/build-tools_r30.0.1-windows.zip
+          wget -q -O android_platforms.zip https://dl.google.com/android/repository/android-19_r04.zip
+          wget -q -O android_platform-tools.zip https://dl.google.com/android/repository/platform-tools_r31.0.2-windows.zip
+          unzip -q .\android_ndk.zip -d "%ANDROID_NDK_ROOT_LOC%"
+          unzip -q .\android_cmd.zip -d "%ANDROID_SDK_LOC%"
+          unzip -q -n .\android_build-tools.zip -d %ANDROID_SDK_LOC%\build-tools
+          unzip -q .\android_platforms.zip -d "%ANDROID_SDK_LOC%"
+          unzip -q -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%" 
+
+      - name: script run line haha
+        run: |
+          cinst haxe -y
           RefreshEnv
           mkdir "%HAXELIB_ROOT%"
           haxelib setup "%HAXELIB_ROOT%"
@@ -46,14 +69,11 @@ jobs:
           haxelib install flixel-addons
           haxelib install flixel-ui
           haxelib install hscript
-          haxelib install newgrounds
           haxelib install flixel-addons
           haxelib git faxe https://github.com/uhrobots/faxe
-          haxelib git polymod https://github.com/larsiusprime/polymod.git
+          haxelib git polymod https://github.com/MasterEric/polymod.git
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
-          haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib run lime rebuild extension-webm windows
           haxelib install android6permissions
           haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
@@ -68,31 +88,76 @@ jobs:
           haxelib install tink_core
           haxelib install grig.audio
           haxelib install grig.midi
+          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+          haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib install actuate 
           haxelib git tentools https://github.com/TentaRJ/tentools.git
           haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools windows
+          haxelib install hxp
+          haxelib install svg
+          haxelib install format
+          haxelib install lime-tools
           haxelib list
           dir
           pwd
+      
+      - name: TEMP patch FlxAction.hx workaround
+        run: |
+          wget "https://gist.github.com/JOELwindows7/118b3a40a76d60e701399a61fb5e1c2d/raw/fef2b6649a4b51d76f912459ef3f107b4bd25905/FlxAction.hx" -O %HAXELIB_ROOT%\HaxeToolkit\haxe\lib\flixel\4,10,0\flixel\input\actions\FlxAction.hx
+
+      
+      - name: Setup Android support
+        run: |
+          haxelib run lime config ANDROID_SDK "%ANDROID_SDK_LOC%"
+          haxelib run lime config ANDROID_NDK_ROOT "%ANDROID_NDK_ROOT_LOC%\android-ndk-r15c"
+          haxelib run lime config ANDROID_SETUP true
+          haxelib run lime config JAVA_HOME C:\Program Files\Java\jdk1.8.0_211
+        
+      - name: Obtain Gamejolt empty key
+        run : |
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv .\GJkeys.hx D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx
-          haxelib run lime build windows
-          haxelib run lime build html5
       
-      - name: upload to itch
+      - name: build Windows now!
         run: |
-          echo test
+          haxelib run lime build windows
+      
+      - name: build Android now!
+        run: |
+          haxelib run lime build android
           
-      - uses: actions/upload-artifact@v2
+      - name: Artifact Windows now
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: Windows Build
           path: export/release/windows/bin
-
-      - uses: actions/upload-artifact@v2
+      
+      - name: Artifact Android now
+        uses: actions/upload-artifact@v2.2.4
         with:
-          name: HTML5 Build
-          path: export/release/html5/bin
+          name: Android Build
+          path: export/release/android/bin/app/build/output/apk/Last Funkin Moments-debug.apk
+        
+      - name: Push to Itch Windows
+        if: ${{github.event.name == "push"}}
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: windows-GHAction
+          ITCH_GAME: last-funkin-moments
+          ITCH_USER: joelwindows7
+          PACKAGE: export/release/windows/bin
+
+      - name: Push to Itch Android
+        if: ${{github.event.name == "push"}}
+        uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: android-GHAction
+          ITCH_GAME: last-funkin-moments
+          ITCH_USER: joelwindows7
+          PACKAGE: export/release/android/bin/app/build/output/apk/Last Funkin Moments-debug.apk
       
       - name: Yo, release now
         uses: softprops/action-gh-release@v0.1.13

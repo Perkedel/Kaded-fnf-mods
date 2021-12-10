@@ -3,7 +3,7 @@ package;
 import flixel.addons.display.FlxBackdrop;
 import plugins.sprites.QmovephBackground;
 import GalleryAchievements;
-#if sys
+#if FEATURE_STEPMANIA
 import smTools.SMFile;
 #end
 import flixel.FlxG;
@@ -26,21 +26,17 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-#if newgrounds
-import io.newgrounds.NG;
-#end
 import lime.app.Application;
 import openfl.Assets;
+import flixel.input.keyboard.FlxKey;
 #if gamejolt
 import GameJolt.GameJoltAPI;
 #end
 // import grig.midi.MidiOut;
-
-#if (desktop && cpp)
+#if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
-
-#if (cpp && sys)
+#if FEATURE_MULTITHREADING
 import sys.thread.Thread;
 #end
 
@@ -55,69 +51,89 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
-	var perkedelSpr:FlxSprite; //JOELwindows7: the Perkedel Logo
-	var odyseeSpr:FlxSprite; //JOELwindows7: the Odysee Logo
+	var perkedelSpr:FlxSprite; // JOELwindows7: the Perkedel Logo
+	var odyseeSpr:FlxSprite; // JOELwindows7: the Odysee Logo
 
 	var curWacky:Array<String> = [];
 
 	var wackyImage:FlxSprite;
 
-	var alreadyDecideOutdated:Bool = false; //JOELwindows7: flag to decide outdated. 
-	//to prevent reselectoid after seen outdated on previously
+	var alreadyDecideOutdated:Bool = false; // JOELwindows7: flag to decide outdated.
+
+	// to prevent reselectoid after seen outdated on previously
 
 	override public function create():Void
 	{
-		
-
-		//JOELwindows7: luckydog7 added this, maybe to prevent absolute quit by back button.
+		// JOELwindows7: luckydog7 added this, maybe to prevent absolute quit by back button.
 		// https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx
 		// https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088
+		// JOELwindows7: title state in trickster android luckydog7
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
-		#if polymod
-		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
-		#end
-		
-		#if (sys && !mobile) //JOELwindows7: title state in trickster android luckydog7
+		// TODO: Refactor this to use OpenFlAssets.
+		#if FEATURE_FILESYSTEM
 		if (!sys.FileSystem.exists(Sys.getCwd() + "/assets/replays"))
 			sys.FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
 		#end
-		//Since we do not have the ability to spawn ask permission in Android somehow (despite our best effort), 
-		//we disabled create directory of replay. man that's disappointing.
-		//we need help for creating dir and file in Android!
+		// JOELwindows7: Since we do not have the ability to spawn ask permission in Android somehow (despite our best effort),
+		// we disabled create directory of replay. man that's disappointing.
+		// we need help for creating dir and file in Android!
 
-		//JOELwindows7: add Odysee titler
+		// JOELwindows7: add Odysee titler
 		#if odysee
-		trace("Odysee lol!");
+		Debug.logTrace("Odysee lol!");
 		#else
-		trace("Not Odysee. okeh.. I guess. Or perhaps yes, just forgot the Odysee definition?");
+		Debug.logTrace("Not Odysee. okeh.. I guess. Or perhaps yes, just forgot the Odysee definition?");
 		#end
 
 		@:privateAccess
 		{
-			trace("Loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets (DEFAULT)");
+			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
 		}
-		
-		#if (!cpp || !sys || mobile)
+
+		FlxG.autoPause = false;
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		PlayerSettings.init();
 
 		KadeEngineData.initSave();
-		
-		#end
 
 		// JOELwindows7: TentaRJ GameJolter
 		#if gamejolt
+		// Main.gjToastManager.createToast(Paths.image("art/LFMicon64"), "Cool and good", "Welcome to Last Funkin Moments",
+		// 	false); // JOELwindows7: create GameJolt Toast here.
 		GameJoltAPI.connect();
 		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
 		#end
-				
-		Highscore.load();
 
+		KeyBinds.keyCheck();
+		// It doesn't reupdate the list before u restart rn lmao
+
+		NoteskinHelpers.updateNoteskins();
+
+		if (FlxG.save.data.volDownBind == null)
+			FlxG.save.data.volDownBind = "MINUS";
+		if (FlxG.save.data.volUpBind == null)
+			FlxG.save.data.volUpBind = "PLUS";
+
+		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+
+		FlxG.mouse.visible = false;
+
+		FlxG.worldBounds.set(0, 0);
+
+		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+
+		MusicBeatState.initSave = true;
+
+		fullscreenBind = FlxKey.fromString(FlxG.save.data.fullscreenBind);
+
+		Highscore.load();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
@@ -126,13 +142,6 @@ class TitleState extends MusicBeatState
 		// DEBUG BULLSHIT
 
 		super.create();
-
-		// NGio.noLogin(APIStuff.API);
-
-		#if ng
-		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
-		trace('NEWGROUNDS LOL');
-		#end
 
 		#if FREEPLAY
 		FlxG.switchState(new FreeplayState());
@@ -157,15 +166,21 @@ class TitleState extends MusicBeatState
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
 
+	// JOELwindows7: globalize button
+	var pressedEnter:Bool = false;
+
 	function startIntro()
 	{
 		persistentUpdate = true;
 
-		//JOELwindows7: the default background pls
-		if(Main.watermarks && Main.perkedelMark){
+		// JOELwindows7: the default background pls
+		if (Main.watermarks && Main.perkedelMark)
+		{
 			// installDefaultBekgron();
 			installSophisticatedDefaultBekgron();
-		} else {
+		}
+		else
+		{
 			var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 			// bg.antialiasing = FlxG.save.data.antialiasing;
 			// bg.setGraphicSize(Std.int(bg.width * 0.6));
@@ -173,14 +188,14 @@ class TitleState extends MusicBeatState
 			add(bg);
 		}
 
-		if (Main.watermarks) {
+		if (Main.watermarks)
+		{
 			logoBl = new FlxSprite(-150, 1500);
-			logoBl.frames = Paths.getSparrowAtlas(
-				Main.perkedelMark?
-				'LFMLogoBumpin':
-				'KadeEngineLogoBumpin'
-				);
-		} else {
+			// logoBl.frames = Paths.getSparrowAtlas('KadeEngineLogoBumpin');
+			logoBl.frames = Paths.getSparrowAtlas(Main.perkedelMark ? 'LFMLogoBumpin' : 'KadeEngineLogoBumpin');
+		}
+		else
+		{
 			logoBl = new FlxSprite(-150, -100);
 			logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		}
@@ -208,7 +223,7 @@ class TitleState extends MusicBeatState
 		// titleText.screenCenter(X);
 		add(titleText);
 
-		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
+		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('logo'));
 		logo.screenCenter();
 		logo.antialiasing = FlxG.save.data.antialiasing;
 		// add(logo);
@@ -230,7 +245,7 @@ class TitleState extends MusicBeatState
 
 		credTextShit.visible = false;
 
-		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('newgrounds_logo'));
+		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('newgrounds_logo'));
 		add(ngSpr);
 		ngSpr.visible = false;
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
@@ -238,20 +253,20 @@ class TitleState extends MusicBeatState
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = FlxG.save.data.antialiasing;
 
-		//JOELwindows7: odysee spriter
-		odyseeSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('odysee_Logo_Transparent_White_Text'));
+		// JOELwindows7: odysee spriter
+		odyseeSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('odysee_Logo_Transparent_White_Text'));
 		add(odyseeSpr);
 		odyseeSpr.visible = false;
-		odyseeSpr.setGraphicSize(Std.int(odyseeSpr.width * .5),Std.int(odyseeSpr.height * .5)); 
+		odyseeSpr.setGraphicSize(Std.int(odyseeSpr.width * .5), Std.int(odyseeSpr.height * .5));
 		odyseeSpr.updateHitbox();
 		odyseeSpr.screenCenter(X);
 		odyseeSpr.antialiasing = FlxG.save.data.antialiasing;
 
-		//JOELwindows7: Perkedel spriter
-		perkedelSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('Perkedel_Logo_Typeborder'));
+		// JOELwindows7: Perkedel spriter
+		perkedelSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('Perkedel_Logo_Typeborder'));
 		add(perkedelSpr);
 		perkedelSpr.visible = false;
-		perkedelSpr.setGraphicSize(Std.int(perkedelSpr.width * .2),Std.int(perkedelSpr.height * .2)); 
+		perkedelSpr.setGraphicSize(Std.int(perkedelSpr.width * .2), Std.int(perkedelSpr.height * .2));
 		perkedelSpr.updateHitbox();
 		perkedelSpr.screenCenter(X);
 		perkedelSpr.antialiasing = FlxG.save.data.antialiasing;
@@ -262,7 +277,8 @@ class TitleState extends MusicBeatState
 
 		if (initialized)
 			skipIntro();
-		else {
+		else
+		{
 			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 			diamond.persist = true;
 			diamond.destroyOnNoUse = false;
@@ -287,6 +303,7 @@ class TitleState extends MusicBeatState
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);
+
 			initialized = true;
 		}
 
@@ -309,22 +326,23 @@ class TitleState extends MusicBeatState
 	}
 
 	var transitioning:Bool = false;
+	var fullscreenBind:FlxKey;
 
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
-		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
-		if (FlxG.keys.justPressed.F)
+		if (FlxG.keys.anyJustPressed([fullscreenBind]))
 		{
 			FlxG.fullscreen = !FlxG.fullscreen;
-			//JOELwindows7: save data for fullscreen mode
+			// JOELwindows7: save data for fullscreen mode
 			FlxG.save.data.fullscreen = FlxG.fullscreen;
 			FlxG.save.flush(); // JOELwindows7: from OptionMenu.hx it constantly save data.
 		}
 
-		var pressedEnter:Bool = controls.ACCEPT;
+		// JOELwindows7: globalize this
+		pressedEnter = controls.ACCEPT;
 
 		#if mobile
 		for (touch in FlxG.touches.list)
@@ -336,23 +354,18 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
-		//JOELwindows7: add mouse click to press enter
-		if(FlxG.mouse.justPressed){
+		// JOELwindows7: add mouse click to press enter
+		if (FlxG.mouse.justPressed)
+		{
 			pressedEnter = true;
 		}
-		//Well sure enough guys. on my Samsung Galaxy S since Dex support
-		//the mouse and touch is different. you need this ON all the time in case
-		//somebody uses mouse in Android device.
+		// Well sure enough guys. on my Samsung Galaxy S since Dex support
+		// the mouse and touch is different. you need this ON all the time in case
+		// somebody uses mouse in Android device.
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			#if (!switch && newgrounds)
-			NGio.unlockMedal(60960);
-
-			// If it's Friday according to da clock
-			if (Date.now().getDay() == 5)
-				NGio.unlockMedal(61034);
-			#end
+			// JOELwindows7: start game on friday real time
 			AchievementUnlocked.whichIs("anFunkin");
 			if (Date.now().getDay() == 5)
 				AchievementUnlocked.whichIs("just_like_the_game");
@@ -372,18 +385,18 @@ class TitleState extends MusicBeatState
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				// Get current version of Kade Engine
-				
-				//JOELwindows7: do this if not mobile since in there this doesn't work
-				//according to the luckydog7 and mods that don't care update
-				#if !mobile
+
+				// JOELwindows7: do this if not mobile since in there this doesn't work
+				// according to the luckydog7 and mods that don't care update
+				#if FEATURE_HTTP
 				var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/master/version.downloadMe");
 				var returnedData:Array<String> = [];
-				
-				http.onData = function (data:String)
+
+				http.onData = function(data:String)
 				{
 					returnedData[0] = data.substring(0, data.indexOf(';'));
 					returnedData[1] = data.substring(data.indexOf('-'), data.length);
-				  	if (!MainMenuState.kadeEngineVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState)
+					if (!MainMenuState.kadeEngineVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState)
 					{
 						alreadyDecideOutdated = true;
 						trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.kadeEngineVer);
@@ -398,37 +411,40 @@ class TitleState extends MusicBeatState
 						clean();
 					}
 				}
-				
-				http.onError = function (error) {
-				  trace('error: $error');
-				  FlxG.switchState(new MainMenuState()); // fail but we go anyway
-				  clean();
+
+				http.onError = function(error)
+				{
+					trace('error: $error');
+					FlxG.switchState(new MainMenuState()); // fail but we go anyway
+					clean();
 				}
-				
+
 				http.request();
 				#else
-				//see bellow update (LFM update check) check else
-				//it already done go to menu for me.
+				// see bellow update (LFM update check) check else
+				// it already done go to menu for me.
 				#end
 			});
+			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 
-			//JOELwindows7: Last Funkin Moments outdated marks
-			//copy from above
-			new FlxTimer().start(2, function(tmr:FlxTimer){
-				//Get the current version of Last Funkin Moments
+			// JOELwindows7: Last Funkin Moments outdated marks
+			// copy from above
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+				// Get the current version of Last Funkin Moments
 
-				#if !mobile
+				#if FEATURE_HTTP
 				var http = new haxe.Http("https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe");
 				var returnedData:Array<String> = [];
-				
-				http.onData = function (data:String)
+
+				http.onData = function(data:String)
 				{
 					returnedData[0] = data.substring(0, data.indexOf(';'));
 					returnedData[1] = data.substring(data.indexOf('-'), data.length);
-				  	if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.tinggalkanState)
+					if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.tinggalkanState)
 					{
-						if(!alreadyDecideOutdated)
-							OutdatedSubState.whichAreaOutdated = 1; //mark that LFM one is outdated
+						if (!alreadyDecideOutdated)
+							OutdatedSubState.whichAreaOutdated = 1; // mark that LFM one is outdated
 						alreadyDecideOutdated = true;
 						trace('LFM outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
 						OutdatedSubState.needVerLast = returnedData[0];
@@ -440,18 +456,18 @@ class TitleState extends MusicBeatState
 						FlxG.switchState(new MainMenuState());
 					}
 				}
-				
-				http.onError = function (error) {
-				  trace('error: $error');
-				  FlxG.switchState(new MainMenuState()); // fail but we go anyway
+
+				http.onError = function(error)
+				{
+					trace('error: $error');
+					FlxG.switchState(new MainMenuState()); // fail but we go anyway
 				}
-				
+
 				http.request();
 				#else
-				FlxG.switchState(new MainMenuState()); //Just pecking go to menu already!
+				FlxG.switchState(new MainMenuState()); // Just pecking go to menu already!
 				#end
 			});
-			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
 		if (pressedEnter && !skippedIntro && initialized)
@@ -504,7 +520,7 @@ class TitleState extends MusicBeatState
 		else
 			gfDance.animation.play('danceLeft');
 
-		FlxG.log.add(curBeat);
+		// FlxG.log.add(curBeat);
 
 		switch (curBeat)
 		{
@@ -524,24 +540,26 @@ class TitleState extends MusicBeatState
 			// credTextShit.screenCenter();
 			case 5:
 				if (Main.watermarks)
-					{
-						if (Main.odyseeMark)
-							createCoolText(['are we partnered', 'with']);
-						else if (Main.perkedelMark)
-							createCoolText(['last funkin moments', 'by']);
-						else
-							createCoolText(['Kade Engine', 'by']);
-					}
+				{
+					if (Main.odyseeMark)
+						createCoolText(['are we partnered', 'with']);
+					else if (Main.perkedelMark)
+						createCoolText(['last funkin moments', 'by']);
+					else
+						createCoolText(['Kade Engine', 'by']);
+				}
 				else
 					createCoolText(['In Partnership', 'with']);
 			case 7:
 				if (Main.watermarks)
-					if (Main.odyseeMark){
-						//addMoreText('Odysee');
+					if (Main.odyseeMark)
+					{
+						// addMoreText('Odysee');
 						odyseeSpr.visible = true;
 					}
-					else if (!Main.odyseeMark && Main.perkedelMark){
-						//JOELwindows7: uuhhh, can we be more efficient here? uh, is there enum?
+					else if (!Main.odyseeMark && Main.perkedelMark)
+					{
+						// JOELwindows7: uuhhh, can we be more efficient here? uh, is there enum?
 						perkedelSpr.visible = true;
 					}
 					else
@@ -573,14 +591,16 @@ class TitleState extends MusicBeatState
 			// credTextShit.text = "Friday";
 			// credTextShit.screenCenter();
 			case 13:
-				addMoreText(Main.perkedelMark? 'Last' : 'Friday');
+				// addMoreText('Friday');
+				addMoreText(Main.perkedelMark ? 'Last' : 'Friday');
 			// credTextShit.visible = true;
 			case 14:
-				addMoreText(Main.perkedelMark? 'Funkin' : 'Night');
+				// addMoreText('Night');
+				addMoreText(Main.perkedelMark ? 'Funkin' : 'Night');
 			// credTextShit.text += '\nNight';
 			case 15:
-				addMoreText(Main.perkedelMark? 'Moments' : 'Funkin'); // credTextShit.text += '\nFunkin';
-
+				// addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+				addMoreText(Main.perkedelMark ? 'Moments' : 'Funkin');
 			case 16:
 				skipIntro();
 		}
@@ -592,6 +612,8 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
+			Debug.logInfo("Skipping intro...");
+
 			remove(ngSpr);
 			remove(odyseeSpr);
 			remove(perkedelSpr);
@@ -599,19 +621,36 @@ class TitleState extends MusicBeatState
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);
 
-			FlxTween.tween(logoBl,{y: -100}, 1.4, {ease: FlxEase.expoInOut});
+			FlxTween.tween(logoBl, {y: -100}, 1.4, {ease: FlxEase.expoInOut});
 
 			logoBl.angle = -4;
 
 			new FlxTimer().start(0.01, function(tmr:FlxTimer)
-				{
-					if(logoBl.angle == -4) 
-						FlxTween.angle(logoBl, logoBl.angle, 4, 4, {ease: FlxEase.quartInOut});
-					if (logoBl.angle == 4) 
-						FlxTween.angle(logoBl, logoBl.angle, -4, 4, {ease: FlxEase.quartInOut});
-				}, 0);
+			{
+				if (logoBl.angle == -4)
+					FlxTween.angle(logoBl, logoBl.angle, 4, 4, {ease: FlxEase.quartInOut});
+				if (logoBl.angle == 4)
+					FlxTween.angle(logoBl, logoBl.angle, -4, 4, {ease: FlxEase.quartInOut});
+			}, 0);
+
+			// It always bugged me that it didn't do this before.
+			// Skip ahead in the song to the drop.
+			FlxG.sound.music.time = 9400; // 9.4 seconds
 
 			skippedIntro = true;
 		}
+	}
+
+	override function manageMouse()
+	{
+		// JOELwindows7: add mouse click to press enter
+		if (FlxG.mouse.justPressed)
+		{
+			pressedEnter = true;
+		}
+		// Well sure enough guys. on my Samsung Galaxy S since Dex support
+		// the mouse and touch is different. you need this ON all the time in case
+		// somebody uses mouse in Android device.
+		super.manageMouse();
 	}
 }

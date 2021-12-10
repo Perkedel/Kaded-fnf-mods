@@ -1,8 +1,9 @@
 package;
 
+import Options.LockWeeksOption;
+import CoreState;
 import GalleryAchievements;
 import flixel.tweens.FlxEase;
-import MusicBeatState.SwagWeeks;
 import lime.utils.Assets;
 import flixel.input.actions.FlxActionManager.ActionSetJson;
 import flixel.input.gamepad.FlxGamepad;
@@ -20,44 +21,42 @@ import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
 import haxe.Json;
 import haxe.format.JsonParser;
-
-#if (desktop && cpp)
+#if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
 
 using StringTools;
 
-
-
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	//JOELwindows7: ahei. so, we have already make the week list as a json file.
+	// JOELwindows7: ahei. so, we have already make the week list as a json file.
 	// therefore, you just have to do edit assets/data/weekList.json (rendered version)
 	// and follow the way it works like the tutorial. also, use "" instead of '',
 	// because JSON only consider value a string and variable name like that with "".
 	// have fun!
-	//wait. it's already covered?
-	static var weekDatas:Array<Dynamic>; //nope. only week names. they also borked weekData variable.
+	// wait. it's already covered?
+	static var weekDatas:Array<Dynamic>; // nope. only week names. they also borked weekData variable.
+
 	// non-gamer move lol! you supposed to let it be filed procedural!!!
 	static function weekData(hardcoded:Bool = false):Array<Dynamic>
 	{
-		if(hardcoded)
+		if (hardcoded)
 			return [
-				['Tutorial'],
-				['Bopeebo', 'Fresh', 'Dad Battle'],
-				['Spookeez', 'South', "Monster"],
-				['Pico', 'Philly Nice', "Blammed"],
-				['Satin Panties', "High", "Milf"],
-				['Cocoa', 'Eggnog', 'Winter Horrorland'],
-				['Senpai', 'Roses', 'Thorns'],
-				['Senpai', 'Roses', 'Thorns'],
-				['Windfall','Rule The World', 'Well Meet Again'],
+				['tutorial'],
+				['bopeebo', 'fresh', 'dadbattle'],
+				['spookeez', 'south', "monster"],
+				['pico', 'philly', "blammed"],
+				['satin-panties', "high", "milf"],
+				['cocoa', 'eggnog', 'winter-horrorland'],
+				['senpai', 'roses', 'thorns'],
+				['Windfall', 'Rule The World', 'Well Meet Again'],
 			];
 		else
 			return weekDatas;
 	}
+
 	// JOELwindows7: yeah, so, these hard code edit no longer needed.
 	var curDifficulty:Int = 1;
 
@@ -76,7 +75,23 @@ class StoryMenuState extends MusicBeatState
 
 	var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 
-	var weekColor:Array<String>;
+	// JOELwindows7: and other text files for that yuss week list.
+	// Yep, in order to make mod core works and loading extra week just by appending the weeklines, we unfortunately
+	// have to abandon JSONed week loading `weekList.json` and use these two above.
+	// TODO: week per JSON file Psychedly
+	/*
+		weekStuffs line represents = left char, mid char, right char, color, bannerPath, underlayPath
+	 */
+	var weekStuffs:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekStuffs')); // Week Display! Character & Color
+	var weekLoads:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekLoads')); // Week Loads! each lines represents songs in the week
+
+	var legacyJSONWeekList:Bool = false; // JOELwindows7: in case you want to use the old JSONed week list.
+
+	// JOELwindows7: custom week parameters
+	var weekColor:Array<String>; // LED backlight color
+	var weekBannerPath:Array<String>; // Menu item banner image path
+	var weekUnderlayPath:Array<String>; // LCD underlay image path
+	var weekClickSoundPath:Array<String>; // Click sound path
 
 	var txtWeekTitle:FlxText;
 
@@ -94,58 +109,102 @@ class StoryMenuState extends MusicBeatState
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
-	var yellowBG:FlxSprite; //JOELwindows7: globalize this bg so we can colorize it.
+	var yellowBG:FlxSprite; // JOELwindows7: globalize this bg so we can colorize it.
+	var underlayBG:FlxSprite; // JOELwindows7: for Underlay. the image appear between character & yellowBG.
 
 	function unlockWeeks():Array<Bool>
 	{
 		var weeks:Array<Bool> = [];
 		#if debug
-		for(i in 0...weekNames.length)
+		for (i in 0...weekNames.length)
 			weeks.push(true);
 		return weeks;
 		#else
-		//JOELwindows7: in Stepmania home use mode, you can have all songs preunlocked by default
+		// JOELwindows7: in Stepmania home use mode, you can have all songs preunlocked by default
 		// You can enable lock progress if you wish to have adventure sensation.
-		if(FlxG.save.data.preUnlocked)
+		if (FlxG.save.data.preUnlocked)
 		{
-			for(i in 0...weekNames.length)
+			for (i in 0...weekNames.length)
 				weeks.push(true);
 			return weeks;
 		}
 		#end
-		
+
 		weeks.push(true);
 
-		for(i in 0...FlxG.save.data.weekUnlocked)
-			{
-				weeks.push(true);
-			}
+		for (i in 0...FlxG.save.data.weekUnlocked)
+		{
+			weeks.push(true);
+		}
 		return weeks;
+	}
+
+	function jsonWeekList()
+	{
+		// JOELwindows7: okay fine let's just json it.
+		var initWeekJson:SwagWeeks = loadFromJson('weekList');
+		weekDatas = initWeekJson.weekData;
+		// weekUnlocked = initWeekJson.weekUnlocked;
+		weekCharacters = initWeekJson.weekCharacters;
+		// weekNames = initWeekJson.weekNames;
+		weekColor = initWeekJson.weekColor;
+		weekBannerPath = initWeekJson.weekBannerPath;
+		weekUnderlayPath = initWeekJson.weekUnderlayPath;
+		weekClickSoundPath = initWeekJson.weekClickSoundPath;
+	}
+
+	// JOELwindows7: modcore compatible texted week list loading
+	function textedWeekList()
+	{
+		weekDatas = new Array<Dynamic>();
+		weekCharacters = new Array<Dynamic>();
+		weekColor = new Array<String>();
+		weekBannerPath = new Array<String>();
+		weekUnderlayPath = new Array<String>();
+		weekClickSoundPath = new Array<String>();
+		for (i in 0...weekLoads.length)
+		{
+			var weekLine:Array<String> = weekLoads[i].split(':');
+			var weekSongs:Array<String> = new Array<String>();
+			for (j in 0...weekLine.length)
+			{
+				var song:String = weekLine[j];
+				// weekDatas[i].push(song);
+				weekSongs.push(song);
+			}
+			weekDatas.insert(i, weekSongs);
+			var lineStuffs:Array<String> = weekStuffs[i].split(':');
+			weekCharacters.insert(i, [lineStuffs[0], lineStuffs[1], lineStuffs[2]]);
+			weekColor.insert(i, lineStuffs[3]);
+			weekBannerPath.insert(i, lineStuffs[4]);
+			weekUnderlayPath.insert(i, lineStuffs[5]);
+			weekClickSoundPath.insert(i, lineStuffs[6]);
+		}
 	}
 
 	override function create()
 	{
-		//JOELwindows7: Do the work for the weeklist pls!
-		//JOELwindows7: Okay, why not weeklist also procedural? just asking?
+		// JOELwindows7: Do the work for the weeklist pls!
+		// JOELwindows7: Okay, why not weeklist also procedural? just asking?
 		// not all people are into coding.
 		// hmm isn't that better to use JSON instead? it's easier to manage!
 		// just copy 3 week list variables above, JSONify them all! yeah!
 		/*
-		Pain is temporary
-		GLORY IS FOREVER
-		LOL wintergatan
-		*/
-		//JOELwindows7: okay fine let's just json it.
-		var initWeekJson = loadFromJson('weekList');
-		weekDatas = initWeekJson.weekData;
-		//weekUnlocked = initWeekJson.weekUnlocked;
-		weekCharacters = initWeekJson.weekCharacters;
-		//weekNames = initWeekJson.weekNames;
-		weekColor = initWeekJson.weekColor;
+			Pain is temporary
+			GLORY IS FOREVER
+			LOL wintergatan
+		 */
+		legacyJSONWeekList = false; // JOELwindows7: turn off after you completed new weeklist
+		if (legacyJSONWeekList)
+			jsonWeekList();
+		else
+			textedWeekList();
 
 		weekUnlocked = unlockWeeks();
 
-		#if (desktop && cpp)
+		PlayState.currentSong = "bruh";
+		PlayState.inDaPlay = false;
+		#if FEATURE_DISCORD
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
 		#end
@@ -177,11 +236,18 @@ class StoryMenuState extends MusicBeatState
 		rankText.size = scoreText.size;
 		rankText.screenCenter(X);
 
-		//Mark selection for campaign menu ui assets
+		// Mark selection for campaign menu ui assets
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE); //JOELwindows7: globalized lol
-		//original color was 0xFFF9CF51
-		//You must be white as a base colorable.
+		yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE); // JOELwindows7: globalized lol
+		// original color was 0xFFF9CF51
+		// You must be white as a base colorable.
+
+		trace("Line smothing");
+		// JOELwindows7: add Underlay image first
+		underlayBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+		underlayBG.alpha = .3; // Just like the LCD watch game toy.
+		// 64 bit, 32 bit, 16 bit. 8 bit, 4 Bit, 2 BIt, 1 BiT, HALF bIT, QUARTER BIT, THE WRIST GAAAAAAAAAME!!!
+		// lmao angry game review lololol
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
@@ -198,10 +264,14 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in 0...weekData().length)
 		{
-			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
+			// JOELwindows7: first, check weekStuffs first.
+			var shouldCustomPath:Bool = weekBannerPath[i] != null && weekBannerPath[i] != "";
+
+			// JOELwindows7: then apply to another arguments
+			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i, shouldCustomPath, weekBannerPath[i]);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
-			weekThing.ID = i; //JOELwindows7: add ID to compare with curSelected week
+			weekThing.ID = i; // JOELwindows7: add ID to compare with curSelected week
 			grpWeekText.add(weekThing);
 
 			weekThing.screenCenter(X);
@@ -238,6 +308,7 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.addByPrefix('idle', "arrow left");
 		leftArrow.animation.addByPrefix('press', "arrow push left");
 		leftArrow.animation.play('idle');
+		leftArrow.antialiasing = FlxG.save.data.antialiasing;
 		difficultySelectors.add(leftArrow);
 
 		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
@@ -246,6 +317,7 @@ class StoryMenuState extends MusicBeatState
 		sprDifficulty.animation.addByPrefix('normal', 'NORMAL');
 		sprDifficulty.animation.addByPrefix('hard', 'HARD');
 		sprDifficulty.animation.play('easy');
+		sprDifficulty.antialiasing = FlxG.save.data.antialiasing;
 		changeDifficulty();
 
 		difficultySelectors.add(sprDifficulty);
@@ -255,11 +327,13 @@ class StoryMenuState extends MusicBeatState
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
 		rightArrow.animation.play('idle');
+		rightArrow.antialiasing = FlxG.save.data.antialiasing;
 		difficultySelectors.add(rightArrow);
 
 		trace("Line 150");
 
 		add(yellowBG);
+		add(underlayBG); // JOELwindows7: here add underlay
 		add(grpWeekCharacters);
 
 		txtTracklist = new FlxText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 100, 0, "Tracks", 32);
@@ -272,7 +346,6 @@ class StoryMenuState extends MusicBeatState
 		add(txtWeekTitle);
 
 		updateText();
-
 
 		var bullShit:Int = 0;
 
@@ -288,12 +361,12 @@ class StoryMenuState extends MusicBeatState
 
 		trace("Line 165");
 
-		//JOELwindows7: add back button now
-		addBackButton(10,Std.int((FlxG.height/2)+40),.25);
+		// JOELwindows7: add back button now
+		addBackButton(10, Std.int((FlxG.height / 2) + 40), .25);
 
 		super.create();
 
-		//JOELwindows7: stuffs
+		// JOELwindows7: stuffs
 		AchievementUnlocked.whichIs("story_mode");
 	}
 
@@ -352,7 +425,7 @@ class StoryMenuState extends MusicBeatState
 					}
 				}
 
-				//JOELwindows7: add the mouse support here too as well
+				// JOELwindows7: add the mouse support here too as well
 				if (FlxG.keys.justPressed.UP || FlxG.mouse.wheel == 1)
 				{
 					changeWeek(-1);
@@ -363,8 +436,8 @@ class StoryMenuState extends MusicBeatState
 					changeWeek(1);
 				}
 
-				//JOELwindows7: regular mouse overlaps click sprite
-				//https://gamefromscratch.com/haxeflixel-tutorial-mouse-input/
+				// JOELwindows7: regular mouse overlaps click sprite
+				// https://gamefromscratch.com/haxeflixel-tutorial-mouse-input/
 				if (controls.RIGHT || (FlxG.mouse.overlaps(rightArrow) && FlxG.mouse.pressed) || FlxG.mouse.pressedMiddle)
 					rightArrow.animation.play('press')
 				else
@@ -380,25 +453,31 @@ class StoryMenuState extends MusicBeatState
 				if (controls.LEFT_P || (FlxG.mouse.overlaps(leftArrow) && FlxG.mouse.justPressed))
 					changeDifficulty(-1);
 
-				//manage mouse visibility
-				//JOELwindows7: make mouse visible when moved.
-				if(FlxG.mouse.justMoved){
-					//trace("mouse moved");
+				// manage mouse visibility
+				// JOELwindows7: make mouse visible when moved.
+				if (FlxG.mouse.justMoved)
+				{
+					// trace("mouse moved");
 					FlxG.mouse.visible = true;
 				}
-				//JOELwindows7: detect any keypresses or any button presses
-				if(FlxG.keys.justPressed.ANY){
-					//lmao! inspire from GameOverState.hx!
+				// JOELwindows7: detect any keypresses or any button presses
+				if (FlxG.keys.justPressed.ANY)
+				{
+					// lmao! inspire from GameOverState.hx!
 					FlxG.mouse.visible = false;
 				}
-				if(FlxG.gamepads.lastActive != null){
-					if(FlxG.gamepads.lastActive.justPressed.ANY){
+				if (FlxG.gamepads.lastActive != null)
+				{
+					if (FlxG.gamepads.lastActive.justPressed.ANY)
+					{
 						FlxG.mouse.visible = false;
 					}
-					//peck this I'm tired! plns work lol
+					// peck this I'm tired! plns work lol
 				}
-			} else {
-				//JOELwindows7: week has been selected
+			}
+			else
+			{
+				// JOELwindows7: week has been selected
 				FlxG.mouse.visible = false;
 			}
 
@@ -406,7 +485,7 @@ class StoryMenuState extends MusicBeatState
 			{
 				selectWeek();
 				haveClicked = false;
-			} 
+			}
 		}
 
 		if ((controls.BACK || haveBacked) && !movedBack && !selectedWeek)
@@ -422,65 +501,45 @@ class StoryMenuState extends MusicBeatState
 			Conductor.songPosition = FlxG.sound.music.time;
 
 		super.update(elapsed);
-
-		//JOELwindows7: mouse support
-		grpWeekText.forEach(function(item:MenuItem){
-			if(!selectedWeek){
-				if(FlxG.mouse.overlaps(item) && !FlxG.mouse.overlaps(backButton)){
-					if(FlxG.mouse.justPressed){
-						if(item.ID == curWeek){
-							haveClicked = true;
-						} else {
-							//go to week which
-							goToWeek(item.ID);
-						}
-					}
-				}
-			}
-
-			//back Buttoning
-			if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(item)){
-				if(FlxG.mouse.justPressed)
-					if(!haveBacked){
-						haveBacked = true;
-					}
-			}
-		});
-		
 	}
 
 	var movedBack:Bool = false;
 	var selectedWeek:Bool = false;
 	var stopspamming:Bool = false;
 
-	//JOELwindows7: Okay so, cleanup Json? and then parse? okeh
+	// JOELwindows7: Okay so, cleanup Json? and then parse? okeh
 	// yeah I know, I copied from Song.hx. for this one, the weekList.json isn't anywhere in special folder
 	// but root of asset/data . that's all... idk
-	public static function loadFromJson(jsonInput:String):SwagWeeks{
+	public static function loadFromJson(jsonInput:String):SwagWeeks
+	{
 		var rawJson = Assets.getText(Paths.json(jsonInput)).trim();
 		trace("load weeklist Json");
 
-		while (!rawJson.endsWith("}")){
-			//JOELwindows7: okay also going through bullshit cleaning what the peck strange
+		while (!rawJson.endsWith("}"))
+		{
+			// JOELwindows7: okay also going through bullshit cleaning what the peck strange
 			rawJson = rawJson.substr(0, rawJson.length - 1);
 		}
 		return parseJSONshit(rawJson);
 	}
-	//JOELwindows7: lol!literally copy from Song.hx minus the 
-	//changing valid score which SwagWeeks typedef doesn't have, idk..
+
+	// JOELwindows7: lol!literally copy from Song.hx minus the
+	// changing valid score which SwagWeeks typedef doesn't have, idk..
 	public static function parseJSONshit(rawJson:String):SwagWeeks
 	{
 		var swagShit:SwagWeeks = cast Json.parse(rawJson);
 		return swagShit;
 	}
-	
+
 	function selectWeek()
 	{
 		if (weekUnlocked[curWeek])
 		{
 			if (stopspamming == false)
 			{
-				FlxG.sound.play(Paths.sound('confirmMenu'));
+				// JOELwindows7: change click sound based on week selected
+				FlxG.sound.play(Paths.sound(weekClickSoundPath[curWeek] != null
+					&& weekClickSoundPath[curWeek] != '' ? weekClickSoundPath[curWeek] : 'confirmMenu'));
 
 				grpWeekText.members[curWeek].startFlashing();
 				grpWeekCharacters.members[1].animation.play('bfConfirm');
@@ -492,29 +551,25 @@ class StoryMenuState extends MusicBeatState
 			selectedWeek = true;
 			PlayState.songMultiplier = 1;
 
+			PlayState.isSM = false;
+
 			PlayState.storyDifficulty = curDifficulty;
 
-			// adjusting the song name to be compatible
-			var songFormat = StringTools.replace(PlayState.storyPlaylist[0], " ", "-");
-			switch (songFormat) {
-				case 'Dad-Battle': songFormat = 'Dadbattle';
-				case 'Philly-Nice': songFormat = 'Philly';
-			}
-
-			var poop:String = Highscore.formatSong(songFormat, curDifficulty);
+			var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
 			PlayState.sicks = 0;
 			PlayState.bads = 0;
 			PlayState.shits = 0;
 			PlayState.goods = 0;
 			PlayState.campaignMisses = 0;
-			PlayState.SONG = Song.conversionChecks(Song.loadFromJson(poop, PlayState.storyPlaylist[0]));
+			PlayState.SONG = Song.conversionChecks(Song.loadFromJson(PlayState.storyPlaylist[0], diff));
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
-				//JOELwindows7: check if the song has video files
+				// JOELwindows7: check if the song has video files
 				// #if !mobile
-				LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(), true);
+				LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
+					true);
 				// #else //workaround for Video cutscener not working in Android
 				// LoadingState.loadAndSwitchState(new PlayState(), true);
 				// #end
@@ -588,8 +643,9 @@ class StoryMenuState extends MusicBeatState
 		updateText();
 	}
 
-	//JOELwindows7: copy above but this time set week selection
-	function goToWeek(change:Int = 0){
+	// JOELwindows7: copy above but this time set week selection
+	function goToWeek(change:Int = 0)
+	{
 		curWeek = change;
 
 		if (curWeek >= weekData().length)
@@ -620,6 +676,27 @@ class StoryMenuState extends MusicBeatState
 		grpWeekCharacters.members[1].setCharacter(weekCharacters[curWeek][1]);
 		grpWeekCharacters.members[2].setCharacter(weekCharacters[curWeek][2]);
 
+		// JOELwindows7: set underlay image
+		if (weekUnderlayPath[curWeek] != null && weekUnderlayPath[curWeek] != "")
+		{
+			try
+			{
+				underlayBG.loadGraphic(Paths.image('menuBackgrounds/' + weekUnderlayPath[curWeek]));
+				underlayBG.alpha = .3;
+			}
+			catch (e)
+			{
+				Debug.logWarn("Werror " + e);
+				underlayBG.makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+				underlayBG.alpha = .3;
+			}
+		}
+		else
+		{
+			underlayBG.makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+			underlayBG.alpha = .3;
+		}
+
 		txtTracklist.text = "Tracks\n";
 		var stringThing:Array<String> = weekData()[curWeek];
 
@@ -633,15 +710,26 @@ class StoryMenuState extends MusicBeatState
 
 		txtTracklist.text += "\n";
 
-		//JOELwindows7: change yellowBG color pls
-		yellowBG.color = FlxColor.fromString(weekColor[curWeek]);
+		// JOELwindows7: change yellowBG color pls
+		var colores:FlxColor = FlxColor.fromString("0xFFF9CF51");
+		// yellowBG.color = FlxColor.fromString(weekColor[curWeek]);
 		// FlxTween.tween(
-		// 	yellowBG, 
+		// 	yellowBG,
 		// 	{color:FlxColor.fromString(weekColor[curWeek])},
 		// 	.5,
 		// 	{ease:FlxEase.linear}
 		// 	);
-		//wtf bro, the tweener triggers epilepsy!
+		// wtf bro, the tweener triggers epilepsy!
+		colores = FlxColor.fromString(weekColor[curWeek]);
+		// FlxTween.tween(yellowBG.color, {redFloat: colores.redFloat}, 0.5, {ease: FlxEase.linear});
+		// FlxTween.tween(yellowBG.color, {greenFloat: colores.greenFloat}, 0.5, {ease: FlxEase.linear});
+		// FlxTween.tween(yellowBG.color, {blueFloat: colores.blueFloat}, 0.5, {ease: FlxEase.linear});
+		// FlxTween.tween(yellowBG, {color:{
+		// 	redFloat: colores.redFloat,
+		// 	greenFloat: colores.greenFloat,
+		// 	blueFloat: colores.blueFloat
+		// }}, 0.5, {ease: FlxEase.linear});
+		FlxTween.color(yellowBG, .5, yellowBG.color, colores, {ease: FlxEase.linear}); // JOELwindows7: FINALLY!!!
 
 		#if !switch
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
@@ -650,7 +738,7 @@ class StoryMenuState extends MusicBeatState
 
 	public static function unlockNextWeek(week:Int):Void
 	{
-		if(week <= weekData().length - 1 && FlxG.save.data.weekUnlocked == week)
+		if (week <= weekData().length - 1 /*&& FlxG.save.data.weekUnlocked == week*/) // fuck you, unlocks all weeks
 		{
 			weekUnlocked.push(true);
 			trace('Week ' + week + ' beat (Week ' + (week + 1) + ' unlocked)');
@@ -664,8 +752,52 @@ class StoryMenuState extends MusicBeatState
 	{
 		super.beatHit();
 
-		grpWeekCharacters.members[0].bopHead();
-		grpWeekCharacters.members[1].bopHead();
-		grpWeekCharacters.members[2].bopHead();
+		if (curBeat % 2 == 0)
+		{
+			grpWeekCharacters.members[0].bopHead();
+			grpWeekCharacters.members[1].bopHead();
+		}
+		else if (weekCharacters[curWeek][0] == 'spooky' || weekCharacters[curWeek][0] == 'gf')
+			grpWeekCharacters.members[0].bopHead();
+
+		if (weekCharacters[curWeek][2] == 'spooky' || weekCharacters[curWeek][2] == 'gf')
+			grpWeekCharacters.members[2].bopHead();
+	}
+
+	// JOELwindows7: put mouse function here yea
+	override function manageMouse()
+	{
+		// JOELwindows7: mouse support
+		grpWeekText.forEach(function(item:MenuItem)
+		{
+			if (!selectedWeek)
+			{
+				if (FlxG.mouse.overlaps(item) && !FlxG.mouse.overlaps(backButton))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (item.ID == curWeek)
+						{
+							haveClicked = true;
+						}
+						else
+						{
+							// go to week which
+							goToWeek(item.ID);
+						}
+					}
+				}
+			}
+
+			// back Buttoning
+			if (FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(item))
+			{
+				if (FlxG.mouse.justPressed)
+					if (!haveBacked)
+					{
+						haveBacked = true;
+					}
+			}
+		});
 	}
 }

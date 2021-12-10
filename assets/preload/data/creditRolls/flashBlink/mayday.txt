@@ -60,6 +60,8 @@ Tutorials:BrightFyre:How to Mod FNF series
 Tutorials:bbpanzu:Video Cutscener + other tutorials
 Featuring:Bill Wurtz:surreal Jazz & meme musician
 Community:FNF Modding Community:bring modders in!
+Protoglin Amexamlef:madii (formerly):inspiration source
+Protoglin Amexamlef:KitsuneSkulls:inspiration source
 Protoglin Amexamlef:bbpanzu:inspiration source
 Protoglin Amexamlef:Sock.clip:inspiration source
 Protoglin Amexamlef:Kuroao_anomal:inspiration source

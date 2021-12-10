@@ -1,12 +1,9 @@
-2021.10.170;
-- Kade Engine 1.7
-- Week TOXIC
-- (Kade) Betterized chart editor (now beat based)
-- (Kade)
-- 3 new song in week TOXIC
-- Cradles NCS
-- Doremi
-- Mayday TheFatRat
-- VLC video player
-- MIDIs now rendered with Yamaha S-YXG2006LE
-- credit rolling
+2021.12.180;
+- Kade Engine 1.8
+- Mystery Freeplay song
+- Enhanced _meta.json capabilities
+- Fallback offset to all rest of characters per stage
+- GameJolter update & Toast
+- (Kade) New options menu
+- (Kade) Added noteskin support + new circle skin OPTION MENU
+- (Kade) Access option in pause menu too

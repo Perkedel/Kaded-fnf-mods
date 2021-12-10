@@ -1,4 +1,5 @@
-![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-toxic-thumb.png )
+![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2021.11-thumb.png )
+<!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-toxic-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-merdeka-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-meta-thumb.png ) -->
@@ -11,7 +12,7 @@ collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 ## Download NOW
 - Odysee
   - [Linux x64](https://odysee.com/@JOELwindows7:a/last-funkin-moments:b?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
-  - [Linux 32 bit](https://odysee.com/@JOELwindows7:a/last-funkin-32bit )
+  - ~~[Linux 32 bit](https://odysee.com/@JOELwindows7:a/last-funkin-32bit )~~
   - [Win64](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows:c?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
   - [Win32](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows32 )
   - [macOS](https://odysee.com/@JOELwindows7:a/last-funkin-moments-macOS)
@@ -36,6 +37,7 @@ class GJKeys
 ```
 
 ## Status
+## Build
 - Linux [![Build status Linux](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)  
 - Linux ~~32 Bit~~Raspberry Pi [![Build status](https://ci.appveyor.com/api/projects/status/ou9xo42n9cwce9bt?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux32)
 - Windows [![Build status Windows](https://ci.appveyor.com/api/projects/status/6m6urhdk0hx9esci?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windows)
@@ -43,6 +45,9 @@ class GJKeys
 - Android (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/wkicycueho8xtb7h?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windroid)
 - HTML5 (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/ngwvliwkacsu0nly?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-winhtml5)
 - macOS [![Build status macOS](https://ci.appveyor.com/api/projects/status/61pl7ba9rgu375pn?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-macos)
+
+## Stuff
+- WakaTime Total [![wakatime](https://wakatime.com/badge/user/dbc5f9fc-c736-48c6-83db-e5a221526daa.svg)](https://wakatime.com/@dbc5f9fc-c736-48c6-83db-e5a221526daa)
 
 ## We have:
 Tons. check each today's update what has added yay.
@@ -280,3 +285,6 @@ This game was made with love to Newgrounds and its community. Extra love to Tom 
 - [Puyo](https://github.com/puyoxyz) - Setting up appveyor and a lot of other help
 - [Smokey](https://github.com/Smokey555) - telling me that I should do the tricky asset loading
 - [Poco](https://github.com/poco0317) - math degree (aka most of the fucking math in this project)
+- [Fox](https://twitter.com/FoxeruKun) - circle noteskins
+- [Orbyy](https://twitter.com/orbyynew) - pixel circle noteskins
+- [Shubs](https://github.com/Yoshubs) - Forever Engine dump cache

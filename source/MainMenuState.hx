@@ -17,12 +17,8 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-#if newgrounds
-import io.newgrounds.NG;
-#end
 import lime.app.Application;
-
-#if (desktop && cpp)
+#if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
 
@@ -31,7 +27,7 @@ using StringTools;
 class MainMenuState extends MusicBeatState
 {
 	var curSelected:Int = 0;
-	//JOELwindows7: which clicked & have they clicked.
+	// JOELwindows7: which clicked & have they clicked.
 	var curClicked:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -44,24 +40,28 @@ class MainMenuState extends MusicBeatState
 
 	var newGaming:FlxText;
 	var newGaming2:FlxText;
+
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
-	public static var larutMalam:String = ""; //JOELwindows7: Last Funkin Nightly mark
+	public static var larutMalam:String = ""; // JOELwindows7: Last Funkin Nightly mark
 
-	public static var kadeEngineVer:String = "1.7" + nightly;
+	public static var kadeEngineVer:String = "1.8" + nightly;
 	public static var gameVer:String = "0.2.7.1";
-	public static var lastFunkinMomentVer:String = "2021.10.170" + larutMalam; //JOELwindows7: last funkin moments version
-	public static var yourModVer:String = "0.0.0.0"; //JOELwindows7: your own mod version
+	public static var lastFunkinMomentVer:String = "2021.12.180" + larutMalam; // JOELwindows7: last funkin moments version
+	public static var yourModVer:String = "0.0.0.0"; // JOELwindows7: your own mod version
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
+
 	public static var finishedFunnyMove:Bool = false;
 
 	override function create()
 	{
+		trace(0 / 2);
 		clean();
-		#if (desktop && cpp)
+		PlayState.inDaPlay = false;
+		#if FEATURE_DISCORD
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
@@ -73,7 +73,7 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('menuBG'));
+		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('menuBG'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.10;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
@@ -85,7 +85,7 @@ class MainMenuState extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
+		magenta = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuDesat'));
 		magenta.scrollFactor.x = 0;
 		magenta.scrollFactor.y = 0.10;
 		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
@@ -102,9 +102,9 @@ class MainMenuState extends MusicBeatState
 
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 
-		//JOELwindows7: add back button
+		// JOELwindows7: add back button
 		addBackButton(10, FlxG.height + 100);
-		//backButton.screenCenter(X);
+		// backButton.screenCenter(X);
 		backButton.scrollFactor.set();
 
 		for (i in 0...optionShit.length)
@@ -120,25 +120,27 @@ class MainMenuState extends MusicBeatState
 			menuItem.scrollFactor.set();
 			menuItem.antialiasing = FlxG.save.data.antialiasing;
 			if (firstStart)
-			{
-				FlxTween.tween(menuItem,{y: 60 + (i * 160)},1 + (i * 0.25) ,{ease: FlxEase.expoInOut, onComplete: function(flxTween:FlxTween) 
-					{ 
-						finishedFunnyMove = true; 
+				FlxTween.tween(menuItem, {y: 60 + (i * 160)}, 1 + (i * 0.25), {
+					ease: FlxEase.expoInOut,
+					onComplete: function(flxTween:FlxTween)
+					{
+						finishedFunnyMove = true;
 						changeItem();
-					}});
-				
-			}
+					}
+				});
 			else
 			{
 				menuItem.y = 60 + (i * 160);
-				
 			}
 		}
 
-		//JOELwindows7: back button swiaush
-		if(firstStart){
-			FlxTween.tween(backButton,{y: FlxG.height - 150},{ease: FlxEase.expoInOut});
-		} else {
+		// JOELwindows7: back button swiaush
+		if (firstStart)
+		{
+			FlxTween.tween(backButton, {y: FlxG.height - 150}, {ease: FlxEase.expoInOut});
+		}
+		else
+		{
 			backButton.y = FlxG.height - 150;
 		}
 
@@ -146,23 +148,27 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.60 * (60 / FlxG.save.data.fpsCap));
 
-		//JOELwindows7: hard code our download link in case illegally reuploaded no matter what sign given
-		//we also covered both Kade Engine and the vanilla itself
-		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 72, 0, "Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\noriginal Kade Engine at https://github.com/KadeDev/Kade-Engine,\nand vanilla Funkin at https://github.com/ninjamuffin99/Funkin .\nplay vanilla Funkin at https://www.newgrounds.com/portal/view/770371\n", 12);
+		// JOELwindows7: hard code our download link in case illegally reuploaded no matter what sign given
+		// we also covered both Kade Engine and the vanilla itself
+		var reuploadWord:String = "Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\n"
+			+ "original Kade Engine at https://github.com/KadeDev/Kade-Engine,\n"
+			+ "and vanilla Funkin at https://github.com/ninjamuffin99/Funkin .\n"
+			+ "play vanilla Funkin at https://www.newgrounds.com/portal/view/770371\n";
+		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 72, 0, reuploadWord, 12);
 		reuploadEdgeCase.scrollFactor.set();
 		reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(reuploadEdgeCase);
-		//Kade, ninja, you should do that too. follow this example!
-		//also somehow at the end of the paragraph above, you must `\n` it at the very end. idk why, but that's the workaround
-		//so the last line of text also shows.
+		// Kade, ninja, you should do that too. follow this example!
+		// also somehow at the end of the paragraph above, you must `\n` it at the very end. idk why, but that's the workaround
+		// so the last line of text also shows.
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod v" + lastFunkinMomentVer : ""), 12);
+		// var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod v" + lastFunkinMomentVer : ""), 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
-
 
 		if (FlxG.save.data.dfjk)
 			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
@@ -170,6 +176,11 @@ class MainMenuState extends MusicBeatState
 			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
 
 		changeItem();
+
+		#if gamejolt
+		// Main.gjToastManager.createToast(Paths.image("art/LFMicon64.png"), "Cool and good", "Welcome to Last Funkin Moments",
+		// 	false); // JOELwindows7: create GameJolt Toast here.
+		#end
 
 		super.create();
 	}
@@ -185,23 +196,27 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
-			//JOELwindows7: make mouse visible when moved.
-			if(FlxG.mouse.justMoved){
-				//trace("mouse moved");
+			// JOELwindows7: make mouse visible when moved.
+			if (FlxG.mouse.justMoved)
+			{
+				// trace("mouse moved");
 				FlxG.mouse.visible = true;
 			}
-			//JOELwindows7: detect any keypresses or any button presses
-			if(FlxG.keys.justPressed.ANY){
-				//lmao! inspire from GameOverState.hx!
+			// JOELwindows7: detect any keypresses or any button presses
+			if (FlxG.keys.justPressed.ANY)
+			{
+				// lmao! inspire from GameOverState.hx!
 				FlxG.mouse.visible = false;
 			}
-			if(FlxG.gamepads.lastActive != null){
-				if(FlxG.gamepads.lastActive.justPressed.ANY){
+			if (FlxG.gamepads.lastActive != null)
+			{
+				if (FlxG.gamepads.lastActive.justPressed.ANY)
+				{
 					FlxG.mouse.visible = false;
 				}
-				//peck this I'm tired! plns work lol
+				// peck this I'm tired! plns work lol
 			}
-			
+
 			var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
 			if (gamepad != null)
@@ -218,7 +233,7 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 
-			//JOELwindows7: attempt add mouse support kinda..
+			// JOELwindows7: attempt add mouse support kinda..
 			if (FlxG.keys.justPressed.UP)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -251,7 +266,7 @@ class MainMenuState extends MusicBeatState
 					FlxG.mouse.visible = false;
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
-					
+
 					if (FlxG.save.data.flashing)
 						FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
@@ -286,50 +301,59 @@ class MainMenuState extends MusicBeatState
 						}
 					});
 
-					//JOELwindows7: also for the back button fade
-					FlxTween.tween(backButton,{alpha:0},1.3,{ease:FlxEase.quadOut, onComplete: function(twn:FlxTween){
-						backButton.kill();
-					}});
+					// JOELwindows7: also for the back button fade
+					FlxTween.tween(backButton, {alpha: 0}, 1.3, {
+						ease: FlxEase.quadOut,
+						onComplete: function(twn:FlxTween)
+						{
+							backButton.kill();
+						}
+					});
 				}
-				//JOELwindows7: have clicked refalsing after done.
+				// JOELwindows7: have clicked refalsing after done.
 				haveClicked = false;
 			}
-			
-			
 		}
 
 		super.update(elapsed);
 
-		//JOELwindows7: not my code, but this one is important!
-		//do this all time to center the spr every single time!
+		// JOELwindows7: not my code, but this one is important!
+		// do this all time to center the spr every single time!
 		menuItems.forEach(function(spr:FlxSprite)
 		{
-			//JOELwindows7: itterate sprite menu items overlaps and click functions
-			if(!selectedSomethin && FlxG.mouse.visible && finishedFunnyMove){
-				if(FlxG.mouse.overlaps(spr) && !FlxG.mouse.overlaps(backButton)){
-					if(curSelected != spr.ID){
+			// JOELwindows7: itterate sprite menu items overlaps and click functions
+			if (!selectedSomethin && FlxG.mouse.visible && finishedFunnyMove)
+			{
+				if (FlxG.mouse.overlaps(spr) && !FlxG.mouse.overlaps(backButton))
+				{
+					if (curSelected != spr.ID)
+					{
 						FlxG.sound.play(Paths.sound('scrollMenu'));
 						goToItem(spr.ID);
 					}
-					if(FlxG.mouse.justPressed){
+					if (FlxG.mouse.justPressed)
+					{
 						trace("mouse clicked on " + Std.string(curSelected) + ". " + optionShit[curSelected]);
 						haveClicked = true;
 					}
 				}
 
-				if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(spr)){
-					if(FlxG.mouse.justPressed){
-						if(!haveBacked) {
+				if (FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(spr))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (!haveBacked)
+						{
 							haveBacked = true;
 						}
 					}
 				}
 			}
-			
+
 			spr.screenCenter(X);
 		});
 	}
-	
+
 	function goToState()
 	{
 		var daChoice:String = optionShit[curSelected];
@@ -345,7 +369,7 @@ class MainMenuState extends MusicBeatState
 				trace("Freeplay Menu Selected");
 
 			case 'options':
-				FlxG.switchState(new OptionsMenu());
+				FlxG.switchState(new OptionsDirect());
 		}
 	}
 
@@ -370,15 +394,17 @@ class MainMenuState extends MusicBeatState
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 
+			spr.animation.curAnim.frameRate = 24 * (60 / FlxG.save.data.fpsCap);
+
 			spr.updateHitbox();
 		});
 	}
 
-	//JOELwindows7: go to item for hover mouse
-	//copy from above but the curSelected is set value instead
-	function goToItem(huh:Int = 0){
-
-		if(finishedFunnyMove)
+	// JOELwindows7: go to item for hover mouse
+	// copy from above but the curSelected is set value instead
+	function goToItem(huh:Int = 0)
+	{
+		if (finishedFunnyMove)
 		{
 			curSelected = huh;
 

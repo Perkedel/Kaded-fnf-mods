@@ -2,7 +2,7 @@ package vlc;
 
 import flixel.FlxG;
 import openfl.system.Capabilities;
-#if (cpp && !mobile && !mac && !linux) //JOELwindows7: unfortunately, no mac or linux support yet
+#if (cpp && !mobile) //JOELwindows7: unfortunately, no mac or linux support yet
 import cpp.NativeArray;
 import cpp.UInt8;
 import haxe.ValueException;
@@ -21,7 +21,7 @@ import vlc.LibVLC;
  * ...
  * @author Tommy S
  */
-#if (cpp && !mobile) 
+#if (cpp && !mobile)
 @:cppFileCode('#include "LibVLC.cpp"')
 #end
 class VlcBitmap extends Bitmap

@@ -186,6 +186,8 @@
 	<assets path="assets/sm"    library="sm"    exclude="*.mp3" unless="web"/>
 
 	<assets path='example_mods' rename='mods' embed='false'/>
+	<!-- JOELwindows7: separate mods folder to not include at all unless debug or forced anyway -->
+	<assets path='separate_mods' rename='mods' embed='false' if='debug || FORCE_INCLUDE_DLC'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	<assets path='CREDIT.md' rename='CREDIT.txt'/>
@@ -222,15 +224,17 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="newgrounds" unless='mobile || emscripten'/>
-	<!-- whoah NG stuff now supports neko & haslink whoahow -->
+	<!-- <haxelib name="newgrounds" unless='mobile || emscripten'/> -->
+	<!-- JOELwindows7: Kade delete ☝️☝️ because NG doesn't allow mod -->
+
 	<haxelib name="faxe" if='switch'/>
 	<!-- JOELwindows7: VVV Danger -->
 	<!-- <haxelib name="faxe"/>  -->
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
-	<!-- <haxelib name="polymod"/> -->
+	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="cpp desktop" unless="neko || hl"/>
-	<haxelib name="linc_luajit" unless = "linux"/>
+	<haxelib name="linc_luajit" if="desktop"/>
+	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
 	<haxelib name="hxvm-luajit" if="desktop"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="cpp desktop"/> -->
 
@@ -306,7 +310,7 @@
 	<haxelib name="systools" unless = "mobile"/>
 	<ndll name="systools" haxelib="systools" unless = "mobile"/>
 	<!-- Final touch to have this -->
-	<haxedef name="gamejolt" if="tentools systools"/>
+	<haxedef name="gamejolt" if="tentools systools" unless= "mobile"/>
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
@@ -368,11 +372,7 @@
 	<haxeflag name="--dce full" if="release" />
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
-	<haxedef name="NG_LOGIN" if="newgrounds" />
-
-	<!-- JOELwindows7: additional howl for LIME project xml here -->
-	<echo value="This is Odysee build" if="odysee"/>
-	<echo value="we have stolen mods in it" if="thief"/>
+	<!-- <haxedef name="NG_LOGIN" if="newgrounds" /> -->
 
 	<!-- JOELwindows7: Android settings -->
 	<android install-location="preferExternal" />
@@ -389,4 +389,47 @@
 	<android permission="android.permission.VIBRATE"/>
 	<android permission="android.permission.READ_EXTERNAL_STORAGE"/>
 	
+	<!-- Use defines to ensure compile-time definitions have readable context. -->
+	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
+
+	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
+	<haxedef name="FEATURE_DISCORD" if="desktop || cpp" unless="mobile" />
+	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
+	<haxedef name="FEATURE_FILESYSTEM" if="desktop || sys" />
+	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
+	<haxedef name="FEATURE_LUAMODCHART" if="windows || cpp" unless="mobile"/>
+	<!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
+	<haxedef name="FEATURE_WEBM" if="windows" />
+	<!-- Defines whether StepMania files can be loaded. -->
+	<haxedef name="FEATURE_STEPMANIA" if="desktop || sys" />
+	<!-- Defines whether the Thread class can be used. -->
+	<haxedef name="FEATURE_MULTITHREADING" if="cpp" />
+	<!-- JOELwindows7: Defines whether uh I forgot -->
+
+	<!-- JOELwindows7: Defines whether the WebMer native should be enabled. This is for cpp-->
+	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="mobile"/>
+	<!-- JOELwindows7: and for JS -->
+	<haxedef name="FEATURE_WEBM_JS" if="web"/>
+	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
+	<haxedef name="FEATURE_VLC" if="cpp windows"/>
+	<!-- JOELwindows7: additional howl for LIME project xml here -->
+	<echo value="This is Odysee build" if="odysee"/>
+	<echo value="we have stolen mods in it" if="thief"/>
+
+	<!-- Defines whether the Mods menu will display before launching. -->
+	<haxedef name="FEATURE_MODCORE" if="desktop" />
+
+	<!-- JOELwindows7: Defines whether the HTTP query possible. -->
+	<haxedef name="FEATURE_HTTP" unless="mobile"/>
+	<!-- JOELwindows7: Defines whether OpenAl audio manipulation is available -->
+	<haxedef name="FEATURE_AUDIO_MANIPULATE" if="cpp"/>
+	<!-- JOELwindows7: Defines whether FPS change is possible safely -->
+	<haxedef name="FEATURE_DISPLAY_FPS_CHANGE" unless = "mobile"/>
+
+	<!-- JOELwindows7: here force defines to know. -->
+	<!-- Write override defines for development special features -->
+
+	<!-- FORCE_INCLUDE_DLC to include separate_mods anyway which previously included only in debug build -->
+	<haxedef name="FORCE_INCLUDE_DLC" if="debug"/>
+
 </project>

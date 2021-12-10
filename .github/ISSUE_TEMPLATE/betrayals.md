@@ -16,7 +16,7 @@ Also, you can refer to entire mods made per author, MULTIPLE REPORT IN ONE ISSUE
 <!-- e.g. FNF Week Choves vs. Neba -->
 
 # What license the asset was, and what license it is now?
-<!-- e.g. was CC4.0-BY-SA, now is Choves' Proprietary EULA -->
+<!-- e.g. was CC4.0-BY-SA, now is Choves' Proprietary EULA / CC4.0-BY-ND-NC -->
 
 # Link to the mod?
 <!-- any mod page link! GameBanana, itch, NexusMods, etc etc. -->

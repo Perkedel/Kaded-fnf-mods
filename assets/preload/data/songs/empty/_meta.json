@@ -1,0 +1,22 @@
+{
+    "name": "Empty",
+    "offset": 0,
+    "artist": "none",
+    "isCreditRoll": false,
+    "creditRunsOnce": false,
+    "delayBeforeStart": 0.0,
+    "delayAfterFinish": 0.0,
+    "hasVideo": false,
+    "videoPath": "",
+    "hasEpilogueVideo": false,
+    "epilogueVideoPath": "",
+    "hasDialogueChat": false,
+    "hasEpilogueChat": false,
+    "allowedToHeadbang": false,
+    "forceLuaModchart": false,
+    "forceHscriptModchart": false,
+    "reversedCountdown": false,
+    "invisibleCountdown": false,
+    "silentCountdown": false,
+    "noteStyle": "normal"
+}

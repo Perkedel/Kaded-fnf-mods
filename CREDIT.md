@@ -322,6 +322,13 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/questions/17887 Note mine how do i add this
 - https://www.youtube.com/watch?v=iiQfjYcpJfQ use this video man
 - https://gamebanana.com/mods/328733?post=9535558 gff inspiration. `shitty mod didn't get downloaded get angry`. name the update `The Poopiest Mod of the year` `The Poopiest Update of the year`.
+- https://stackoverflow.com/questions/60916931/github-action-does-the-if-have-an-else
+- https://docs.github.com/en/actions/learn-github-actions/contexts#operators
+- https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idif
+- https://docs.github.com/en/actions/learn-github-actions/expressions
+- https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference REGEX references
+- https://github.com/HaxeFlixel/flixel-demos/blob/master/UserInterface/FlxTypeText/source/MenuState.hx prefix of FlxTypeText lol
+- https://github.com/HaxeFlixel/flixel-demos/blob/master/Effects/FlxTween/source/PlayState.hx more tween like Tween color
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -448,6 +455,11 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://github.com/TentaRJ/GameJolt-FNF-Integration https://github.com/TentaRJ/tentools TentaRJ. Stuffs like GameJolt Achievements and perhaps other things later.
 - https://design.ubuntu.com/font/ Canonical. Ubuntu font set yeay!
 - https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Conso ah this tool right here to get hex color. 
+- https://github.com/marketplace/actions/butler-push push to itch and
+- https://github.com/marketplace/actions/setup-haxe-environment setup da haxe CI now
+- https://gamebanana.com/mods/336567 https://twitter.com/RedstyP/status/1460982660751257601?s=20 (WARNING: CC4.0-BY-NC-ND, but can reuse if you credit all these 3 on credit sidebar) Redsty Phoenix (everything this thing, Co-Animator, Artis), P (16th letter), & IronB (banner). The Playable Standalone GF yess! 
+- https://github.com/EnigmaEngine/EnigmaEngine Master Eric. Kade FNF fork with Quality of Life feature & pioneer of Polymod ModCore system. taking inspiration & perhaps yoink some of their stuff back in here. Obviously needs to be edited to fit Kade-LFM specification, No replacement is allowed, week must be added by this Kade-LFM format & rereverse engineered (if the mod ports from somebody's mod). The Enigma repository did alot of drastic changes that seems have broken compatibilities with Kade's current structure. While it's good to sort it out, but then it will / could be difficult to pull the new upstream commits back to there.
+- https://github.com/polybiusproxy/PolyEngine/ Polybius proxy. this where BrightFyre maybe contributed or taken MP4 support to/from. Yeah basically this is mod that pioneers mp4 support. Oh yeah infact this is original MP4 support, BrightFyre yanked this for us all to implement. No, I do not shame BrightFyre, it's cool and good! we finally have easy to implement VLC, pecking finally!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
@@ -456,7 +468,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 
 > whew, he stopped stealing.
 
-*sarcasm intended*
+*sarcasm intended 🙃*
 
 - https://gamebanana.com/sounds/52066 (WARNING: has NC, ND) frick vine school class, assembled by Picaro2604. discovered that this kade randomly choose which missNote you can have. 7 8 9 miss note
 - https://gamebanana.com/sounds/51010 (WARNING: has NC, ND) tourettes guy miss note Beskupehn_Espira redistributions. 4 5 6 miss note
