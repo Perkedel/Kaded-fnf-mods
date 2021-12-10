@@ -32,7 +32,6 @@ jobs:
             ls
             pwd
             mkdir -p $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
-            haxelib install hxnodejs
             haxelib install lime
             haxelib install openfl
             haxelib install flixel
@@ -42,17 +41,21 @@ jobs:
             haxelib install flixel-addons
             haxelib install flixel-ui
             haxelib install hscript
-            haxelib install newgrounds
             haxelib install flixel-addons
             haxelib git faxe https://github.com/uhrobots/faxe
-            haxelib git polymod https://github.com/larsiusprime/polymod.git
+            haxelib git polymod https://github.com/MasterEric/polymod.git
             haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
             haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
             haxelib run lime rebuild extension-webm linux
-            haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
-            haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
-            haxelib run lime rebuild linc_luajit linux
-            haxelib run lime rebuild extension-webm linux
+            haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
+            haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
+            haxelib install actuate 
+            haxelib git faxe https://github.com/uhrobots/faxe
+            haxelib git polymod https://github.com/MasterEric/polymod.git
+            haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+            haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
+            haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
+            haxelib install actuate 
             haxelib install android6permissions
             haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
             haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
@@ -66,10 +69,13 @@ jobs:
             haxelib install tink_core
             haxelib install grig.audio
             haxelib install grig.midi
-            haxelib install actuate 
             haxelib git tentools https://github.com/TentaRJ/tentools.git
             haxelib git systools https://github.com/haya3218/systools
             haxelib run lime rebuild systools linux
+            haxelib install hxp
+            haxelib install svg
+            haxelib install format
+            haxelib install lime-tools
             haxelib list
             wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
             unzip butler.zip
