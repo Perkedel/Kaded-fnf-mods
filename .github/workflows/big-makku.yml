@@ -90,7 +90,7 @@ jobs:
           name: macOS Build
           path: export/release/macos/bin
       
-      - name: Manually push to Itch macOS because Action container only support Linux wtf bro
+      - name: Manually push to Itch macOS because that Action container only support Linux wtf bro
         env: 
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
