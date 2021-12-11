@@ -93,7 +93,7 @@ jobs:
         env: 
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
-          hdiutil create /Users/runner/work/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/runner/work/Kaded-fnf-mods/kaded-fnf-mods-macos/export/release/macos/bin"
+          hdiutil create /Users/runner/work/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/runner/work/Kaded-fnf-mods/kaded-fnf-mods/export/release/macos/bin"
           ls
           pwd
           hdiutil convert /Users/runner/work/temp.dmg -format UDZO -o last-funkin-moments-macOS.dmg
