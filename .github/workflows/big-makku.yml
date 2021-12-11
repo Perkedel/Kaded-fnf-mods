@@ -72,6 +72,11 @@ jobs:
         run: |
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv ./GJkeys.hx /Users/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
+      
+      - name: Oh peck, I can't believe you've done this
+        run: |
+          wget -q -O butler.zip https://broth.itch.ovh/butler/darwin-amd64/LATEST/archive/default
+          unzip ./butler.zip
 
       - name: build macOS now!
         run: |
@@ -82,15 +87,13 @@ jobs:
           name: macOS Build
           path: export/release/macos/bin
       
-      - name: Push to Itch macOS
-        if: ${{github.event_name == 'push'}}
-        uses: josephbmanley/butler-publish-itchio-action@master
-        env:
+      - name: Manually push to Itch macOS because Action container only support Linux wtf bro
+        env: 
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: macOS-GHAction
-          ITCH_GAME: last-funkin-moments
-          ITCH_USER: joelwindows7
-          PACKAGE: export/release/macos/bin
+        run: |
+          hdiutil create /Users/runner/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/runner/work/kaded-fnf-mods-macos/export/release/macos/bin"
+          hdiutil convert /Users/runner/temp.dmg -format UDZO -o last-funkin-moments-macOS.dmg
+          /Users/runner/butler push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-GHAction
       
       - name: Yo, release now
         uses: softprops/action-gh-release@v0.1.13
