@@ -77,6 +77,7 @@ jobs:
         run: |
           wget -q -O butler.zip https://broth.itch.ovh/butler/darwin-amd64/LATEST/archive/default
           unzip ./butler.zip
+          mv ./butler /Users/runner/work
           ls
           pwd
 

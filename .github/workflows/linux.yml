@@ -26,13 +26,11 @@ jobs:
       - name: script run line haha
         run: |
           sudo apt-get update
-          sudo add-apt-repository ppa:haxe/releases -y
           sudo apt upgrade -y
           sudo apt install luajit -y
-          sudo apt-get install gcc-multilib g++-multilib haxe -y
+          sudo apt-get install gcc-multilib g++-multilib -y
           sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
-          mkdir "%HAXELIB_ROOT%"
-          haxelib setup "%HAXELIB_ROOT%"
+          sudo apt install libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev
           haxelib install lime
           haxelib install openfl
           haxelib install flixel
