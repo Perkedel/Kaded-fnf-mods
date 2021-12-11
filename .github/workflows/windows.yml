@@ -42,6 +42,8 @@ jobs:
         run: |
           dir C:\
           dir C:\hostedtoolcache
+          dir "C:\hostedtoolcache\windows"
+          dir "C:\hostedtoolcache\windows\haxe"
           dir "C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib"
           wget "https://gist.github.com/JOELwindows7/118b3a40a76d60e701399a61fb5e1c2d/raw/fef2b6649a4b51d76f912459ef3f107b4bd25905/FlxAction.hx"
           dir
