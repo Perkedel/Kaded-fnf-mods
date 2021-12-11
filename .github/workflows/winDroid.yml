@@ -37,6 +37,7 @@ jobs:
           cinst android-sdk -y
           cinst android-ndk --version=16.2 -y
           cinst adb -y
+          cinst androidstudio -y
 
       - name: first, lemme download android stuff
         run: |
