@@ -77,6 +77,8 @@ jobs:
         run: |
           wget -q -O butler.zip https://broth.itch.ovh/butler/darwin-amd64/LATEST/archive/default
           unzip ./butler.zip
+          ls
+          pwd
 
       - name: build macOS now!
         run: |
@@ -91,9 +93,11 @@ jobs:
         env: 
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
-          hdiutil create /Users/runner/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/runner/work/kaded-fnf-mods-macos/export/release/macos/bin"
-          hdiutil convert /Users/runner/temp.dmg -format UDZO -o last-funkin-moments-macOS.dmg
-          /Users/runner/butler push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-GHAction
+          hdiutil create /Users/runner/work/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/runner/work/Kaded-fnf-mods/kaded-fnf-mods-macos/export/release/macos/bin"
+          ls
+          pwd
+          hdiutil convert /Users/runner/work/temp.dmg -format UDZO -o last-funkin-moments-macOS.dmg
+          /Users/runner/work/butler push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-GHAction
       
       - name: Yo, release now
         uses: softprops/action-gh-release@v0.1.13
