@@ -93,6 +93,7 @@ jobs:
       - name: Manually push to Itch macOS because Action container only support Linux wtf bro
         env: 
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
           hdiutil create /Users/runner/work/temp.dmg -ov -volname "last-funkin-moments-macOS" -fs HFS+ -srcfolder "/Users/runner/work/Kaded-fnf-mods/kaded-fnf-mods/export/release/macos/bin"
           ls

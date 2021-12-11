@@ -120,6 +120,12 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT "%ANDROID_NDK_ROOT_LOC%\android-ndk-r15c"
           haxelib run lime config ANDROID_SETUP true
           haxelib run lime config JAVA_HOME C:\Program Files\Java\jdk1.8.0_211
+      
+      - name: Manual Android NDLL download for extension-webm
+        run: |
+          wget https://github.com/Perkedel/After-Church/raw/master/RAW%20files/stray%20anything/Borkarounds/extension-webm/ndll/Android.zip
+          unzip .\Android.zip
+          mv ".\Android" "C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\extension-webm\git\ndll"
         
       - name: Obtain Gamejolt empty key
         run : |
