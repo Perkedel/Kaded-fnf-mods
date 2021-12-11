@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Windows Build CI
+name: Windows Droid Build CI
 
 # Controls when the workflow will run
 on: [push, pull_request]
@@ -132,25 +132,25 @@ jobs:
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
           mv .\GJkeys.hx D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx
       
-      - name: build Windows now!
+      - name: build Android now!
         run: |
-          haxelib run lime build windows
-          
-      - name: Artifact Windows now
+          haxelib run lime build android
+      
+      - name: Artifact Android now
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: Windows Build
-          path: export/release/windows/bin
-        
-      - name: Push to Itch Windows
+          name: Android Build
+          path: export/release/android/bin/app/build/output/apk/Last Funkin Moments-debug.apk
+
+      - name: Push to Itch Android
         if: ${{github.event_name == 'push'}}
         uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: windows-GHAction
+          CHANNEL: android-GHAction
           ITCH_GAME: last-funkin-moments
           ITCH_USER: joelwindows7
-          PACKAGE: export/release/windows/bin
+          PACKAGE: export/release/android/bin/app/build/output/apk/Last Funkin Moments-debug.apk
       
       - name: Yo, release now
         uses: softprops/action-gh-release@v0.1.13
