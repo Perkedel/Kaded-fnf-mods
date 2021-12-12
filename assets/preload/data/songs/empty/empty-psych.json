@@ -1,0 +1,20 @@
+{
+    "ProgramUsed": "Visual Studio Code",
+    "generatedBy": "manually",
+    "song": {
+        "song": "Empty",
+        "notes": [],
+        "events": [],
+        "bpm": 150.0,
+        "needsVoices": true,
+        "arrowSkin": "",
+        "splashSkin": "noteSplashes",
+        "player1": "bf",
+        "player2": "dad",
+        "player3": null,
+        "gfVersion": "gf",
+        "speed": 1,
+        "stage": "stage",
+        "validScore": false
+    }
+}

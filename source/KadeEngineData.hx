@@ -163,6 +163,11 @@ class KadeEngineData
 			FlxG.save.data.traceSongChart = false;
 		}
 
+		//JOELwindows7: enable legacy lua modchart supports
+		if (FlxG.save.data.legacyLuaScript == null){
+			FlxG.save.data.legacyLuaScript = false;
+		}
+
 		FlxG.save.data.cacheImages = false;
 
 		if (FlxG.save.data.middleScroll == null)

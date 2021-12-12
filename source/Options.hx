@@ -2812,3 +2812,37 @@ class LogGameJoltIn extends Option
 		return updateDisplay();
 	}
 }
+
+// JOELwindows7: Legacy Lua Modchart enable option
+class LuaLegacyModchartOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.legacyLuaScript = !FlxG.save.data.legacyLuaScript;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Legacy Lua Modchart Compatibility < " + (FlxG.save.data.legacyLuaScript ? "ON" : "OFF") + " >";
+	}
+}

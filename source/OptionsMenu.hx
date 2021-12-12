@@ -143,7 +143,7 @@ class OptionsMenu extends CoreSubState
 				new DFJKOption(),
 				new Judgement("Create a custom judgement preset"),
 				new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!"),
-
+				new LuaLegacyModchartOption("Enable Lua modchart compatibility for <1.7 modchart files."),
 			]),
 			new OptionCata(345, 40, "Appearance", [
 				new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),
