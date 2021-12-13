@@ -413,7 +413,7 @@ class ModchartState
 		trace("LuaJIT version: " + Lua.versionJIT());
 		Lua.init_callbacks(lua);
 
-		// if (FlxG.save.data.legacyLuaScript)
+		// if (PPlayStateChangeables.legacyLuaModchartSupport)
 		// 	shaders = new Array<LuaShader>(); // JOELwindows7: uncomment now!!!! nvm
 
 		// pre lowercasing the song name (new)
@@ -550,7 +550,7 @@ class ModchartState
 		});
 
 		// JOELwindows7: pls don't delete
-		if (FlxG.save.data.legacyLuaScript)
+		if (PlayStateChangeables.legacyLuaModchartSupport)
 		{
 			Lua_helper.add_callback(lua, "makeAnimatedSprite", makeAnimatedLuaSprite);
 			// this one is still in development
@@ -684,7 +684,7 @@ class ModchartState
 
 		// actors
 		// JOELwindows7: olde
-		if (FlxG.save.data.legacyLuaScript)
+		if (PlayStateChangeables.legacyLuaModchartSupport)
 		{
 			Lua_helper.add_callback(lua, "getRenderedNotes", function()
 			{
@@ -911,7 +911,7 @@ class ModchartState
 			new LuaReceptor(member, "receptor_" + i).Register(lua);
 
 			// JOELwindows7: old
-			if (FlxG.save.data.legacyLuaScript)
+			if (PlayStateChangeables.legacyLuaModchartSupport)
 			{
 				var member = PlayState.strumLineNotes.members[i];
 				Debug.logTrace(PlayState.strumLineNotes.members[i].x
@@ -933,7 +933,7 @@ class ModchartState
 		new LuaWindow().Register(lua);
 
 		// JOELwindows7: windowing old
-		if (FlxG.save.data.legacyLuaScript)
+		if (PlayStateChangeables.legacyLuaModchartSupport)
 		{
 			Lua_helper.add_callback(lua, "setWindowPos", function(x:Int, y:Int)
 			{
@@ -979,7 +979,7 @@ class ModchartState
 		// end windowing old
 
 		// JOELwindows7: tweener old
-		if (FlxG.save.data.legacyLuaScript)
+		if (PlayStateChangeables.legacyLuaModchartSupport)
 		{
 			// tweens
 
@@ -1448,7 +1448,7 @@ class ModchartState
 		// end tweener old
 
 		// JOELwindows7: HUD rest old
-		if (FlxG.save.data.legacyLuaScript)
+		if (PlayStateChangeables.legacyLuaModchartSupport)
 		{
 			// forgot and accidentally commit to master branch
 			// shader

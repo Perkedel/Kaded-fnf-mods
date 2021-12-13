@@ -15,6 +15,7 @@
     "allowedToHeadbang": false,
     "forceLuaModchart": false,
     "forceHscriptModchart": false,
+    "forceLuaModchartLegacy": false,
     "reversedCountdown": false,
     "invisibleCountdown": false,
     "silentCountdown": false,

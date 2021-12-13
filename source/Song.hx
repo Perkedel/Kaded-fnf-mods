@@ -65,6 +65,7 @@ typedef SongData =
 	var useCustomStage:Bool; // JOELwindows7: should use custom stage?
 	// be allowed at certain moments in time
 	var forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	var ?forceLuaModchartLegacy:Bool; // JOELwindows7: force to support legacy Lua modchart system as in <1.7 I guess
 	var forceHscriptModchart:Bool; // JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 	// JOELwindows7: Countdown funny configs
 	var reversedCountdown:Bool;
@@ -94,12 +95,13 @@ typedef SongMeta =
 	var ?epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
 	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
 	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
-
+	var ?forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	var ?forceLuaModchartLegacy:Bool; // JOELwindows7: force to support legacy Lua modchart system as in <1.7 I guess
+	var ?forceHscriptModchart:Bool; // JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 	var ?delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
 	var ?delayAfterFinish:Float; // Delay after song finish before load next song. for cutscene before epilogue video
 	var ?isCreditRoll:Bool; // JOELwindows7: is this credit roll? if yes then roll credit.
 	var ?creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
-
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
 }
 
@@ -252,16 +254,12 @@ class Song
 		}
 
 		// JOELwindows7: the artist too
-		songData.artist = songMetaData.artist != null ? 
-			songMetaData.artist :
-			songData.artist != null ? songData.artist : "Unknown";
+		songData.artist = songMetaData.artist != null ? songMetaData.artist : songData.artist != null ? songData.artist : "Unknown";
 
-		//JOELwindows7: more too
-		songData.isCreditRoll = songMetaData.isCreditRoll != null ? 
-			songMetaData.isCreditRoll : 
-			songData.isCreditRoll != null? songData.isCreditRoll : false;
+		// JOELwindows7: more too
+		songData.isCreditRoll = songMetaData.isCreditRoll != null ? songMetaData.isCreditRoll : songData.isCreditRoll != null ? songData.isCreditRoll : false;
 
-		//JOELwindows7: yut
+		// JOELwindows7: yut
 		if (songMetaData.creditRunsOnce != null)
 		{
 			songData.creditRunsOnce = songMetaData.creditRunsOnce;
@@ -270,7 +268,7 @@ class Song
 		{
 		}
 
-		//JOELwindows7: dude, is there a procedural way to fill these all up?
+		// JOELwindows7: dude, is there a procedural way to fill these all up?
 		if (songMetaData.hasVideo != null)
 		{
 			songData.hasVideo = songMetaData.hasVideo;
@@ -279,7 +277,7 @@ class Song
 		{
 		}
 
-		//JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
+		// JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
 		if (songMetaData.videoPath != null)
 		{
 			songData.videoPath = songMetaData.videoPath;
@@ -288,8 +286,8 @@ class Song
 		{
 		}
 
-		//JOELwindows7: haaaaaaaaaaaaaaaa!!!!
-		if(songMetaData.hasEpilogueVideo != null)
+		// JOELwindows7: haaaaaaaaaaaaaaaa!!!!
+		if (songMetaData.hasEpilogueVideo != null)
 		{
 			songData.hasEpilogueVideo = songMetaData.hasEpilogueVideo;
 		}
@@ -297,8 +295,8 @@ class Song
 		{
 		}
 
-		//JOELwindows7: boooooooof
-		if(songMetaData.epilogueVideoPath != null)
+		// JOELwindows7: boooooooof
+		if (songMetaData.epilogueVideoPath != null)
 		{
 			songData.epilogueVideoPath = songMetaData.epilogueVideoPath;
 		}
@@ -306,8 +304,8 @@ class Song
 		{
 		}
 
-		//JOELwindows7: yay GitHub Copilot yey
-		if(songMetaData.hasDialogueChat != null)
+		// JOELwindows7: yay GitHub Copilot yey
+		if (songMetaData.hasDialogueChat != null)
 		{
 			songData.hasDialogueChat = songMetaData.hasDialogueChat;
 		}
@@ -315,8 +313,8 @@ class Song
 		{
 		}
 
-		//JOELwindows7: yay GitHub Copilot yeyu
-		if(songMetaData.hasEpilogueChat != null)
+		// JOELwindows7: yay GitHub Copilot yeyu
+		if (songMetaData.hasEpilogueChat != null)
 		{
 			songData.hasEpilogueChat = songMetaData.hasEpilogueChat;
 		}
@@ -324,15 +322,15 @@ class Song
 		{
 		}
 
-		//JOELwindows7: try casting, but no. that's aggressive and destroys per difficulty basis.
-		if(songMetaData.delayBeforeStart != null)
+		// JOELwindows7: try casting, but no. that's aggressive and destroys per difficulty basis.
+		if (songMetaData.delayBeforeStart != null)
 		{
 			songData.delayBeforeStart = songMetaData.delayBeforeStart;
 		}
 		else
 		{
 		}
-		if(songMetaData.delayAfterFinish != null)
+		if (songMetaData.delayAfterFinish != null)
 		{
 			songData.delayAfterFinish = songMetaData.delayAfterFinish;
 		}
@@ -340,13 +338,32 @@ class Song
 		{
 		}
 
-		//JOELwindows7: right, these are all we have.
-		if(songMetaData.allowedToHeadbang != null)
+		// JOELwindows7: right, these are all we have.
+		if (songMetaData.allowedToHeadbang != null)
 		{
 			songData.allowedToHeadbang = songMetaData.allowedToHeadbang;
 		}
 		else
 		{
+		}
+
+		//JOELwindows7: lua & haxescript stuffs
+		if (songMetaData.forceLuaModchartLegacy != null){
+			songData.forceLuaModchartLegacy = songMetaData.forceLuaModchartLegacy;
+		}
+		else{
+		}
+
+		if (songMetaData.forceLuaModchart != null){
+			songData.forceLuaModchart = songMetaData.forceLuaModchart;
+		}
+		else{
+		}
+
+		if (songMetaData.forceHscriptModchart != null){
+			songData.forceHscriptModchart = songMetaData.forceHscriptModchart;
+		}
+		else{
 		}
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!

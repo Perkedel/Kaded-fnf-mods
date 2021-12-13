@@ -425,6 +425,7 @@ class PlayState extends MusicBeatState
 		PlayStateChangeables.botPlay = FlxG.save.data.botplay;
 		PlayStateChangeables.Optimize = FlxG.save.data.optimize;
 		PlayStateChangeables.zoom = FlxG.save.data.zoom;
+		PlayStateChangeables.legacyLuaModchartSupport = FlxG.save.data.legacyLuaScript || SONG.forceLuaModchartLegacy;
 
 		removedVideo = false;
 

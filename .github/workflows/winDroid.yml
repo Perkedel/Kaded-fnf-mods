@@ -102,6 +102,24 @@ jobs:
           dir
           pwd
       
+      - name: Obtain stuffs of Windows?
+        run: |
+          mkdir -p C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
+          mkdir -p C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
+          mkdir -p C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
+          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit-5.1.so
+          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit.so
+          mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
+          mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
+          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit-5.1.so
+          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit.so
+          mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
+          mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
+          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit-5.1.so
+          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit.so
+          mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
+          mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
+      
       - name: TEMP patch FlxAction.hx workaround
         run: |
           dir C:\

@@ -75,6 +75,12 @@ jobs:
           haxelib install lime-tools
           haxelib list
 
+      - name: Obtain stuffs of Linux
+        run: |
+          wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
+          sudo mkdir -p /opt/hostedtoolcache/haxe/4.2.4/x64/lib/linc_luajit/lib/lua/lib/Linux64
+          sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.2.4/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
+
       - name: Obtain GameJolt empty file
         run: |
           wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx

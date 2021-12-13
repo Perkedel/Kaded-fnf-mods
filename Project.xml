@@ -404,7 +404,8 @@
 	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
 	<haxedef name="FEATURE_FILESYSTEM" if="desktop || sys" />
 	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
-	<haxedef name="FEATURE_LUAMODCHART" if="windows || cpp" unless="mobile"/>
+	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile"/>
+	<!-- JOELwindows7: okay fam, we've got libraries for most of the platform here yey, mobile still broken tho, Android yess. -->
 	<!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
 	<haxedef name="FEATURE_WEBM" if="windows" />
 	<!-- Defines whether StepMania files can be loaded. -->
