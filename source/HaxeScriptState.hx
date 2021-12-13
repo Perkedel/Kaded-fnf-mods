@@ -435,6 +435,10 @@ class HaxeScriptState
 		addCallback("songStart", function(elapsed)
 		{
 		});
+		addCallback("songEnd", function(elapsed)
+		{
+			// JOELwindows7: call when song end before unloading this thing.
+		});
 		addCallback("stepHit", function(step)
 		{
 		});

@@ -12,8 +12,13 @@ function update(elapsed) -- arguments, how long it took to complete a frame
 
 end
 
-
+-- this gets called after GO!
 function songStart()
+
+end
+
+-- this gets called when song is ended right before unloading the script. not to be confused with epilogue cutscene things!
+function songEnd()
 
 end
 

@@ -4355,27 +4355,35 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.save.data.fpsCap > 290)
 		{
-			trace("return the FPS cap");
+			Debug.logTrace("return the FPS cap");
 			// JOELwindows7: issue with Android version. cast lib current technic crash it
 			#if FEATURE_DISPLAY_FPS_CHANGE
 			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
 			#end
 		}
 
-		trace("unload mod chart");
+		Debug.logTrace("unload mod chart");
 
 		#if FEATURE_LUAMODCHART
 		if (luaModchart != null)
 		{
+			luaModchart.executeState("songEnd",[]); //JOELwindows7: gotta call one last thing before you unload it.
 			luaModchart.die();
 			luaModchart = null;
 		}
 		if (stageScript != null)
 		{
+			stageScript.executeState("songEnd",[]); //JOELwindows7: gotta call one last thing before you unload it.
 			stageScript.die();
 			stageScript = null;
 		}
 		#end
+		if (hscriptModchart != null){
+			hscriptModchart.executeState("songEnd",[]); //JOELwindows7: gotta call one last thing before you unload it.
+		}
+		if (stageHscript != null){
+			stageHscript.executeState("songEnd",[]); //JOELwindows7: gotta call one last thing before you unload it.
+		}
 		scronchHscript();
 
 		// JOELwindows7: stuff to end

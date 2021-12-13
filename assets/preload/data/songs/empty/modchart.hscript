@@ -21,6 +21,11 @@ function songStart()
 
 }
 
+function songEng()
+{
+
+}
+
 function update(elapsed)
 {
 
