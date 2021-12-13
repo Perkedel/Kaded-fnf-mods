@@ -527,16 +527,31 @@ class HaxeScriptState
 		});
 		addCallback("pauseVideo", function()
 		{
+			if (PlayState.instance.useVLC)
+			{
+				PlayState.instance.vlcHandler.pause();
+			}
+			else
 			if (!GlobalVideo.get().paused)
 				GlobalVideo.get().pause();
 		});
 		addCallback("resumeVideo", function()
 		{
+			if (PlayState.instance.useVLC)
+			{
+				PlayState.instance.vlcHandler.resume();
+			}
+			else
 			if (GlobalVideo.get().paused)
 				GlobalVideo.get().pause();
 		});
 		addCallback("restartVideo", function()
 		{
+			if (PlayState.instance.useVLC)
+			{
+				PlayState.instance.vlcHandler.restart();
+			}
+			else
 			GlobalVideo.get().restart();
 		});
 		addCallback("getVideoSpriteX", function()

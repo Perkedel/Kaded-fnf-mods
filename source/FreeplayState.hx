@@ -208,6 +208,11 @@ class FreeplayState extends MusicBeatState
 	{
 		// JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
+
+		// JOELwindows7: go loading bar
+		_loadingBar.popNow();
+		_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
+
 		// JOELwindows7: pls install weekData
 		weekInfo = FreeplayState.loadWeekDatas(weekInfo);
 
@@ -224,10 +229,13 @@ class FreeplayState extends MusicBeatState
 		#elseif FEATURE_STEPMANIA
 		// TODO: Refactor this to use OpenFlAssets.
 		trace("tryin to load sm files");
+		_loadingBar.setInfoText("Loading StepMania files...");
+		_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
 		// JOELwindows7: android crash if attempt FileSystem stuffs
 		for (i in FileSystem.readDirectory("assets/sm/"))
 		{
 			trace(i);
+			
 			if (FileSystem.isDirectory("assets/sm/" + i))
 			{
 				trace("Reading SM file dir " + i);
@@ -238,8 +246,10 @@ class FreeplayState extends MusicBeatState
 					if (file.endsWith(".sm") && !FileSystem.exists("assets/sm/" + i + "/converted.json"))
 					{
 						trace("reading " + file);
+						_loadingBar.setInfoText("Reading StepMania "+ file +" file...");
 						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
 						trace("Converting " + file.header.TITLE);
+						_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
 						var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
 						songs.push(meta);
@@ -249,8 +259,10 @@ class FreeplayState extends MusicBeatState
 					else if (FileSystem.exists("assets/sm/" + i + "/converted.json") && file.endsWith(".sm"))
 					{
 						trace("reading " + file);
+						_loadingBar.setInfoText("Reading StepMania " + file + " file...");
 						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
 						trace("Converting " + file.header.TITLE);
+						_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
 						var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
 						songs.push(meta);
@@ -370,6 +382,11 @@ class FreeplayState extends MusicBeatState
 		FlxTween.tween(leftButton, {y: 90}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left button!
 		FlxTween.tween(rightButton, {y: 90}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween right button!
 
+		//JOELwindows7: done loading bar
+		_loadingBar.setInfoText("Done loading!");
+		_loadingBar.setLoadingType(ExtraLoadingType.DONE);
+		_loadingBar.delayedUnPopNow(5);
+
 		// JOELwindows7: stuff
 		AchievementUnlocked.whichIs("freeplay_mode");
 	}
@@ -383,6 +400,8 @@ class FreeplayState extends MusicBeatState
 	{
 		cached = false;
 		// TODO: JOELwindows7: make this loading procedural & automatic
+		Main.loadingBar.setInfoText("Loading songs...");
+		Main.loadingBar.setLoadingType(ExtraLoadingType.GOING);
 		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
 		// JOELwindows7: hey, you must say goodbye to this. just load this one up from directory shall we?
 		// right, how do we do this..
@@ -395,6 +414,9 @@ class FreeplayState extends MusicBeatState
 			var data:Array<String> = list[i].split(':');
 			var songId = data[0];
 			var meta = new FreeplaySongMetadata(songId, Std.parseInt(data[2]), data[1]);
+			//JOELwindows7: loading text
+			Main.loadingBar.setInfoText("Loading song " + songId + "...");
+			Main.loadingBar.setPercentage((i / list.length)*100);
 
 			var diffs = [];
 			var diffsThatExist = [];

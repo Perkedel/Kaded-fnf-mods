@@ -429,8 +429,8 @@ class PlayState extends MusicBeatState
 		removedVideo = false;
 
 		#if FEATURE_LUAMODCHART
-		// TODO: Refactor this to use OpenFlAssets.
-		executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'));
+		// TODO: Refactor this to use OpenFlAssets
+		executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart')) || SONG.forceLuaModchart; //JOELwindows7: don't forgot force it.
 		if (isSM)
 			executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
 		if (executeModchart)
@@ -2211,7 +2211,8 @@ class PlayState extends MusicBeatState
 				SONG.artist
 				+ " - "
 				+ SONG.songName, 16);
-			songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			// songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			songName.setFormat(Paths.font("UbuntuMono-R.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); //JOELwindows7: I want international support!
 			songName.scrollFactor.set();
 
 			// JOELwindows7: YOU SNEAKY LITTLE PUNK!!! WHY TEXT CHANGE AGAIN HERE?!??!
@@ -5286,6 +5287,7 @@ class PlayState extends MusicBeatState
 
 	public var fuckingVolume:Float = 1;
 	public var useVideo = false;
+	public var useVLC = false; //JOELwindows7 marking for it.
 
 	public static var webmHandler:WebmHandler;
 
@@ -5301,6 +5303,7 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: from that BrightFyre MP4 support, outputting to FlxSprite
 		// https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support#outputting-to-a-flxsprite
 		useVideo = true;
+		useVLC = true; //JOELwindows7: yes VLC
 
 		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
 
@@ -5328,6 +5331,7 @@ class PlayState extends MusicBeatState
 			vlcHandler.resume();
 		#elseif (FEATURE_WEBM && !FEATURE_VLC)
 		useVideo = true;
+		useVLC = false; //JOELwindows7: not VLC
 
 		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
 		// #if (!mobile)

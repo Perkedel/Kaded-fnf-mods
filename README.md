@@ -38,6 +38,15 @@ class GJKeys
 
 ## Status
 ## Build
+### GitHub Action
+- Linux [![Linux Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/linux.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/linux.yml)
+- Windows [![Windows Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/windows.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/windows.yml)
+- Android [![Windows Droid Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/winDroid.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/winDroid.yml)
+- HTML5 [![HTML5 Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/html5.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/html5.yml)
+- macOS [![macOS Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/big-makku.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/big-makku.yml)
+- Auto Close Compile Issues [![Autocloser](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/closeCompileIssues.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/closeCompileIssues.yml)
+- Close stale issues [![Close inactive issues](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/staleIssue.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/staleIssue.yml)
+### Appveyor (Brogen)
 - Linux [![Build status Linux](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)  
 - Linux ~~32 Bit~~Raspberry Pi [![Build status](https://ci.appveyor.com/api/projects/status/ou9xo42n9cwce9bt?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux32)
 - Windows [![Build status Windows](https://ci.appveyor.com/api/projects/status/6m6urhdk0hx9esci?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windows)

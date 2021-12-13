@@ -1,5 +1,6 @@
 package;
 
+import plugins.sprites.LoadingBar;
 import GameJolt;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.input.keyboard.FlxKey;
@@ -42,6 +43,7 @@ class Main extends Sprite
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 
 	public static var bitmapFPS:Bitmap;
+	public static var bitmapLoadingBar:Bitmap; // JOELwindows7: The loading bar bitmap I guess
 
 	public static var instance:Main;
 
@@ -52,6 +54,7 @@ class Main extends Sprite
 	public static var chosenMarkNum:Int = 0;
 
 	public static var gjToastManager:GJToastManager; // JOELwindows7: TentaRJ Gamejolter now has Toast yey! FORMATTER STOP PECK THIS UP FEMALE DOG!!!
+	public static var loadingBar:LoadingBar; // JOELwindows7: the loading bar thingy.
 
 	// JOELwindows7: Please no demonic reference about Mark of what the peck!
 	/*
@@ -196,7 +199,7 @@ class Main extends Sprite
 		ModCore.initialize();
 
 		trace("init FPS counter");
-		#if !mobile
+		#if FEATURE_DISPLAY_FPS_CHANGE
 		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
@@ -223,6 +226,12 @@ class Main extends Sprite
 		// JOELwindows7: finally, have a GameJolt toast
 		addChild(gjToastManager); // Needs to be added after the game. that's how stack workss
 		gjToastManager.createToast(Paths.image("art/LFMicon128"), "Cool and good", "Welcome to Last Funkin Moments", false);
+
+		// JOELwindows7: Oh don't forget! the loading bar
+		loadingBar = new LoadingBar(0, 0, 0xFFFFFF);
+		bitmapLoadingBar = ImageOutline.renderImage(loadingBar, 1, 0x000000, true);
+		bitmapLoadingBar.smoothing = true;
+		addChild(loadingBar);
 
 		// JOELwindows7: GameBanana seems notorious.
 		// let's just hide everything that "trashworthy" / "blammworthy"

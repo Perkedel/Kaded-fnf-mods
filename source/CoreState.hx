@@ -57,6 +57,17 @@ typedef SwagWeeks =
 	var ?weekClickSoundPath:Array<String>;
 }
 
+/** Your Loading Type. what's status is it.
+ * @author JOELwindows7
+ */
+enum ExtraLoadingType
+{
+	NONE;
+	VAGUE;
+	GOING;
+	DONE;
+}
+
 // TODO: JOELwindows7: make granular week data like Psych
 // https://github.com/ShadowMario/FNF-PsychEngine
 
@@ -123,6 +134,9 @@ class CoreState extends FlxUIState
 
 	// JOELwindows7: steal control var in order to make it work
 	private var controls(get, never):Controls;
+
+	// JOELwindows7: stuff OpenFl
+	private var _loadingBar = Main.loadingBar;
 
 	// JOELwindows7: and the control getter
 	inline function get_controls():Controls
@@ -563,6 +577,9 @@ class CoreSubState extends FlxSubState
 
 	// JOELwindows7: steal control in order to make it work
 	private var controls(get, never):Controls;
+
+	// JOELwindows7: stuff OpenFl
+	private var _loadingBar = Main.loadingBar;
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;

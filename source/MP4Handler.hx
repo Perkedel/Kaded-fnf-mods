@@ -6,7 +6,7 @@ import flixel.FlxState;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import openfl.events.Event;
-import openfl.media.Video; //Oh this exist?! https://github.com/polybiusproxy/PolyEngine/blob/master/source/VideoHandler.hx
+import openfl.media.Video; // Oh this exist?! https://github.com/polybiusproxy/PolyEngine/blob/master/source/VideoHandler.hx
 #if (FEATURE_VLC) // JOELwindows7: no mac or linux support yet unfortunately
 import vlc.VlcBitmap;
 #end
@@ -15,7 +15,6 @@ import vlc.VlcBitmap;
 // DONT STEAL MY CODE >:(
 class MP4Handler
 {
-
 	public var finishCallback:Void->Void;
 	public var stateCallback:FlxState;
 
@@ -96,6 +95,19 @@ class MP4Handler
 	public function resume()
 	{
 		bitmap.resume();
+	}
+
+	// JOELwindows7: restart
+	public function restart()
+	{
+		// bitmap.restart();
+		// bitmap.stop();
+		// bitmap.play();
+
+		// maybe you should seek to 0 instead???
+		bitmap.pause();
+		bitmap.seek(0);
+		bitmap.play();
 	}
 
 	function checkFile(fileName:String):String

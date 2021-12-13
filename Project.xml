@@ -311,6 +311,13 @@
 	<ndll name="systools" haxelib="systools" unless = "mobile"/>
 	<!-- Final touch to have this -->
 	<haxedef name="gamejolt" if="tentools systools" unless= "mobile"/>
+	
+
+	<!-- JOELwindows7: extra needed for Enigma whoahow -->
+	<!-- A set of additional functions for working with strings. -->
+	<haxelib name="haxe-strings" />
+	<!-- A localization library. We'll start using this eventually for multiple language support. -->
+	<haxelib name="firetongue" />
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
@@ -425,6 +432,9 @@
 	<haxedef name="FEATURE_AUDIO_MANIPULATE" if="cpp"/>
 	<!-- JOELwindows7: Defines whether FPS change is possible safely -->
 	<haxedef name="FEATURE_DISPLAY_FPS_CHANGE" unless = "mobile"/>
+
+	<!-- oh, also MasterEric's way of defining -->
+	<haxedef name="FEATURE_GAMEJOLT" if="gamejolt"/>
 
 	<!-- JOELwindows7: here force defines to know. -->
 	<!-- Write override defines for development special features -->

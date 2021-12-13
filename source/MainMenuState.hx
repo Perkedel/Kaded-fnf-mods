@@ -1,5 +1,6 @@
 package;
 
+import CoreState;
 import GalleryAchievements;
 import flixel.ui.FlxSpriteButton;
 import flixel.ui.FlxButton;
@@ -263,6 +264,9 @@ class MainMenuState extends MusicBeatState
 				}
 				else
 				{
+					_loadingBar.popNow();
+					_loadingBar.setInfoText("Selected " + optionShit[curSelected]);
+					_loadingBar.setLoadingType(ExtraLoadingType.NONE);
 					FlxG.mouse.visible = false;
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -288,6 +292,7 @@ class MainMenuState extends MusicBeatState
 							{
 								FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
 								{
+									_loadingBar.unPopNow();
 									goToState();
 								});
 							}
@@ -295,6 +300,7 @@ class MainMenuState extends MusicBeatState
 							{
 								new FlxTimer().start(1, function(tmr:FlxTimer)
 								{
+									_loadingBar.unPopNow();
 									goToState();
 								});
 							}

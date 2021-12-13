@@ -67,6 +67,8 @@ jobs:
           haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools html5
           haxelib run lime rebuild systools linux
+          haxelib install haxe-strings
+          haxelib install firetongue
           haxelib install hxp
           haxelib install svg
           haxelib install format

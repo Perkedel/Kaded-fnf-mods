@@ -1,5 +1,6 @@
 package;
 
+import CoreState;
 import lime.app.Promise;
 import lime.app.Future;
 import flixel.FlxG;
@@ -34,8 +35,13 @@ class LoadingState extends MusicBeatState
 
 	override function create()
 	{
-		//JOELwindows7: bekgron stuff
-		installStarfield3D(0,0,FlxG.width,FlxG.height);
+		// JOELwindows7: bekgron stuff
+		installStarfield3D(0, 0, FlxG.width, FlxG.height);
+
+		// JOELwindows7: loading stuffs
+		_loadingBar.setLoadingType(ExtraLoadingType.GOING);
+		_loadingBar.setInfoText("Loading Next State...");
+		_loadingBar.popNow();
 
 		logo = new FlxSprite(-150, -100);
 		logo.frames = Paths.getSparrowAtlas('logoBumpin');
@@ -137,6 +143,11 @@ class LoadingState extends MusicBeatState
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
+		// JOELwindows7: got loaded
+		_loadingBar.setInfoText("Done Loading!");
+		_loadingBar.setLoadingType(ExtraLoadingType.DONE);
+		_loadingBar.delayedUnPopNow(5);
+
 		FlxG.switchState(target);
 	}
 
@@ -230,31 +241,39 @@ class LoadingState extends MusicBeatState
 			path = LimeAssets.__cacheBreak(path);
 		}
 
-		AssetManifest.loadFromFile(path, rootPath).onComplete(function(manifest)
-		{
-			if (manifest == null)
+		AssetManifest.loadFromFile(path, rootPath)
+			.onComplete(function(manifest)
 			{
-				promise.error("Cannot parse asset manifest for library \"" + id + "\"");
-				return;
-			}
+				if (manifest == null)
+				{
+					promise.error("Cannot parse asset manifest for library \"" + id + "\"");
+					return;
+				}
 
-			var library = AssetLibrary.fromManifest(manifest);
+				var library = AssetLibrary.fromManifest(manifest);
 
-			if (library == null)
+				if (library == null)
+				{
+					promise.error("Cannot open library \"" + id + "\"");
+				}
+				else
+				{
+					@:privateAccess
+					LimeAssets.libraries.set(id, library);
+					library.onChange.add(LimeAssets.onChange.dispatch);
+					promise.completeWith(Future.withValue(library));
+				}
+			})
+			.onError(function(_)
 			{
-				promise.error("Cannot open library \"" + id + "\"");
-			}
-			else
-			{
-				@:privateAccess
-				LimeAssets.libraries.set(id, library);
-				library.onChange.add(LimeAssets.onChange.dispatch);
-				promise.completeWith(Future.withValue(library));
-			}
-		}).onError(function(_)
-		{
 				promise.error("There is no asset library with an ID of \"" + id + "\"");
-		});
+			})
+			.onProgress(function(progress, total)
+			{
+				// JOELwindows7: whoah you can onProgress?!??!?!
+				promise.progress(progress, total);
+				Main.loadingBar.setPercentage((progress / total) * 100);
+			});
 
 		return promise.future;
 	}
