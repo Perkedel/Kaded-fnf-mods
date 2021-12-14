@@ -431,7 +431,8 @@ class PlayState extends MusicBeatState
 
 		#if FEATURE_LUAMODCHART
 		// TODO: Refactor this to use OpenFlAssets
-		executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart')) || SONG.forceLuaModchart; //JOELwindows7: don't forgot force it.
+		executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'))
+			|| SONG.forceLuaModchart; // JOELwindows7: don't forgot force it.
 		if (isSM)
 			executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
 		if (executeModchart)
@@ -1187,7 +1188,7 @@ class PlayState extends MusicBeatState
 		// Add Kade Engine watermark
 		kadeEngineWatermark = new FlxText(4, healthBarBG.y
 			+ 50, 0,
-			SONG.songName
+			SONG.songId // JOELwindows7: damn, you should've used Song ID instead. the top bar already covered the name for us!
 			+ (FlxMath.roundDecimal(songMultiplier, 2) != 1.00 ? " (" + FlxMath.roundDecimal(songMultiplier, 2) + "x)" : "")
 			+ " - "
 			+ CoolUtil.difficultyFromInt(storyDifficulty) // + (Main.watermarks ? " | KE " + MainMenuState.kadeEngineVer : "")
@@ -1747,7 +1748,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					if (!silent) // JOELwindows7: Silencio Bruno!
-						FlxG.sound.play(Paths.sound('intro2' + altSuffix), 0.6);
+						FlxG.sound.play(Paths.sound('intro2' + altSuffix + midiSuffix), 0.6);
 				case 2:
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[1], week6Bullshit));
 					set.scrollFactor.set();
@@ -1767,7 +1768,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					if (!silent) // JOELwindows7: ssshhh
-						FlxG.sound.play(Paths.sound('intro1' + altSuffix), 0.6);
+						FlxG.sound.play(Paths.sound('intro1' + altSuffix + midiSuffix), 0.6);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[2], week6Bullshit));
 					go.scrollFactor.set();
@@ -1789,7 +1790,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					if (!silent) // JOELwindows7: quiet!
-						FlxG.sound.play(Paths.sound('introGo' + altSuffix), 0.6);
+						FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
 
 					// JOELwindows7: now visiblize the touchscreen buttons
 					// trace("visiblize touchscreen button now");
@@ -2213,7 +2214,8 @@ class PlayState extends MusicBeatState
 				+ " - "
 				+ SONG.songName, 16);
 			// songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			songName.setFormat(Paths.font("UbuntuMono-R.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); //JOELwindows7: I want international support!
+			songName.setFormat(Paths.font("UbuntuMono-R.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,
+				FlxColor.BLACK); // JOELwindows7: I want international support!
 			songName.scrollFactor.set();
 
 			// JOELwindows7: YOU SNEAKY LITTLE PUNK!!! WHY TEXT CHANGE AGAIN HERE?!??!
@@ -2832,7 +2834,7 @@ class PlayState extends MusicBeatState
 							trace("SCROLL SPEED CHANGE to " + i.value);
 							newScroll = i.value;
 						}
-					//JOELwindows7: moar effeks
+					// JOELwindows7: moar effeks
 					case "Cheer Now":
 						justCheer(true);
 					case "Hey Now":
@@ -4368,22 +4370,24 @@ class PlayState extends MusicBeatState
 		#if FEATURE_LUAMODCHART
 		if (luaModchart != null)
 		{
-			luaModchart.executeState("songEnd",[]); //JOELwindows7: gotta call one last thing before you unload it.
+			luaModchart.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
 			luaModchart.die();
 			luaModchart = null;
 		}
 		if (stageScript != null)
 		{
-			stageScript.executeState("songEnd",[]); //JOELwindows7: gotta call one last thing before you unload it.
+			stageScript.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
 			stageScript.die();
 			stageScript = null;
 		}
 		#end
-		if (hscriptModchart != null){
-			hscriptModchart.executeState("songEnd",[]); //JOELwindows7: gotta call one last thing before you unload it.
+		if (hscriptModchart != null)
+		{
+			hscriptModchart.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
 		}
-		if (stageHscript != null){
-			stageHscript.executeState("songEnd",[]); //JOELwindows7: gotta call one last thing before you unload it.
+		if (stageHscript != null)
+		{
+			stageHscript.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
 		}
 		scronchHscript();
 
@@ -5296,11 +5300,11 @@ class PlayState extends MusicBeatState
 
 	public var fuckingVolume:Float = 1;
 	public var useVideo = false;
-	public var useVLC = false; //JOELwindows7 marking for it.
+	public var useVLC = false; // JOELwindows7 marking for it.
 
 	public static var webmHandler:WebmHandler;
 
-	public var vlcHandler:MP4Handler; //JOELwindows7: globalize VLC handler
+	public var vlcHandler:MP4Handler; // JOELwindows7: globalize VLC handler
 
 	public var playingDathing = false;
 
@@ -5312,7 +5316,7 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: from that BrightFyre MP4 support, outputting to FlxSprite
 		// https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support#outputting-to-a-flxsprite
 		useVideo = true;
-		useVLC = true; //JOELwindows7: yes VLC
+		useVLC = true; // JOELwindows7: yes VLC
 
 		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
 
@@ -5340,7 +5344,7 @@ class PlayState extends MusicBeatState
 			vlcHandler.resume();
 		#elseif (FEATURE_WEBM && !FEATURE_VLC)
 		useVideo = true;
-		useVLC = false; //JOELwindows7: not VLC
+		useVLC = false; // JOELwindows7: not VLC
 
 		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
 		// #if (!mobile)
@@ -6559,8 +6563,8 @@ class PlayState extends MusicBeatState
 				// blackShit.alpha = 0;
 				// add(blackShit);
 
-				//JOELwindows7: better! use camera fade
-				FlxG.camera.fade(FlxColor.BLACK,5);
+				// JOELwindows7: better! use camera fade
+				FlxG.camera.fade(FlxColor.BLACK, 5);
 
 				// camHUD.alpha = 0;
 				FlxTween.tween(camHUD, {alpha: 0}, 5, {
@@ -6569,12 +6573,12 @@ class PlayState extends MusicBeatState
 					{
 					}
 				});
-				// FlxTween.tween(blackShit, {alpha: 1}, 5, {
-				// 	ease: FlxEase.linear,
-				// 	onComplete: function(twn:FlxTween)
-				// 	{
-				// 	}
-				// });
+			// FlxTween.tween(blackShit, {alpha: 1}, 5, {
+			// 	ease: FlxEase.linear,
+			// 	onComplete: function(twn:FlxTween)
+			// 	{
+			// 	}
+			// });
 			default:
 		}
 	}

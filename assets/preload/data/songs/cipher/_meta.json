@@ -1,7 +1,7 @@
 {
-    "name": "Empty",
+    "name": "Cipher",
     "offset": 0,
-    "artist": "none",
+    "artist": "Kevin Macleod",
     "isCreditRoll": false,
     "creditRunsOnce": false,
     "delayBeforeStart": 0.0,
@@ -19,8 +19,8 @@
     "reversedCountdown": false,
     "invisibleCountdown": false,
     "silentCountdown": false,
-    "noteStyle": "normal",
-    "player1": "bf",
-    "player2": "dad",
-    "gfVersion": "gf"
+    "noteStyle": "saubo",
+    "player1": "bf-covid",
+    "player2": "hookx",
+    "gfVersion": "gf-covid"
 }

@@ -103,6 +103,10 @@ typedef SongMeta =
 	var ?isCreditRoll:Bool; // JOELwindows7: is this credit roll? if yes then roll credit.
 	var ?creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
+	// JOELwindows7: fallbackers
+	var ?player1:String;
+	var ?player2:String;
+	var ?gfVersion:String;
 }
 
 class Song
@@ -347,23 +351,54 @@ class Song
 		{
 		}
 
-		//JOELwindows7: lua & haxescript stuffs
-		if (songMetaData.forceLuaModchartLegacy != null){
+		// JOELwindows7: lua & haxescript stuffs
+		if (songMetaData.forceLuaModchartLegacy != null)
+		{
 			songData.forceLuaModchartLegacy = songMetaData.forceLuaModchartLegacy;
 		}
-		else{
+		else
+		{
 		}
 
-		if (songMetaData.forceLuaModchart != null){
+		if (songMetaData.forceLuaModchart != null)
+		{
 			songData.forceLuaModchart = songMetaData.forceLuaModchart;
 		}
-		else{
+		else
+		{
 		}
 
-		if (songMetaData.forceHscriptModchart != null){
+		if (songMetaData.forceHscriptModchart != null)
+		{
 			songData.forceHscriptModchart = songMetaData.forceHscriptModchart;
 		}
-		else{
+		else
+		{
+		}
+
+		// JOELwindows7: fallbackers of the stuffs. the metadata should only overwrite if the variable is empty or null
+		if (songMetaData.player1 != null)
+		{
+			if (songData.player1 == null || songData.player1 == "")
+			{
+				songData.player1 = songMetaData.player1;
+			}
+		}
+
+		if (songMetaData.player2 != null)
+		{
+			if (songData.player2 == null || songData.player2 == "")
+			{
+				songData.player2 = songMetaData.player2;
+			}
+		}
+
+		if (songMetaData.gfVersion != null)
+		{
+			if (songData.gfVersion == null || songData.gfVersion == "")
+			{
+				songData.gfVersion = songMetaData.gfVersion;
+			}
 		}
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!

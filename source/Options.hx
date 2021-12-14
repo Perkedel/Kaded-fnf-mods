@@ -21,6 +21,7 @@ import Controls.KeyboardScheme;
 import flixel.FlxG;
 import openfl.display.FPS;
 import openfl.Lib;
+import const.Perkedel;
 
 using StringTools;
 
@@ -29,6 +30,9 @@ class Option
 	public function new()
 	{
 		display = updateDisplay();
+		// JOELwindows7: install the value to those variables yea
+		// this.cannotInPause = cantInPause;
+		// this.requiresRestartSong = needsRestartSong;
 	}
 
 	private var description:String = "";
@@ -38,6 +42,10 @@ class Option
 	public var acceptType:Bool = false;
 
 	public var waitingType:Bool = false;
+
+	// JOELwindows7: special marker
+	public var cannotInPause:Bool = false; // mark this option inaccessible in pause menu
+	public var requiresRestartSong:Bool = false; // mark this option, changing will require you to restart song to apply.
 
 	public final function getDisplay():String
 	{
@@ -66,6 +74,8 @@ class Option
 	// Returns whether the label is to be updated.
 	public function press():Bool
 	{
+		if (requiresRestartSong)
+			OptionsMenu.markRestartSong();
 		return true;
 	}
 
@@ -76,11 +86,15 @@ class Option
 
 	public function left():Bool
 	{
+		if (requiresRestartSong)
+			OptionsMenu.markRestartSong();
 		return false;
 	}
 
 	public function right():Bool
 	{
+		if (requiresRestartSong)
+			OptionsMenu.markRestartSong();
 		return false;
 	}
 }
@@ -658,7 +672,8 @@ class DownscrollOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -717,7 +732,8 @@ class AccuracyOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -749,7 +765,8 @@ class SongPositionOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -781,7 +798,8 @@ class DistractionsAndEffectsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -813,7 +831,8 @@ class Colour extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -845,7 +864,8 @@ class StepManiaOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -919,7 +939,8 @@ class FlashingLightsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -951,7 +972,8 @@ class AntialiasingOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -983,7 +1005,8 @@ class MissSoundsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1042,7 +1065,8 @@ class Judgement extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 		acceptValues = true;
@@ -1294,7 +1318,8 @@ class AccuracyDOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1326,7 +1351,8 @@ class CustomizeGameplay extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1352,7 +1378,8 @@ class WatermarkOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1413,7 +1440,8 @@ class OffsetThing extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1479,7 +1507,8 @@ class CamZoomOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1511,7 +1540,8 @@ class JudgementCounter extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1543,7 +1573,8 @@ class MiddleScrollOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1574,16 +1605,26 @@ class NoteskinOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+		// if (OptionsMenu.isInPause)
+		// 	description = "This option cannot be toggled in the pause menu.";
+		// else
+		// 	description = desc;
+		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
+
+		// JOELwindows7: c'mon let them change it. this noteskin index save data loads only on create.
+		if (requiresRestartSong)
+			description = Perkedel.OPTION_REQUIRES_RESTART_SONG + desc;
 		else
 			description = desc;
+
+		// JOELwindows7: I got it. you want to apply noteskin right now no restart. It's heavy. you need to tell n number of notes +
+		// strum notes + hold bar to change image. BUT, maybe later. why not, I guess.
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.noteskin--;
 		if (FlxG.save.data.noteskin < 0)
 			FlxG.save.data.noteskin = NoteskinHelpers.getNoteskins().length - 1;
@@ -1593,8 +1634,8 @@ class NoteskinOption extends Option
 
 	public override function right():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.noteskin++;
 		if (FlxG.save.data.noteskin > NoteskinHelpers.getNoteskins().length - 1)
 			FlxG.save.data.noteskin = 0;
@@ -1614,7 +1655,8 @@ class HealthBarOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1645,11 +1687,19 @@ class LaneUnderlayOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+		// if (OptionsMenu.isInPause)
+		// 	description = "This option cannot be toggled in the pause menu.";
+		// else
+		// 	description = desc;
+		acceptValues = true;
+
+		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
+
+		// JOELwindows7: c'mon let them change it. this noteskin index save data loads only on create.
+		if (requiresRestartSong)
+			description = Perkedel.OPTION_REQUIRES_RESTART_SONG + desc;
 		else
 			description = desc;
-		acceptValues = true;
 	}
 
 	private override function updateDisplay():String
@@ -1659,8 +1709,8 @@ class LaneUnderlayOption extends Option
 
 	override function right():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.laneTransparency += 0.1;
 
 		if (FlxG.save.data.laneTransparency > 1)
@@ -1670,8 +1720,8 @@ class LaneUnderlayOption extends Option
 
 	override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.laneTransparency -= 0.1;
 
 		if (FlxG.save.data.laneTransparency < 0)
@@ -1685,13 +1735,19 @@ class DebugMode extends Option
 {
 	public function new(desc:String)
 	{
-		description = desc;
+		// description = desc;
+		// JOELwindows7: cannot access to there during gameplay pause.
+		if (OptionsMenu.isInPause)
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc;
+		else
+			description = desc;
 		super();
 	}
 
 	public override function press():Bool
 	{
-		FlxG.switchState(new AnimationDebug());
+		// JOELwindows7: whoa easy baby! we're in gameplay!
+		OptionsMenu.switchState(new AnimationDebug());
 		return false;
 	}
 
@@ -1709,7 +1765,8 @@ class LockWeeksOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1746,7 +1803,8 @@ class ResetScoreOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1791,7 +1849,8 @@ class ResetSettings extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2480,7 +2539,8 @@ class SurroundTestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2506,7 +2566,8 @@ class AnVideoCutscenerTestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2532,7 +2593,8 @@ class AnStarfieldTestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2558,7 +2620,8 @@ class AnDefaultBekgronTestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2584,7 +2647,8 @@ class AnMIDITestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2610,7 +2674,8 @@ class AnChangeChannelOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2781,7 +2846,8 @@ class LogGameJoltIn extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2820,6 +2886,7 @@ class LuaLegacyModchartOption extends Option
 	{
 		super();
 		description = desc;
+		requiresRestartSong = true;
 	}
 
 	public override function left():Bool
@@ -2836,6 +2903,7 @@ class LuaLegacyModchartOption extends Option
 
 	public override function press():Bool
 	{
+		OptionsMenu.markRestartSong(); // JOELwindows7: what if without calling super() this doesn't called then?
 		FlxG.save.data.legacyLuaScript = !FlxG.save.data.legacyLuaScript;
 		display = updateDisplay();
 		return true;

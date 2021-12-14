@@ -112,6 +112,8 @@ class OptionsMenu extends CoreSubState
 
 	public var upToHowManyCatsOnScreen:Int = 6; // JOELwindows7: by default there was 4 categories.
 
+	public static var markForGameplayRestart:Bool = false; // JOELwindows7: mark this true to tell that you have to restart song.
+
 	public function new(pauseMenu:Bool = false)
 	{
 		super();
@@ -537,6 +539,15 @@ class OptionsMenu extends CoreSubState
 							var object = selectedCat.optionObjects.members[selectedOptionIndex];
 							object.text = "> " + selectedOption.getValue();
 							Debug.logTrace("New text: " + object.text);
+
+							// JOELwindows7: heurestic to see if a marker has raised
+							if (markForGameplayRestart)
+							{
+								createToast(null, "Please Restart Song",
+									"You have changed options that needs reloading. Please restart the song to apply the changes.");
+							}
+							// JOELwindows7: reset value again.
+							markForGameplayRestart = false;
 							haveBacked = false; // JOELwindows7: whie
 							return;
 						}
@@ -798,6 +809,12 @@ class OptionsMenu extends CoreSubState
 			return;
 		}
 		FlxG.switchState(ofHere);
+	}
+
+	// JOELwindows7: mark needs restart song if the option requires restart
+	public static function markRestartSong()
+	{
+		markForGameplayRestart = true;
 	}
 
 	// JOELwindows7: assign ID to category on screen

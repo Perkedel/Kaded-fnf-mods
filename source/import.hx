@@ -21,3 +21,6 @@ import haxe.macro.Context;
 import flixel.FlxG;
 import Debug;
 #end
+
+//JOELwindows7: everybody will eventually use StringTools, why not globalize that use then?
+using StringTools;
