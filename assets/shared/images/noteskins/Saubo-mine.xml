@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="Saubo.png">
+<TextureAtlas imagePath="Saubo-mine.png">
 	<!-- JOELwindows7: -->
 	<!-- Copy from default up in here -->
 	<SubTexture name="arrowDOWN0000" x="0" y="235" width="157" height="153"/>

@@ -61,9 +61,28 @@ class TitleState extends MusicBeatState
 	var alreadyDecideOutdated:Bool = false; // JOELwindows7: flag to decide outdated.
 
 	// to prevent reselectoid after seen outdated on previously
+	// var hbdWhen:Map<Date, String>; // JOELwindows7: store lines of birthday stuffs, and its date when.
+	var hbdList:Array<Dynamic>;
 
 	override public function create():Void
 	{
+		// JOELwindows7: fetch birthday lines
+		// hbdWhen = new Map<Date, String>();
+		CarryAround.hbdLines = CoolUtil.coolTextFile(Paths.txt("hbd.txt"));
+		for (i in 0...CarryAround.hbdLines.length)
+		{
+			var line:String = CarryAround.hbdLines[i];
+			var breakdown:Array<String> = line.split(":");
+			var name:String = breakdown[0];
+			var month:Int = Std.parseInt(breakdown[1]);
+			var day:Int = Std.parseInt(breakdown[2]);
+			// var date:Date = Date.;
+			// hbdWhen.set(new Date(null, month, day), name);
+			var hbdCell:Array<Dynamic> = [name, month, day];
+			hbdList.push(hbdCell);
+			// JOELwindows7: pls idk how to make it elegant and work.
+		}
+
 		// JOELwindows7: luckydog7 added this, maybe to prevent absolute quit by back button.
 		// https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx
 		// https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088
@@ -369,6 +388,15 @@ class TitleState extends MusicBeatState
 			AchievementUnlocked.whichIs("anFunkin");
 			if (Date.now().getDay() == 5)
 				AchievementUnlocked.whichIs("just_like_the_game");
+
+			// JOELwindows7: oke now hbd time.
+			for (i in 0...hbdList.length)
+			{
+				if (Date.now().getDay() == hbdList[i][1] && Date.now().getMonth() == hbdList[i][2])
+				{
+					createToast(null, "HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "!!! Semoga panjang umur & sehat selalu");
+				}
+			}
 
 			if (FlxG.save.data.flashing)
 				titleText.animation.play('press');

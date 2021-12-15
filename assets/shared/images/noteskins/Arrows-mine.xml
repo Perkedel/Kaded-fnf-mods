@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="NOTE_assets_special.png">
-	<!-- JOELwindows7: -->
-	<!-- Copy from default up in here -->
+<TextureAtlas imagePath="Arrows-mine.png">
+	<!-- Created with Adobe Animate version 20.0.0.17400 -->
+	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="arrowDOWN0000" x="0" y="235" width="157" height="153"/>
 	<SubTexture name="arrowLEFT0000" x="310" y="235" width="153" height="157"/>
 	<SubTexture name="arrowRIGHT0000" x="157" y="235" width="153" height="157"/>

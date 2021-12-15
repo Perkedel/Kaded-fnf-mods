@@ -52,20 +52,41 @@ class NoteskinHelpers
 		return noteskinArray[id];
 	}
 
-	static public function generateNoteskinSprite(id:Int)
+	static public function generateNoteskinSprite(id:Int, typeSpecial:Int = 0) // JOELwindows7: add type of it.
 	{
 		#if FEATURE_FILESYSTEM
 		// TODO: Make this use OpenFlAssets.
 
 		Debug.logTrace("bruh momento");
 
-		var path = FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + getNoteskinByID(id);
+		var typeSuffix:String;
+		switch (typeSpecial)
+		{
+			case 0:
+				typeSuffix = "";
+			case 1:
+				typeSuffix = "";
+			case 2:
+				typeSuffix = "-mine";
+			default:
+				typeSuffix = "";
+		}
+
+		var path = FileSystem.absolutePath("assets/shared/images/noteskins" + typeSuffix) + "/" + getNoteskinByID(id);
 		var data:BitmapData = BitmapData.fromFile(path + ".png");
 
 		return FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data), xmlData[id]);
 
 		// return Paths.getSparrowAtlas('noteskins/' + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin), "shared");
 		#else
+		switch (typeSpecial)
+		{
+			case 0:
+			case 1:
+			case 2:
+				return Paths.getSparrowAtlas('noteskins/Arrows-mine', "shared");
+			default:
+		}
 		return Paths.getSparrowAtlas('noteskins/Arrows', "shared");
 		#end
 	}
