@@ -329,6 +329,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference REGEX references
 - https://github.com/HaxeFlixel/flixel-demos/blob/master/UserInterface/FlxTypeText/source/MenuState.hx prefix of FlxTypeText lol
 - https://github.com/HaxeFlixel/flixel-demos/blob/master/Effects/FlxTween/source/PlayState.hx more tween like Tween color
+- https://fridaynightfunking.fandom.com/wiki/Carol info about bbpanzu's Carol yess.
 
 # in event of git merge conflict
 use VScode and Github desktop!
