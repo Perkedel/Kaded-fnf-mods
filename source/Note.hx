@@ -242,7 +242,7 @@ class Note extends FlxSprite
 					// 		frames = Paths.getSparrowAtlas('NOTE_assets');
 					// }
 					// JOELwindows7: okay fine, let's put here, how about that?
-					// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle) : PlayState.noteskinSprite;
+					frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle) : PlayState.noteskinSprite;
 					// JOELwindows7: okay let's be advanced
 					switch (noteType)
 					{

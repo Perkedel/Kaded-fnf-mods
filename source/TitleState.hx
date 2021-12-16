@@ -68,7 +68,8 @@ class TitleState extends MusicBeatState
 	{
 		// JOELwindows7: fetch birthday lines
 		// hbdWhen = new Map<Date, String>();
-		CarryAround.hbdLines = CoolUtil.coolTextFile(Paths.txt("hbd.txt"));
+		hbdList = new Array<Dynamic>();
+		CarryAround.hbdLines = CoolUtil.coolTextFile(Paths.txt("data/hbd"));
 		for (i in 0...CarryAround.hbdLines.length)
 		{
 			var line:String = CarryAround.hbdLines[i];

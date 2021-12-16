@@ -969,8 +969,9 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: folks, let's not ignore the fact some song wants to use custom noteskin rather than user option. idk man.
 		// noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.useCustomNoteStyle? SONG.noteStyle :FlxG.save.data.noteskin);
 		noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
-		noteskinSprite = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' +
-			SONG.noteStyle) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+		// noteskinSprite = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' +
+		// 	SONG.noteStyle) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+		noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
 		noteskinSpriteMine = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + SONG.noteStyle +
 			"-mine") : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 2);
 		noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
@@ -2172,6 +2173,8 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
+		Debug.logInfo("SONGeh " + Std.string(FlxG.sound.music));
+
 		FlxG.sound.music.looped = false; // JOELwindows7: okay try to make this unloop.
 		// FlxG.sound.music.onComplete = endSong;
 		// FlxG.sound.music.onComplete = checkEpilogueChat; // Moved to somewhere again
@@ -2274,7 +2277,7 @@ class PlayState extends MusicBeatState
 				else
 					oldNote = null;
 
-				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4]);
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, 0, songNotes[5]);
 
 				if (!gottaHitNote && PlayStateChangeables.Optimize)
 					continue;
@@ -3810,7 +3813,7 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{
-					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes, playerStrums.members));
 				}
 
 				#if FEATURE_DISCORD

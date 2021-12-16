@@ -23,7 +23,13 @@ class NoteskinHelpers
 		var count:Int = 0;
 		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/noteskins")))
 		{
-			if (i.contains("-pixel"))
+			// JOELwindows7: make sure the special type are not considered different option.
+			// these are pixel, mine do not step, special power up, important must step or ded, never step or ded.
+			if (i.contains("-pixel")
+				|| i.contains("-mine")
+				|| i.contains("-special")
+				|| i.contains("-important")
+				|| i.contains("-never"))
 				continue;
 			if (i.endsWith(".xml"))
 			{
@@ -57,7 +63,7 @@ class NoteskinHelpers
 		#if FEATURE_FILESYSTEM
 		// TODO: Make this use OpenFlAssets.
 
-		Debug.logTrace("bruh momento");
+		Debug.logTrace("bruh momento " + Std.string(id) + " " + Std.string(typeSpecial));
 
 		var typeSuffix:String;
 		switch (typeSpecial)

@@ -1613,7 +1613,7 @@ class NoteskinOption extends Option
 
 		// JOELwindows7: c'mon let them change it. this noteskin index save data loads only on create.
 		if (requiresRestartSong)
-			description = Perkedel.OPTION_REQUIRES_RESTART_SONG + desc;
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc;
 		else
 			description = desc;
 
@@ -1697,7 +1697,7 @@ class LaneUnderlayOption extends Option
 
 		// JOELwindows7: c'mon let them change it. this noteskin index save data loads only on create.
 		if (requiresRestartSong)
-			description = Perkedel.OPTION_REQUIRES_RESTART_SONG + desc;
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc;
 		else
 			description = desc;
 	}
