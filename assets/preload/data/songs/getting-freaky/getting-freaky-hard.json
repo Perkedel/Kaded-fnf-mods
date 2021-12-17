@@ -26300,6 +26300,7 @@
         "isSpooky": false,
         "song": "Getting-Freaky",
         "useCustomStage": true,
+        "useCustomNoteStyle": true,
         "validScore": true,
         "artist": "Kawai Sprite",
         "speed": 3,
@@ -26325,6 +26326,6 @@
         "stage": "amfrost",
         "sections": 0,
         "bpm": 102,
-        "noteStyle": "saubo"
+        "noteStyle": "Saubo"
     }
 }

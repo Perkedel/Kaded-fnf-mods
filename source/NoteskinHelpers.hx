@@ -24,7 +24,7 @@ class NoteskinHelpers
 		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/noteskins")))
 		{
 			// JOELwindows7: make sure the special type are not considered different option.
-			// these are pixel, mine do not step, special power up, important must step or ded, never step or ded.
+			// these are pixel, mine do not step, special power up, important must step or ded, never step or ded. idk.
 			if (i.contains("-pixel")
 				|| i.contains("-mine")
 				|| i.contains("-special")
@@ -63,7 +63,7 @@ class NoteskinHelpers
 		#if FEATURE_FILESYSTEM
 		// TODO: Make this use OpenFlAssets.
 
-		Debug.logTrace("bruh momento " + Std.string(id) + " " + Std.string(typeSpecial));
+		Debug.logTrace("bruh momento id=" + Std.string(id) + " typeSpecial=" + Std.string(typeSpecial));
 
 		var typeSuffix:String;
 		switch (typeSpecial)
@@ -78,7 +78,7 @@ class NoteskinHelpers
 				typeSuffix = "";
 		}
 
-		var path = FileSystem.absolutePath("assets/shared/images/noteskins" + typeSuffix) + "/" + getNoteskinByID(id);
+		var path = FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + getNoteskinByID(id) + typeSuffix; // JOELwindows7: watch the xml path
 		var data:BitmapData = BitmapData.fromFile(path + ".png");
 
 		return FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data), xmlData[id]);
@@ -102,7 +102,7 @@ class NoteskinHelpers
 		#if FEATURE_FILESYSTEM
 		// TODO: Make this use OpenFlAssets.
 
-		Debug.logTrace("bruh momento");
+		Debug.logTrace("bruh momento id=" + Std.int(id) + " ends=" + Std.string(ends));
 
 		var path = FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + getNoteskinByID(id) + "-pixel" + (ends ? "-ends" : "");
 		if (!FileSystem.exists(path + ".png"))

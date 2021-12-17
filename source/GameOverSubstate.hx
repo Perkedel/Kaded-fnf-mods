@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -24,8 +25,15 @@ class GameOverSubstate extends MusicBeatSubstate
 	var camGame:FlxCamera; // JOELwindows7: in case adding camera ruins the default null camera
 	var camHUD:FlxCamera; // JOELwindows7: for that arrow collapsing.
 
+	var workaroundDidStopCurrentMusic:Bool = false;
+
 	public function new(x:Float, y:Float, ?handoverUnspawnNotes:Array<Note>, ?handoverStaticArrow:Array<StaticArrow>)
 	{
+		// JOELwindows7: debug slag! stop voice & sound again!
+		if (PlayState.instance != null && PlayState.instance.vocals != null)
+			PlayState.instance.vocals.stop();
+		FlxG.sound.music.stop();
+
 		// JOELwindows7: install the handover arrows too as well for cool osu! arrows collapsing.
 		var daStage = PlayState.Stage.curStage;
 		var daBf:String = '';
@@ -93,31 +101,51 @@ class GameOverSubstate extends MusicBeatSubstate
 		add(camFollow);
 
 		// JOELwindows7: add collapse notes arrows
+		Debug.logTrace("fake arrow");
 		if (handoverUnspawnNotes != null)
 		{
-			for (i in 0...(handoverUnspawnNotes.length > 10 ? 10 : handoverUnspawnNotes.length))
+			for (i in 0...(handoverUnspawnNotes.length > 50 ? 50 : handoverUnspawnNotes.length))
 			{
-				if (handoverUnspawnNotes[i].canBeHit)
+				if (handoverUnspawnNotes[i].mustPress)
 				{
-					handoverUnspawnNotes[i].cameras = [camHUD];
-					add(handoverUnspawnNotes[i]);
-					handoverUnspawnNotes[i].velocity.x = FlxG.random.float(-10, 10);
-					handoverUnspawnNotes[i].velocity.y = FlxG.random.float(-10, 10);
-					handoverUnspawnNotes[i].angularVelocity = FlxG.random.float(-2000, 2000);
-					handoverUnspawnNotes[i].acceleration.y = 200;
+					// var imageArrow = new FlxSprite(handoverUnspawnNotes[i].x, handoverUnspawnNotes[i].y, handoverUnspawnNotes[i].graphic);
+					var imageArrow = handoverUnspawnNotes[i];
+					// imageArrow.animation.play(imageArrow.dataColor[imageArrow.noteData] + 'Scroll');
+					imageArrow.cameras = [camHUD];
+					add(imageArrow);
+					imageArrow.velocity.x = FlxG.random.float(-100, 100);
+					imageArrow.velocity.y = FlxG.random.float(-100, 100);
+					imageArrow.angularVelocity = FlxG.random.float(-10, 10);
+					imageArrow.acceleration.y = 200;
+					// handoverUnspawnNotes[i].cameras = [camHUD];
+					// add(handoverUnspawnNotes[i]);
+					// handoverUnspawnNotes[i].velocity.x = FlxG.random.float(-10, 10);
+					// handoverUnspawnNotes[i].velocity.y = FlxG.random.float(-10, 10);
+					// handoverUnspawnNotes[i].angularVelocity = FlxG.random.float(-2000, 2000);
+					// handoverUnspawnNotes[i].acceleration.y = 200;
 				}
 			}
 		}
+		Debug.logTrace("fake static arrow");
 		if (handoverStaticArrow != null)
 		{
 			for (i in 0...handoverStaticArrow.length)
 			{
-				handoverStaticArrow[i].cameras = [camHUD];
-				add(handoverStaticArrow[i]);
-				handoverStaticArrow[i].velocity.x = FlxG.random.float(-10, 10);
-				handoverStaticArrow[i].velocity.y = FlxG.random.float(-10, 10);
-				handoverStaticArrow[i].angularVelocity = FlxG.random.float(-2000, 2000);
-				handoverStaticArrow[i].acceleration.y = 200;
+				// var imageStaticArrow = new FlxSprite(handoverStaticArrow[i].x, handoverStaticArrow[i].y, handoverStaticArrow[i].graphic);
+				var imageStaticArrow = handoverStaticArrow[i];
+				imageStaticArrow.playAnim('static');
+				imageStaticArrow.cameras = [camHUD];
+				add(imageStaticArrow);
+				imageStaticArrow.velocity.x = FlxG.random.float(-100, 100);
+				imageStaticArrow.velocity.y = FlxG.random.float(-100, 100);
+				imageStaticArrow.angularVelocity = FlxG.random.float(-10, 10);
+				imageStaticArrow.acceleration.y = 200;
+				// handoverStaticArrow[i].cameras = [camHUD];
+				// add(handoverStaticArrow[i]);
+				// handoverStaticArrow[i].velocity.x = FlxG.random.float(-10, 10);
+				// handoverStaticArrow[i].velocity.y = FlxG.random.float(-10, 10);
+				// handoverStaticArrow[i].angularVelocity = FlxG.random.float(-2000, 2000);
+				// handoverStaticArrow[i].acceleration.y = 200;
 			}
 		}
 
@@ -131,7 +159,10 @@ class GameOverSubstate extends MusicBeatSubstate
 					FlxG.sound.play(Paths.sound('fnf_loss_sfx-BSoD'));
 				}
 			case 'bf-covid':
-				FlxG.sound.play(Paths.sound('paperTear1'));
+				{
+					FlxG.sound.play(Paths.sound('paperTear' + Std.string(FlxG.random.int(1, 8))));
+					FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
+				}
 			default:
 				{
 					FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
@@ -209,6 +240,17 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
 			startVibin = true;
 			FlxTween.tween(backButton, {y: FlxG.height - 100, alpha: 1}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+		}
+		else
+		{
+			// JOELwindows7: okeh there is some weird bug glith this Flixel is
+			if (!workaroundDidStopCurrentMusic)
+			{
+				if (PlayState.instance != null && PlayState.instance.vocals != null)
+					PlayState.instance.vocals.stop();
+				FlxG.sound.music.stop();
+				workaroundDidStopCurrentMusic = true;
+			}
 		}
 
 		if (FlxG.sound.music.playing)

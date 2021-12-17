@@ -48,7 +48,26 @@
             "fearShockAdd": [10, 8, 7, 5],
             "relaxMinusPerBeat": [1, 2, 4, 7]
         }, {
+            "character": "bf-pixel",
+            "initHR": 70,
+            "maxHR": 220,
+            "minHR": 70,
+            "heartTierBoundaries": [90, 120, 150, 200],
+            "successionAdrenalAdd": [4, 3, 2, 1],
+            "fearShockAdd": [10, 8, 7, 5],
+            "relaxMinusPerBeat": [1, 2, 4, 7]
+        }, {
             "character": "gf-covid",
+            "initHR": 80,
+            "maxHR": 400,
+            "minHR": 80,
+            "heartTierBoundaries": [100, 150, 200, 300],
+            "successionAdrenalAdd": [6, 5, 4, 3],
+            "fearShockAdd": [50, 30, 20, 15],
+            "relaxMinusPerBeat": [1, 2, 2, 3]
+        },
+        {
+            "character": "gf-pixel",
             "initHR": 80,
             "maxHR": 400,
             "minHR": 80,
@@ -97,6 +116,26 @@
         },
         {
             "character": "senpai",
+            "initHR": 70,
+            "maxHR": 200,
+            "minHR": 60,
+            "heartTierBoundaries": [80, 100, 125, 180],
+            "successionAdrenalAdd": [2, 2, 1, 1],
+            "fearShockAdd": [10, 10, 8, 5],
+            "relaxMinusPerBeat": [2, 8, 10, 15]
+        },
+        {
+            "character": "senpai-angry",
+            "initHR": 70,
+            "maxHR": 200,
+            "minHR": 60,
+            "heartTierBoundaries": [80, 100, 125, 180],
+            "successionAdrenalAdd": [2, 2, 1, 1],
+            "fearShockAdd": [10, 10, 8, 5],
+            "relaxMinusPerBeat": [2, 8, 10, 15]
+        },
+        {
+            "character": "spirit",
             "initHR": 70,
             "maxHR": 200,
             "minHR": 60,

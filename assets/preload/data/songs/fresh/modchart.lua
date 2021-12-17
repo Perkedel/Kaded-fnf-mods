@@ -31,7 +31,7 @@ function playerTwoTurn()
 end
 
 function playerOneSing(note, position, beatOf, stepOf)
-    print("P1 sing " .. note .. " at " .. position)
+    -- print("P1 sing " .. note .. " at " .. position)
     if(-executeModHscript or executeModHscript == false) then
         if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
             if(flashing) then
@@ -46,7 +46,7 @@ function playerOneSing(note, position, beatOf, stepOf)
 end
 
 function playerTwoSing(note, position, beatOf, stepOf)
-    print("P2 sing " .. note .. " at " .. position)
+    -- print("P2 sing " .. note .. " at " .. position)
     if(-executeModHscript or executeModHscript == false) then -- `!` is not supported. use `-` or `not` to negate.
         if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
             if(flashing) then

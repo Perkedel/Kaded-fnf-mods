@@ -966,18 +966,25 @@ class PlayState extends MusicBeatState
 		playerStrums = new FlxTypedGroup<StaticArrow>();
 		cpuStrums = new FlxTypedGroup<StaticArrow>();
 
+		Debug.logTrace("Pls prepare Noteskin sprites");
 		// JOELwindows7: folks, let's not ignore the fact some song wants to use custom noteskin rather than user option. idk man.
 		// noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.useCustomNoteStyle? SONG.noteStyle :FlxG.save.data.noteskin);
 		noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
-		// noteskinSprite = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' +
-		// 	SONG.noteStyle) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
-		noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
+		Debug.logTrace("Go the regular noteskin");
+		noteskinSprite = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' +
+			SONG.noteStyle) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+		// noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
+		Debug.logTrace("Go the mine noteskin");
 		noteskinSpriteMine = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + SONG.noteStyle +
 			"-mine") : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 2);
+		Debug.logTrace("Go the pixel hold end");
 		noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
 
+		Debug.logTrace("Now for static arrows");
 		generateStaticArrows(0);
+		Debug.logTrace("and other player static arrows");
 		generateStaticArrows(1);
+		Debug.logTrace("Doned static arrows");
 
 		// Update lane underlay positions AFTER static arrows :)
 
@@ -1734,7 +1741,7 @@ class PlayState extends MusicBeatState
 				case 0:
 					// JOELwindows7:Lol! I added reverse
 					if (!silent)
-						FlxG.sound.play(Paths.sound('intro3' + altSuffix), 0.6);
+						FlxG.sound.play(Paths.sound('intro3' + altSuffix + midiSuffix), 0.6);
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[0], week6Bullshit));
 					ready.scrollFactor.set();
@@ -2277,7 +2284,7 @@ class PlayState extends MusicBeatState
 				else
 					oldNote = null;
 
-				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, 0, songNotes[5]);
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4], songNotes[5]); //JOELwindows7: the note with type
 
 				if (!gottaHitNote && PlayStateChangeables.Optimize)
 					continue;
@@ -2303,7 +2310,8 @@ class PlayState extends MusicBeatState
 				{
 					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
-					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true);
+					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false,
+						false, songNotes[4], songNotes[5]); //JOELwindows7: here sustain note too.
 					sustainNote.scrollFactor.set();
 					unspawnNotes.push(sustainNote);
 					sustainNote.isAlt = songNotes[3]
@@ -3816,6 +3824,10 @@ class PlayState extends MusicBeatState
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes, playerStrums.members));
 				}
 
+				// JOELwindows7: whyn't stop
+				vocals.stop();
+				FlxG.sound.music.stop();
+
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here
 				DiscordClient.changePresence("GAME OVER -- "
@@ -3859,8 +3871,13 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{
-					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes,
+						playerStrums.members));
 				}
+
+				//JOELwindows7: whyn't stop
+				vocals.stop();
+				FlxG.sound.music.stop();
 
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here

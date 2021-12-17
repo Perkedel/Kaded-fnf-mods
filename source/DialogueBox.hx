@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.FlxTween;
 import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -330,8 +331,12 @@ class DialogueBox extends FlxSpriteGroup
 			isEnding = true;
 			switch (PlayState.SONG.songId.toLowerCase())
 			{
-				case "senpai" | "thorns":
-					sound.fadeOut(2.2, 0);
+				// JOELwindows7: sneaky sneaky!
+				case "senpai" | "thorns" | "senpai-midi" | "thorns-midi":
+					sound.fadeOut(2.2, 0, function(tween:FlxTween)
+					{
+						sound.stop(); // JOELwindows7: make sure it stops for good.
+					});
 				case "roses":
 					trace("roses");
 				default:

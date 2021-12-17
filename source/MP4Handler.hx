@@ -203,5 +203,16 @@ class MP4Handler
 			bitmap.volume = 0;
 	}
 	#else
+	public function pause(){
+
+	}
+
+	public function resume(){
+
+	}
+
+	public function restart(){
+		
+	}
 	#end
 }

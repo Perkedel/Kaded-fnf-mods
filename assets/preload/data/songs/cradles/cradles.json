@@ -39591,7 +39591,7 @@
         "forceHscriptModchart": false,
         "cutsceneType": "none",
         "useCustomStage": true,
-        "useCustomNoteStyle": false,
+        "useCustomNoteStyle": true,
         "artist": "Sub Urban",
         "speed": 1.5,
         "hasEpilogueChat": true,
@@ -39655,6 +39655,7 @@
         "stage": "view-of-the-world",
         "needsVoices": false,
         "bpm": 80,
-        "noteStyle": "saubo"
+
+        "noteStyle": "Saubo"
     }
 }

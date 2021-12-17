@@ -2676,7 +2676,7 @@
         "useCustomStage": true,
         "speed": 2,
         "artist": "Unknown",
-        "useCustomNoteStyle": false,
+        "useCustomNoteStyle": true,
         "sectionLengths": [],
         "hasEpilogueChat": false,
         "forceLuaModchart": false,
@@ -2709,7 +2709,7 @@
         "silentCountdown": false,
         "needsVoices": true,
         "stage": "komsel",
-        "noteStyle": "saubo",
+        "noteStyle": "Saubo",
         "bpm": 69
     }
 }

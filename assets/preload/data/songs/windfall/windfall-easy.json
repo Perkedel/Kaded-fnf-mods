@@ -2077,7 +2077,8 @@
         "speed": 1,
         "hasDialogueChat": true,
         "hasEpilogueChat": false,
-        "noteStyle": "saubo",
+        "useCustomNoteStyle": true,
+        "noteStyle": "Saubo",
         "isCreditRoll": true,
         "creditRunsOnce": true,
         "artist": "TheFatRat"

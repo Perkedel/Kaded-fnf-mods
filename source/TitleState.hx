@@ -393,9 +393,21 @@ class TitleState extends MusicBeatState
 			// JOELwindows7: oke now hbd time.
 			for (i in 0...hbdList.length)
 			{
-				if (Date.now().getDay() == hbdList[i][1] && Date.now().getMonth() == hbdList[i][2])
+				// Today, Early & late birthday too
+				if (Date.now().getMonth() == hbdList[i][2])
 				{
-					createToast(null, "HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "!!! Semoga panjang umur & sehat selalu");
+					if (Date.now().getDay() == hbdList[i][1])
+					{
+						createToast(null, "HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!! ");
+					}
+					if (Date.now().getDay() == hbdList[i][1] - 1 || Date.now().getDay() == hbdList[i][1] - 2)
+					{
+						createToast(null, "Early HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
+					}
+					if (Date.now().getDay() == hbdList[i][1] + 1 || Date.now().getDay() == hbdList[i][1] + 2)
+					{
+						createToast(null, "Late HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
+					}
 				}
 			}
 

@@ -167,6 +167,7 @@ class OptionsMenu extends CoreSubState
 				// new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."), //JOELwindows7: how about move it here?
 				new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
 				// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
+				new AnLoneBopeeboOption("Test gameplay music"),
 			]),
 			// JOELwindows7: Account options
 			new OptionCata(935, 40, 'Accounts', [
@@ -521,6 +522,14 @@ class OptionsMenu extends CoreSubState
 					{
 						PauseSubState.goBack = true;
 						PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * PlayState.songMultiplier;
+						// JOELwindows7: heurestic to see if a marker has raised
+						if (markForGameplayRestart)
+						{
+							createToast(null, "Please Restart Song",
+								"You have changed options that needs reloading. Please restart the song to apply the changes.");
+						}
+						// JOELwindows7: reset value again.
+						markForGameplayRestart = false;
 						close();
 					}
 
@@ -722,6 +731,15 @@ class OptionsMenu extends CoreSubState
 							}
 						if (selectedCat.middle)
 							switchCat(options[0]);
+
+						// JOELwindows7: heurestic to see if a marker has raised
+						if (markForGameplayRestart)
+						{
+							createToast(null, "Please Restart Song",
+								"You have changed options that needs reloading. Please restart the song to apply the changes.");
+						}
+						// JOELwindows7: reset value again.
+						markForGameplayRestart = false;
 
 						haveBacked = false; // JOELwindows7: okeh.
 					}

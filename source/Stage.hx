@@ -462,8 +462,9 @@ class Stage extends MusicBeatState
 						var bgGirls = new BackgroundGirls(-100, 190);
 						bgGirls.scrollFactor.set(0.9, 0.9);
 
+						// JOELwindows7: zo not forogot
 						// if (PlayState.SONG.songId.toLowerCase() == 'roses')
-						if (GameplayCustomizeState.freeplaySong == 'roses')
+						if (GameplayCustomizeState.freeplaySong == 'roses' || GameplayCustomizeState.freeplaySong == 'roses-midi')
 						{
 							if (FlxG.save.data.distractions)
 								bgGirls.getScared();
@@ -1419,7 +1420,6 @@ class Stage extends MusicBeatState
 	// JOELwindows7: To hide coloring incase you don't need it anymore
 	public function hideColoring(justOne:Bool = false, toWhichBg:Int = 0, inHowLong:Float = 0.01)
 	{
-		
 		if (swagBacks['colorableGround'] != null)
 			if (isChromaScreen)
 			{
@@ -1457,7 +1457,7 @@ class Stage extends MusicBeatState
 					FlxTween.color(theBg, inHowLong, theBg.color, multiOriginalColor[theBg.ID], {ease: FlxEase.linear});
 					// FlxTween.color(theBg, inHowLong, theBg.color, multiOriginalColor[counte], {ease: FlxEase.linear});
 					if (multiIsChromaScreen[theBg.ID])
-					// if (multiIsChromaScreen[counte])
+						// if (multiIsChromaScreen[counte])
 						theBg.visible = false;
 					counte++;
 				});

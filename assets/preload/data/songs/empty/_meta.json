@@ -19,6 +19,7 @@
     "reversedCountdown": false,
     "invisibleCountdown": false,
     "silentCountdown": false,
+    "useCustomNoteStyle": false,
     "noteStyle": "normal",
     "player1": "bf",
     "player2": "dad",

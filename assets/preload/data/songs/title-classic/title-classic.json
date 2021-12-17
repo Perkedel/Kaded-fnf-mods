@@ -22927,6 +22927,7 @@
         "song": "Title Classic",
         "isSpooky": false,
         "useCustomStage": true,
+        "useCustomNoteStyle": true,
         "validScore": true,
         "speed": 1.5,
         "artist": "Kawai Sprite",
@@ -22950,7 +22951,7 @@
         "stage": "amfrost",
         "needsVoices": false,
         "uiType": "saubo",
-        "noteStyle": "saubo",
+        "noteStyle": "Saubo",
         "bpm": 140
     }
 }

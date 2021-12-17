@@ -1629,6 +1629,7 @@ class NoteskinOption extends Option
 		if (FlxG.save.data.noteskin < 0)
 			FlxG.save.data.noteskin = NoteskinHelpers.getNoteskins().length - 1;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
 	}
 
@@ -1640,6 +1641,7 @@ class NoteskinOption extends Option
 		if (FlxG.save.data.noteskin > NoteskinHelpers.getNoteskins().length - 1)
 			FlxG.save.data.noteskin = 0;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
 	}
 
@@ -1715,6 +1717,7 @@ class LaneUnderlayOption extends Option
 
 		if (FlxG.save.data.laneTransparency > 1)
 			FlxG.save.data.laneTransparency = 1;
+		OptionsMenu.markRestartSong(); //JOELwindows7: mark restart song required.
 		return true;
 	}
 
@@ -1726,7 +1729,7 @@ class LaneUnderlayOption extends Option
 
 		if (FlxG.save.data.laneTransparency < 0)
 			FlxG.save.data.laneTransparency = 0;
-
+		OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
 	}
 }
@@ -2664,6 +2667,32 @@ class AnMIDITestOption extends Option
 	private override function updateDisplay():String
 	{
 		return "MIDI Test";
+	}
+}
+
+//JOELwindows7: quick way testing music play
+class AnLoneBopeeboOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		OptionsMenu.switchState(new AnLoneBopeebo()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		// FlxG.switchState(new AnMIDIyeay());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Test Bopeebo";
 	}
 }
 
