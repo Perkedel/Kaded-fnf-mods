@@ -110,6 +110,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				{
 					// var imageArrow = new FlxSprite(handoverUnspawnNotes[i].x, handoverUnspawnNotes[i].y, handoverUnspawnNotes[i].graphic);
 					var imageArrow = handoverUnspawnNotes[i];
+					imageArrow.totalOverride = true; // Must be on, don't let update parameter holds the original angle supposed to be.
 					// imageArrow.animation.play(imageArrow.dataColor[imageArrow.noteData] + 'Scroll');
 					imageArrow.cameras = [camHUD];
 					add(imageArrow);
@@ -133,6 +134,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				// var imageStaticArrow = new FlxSprite(handoverStaticArrow[i].x, handoverStaticArrow[i].y, handoverStaticArrow[i].graphic);
 				var imageStaticArrow = handoverStaticArrow[i];
+				imageStaticArrow.totalOverride = true; // this must be on to disable enforcement (update) by external parameters.
 				imageStaticArrow.playAnim('static');
 				imageStaticArrow.cameras = [camHUD];
 				add(imageStaticArrow);

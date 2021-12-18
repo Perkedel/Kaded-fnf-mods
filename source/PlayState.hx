@@ -2284,7 +2284,8 @@ class PlayState extends MusicBeatState
 				else
 					oldNote = null;
 
-				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4], songNotes[5]); //JOELwindows7: the note with type
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4],
+					songNotes[5]); // JOELwindows7: the note with type
 
 				if (!gottaHitNote && PlayStateChangeables.Optimize)
 					continue;
@@ -2311,7 +2312,7 @@ class PlayState extends MusicBeatState
 					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
 					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false,
-						false, songNotes[4], songNotes[5]); //JOELwindows7: here sustain note too.
+						false, songNotes[4], songNotes[5]); // JOELwindows7: here sustain note too.
 					sustainNote.scrollFactor.set();
 					unspawnNotes.push(sustainNote);
 					sustainNote.isAlt = songNotes[3]
@@ -3871,11 +3872,10 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{
-					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes,
-						playerStrums.members));
+					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes, playerStrums.members));
 				}
 
-				//JOELwindows7: whyn't stop
+				// JOELwindows7: whyn't stop
 				vocals.stop();
 				FlxG.sound.music.stop();
 
@@ -4710,7 +4710,7 @@ class PlayState extends MusicBeatState
 				// JOELwindows7: add da noteType effex
 				if (daNote.noteType == 2)
 				{
-					health -= 10;
+					health -= 1;
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -4726,7 +4726,7 @@ class PlayState extends MusicBeatState
 			case 'bad':
 				if (daNote.noteType == 2)
 				{
-					health -= 10;
+					health -= 1;
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -4741,7 +4741,7 @@ class PlayState extends MusicBeatState
 			case 'good':
 				if (daNote.noteType == 2)
 				{
-					health -= 10;
+					health -= 1;
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -4755,7 +4755,7 @@ class PlayState extends MusicBeatState
 			case 'sick':
 				if (daNote.noteType == 2)
 				{
-					health -= 10;
+					health -= 1;
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -4772,7 +4772,7 @@ class PlayState extends MusicBeatState
 
 		// trace('Wife accuracy loss: ' + wife + ' | Rating: ' + daRating + ' | Score: ' + score + ' | Weight: ' + (1 - wife));
 
-		if (daRating != 'shit' || daRating != 'bad')
+		if ((daRating != 'shit' || daRating != 'bad') && daNote.noteType != 2) //JOELwindows7: do not count if note type is mine or powerup i guess.
 		{
 			songScore += Math.round(score);
 
@@ -5268,8 +5268,11 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
-						goodNoteHit(daNote);
-						boyfriend.holdTimer = 0;
+						if (daNote.noteType != 2)
+						{ // JOELwindows7: do not hit mine!!! also if power up there, do not hit negative powerup!
+							goodNoteHit(daNote);
+							boyfriend.holdTimer = 0;
+						}
 					}
 				}
 			});

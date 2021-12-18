@@ -1363,7 +1363,7 @@ class ChartingState extends MusicBeatState
 		stepperSusLength.name = 'note_susLength';
 
 		// JOELwindows7: number roller for note type notetype
-		stepperNoteType = new FlxUINumericStepper(10, 15, 1, 0, 0, 2);
+		stepperNoteType = new FlxUINumericStepper(10, 40, 1, 0, 0, 2);
 		stepperNoteType.value = 0;
 		stepperNoteType.name = 'note_noteType';
 
@@ -1388,7 +1388,7 @@ class ChartingState extends MusicBeatState
 
 		var stepperSusLengthLabel = new FlxText(74, 10, 'Note Sustain Length');
 
-		var stepperNoteTypeLabel = new FlxText(74, 15, 'Note Sustain Length'); // JOELwindows7: note type label
+		var stepperNoteTypeLabel = new FlxText(74, 40, 'Note Type'); // JOELwindows7: note type label
 
 		var applyLength:FlxButton = new FlxButton(10, 100, 'Apply Data');
 
@@ -2492,24 +2492,12 @@ class ChartingState extends MusicBeatState
 				+ "\n"
 				+ (doSnapShit ? "Snap enabled" : "Snap disabled")
 				+ // JOELwindows7: helep! string hard to read!!!
-				(FlxG.save.data.showHelp ? "\n\n
-					Help:\n
-					Ctrl-MWheel : Zoom in/out\n
-					Shift-Left/Right :\nChange playback speed\n
-					Ctrl-Drag Click : Select notes\n
-					Ctrl-C : Copy notes\n
-					Ctrl-V : Paste notes\n
-					Ctrl-Z : Undo\n
-					Delete : Delete selection\n
-					CTRL-Left/Right :\n  Change Snap\n
-					  Hold Shift : Disable Snap\n
-					  Click or 1/2/3/4/5/6/7/8 :\nPlace notes\n
-					  Place Note + ALT: Place mines
-					Up/Down :\n  Move selected notes 1 step\n
-					Shift-Up/Down :\nMove selected notes 1 beat\n
-					Space: Play Music\n
-					Enter : Preview\n
-					Press F1 to hide/show this!" : "");
+				(FlxG.save.data.showHelp ? "\n\n" + "Help:\n" + "Ctrl-MWheel : Zoom in/out\n" + "Shift-Left/Right :\nChange playback speed\n"
+					+ "Ctrl-Drag Click : Select notes\n" + "Ctrl-C : Copy notes\n" + "Ctrl-V : Paste notes\n" + "Ctrl-Z : Undo\n"
+					+ "Delete : Delete selection\n" + "CTRL-Left/Right :\n  Change Snap\n" + "Hold Shift : Disable Snap\n"
+					+ "Click or 1/2/3/4/5/6/7/8 :\n\tPlace notes\n" + "Place Note + ALT: Place mines\n" + "Up/Down :\n  Move selected notes 1 step\n"
+					+ "Shift-Up/Down :\nMove selected notes 1 beat\n" + "Space: Play Music\n" + "Enter : Preview\n" +
+					"Press F1 to hide/show help!" : "Press F1 to hide/show help!");
 
 			var left = FlxG.keys.justPressed.ONE;
 			var down = FlxG.keys.justPressed.TWO;
@@ -2685,7 +2673,7 @@ class ChartingState extends MusicBeatState
 
 			if (doInput)
 			{
-				//JOELwindows7: press back on Android to exit this chart editor lol
+				// JOELwindows7: press back on Android to exit this chart editor lol
 				if (FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end)
 				{
 					lastSection = curSection;

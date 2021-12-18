@@ -36,6 +36,7 @@ class Note extends FlxSprite
 	public var wasGoodHit:Bool = false;
 	public var prevNote:Note;
 	public var modifiedByLua:Bool = false;
+	public var totalOverride:Bool = false; // JOELwindows7: enable to disable special parametering & leave its original parametering.
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 	public var originColor:Int = 0; // The sustain note's original note's color
@@ -147,11 +148,13 @@ class Note extends FlxSprite
 			switch (noteType)
 			{
 				case 2:
-					frames = PlayState.noteskinSpriteMine;
+					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+						2);
 				default:
-					frames = PlayState.noteskinSprite;
+					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
 			}
 			// frames = PlayState.noteskinSprite;
+			// frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, noteType);
 
 			for (i in 0...4)
 			{
@@ -189,9 +192,13 @@ class Note extends FlxSprite
 			switch (noteTypeCheck)
 			{
 				case 'pixel':
-					loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
+					// JOELwindows7: resafety check I guess.
+					loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin),
+						true, 17, 17);
 					if (isSustainNote)
-						loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+						loadGraphic(PlayState.noteskinPixelSpriteEnds != null ? PlayState.noteskinPixelSpriteEnds : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+							true),
+							true, 7, 6);
 
 					for (i in 0...4)
 					{
@@ -281,34 +288,68 @@ class Note extends FlxSprite
 		animation.play(dataColor[noteData] + 'Scroll');
 		originColor = noteData; // The note's origin color will be checked by its sustain notes
 
-		if (FlxG.save.data.stepMania && !isSustainNote && !PlayState.instance.executeModchart)
+		// JOELwindows7: whoa, the PlayState.instance can be null! make sure be careful
+		if (PlayState.instance != null)
 		{
-			var col:Int = 0;
+			if (FlxG.save.data.stepMania && !isSustainNote && !PlayState.instance.executeModchart)
+			{
+				var col:Int = 0;
 
-			var beatRow = Math.round(beat * 48);
+				var beatRow = Math.round(beat * 48);
 
-			// STOLEN ETTERNA CODE (IN 2002)
+				// STOLEN ETTERNA CODE (IN 2002)
 
-			if (beatRow % (192 / 4) == 0)
-				col = quantityColor[0];
-			else if (beatRow % (192 / 8) == 0)
-				col = quantityColor[2];
-			else if (beatRow % (192 / 12) == 0)
-				col = quantityColor[4];
-			else if (beatRow % (192 / 16) == 0)
-				col = quantityColor[6];
-			else if (beatRow % (192 / 24) == 0)
-				col = quantityColor[4];
-			else if (beatRow % (192 / 32) == 0)
-				col = quantityColor[4];
+				if (beatRow % (192 / 4) == 0)
+					col = quantityColor[0];
+				else if (beatRow % (192 / 8) == 0)
+					col = quantityColor[2];
+				else if (beatRow % (192 / 12) == 0)
+					col = quantityColor[4];
+				else if (beatRow % (192 / 16) == 0)
+					col = quantityColor[6];
+				else if (beatRow % (192 / 24) == 0)
+					col = quantityColor[4];
+				else if (beatRow % (192 / 32) == 0)
+					col = quantityColor[4];
 
-			animation.play(dataColor[col] + 'Scroll');
-			localAngle -= arrowAngles[col];
-			localAngle += arrowAngles[noteData];
-			originAngle = localAngle;
-			originColor = col;
+				animation.play(dataColor[col] + 'Scroll');
+				localAngle -= arrowAngles[col];
+				localAngle += arrowAngles[noteData];
+				originAngle = localAngle;
+				originColor = col;
+			}
 		}
+		else
+		{
+			// JOELwindows7: okay we still have to quantize color.
+			if (FlxG.save.data.stepMania && !isSustainNote)
+			{
+				var col:Int = 0;
 
+				var beatRow = Math.round(beat * 48);
+
+				// STOLEN ETTERNA CODE (IN 2002)
+
+				if (beatRow % (192 / 4) == 0)
+					col = quantityColor[0];
+				else if (beatRow % (192 / 8) == 0)
+					col = quantityColor[2];
+				else if (beatRow % (192 / 12) == 0)
+					col = quantityColor[4];
+				else if (beatRow % (192 / 16) == 0)
+					col = quantityColor[6];
+				else if (beatRow % (192 / 24) == 0)
+					col = quantityColor[4];
+				else if (beatRow % (192 / 32) == 0)
+					col = quantityColor[4];
+
+				animation.play(dataColor[col] + 'Scroll');
+				localAngle -= arrowAngles[col];
+				localAngle += arrowAngles[noteData];
+				originAngle = localAngle;
+				originColor = col;
+			}
+		}
 		// we make sure its downscroll and its a SUSTAIN NOTE (aka a trail, not a note)
 		// and flip it so it doesn't look weird.
 		// THIS DOESN'T FUCKING FLIP THE NOTE, CONTRIBUTERS DON'T JUST COMMENT THIS OUT JESUS
@@ -359,10 +400,13 @@ class Note extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (!modifiedByLua)
-			angle = modAngle + localAngle;
-		else
-			angle = modAngle;
+		if (!totalOverride)
+		{ // JOELwindows7: here total override, if on forget special parameter!
+			if (!modifiedByLua)
+				angle = modAngle + localAngle;
+			else
+				angle = modAngle;
+		}
 
 		if (!modifiedByLua)
 		{
@@ -416,9 +460,12 @@ class Note extends FlxSprite
 			switch (noteType)
 			{
 				case 2:
-					frames = Paths.getSparrowAtlas('NOTE_assets_special');
+					// frames = Paths.getSparrowAtlas('NOTE_assets_special');
+					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+						2);
 				default:
-					frames = PlayState.noteskinSprite;
+					// frames = PlayState.noteskinSprite;
+					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
 			}
 			// frames = PlayState.noteskinSprite;
 
@@ -451,9 +498,15 @@ class Note extends FlxSprite
 			switch (noteTypeCheck)
 			{
 				case 'pixel':
-					loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
+					// JOELwindows7: resafety check I guess.
+					// loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
+					loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin),
+						true, 17, 17);
 					if (isSustainNote)
-						loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+						// loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+						loadGraphic(PlayState.noteskinPixelSpriteEnds != null ? PlayState.noteskinPixelSpriteEnds : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+							true),
+							true, 7, 6);
 
 					for (i in 0...4)
 					{
