@@ -116,7 +116,7 @@ class GameOverSubstate extends MusicBeatSubstate
 					add(imageArrow);
 					imageArrow.velocity.x = FlxG.random.float(-100, 100);
 					imageArrow.velocity.y = FlxG.random.float(-100, 100);
-					imageArrow.angularVelocity = FlxG.random.float(-10, 10);
+					imageArrow.angularVelocity = FlxG.random.float(-180, 180);
 					imageArrow.acceleration.y = 200;
 					// handoverUnspawnNotes[i].cameras = [camHUD];
 					// add(handoverUnspawnNotes[i]);
@@ -140,7 +140,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				add(imageStaticArrow);
 				imageStaticArrow.velocity.x = FlxG.random.float(-100, 100);
 				imageStaticArrow.velocity.y = FlxG.random.float(-100, 100);
-				imageStaticArrow.angularVelocity = FlxG.random.float(-10, 10);
+				imageStaticArrow.angularVelocity = FlxG.random.float(-180, 180);
 				imageStaticArrow.acceleration.y = 200;
 				// handoverStaticArrow[i].cameras = [camHUD];
 				// add(handoverStaticArrow[i]);

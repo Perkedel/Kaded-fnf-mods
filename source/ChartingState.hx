@@ -423,7 +423,12 @@ class ChartingState extends MusicBeatState
 		UI_box.x = FlxG.width / 2 + 40;
 		UI_box.y = 20;
 
-		var opt_tabs = [{name: "Options", label: 'Song Options'}, {name: "Events", label: 'Song Events'}];
+		// JOELwindows7: make sure to register your bottom tab here too.
+		var opt_tabs = [
+			{name: "Options", label: 'Song Options'},
+			{name: "Events", label: 'Song Events'},
+			{name: "Controls", label: 'Play Controls'}
+		];
 
 		UI_options = new FlxUITabMenu(null, opt_tabs, true);
 
@@ -441,6 +446,7 @@ class ChartingState extends MusicBeatState
 
 		addOptionsUI();
 		addEventsUI();
+		addControlUI(); // JOELwindows7: here the touchscreen control
 
 		regenerateLines();
 
@@ -997,6 +1003,37 @@ class ChartingState extends MusicBeatState
 		tab_options.name = "Options";
 		tab_options.add(hitsounds);
 		UI_options.addGroup(tab_options);
+	}
+
+	// JOELwindows7: now add player control tab UI
+	function addControlUI():Void
+	{
+		var playButton = new FlxButton(40, 10, "Play", function()
+		{
+			// JOELwindows7: steal function when press SPACE
+			if (FlxG.sound.music.playing)
+			{
+				FlxG.sound.music.pause();
+				if (!PlayState.isSM)
+					vocals.pause();
+				claps.splice(0, claps.length);
+			}
+			else
+			{
+				if (!PlayState.isSM)
+					vocals.play();
+				FlxG.sound.music.play();
+			}
+		});
+		playButton.loadGraphic(Paths.loadImage('playPauseButton'), false, 10, 10);
+		playButton.setSize(10, 10);
+		playButton.updateHitbox();
+		// playButton.alpha = 0;
+
+		var tab_control = new FlxUI(null, UI_options);
+		tab_control.name = "Controls";
+		tab_control.add(playButton);
+		UI_options.addGroup(tab_control);
 	}
 
 	function addSongUI():Void
@@ -1737,8 +1774,9 @@ class ChartingState extends MusicBeatState
 					if (nums.value <= 0)
 						nums.value = 0;
 					curSelectedNote[5] = nums.value;
-					curSelectedNoteObject.noteType = curSelectedNote[5];
-					curSelectedNoteObject.refreshNoteLook();
+					// curSelectedNoteObject.noteType = curSelectedNote[5];
+					Debug.logTrace("Change note type look to " + Std.int(curSelectedNote[5]));
+					// curSelectedNoteObject.refreshNoteLook();
 					updateGrid();
 
 				case 'section_bpm':
@@ -2529,7 +2567,7 @@ class ChartingState extends MusicBeatState
 					var i = pressArray[p];
 					if (i && !delete)
 					{
-						addNote(new Note(Conductor.songPosition, p, null, null, null, null, null)); // JOELwindows7: traverse to notetype
+						addNote(new Note(Conductor.songPosition, p, null, null, null, null, null, 0)); // JOELwindows7: traverse to notetype
 					}
 				}
 			}
@@ -2640,10 +2678,13 @@ class ChartingState extends MusicBeatState
 				{
 					if (FlxG.mouse.x > 0 && FlxG.mouse.x < 0 + gridBG.width && FlxG.mouse.y > 0 && FlxG.mouse.y < 0 + height)
 					{
-						FlxG.log.add('added note');
+						// FlxG.log.add('added note');
+						Debug.logInfo('added note');
 						addNote();
+						Debug.logInfo('Completed da Note');
 					}
 				}
+				// Debug.logTrace('mouse pressed');
 			}
 
 			if (FlxG.mouse.x > 0 && FlxG.mouse.x < gridBG.width && FlxG.mouse.y > 0 && FlxG.mouse.y < height)
@@ -3047,6 +3088,7 @@ class ChartingState extends MusicBeatState
 				check_naltAnim.checked = false;
 			}
 
+			// JOELwindows7: also the note type too as well.
 			stepperNoteType.value = curSelectedNote[5];
 			// if (stepperNoteType.value != null)
 			// {
@@ -3096,7 +3138,11 @@ class ChartingState extends MusicBeatState
 				var daStrumTime = i[0];
 				var daSus = i[2];
 				var daType = i[5]; // JOELwindows7: da type yeahhhh
-				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], daType); // JOELwindows7: note type pls mine duar.
+				if (daType == 2)
+					Debug.logTrace("It's a pecking MINE!!! no way!!!");
+				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], daType); // JOELwindows7: note type pls mine duar
+				if (daType == 2)
+					Debug.logTrace("Mine placered");
 				note.rawNoteData = daNoteInfo;
 				note.sustainLength = daSus;
 				note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -3425,7 +3471,7 @@ class ChartingState extends MusicBeatState
 		if (FlxG.keys.pressed.ALT)
 			noteType = 2;
 
-		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData);
+		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData + " & noteType " + Std.string(noteType));
 
 		// JOELwindows7: push noteType too
 		if (n != null)
@@ -3447,6 +3493,8 @@ class ChartingState extends MusicBeatState
 				noteType
 			]);
 
+		// Debug.logTrace("MROGIN");
+
 		var thingy = section.sectionNotes[section.sectionNotes.length - 1];
 
 		curSelectedNote = thingy;
@@ -3456,7 +3504,11 @@ class ChartingState extends MusicBeatState
 		if (n == null)
 		{
 			// JOELwindows7: put notetype yea
+			if (noteType == 2)
+				Debug.logTrace("add mine n null ");
 			var note:Note = new Note(noteStrum, noteData % 4, null, false, true, TimingStruct.getBeatFromTime(noteStrum), noteType);
+			if (noteType == 2)
+				Debug.logTrace("add mine n null success");
 			note.rawNoteData = noteData;
 			note.sustainLength = noteSus;
 			note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -3487,7 +3539,11 @@ class ChartingState extends MusicBeatState
 		else
 		{
 			// JOELwindows7: put notetype
+			if (noteType == 2)
+				Debug.logTrace("add mine n exist ");
 			var note:Note = new Note(n.strumTime, n.noteData % 4, null, false, true, n.isAlt, TimingStruct.getBeatFromTime(n.strumTime), noteType);
+			if (noteType == 2)
+				Debug.logTrace("add mine n exist success");
 			note.beat = TimingStruct.getBeatFromTime(n.strumTime);
 			note.rawNoteData = n.noteData;
 			note.sustainLength = noteSus;
@@ -3517,9 +3573,13 @@ class ChartingState extends MusicBeatState
 			curRenderedNotes.add(note);
 		}
 
+		// Debug.logTrace("Doned note, update note UI & Autosave");
+
 		updateNoteUI();
+		// Debug.logTrace("Updated note UI");
 
 		autosaveSong();
+		// Debug.logTrace("autoSaved");
 	}
 
 	function getStrumTime(yPos:Float):Float
@@ -3669,10 +3729,12 @@ class ChartingState extends MusicBeatState
 
 	function autosaveSong():Void
 	{
+		// JOELwindows7: whoaho here more data
 		FlxG.save.data.autosave = Json.stringify({
 			"song": _song,
 			"songMeta": {
 				"name": _song.songId,
+				"artist": _song.artist,
 				"offset": 0,
 			}
 		});

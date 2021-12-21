@@ -148,10 +148,14 @@ class Note extends FlxSprite
 			switch (noteType)
 			{
 				case 2:
+					Debug.logTrace("Whoah dude he adds mine?");
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
 						2);
+					// frames = PlayState.noteskinSpriteMine;
+					Debug.logTrace("Mine graphic loaded");
 				default:
 					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
+					// frames = PlayState.noteskinSprite;
 			}
 			// frames = PlayState.noteskinSprite;
 			// frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, noteType);
@@ -166,6 +170,7 @@ class Note extends FlxSprite
 			setGraphicSize(Std.int(width * 0.7));
 			updateHitbox();
 			antialiasing = FlxG.save.data.antialiasing;
+			// Debug.logTrace("Charter note yau");
 		}
 		else
 		{
@@ -395,6 +400,8 @@ class Note extends FlxSprite
 					prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
 			}
 		}
+
+		// Debug.logTrace("NOte newed enojy");
 	}
 
 	override function update(elapsed:Float)

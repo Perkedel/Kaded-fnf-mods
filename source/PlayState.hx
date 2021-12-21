@@ -953,7 +953,8 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.save.data.laneUnderlay && !PlayStateChangeables.Optimize)
 		{
-			if (!FlxG.save.data.middleScroll || executeModchart)
+			// JOELwindows7: haxe script too
+			if (!FlxG.save.data.middleScroll || executeModchart || executeModHscript)
 			{
 				add(laneunderlayOpponent);
 			}
@@ -2429,25 +2430,25 @@ class PlayState extends MusicBeatState
 					{
 						babyArrow.animation.add('dirCon' + j, [12 + j, 16 + j], 24, false);
 					}
-				case 'saubo':
-					// JOELwindows7: LFM original noteskin
-					babyArrow.frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-					for (j in 0...4)
-					{
-						babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
-						babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
-					}
+				// case 'saubo':
+				// 	// JOELwindows7: LFM original noteskin
+				// 	babyArrow.frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+				// 	for (j in 0...4)
+				// 	{
+				// 		babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
+				// 		babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
+				// 	}
 
-					var lowerDir:String = dataSuffix[i].toLowerCase();
+				// 	var lowerDir:String = dataSuffix[i].toLowerCase();
 
-					babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
-					babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
-					babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
+				// 	babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
+				// 	babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
+				// 	babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
 
-					babyArrow.x += Note.swagWidth * i;
+				// 	babyArrow.x += Note.swagWidth * i;
 
-					babyArrow.antialiasing = FlxG.save.data.antialiasing;
-					babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
+				// 	babyArrow.antialiasing = FlxG.save.data.antialiasing;
+				// 	babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
 
 				default:
 					babyArrow.frames = noteskinSprite;
@@ -2502,7 +2503,23 @@ class PlayState extends MusicBeatState
 
 			// JOELwindows7: filtere Haxe script
 			if (PlayStateChangeables.Optimize || (FlxG.save.data.middleScroll && !(executeModchart || executeModHscript)))
+			{
 				babyArrow.x -= 320;
+
+				// JOELwindows7: interupt now! We got Psyched cpu static arrow positionings in middle scroll mode. watch this!
+				if (player == 0)
+				{
+					babyArrow.x += 320; // JOELwindows7: hey push the position back for the CPU okay.
+					if (i >= 0 && i <= 1) // JOELwindows7: here 1st two of CPU arrow
+					{
+						babyArrow.x += 20;
+					}
+					else if (i >= 2 && i <= 3) // JOELwindows7: and then rest 2 of the CPU arrow.
+					{
+						babyArrow.x += 600;
+					}
+				}
+			}
 
 			cpuStrums.forEach(function(spr:FlxSprite)
 			{
@@ -2521,6 +2538,9 @@ class PlayState extends MusicBeatState
 			// JOELwindows7: if or haxescript
 			if (isStoryMode && !FlxG.save.data.middleScroll || (executeModchart || executeModHscript))
 				babyArrow.alpha = 1;
+			// JOELwindows7: semi visible CPU static arrow if middle scroll
+			if (index <= 3 && FlxG.save.data.middleScroll)
+				babyArrow.alpha = .5;
 			if (index > 3 && FlxG.save.data.middleScroll)
 				babyArrow.alpha = 1;
 			index++;
@@ -4121,8 +4141,9 @@ class PlayState extends MusicBeatState
 					daNote.modAngle = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
 				}
 
-				if (!daNote.mustPress && FlxG.save.data.middleScroll && !executeModchart)
-					daNote.alpha = 0;
+				// JOELwindows7: moverd hscript & also alpha note pls
+				if (!daNote.mustPress && FlxG.save.data.middleScroll && !(executeModchart || executeModHscript))
+					daNote.alpha = 0.5;
 
 				if (daNote.isSustainNote)
 				{
@@ -4156,7 +4177,7 @@ class PlayState extends MusicBeatState
 						// JOELwindows7: Skip da mine
 						if (daNote.noteType == 2)
 						{
-							trace("Sneaked past the mine whew");
+							// trace("Sneaked past the mine whew");
 						}
 						// JOELwindows7: Missed supposed note
 						if (daNote.noteType == 1 || daNote.noteType == 0)
@@ -4772,7 +4793,8 @@ class PlayState extends MusicBeatState
 
 		// trace('Wife accuracy loss: ' + wife + ' | Rating: ' + daRating + ' | Score: ' + score + ' | Weight: ' + (1 - wife));
 
-		if ((daRating != 'shit' || daRating != 'bad') && daNote.noteType != 2) //JOELwindows7: do not count if note type is mine or powerup i guess.
+		if ((daRating != 'shit' || daRating != 'bad')
+			&& daNote.noteType != 2) // JOELwindows7: do not count if note type is mine or powerup i guess.
 		{
 			songScore += Math.round(score);
 
