@@ -1017,7 +1017,7 @@ class ChartingState extends MusicBeatState
 		/**
 		 * Play button
 		* **/
-		var playButton = new FlxButtonPlus(70, 10, function()
+		var playButton = new FlxButton(70, 70, "Play", function()
 		{
 			// JOELwindows7: steal function when press SPACE
 			if (FlxG.sound.music.playing)
@@ -1033,23 +1033,22 @@ class ChartingState extends MusicBeatState
 					vocals.play();
 				FlxG.sound.music.play();
 			}
-		}, "Play",25, 25);
+		});
 
-		playButton.loadGraphic(Paths.loadImage('playPauseButton'), false);
+		playButton.loadGraphic(Paths.loadImage('playPauseButtonSmall'), false);
 		// playButton.loadButtonGraphic(Paths.loadImage('playPauseButton'), Paths.loadImage('playPauseButton'));
-		// playButton.setSize(25, 25);
+		playButton.setSize(25, 25);
 		playButton.updateHitbox();
 		// playButton.alpha = 0;
 
 		/**
 		 * Seek Up button, scroll the chart up
 		 */
-		var seekUpButton = new FlxButtonPlus(10, 10, function()
+		var seekUpButton = new FlxButton(70, 10, "Scroll Up", function()
 		{
-		}, "Scroll Up", 25, 25);
+		});
 
-		// seekUpButton.onDown.callback = function()
-		seekUpButton.onClickCallback = function()
+		seekUpButton.onDown.callback = function() // seekUpButton.onClickCallback = function()
 		{
 			// JOELwindows7: steal from keyboard function of it. this is when press W
 			FlxG.sound.music.pause();
@@ -1057,6 +1056,7 @@ class ChartingState extends MusicBeatState
 				vocals.pause();
 
 			var daTime:Float;
+			// TODO: You should just take scroll wheel's seek instead.
 			if (FlxG.keys.pressed.SHIFT)
 				daTime = 700 * FlxG.elapsed
 			else
@@ -1067,20 +1067,19 @@ class ChartingState extends MusicBeatState
 			if (!PlayState.isSM)
 				vocals.time = FlxG.sound.music.time;
 		};
-		seekUpButton.loadGraphic(Paths.loadImage('upAdjustButton'), false);
-		// seekUpButton.setSize(25, 25);
+		seekUpButton.loadGraphic(Paths.loadImage('upAdjustButtonSmall'), false);
+		seekUpButton.setSize(25, 25);
 		seekUpButton.updateHitbox();
 		// seekUpButton.alpha = 0;
 
 		/**
 		 * Seek down button. scroll the chart down
 		 */
-		var seekDownButton = new FlxButtonPlus(90, 10, function()
+		var seekDownButton = new FlxButton(70, 130, "Scroll Down", function()
 		{
-		}, "Scroll Down", 25, 25);
+		});
 
-		// seekDownButton.onDown.callback = function()
-		seekDownButton.onClickCallback = function()
+		seekDownButton.onDown.callback = function() // seekDownButton.onClickCallback = function()
 		{
 			// JOELwindows7: steal from keyboard function of it. this is when press S
 			FlxG.sound.music.pause();
@@ -1098,16 +1097,46 @@ class ChartingState extends MusicBeatState
 			if (!PlayState.isSM)
 				vocals.time = FlxG.sound.music.time;
 		};
-		seekDownButton.loadGraphic(Paths.loadImage('downAdjustButton'), false);
-		// seekDownButton.setSize(25, 25);
+		seekDownButton.loadGraphic(Paths.loadImage('downAdjustButtonSmall'), false);
+		seekDownButton.setSize(25, 25);
 		seekDownButton.updateHitbox();
 		// seekDownButton.alpha = 0;
+
+		var nextSectionButton = new FlxButton(125, 70, "Next Section", function()
+		{
+			// JOELwindows7: steal from keyboard function of it. this is when press D
+			if (FlxG.keys.pressed.CONTROL)
+			{
+				speed += 0.1;
+			}
+			else
+				goToSection(curSection + 1);
+		});
+		nextSectionButton.loadGraphic(Paths.loadImage('rightAdjustButtonSmall'), false);
+		nextSectionButton.setSize(25, 25);
+		nextSectionButton.updateHitbox();
+
+		var prevSectionButton = new FlxButton(10, 70, "Previous Section", function()
+		{
+			// JOELwindows7: steal from keyboard function of it. this is when press A
+			if (FlxG.keys.pressed.CONTROL)
+			{
+				speed -= 0.1;
+			}
+			else
+				goToSection(curSection - 1);
+		});
+		prevSectionButton.loadGraphic(Paths.loadImage('leftAdjustButtonSmall'), false);
+		prevSectionButton.setSize(25, 25);
+		prevSectionButton.updateHitbox();
 
 		var tab_control = new FlxUI(null, UI_options);
 		tab_control.name = "Controls";
 		tab_control.add(playButton);
 		tab_control.add(seekUpButton);
 		tab_control.add(seekDownButton);
+		tab_control.add(nextSectionButton);
+		tab_control.add(prevSectionButton);
 		UI_options.addGroup(tab_control);
 	}
 
