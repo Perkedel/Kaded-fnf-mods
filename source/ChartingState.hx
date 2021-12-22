@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxButtonPlus;
 import Song.SongMeta;
 import openfl.system.System;
 import lime.app.Application;
@@ -1006,9 +1007,17 @@ class ChartingState extends MusicBeatState
 	}
 
 	// JOELwindows7: now add player control tab UI
+
+	/**
+	 * This function adds the player control tab UI to the UI_options group.
+	 * It contains Play/Pause & Seek buttons to scroll the chart & play the song.
+	 */
 	function addControlUI():Void
 	{
-		var playButton = new FlxButton(40, 10, "Play", function()
+		/**
+		 * Play button
+		* **/
+		var playButton = new FlxButtonPlus(70, 10, function()
 		{
 			// JOELwindows7: steal function when press SPACE
 			if (FlxG.sound.music.playing)
@@ -1024,15 +1033,81 @@ class ChartingState extends MusicBeatState
 					vocals.play();
 				FlxG.sound.music.play();
 			}
-		});
-		playButton.loadGraphic(Paths.loadImage('playPauseButton'), false, 10, 10);
-		playButton.setSize(10, 10);
+		}, "Play",25, 25);
+
+		playButton.loadGraphic(Paths.loadImage('playPauseButton'), false);
+		// playButton.loadButtonGraphic(Paths.loadImage('playPauseButton'), Paths.loadImage('playPauseButton'));
+		// playButton.setSize(25, 25);
 		playButton.updateHitbox();
 		// playButton.alpha = 0;
+
+		/**
+		 * Seek Up button, scroll the chart up
+		 */
+		var seekUpButton = new FlxButtonPlus(10, 10, function()
+		{
+		}, "Scroll Up", 25, 25);
+
+		// seekUpButton.onDown.callback = function()
+		seekUpButton.onClickCallback = function()
+		{
+			// JOELwindows7: steal from keyboard function of it. this is when press W
+			FlxG.sound.music.pause();
+			if (!PlayState.isSM)
+				vocals.pause();
+
+			var daTime:Float;
+			if (FlxG.keys.pressed.SHIFT)
+				daTime = 700 * FlxG.elapsed
+			else
+				daTime = Conductor.stepCrochet * 2;
+
+			FlxG.sound.music.time -= daTime;
+
+			if (!PlayState.isSM)
+				vocals.time = FlxG.sound.music.time;
+		};
+		seekUpButton.loadGraphic(Paths.loadImage('upAdjustButton'), false);
+		// seekUpButton.setSize(25, 25);
+		seekUpButton.updateHitbox();
+		// seekUpButton.alpha = 0;
+
+		/**
+		 * Seek down button. scroll the chart down
+		 */
+		var seekDownButton = new FlxButtonPlus(90, 10, function()
+		{
+		}, "Scroll Down", 25, 25);
+
+		// seekDownButton.onDown.callback = function()
+		seekDownButton.onClickCallback = function()
+		{
+			// JOELwindows7: steal from keyboard function of it. this is when press S
+			FlxG.sound.music.pause();
+			if (!PlayState.isSM)
+				vocals.pause();
+
+			var daTime:Float;
+			if (FlxG.keys.pressed.SHIFT)
+				daTime = 700 * FlxG.elapsed
+			else
+				daTime = Conductor.stepCrochet * 2;
+
+			FlxG.sound.music.time += daTime;
+
+			if (!PlayState.isSM)
+				vocals.time = FlxG.sound.music.time;
+		};
+		seekDownButton.loadGraphic(Paths.loadImage('downAdjustButton'), false);
+		// seekDownButton.setSize(25, 25);
+		seekDownButton.updateHitbox();
+		// seekDownButton.alpha = 0;
 
 		var tab_control = new FlxUI(null, UI_options);
 		tab_control.name = "Controls";
 		tab_control.add(playButton);
+		tab_control.add(seekUpButton);
+		tab_control.add(seekDownButton);
 		UI_options.addGroup(tab_control);
 	}
 
@@ -3815,7 +3890,7 @@ class ChartingState extends MusicBeatState
 		FlxG.log.error("Problem saving Level data");
 		// JOELwindows7: also trace the error & sound it
 		Debug.logError("Weror! problem saving data");
-		createToast(null, "Oh no! Our table", "It's brogen! Problem saving level data. warm and bad!");
+		createToast(null, "Oh no! Our table", "It's brogen!\nProblem saving level data. warm and bad!");
 		FlxG.sound.play(Paths.sound('cancelMenu'));
 	}
 }
