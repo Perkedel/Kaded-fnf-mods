@@ -62,16 +62,16 @@ end
 
 function colorizeColorablebyKey(note, justOne, toWhichBg)
     if note == "left" or note == 0 then
-        print("set color magenta")
+        -- print("set color magenta")
         chooseColoringColor("magenta", justOne, toWhichBg)
     elseif note == "down" or note == 1 then
-        print("set color cyan")
+        -- print("set color cyan")
         chooseColoringColor("cyan", justOne, toWhichBg)
     elseif note == "up" or note == 2 then
-        print("set color lime")
+        -- print("set color lime")
         chooseColoringColor("lime", justOne, toWhichBg)
     elseif note == "right" or note == 3 then
-        print("set color red")
+        -- print("set color red")
         chooseColoringColor("red", justOne, toWhichBg)
     end
 end

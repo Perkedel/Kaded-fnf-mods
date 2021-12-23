@@ -6,12 +6,24 @@
 // But remember, this is Haxe Script. convert your syntax format to it here.
 // templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
 
+//Dad Battle whohwohow
+
 function loaded(song)
 {
 
 }
 
 function start(song) 
+{
+
+}
+
+function songStart()
+{
+
+}
+
+function songEng()
 {
 
 }
@@ -23,17 +35,59 @@ function update(elapsed)
 
 function beatHit(beat)
 {
-    
+    if(beat == 0
+    || beat == 16
+    || beat == 224
+    || beat == 232
+    || beat == 240) 
+    {
+        randomizeColoring();
+        vibrate(0, 400);
+    }
+
+    if(flashing)
+    {
+        if(beat >= 144 && beat <= 156)
+        {
+            randomizeColoring();
+            vibrate(0, 200);
+        }
+    }
+
+    if(distractions)
+    {
+        if(beat >= 144 && beat <= 156)
+        {
+            camZoomNow(0.015, 0.03, 1.35);
+            vibrate(0, 100);
+        }
+    }
+
+
+    if(beat == 32 || beat == 160)
+        hideColoring(false, 0);
 }
 
 function stepHit(step)
 {
-
+    if(flashing)
+    {
+        if(step >= 623 && step <= 639)
+        {
+            randomizeColoring();
+            vibrate(0, 70);
+        }
+    }
 }
 
 function keyPressed(key)
 {
 
+}
+
+function keyReleased(key)
+{
+    
 }
 
 function playerTwoTurn()
@@ -48,19 +102,7 @@ function playerTwoMiss(note, position)
 
 function playerTwoSing(note, position)
 {
-    //trace("P2 sing " + note + " at " + position + " hscript");
-    if ((curBeat >= 0 && curBeat < 16) || (curBeat >= 144)){
-        if(flashing)
-            //colorizeColorablebyKey(note,false,0);
-            randomizeColoring();
-        if(distractions){
-            //trace("BRUMM " + curBeat);
-            camZoomNow(0.015, 0.03, 1.35);
-            vibrate(0, 200);
-        }
-    }else{
-        hideColoring(false, 0);
-    }
+
 }
 
 function playerOneTurn()
@@ -75,36 +117,29 @@ function playerOneMiss(note, position)
 
 function playerOneSing(note, position)
 {
-    //trace("P1 sing " + note + " at " + position + " hscript");
-    if ((curBeat >= 0 && curBeat < 16) || (curBeat >= 144)){
-        if(flashing)
-            //colorizeColorablebyKey(note,false,0);
-            randomizeColoring();
-    }else{
-        hideColoring(false, 0);
-    }
+
 }
 
 function colorizeColorablebyKey(note, justOne, toWhichBg)
 {
-    if (note == 0 /*'left'*/)
+    if (note == 'left')
     {
-        //trace("set color magenta (hscript)");
+        trace("set color magenta (hscript)");
         chooseColoringColor("magenta", justOne, toWhichBg);
     }
-    else if (note == 1 /*'down'*/)
+    else if (note == 'down')
     {
-        //trace("set color cyan (hscript)");
+        trace("set color cyan (hscript)");
         chooseColoringColor("cyan", justOne, toWhichBg);
     }
-    else if (note == 2 /*'up'*/)
+    else if (note == 'up')
     {
-        //trace("set color lime (hscript)");
+        trace("set color lime (hscript)");
         chooseColoringColor("lime", justOne, toWhichBg);
     }
-    else if (note == 3 /*'right'*/)
+    else if (note == 'right')
     {
-        //trace("set color red (hscript)");
+        trace("set color red (hscript)");
         chooseColoringColor("red", justOne, toWhichBg);
     }
 }
