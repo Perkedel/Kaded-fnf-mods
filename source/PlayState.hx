@@ -4618,6 +4618,7 @@ class PlayState extends MusicBeatState
 
 				// JOELwindows7: wait! remember the song name first!
 				var lastSonginPlaylist = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
+				// var lastSonginPlaylist = StringTools.replace(PlayState.storyPlaylist[0], " ", "-");
 
 				storyPlaylist.remove(storyPlaylist[0]);
 

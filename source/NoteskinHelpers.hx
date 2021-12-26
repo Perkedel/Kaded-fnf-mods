@@ -114,7 +114,10 @@ class NoteskinHelpers
 
 		// return Paths.getSparrowAtlas('noteskins/' + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin), "shared");
 		#else
-		return BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
+		// return BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
+		// JOELwindows7: here because Android requires Asset2File
+		return BitmapData.fromFile(#if !mobile Paths.image('noteskins/Arrows-pixel',
+			"shared") #else Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared")) #end);
 		#end
 	}
 }

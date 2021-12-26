@@ -28,17 +28,66 @@ function songEng()
 
 function update(elapsed)
 {
-
+    /*
+    if (distractions){
+        if (curBeat == 66.500
+        || curBeat == 70.500)
+        {
+            camShake(.1, .5);
+        }
+    }
+    */
 }
 
 function beatHit(beat)
 {
-    
+    if(distractions){
+        if(beat == 64
+        || beat == 68
+        || beat == 72
+        || beat == 76
+        || beat == 80
+        || beat == 84
+        || beat == 88
+        || beat == 92
+        || beat == 96)
+        {
+            camShake(.01, .5);
+        }
+
+        
+    }
 }
 
 function stepHit(step)
 {
+    if(distractions){
+        if( step == 282 || step == 266
+        || step == 298
+        || step == 313
+        || step == 329
+        || step == 361
+        || step == 377)
+        {
+            camShake(.02, .5);
+        }
 
+        if( step == 63 || step == 66 
+        || step == 79 || step == 82
+        || step == 448 || step == 450
+        || step == 111 || step == 114)
+        {
+            camZoomNow(0.1, 0.03, 1.35);
+        }
+
+        if(step == 71 || step == 74
+        || step == 87 || step == 90
+        || step == 103 || step == 106
+        || step == 120 || step == 122)
+        {
+            camZoomNow(-0.1, 0.03, 1.35);
+        }
+    }
 }
 
 function keyPressed(key)
