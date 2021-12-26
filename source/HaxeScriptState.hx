@@ -622,6 +622,11 @@ class HaxeScriptState
 		{
 			PlayState.instance.camHUD.zoom = zoomAmount;
 		});
+		addCallback("camShake", function(intensity:Float = .05, duration:Float = .5, force:Bool = true)
+		{
+			//JOELwindows7: "I'm, not, that, OLD!!!" lol vs. oswald damn forgor user author.
+			FlxG.camera.shake(intensity, duration, null, force);
+		});
 
 		// Strumline
 		addCallback("setStrumlineY", function(y:Float)

@@ -59,6 +59,10 @@ typedef SongData =
 	var ?videoPath:String; // JOELwindows7: the video file path
 	var ?hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
 	var ?epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
+	var ?hasTankmanVideo:Bool; //JOELwindows7: same as hasVideo but this is for when entered PlayState like week7.
+	var ?tankmanVideoPath:String; //JOELwindows7: same as videoPath but this is for when entered PlayState like week7.
+	var ?hasEpilogueTankmanVideo:Bool; //JOELwindows7: same as hasEpilogueVideo but this is for when entered PlayState like week7.
+	var ?epilogueTankmanVideoPath:String; //JOELwindows7: same as epilogueVideoPath but this is for when entered PlayState like week7.
 	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
 	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
@@ -93,6 +97,10 @@ typedef SongMeta =
 	var ?videoPath:String; // JOELwindows7: the video file path
 	var ?hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
 	var ?epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
+	var ?hasTankmanVideo:Bool; // JOELwindows7: same as hasVideo but this is for when entered PlayState like week7.
+	var ?tankmanVideoPath:String; // JOELwindows7: same as videoPath but this is for when entered PlayState like week7.
+	var ?hasEpilogueTankmanVideo:Bool; // JOELwindows7: same as hasEpilogueVideo but this is for when entered PlayState like week7.
+	var ?epilogueTankmanVideoPath:String; // JOELwindows7: same as epilogueVideoPath but this is for when entered PlayState like week7.
 	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
 	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
 	var ?forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
@@ -398,6 +406,38 @@ class Song
 			if (songData.gfVersion == null || songData.gfVersion == "")
 			{
 				songData.gfVersion = songMetaData.gfVersion;
+			}
+		}
+
+		if (songMetaData.hasTankmanVideo != null)
+		{
+			if (songData.hasTankmanVideo == null)
+			{
+				songData.hasTankmanVideo = songMetaData.hasTankmanVideo;
+			}
+		}
+
+		if (songMetaData.hasEpilogueTankmanVideo != null)
+		{
+			if (songData.hasEpilogueTankmanVideo == null)
+			{
+				songData.hasEpilogueTankmanVideo = songMetaData.hasEpilogueTankmanVideo;
+			}
+		}
+
+		if (songMetaData.tankmanVideoPath != null)
+		{
+			if (songData.tankmanVideoPath == null || songData.tankmanVideoPath == "")
+			{
+				songData.tankmanVideoPath = songMetaData.tankmanVideoPath;
+			}
+		}
+
+		if (songMetaData.epilogueTankmanVideoPath != null)
+		{
+			if (songData.epilogueTankmanVideoPath == null || songData.epilogueTankmanVideoPath == "")
+			{
+				songData.epilogueTankmanVideoPath = songMetaData.epilogueTankmanVideoPath;
 			}
 		}
 

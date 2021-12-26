@@ -673,6 +673,13 @@ class ModchartState
 				PlayState.instance.camHUD.zoom = zoomAmount;
 			});
 		}
+
+		// JOELwindows7: whoah forgor this cam function!
+		Lua_helper.add_callback(lua, "camShake", function(intensity:Float = .05, duration:Float = .5, force:Bool = true)
+		{
+			// JOELwindows7: "I'm, not, that, OLD!!!" lol vs. oswald damn forgor user author.
+			FlxG.camera.shake(intensity, duration, null, force);
+		});
 		// end don't delete
 
 		// strumline

@@ -1390,24 +1390,31 @@ class PlayState extends MusicBeatState
 				case 'thorns' | 'thorns-midi':
 					schoolIntro(doof);
 				default:
-					introScene(); // JOELwindows7: start intro cutscene!
+					if (SONG.hasTankmanVideo)
+					{
+						tankmanIntro(Paths.video(SONG.tankmanVideoPath));
+					}
+					else
+					{
+						introScene(); // JOELwindows7: start intro cutscene!
 
-					new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
-					{ // JOELwindows7: also add delay before start
-						// for intro cutscene after video and before dialogue chat you know!
-						// JOELwindows7: Heuristic for using JSON chart instead
-						if (SONG.hasDialogueChat)
-						{
-							schoolIntro(doof);
-						}
-						else
-						{
-							new FlxTimer().start(1, function(timer)
-							{
-								startCountdown();
-							});
-						}
-					});
+						// new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
+						// { // JOELwindows7: also add delay before start
+						// 	// for intro cutscene after video and before dialogue chat you know!
+						// 	// JOELwindows7: Heuristic for using JSON chart instead
+						// 	if (SONG.hasDialogueChat)
+						// 	{
+						// 		schoolIntro(doof);
+						// 	}
+						// 	else
+						// 	{
+						// 		new FlxTimer().start(1, function(timer)
+						// 		{
+						// 			startCountdown();
+						// 		});
+						// 	}
+						// });
+					}
 			}
 		}
 		else
@@ -1491,6 +1498,117 @@ class PlayState extends MusicBeatState
 
 		// JOELwindows7: why the peck with touchscreen button game crash on second run?!
 		trace("finish create PlayState");
+	}
+
+	function tankmanIntro(source:String, outro:Bool = false, handoverName:String = "", isNextSong:Bool = false, handoverDelayFirst:Float = 0,
+			handoverHasEpilogueVid:Bool = false, handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false,
+			handoverTankmanEpilogueVidPath:String = ""):Void
+	{
+		// JOELwindows7: okay here video for week7. fun fact, this is how week7 vanilla video loads.
+		// Essentially is a dialogue but instead it's a video FlxSprite spawned above the gameplay, replacing the dialogue.
+		// steal this luckydog7's android port, it yoinked the week7 and looks fine on GameBanana even still in embargo somehow.
+		// Coding is at that PlayState.hx . there are 3 week7 intro methods unprocedurally: `ughIntro`, `gunsIntro`, & `stressIntro`.
+
+		#if (FEATURE_VLC)
+		// JOELwindows7: inspire that luckydog7's webmer bellow, build the VLC version of function!
+		// inspire from function backgroundVideo if the FEATURE_VLC is available!
+
+		var videoSpriteFirst = new FlxSprite();
+		// Build own cam!
+		var ownCam = new FlxCamera();
+		FlxG.cameras.add(ownCam);
+		ownCam.bgColor.alpha = 0;
+		videoSpriteFirst.cameras = [ownCam];
+
+		var video = new MP4Handler();
+
+		video.finishCallback = function()
+		{
+			// videoSpriteFirst.kill();
+			remove(videoSpriteFirst);
+			if (outro)
+			{
+				// outroScene(handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
+				// 	handoverTankmanEpilogueVidPath);
+
+				if (isNextSong)
+				{
+					// JOELwindows7: here timer guys
+					new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
+					{
+						// JOELwindows7: if has video, then load the video first before going to new playstate!
+						LoadingState.loadAndSwitchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
+							(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+								new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+								new PlayState()) : new PlayState()));
+						// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+						// JOELwindows7: oh God, so complicated. I hope it works!
+						clean();
+					});
+				}
+				else
+				{
+					// JOELwindows7: yep move from that function. this one is when song has ran out in the playlist.
+					new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
+					{
+						if (FlxG.save.data.scoreScreen)
+						{
+							if (FlxG.save.data.songPosition)
+							{
+								FlxTween.tween(songPosBar, {alpha: 0}, 1);
+								FlxTween.tween(bar, {alpha: 0}, 1);
+								FlxTween.tween(songName, {alpha: 0}, 1);
+							}
+							openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
+							new FlxTimer().start(1, function(tmr:FlxTimer)
+							{
+								inResults = true;
+							});
+						}
+						else
+						{
+							GameplayCustomizeState.freeplayBf = 'bf';
+							GameplayCustomizeState.freeplayDad = 'dad';
+							GameplayCustomizeState.freeplayGf = 'gf';
+							GameplayCustomizeState.freeplayNoteStyle = 'normal';
+							GameplayCustomizeState.freeplayStage = 'stage';
+							GameplayCustomizeState.freeplaySong = 'bopeebo';
+							GameplayCustomizeState.freeplayWeek = 1;
+							FlxG.sound.playMusic(Paths.music('freakyMenu'));
+							Conductor.changeBPM(102);
+							// FlxG.switchState(new StoryMenuState());
+							FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
+								new StoryMenuState()) : new StoryMenuState());
+							// JOELwindows7: complicated! oh MY GOD!
+							clean();
+						}
+					});
+				}
+			}
+			else
+			{
+				introScene(); // JOELwindows7: start intro cutscene!
+
+				
+			}
+		}
+		video.playMP4(source, null, videoSpriteFirst); // make the transition null so it doesn't take you out of this state
+		videoSpriteFirst.setGraphicSize(Std.int(videoSpriteFirst.width * 1.2));
+		videoSpriteFirst.updateHitbox();
+		add(videoSpriteFirst);
+		#elseif (FEATURE_WEBM && !FEATURE_VLC)
+		var video = new VideoPlayer(source);
+		video.finishCallback = () ->
+		{
+			remove(video);
+			startCountdown();
+		}
+		video.ownCamera();
+		video.setGraphicSize(Std.int(video.width * 2));
+		video.updateHitbox();
+		add(video);
+		video.play();
+		#end
 	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
@@ -4517,41 +4635,43 @@ class PlayState extends MusicBeatState
 					FlxG.sound.music.stop();
 					vocals.stop();
 					// JOELwindows7: here timer guys
-					outroScene(lastSonginPlaylist);
-					new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
-					{
-						if (FlxG.save.data.scoreScreen)
-						{
-							if (FlxG.save.data.songPosition)
-							{
-								FlxTween.tween(songPosBar, {alpha: 0}, 1);
-								FlxTween.tween(bar, {alpha: 0}, 1);
-								FlxTween.tween(songName, {alpha: 0}, 1);
-							}
-							openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
-							new FlxTimer().start(1, function(tmr:FlxTimer)
-							{
-								inResults = true;
-							});
-						}
-						else
-						{
-							GameplayCustomizeState.freeplayBf = 'bf';
-							GameplayCustomizeState.freeplayDad = 'dad';
-							GameplayCustomizeState.freeplayGf = 'gf';
-							GameplayCustomizeState.freeplayNoteStyle = 'normal';
-							GameplayCustomizeState.freeplayStage = 'stage';
-							GameplayCustomizeState.freeplaySong = 'bopeebo';
-							GameplayCustomizeState.freeplayWeek = 1;
-							FlxG.sound.playMusic(Paths.music('freakyMenu'));
-							Conductor.changeBPM(102);
-							// FlxG.switchState(new StoryMenuState());
-							FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
-								new StoryMenuState()) : new StoryMenuState());
-							// JOELwindows7: complicated! oh MY GOD!
-							clean();
-						}
-					});
+					outroScene(lastSonginPlaylist, false, delayFirstBeforeThat, SONG.hasEpilogueVideo, SONG.epilogueVideoPath, SONG.hasEpilogueTankmanVideo,
+						SONG.epilogueTankmanVideoPath);
+					// outroScene(lastSonginPlaylist);
+					// new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+					// {
+					// 	if (FlxG.save.data.scoreScreen)
+					// 	{
+					// 		if (FlxG.save.data.songPosition)
+					// 		{
+					// 			FlxTween.tween(songPosBar, {alpha: 0}, 1);
+					// 			FlxTween.tween(bar, {alpha: 0}, 1);
+					// 			FlxTween.tween(songName, {alpha: 0}, 1);
+					// 		}
+					// 		openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
+					// 		new FlxTimer().start(1, function(tmr:FlxTimer)
+					// 		{
+					// 			inResults = true;
+					// 		});
+					// 	}
+					// 	else
+					// 	{
+					// 		GameplayCustomizeState.freeplayBf = 'bf';
+					// 		GameplayCustomizeState.freeplayDad = 'dad';
+					// 		GameplayCustomizeState.freeplayGf = 'gf';
+					// 		GameplayCustomizeState.freeplayNoteStyle = 'normal';
+					// 		GameplayCustomizeState.freeplayStage = 'stage';
+					// 		GameplayCustomizeState.freeplaySong = 'bopeebo';
+					// 		GameplayCustomizeState.freeplayWeek = 1;
+					// 		FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					// 		Conductor.changeBPM(102);
+					// 		// FlxG.switchState(new StoryMenuState());
+					// 		FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
+					// 			new StoryMenuState()) : new StoryMenuState());
+					// 		// JOELwindows7: complicated! oh MY GOD!
+					// 		clean();
+					// 	}
+					// });
 					// JOELwindows7: clean was here, but now inside that?!
 
 					#if FEATURE_LUAMODCHART
@@ -4601,7 +4721,7 @@ class PlayState extends MusicBeatState
 
 						FlxG.sound.play(Paths.sound('Lights_Shut_off'));
 					}
-					outroScene(lastSonginPlaylist);
+					// outroScene(lastSonginPlaylist);
 					// JOELwindows7: Psychedly Successfully fixed the light shut off scene!
 
 					FlxTransitionableState.skipNextTransIn = true;
@@ -4627,17 +4747,19 @@ class PlayState extends MusicBeatState
 					Debug.logInfo("and outro is enabled " + Std.string(hasEpilogueVideo) + "and next song intro enabled" + SONG.hasVideo);
 
 					// JOELwindows7: here timer guys
-					new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
-					{
-						// JOELwindows7: if has video, then load the video first before going to new playstate!
-						LoadingState.loadAndSwitchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
-							(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
-								new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
-								new PlayState()) : new PlayState()));
-						// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
-						// JOELwindows7: oh God, so complicated. I hope it works!
-						clean();
-					});
+					// new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+					// {
+					// 	// JOELwindows7: if has video, then load the video first before going to new playstate!
+					// 	LoadingState.loadAndSwitchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
+					// 		(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+					// 			new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+					// 			new PlayState()) : new PlayState()));
+					// 	// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					// 	// JOELwindows7: oh God, so complicated. I hope it works!
+					// 	clean();
+					// });
+					outroScene(lastSonginPlaylist, true, delayFirstBeforeThat, hasEpilogueVideo, epilogueVideoPath, SONG.hasEpilogueTankmanVideo,
+						SONG.epilogueTankmanVideoPath);
 				}
 			}
 			else
@@ -6598,11 +6720,49 @@ class PlayState extends MusicBeatState
 		{
 			default:
 				// No cutscene intro
+				new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
+				{ // JOELwindows7: also add delay before start
+					// for intro cutscene after video and before dialogue chat you know!
+					// JOELwindows7: Heuristic for using JSON chart instead
+					if (SONG.hasDialogueChat)
+					{
+						schoolIntro(doof);
+					}
+					else
+					{
+						new FlxTimer().start(1, function(timer)
+						{
+							startCountdown();
+						});
+					}
+				});
 		}
 	}
 
+	// JOELwindows7: call this for intro is done
+	function introSceneIsDone()
+	{
+		new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
+		{ // JOELwindows7: also add delay before start
+			// for intro cutscene after video and before dialogue chat you know!
+			// JOELwindows7: Heuristic for using JSON chart instead
+			if (SONG.hasDialogueChat)
+			{
+				schoolIntro(doof);
+			}
+			else
+			{
+				new FlxTimer().start(1, function(timer)
+				{
+					startCountdown();
+				});
+			}
+		});
+	}
+
 	// JOELwindows7: Psyched outro after dialogue chat & before epilogue video
-	function outroScene(handoverName:String)
+	function outroScene(handoverName:String, isNextSong:Bool = false, handoverDelayFirst:Float = 0, handoverHasEpilogueVid:Bool = false,
+			handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false, handoverTankmanEpilogueVidPath:String = "")
 	{
 		switch (handoverName.toLowerCase())
 		{
@@ -6624,13 +6784,86 @@ class PlayState extends MusicBeatState
 					{
 					}
 				});
-			// FlxTween.tween(blackShit, {alpha: 1}, 5, {
-			// 	ease: FlxEase.linear,
-			// 	onComplete: function(twn:FlxTween)
-			// 	{
-			// 	}
-			// });
+				// FlxTween.tween(blackShit, {alpha: 1}, 5, {
+				// 	ease: FlxEase.linear,
+				// 	onComplete: function(twn:FlxTween)
+				// 	{
+				// 	}
+				// });
+
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+				});
 			default:
+				outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
+					handoverTankmanEpilogueVidPath);
+		}
+	}
+
+	// JOELwindows7: call this when outro is done
+	function outroSceneIsDone(isNextSong:Bool = false, lastSongNameInPlaylist:String = "", delayFirstBeforeThat:Float = 0, hasEpilogueVideo:Bool = false,
+			epilogueVideoPath:String = "", hasEpilogueTankmanVideo:Bool = false, epilogueTankmanVideoPath:String = "")
+	{
+		if (hasEpilogueTankmanVideo)
+		{
+			tankmanIntro(epilogueTankmanVideoPath, true, lastSongNameInPlaylist, isNextSong, delayFirstBeforeThat, hasEpilogueVideo, epilogueVideoPath,
+				hasEpilogueTankmanVideo, epilogueTankmanVideoPath);
+		}
+		else
+		{
+			if (isNextSong)
+			{
+				// JOELwindows7: here timer guys
+				new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+				{
+					// JOELwindows7: if has video, then load the video first before going to new playstate!
+					LoadingState.loadAndSwitchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
+						(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+							new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()));
+					// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					// JOELwindows7: oh God, so complicated. I hope it works!
+					clean();
+				});
+			}
+			else
+			{
+				// JOELwindows7: yep move from that function. this one is when song has ran out in the playlist.
+				new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+				{
+					if (FlxG.save.data.scoreScreen)
+					{
+						if (FlxG.save.data.songPosition)
+						{
+							FlxTween.tween(songPosBar, {alpha: 0}, 1);
+							FlxTween.tween(bar, {alpha: 0}, 1);
+							FlxTween.tween(songName, {alpha: 0}, 1);
+						}
+						openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							inResults = true;
+						});
+					}
+					else
+					{
+						GameplayCustomizeState.freeplayBf = 'bf';
+						GameplayCustomizeState.freeplayDad = 'dad';
+						GameplayCustomizeState.freeplayGf = 'gf';
+						GameplayCustomizeState.freeplayNoteStyle = 'normal';
+						GameplayCustomizeState.freeplayStage = 'stage';
+						GameplayCustomizeState.freeplaySong = 'bopeebo';
+						GameplayCustomizeState.freeplayWeek = 1;
+						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						Conductor.changeBPM(102);
+						// FlxG.switchState(new StoryMenuState());
+						FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
+						// JOELwindows7: complicated! oh MY GOD!
+						clean();
+					}
+				});
+			}
 		}
 	}
 
