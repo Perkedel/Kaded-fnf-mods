@@ -239,6 +239,8 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					if (!inCharter)
 						FlxG.mouse.visible = false; // JOELwindows7: just in case
+					else
+						FlxG.mouse.visible = true; // JOELwindows7: sigh, do not invisiblize mouse in charter!
 					close();
 				case "Save":
 					// JOELwindows7: save the edit chart now.

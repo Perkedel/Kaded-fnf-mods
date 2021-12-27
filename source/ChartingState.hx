@@ -479,7 +479,7 @@ class ChartingState extends MusicBeatState
 
 		// JOELwindows7: One last thing! Toolbars!
 		addFileMenuButton(); // JOELwindows7: here the file menu button a.k.a. Office button.
-		
+
 		Debug.logTrace("create");
 
 		super.create();
@@ -1019,6 +1019,7 @@ class ChartingState extends MusicBeatState
 		{
 			openDaFileMenuNow();
 		});
+		fileMenuButton.loadGraphic(Paths.loadImage('fileButtonSmall'), false);
 		add(fileMenuButton);
 	}
 
@@ -4152,6 +4153,7 @@ class ChartingState extends MusicBeatState
 		}
 		else if (paused)
 		{
+			FlxG.mouse.visible = true;
 			paused = false;
 		}
 		super.closeSubState();
