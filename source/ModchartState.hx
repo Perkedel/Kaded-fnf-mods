@@ -4,6 +4,7 @@
 // LuaJit only works for C++; JOELwindows7: wtf Linux not working?
 // https://lib.haxe.org/p/linc_luajit/
 // Lua
+import flixel.util.FlxAxes;
 #if FEATURE_LUAMODCHART
 import LuaClass.LuaGame;
 import LuaClass.LuaWindow;
@@ -675,10 +676,25 @@ class ModchartState
 		}
 
 		// JOELwindows7: whoah forgor this cam function!
-		Lua_helper.add_callback(lua, "camShake", function(intensity:Float = .05, duration:Float = .5, force:Bool = true)
+		Lua_helper.add_callback(lua, "camShake", function(intensity:Float = .05, duration:Float = .5, force:Bool = true, axes:Int = 0, onComplete:String)
 		{
+			//JOELwindows7: decide which axes this shakes at. yoink from HaxeFlixel snippet of camera shake.
+			// https://snippets.haxeflixel.com/camera/shake/
+			var shakeAxes:FlxAxes = switch (axes)
+            {
+                case 0: FlxAxes.XY;
+                case 1: FlxAxes.X;
+				case 2: FlxAxes.Y;
+                case _: FlxAxes.XY;
+            }
+
 			// JOELwindows7: "I'm, not, that, OLD!!!" lol vs. oswald damn forgor user author.
-			FlxG.camera.shake(intensity, duration, null, force);
+			FlxG.camera.shake(intensity, duration, function(){
+				if (onComplete != '' && onComplete != null)
+				{
+					callLua(onComplete, ["camera"]);
+				}
+			}, force);
 		});
 		// end don't delete
 

@@ -1588,8 +1588,6 @@ class PlayState extends MusicBeatState
 			else
 			{
 				introScene(); // JOELwindows7: start intro cutscene!
-
-				
 			}
 		}
 		video.playMP4(source, null, videoSpriteFirst); // make the transition null so it doesn't take you out of this state
@@ -1601,7 +1599,70 @@ class PlayState extends MusicBeatState
 		video.finishCallback = () ->
 		{
 			remove(video);
-			startCountdown();
+			// startCountdown();
+			if (outro)
+			{
+				// outroScene(handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
+				// 	handoverTankmanEpilogueVidPath);
+
+				if (isNextSong)
+				{
+					// JOELwindows7: here timer guys
+					new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
+					{
+						// JOELwindows7: if has video, then load the video first before going to new playstate!
+						LoadingState.loadAndSwitchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
+							(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+								new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+								new PlayState()) : new PlayState()));
+						// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+						// JOELwindows7: oh God, so complicated. I hope it works!
+						clean();
+					});
+				}
+				else
+				{
+					// JOELwindows7: yep move from that function. this one is when song has ran out in the playlist.
+					new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
+					{
+						if (FlxG.save.data.scoreScreen)
+						{
+							if (FlxG.save.data.songPosition)
+							{
+								FlxTween.tween(songPosBar, {alpha: 0}, 1);
+								FlxTween.tween(bar, {alpha: 0}, 1);
+								FlxTween.tween(songName, {alpha: 0}, 1);
+							}
+							openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
+							new FlxTimer().start(1, function(tmr:FlxTimer)
+							{
+								inResults = true;
+							});
+						}
+						else
+						{
+							GameplayCustomizeState.freeplayBf = 'bf';
+							GameplayCustomizeState.freeplayDad = 'dad';
+							GameplayCustomizeState.freeplayGf = 'gf';
+							GameplayCustomizeState.freeplayNoteStyle = 'normal';
+							GameplayCustomizeState.freeplayStage = 'stage';
+							GameplayCustomizeState.freeplaySong = 'bopeebo';
+							GameplayCustomizeState.freeplayWeek = 1;
+							FlxG.sound.playMusic(Paths.music('freakyMenu'));
+							Conductor.changeBPM(102);
+							// FlxG.switchState(new StoryMenuState());
+							FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
+								new StoryMenuState()) : new StoryMenuState());
+							// JOELwindows7: complicated! oh MY GOD!
+							clean();
+						}
+					});
+				}
+			}
+			else
+			{
+				introScene(); // JOELwindows7: start intro cutscene!
+			}
 		}
 		video.ownCamera();
 		video.setGraphicSize(Std.int(video.width * 2));
@@ -2163,8 +2224,14 @@ class PlayState extends MusicBeatState
 				// use "allowedToHeadbang": true to your JSON chart (per difficulty) to enable headbangs.
 		}
 
-		if (useVideo)
+		//JOELwindows7: there is VLC!
+		if (useVideo && !useVLC)
 			GlobalVideo.get().resume();
+		else if(useVLC)
+		{
+			if(vlcHandler != null)
+				vlcHandler.resume();
+		}
 
 		#if FEATURE_LUAMODCHART
 		if (executeModchart)
@@ -3274,6 +3341,9 @@ class PlayState extends MusicBeatState
 			if (useVideo)
 			{
 				GlobalVideo.get().stop();
+				//JOELwindows7: VLC stop!
+				if(vlcHandler != null)
+					vlcHandler.kill();
 				remove(videoSprite);
 				removedVideo = true;
 			}
@@ -3304,6 +3374,9 @@ class PlayState extends MusicBeatState
 			if (useVideo)
 			{
 				GlobalVideo.get().stop();
+				//JOELwindows7: VLC stop!
+				if(vlcHandler != null)
+					vlcHandler.kill();
 				remove(videoSprite);
 				removedVideo = true;
 			}
@@ -3366,6 +3439,9 @@ class PlayState extends MusicBeatState
 			if (useVideo)
 			{
 				GlobalVideo.get().stop();
+				//JOELwindows7: VLC stop!
+				if(vlcHandler != null)
+					vlcHandler.kill();
 				remove(videoSprite);
 				removedVideo = true;
 			}
@@ -3400,6 +3476,9 @@ class PlayState extends MusicBeatState
 				if (useVideo)
 				{
 					GlobalVideo.get().stop();
+					//JOELwindows7: VLC stop!
+					if(vlcHandler != null)
+						vlcHandler.kill();
 					remove(videoSprite);
 					removedVideo = true;
 				}
@@ -4509,6 +4588,9 @@ class PlayState extends MusicBeatState
 		if (useVideo)
 		{
 			GlobalVideo.get().stop();
+			//JOELwindows7: VLC stop!
+			if(vlcHandler != null)
+				vlcHandler.kill();
 			PlayState.instance.remove(PlayState.instance.videoSprite);
 		}
 
@@ -6714,34 +6796,8 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	// JOELwindows7: Psyched intro after video and before dialogue chat
-	function introScene()
-	{
-		switch (curSong)
-		{
-			default:
-				// No cutscene intro
-				new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
-				{ // JOELwindows7: also add delay before start
-					// for intro cutscene after video and before dialogue chat you know!
-					// JOELwindows7: Heuristic for using JSON chart instead
-					if (SONG.hasDialogueChat)
-					{
-						schoolIntro(doof);
-					}
-					else
-					{
-						new FlxTimer().start(1, function(timer)
-						{
-							startCountdown();
-						});
-					}
-				});
-		}
-	}
-
-	// JOELwindows7: call this for intro is done
-	function introSceneIsDone()
+	// JOELwindows7: check song start
+	function checkSongStartAfterTankman()
 	{
 		new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
 		{ // JOELwindows7: also add delay before start
@@ -6759,6 +6815,23 @@ class PlayState extends MusicBeatState
 				});
 			}
 		});
+	}
+
+	// JOELwindows7: Psyched intro after video and before dialogue chat
+	function introScene()
+	{
+		switch (curSong)
+		{
+			default:
+				// No cutscene intro
+				introSceneIsDone();
+		}
+	}
+
+	// JOELwindows7: call this for intro is done
+	function introSceneIsDone()
+	{
+		checkSongStartAfterTankman(); // I know, this is spaghetti code. because I believe there's more somebody uses the method.
 	}
 
 	// JOELwindows7: Psyched outro after dialogue chat & before epilogue video

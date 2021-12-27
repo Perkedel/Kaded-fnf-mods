@@ -1,4 +1,5 @@
 // package;
+import flixel.util.FlxAxes;
 import utils.Asset2File;
 import flixel.util.FlxDestroyUtil;
 import flixel.*;
@@ -535,8 +536,7 @@ class HaxeScriptState
 			{
 				PlayState.instance.vlcHandler.pause();
 			}
-			else
-			if (!GlobalVideo.get().paused)
+			else if (!GlobalVideo.get().paused)
 				GlobalVideo.get().pause();
 		});
 		addCallback("resumeVideo", function()
@@ -545,8 +545,7 @@ class HaxeScriptState
 			{
 				PlayState.instance.vlcHandler.resume();
 			}
-			else
-			if (GlobalVideo.get().paused)
+			else if (GlobalVideo.get().paused)
 				GlobalVideo.get().pause();
 		});
 		addCallback("restartVideo", function()
@@ -556,7 +555,7 @@ class HaxeScriptState
 				PlayState.instance.vlcHandler.restart();
 			}
 			else
-			GlobalVideo.get().restart();
+				GlobalVideo.get().restart();
 		});
 		addCallback("getVideoSpriteX", function()
 		{
@@ -622,10 +621,26 @@ class HaxeScriptState
 		{
 			PlayState.instance.camHUD.zoom = zoomAmount;
 		});
-		addCallback("camShake", function(intensity:Float = .05, duration:Float = .5, force:Bool = true)
+		addCallback("camShake", function(intensity:Float = .05, duration:Float = .5, force:Bool = true, axes:Int = 0, onComplete:String)
 		{
-			//JOELwindows7: "I'm, not, that, OLD!!!" lol vs. oswald damn forgor user author.
-			FlxG.camera.shake(intensity, duration, null, force);
+			//JOELwindows7: decide which axes this shakes at. yoink from HaxeFlixel snippet of camera shake.
+			// https://snippets.haxeflixel.com/camera/shake/
+			var shakeAxes:FlxAxes = switch (axes)
+            {
+                case 0: FlxAxes.XY;
+                case 1: FlxAxes.X;
+				case 2: FlxAxes.Y;
+                case _: FlxAxes.XY;
+            }
+
+			// JOELwindows7: "I'm, not, that, OLD!!!" lol vs. oswald damn forgor user author.
+			FlxG.camera.shake(intensity, duration, function()
+			{
+				if (onComplete != '' && onComplete != null)
+				{
+					callHscript(onComplete, ["camera"]);
+				}
+			}, force, shakeAxes);
 		});
 
 		// Strumline

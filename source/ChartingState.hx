@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxSubState;
 import flixel.addons.ui.FlxButtonPlus;
 import Song.SongMeta;
 import openfl.system.System;
@@ -143,6 +144,8 @@ class ChartingState extends MusicBeatState
 	public var waveform:Waveform;
 
 	public static var latestChartVersion = "2";
+
+	public var paused:Bool = false; // JOELwindows7: mark for file menu open
 
 	public function new(reloadOnInit:Bool = false)
 	{
@@ -474,6 +477,9 @@ class ChartingState extends MusicBeatState
 
 		Debug.logTrace("bruh");
 
+		// JOELwindows7: One last thing! Toolbars!
+		addFileMenuButton(); // JOELwindows7: here the file menu button a.k.a. Office button.
+		
 		Debug.logTrace("create");
 
 		super.create();
@@ -1006,6 +1012,16 @@ class ChartingState extends MusicBeatState
 		UI_options.addGroup(tab_options);
 	}
 
+	// JOELwindows7: left side is Tool menu. add Menu button and its toolbar bellow
+	function addFileMenuButton():Void
+	{
+		var fileMenuButton = new FlxButton(170, 40, "File", function()
+		{
+			openDaFileMenuNow();
+		});
+		add(fileMenuButton);
+	}
+
 	// JOELwindows7: now add player control tab UI
 
 	/**
@@ -1058,11 +1074,43 @@ class ChartingState extends MusicBeatState
 			var daTime:Float;
 			// TODO: You should just take scroll wheel's seek instead.
 			if (FlxG.keys.pressed.SHIFT)
-				daTime = 700 * FlxG.elapsed
+			{
+				daTime = 700 * FlxG.elapsed;
+				FlxG.sound.music.time -= daTime;
+			}
 			else
-				daTime = Conductor.stepCrochet * 2;
+			{
+				if (doSnapShit)
+				{
+					// Here mouse wheel snap.
+					var increase:Float = 0;
+					var beats:Float = 0;
 
-			FlxG.sound.music.time -= daTime;
+					increase = -1 / deezNuts.get(snap);
+					beats = ((Math.ceil(curDecimalBeat * deezNuts.get(snap)) - 0.001) / deezNuts.get(snap)) + increase;
+
+					Debug.logTrace("SNAP - " + snap + " INCREASE - " + increase + " - GO TO BEAT " + beats);
+
+					var data = TimingStruct.getTimingAtBeat(beats);
+
+					if (beats <= 0)
+						FlxG.sound.music.time = 0;
+
+					var bpm = data != null ? data.bpm : _song.bpm;
+
+					if (data != null)
+					{
+						FlxG.sound.music.time = (data.startTime + ((beats - data.startBeat) / (bpm / 60))) * 1000;
+					}
+				}
+				else
+				{
+					daTime = Conductor.stepCrochet * 2;
+					FlxG.sound.music.time -= daTime;
+				}
+			}
+
+			// FlxG.sound.music.time -= daTime;
 
 			if (!PlayState.isSM)
 				vocals.time = FlxG.sound.music.time;
@@ -1088,11 +1136,43 @@ class ChartingState extends MusicBeatState
 
 			var daTime:Float;
 			if (FlxG.keys.pressed.SHIFT)
-				daTime = 700 * FlxG.elapsed
+			{
+				daTime = 700 * FlxG.elapsed;
+				FlxG.sound.music.time += daTime;
+			}
 			else
-				daTime = Conductor.stepCrochet * 2;
+			{
+				if (doSnapShit)
+				{
+					// Here mouse wheel snap.
+					var increase:Float = 0;
+					var beats:Float = 0;
 
-			FlxG.sound.music.time += daTime;
+					increase = 1 / deezNuts.get(snap);
+					beats = (Math.floor((curDecimalBeat * deezNuts.get(snap)) + 0.001) / deezNuts.get(snap)) + increase;
+
+					Debug.logTrace("SNAP - " + snap + " INCREASE - " + increase + " - GO TO BEAT " + beats);
+
+					var data = TimingStruct.getTimingAtBeat(beats);
+
+					if (beats <= 0)
+						FlxG.sound.music.time = 0;
+
+					var bpm = data != null ? data.bpm : _song.bpm;
+
+					if (data != null)
+					{
+						FlxG.sound.music.time = (data.startTime + ((beats - data.startBeat) / (bpm / 60))) * 1000;
+					}
+				}
+				else
+				{
+					daTime = Conductor.stepCrochet * 2;
+					FlxG.sound.music.time += daTime;
+				}
+			}
+
+			// FlxG.sound.music.time += daTime;
 
 			if (!PlayState.isSM)
 				vocals.time = FlxG.sound.music.time;
@@ -2639,7 +2719,7 @@ class ChartingState extends MusicBeatState
 					+ "Delete : Delete selection\n" + "CTRL-Left/Right :\n  Change Snap\n" + "Hold Shift : Disable Snap\n"
 					+ "Click or 1/2/3/4/5/6/7/8 :\n\tPlace notes\n" + "Place Note + ALT: Place mines\n" + "Up/Down :\n  Move selected notes 1 step\n"
 					+ "Shift-Up/Down :\nMove selected notes 1 beat\n" + "Space: Play Music\n" + "Enter : Preview\n" +
-					"Press F1 to hide/show help!" : "Press F1 to hide/show help!");
+					"Press F1 to hide/show help!" : "\nPress F1 to hide/show help!");
 
 			var left = FlxG.keys.justPressed.ONE;
 			var down = FlxG.keys.justPressed.TWO;
@@ -2818,9 +2898,16 @@ class ChartingState extends MusicBeatState
 
 			if (doInput)
 			{
-				// JOELwindows7: press back on Android to exit this chart editor lol
+				// JOELwindows7: escape for open file menu
+				if (FlxG.keys.justPressed.ESCAPE /*#if android || FlxG.android.justReleased.BACK #end*/)
+				{
+					openDaFileMenuNow();
+				}
+
+				// JOELwindows7: press back on Android to exit this chart editor lol. nvm, back Android to open menu.
 				if (FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end)
 				{
+					PauseSubState.inCharter = false; // JOELwindows7: make sure the mode is turned back to normal.
 					lastSection = curSection;
 
 					PlayState.SONG = _song;
@@ -2995,6 +3082,58 @@ class ChartingState extends MusicBeatState
 			Debug.logError("Error on this shit???\n" + e);
 		}
 		super.update(elapsed);
+	}
+
+	// JOELwindows7: make press Enter to play song a function method
+	public function playDaSongNow():Void
+	{
+		PauseSubState.inCharter = false; // JOELwindows7: make sure the mode is turned back to normal.
+		lastSection = curSection;
+
+		PlayState.SONG = _song;
+		FlxG.sound.music.stop();
+		if (!PlayState.isSM)
+			vocals.stop();
+
+		while (curRenderedNotes.members.length > 0)
+		{
+			curRenderedNotes.remove(curRenderedNotes.members[0], true);
+		}
+
+		while (curRenderedSustains.members.length > 0)
+		{
+			curRenderedSustains.remove(curRenderedSustains.members[0], true);
+		}
+
+		while (sectionRenderes.members.length > 0)
+		{
+			sectionRenderes.remove(sectionRenderes.members[0], true);
+		}
+
+		var toRemove = [];
+
+		for (i in _song.notes)
+		{
+			if (i.startTime > FlxG.sound.music.length)
+				toRemove.push(i);
+		}
+
+		for (i in toRemove)
+			_song.notes.remove(i);
+
+		toRemove = []; // clear memory
+
+		LoadingState.loadAndSwitchState(new PlayState());
+	}
+
+	// JOELwindows7: open the menu here yo
+	function openDaFileMenuNow():Void
+	{
+		// Yoink from PlayState when you press ENTER or Start.
+		PauseSubState.inCharter = true;
+		var officeButtonMenu:PauseSubState = new PauseSubState();
+		paused = true;
+		openSubState(officeButtonMenu);
 	}
 
 	// JOELwindows7: change note type
@@ -3845,7 +3984,7 @@ class ChartingState extends MusicBeatState
 		FlxG.save.flush();
 	}
 
-	private function saveLevel()
+	public function saveLevel() // JOELwindows7: make this public for others to tell idk.
 	{
 		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
 
@@ -3881,12 +4020,61 @@ class ChartingState extends MusicBeatState
 		}
 	}
 
+	// JOELwindows7: the just save function. if you already saved as before like above, here save just save without dialog box
+	public var alreadySavedBefore:Bool = false;
+
+	public function justSaveNow():Void
+	{
+		if (alreadySavedBefore)
+		{
+			// JOELwindows7: copy above, but this time only save without dialog box
+			var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+
+			var toRemove = [];
+
+			for (i in _song.notes)
+			{
+				if (i.startTime > FlxG.sound.music.length)
+					toRemove.push(i);
+			}
+
+			for (i in toRemove)
+				_song.notes.remove(i);
+
+			toRemove = []; // clear memory
+
+			var json = {
+				"song": _song
+			};
+
+			// JOELwindows7: make save JSON pretty
+			// https://haxe.org/manual/std-Json-encoding.html
+			// var data:String = Json.stringify(json, "\t");
+			var data:String = Json.stringify(json, null, " ");
+
+			if ((data != null) && (data.length > 0))
+			{
+				_file = new FileReference();
+				_file.addEventListener(Event.COMPLETE, onSaveComplete);
+				_file.addEventListener(Event.CANCEL, onSaveCancel);
+				_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+				// JOELwindows7: DAMN!!! how the peck I supposed to just pecking save?!?!?!? no dialog!!!!!
+				_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
+			}
+		}
+		else
+		{
+			saveLevel();
+		}
+	}
+
 	function onSaveComplete(_):Void
 	{
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+		alreadySavedBefore = true; // JOELwindows7: mark this already saved before.
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
 		// JOELwindows7: trace the success & sound it
 		Debug.logInfo("Yay level saved! cool and good");
@@ -3921,5 +4109,51 @@ class ChartingState extends MusicBeatState
 		Debug.logError("Weror! problem saving data");
 		createToast(null, "Oh no! Our table", "It's brogen!\nProblem saving level data. warm and bad!");
 		FlxG.sound.play(Paths.sound('cancelMenu'));
+	}
+
+	/**
+	 * Called when you press menu button. yoink pause function from PlayState yess.
+	 * @author JOELwindows7
+	 * @param SubState 
+	 */
+	override function openSubState(SubState:FlxSubState)
+	{
+		if (paused)
+		{
+			if (FlxG.sound.music.playing)
+			{
+				FlxG.sound.music.pause();
+				if (!PlayState.isSM)
+					vocals.pause();
+				claps.splice(0, claps.length);
+			}
+		}
+		super.openSubState(SubState);
+	}
+
+	/**
+	 * Called when close menu. yoink pause function from PlayState yess.
+	 * @author JOELwindows7
+	 */
+	override function closeSubState()
+	{
+		if (PauseSubState.goToOptions)
+		{
+			Debug.logTrace("pause thingyt");
+			if (PauseSubState.goBack)
+			{
+				Debug.logTrace("pause thingyt");
+				PauseSubState.goToOptions = false;
+				PauseSubState.goBack = false;
+				openSubState(new PauseSubState());
+			}
+			else
+				openSubState(new OptionsMenu(true));
+		}
+		else if (paused)
+		{
+			paused = false;
+		}
+		super.closeSubState();
 	}
 }

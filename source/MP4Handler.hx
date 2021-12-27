@@ -24,6 +24,9 @@ class MP4Handler
 
 	public var sprite:FlxSprite;
 
+	// JOELwindows7: statuses
+	public var playing:Bool = false;
+
 	public function new()
 	{
 		// FlxG.autoPause = false;
@@ -83,18 +86,36 @@ class MP4Handler
 
 			sprite = outputTo;
 		}
+
+		playing = bitmap.isPlaying;
+	}
+
+	// JOELwindows7: play
+	public function play()
+	{
+		bitmap.play();
+		playing = bitmap.isPlaying;
 	}
 
 	// JOELwindows7: pause
 	public function pause()
 	{
 		bitmap.pause();
+		playing = bitmap.isPlaying;
 	}
 
 	// JOELwindows7: resume
 	public function resume()
 	{
 		bitmap.resume();
+		playing = bitmap.isPlaying;
+	}
+
+	// JOELwindows7: stop
+	public function stop()
+	{
+		bitmap.stop();
+		playing = bitmap.isPlaying;
 	}
 
 	// JOELwindows7: restart
@@ -108,6 +129,7 @@ class MP4Handler
 		bitmap.pause();
 		bitmap.seek(0);
 		bitmap.play();
+		playing = bitmap.isPlaying;
 	}
 
 	function checkFile(fileName:String):String
@@ -203,16 +225,16 @@ class MP4Handler
 			bitmap.volume = 0;
 	}
 	#else
-	public function pause(){
-
+	public function pause()
+	{
 	}
 
-	public function resume(){
-
+	public function resume()
+	{
 	}
 
-	public function restart(){
-		
+	public function restart()
+	{
 	}
 	#end
 }

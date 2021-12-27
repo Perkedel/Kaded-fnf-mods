@@ -26,6 +26,7 @@ class PauseSubState extends MusicBeatSubstate
 	public static var goBack:Bool = false;
 
 	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
+	var officeButtonMenuItems:Array<String> = ['Resume', 'Save', 'Save as', 'Options', 'Play Song', 'Exit to menu'];
 	var curSelected:Int = 0;
 
 	public static var playingPause:Bool = false;
@@ -39,16 +40,29 @@ class PauseSubState extends MusicBeatSubstate
 
 	var bg:FlxSprite;
 
+	public static var inCharter:Bool = false; // JOELwindows7: set this for in chartener or not.
+
 	public function new()
 	{
+		// JOELwindows7: first, check the mode.
+		if (inCharter)
+			menuItems = officeButtonMenuItems; // JOELwindows7: for charter menu
+
 		super();
 
-		if (PlayState.instance.useVideo)
-		{
-			menuItems.remove("Resume");
-			if (GlobalVideo.get().playing)
-				GlobalVideo.get().pause();
-		}
+		if (PlayState.instance != null) // JOELwindows7: make sure intance was ever there.
+			if (PlayState.instance.useVideo && !PlayState.instance.useVLC)
+			{
+				menuItems.remove("Resume");
+				if (GlobalVideo.get().playing)
+					GlobalVideo.get().pause();
+			}
+			else if (PlayState.instance.useVLC)
+			{
+				menuItems.remove("Resume");
+				if (PlayState.instance.vlcHandler.playing)
+					PlayState.instance.vlcHandler.pause();
+			}
 
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
@@ -121,40 +135,39 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 			songText.isMenuItem = true;
-			songText.scrollFactor.set(); //JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
-			//JOELwindows7: where the peck is zoom factor?!?
+			songText.scrollFactor.set(); // JOELwindows7: don't forget to zero the scrollfactor so the hover point doesn't scroll with camera it.
+			// JOELwindows7: where the peck is zoom factor?!?
 			songText.targetY = i;
-			songText.ID = i; //JOELwindows7: ID each menu item to compare with current selected
-			//songText.updateHitbox(); //JOELwindows7: not necessary, this can mess touch mouse support
+			songText.ID = i; // JOELwindows7: ID each menu item to compare with current selected
+			// songText.updateHitbox(); //JOELwindows7: not necessary, this can mess touch mouse support
 			grpMenuShit.add(songText);
-			trace("add menu " + Std.string(songText.ID) + ". " + songText.text); //JOELwindows7: cmon what happened
+			trace("add menu " + Std.string(songText.ID) + ". " + songText.text); // JOELwindows7: cmon what happened
 		}
 
 		changeSelection();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
-		//JOELwindows7: button desu
-		addBackButton(20,FlxG.height);
-		addLeftButton(FlxG.width-400,FlxG.height);
-		addRightButton(FlxG.width-200,FlxG.height);
-		addUpButton(FlxG.width,Std.int(FlxG.height/2)-200);
-		addAcceptButton(FlxG.width,Std.int(FlxG.height/2));
-		addDownButton(FlxG.width,Std.int(FlxG.height/2)+200);
+		// JOELwindows7: button desu
+		addBackButton(20, FlxG.height);
+		addLeftButton(FlxG.width - 400, FlxG.height);
+		addRightButton(FlxG.width - 200, FlxG.height);
+		addUpButton(FlxG.width, Std.int(FlxG.height / 2) - 200);
+		addAcceptButton(FlxG.width, Std.int(FlxG.height / 2));
+		addDownButton(FlxG.width, Std.int(FlxG.height / 2) + 200);
 
-		backButton.visible = false; //JOELwindows7: oops that backButton ESC not work here. choose resume instead!
-		#if !desktop //JOELwindows7: hide the offset adjustment key to prevent people pressing it
+		backButton.visible = false; // JOELwindows7: oops that backButton ESC not work here. choose resume instead!
+		#if !desktop // JOELwindows7: hide the offset adjustment key to prevent people pressing it
 		leftButton.visible = false;
-		rightButton.visible = false;
-		#end //and then crash the game because again, file writing doesn't work in Android currently
+		rightButton.visible = false; #end // and then crash the game because again, file writing doesn't work in Android currently
 
-		//JOELwindows7: tweenenied.
-		FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
-		FlxTween.tween(leftButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween left right button
-		FlxTween.tween(rightButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: yeah.
-		FlxTween.tween(upButton,{x:FlxG.width - 100},2,{ease: FlxEase.elasticInOut});
-		FlxTween.tween(acceptButton,{x:FlxG.width - 100},2,{ease: FlxEase.elasticInOut});
-		FlxTween.tween(downButton,{x:FlxG.width - 100},2,{ease: FlxEase.elasticInOut});
+		// JOELwindows7: tweenenied.
+		FlxTween.tween(backButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left right button
+		FlxTween.tween(rightButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: yeah.
+		FlxTween.tween(upButton, {x: FlxG.width - 100}, 2, {ease: FlxEase.elasticInOut});
+		FlxTween.tween(acceptButton, {x: FlxG.width - 100}, 2, {ease: FlxEase.elasticInOut});
+		FlxTween.tween(downButton, {x: FlxG.width - 100}, 2, {ease: FlxEase.elasticInOut});
 	}
 
 	override function update(elapsed:Float)
@@ -164,8 +177,9 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		if (PlayState.instance.useVideo)
-			menuItems.remove('Resume');
+		if (PlayState.instance != null) // JOELwindows7: be sure to make sure the instance was ever there.
+			if (PlayState.instance.useVideo)
+				menuItems.remove('Resume');
 
 		for (i in FlxG.sound.list)
 		{
@@ -199,38 +213,54 @@ class PauseSubState extends MusicBeatSubstate
 			songPath = PlayState.pathToSm;
 		#end
 
-		if (controls.UP_P || upPcontroller || FlxG.mouse.wheel == 1 || haveUpped) //JOELwindows7: scroll up
+		if (controls.UP_P || upPcontroller || FlxG.mouse.wheel == 1 || haveUpped) // JOELwindows7: scroll up
 		{
 			changeSelection(-1);
-			//trace("curSelection is " + Std.string(curSelected) + ". " + menuItems[curSelected]); // JOELwindows7: trace cur selection number
+			// trace("curSelection is " + Std.string(curSelected) + ". " + menuItems[curSelected]); // JOELwindows7: trace cur selection number
 
 			haveUpped = false;
 		}
-		else if (controls.DOWN_P || downPcontroller || FlxG.mouse.wheel == -1 || haveDowned) //JOELwindows7: scroll down
+		else if (controls.DOWN_P || downPcontroller || FlxG.mouse.wheel == -1 || haveDowned) // JOELwindows7: scroll down
 		{
 			changeSelection(1);
 			trace("curSelection is " + Std.string(curSelected) + ". " + menuItems[curSelected]);
-			//trace("well that alphabet is " + grpMenuShit.members[curSelected].ID + ". " + grpMenuShit.members[curSelected].text);
-			
+			// trace("well that alphabet is " + grpMenuShit.members[curSelected].ID + ". " + grpMenuShit.members[curSelected].text);
+
 			haveDowned = false;
 		}
 
 		if ((controls.ACCEPT || haveClicked) && !FlxG.keys.pressed.ALT)
 		{
-			FlxG.mouse.visible = false; //JOELwindows7: invisiblize after select
+			FlxG.mouse.visible = false; // JOELwindows7: invisiblize after select
 			var daSelected:String = menuItems[curSelected];
 
 			switch (daSelected)
 			{
 				case "Resume":
-					FlxG.mouse.visible = false; //JOELwindows7: just in case
+					if (!inCharter)
+						FlxG.mouse.visible = false; // JOELwindows7: just in case
+					close();
+				case "Save":
+					// JOELwindows7: save the edit chart now.
+					ChartingState.instance.justSaveNow();
+					close();
+				case "Save as":
+					// JOELwindows7: save the edit chart as filename now.
+					ChartingState.instance.saveLevel();
 					close();
 				case "Restart Song":
-					FlxG.mouse.visible = false; //JOELwindows7: just in case
+					FlxG.mouse.visible = false; // JOELwindows7: just in case
 					PlayState.startTime = 0;
-					if (PlayState.instance.useVideo)
+					// JOELwindows7: watch for VLC!
+					if (PlayState.instance.useVideo && !PlayState.instance.useVLC)
 					{
 						GlobalVideo.get().stop();
+						PlayState.instance.remove(PlayState.instance.videoSprite);
+						PlayState.instance.removedVideo = true;
+					}
+					else if (PlayState.instance.useVLC)
+					{
+						PlayState.instance.vlcHandler.kill();
 						PlayState.instance.remove(PlayState.instance.videoSprite);
 						PlayState.instance.removedVideo = true;
 					}
@@ -240,11 +270,23 @@ class PauseSubState extends MusicBeatSubstate
 				case "Options":
 					goToOptions = true;
 					close();
+				case "Play Song":
+					// JOELwindows7: same as press enter in Chartener.
+					ChartingState.instance.playDaSongNow();
+					close();
 				case "Exit to menu":
+					inCharter = false; // JOELwindows7: reset the mode back to normal.
 					PlayState.startTime = 0;
-					if (PlayState.instance.useVideo)
+					// JOELwindows7: VLC is here!
+					if (PlayState.instance.useVideo && !PlayState.instance.useVLC)
 					{
 						GlobalVideo.get().stop();
+						PlayState.instance.remove(PlayState.instance.videoSprite);
+						PlayState.instance.removedVideo = true;
+					}
+					else if (PlayState.instance.useVLC)
+					{
+						PlayState.instance.vlcHandler.kill();
 						PlayState.instance.remove(PlayState.instance.videoSprite);
 						PlayState.instance.removedVideo = true;
 					}
@@ -263,8 +305,8 @@ class PauseSubState extends MusicBeatSubstate
 					// 	PlayState.luaModchart = null;
 					// }
 					#end
-					PlayState.instance.scronchModcharts(); //JOELwindows7: you must scronch both Lua modchart & stage modchart
-					PlayState.instance.removeTouchScreenButtons(); //JOELwindows7: the controller destroy
+					PlayState.instance.scronchModcharts(); // JOELwindows7: you must scronch both Lua modchart & stage modchart
+					PlayState.instance.removeTouchScreenButtons(); // JOELwindows7: the controller destroy
 					if (FlxG.save.data.fpsCap > 340)
 						(cast(Lib.current.getChildAt(0), Main)).setFPSCap(120);
 
@@ -285,22 +327,28 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.switchState(new FreeplayState());
 			}
 			haveClicked = false;
-		} else {
-			//JOELwindows7: make mouse visible when moved.
-			if(FlxG.mouse.justMoved){
-				//trace("mouse moved");
+		}
+		else
+		{
+			// JOELwindows7: make mouse visible when moved.
+			if (FlxG.mouse.justMoved)
+			{
+				// trace("mouse moved");
 				FlxG.mouse.visible = true;
 			}
-			//JOELwindows7: detect any keypresses or any button presses
-			if(FlxG.keys.justPressed.ANY){
-				//lmao! inspire from GameOverState.hx!
+			// JOELwindows7: detect any keypresses or any button presses
+			if (FlxG.keys.justPressed.ANY)
+			{
+				// lmao! inspire from GameOverState.hx!
 				FlxG.mouse.visible = false;
 			}
-			if(FlxG.gamepads.lastActive != null){
-				if(FlxG.gamepads.lastActive.justPressed.ANY){
+			if (FlxG.gamepads.lastActive != null)
+			{
+				if (FlxG.gamepads.lastActive.justPressed.ANY)
+				{
 					FlxG.mouse.visible = false;
 				}
-				//peck this I'm tired! plns work lol
+				// peck this I'm tired! plns work lol
 			}
 		}
 
@@ -310,73 +358,93 @@ class PauseSubState extends MusicBeatSubstate
 			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
 
-		//JOELwindows7: mouse support
-		if(FlxG.mouse.visible)
+		// JOELwindows7: mouse support
+		if (FlxG.mouse.visible)
 		{
-			//do something here
-			//only when mouse is visible
-			grpMenuShit.forEach(function(poop:Alphabet){
-				if(FlxG.mouse.overlaps(poop) /*&& !FlxG.mouse.overlaps(backButton)*/
-					&& !FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(rightButton)){
-					//trace("hover over " + Std.string(poop.ID)); //JOELwindows7: temp tracer
-					//alright. it looks like that, the alphabet hover
-					//isn't placed like it was appeared.
-					//must find another way then. how?
-					if(FlxG.mouse.justPressed){
+			// do something here
+			// only when mouse is visible
+			grpMenuShit.forEach(function(poop:Alphabet)
+			{
+				if (FlxG.mouse.overlaps(poop) /*&& !FlxG.mouse.overlaps(backButton)*/
+					&& !FlxG.mouse.overlaps(leftButton)
+					&& !FlxG.mouse.overlaps(rightButton))
+				{
+					// trace("hover over " + Std.string(poop.ID)); //JOELwindows7: temp tracer
+					// alright. it looks like that, the alphabet hover
+					// isn't placed like it was appeared.
+					// must find another way then. how?
+					if (FlxG.mouse.justPressed)
+					{
 						trace("click a menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
-						if(poop.ID == curSelected){
+						if (poop.ID == curSelected)
+						{
 							trace("haveClicked yes");
 							haveClicked = true;
-						} else {
-							//go to clicked menu
+						}
+						else
+						{
+							// go to clicked menu
 							goToSelection(poop.ID);
 							trace("Go to menu " + Std.string(poop.ID) + ". " + Std.string(poop.text));
 						}
 					}
 				}
 
-				//JOELwindows7: back button for no keyboard
-				if(FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(poop)){
-					if(FlxG.mouse.justPressed){
-						if(!haveBacked){
+				// JOELwindows7: back button for no keyboard
+				if (FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(poop))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (!haveBacked)
+						{
 							haveBacked = true;
 						}
 					}
 				}
-				if(FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(poop)){
-					if(FlxG.mouse.justPressed){
-						if(!haveLefted){
+				if (FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(poop))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (!haveLefted)
+						{
 							haveLefted = true;
 						}
 					}
 				}
-				if(FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(poop)){
-					if(FlxG.mouse.justPressed){
-						if(!haveRighted){
+				if (FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(poop))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (!haveRighted)
+						{
 							haveRighted = true;
 						}
 					}
 				}
 
-				//JOELwindows7: last measure if none of the click pause menu work at all somehow.
-				if(FlxG.mouse.overlaps(acceptButton) && !FlxG.mouse.overlaps(poop)){
-					if(FlxG.mouse.justPressed){
+				// JOELwindows7: last measure if none of the click pause menu work at all somehow.
+				if (FlxG.mouse.overlaps(acceptButton) && !FlxG.mouse.overlaps(poop))
+				{
+					if (FlxG.mouse.justPressed)
+					{
 						haveClicked = true;
 					}
 				}
-				if(FlxG.mouse.overlaps(upButton) && !FlxG.mouse.overlaps(poop)){
-					if(FlxG.mouse.justPressed){
+				if (FlxG.mouse.overlaps(upButton) && !FlxG.mouse.overlaps(poop))
+				{
+					if (FlxG.mouse.justPressed)
+					{
 						haveUpped = true;
 					}
 				}
-				if(FlxG.mouse.overlaps(downButton) && !FlxG.mouse.overlaps(poop)){
-					if(FlxG.mouse.justPressed){
+				if (FlxG.mouse.overlaps(downButton) && !FlxG.mouse.overlaps(poop))
+				{
+					if (FlxG.mouse.justPressed)
+					{
 						haveDowned = true;
 					}
 				}
 			});
-
-			
 		}
 	}
 
@@ -421,8 +489,9 @@ class PauseSubState extends MusicBeatSubstate
 		}
 	}
 
-	//JOELwindows7: same as above but this one set to which menu item
-	function goToSelection(change:Int){
+	// JOELwindows7: same as above but this one set to which menu item
+	function goToSelection(change:Int)
+	{
 		curSelected = change;
 
 		if (curSelected < 0)
