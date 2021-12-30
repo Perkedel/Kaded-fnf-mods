@@ -1717,7 +1717,7 @@ class LaneUnderlayOption extends Option
 
 		if (FlxG.save.data.laneTransparency > 1)
 			FlxG.save.data.laneTransparency = 1;
-		OptionsMenu.markRestartSong(); //JOELwindows7: mark restart song required.
+		OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
 	}
 
@@ -2670,8 +2670,9 @@ class AnMIDITestOption extends Option
 	}
 }
 
-//JOELwindows7: quick way testing music play
-class AnLoneBopeeboOption extends Option{
+// JOELwindows7: quick way testing music play
+class AnLoneBopeeboOption extends Option
+{
 	public function new(desc:String)
 	{
 		super();
@@ -2684,7 +2685,7 @@ class AnLoneBopeeboOption extends Option{
 
 	public override function press():Bool
 	{
-		OptionsMenu.switchState(new AnLoneBopeebo()); //open substate.
+		OptionsMenu.switchState(new AnLoneBopeebo()); // open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		// FlxG.switchState(new AnMIDIyeay());
 		return true;
@@ -2941,5 +2942,77 @@ class LuaLegacyModchartOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Legacy Lua Modchart Compatibility < " + (FlxG.save.data.legacyLuaScript ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: autoclick checkbox in option menu for convenience
+class AutoClickEnabledOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.autoClick = !FlxG.save.data.autoClick;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Dialogue AutoClick < " + (FlxG.save.data.autoClick ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: autoclick delay stepper in option menu for convenience
+class AutoClickDelayOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.autoClickDelay -= .05;
+		if (FlxG.save.data.autoClickDelay < 1.0)
+			FlxG.save.data.autoClickDelay = 1.0;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		FlxG.save.data.autoClickDelay += .05;
+		if (FlxG.save.data.autoClickDelay > 5.0)
+			FlxG.save.data.autoClickDelay = 5.0;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function press():Bool
+	{
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Dialogue AutoClick Delay < " + Std.string(FlxG.save.data.autoClickDelay) + " > seconds";
 	}
 }

@@ -1021,6 +1021,8 @@ class ChartingState extends MusicBeatState
 		});
 		fileMenuButton.loadGraphic(Paths.loadImage('fileButtonSmall'), false);
 		add(fileMenuButton);
+
+		addShiftButton(170, FlxG.height - 80);
 	}
 
 	// JOELwindows7: now add player control tab UI
@@ -1074,7 +1076,7 @@ class ChartingState extends MusicBeatState
 
 			var daTime:Float;
 			// TODO: You should just take scroll wheel's seek instead.
-			if (FlxG.keys.pressed.SHIFT)
+			if (FlxG.keys.pressed.SHIFT || haveShiftedHeld)
 			{
 				daTime = 700 * FlxG.elapsed;
 				FlxG.sound.music.time -= daTime;
@@ -1136,7 +1138,7 @@ class ChartingState extends MusicBeatState
 				vocals.pause();
 
 			var daTime:Float;
-			if (FlxG.keys.pressed.SHIFT)
+			if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: here shift touchscreen button
 			{
 				daTime = 700 * FlxG.elapsed;
 				FlxG.sound.music.time += daTime;
@@ -2362,7 +2364,7 @@ class ChartingState extends MusicBeatState
 					}
 				}
 
-				if (FlxG.keys.pressed.SHIFT)
+				if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: here shift button touchscreen
 				{
 					if (FlxG.keys.justPressed.RIGHT)
 						speed += 0.1;
@@ -2645,11 +2647,11 @@ class ChartingState extends MusicBeatState
 				Debug.logTrace("new snap " + snap + " | " + snapSelection);
 			}
 
-			if (FlxG.keys.justPressed.SHIFT)
+			if (FlxG.keys.justPressed.SHIFT || haveShiftedHeld) // JOELwindows7: shift button
 				doSnapShit = !doSnapShit;
 
 			doSnapShit = defaultSnap;
-			if (FlxG.keys.pressed.SHIFT)
+			if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: shift button
 			{
 				doSnapShit = !defaultSnap;
 			}
@@ -2992,7 +2994,7 @@ class ChartingState extends MusicBeatState
 
 				if (FlxG.keys.justPressed.TAB)
 				{
-					if (FlxG.keys.pressed.SHIFT)
+					if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: shift button
 					{
 						UI_box.selected_tab -= 1;
 						if (UI_box.selected_tab < 0)
@@ -3009,7 +3011,7 @@ class ChartingState extends MusicBeatState
 				if (!typingShit.hasFocus)
 				{
 					var shiftThing:Int = 1;
-					if (FlxG.keys.pressed.SHIFT)
+					if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: oh yeah baby
 						shiftThing = 4;
 					if (FlxG.keys.justPressed.SPACE)
 					{
@@ -3031,7 +3033,8 @@ class ChartingState extends MusicBeatState
 					if (FlxG.sound.music.time < 0 || curDecimalBeat < 0)
 						FlxG.sound.music.time = 0;
 
-					if (!FlxG.keys.pressed.SHIFT)
+					// JOELwindows7: here touchscreen shift
+					if (!FlxG.keys.pressed.SHIFT || haveShiftedHeld)
 					{
 						if (FlxG.keys.pressed.W || FlxG.keys.pressed.S)
 						{

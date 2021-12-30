@@ -1,5 +1,8 @@
 package;
 
+import flixel.addons.ui.FlxUINumericStepper;
+import flixel.addons.ui.FlxUICheckBox;
+import flixel.ui.FlxButton;
 import flixel.tweens.FlxTween;
 import flixel.system.FlxSound;
 import flixel.FlxG;
@@ -56,6 +59,16 @@ class DialogueBox extends FlxSpriteGroup
 
 	// JOELwindows7: own FlxSound because generate song destroyed the intro music
 	var sound:FlxSound;
+
+	// JOELwindows7: touchscreen stuffs
+	var skipButton:FlxButton;
+	var autoClickCheckbox:FlxUICheckBox;
+	var autoClickDelayStepper:FlxUINumericStepper;
+	var autoClickDelayLabel:FlxText;
+	var haveSkippedDialogue:Bool = false;
+	var tobeAutoClicked:Bool = false;
+
+	public var autoClickTimer:FlxTimer;
 
 	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>, ?hadChat:Bool = false, ?isEpilogue:Bool = false, ?customChar:Bool = false,
 			?customCharXML:String = "jakartaFair/Hookx-dialogueAppear", ?customCharFrame:String = "enter", ?customCharPrefix:String = "Hookx Portrait Enter")
@@ -292,6 +305,47 @@ class DialogueBox extends FlxSpriteGroup
 		dialogue = new Alphabet(0, 80, "", false, true);
 		// dialogue.x = 90;
 		// add(dialogue);
+
+		// JOELwindows7: now the touchscreen buttons!
+		// Skip dialogue
+		// FlxG.width * 0.9
+		skipButton = new FlxButton(10, 45, "Skip", function()
+		{
+			haveSkippedDialogue = true;
+		});
+		// skipButton.loadGraphic(Paths.loadImage('weeb/pixelUI/skip_button'));
+		skipButton.scrollFactor.set();
+		add(skipButton);
+
+		// JOELwindows7: autoclick options
+		autoClickTimer = new FlxTimer();
+		autoClickCheckbox = new FlxUICheckBox(FlxG.width - 80, 10, null, null, "Auto-click", 100);
+		// autoClickCheckbox.font = 'Pixel Arial 11 Bold';
+		autoClickCheckbox.scrollFactor.set();
+		autoClickCheckbox.checked = FlxG.save.data.autoClick;
+		autoClickCheckbox.callback = function()
+		{
+			Debug.logTrace("Auto Click is " + Std.string(autoClickCheckbox.checked));
+			FlxG.save.data.autoClick = autoClickCheckbox.checked;
+			checkAutoClick(autoClickCheckbox.checked);
+			FlxG.save.flush();
+		};
+		add(autoClickCheckbox);
+		autoClickDelayStepper = new FlxUINumericStepper(FlxG.width - 80, 45, .5, 2, 1, 5, 1);
+		autoClickDelayStepper.scrollFactor.set();
+		autoClickDelayStepper.value = FlxG.save.data.autoClickDelay;
+		autoClickDelayStepper.name = "autoClick_delay";
+		// autoClickDelayStepper.callback = function(){
+		// 	FlxG.save.data.autoClickDelay = autoClickDelayStepper.value;
+		// 	FlxG.save.flush();
+		// };
+		add(autoClickDelayStepper);
+		autoClickDelayLabel = new FlxText(FlxG.width - 180, 45, Std.int(FlxG.width * 0.6), "", 8);
+		autoClickDelayLabel.scrollFactor.set();
+		autoClickDelayLabel.font = 'Pixel Arial 11 Bold';
+		autoClickDelayLabel.color = 0x00000000;
+		autoClickDelayLabel.text = 'Auto-click delay: ';
+		add(autoClickDelayLabel);
 	}
 
 	var dialogueOpened:Bool = false;
@@ -325,8 +379,10 @@ class DialogueBox extends FlxSpriteGroup
 			startDialogue();
 			dialogueStarted = true;
 		}
-		if (PlayerSettings.player1.controls.BACK && isEnding != true)
+		// JOELwindows7: press skip dialogue
+		if ((PlayerSettings.player1.controls.BACK || haveSkippedDialogue) && isEnding != true)
 		{
+			haveSkippedDialogue = false;
 			remove(dialogue);
 			isEnding = true;
 			switch (PlayState.SONG.songId.toLowerCase())
@@ -358,9 +414,20 @@ class DialogueBox extends FlxSpriteGroup
 				kill();
 			});
 		}
-		// JOELwindows7: add mouse click t continue
-		if ((PlayerSettings.player1.controls.ACCEPT || FlxG.mouse.justPressed) && dialogueStarted == true)
+		// JOELwindows7: add mouse click t continue, also auto-click
+		if ((PlayerSettings.player1.controls.ACCEPT
+			|| (FlxG.mouse.justPressed
+				&& !(FlxG.mouse.overlaps(skipButton)
+					|| FlxG.mouse.overlaps(autoClickDelayLabel)
+					|| FlxG.mouse.overlaps(autoClickDelayStepper)
+					|| FlxG.mouse.overlaps(autoClickCheckbox)))
+			|| tobeAutoClicked)
+			&& dialogueStarted == true)
 		{
+			// JOELwindows7: reset auto-click first.
+			tobeAutoClicked = false;
+			autoClickTimer.cancel();
+
 			remove(dialogue);
 
 			FlxG.sound.play(Paths.sound('clickText'), 0.8);
@@ -408,6 +475,9 @@ class DialogueBox extends FlxSpriteGroup
 		}
 
 		super.update(elapsed);
+
+		// JOELwindows7: unfortunately this is neither Core state we had
+		manageMouse();
 	}
 
 	var isEnding:Bool = false;
@@ -467,7 +537,7 @@ class DialogueBox extends FlxSpriteGroup
 
 		// swagDialogue.text = ;
 		swagDialogue.resetText(dialogueList[0]);
-		swagDialogue.start(0.04, true);
+		swagDialogue.start(0.04, true, false, null, swagDialogueOnComplete.bind());
 
 		switch (curCharacter)
 		{
@@ -604,5 +674,41 @@ class DialogueBox extends FlxSpriteGroup
 		var splitName:Array<String> = dialogueList[0].split(":");
 		curCharacter = splitName[1];
 		dialogueList[0] = dialogueList[0].substr(splitName[1].length + 2).trim();
+	}
+
+	function manageMouse()
+	{
+	}
+
+	// JOELwindows7: check autoclick
+	function checkAutoClick(handoverCheck:Bool)
+	{
+		if (handoverCheck)
+		{
+			autoClickTimer.start(autoClickDelayStepper.value, function(tmr:FlxTimer)
+			{
+				tobeAutoClicked = true;
+			});
+		}
+		else
+		{
+			autoClickTimer.cancel();
+		}
+	}
+
+	// JOELwindows7: swagDialogue finish typing
+	function swagDialogueOnComplete()
+	{
+		// JOELwindows7: check autoclick
+		if (autoClickCheckbox.checked)
+		{
+			autoClickTimer.start(autoClickDelayStepper.value, function(tmr:FlxTimer)
+			{
+				tobeAutoClicked = true;
+			});
+		}
+		else
+		{
+		}
 	}
 }

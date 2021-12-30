@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.ui.FlxButton;
 import ui.FlxVirtualPad;
 import flixel.input.actions.FlxActionInput;
 import plugins.sprites.DVDScreenSaver;
@@ -97,6 +98,20 @@ class CoreState extends FlxUIState
 	private var haveRetryed:Bool = false;
 	private var haveViewReplayed:Bool = false;
 	private var haveDebugSevened:Bool = false;
+	private var haveShifted:Bool = false;
+
+	// JOELwindows7: held mouse flags
+	private var haveClickedHeld:Bool = false;
+	private var haveBackedHeld:Bool = false;
+	private var haveLeftedHeld:Bool = false;
+	private var haveUppedHeld:Bool = false;
+	private var haveDownedHeld:Bool = false;
+	private var haveRightedHeld:Bool = false;
+	private var havePausenedHeld:Bool = false;
+	private var haveRetryedHeld:Bool = false;
+	private var haveViewReplayedHeld:Bool = false;
+	private var haveDebugSevenedHeld:Bool = false;
+	private var haveShiftedHeld:Bool = false;
 
 	var backButton:FlxSprite; // JOELwindows7: the back button here
 	var leftButton:FlxSprite; // JOELwindows7: the left button here
@@ -114,6 +129,18 @@ class CoreState extends FlxUIState
 	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
 	// var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
 	var hourGlass:FlxSprite; // JOELwindows7: animated gravity hourglass Piskel
+
+	// JOELwindows7: okay, let's be real button instead.
+	var backButtonReal:FlxButton;
+	var leftButtonReal:FlxButton;
+	var rightButtonReal:FlxButton;
+	var upButtonReal:FlxButton;
+	var downButtonReal:FlxButton;
+	var pauseButtonReal:FlxButton;
+	var acceptButtonReal:FlxButton;
+	var retryButtonReal:FlxButton;
+	var viewReplayButtonReal:FlxButton;
+	var shiftButtonReal:FlxButton;
 
 	// JOELwindows7: raw button situations
 	var rawMouseHeld:Bool = false;
@@ -308,6 +335,34 @@ class CoreState extends FlxUIState
 			viewReplayButton.cameras = [camControl];
 		add(viewReplayButton);
 		return viewReplayButton;
+	}
+
+	private function shiftButtonCallback()
+	{
+		// JOELwindows7: nothing. this is to be overriden.
+		haveShifted = true;
+	}
+
+	private function shiftButtonHeldCallback()
+	{
+		// JOELwindows7: nothing. this is to be overriden.
+		haveShiftedHeld = true;
+	}
+
+	private function shiftButtonUnheldCallback()
+	{
+		// JOELwindows7: nothing. this is to be overriden.
+		haveShiftedHeld = false;
+	}
+
+	// JOELwindows7: here shift button touchscreen mouse
+	private function addShiftButton(x:Int = 300, y:Int = 680)
+	{
+		shiftButtonReal = new FlxButton(x, y, 'Shift');
+		shiftButtonReal.loadGraphic(Paths.loadImage('shiftButtonSmall'), false);
+		shiftButtonReal.onDown.callback = shiftButtonHeldCallback;
+		shiftButtonReal.onUp.callback = shiftButtonUnheldCallback;
+		add(shiftButtonReal);
 	}
 
 	private function installBusyHourglassScreenSaver()
@@ -559,6 +614,20 @@ class CoreSubState extends FlxSubState
 	private var haveRetryed:Bool = false;
 	private var haveViewReplayed:Bool = false;
 	private var haveDebugSevened:Bool = false;
+	private var haveShifted:Bool = false;
+
+	// JOELwindows7: held mouse flags
+	private var haveClickedHeld:Bool = false;
+	private var haveBackedHeld:Bool = false;
+	private var haveLeftedHeld:Bool = false;
+	private var haveUppedHeld:Bool = false;
+	private var haveDownedHeld:Bool = false;
+	private var haveRightedHeld:Bool = false;
+	private var havePausenedHeld:Bool = false;
+	private var haveRetryedHeld:Bool = false;
+	private var haveViewReplayedHeld:Bool = false;
+	private var haveDebugSevenedHeld:Bool = false;
+	private var haveShiftedHeld:Bool = false;
 
 	var backButton:FlxSprite; // JOELwindows7: the back button here
 	var leftButton:FlxSprite; // JOELwindows7: the left button here
@@ -569,6 +638,18 @@ class CoreSubState extends FlxSubState
 	var acceptButton:FlxSprite; // JOELwindows7: the accept button here
 	var retryButton:FlxSprite; // JOELwindows7: the retry button here
 	var viewReplayButton:FlxSprite; // JOELwindows7: the view replay button here
+
+	// JOELwindows7: okay, let's be real button instead.
+	var backButtonReal:FlxButton;
+	var leftButtonReal:FlxButton;
+	var rightButtonReal:FlxButton;
+	var upButtonReal:FlxButton;
+	var downButtonReal:FlxButton;
+	var pauseButtonReal:FlxButton;
+	var acceptButtonReal:FlxButton;
+	var retryButtonReal:FlxButton;
+	var viewReplayButtonReal:FlxButton;
+	var shiftButtonReal:FlxButton;
 
 	public var camControl:FlxCamera;
 
@@ -731,6 +812,34 @@ class CoreSubState extends FlxSubState
 			viewReplayButton.cameras = [camControl];
 		add(viewReplayButton);
 		return viewReplayButton;
+	}
+
+	private function shiftButtonCallback()
+	{
+		// JOELwindows7: nothing. this is to be overriden.
+		haveShifted = true;
+	}
+
+	private function shiftButtonHeldCallback()
+	{
+		// JOELwindows7: nothing. this is to be overriden.
+		haveShiftedHeld = true;
+	}
+
+	private function shiftButtonUnheldCallback()
+	{
+		// JOELwindows7: nothing. this is to be overriden.
+		haveShiftedHeld = false;
+	}
+
+	// JOELwindows7: here shift button touchscreen mouse
+	private function addShiftButton(x:Int = 300, y:Int = 680)
+	{
+		shiftButtonReal = new FlxButton(x, y, 'Shift');
+		shiftButtonReal.loadGraphic(Paths.loadImage('shiftButtonSmall'), false);
+		shiftButtonReal.onDown.callback = shiftButtonHeldCallback;
+		shiftButtonReal.onUp.callback = shiftButtonUnheldCallback;
+		add(shiftButtonReal);
 	}
 
 	/**

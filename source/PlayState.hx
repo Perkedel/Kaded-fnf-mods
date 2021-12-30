@@ -1,5 +1,9 @@
 package;
 
+import flixel.addons.ui.FlxUIButton;
+import flixel.addons.ui.FlxUITypedButton;
+import flixel.addons.ui.FlxUINumericStepper;
+import flixel.addons.ui.FlxUICheckBox;
 import GalleryAchievements.AchievementUnlocked;
 import Controls;
 import TouchScreenControls;
@@ -537,6 +541,7 @@ class PlayState extends MusicBeatState
 		// nope. well it works, but
 		// alot of semantics here has to be changed first before hand, so uh. unfortunately
 		// I can't yet.
+		// hey bbpanzu how the peck do we supposed to make this work??!?!?
 
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -6994,6 +6999,52 @@ class PlayState extends MusicBeatState
 			if (pauseButton != null)
 			{
 				pauseButton.visible = false;
+			}
+		}
+	}
+
+	//JOELwindows7: well the getEvent thingy like everybody that uses FlxUI value input stuff.
+	override public function getEvent(name:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void
+	{
+		//JOELwindows7: inspire from ChartingState.hx & FlxSound demo Flixel yess.
+		// https://github.com/HaxeFlixel/flixel-demos/blob/master/Features/FlxSound/source/MenuState.hx
+
+		if (destroyed)
+		{
+			return;
+		}
+
+		super.getEvent(name,sender,data,params);
+
+		if (name == FlxUICheckBox.CLICK_EVENT)
+		{
+			var check:FlxUICheckBox = cast sender;
+			var label = check.getLabel().text;
+			switch(label)
+			{
+				default:
+			}
+		}
+		else if (name == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper))
+		{
+			var nums:FlxUINumericStepper = cast sender;
+			var wname = nums.name;
+			switch(wname)
+			{
+				case 'autoClick_delay':
+					Debug.logTrace("Change Auto click delay into " + Std.string(nums.value) + "s");
+					FlxG.save.data.autoClickDelay = nums.value;
+					FlxG.save.flush();
+				default:
+			}
+		}
+		else if (name == FlxUITypedButton.CLICK_EVENT && (sender is FlxUIButton))
+		{
+			var fuib:FlxUIButton = cast sender;
+			var label = fuib.label.text;
+			switch(label)
+			{
+				default:
 			}
 		}
 	}

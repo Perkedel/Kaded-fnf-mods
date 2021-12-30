@@ -177,6 +177,16 @@ class KadeEngineData
 			FlxG.save.data.modData = properValue;
 		}
 
+		// JOELwindows7: dialogue autoclick
+		if (FlxG.save.data.autoClick == null)
+		{
+			FlxG.save.data.autoClick = false;
+		}
+		if (FlxG.save.data.autoClickDelay == null)
+		{
+			FlxG.save.data.autoClickDelay = 2;
+		}
+
 		FlxG.save.data.cacheImages = false;
 
 		if (FlxG.save.data.middleScroll == null)
