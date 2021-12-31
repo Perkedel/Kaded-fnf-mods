@@ -197,6 +197,7 @@ class OptionsMenu extends CoreSubState
 				new AnStarfieldTestOption("EXPERIMENTAL! Test FlxStarfield"),
 				new AnDefaultBekgronTestOption("EXPERIMENTAL! Test default background of Hexagon Engine"),
 				new AnChangeChannelOption("EXPERIMENTAL! Test change channel and rate"),
+				new AnMiniWindowOption("EXPERIMENTAL! Test MiniWindow using debugger's windowing"),
 				// new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
 			]),

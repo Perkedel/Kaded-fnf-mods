@@ -61,6 +61,9 @@ class ChartingState extends MusicBeatState
 	public static var instance:ChartingState;
 
 	var _file:FileReference;
+	#if FEATURE_FILESYSTEM
+	var _regFile:File; // JOElwindows7: here regular file.
+	#end
 
 	public var playClaps:Bool = false;
 

@@ -330,6 +330,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://github.com/HaxeFlixel/flixel-demos/blob/master/UserInterface/FlxTypeText/source/MenuState.hx prefix of FlxTypeText lol
 - https://github.com/HaxeFlixel/flixel-demos/blob/master/Effects/FlxTween/source/PlayState.hx more tween like Tween color
 - https://fridaynightfunking.fandom.com/wiki/Carol info about bbpanzu's Carol yess.
+- https://ninjamuffin99.newgrounds.com/news/post/1091199 tips & trick of html5 build
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -465,6 +466,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://youtu.be/7GPmOYlUVLc BahnDaten (WARNING: COPYRIGHTED SONG, NO CLEAR CHART LICENSE). Simple Dimple FNF with modchart whoahow!!!
 - https://gamebanana.com/mods/327730 theworsttrash:v@ (WARNING: NO BETADCIU ALLOWED i think). Jaiden colored GF.
 - https://gamebanana.com/mods/342500 Popstarbird25 . Bf with beanie
+- https://github.com/kem0x/Nexus-Engine kem0x. Here his fusion of Kade Engine 1.8 ish + Psych Engine yeah. some new stuffs like shadered things like background, effects, etc.!!!!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

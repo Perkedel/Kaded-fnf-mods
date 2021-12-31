@@ -25,4 +25,5 @@ class Perkedel
 {
 	public static final OPTION_SAY_NEED_RESTART_SONG:String = "(Restart Song Required) ";
 	public static final OPTION_SAY_CANNOT_ACCESS_IN_PAUSE:String = "(Can't access / toggle! in pause rn) "; // In kade it was "This option cannot be toggled in the pause menu."
+	public static final MAX_FPS_CAP:Int = 3000; // JOELwindows7: usually 290
 }

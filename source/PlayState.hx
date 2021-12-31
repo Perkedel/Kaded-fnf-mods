@@ -1,5 +1,6 @@
 package;
 
+import const.Perkedel;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUITypedButton;
 import flixel.addons.ui.FlxUINumericStepper;
@@ -393,11 +394,11 @@ class PlayState extends MusicBeatState
 		if (previousRate < 1.00)
 			previousRate = 1;
 
-		if (FlxG.save.data.fpsCap > 290)
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) //JOELwindows7: was 290
 		{
 			// JOELwindows7: android issue. cast lib current technic crash
 			#if FEATURE_DISPLAY_FPS_CHANGE
-			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(800);
+			// (cast(Lib.current.getChildAt(0), Main)).setFPSCap(800);
 			#end
 		}
 
@@ -1518,19 +1519,22 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: inspire that luckydog7's webmer bellow, build the VLC version of function!
 		// inspire from function backgroundVideo if the FEATURE_VLC is available!
 
-		var videoSpriteFirst = new FlxSprite();
+		// var videoSpriteFirst = new FlxSprite();
 		// Build own cam!
 		var ownCam = new FlxCamera();
 		FlxG.cameras.add(ownCam);
 		ownCam.bgColor.alpha = 0;
-		videoSpriteFirst.cameras = [ownCam];
+		// videoSpriteFirst.cameras = [ownCam];
 
+		// var video = new MP4Sprite(0, 0, FlxG.width, FlxG.height);
 		var video = new MP4Handler();
+		// video.cameras = [ownCam];
 
 		video.finishCallback = function()
 		{
 			// videoSpriteFirst.kill();
-			remove(videoSpriteFirst);
+			// remove(videoSpriteFirst);
+			// remove(video);
 			if (outro)
 			{
 				// outroScene(handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
@@ -1539,8 +1543,8 @@ class PlayState extends MusicBeatState
 				if (isNextSong)
 				{
 					// JOELwindows7: here timer guys
-					new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
-					{
+					// new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
+					// {
 						// JOELwindows7: if has video, then load the video first before going to new playstate!
 						LoadingState.loadAndSwitchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
 							(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
@@ -1549,7 +1553,7 @@ class PlayState extends MusicBeatState
 						// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
 						// JOELwindows7: oh God, so complicated. I hope it works!
 						clean();
-					});
+					// });
 				}
 				else
 				{
@@ -1594,11 +1598,15 @@ class PlayState extends MusicBeatState
 			{
 				introScene(); // JOELwindows7: start intro cutscene!
 			}
-		}
-		video.playMP4(source, null, videoSpriteFirst); // make the transition null so it doesn't take you out of this state
-		videoSpriteFirst.setGraphicSize(Std.int(videoSpriteFirst.width * 1.2));
-		videoSpriteFirst.updateHitbox();
-		add(videoSpriteFirst);
+		};
+		// video.playMP4(source, null, videoSpriteFirst); // make the transition null so it doesn't take you out of this state
+		video.playVideo(source, false, false); // make the transition null so it doesn't take you out of this state
+		// videoSpriteFirst.setGraphicSize(Std.int(videoSpriteFirst.width * 1.2));
+		// video.setGraphicSize(Std.int(video.width * 1.2));
+		// videoSpriteFirst.updateHitbox();
+		// video.updateHitbox();
+		// add(videoSpriteFirst);
+		// add(video);
 		#elseif (FEATURE_WEBM && !FEATURE_VLC)
 		var video = new VideoPlayer(source);
 		video.finishCallback = () ->
@@ -2229,12 +2237,12 @@ class PlayState extends MusicBeatState
 				// use "allowedToHeadbang": true to your JSON chart (per difficulty) to enable headbangs.
 		}
 
-		//JOELwindows7: there is VLC!
+		// JOELwindows7: there is VLC!
 		if (useVideo && !useVLC)
 			GlobalVideo.get().resume();
-		else if(useVLC)
+		else if (useVLC)
 		{
-			if(vlcHandler != null)
+			if (vlcHandler != null)
 				vlcHandler.resume();
 		}
 
@@ -3103,7 +3111,8 @@ class PlayState extends MusicBeatState
 		{
 			if (GlobalVideo.get().ended && !removedVideo)
 			{
-				remove(videoSprite);
+				// remove(videoSprite);
+				remove(vlcHandler);
 				removedVideo = true;
 			}
 		}
@@ -3346,10 +3355,11 @@ class PlayState extends MusicBeatState
 			if (useVideo)
 			{
 				GlobalVideo.get().stop();
-				//JOELwindows7: VLC stop!
-				if(vlcHandler != null)
+				// JOELwindows7: VLC stop!
+				if (vlcHandler != null)
 					vlcHandler.kill();
-				remove(videoSprite);
+				// remove(videoSprite);
+				remove(vlcHandler);
 				removedVideo = true;
 			}
 			cannotDie = true;
@@ -3379,10 +3389,11 @@ class PlayState extends MusicBeatState
 			if (useVideo)
 			{
 				GlobalVideo.get().stop();
-				//JOELwindows7: VLC stop!
-				if(vlcHandler != null)
+				// JOELwindows7: VLC stop!
+				if (vlcHandler != null)
 					vlcHandler.kill();
-				remove(videoSprite);
+				// remove(videoSprite);
+				remove(vlcHandler);
 				removedVideo = true;
 			}
 			cannotDie = true;
@@ -3444,8 +3455,8 @@ class PlayState extends MusicBeatState
 			if (useVideo)
 			{
 				GlobalVideo.get().stop();
-				//JOELwindows7: VLC stop!
-				if(vlcHandler != null)
+				// JOELwindows7: VLC stop!
+				if (vlcHandler != null)
 					vlcHandler.kill();
 				remove(videoSprite);
 				removedVideo = true;
@@ -3481,8 +3492,8 @@ class PlayState extends MusicBeatState
 				if (useVideo)
 				{
 					GlobalVideo.get().stop();
-					//JOELwindows7: VLC stop!
-					if(vlcHandler != null)
+					// JOELwindows7: VLC stop!
+					if (vlcHandler != null)
 						vlcHandler.kill();
 					remove(videoSprite);
 					removedVideo = true;
@@ -4593,10 +4604,11 @@ class PlayState extends MusicBeatState
 		if (useVideo)
 		{
 			GlobalVideo.get().stop();
-			//JOELwindows7: VLC stop!
-			if(vlcHandler != null)
+			// JOELwindows7: VLC stop!
+			if (vlcHandler != null)
 				vlcHandler.kill();
-			PlayState.instance.remove(PlayState.instance.videoSprite);
+			// PlayState.instance.remove(PlayState.instance.videoSprite);
+			PlayState.instance.remove(PlayState.instance.vlcHandler);
 		}
 
 		if (!loadRep)
@@ -4608,12 +4620,12 @@ class PlayState extends MusicBeatState
 			PlayStateChangeables.useDownscroll = false;
 		}
 
-		if (FlxG.save.data.fpsCap > 290)
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP)
 		{
 			Debug.logTrace("return the FPS cap");
 			// JOELwindows7: issue with Android version. cast lib current technic crash it
 			#if FEATURE_DISPLAY_FPS_CHANGE
-			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
+			// (cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
 			#end
 		}
 
@@ -5565,7 +5577,7 @@ class PlayState extends MusicBeatState
 
 	public static var webmHandler:WebmHandler;
 
-	public var vlcHandler:MP4Handler; // JOELwindows7: globalize VLC handler
+	public var vlcHandler:MP4Sprite; // JOELwindows7: globalize VLC handler
 
 	public var playingDathing = false;
 
@@ -5581,18 +5593,21 @@ class PlayState extends MusicBeatState
 
 		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
 
-		videoSprite = new FlxSprite(-470, -30);
+		// videoSprite = new FlxSprite(-470, -30);
 
-		vlcHandler = new MP4Handler();
+		vlcHandler = new MP4Sprite(-470, -30);
 		vlcHandler.finishCallback = onVideoSpriteFinish;
-		vlcHandler.playMP4(source, null, videoSprite); // make the transition null so it doesn't take you out of this state
+		// vlcHandler.playMP4(source, null, videoSprite); // make the transition null so it doesn't take you out of this state
+		vlcHandler.playVideo(source, false, false); // make the transition null so it doesn't take you out of this state
 
-		videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
+		// videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
+		vlcHandler.setGraphicSize(Std.int(vlcHandler.width * 1.2));
 
 		remove(gf);
 		remove(boyfriend);
 		remove(dad);
-		add(videoSprite);
+		// add(videoSprite);
+		add(vlcHandler);
 		add(gf);
 		add(boyfriend);
 		add(dad);
@@ -7003,10 +7018,10 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	//JOELwindows7: well the getEvent thingy like everybody that uses FlxUI value input stuff.
+	// JOELwindows7: well the getEvent thingy like everybody that uses FlxUI value input stuff.
 	override public function getEvent(name:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void
 	{
-		//JOELwindows7: inspire from ChartingState.hx & FlxSound demo Flixel yess.
+		// JOELwindows7: inspire from ChartingState.hx & FlxSound demo Flixel yess.
 		// https://github.com/HaxeFlixel/flixel-demos/blob/master/Features/FlxSound/source/MenuState.hx
 
 		if (destroyed)
@@ -7014,13 +7029,13 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		super.getEvent(name,sender,data,params);
+		super.getEvent(name, sender, data, params);
 
 		if (name == FlxUICheckBox.CLICK_EVENT)
 		{
 			var check:FlxUICheckBox = cast sender;
 			var label = check.getLabel().text;
-			switch(label)
+			switch (label)
 			{
 				default:
 			}
@@ -7029,7 +7044,7 @@ class PlayState extends MusicBeatState
 		{
 			var nums:FlxUINumericStepper = cast sender;
 			var wname = nums.name;
-			switch(wname)
+			switch (wname)
 			{
 				case 'autoClick_delay':
 					Debug.logTrace("Change Auto click delay into " + Std.string(nums.value) + "s");
@@ -7042,7 +7057,7 @@ class PlayState extends MusicBeatState
 		{
 			var fuib:FlxUIButton = cast sender;
 			var label = fuib.label.text;
-			switch(label)
+			switch (label)
 			{
 				default:
 			}

@@ -1157,10 +1157,10 @@ class FPSCapOption extends Option
 
 	override function right():Bool
 	{
-		if (FlxG.save.data.fpsCap >= 290)
+		if (FlxG.save.data.fpsCap >= Perkedel.MAX_FPS_CAP) //JOELwindows7: was 290
 		{
-			FlxG.save.data.fpsCap = 290;
-			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
+			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; //JOELwindows7: yeah.
+			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Perkedel.MAX_FPS_CAP); //JOELwindows7: crazy fps go brrrrr
 		}
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap + 10;
@@ -1171,8 +1171,8 @@ class FPSCapOption extends Option
 
 	override function left():Bool
 	{
-		if (FlxG.save.data.fpsCap > 290)
-			FlxG.save.data.fpsCap = 290;
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) //JOELwindows7: was 290
+			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; //JOELwindows7: yeye
 		else if (FlxG.save.data.fpsCap < 60)
 			FlxG.save.data.fpsCap = Application.current.window.displayMode.refreshRate;
 		else
@@ -2724,6 +2724,32 @@ class AnChangeChannelOption extends Option
 	}
 }
 
+class AnMiniWindowOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.switchState(new AnWindowTest());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Mini Window Test";
+	}
+}
+
 // JOELwindows7: Force all weeks to unlock
 class PreUnlockAllWeeksOption extends Option
 {
@@ -2888,7 +2914,7 @@ class LogGameJoltIn extends Option
 		OptionsMenu.switchState(new GameJoltLogin());
 		return true;
 		#else
-		Main.gjToastManager.createToast(null, "GameJolt not supported", "Sorry, your platform does not support GameJolt.");
+		// Main.gjToastManager.createToast(null, "GameJolt not supported", "Sorry, your platform does not support GameJolt.");
 		return false;
 		#end
 	}

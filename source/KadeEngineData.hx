@@ -1,3 +1,4 @@
+import const.Perkedel;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
 import flixel.FlxG;
@@ -54,7 +55,8 @@ class KadeEngineData
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 120;
 
-		if (FlxG.save.data.fpsCap > 340 || FlxG.save.data.fpsCap < 60)
+		// JOELwindows7: was 340
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP || FlxG.save.data.fpsCap < 60)
 			FlxG.save.data.fpsCap = 120; // baby proof so you can't hard lock ur copy of kade engine
 
 		if (FlxG.save.data.scrollSpeed == null)

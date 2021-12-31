@@ -100,7 +100,7 @@ class Replay
 		#end
 
 		var json = {
-			"songName": PlayState.SONG.song,
+			"songName": PlayState.SONG.songName, // JOELwindows7: use new name system
 			"songId": PlayState.SONG.songId,
 			"songDiff": PlayState.storyDifficulty,
 			"chartPath": chartPath,
@@ -129,8 +129,8 @@ class Replay
 
 		replay.ana = ana;
 		#else
-        //JOELwindows7: trouble with Android version
-        trace("WERROR: File save replay fail, sys functions is crashing in Android");
+		// JOELwindows7: trouble with Android version
+		trace("WERROR: File save replay fail, sys functions is crashing in Android");
 		#end
 	}
 

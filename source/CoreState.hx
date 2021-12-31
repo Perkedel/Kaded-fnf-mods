@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.addons.ui.FlxUISubState;
 import flixel.ui.FlxButton;
 import ui.FlxVirtualPad;
 import flixel.input.actions.FlxActionInput;
@@ -601,7 +602,7 @@ class CoreState extends FlxUIState
  * 
  * @author JOELwindows7
  */
-class CoreSubState extends FlxSubState
+class CoreSubState extends FlxUISubState
 {
 	// JOELwindows7: mouse support flags
 	private var haveClicked:Bool = false;

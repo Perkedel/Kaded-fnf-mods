@@ -21,6 +21,7 @@ using StringTools;
  */
 class Debug
 {
+	// JOELwindows7: add icon to these
 	static final LOG_STYLE_ERROR:LogStyle = new LogStyle('[ERROR] ', 'FF8888', 12, true, false, false, 'flixel/sounds/beep', true);
 	static final LOG_STYLE_WARN:LogStyle = new LogStyle('[WARN ] ', 'D9F85C', 12, true, false, false, 'flixel/sounds/beep', true);
 	static final LOG_STYLE_INFO:LogStyle = new LogStyle('[INFO ] ', '5CF878', 12, false);
@@ -40,7 +41,7 @@ class Debug
 			return;
 		var output = formatOutput(input, pos);
 		writeToFlxGLog(output, LOG_STYLE_ERROR);
-		writeToLogFile(output, 'ERROR');
+		writeToLogFile(output, 'ERROR'); // JOELwindows7: I add icon.
 	}
 
 	/**
@@ -55,7 +56,7 @@ class Debug
 			return;
 		var output = formatOutput(input, pos);
 		writeToFlxGLog(output, LOG_STYLE_WARN);
-		writeToLogFile(output, 'WARN');
+		writeToLogFile(output, 'WARN'); // JOELwindows7: I add icon.
 	}
 
 	/**
@@ -69,7 +70,7 @@ class Debug
 			return;
 		var output = formatOutput(input, pos);
 		writeToFlxGLog(output, LOG_STYLE_INFO);
-		writeToLogFile(output, 'INFO');
+		writeToLogFile(output, 'INFO'); // JOELwindows7: I add icon.
 	}
 
 	/**
@@ -84,7 +85,7 @@ class Debug
 			return;
 		var output = formatOutput(input, pos);
 		writeToFlxGLog(output, LOG_STYLE_TRACE);
-		writeToLogFile(output, 'TRACE');
+		writeToLogFile(output, 'TRACE'); // JOELwindows7: I add icon.
 	}
 
 	/**

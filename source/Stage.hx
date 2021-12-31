@@ -826,6 +826,15 @@ class Stage extends MusicBeatState
 
 						swagBacks['stageCurtains'] = stageCurtains;
 						toAdd.push(stageCurtains);
+
+						// JOELwindows7: here kem0x's shader background yey
+						// yoink from https://github.com/kem0x/Nexus-Engine/blob/master/source/Stage.hx
+						var sha:FlxSprite = new ShaderBackground("test", 0, 0, FlxG.width, FlxG.height);
+						sha.setGraphicSize(Std.int(sha.width * 1.4));
+						sha.updateHitbox();
+						swagBacks['sha'] = sha;
+						toAdd.push(sha);
+						sha.alpha = 0;
 					}
 			}
 	}

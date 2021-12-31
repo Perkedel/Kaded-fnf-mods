@@ -552,7 +552,7 @@ class HaxeScriptState
 		{
 			if (PlayState.instance.useVLC)
 			{
-				PlayState.instance.vlcHandler.restart();
+				// PlayState.instance.vlcHandler.restart();
 			}
 			else
 				GlobalVideo.get().restart();
