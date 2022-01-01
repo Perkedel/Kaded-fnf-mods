@@ -214,7 +214,7 @@ class FreeplayState extends MusicBeatState
 		clean();
 
 		// JOELwindows7: go loading bar
-		if(legacySynchronousLoading)
+		if (legacySynchronousLoading)
 		{
 			_loadingBar.popNow();
 			_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
@@ -232,8 +232,8 @@ class FreeplayState extends MusicBeatState
 		// 	asyncLoader = new FlxAsyncLoop(1, asynchronouslyLoadSongList);
 		// wait, wrong. in down!
 
-		if(legacySynchronousLoading)
-			populateSongData(); //JOELwindows7: uncomment for synchronous
+		if (legacySynchronousLoading)
+			populateSongData(); // JOELwindows7: uncomment for synchronous
 		PlayState.inDaPlay = false;
 		PlayState.currentSong = "bruh";
 
@@ -419,7 +419,12 @@ class FreeplayState extends MusicBeatState
 		if (!legacySynchronousLoading)
 			asyncLoader = new FlxAsyncLoop(1, asynchronouslyLoadSongList);
 		else
+		{
 			loadedUp = true;
+			// JOELwindows7: do it again because last time it ignored because not loaded yet to this point.
+			changeSelection();
+			changeDiff();
+		}
 	}
 
 	public static var cached:Bool = false;

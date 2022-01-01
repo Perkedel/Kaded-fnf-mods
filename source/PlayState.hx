@@ -394,7 +394,7 @@ class PlayState extends MusicBeatState
 		if (previousRate < 1.00)
 			previousRate = 1;
 
-		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) //JOELwindows7: was 290
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) // JOELwindows7: was 290
 		{
 			// JOELwindows7: android issue. cast lib current technic crash
 			#if FEATURE_DISPLAY_FPS_CHANGE
@@ -557,7 +557,7 @@ class PlayState extends MusicBeatState
 
 		if (SONG.eventObjects == null)
 		{
-			SONG.eventObjects = [new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change")];
+			SONG.eventObjects = [new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change", 0, 0)]; //JOELwindows7: houv
 		}
 
 		TimingStruct.clearTimings();
@@ -1545,14 +1545,13 @@ class PlayState extends MusicBeatState
 					// JOELwindows7: here timer guys
 					// new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
 					// {
-						// JOELwindows7: if has video, then load the video first before going to new playstate!
-						LoadingState.loadAndSwitchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
-							(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
-								new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
-								new PlayState()) : new PlayState()));
-						// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
-						// JOELwindows7: oh God, so complicated. I hope it works!
-						clean();
+					// JOELwindows7: if has video, then load the video first before going to new playstate!
+					LoadingState.loadAndSwitchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
+						(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+							new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()));
+					// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					// JOELwindows7: oh God, so complicated. I hope it works!
+					clean();
 					// });
 				}
 				else
@@ -3082,6 +3081,8 @@ class PlayState extends MusicBeatState
 							justHey(true);
 					case "Lightning Strike":
 						Stage.lightningStrikeShit();
+					case "Blammed Lights":
+						Stage.blammedLights(Std.int(i.value));
 					case "Camera Zoom in":
 						camZoomNow(i.value);
 					case "Shake camera":
@@ -6829,6 +6830,7 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
+				// inCutscene = false;
 				new FlxTimer().start(1, function(timer)
 				{
 					startCountdown();
@@ -6840,6 +6842,7 @@ class PlayState extends MusicBeatState
 	// JOELwindows7: Psyched intro after video and before dialogue chat
 	function introScene()
 	{
+		inCutscene = true;
 		switch (curSong)
 		{
 			default:

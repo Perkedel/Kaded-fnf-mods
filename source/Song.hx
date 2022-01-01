@@ -12,13 +12,18 @@ class Event
 	public var name:String;
 	public var position:Float;
 	public var value:Float;
+	public var value2:Float; // JOELwindows7: another one
+	public var value3:Float; // JOELwindows7: aanother one
 	public var type:String;
 
-	public function new(name:String, pos:Float, value:Float, type:String)
+	// JOELwindows7: extra
+	public function new(name:String, pos:Float, value:Float, type:String, value2:Float, value3:Float)
 	{
 		this.name = name;
 		this.position = pos;
 		this.value = value;
+		this.value2 = value2; // JOELwindows7: extra
+		this.value3 = value3; // JOELwindows7: extra
 		this.type = type;
 	}
 }
@@ -59,10 +64,10 @@ typedef SongData =
 	var ?videoPath:String; // JOELwindows7: the video file path
 	var ?hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
 	var ?epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
-	var ?hasTankmanVideo:Bool; //JOELwindows7: same as hasVideo but this is for when entered PlayState like week7.
-	var ?tankmanVideoPath:String; //JOELwindows7: same as videoPath but this is for when entered PlayState like week7.
-	var ?hasEpilogueTankmanVideo:Bool; //JOELwindows7: same as hasEpilogueVideo but this is for when entered PlayState like week7.
-	var ?epilogueTankmanVideoPath:String; //JOELwindows7: same as epilogueVideoPath but this is for when entered PlayState like week7.
+	var ?hasTankmanVideo:Bool; // JOELwindows7: same as hasVideo but this is for when entered PlayState like week7.
+	var ?tankmanVideoPath:String; // JOELwindows7: same as videoPath but this is for when entered PlayState like week7.
+	var ?hasEpilogueTankmanVideo:Bool; // JOELwindows7: same as hasEpilogueVideo but this is for when entered PlayState like week7.
+	var ?epilogueTankmanVideoPath:String; // JOELwindows7: same as epilogueVideoPath but this is for when entered PlayState like week7.
 	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
 	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
@@ -155,7 +160,7 @@ class Song
 		var convertedStuff:Array<Song.Event> = [];
 
 		if (song.eventObjects == null)
-			song.eventObjects = [new Song.Event("Init BPM", 0, song.bpm, "BPM Change")];
+			song.eventObjects = [new Song.Event("Init BPM", 0, song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: oh banana
 
 		for (i in song.eventObjects)
 		{
@@ -163,8 +168,10 @@ class Song
 			var type = Reflect.field(i, "type");
 			var pos = Reflect.field(i, "position");
 			var value = Reflect.field(i, "value");
+			var value2 = Reflect.field(i, "value2");
+			var value3 = Reflect.field(i, "value3");
 
-			convertedStuff.push(new Song.Event(name, pos, value, type));
+			convertedStuff.push(new Song.Event(name, pos, value, type, value2, value3)); // JOELwindows7: super idol
 		}
 
 		song.eventObjects = convertedStuff;
@@ -220,7 +227,7 @@ class Song
 			{
 				Debug.logTrace("converting changebpm for section " + index);
 				ba = i.bpm;
-				song.eventObjects.push(new Song.Event("FNF BPM Change " + index, beat, i.bpm, "BPM Change"));
+				song.eventObjects.push(new Song.Event("FNF BPM Change " + index, beat, i.bpm, "BPM Change", 0, 0)); // JOELwindows7: bep
 			}
 
 			for (ii in i.sectionNotes)

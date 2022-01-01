@@ -163,7 +163,7 @@ class ChartingState extends MusicBeatState
 
 	override function create()
 	{
-		//JOELwindows7: move super create here
+		// JOELwindows7: move super create here
 		super.create();
 
 		#if FEATURE_DISCORD
@@ -287,10 +287,10 @@ class ChartingState extends MusicBeatState
 		var index = 0;
 
 		if (_song.eventObjects == null)
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change")];
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; //JOELwindows7: ouh
 
 		if (_song.eventObjects.length == 0)
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change")];
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; //JOELwindows7: ha!
 
 		Debug.logTrace("goin");
 
@@ -593,6 +593,8 @@ class ChartingState extends MusicBeatState
 	var currentSelectedEventName:String = "";
 	var savedType:String = "BPM Change";
 	var savedValue:String = "100";
+	var savedValue2:String = "1"; // JOELwindows7: yekstra extra
+	var savedValue3:String = "0"; // JOELwindows7: exkt extra
 	var currentEventPosition:Float = 0;
 
 	function containsName(name:String, events:Array<Song.Event>):Song.Event
@@ -615,7 +617,7 @@ class ChartingState extends MusicBeatState
 	{
 		if (_song.eventObjects == null)
 		{
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change")];
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: oh
 		}
 
 		var firstEvent = "";
@@ -636,10 +638,13 @@ class ChartingState extends MusicBeatState
 		], true));
 		var valueLabel = new FlxText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");
+		// JOELwindows7: moar of them!
+		var eventValue2 = new FlxUIInputText(230, 60, 80, "");
+		var eventValue3 = new FlxUIInputText(310, 60, 80, "");
 		var eventSave = new FlxUIButton(10, 155, "Save Event", function()
 		{
 			var pog:Song.Event = new Song.Event(currentSelectedEventName, currentEventPosition, HelperFunctions.truncateFloat(Std.parseFloat(savedValue), 3),
-				savedType);
+				savedType, HelperFunctions.truncateFloat(Std.parseFloat(savedValue2), 3), HelperFunctions.truncateFloat(Std.parseFloat(savedValue3), 3));
 
 			Debug.logTrace("trying to save " + currentSelectedEventName);
 
@@ -665,6 +670,9 @@ class ChartingState extends MusicBeatState
 				var type = Reflect.field(i, "type");
 				var pos = Reflect.field(i, "position");
 				var value = Reflect.field(i, "value");
+				// JOELwindows7: here more
+				var value2 = Reflect.field(i, "value2");
+				var value3 = Reflect.field(i, "value3");
 
 				Debug.logTrace(i.type);
 				if (type == "BPM Change")
@@ -714,8 +722,9 @@ class ChartingState extends MusicBeatState
 		var eventPos = new FlxUIInputText(150, 100, 80, "");
 		var eventAdd = new FlxUIButton(95, 155, "Add Event", function()
 		{
+			// JOELwindows7: O poggers
 			var pog:Song.Event = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3),
-				HelperFunctions.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change");
+				HelperFunctions.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change", 0, 0);
 
 			Debug.logTrace("adding " + pog.name);
 
@@ -731,12 +740,17 @@ class ChartingState extends MusicBeatState
 			eventName.text = pog.name;
 			eventType.selectedLabel = pog.type;
 			eventValue.text = pog.value + "";
+			// JOELwindows7: here more
+			eventValue2.text = pog.value2 + "";
+			eventValue3.text = pog.value3 + "";
 			eventPos.text = pog.position + "";
 			currentSelectedEventName = pog.name;
 			currentEventPosition = pog.position;
 
 			savedType = pog.type;
 			savedValue = pog.value + "";
+			savedValue2 = pog.value2 + "";
+			savedValue3 = pog.value3 + "";
 
 			var listofnames = [];
 
@@ -810,19 +824,23 @@ class ChartingState extends MusicBeatState
 
 			if (firstEvent == null)
 			{
-				_song.eventObjects.push(new Song.Event("Init BPM", 0, _song.bpm, "BPM Change"));
+				_song.eventObjects.push(new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)); // JOELwindows7: initda
 				firstEvent = _song.eventObjects[0];
 			}
 
 			eventName.text = firstEvent.name;
 			eventType.selectedLabel = firstEvent.type;
 			eventValue.text = firstEvent.value + "";
+			eventValue2.text = firstEvent.value2 + "";
+			eventValue3.text = firstEvent.value3 + "";
 			eventPos.text = firstEvent.position + "";
 			currentSelectedEventName = firstEvent.name;
 			currentEventPosition = firstEvent.position;
 
 			savedType = firstEvent.type;
 			savedValue = firstEvent.value + '';
+			savedValue2 = firstEvent.value2 + ''; // JOELwindows7: here more
+			savedValue3 = firstEvent.value3 + ''; // JOELwindows7: here ye
 
 			var listofnames = [];
 
@@ -893,10 +911,13 @@ class ChartingState extends MusicBeatState
 			var type = Reflect.field(event, "type");
 			var pos = Reflect.field(event, "position");
 			var value = Reflect.field(event, "value");
+			// JOElwindows7: byev
+			var value2 = Reflect.field(event, "value2");
+			var value3 = Reflect.field(event, "value3");
 
 			Debug.logTrace(value);
 
-			var eventt = new Song.Event(name, pos, value, type);
+			var eventt = new Song.Event(name, pos, value, type, value2, value3); // JOELwindows7: weuw
 
 			chartEvents.push(eventt);
 			listofnames.push(name);
@@ -919,6 +940,12 @@ class ChartingState extends MusicBeatState
 			eventType.selectedLabel = firstEventObject.type;
 			Debug.logTrace("bruh");
 			eventValue.text = firstEventObject.value + "";
+			//JOELwindows7: bruh 🕺🏻
+			Debug.logTrace("bruh");
+			eventValue2.text = firstEventObject.value2 + "";
+			//JOELwindows7: ye
+			Debug.logTrace("bruh");
+			eventValue3.text = firstEventObject.value3 + "";
 			Debug.logTrace("bruh");
 			currentSelectedEventName = firstEventObject.name;
 			Debug.logTrace("bruh");
@@ -939,6 +966,8 @@ class ChartingState extends MusicBeatState
 
 			eventName.text = event.name;
 			eventValue.text = event.value + "";
+			eventValue2.text = event.value2 + "";
+			eventValue3.text = event.value3 + "";
 			eventPos.text = event.position + "";
 			eventType.selectedLabel = event.type;
 			currentSelectedEventName = event.name;
@@ -949,6 +978,20 @@ class ChartingState extends MusicBeatState
 		{
 			Debug.logTrace(string + " - value");
 			savedValue = string;
+		};
+
+		//JOELwindows7: moar
+		eventValue2.callback = function(string:String, string2:String)
+		{
+			Debug.logTrace(string + " - value2");
+			savedValue2 = string;
+		};
+
+		//JOELwindows7: MOAR!
+		eventValue3.callback = function(string:String, string2:String)
+		{
+			Debug.logTrace(string + " - value3");
+			savedValue3 = string;
 		};
 
 		eventType.callback = function(type:String)
@@ -975,6 +1018,8 @@ class ChartingState extends MusicBeatState
 
 		Typeables.push(eventPos);
 		Typeables.push(eventValue);
+		Typeables.push(eventValue2); //JOELwindows7: a
+		Typeables.push(eventValue3); //JOELwindows7: b
 		Typeables.push(eventName);
 
 		var tab_events = new FlxUI(null, UI_options);
@@ -986,6 +1031,8 @@ class ChartingState extends MusicBeatState
 		tab_events.add(typeLabel);
 		tab_events.add(eventName);
 		tab_events.add(eventValue);
+		tab_events.add(eventValue2); //JOELwindows7: moar
+		tab_events.add(eventValue3); //JOELwindows7: MOAR!
 		tab_events.add(eventSave);
 		tab_events.add(eventAdd);
 		tab_events.add(eventRemove);
@@ -1246,7 +1293,7 @@ class ChartingState extends MusicBeatState
 			_song.needsVoices = check_voices.checked;
 			Debug.logTrace('CHECKED!');
 		};
-		tooltips.add(check_voices,{
+		tooltips.add(check_voices, {
 			title: "Has voice track",
 			body: "Tick if your song has separate voice audio.",
 		});
@@ -1255,7 +1302,7 @@ class ChartingState extends MusicBeatState
 		{
 			saveLevel();
 		});
-		//JOELwindows7: try add tooltip?
+		// JOELwindows7: try add tooltip?
 		tooltips.add(saveButton, {
 			title: "Save As",
 			body: "Open dialog box to save as a chart JSON.",
@@ -1329,9 +1376,9 @@ class ChartingState extends MusicBeatState
 		{
 			shiftNotes(Std.int(stepperShiftNoteDial.value), Std.int(stepperShiftNoteDialstep.value), Std.int(stepperShiftNoteDialms.value));
 		});
-		//JOELwindows7: tootipsed
+		// JOELwindows7: tootipsed
 		// see https://github.com/HaxeFlixel/flixel-demos/blob/master/UserInterface/Tooltips/source/State_DemoCode.hx
-		tooltips.add(shiftNoteButton,{
+		tooltips.add(shiftNoteButton, {
 			title: "Shift Notes",
 			body: "Commence shifting notes according to the values above you've set.\nNot to be confused with SHIFT on your keyboard or bottom left.",
 		});

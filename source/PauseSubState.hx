@@ -61,7 +61,7 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				menuItems.remove("Resume");
 				// if (PlayState.instance.vlcHandler.isPlaying)
-					PlayState.instance.vlcHandler.pause();
+				PlayState.instance.vlcHandler.pause();
 			}
 
 		if (FlxG.sound.music.playing)
@@ -100,14 +100,16 @@ class PauseSubState extends MusicBeatSubstate
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
 		levelInfo.text += PlayState.SONG.songName;
 		levelInfo.scrollFactor.set();
-		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
+		// levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
+		levelInfo.setFormat(Paths.font("UbuntuMono-R.ttf"), 32); // JOELwindows7: use universal language font
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
 		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
 		levelDifficulty.text += CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toUpperCase();
 		levelDifficulty.scrollFactor.set();
-		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
+		// levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
+		levelDifficulty.setFormat(Paths.font('UbuntuMono-R.ttf'), 32); // JOELwindows7: use universal language font
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
@@ -123,7 +125,8 @@ class PauseSubState extends MusicBeatSubstate
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
-		perSongOffset = new FlxText(5, FlxG.height - 18, 0, "Hello chat", 12);
+		// perSongOffset = new FlxText(5, FlxG.height - 18, 0, "Hello chat", 12);
+		perSongOffset = new FlxText(5, FlxG.height - 18, 0, "Song ID: " + PlayState.SONG.songId + " | Hello Chat", 12); // JOELwindows7: don't empty that this!
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 

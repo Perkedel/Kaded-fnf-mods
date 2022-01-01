@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.display.FlxPieDial;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIButton;
@@ -70,6 +71,8 @@ class DialogueBox extends FlxSpriteGroup
 	var tobeAutoClicked:Bool = false;
 
 	public var autoClickTimer:FlxTimer;
+
+	var autoClickTimerDisplay:FlxPieDial; // JOELwindows7: yes, the timer display. see https://haxeflixel.com/demos/FlxPieDial/ & https://github.com/HaxeFlixel/flixel-demos/blob/master/Features/FlxPieDial/source/DemoState.hx
 
 	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>, ?hadChat:Bool = false, ?isEpilogue:Bool = false, ?customChar:Bool = false,
 			?customCharXML:String = "jakartaFair/Hookx-dialogueAppear", ?customCharFrame:String = "enter", ?customCharPrefix:String = "Hookx Portrait Enter")
@@ -347,6 +350,8 @@ class DialogueBox extends FlxSpriteGroup
 		autoClickDelayLabel.color = 0x00000000;
 		autoClickDelayLabel.text = 'Auto-click delay: ';
 		add(autoClickDelayLabel);
+		autoClickTimerDisplay = new FlxPieDial(FlxG.width - 180, 10, 15, FlxColor.GREEN, FlxPieDialShape.CIRCLE, true, 0);
+		add(autoClickTimerDisplay);
 	}
 
 	var dialogueOpened:Bool = false;
@@ -476,6 +481,12 @@ class DialogueBox extends FlxSpriteGroup
 		}
 
 		super.update(elapsed);
+
+		// JOELwindows7: try to watch time remaining of the auto click
+		if (autoClickCheckbox.checked)
+		{
+			autoClickTimerDisplay.amount = (autoClickTimer.timeLeft / autoClickTimer.time);
+		}
 
 		// JOELwindows7: unfortunately this is neither Core state we had
 		manageMouse();

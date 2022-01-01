@@ -162,7 +162,7 @@ jobs:
       
       - name: build Android now!
         run: |
-          haxelib run lime build android
+          haxelib run lime build android -final
       
       - name: Artifact Android now
         uses: actions/upload-artifact@v2.2.4

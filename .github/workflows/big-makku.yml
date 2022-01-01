@@ -91,7 +91,7 @@ jobs:
 
       - name: build macOS now!
         run: |
-          haxelib run lime build mac
+          haxelib run lime build mac -final
           
       - uses: actions/upload-artifact@v2.2.4
         with:

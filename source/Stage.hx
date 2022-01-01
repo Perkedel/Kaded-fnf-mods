@@ -51,12 +51,20 @@ class Stage extends MusicBeatState
 	var stageCurtainAll:FlxTypedGroup<FlxSprite>;
 	var trailAll:FlxTypedGroup<FlxTrail>;
 
+	// JOELwindows7: okeh globalize those special bg var thingy anyways.
+	var phillyCityLights:FlxTypedGroup<FlxSprite>;
+	var phillyCityLightsEvent:FlxTypedGroup<BGSprite>; // JOELwindows7: psyched stuffening
+	var phillyCityLightsEventTween:FlxTween; // JOELwindows7: psyched stuffening
+
 	public var executeStageScript = false; // JOELwindows7: for stage lua scripter
 	public var executeStageHscript = false;
 
 	public var colorableGround:FlxSprite; // JOELwindows7: the colorable sprite thingy
 	public var originalColor:FlxColor = FlxColor.WHITE; // JOELwindows7: store the original color for chroma screen and RGB lightings
 	public var isChromaScreen:Bool = false; // JOELwindows7: whether this is a Chroma screen or just RGB lightings.
+
+	public var blammedLightsBlack:FlxSprite; // JOELwindows7: black screen for blammed lights Psyched
+	public var blammedLightsBlackTween:FlxTween; // JOELwindows7: and the tween for it.
 
 	// if chroma screen, then don't invisiblize, instead turn it back to original color!
 	// JOELwindows7: arraying them seems won't work at all. so let's make them separateroid instead.
@@ -70,6 +78,9 @@ class Stage extends MusicBeatState
 	public var overrideCamFollowP2:Bool = false;
 	public var manualCamFollowPosP1:Array<Float> = [0, 0];
 	public var manualCamFollowPosP2:Array<Float> = [0, 0];
+
+	// JOELwindows7: other flags toggle switch too
+	public var blammedLightGoing:Bool = false;
 
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
@@ -163,6 +174,11 @@ class Stage extends MusicBeatState
 
 		trace("Load da stage here ya"); // JOELwindows7: wtf happened
 
+		// JOELwindows7: init blammed light first
+		blammedLightsBlack = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5);
+		blammedLightsBlack.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
+		blammedLightsBlack.alpha = 0;
+
 		if (PlayState.SONG != null && PlayState.SONG.useCustomStage)
 		{
 			// JOELwindows7: Here's the switchover!
@@ -198,7 +214,8 @@ class Stage extends MusicBeatState
 						swagBacks['city'] = city;
 						toAdd.push(city);
 
-						var phillyCityLights = new FlxTypedGroup<FlxSprite>();
+						phillyCityLights = new FlxTypedGroup<FlxSprite>();
+						// phillyCityLights = new FlxTypedGroup<BGSprite>(); // JOELwindows7: okeh idk man.
 						if (FlxG.save.data.distractions)
 						{
 							swagGroup['phillyCityLights'] = phillyCityLights;
@@ -208,6 +225,7 @@ class Stage extends MusicBeatState
 						for (i in 0...5)
 						{
 							var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.loadImage('philly/win' + i, 'week3'));
+							// var light:BGSprite = new BGSprite(city.x).loadGraphic(Paths.loadImage('philly/win' + i, 'week3'));
 							light.scrollFactor.set(0.3, 0.3);
 							light.visible = false;
 							light.setGraphicSize(Std.int(light.width * 0.85));
@@ -237,6 +255,10 @@ class Stage extends MusicBeatState
 						// Oh. Kade moved it somehow.
 
 						// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
+
+						// JOELwindows7: first, install blammed lights. Psyched blammed lights yey
+						// https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
+						addThe(blammedLightsBlack, 'blammedLightsBlack');
 
 						var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street', 'week3'));
 						swagBacks['street'] = street;
@@ -981,6 +1003,7 @@ class Stage extends MusicBeatState
 	var lightningStrikeBeat:Int = 0;
 	var lightningOffset:Int = 8;
 	var curLight:Int = 0;
+	var curLightEvent:Int = 0; // JOELwindows7 Psyched blammed things
 
 	// JOELwindows7: make public for lua modchart
 	public function lightningStrikeShit():Void
@@ -1066,6 +1089,170 @@ class Stage extends MusicBeatState
 
 				if (phillyTrain.x < -4000 && trainFinishing)
 					trainReset();
+			}
+		}
+	}
+
+	// JOELwindows7: Psyched blammed lights
+	// https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
+	public function blammedLights(lightId:Int):Void
+	{
+		if (Math.isNaN(lightId))
+			lightId = 0;
+
+		if (FlxG.save.data.distractions)
+		{
+			if (lightId > 0 && curLightEvent != lightId)
+			{
+				if (lightId > 5)
+					lightId = FlxG.random.int(1, 5, [curLightEvent]);
+
+				var color:Int = 0xffffffff;
+				switch (lightId)
+				{
+					case 1: // Blue
+						color = 0xff31a2fd;
+					case 2: // Green
+						color = 0xff31fd8c;
+					case 3: // Pink
+						color = 0xfff794f7;
+					case 4: // Red
+						color = 0xfff96d63;
+					case 5: // Orange
+						color = 0xfffba633;
+				}
+				curLightEvent = lightId;
+
+				if (blammedLightsBlack.alpha == 0)
+				{
+					if (blammedLightsBlackTween != null)
+					{
+						blammedLightsBlackTween.cancel();
+					}
+					blammedLightsBlackTween = FlxTween.tween(blammedLightsBlack, {alpha: 1}, 1, {
+						ease: FlxEase.quadInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							blammedLightsBlackTween = null;
+						}
+					});
+
+					var chars:Array<Character> = [PlayState.boyfriend, PlayState.gf, PlayState.dad];
+					for (i in 0...chars.length)
+					{
+						if (chars[i].colorTween != null)
+						{
+							chars[i].colorTween.cancel();
+						}
+						chars[i].colorTween = FlxTween.color(chars[i], 1, FlxColor.WHITE, color, {
+							onComplete: function(twn:FlxTween)
+							{
+								chars[i].colorTween = null;
+							},
+							ease: FlxEase.quadInOut
+						});
+					}
+				}
+				else
+				{
+					if (blammedLightsBlackTween != null)
+					{
+						blammedLightsBlackTween.cancel();
+					}
+					blammedLightsBlackTween = null;
+					blammedLightsBlack.alpha = 1;
+
+					var chars:Array<Character> = [PlayState.boyfriend, PlayState.gf, PlayState.dad];
+					for (i in 0...chars.length)
+					{
+						if (chars[i].colorTween != null)
+						{
+							chars[i].colorTween.cancel();
+						}
+						chars[i].colorTween = null;
+					}
+					PlayState.dad.color = color;
+					PlayState.boyfriend.color = color;
+					PlayState.gf.color = color;
+				}
+
+				if (curStage == 'philly')
+				{
+					if (phillyCityLightsEvent != null)
+					{
+						phillyCityLightsEvent.forEach(function(spr:BGSprite)
+						{
+							spr.visible = false;
+						});
+						phillyCityLightsEvent.members[lightId - 1].visible = true;
+						phillyCityLightsEvent.members[lightId - 1].alpha = 1;
+					}
+				}
+			}
+			else
+			{
+				if (blammedLightsBlack.alpha != 0)
+				{
+					if (blammedLightsBlackTween != null)
+					{
+						blammedLightsBlackTween.cancel();
+					}
+					blammedLightsBlackTween = FlxTween.tween(blammedLightsBlack, {alpha: 0}, 1, {
+						ease: FlxEase.quadInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							blammedLightsBlackTween = null;
+						}
+					});
+				}
+
+				if (curStage == 'philly')
+				{
+					phillyCityLights.forEach(function(spr:FlxSprite) // JOELwindows7: this gotta be changed
+					{
+						spr.visible = false;
+					});
+					phillyCityLightsEvent.forEach(function(spr:BGSprite)
+					{
+						spr.visible = false;
+					});
+
+					var memb:FlxSprite = phillyCityLightsEvent.members[curLightEvent - 1];
+					if (memb != null)
+					{
+						memb.visible = true;
+						memb.alpha = 1;
+						if (phillyCityLightsEventTween != null)
+							phillyCityLightsEventTween.cancel();
+
+						phillyCityLightsEventTween = FlxTween.tween(memb, {alpha: 0}, 1, {
+							onComplete: function(twn:FlxTween)
+							{
+								phillyCityLightsEventTween = null;
+							},
+							ease: FlxEase.quadInOut
+						});
+					}
+				}
+
+				var chars:Array<Character> = [PlayState.boyfriend, PlayState.gf, PlayState.dad];
+				for (i in 0...chars.length)
+				{
+					if (chars[i].colorTween != null)
+					{
+						chars[i].colorTween.cancel();
+					}
+					chars[i].colorTween = FlxTween.color(chars[i], 1, chars[i].color, FlxColor.WHITE, {
+						onComplete: function(twn:FlxTween)
+						{
+							chars[i].colorTween = null;
+						},
+						ease: FlxEase.quadInOut
+					});
+				}
+
+				curLight = 0;
+				curLightEvent = 0;
 			}
 		}
 	}

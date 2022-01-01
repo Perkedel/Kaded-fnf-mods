@@ -62,6 +62,8 @@
 	<!-- <assets path="assets" include="*.json"/> -->
 	<!-- end yoinkoid -->
 
+	<!-- JOELwindows7: add brightfyre infos -->
+	<assets path="assets/preload/videos" rename="assets/videos" include="*.mp4" embed='false' />
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
 	<!-- JOELwindows7: new folder for Odysee exclusive & stolen / pirated mods exclusive definitions -->
