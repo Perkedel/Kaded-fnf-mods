@@ -40,6 +40,7 @@ import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
+import flixel.addons.ui.FlxUIButton;
 import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxColor;
 import haxe.Json;
@@ -63,8 +64,8 @@ class ChartingState extends MusicBeatState
 	var _file:FileReference;
 	#if FEATURE_FILESYSTEM
 	var _regFile:File; // JOElwindows7: here regular file.
-	#end
 
+	#end
 	public var playClaps:Bool = false;
 
 	public var snap:Int = 16;
@@ -162,6 +163,9 @@ class ChartingState extends MusicBeatState
 
 	override function create()
 	{
+		//JOELwindows7: move super create here
+		super.create();
+
 		#if FEATURE_DISCORD
 		DiscordClient.changePresence("Chart Editor", null, null, true);
 		#end
@@ -447,6 +451,7 @@ class ChartingState extends MusicBeatState
 		add(UI_options);
 		add(UI_box);
 
+		// JOELwindows7: all buttons has been changed into FlxUIButton instead of classic FlxButton
 		addSongUI();
 		addSectionUI();
 		addNoteUI();
@@ -485,7 +490,7 @@ class ChartingState extends MusicBeatState
 
 		Debug.logTrace("create");
 
-		super.create();
+		// super.create(); //JOELwindows7: moved to top
 	}
 
 	public var texts:FlxTypedGroup<FlxText>;
@@ -631,7 +636,7 @@ class ChartingState extends MusicBeatState
 		], true));
 		var valueLabel = new FlxText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");
-		var eventSave = new FlxButton(10, 155, "Save Event", function()
+		var eventSave = new FlxUIButton(10, 155, "Save Event", function()
 		{
 			var pog:Song.Event = new Song.Event(currentSelectedEventName, currentEventPosition, HelperFunctions.truncateFloat(Std.parseFloat(savedValue), 3),
 				savedType);
@@ -707,7 +712,7 @@ class ChartingState extends MusicBeatState
 		});
 		var posLabel = new FlxText(150, 85, 'Event Position');
 		var eventPos = new FlxUIInputText(150, 100, 80, "");
-		var eventAdd = new FlxButton(95, 155, "Add Event", function()
+		var eventAdd = new FlxUIButton(95, 155, "Add Event", function()
 		{
 			var pog:Song.Event = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3),
 				HelperFunctions.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change");
@@ -786,7 +791,7 @@ class ChartingState extends MusicBeatState
 
 			regenerateLines();
 		});
-		var eventRemove = new FlxButton(180, 155, "Remove Event", function()
+		var eventRemove = new FlxUIButton(180, 155, "Remove Event", function()
 		{
 			Debug.logTrace("lets see if we can remove " + listOfEvents.selectedLabel);
 
@@ -868,7 +873,7 @@ class ChartingState extends MusicBeatState
 
 			regenerateLines();
 		});
-		var updatePos = new FlxButton(150, 120, "Update Pos", function()
+		var updatePos = new FlxUIButton(150, 120, "Update Pos", function()
 		{
 			var obj = containsName(currentSelectedEventName, _song.eventObjects);
 			if (obj == null)
@@ -1018,7 +1023,7 @@ class ChartingState extends MusicBeatState
 	// JOELwindows7: left side is Tool menu. add Menu button and its toolbar bellow
 	function addFileMenuButton():Void
 	{
-		var fileMenuButton = new FlxButton(170, 40, "File", function()
+		var fileMenuButton = new FlxUIButton(170, 40, "File", function()
 		{
 			openDaFileMenuNow();
 		});
@@ -1039,7 +1044,7 @@ class ChartingState extends MusicBeatState
 		/**
 		 * Play button
 		* **/
-		var playButton = new FlxButton(70, 70, "Play", function()
+		var playButton = new FlxUIButton(70, 70, "Play", function()
 		{
 			// JOELwindows7: steal function when press SPACE
 			if (FlxG.sound.music.playing)
@@ -1066,7 +1071,7 @@ class ChartingState extends MusicBeatState
 		/**
 		 * Seek Up button, scroll the chart up
 		 */
-		var seekUpButton = new FlxButton(70, 10, "Scroll Up", function()
+		var seekUpButton = new FlxUIButton(70, 10, "Scroll Up", function()
 		{
 		});
 
@@ -1129,7 +1134,7 @@ class ChartingState extends MusicBeatState
 		/**
 		 * Seek down button. scroll the chart down
 		 */
-		var seekDownButton = new FlxButton(70, 130, "Scroll Down", function()
+		var seekDownButton = new FlxUIButton(70, 130, "Scroll Down", function()
 		{
 		});
 
@@ -1188,7 +1193,7 @@ class ChartingState extends MusicBeatState
 		seekDownButton.updateHitbox();
 		// seekDownButton.alpha = 0;
 
-		var nextSectionButton = new FlxButton(125, 70, "Next Section", function()
+		var nextSectionButton = new FlxUIButton(125, 70, "Next Section", function()
 		{
 			// JOELwindows7: steal from keyboard function of it. this is when press D
 			if (FlxG.keys.pressed.CONTROL)
@@ -1202,7 +1207,7 @@ class ChartingState extends MusicBeatState
 		nextSectionButton.setSize(25, 25);
 		nextSectionButton.updateHitbox();
 
-		var prevSectionButton = new FlxButton(10, 70, "Previous Section", function()
+		var prevSectionButton = new FlxUIButton(10, 70, "Previous Section", function()
 		{
 			// JOELwindows7: steal from keyboard function of it. this is when press A
 			if (FlxG.keys.pressed.CONTROL)
@@ -1228,6 +1233,8 @@ class ChartingState extends MusicBeatState
 
 	function addSongUI():Void
 	{
+		// JOELwindows7: here I add tooltip yeye
+
 		var UI_songTitle = new FlxUIInputText(10, 10, 70, _song.songId, 8);
 		typingShit = UI_songTitle;
 
@@ -1239,23 +1246,32 @@ class ChartingState extends MusicBeatState
 			_song.needsVoices = check_voices.checked;
 			Debug.logTrace('CHECKED!');
 		};
+		tooltips.add(check_voices,{
+			title: "Has voice track",
+			body: "Tick if your song has separate voice audio.",
+		});
 
-		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
+		var saveButton:FlxUIButton = new FlxUIButton(110, 8, "Save", function()
 		{
 			saveLevel();
 		});
+		//JOELwindows7: try add tooltip?
+		tooltips.add(saveButton, {
+			title: "Save As",
+			body: "Open dialog box to save as a chart JSON.",
+		});
 
-		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
+		var reloadSong:FlxUIButton = new FlxUIButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
 			loadSong(_song.songId, true);
 		});
 
-		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
+		var reloadSongJson:FlxUIButton = new FlxUIButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
 		{
 			loadJson(_song.songId.toLowerCase());
 		});
 
-		var restart = new FlxButton(10, 140, "Reset Chart", function()
+		var restart = new FlxUIButton(10, 140, "Reset Chart", function()
 		{
 			for (ii in 0..._song.notes.length)
 			{
@@ -1267,7 +1283,7 @@ class ChartingState extends MusicBeatState
 			resetSection(true);
 		});
 
-		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
+		var loadAutosaveBtn:FlxUIButton = new FlxUIButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
 		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 65, 0.1, 1, 1.0, 5000.0, 1);
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
@@ -1309,9 +1325,14 @@ class ChartingState extends MusicBeatState
 		var stepperShiftNoteDialms:FlxUINumericStepper = new FlxUINumericStepper(10, 320, 1, 0, -1000, 1000, 2);
 		stepperShiftNoteDialms.name = 'song_shiftnotems';
 
-		var shiftNoteButton:FlxButton = new FlxButton(10, 335, "Shift", function()
+		var shiftNoteButton:FlxUIButton = new FlxUIButton(10, 335, "Shift", function()
 		{
 			shiftNotes(Std.int(stepperShiftNoteDial.value), Std.int(stepperShiftNoteDialstep.value), Std.int(stepperShiftNoteDialms.value));
+		});
+		//JOELwindows7: tootipsed
+		tooltips.add(shiftNoteButton,{
+			title: "Shift Notes",
+			body: "Commence shifting notes according to the values above you've set.\nNot to be confused with SHIFT on your keyboard or bottom left.",
 		});
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
@@ -1425,14 +1446,14 @@ class ChartingState extends MusicBeatState
 		var stepperCopy:FlxUINumericStepper = new FlxUINumericStepper(110, 132, 1, 1, -999, 999, 0);
 		var stepperCopyLabel = new FlxText(174, 132, 'sections back');
 
-		var copyButton:FlxButton = new FlxButton(10, 130, "Copy last section", function()
+		var copyButton:FlxUIButton = new FlxUIButton(10, 130, "Copy last section", function()
 		{
 			copySection(Std.int(stepperCopy.value));
 		});
 
-		var clearSectionButton:FlxButton = new FlxButton(10, 150, "Clear Section", clearSection);
+		var clearSectionButton:FlxUIButton = new FlxUIButton(10, 150, "Clear Section", clearSection);
 
-		var swapSection:FlxButton = new FlxButton(10, 170, "Swap Section", function()
+		var swapSection:FlxUIButton = new FlxUIButton(10, 170, "Swap Section", function()
 		{
 			var secit = _song.notes[curSection];
 
@@ -1485,7 +1506,7 @@ class ChartingState extends MusicBeatState
 		check_playerAltAnim = new FlxUICheckBox(180, 340, null, null, "Player Alternate Animation", 100);
 		check_playerAltAnim.name = 'check_playerAltAnim';
 
-		var refresh = new FlxButton(10, 60, 'Refresh Section', function()
+		var refresh = new FlxUIButton(10, 60, 'Refresh Section', function()
 		{
 			var section = getSectionByTime(Conductor.songPosition);
 
@@ -1497,7 +1518,7 @@ class ChartingState extends MusicBeatState
 			check_playerAltAnim.checked = section.playerAltAnim;
 		});
 
-		var startSection:FlxButton = new FlxButton(10, 85, "Play Here", function()
+		var startSection:FlxUIButton = new FlxUIButton(10, 85, "Play Here", function()
 		{
 			PlayState.SONG = _song;
 			FlxG.sound.music.stop();
@@ -1617,7 +1638,7 @@ class ChartingState extends MusicBeatState
 
 		var stepperNoteTypeLabel = new FlxText(74, 40, 'Note Type'); // JOELwindows7: note type label
 
-		var applyLength:FlxButton = new FlxButton(10, 100, 'Apply Data');
+		var applyLength:FlxUIButton = new FlxUIButton(10, 100, 'Apply Data');
 
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(stepperSusLengthLabel);
@@ -3983,7 +4004,7 @@ class ChartingState extends MusicBeatState
 		FlxG.save.data.autosave = Json.stringify({
 			"song": _song,
 			"songMeta": {
-				"name": _song.songId,
+				"name": _song.songName,
 				"artist": _song.artist,
 				"offset": 0,
 			}

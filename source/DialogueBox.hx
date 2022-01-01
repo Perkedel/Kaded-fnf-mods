@@ -2,6 +2,7 @@ package;
 
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUICheckBox;
+import flixel.addons.ui.FlxUIButton;
 import flixel.ui.FlxButton;
 import flixel.tweens.FlxTween;
 import flixel.system.FlxSound;
@@ -61,7 +62,7 @@ class DialogueBox extends FlxSpriteGroup
 	var sound:FlxSound;
 
 	// JOELwindows7: touchscreen stuffs
-	var skipButton:FlxButton;
+	var skipButton:FlxUIButton;
 	var autoClickCheckbox:FlxUICheckBox;
 	var autoClickDelayStepper:FlxUINumericStepper;
 	var autoClickDelayLabel:FlxText;
@@ -309,7 +310,7 @@ class DialogueBox extends FlxSpriteGroup
 		// JOELwindows7: now the touchscreen buttons!
 		// Skip dialogue
 		// FlxG.width * 0.9
-		skipButton = new FlxButton(10, 45, "Skip", function()
+		skipButton = new FlxUIButton(10, 45, "Skip", function()
 		{
 			haveSkippedDialogue = true;
 		});

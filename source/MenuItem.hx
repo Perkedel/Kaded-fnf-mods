@@ -1,5 +1,6 @@
 package;
 
+import openfl.Lib;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -18,7 +19,7 @@ class MenuItem extends FlxSpriteGroup
 		// JOELwindows7: now useCustomImagePath & imagePath for custom Week image due to manual assignations.
 		super(x, y);
 		// week = new FlxSprite().loadGraphic(Paths.loadImage('storymenu/week'+ weekNum)); // former
-		week = new FlxSprite().loadGraphic(Paths.loadImage('storymenu/' + (useCustomImagePath? imagePath : 'week'+ weekNum))); // JOELwindows7: there you go
+		week = new FlxSprite().loadGraphic(Paths.loadImage('storymenu/' + (useCustomImagePath ? imagePath : 'week' + weekNum))); // JOELwindows7: there you go
 		week.antialiasing = FlxG.save.data.antialiasing;
 		add(week);
 	}
@@ -36,10 +37,21 @@ class MenuItem extends FlxSpriteGroup
 	// I'm still learning how math works thanks whoever is reading this lol
 	var fakeFramerate:Int = Math.round((1 / FlxG.elapsed) / 10);
 
+	//JOELwindows7: oh here framerate stuff going on
+	var daRefFPS:Int = 60;
+
 	override function update(elapsed:Float)
 	{
+		//JOELwindows7: get the FPS
+		#if FEATURE_DISPLAY_FPS_CHANGE
+		daRefFPS = Std.int((cast(Lib.current.getChildAt(0), Main)).getFPS());
+		#end
+
 		super.update(elapsed);
-		y = FlxMath.lerp(y, (targetY * 120) + 480, 0.17 * (60 / FlxG.save.data.fpsCap));
+		// y = FlxMath.lerp(y, (targetY * 120) + 480, 0.17 * (60 / FlxG.save.data.fpsCap));
+		// y = FlxMath.lerp(y, (targetY * 120) + 480, 0.20); // JOELwindows7: perhaps don't rely on FPS because slower the higher FPS cap is?
+		// y = FlxMath.lerp(y, (targetY * 120) + 480, 0.20 * (60 / fakeFramerate)); // JOELwindows7: Okay let's try Fake Framerate?
+		y = FlxMath.lerp(y, (targetY * 120) + 480, 0.17 * (60 /daRefFPS)); // JOELwindows7: too fast! how about current FPS we had??
 
 		if (isFlashing)
 			flashingInt += 1;
