@@ -1330,6 +1330,7 @@ class ChartingState extends MusicBeatState
 			shiftNotes(Std.int(stepperShiftNoteDial.value), Std.int(stepperShiftNoteDialstep.value), Std.int(stepperShiftNoteDialms.value));
 		});
 		//JOELwindows7: tootipsed
+		// see https://github.com/HaxeFlixel/flixel-demos/blob/master/UserInterface/Tooltips/source/State_DemoCode.hx
 		tooltips.add(shiftNoteButton,{
 			title: "Shift Notes",
 			body: "Commence shifting notes according to the values above you've set.\nNot to be confused with SHIFT on your keyboard or bottom left.",
