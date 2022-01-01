@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.util.FlxAsyncLoop;
 import CoreState;
 import MusicBeatState;
 import GalleryAchievements;
@@ -70,6 +71,10 @@ class FreeplayState extends MusicBeatState
 
 	static var legacyJSONWeekList:Bool = false; // JOELwindows7: in case you want to use the old JSONed week list.
 
+	var asyncLoader:FlxAsyncLoop; // JOELwindows7: here loader thingy.
+	var loadedUp:Bool = false; // JOELwindows7: flag to raise when loading complete.
+	var legacySynchronousLoading:Bool = true; // JOELwindows7: keep false to use new async loading.
+
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
 		var diffName:String = "";
@@ -133,7 +138,7 @@ class FreeplayState extends MusicBeatState
 					weekUnlocked.push(true);
 					Debug.logInfo("Week " + Std.string(i) + ": " + weekSongs.toString() + "; line stuff = " + lineStuffs.toString());
 
-					//Just pecking insert them now directly immediately
+					// Just pecking insert them now directly immediately
 					// weekDatas.weekData.insert(i, weekSongs);
 					// weekDatas.weekCharacters.insert(i, [lineStuffs[0], lineStuffs[1], lineStuffs[2]]);
 					// weekDatas.weekColor.insert(i, lineStuffs[3]);
@@ -167,7 +172,6 @@ class FreeplayState extends MusicBeatState
 				// {
 				// 	Debug.logInfo("Week " + Std.string(i) + ": " + weekArray[i].toString());
 				// }
-				
 
 				// Now insert them to here
 				// Debug.logInfo("Inserting into week datas");
@@ -210,8 +214,11 @@ class FreeplayState extends MusicBeatState
 		clean();
 
 		// JOELwindows7: go loading bar
-		_loadingBar.popNow();
-		_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
+		if(legacySynchronousLoading)
+		{
+			_loadingBar.popNow();
+			_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
+		}
 
 		// JOELwindows7: pls install weekData
 		weekInfo = FreeplayState.loadWeekDatas(weekInfo);
@@ -220,60 +227,69 @@ class FreeplayState extends MusicBeatState
 
 		cached = false;
 
-		populateSongData();
+		// JOELwindows7: excuse me, just just this instead
+		// if (!legacySynchronousLoading)
+		// 	asyncLoader = new FlxAsyncLoop(1, asynchronouslyLoadSongList);
+		// wait, wrong. in down!
+
+		if(legacySynchronousLoading)
+			populateSongData(); //JOELwindows7: uncomment for synchronous
 		PlayState.inDaPlay = false;
 		PlayState.currentSong = "bruh";
 
-		#if !FEATURE_STEPMANIA
-		trace("FEATURE_STEPMANIA was not specified during build, sm file loading is disabled.");
-		#elseif FEATURE_STEPMANIA
-		// TODO: Refactor this to use OpenFlAssets.
-		trace("tryin to load sm files");
-		_loadingBar.setInfoText("Loading StepMania files...");
-		_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
-		// JOELwindows7: android crash if attempt FileSystem stuffs
-		for (i in FileSystem.readDirectory("assets/sm/"))
+		if (legacySynchronousLoading)
 		{
-			trace(i);
-			
-			if (FileSystem.isDirectory("assets/sm/" + i))
+			#if !FEATURE_STEPMANIA
+			trace("FEATURE_STEPMANIA was not specified during build, sm file loading is disabled.");
+			#elseif FEATURE_STEPMANIA
+			// TODO: Refactor this to use OpenFlAssets.
+			trace("tryin to load sm files");
+			_loadingBar.setInfoText("Loading StepMania files...");
+			_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
+			// JOELwindows7: android crash if attempt FileSystem stuffs
+			for (i in FileSystem.readDirectory("assets/sm/"))
 			{
-				trace("Reading SM file dir " + i);
-				for (file in FileSystem.readDirectory("assets/sm/" + i))
+				trace(i);
+
+				if (FileSystem.isDirectory("assets/sm/" + i))
 				{
-					if (file.contains(" "))
-						FileSystem.rename("assets/sm/" + i + "/" + file, "assets/sm/" + i + "/" + file.replace(" ", "_"));
-					if (file.endsWith(".sm") && !FileSystem.exists("assets/sm/" + i + "/converted.json"))
+					trace("Reading SM file dir " + i);
+					for (file in FileSystem.readDirectory("assets/sm/" + i))
 					{
-						trace("reading " + file);
-						_loadingBar.setInfoText("Reading StepMania "+ file +" file...");
-						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
-						trace("Converting " + file.header.TITLE);
-						_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
-						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-						var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
-						songs.push(meta);
-						var song = Song.loadFromJsonRAW(data);
-						songData.set(file.header.TITLE, [song, song, song]);
-					}
-					else if (FileSystem.exists("assets/sm/" + i + "/converted.json") && file.endsWith(".sm"))
-					{
-						trace("reading " + file);
-						_loadingBar.setInfoText("Reading StepMania " + file + " file...");
-						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
-						trace("Converting " + file.header.TITLE);
-						_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
-						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-						var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
-						songs.push(meta);
-						var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + i + "/converted.json"));
-						trace("got content lol");
-						songData.set(file.header.TITLE, [song, song, song]);
+						if (file.contains(" "))
+							FileSystem.rename("assets/sm/" + i + "/" + file, "assets/sm/" + i + "/" + file.replace(" ", "_"));
+						if (file.endsWith(".sm") && !FileSystem.exists("assets/sm/" + i + "/converted.json"))
+						{
+							trace("reading " + file);
+							_loadingBar.setInfoText("Reading StepMania " + file + " file...");
+							var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
+							trace("Converting " + file.header.TITLE);
+							_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
+							var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
+							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
+							songs.push(meta);
+							var song = Song.loadFromJsonRAW(data);
+							songData.set(file.header.TITLE, [song, song, song]);
+						}
+						else if (FileSystem.exists("assets/sm/" + i + "/converted.json") && file.endsWith(".sm"))
+						{
+							trace("reading " + file);
+							_loadingBar.setInfoText("Reading StepMania " + file + " file...");
+							var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
+							trace("Converting " + file.header.TITLE);
+							_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
+							var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
+							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
+							songs.push(meta);
+							var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + i + "/converted.json"));
+							trace("got content lol");
+							songData.set(file.header.TITLE, [song, song, song]);
+						}
 					}
 				}
 			}
+			#end
 		}
-		#end
 
 		// JOELwindows7: propose odysee and thief song list
 		#if odysee
@@ -315,25 +331,28 @@ class FreeplayState extends MusicBeatState
 		addLeftButton(FlxG.width - 350, -100);
 		addRightButton(FlxG.width - 100, -100);
 
-		for (i in 0...songs.length)
+		if (legacySynchronousLoading)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
-			songText.isMenuItem = true;
-			songText.targetY = i;
-			songText.ID = i; // ID the song text to compare curSelected song.
-			grpSongs.add(songText);
+			for (i in 0...songs.length)
+			{
+				var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
+				songText.isMenuItem = true;
+				songText.targetY = i;
+				songText.ID = i; // ID the song text to compare curSelected song.
+				grpSongs.add(songText);
 
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.sprTracker = songText;
-			icon.ID = i;
+				var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+				icon.sprTracker = songText;
+				icon.ID = i;
 
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
+				// using a FlxGroup is too much fuss!
+				iconArray.push(icon);
+				add(icon);
 
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
+				// songText.x += 40;
+				// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+				// songText.screenCenter(X);
+			}
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.65, 5, 0, "", 32);
@@ -363,8 +382,11 @@ class FreeplayState extends MusicBeatState
 
 		add(scoreText);
 
-		changeSelection();
-		changeDiff();
+		if (legacySynchronousLoading)
+		{
+			changeSelection();
+			changeDiff();
+		}
 
 		// FlxG.sound.playMusic(Paths.music('title'), 0);
 		// FlxG.sound.music.fadeIn(2, 0, 0.8);
@@ -382,13 +404,22 @@ class FreeplayState extends MusicBeatState
 		FlxTween.tween(leftButton, {y: 90}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left button!
 		FlxTween.tween(rightButton, {y: 90}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween right button!
 
-		//JOELwindows7: done loading bar
-		_loadingBar.setInfoText("Done loading!");
-		_loadingBar.setLoadingType(ExtraLoadingType.DONE);
-		_loadingBar.delayedUnPopNow(5);
+		if (legacySynchronousLoading)
+		{
+			// JOELwindows7: done loading bar
+			_loadingBar.setInfoText("Done loading!");
+			_loadingBar.setLoadingType(ExtraLoadingType.DONE);
+			_loadingBar.delayedUnPopNow(5);
+		}
 
 		// JOELwindows7: stuff
 		AchievementUnlocked.whichIs("freeplay_mode");
+
+		// JOELwindows7: excuse me, just just this instead
+		if (!legacySynchronousLoading)
+			asyncLoader = new FlxAsyncLoop(1, asynchronouslyLoadSongList);
+		else
+			loadedUp = true;
 	}
 
 	public static var cached:Bool = false;
@@ -414,9 +445,9 @@ class FreeplayState extends MusicBeatState
 			var data:Array<String> = list[i].split(':');
 			var songId = data[0];
 			var meta = new FreeplaySongMetadata(songId, Std.parseInt(data[2]), data[1]);
-			//JOELwindows7: loading text
+			// JOELwindows7: loading text
 			Main.loadingBar.setInfoText("Loading song " + songId + "...");
-			Main.loadingBar.setPercentage((i / list.length)*100);
+			Main.loadingBar.setPercentage((i / list.length) * 100);
 
 			var diffs = [];
 			var diffsThatExist = [];
@@ -483,9 +514,138 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+	// JOELwindows7: stepmania loading copy into here instead
+	function loadStepmania()
+	{
+		#if !FEATURE_STEPMANIA
+		trace("FEATURE_STEPMANIA was not specified during build, sm file loading is disabled.");
+		#elseif FEATURE_STEPMANIA
+		// TODO: Refactor this to use OpenFlAssets.
+		trace("tryin to load sm files");
+		_loadingBar.setInfoText("Loading StepMania files...");
+		_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
+		// JOELwindows7: android crash if attempt FileSystem stuffs
+		for (i in FileSystem.readDirectory("assets/sm/"))
+		{
+			trace(i);
+
+			if (FileSystem.isDirectory("assets/sm/" + i))
+			{
+				trace("Reading SM file dir " + i);
+				for (file in FileSystem.readDirectory("assets/sm/" + i))
+				{
+					if (file.contains(" "))
+						FileSystem.rename("assets/sm/" + i + "/" + file, "assets/sm/" + i + "/" + file.replace(" ", "_"));
+					if (file.endsWith(".sm") && !FileSystem.exists("assets/sm/" + i + "/converted.json"))
+					{
+						trace("reading " + file);
+						_loadingBar.setInfoText("Reading StepMania " + file + " file...");
+						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
+						trace("Converting " + file.header.TITLE);
+						_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
+						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
+						var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
+						songs.push(meta);
+						var song = Song.loadFromJsonRAW(data);
+						songData.set(file.header.TITLE, [song, song, song]);
+					}
+					else if (FileSystem.exists("assets/sm/" + i + "/converted.json") && file.endsWith(".sm"))
+					{
+						trace("reading " + file);
+						_loadingBar.setInfoText("Reading StepMania " + file + " file...");
+						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
+						trace("Converting " + file.header.TITLE);
+						_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
+						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
+						var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
+						songs.push(meta);
+						var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + i + "/converted.json"));
+						trace("got content lol");
+						songData.set(file.header.TITLE, [song, song, song]);
+					}
+				}
+			}
+		}
+		#end
+	}
+
+	// JOELwindows7: here list the song in that list file.
+	function listTheSongs()
+	{
+		for (i in 0...songs.length)
+		{
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
+			songText.isMenuItem = true;
+			songText.targetY = i;
+			songText.ID = i; // ID the song text to compare curSelected song.
+			grpSongs.add(songText);
+
+			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			icon.sprTracker = songText;
+			icon.ID = i;
+
+			// using a FlxGroup is too much fuss!
+			iconArray.push(icon);
+			add(icon);
+
+			// songText.x += 40;
+			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+			// songText.screenCenter(X);
+		}
+	}
+
+	// JOELwindows7: attempt to async the loading of this freeplay song list. use FlxAsyncLoop
+	function asynchronouslyLoadSongList()
+	{
+		_loadingBar.setInfoText("Loading Songs");
+		_loadingBar.popNow();
+		_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
+		Debug.logInfo("Begin Loading pls");
+		// see https://github.com/HaxeFlixel/flixel-demos/blob/master/Other/FlxAsyncLoop/source/MenuState.hx
+		populateSongData();
+		loadStepmania();
+		listTheSongs();
+		Debug.logInfo("End Loading pls");
+	}
+
+	// JOELwindows7: and async complete
+	function asyncCompleteLoad()
+	{
+		changeSelection();
+		changeDiff();
+
+		// JOELwindows7: done loading bar
+		_loadingBar.setInfoText("Done loading!");
+		_loadingBar.setLoadingType(ExtraLoadingType.DONE);
+		_loadingBar.delayedUnPopNow(5);
+
+		// JOELwindows7: now clean up the loader.
+		asyncLoader.kill();
+		asyncLoader.destroy();
+
+		loadedUp = true;
+	}
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		// JOELwindows7: now, begin the async process
+		if (!legacySynchronousLoading)
+		{
+			if (!asyncLoader.started)
+			{
+				Debug.logInfo("start da loaging");
+				asyncLoader.start();
+			}
+			else
+			{
+				if (asyncLoader.finished)
+				{
+					asyncCompleteLoad();
+				}
+			}
+		}
 
 		if (FlxG.sound.music.volume < 0.7)
 		{
@@ -720,6 +880,10 @@ class FreeplayState extends MusicBeatState
 
 	function changeDiff(change:Int = 0)
 	{
+		// JOELwindows7: only proceed if loaded
+		if (!loadedUp)
+			return;
+
 		if (!songs[curSelected].diffs.contains(CoolUtil.difficultyFromInt(curDifficulty + change)))
 			return;
 
@@ -753,6 +917,10 @@ class FreeplayState extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+		// JOELwindows7: only proceed if loaded
+		if (!loadedUp)
+			return;
 
 		curSelected += change;
 
@@ -877,6 +1045,10 @@ class FreeplayState extends MusicBeatState
 
 		// NGio.logEvent('Fresh');
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+		// JOELwindows7: only proceed if loaded
+		if (!loadedUp)
+			return;
 
 		curSelected = change;
 
