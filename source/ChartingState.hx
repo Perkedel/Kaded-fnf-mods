@@ -1,5 +1,6 @@
 package;
 
+import haxe.ui.components.DropDown;
 import flixel.FlxSubState;
 import flixel.addons.ui.FlxButtonPlus;
 import Song.SongMeta;
@@ -631,13 +632,31 @@ class ChartingState extends MusicBeatState
 		var nameLabel = new FlxText(150, 5, 'Event Name');
 		var eventName = new FlxUIInputText(150, 20, 80, "");
 		var typeLabel = new FlxText(10, 45, 'Type of Event');
-		// JOELwindows7: list of event here
-		var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray([
+		// JOELwindows7: alright, here events
+		var theseEvents:Array<String> = [
 			"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
 			"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights",
-		], true));
+		];
+		// JOELwindows7: list of event here
+		// var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray([
+		// 	"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
+		// 	"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights",
+		// ], true));
+		// JOELwindows7: here with tidy version I guess
+		var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray(theseEvents, true));
 		eventType.autoBounds = true; // JOELwindows7: how the peck fit to screen.
 		// eventType.dropDirection = FlxUIDropDownMenuDropDirection.Up; //JOELwindows7: helep
+		// JOELwindows7: attempt HaxeUI version of it
+		var newEventType = new DropDown();
+		newEventType.x = 10;
+		newEventType.y = 75;
+		for (i in 0...theseEvents.length)
+		{
+			newEventType.dataSource.add({
+				text: theseEvents[i],
+				item: theseEvents[i],
+			});
+		}
 		var valueLabel = new FlxText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");
 		// JOELwindows7: moar of them!
@@ -1041,6 +1060,7 @@ class ChartingState extends MusicBeatState
 		tab_events.add(eventPos);
 		tab_events.add(updatePos);
 		tab_events.add(eventType);
+		tab_events.add(newEventType); // JOELwindows7: okeh here attemption
 		tab_events.add(listOfEvents);
 		UI_options.addGroup(tab_events);
 	}

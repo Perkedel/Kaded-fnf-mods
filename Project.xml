@@ -309,9 +309,11 @@
 	<haxelib name="tink_core"/>
 
 	<!-- JOELwindows7: HaxeUI stuffs -->
-	<haxelib name="haxeui"/>
+	<!-- <haxelib name="haxeui"/> -->
+	<!-- Don't use above `haxeui` without any postfix! that's ancient library! use bellow instead! -->
 	<haxelib name="haxeui-core"/>
 	<haxelib name="haxeui-flixel"/>
+	<!-- <haxelib name="haxeui-openfl"/> -->
 
 	<!-- JOELwindows7: TentaRJ's GameJolt tools -->
 	<haxelib name="tentools" />
