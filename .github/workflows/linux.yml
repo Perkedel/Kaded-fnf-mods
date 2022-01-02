@@ -78,6 +78,8 @@ jobs:
           haxelib install format
           haxelib install lime-tools
           haxelib install haxeui
+          haxelib install haxeui-core
+          haxelib install haxeui-openfl
           haxelib install haxeui-flixel
           haxelib list
       

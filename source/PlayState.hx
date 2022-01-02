@@ -3084,9 +3084,11 @@ class PlayState extends MusicBeatState
 					case "Blammed Lights":
 						Stage.blammedLights(Std.int(i.value));
 					case "Camera Zoom in":
-						camZoomNow(i.value);
+						camZoomNow(i.value, i.value2, i.value3);
 					case "Shake camera":
-						FlxG.camera.shake(i.value, 1, null, true);
+						FlxG.camera.shake(i.value, i.value2, function(){
+							
+						}, true);
 						Controls.vibrate(0, i.value);
 					case "HUD Zoom in":
 						camZoomNow(0, i.value);
@@ -3095,7 +3097,7 @@ class PlayState extends MusicBeatState
 					case "LED ON for":
 					// JOELwindows7: turn LED on for how long second i.value
 					case "Vibrate for":
-						Controls.vibrate(0, i.value);
+						Controls.vibrate(0, i.value, i.value2);
 				}
 			}
 

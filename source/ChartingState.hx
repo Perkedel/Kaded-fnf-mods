@@ -152,6 +152,11 @@ class ChartingState extends MusicBeatState
 
 	public var paused:Bool = false; // JOELwindows7: mark for file menu open
 
+	var theseEvents:Array<String> = [
+		"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
+		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights",
+	]; // JOELwindows7: these events of it.
+
 	public function new(reloadOnInit:Bool = false)
 	{
 		super();
@@ -302,6 +307,8 @@ class ChartingState extends MusicBeatState
 			var type = Reflect.field(i, "type");
 			var pos = Reflect.field(i, "position");
 			var value = Reflect.field(i, "value");
+			var value2 = Reflect.field(i, "value2"); // JOELwindows7: hyeye
+			var value3 = Reflect.field(i, "value3"); // JOELwindows7: nyenye
 
 			if (type == "BPM Change")
 			{
@@ -633,10 +640,7 @@ class ChartingState extends MusicBeatState
 		var eventName = new FlxUIInputText(150, 20, 80, "");
 		var typeLabel = new FlxText(10, 45, 'Type of Event');
 		// JOELwindows7: alright, here events
-		var theseEvents:Array<String> = [
-			"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
-			"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights",
-		];
+		// theseEvents; //here.
 		// JOELwindows7: list of event here
 		// var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray([
 		// 	"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
@@ -649,7 +653,7 @@ class ChartingState extends MusicBeatState
 		// JOELwindows7: attempt HaxeUI version of it
 		var newEventType = new DropDown();
 		newEventType.x = 10;
-		newEventType.y = 75;
+		newEventType.y = 90;
 		for (i in 0...theseEvents.length)
 		{
 			newEventType.dataSource.add({
@@ -760,6 +764,7 @@ class ChartingState extends MusicBeatState
 
 			eventName.text = pog.name;
 			eventType.selectedLabel = pog.type;
+			newEventType.selectedItem = pog.type; // JOELwindows7: helep me pelis
 			eventValue.text = pog.value + "";
 			// JOELwindows7: here more
 			eventValue2.text = pog.value2 + "";
@@ -851,6 +856,7 @@ class ChartingState extends MusicBeatState
 
 			eventName.text = firstEvent.name;
 			eventType.selectedLabel = firstEvent.type;
+			newEventType.selectedItem = firstEvent.type; // JOELwindows7: helep me pelis
 			eventValue.text = firstEvent.value + "";
 			eventValue2.text = firstEvent.value2 + "";
 			eventValue3.text = firstEvent.value3 + "";
@@ -960,6 +966,8 @@ class ChartingState extends MusicBeatState
 			Debug.logTrace("bruh");
 			eventType.selectedLabel = firstEventObject.type;
 			Debug.logTrace("bruh");
+			newEventType.selectedItem = firstEventObject.type; // JOELwindows7: helep me pelis
+			Debug.logTrace("bruh");
 			eventValue.text = firstEventObject.value + "";
 			// JOELwindows7: bruh 🕺🏻
 			Debug.logTrace("bruh");
@@ -991,6 +999,7 @@ class ChartingState extends MusicBeatState
 			eventValue3.text = event.value3 + "";
 			eventPos.text = event.position + "";
 			eventType.selectedLabel = event.type;
+			newEventType.selectedItem = event.type; // JOELwindows7: helep me pelis
 			currentSelectedEventName = event.name;
 			currentEventPosition = event.position;
 		});
@@ -1018,6 +1027,15 @@ class ChartingState extends MusicBeatState
 		eventType.callback = function(type:String)
 		{
 			savedType = eventType.selectedLabel;
+			newEventType.selectedItem = eventType.selectedLabel; // JOELwindows7: helep me pelis
+		};
+
+		// JOELwindows7: helep
+		newEventType.onChange = function(e)
+		{
+			Debug.logTrace("Change event type to " + newEventType.selectedItem);
+			savedType = newEventType.selectedItem.item;
+			eventType.selectedLabel = newEventType.selectedItem.item;
 		};
 
 		eventName.callback = function(string:String, string2:String)
