@@ -308,6 +308,11 @@
 	<!-- JOELwindows7: the Tinkerbell stuffs and for the depend on it -->
 	<haxelib name="tink_core"/>
 
+	<!-- JOELwindows7: HaxeUI stuffs -->
+	<haxelib name="haxeui"/>
+	<haxelib name="haxeui-core"/>
+	<haxelib name="haxeui-flixel"/>
+
 	<!-- JOELwindows7: TentaRJ's GameJolt tools -->
 	<haxelib name="tentools" />
 	<haxelib name="systools" unless = "mobile"/>

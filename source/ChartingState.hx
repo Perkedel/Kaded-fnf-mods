@@ -287,10 +287,10 @@ class ChartingState extends MusicBeatState
 		var index = 0;
 
 		if (_song.eventObjects == null)
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; //JOELwindows7: ouh
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: ouh
 
 		if (_song.eventObjects.length == 0)
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; //JOELwindows7: ha!
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: ha!
 
 		Debug.logTrace("goin");
 
@@ -634,8 +634,10 @@ class ChartingState extends MusicBeatState
 		// JOELwindows7: list of event here
 		var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray([
 			"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
-			"Scroll Speed Change", "Vibrate for", "LED ON for",
+			"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights",
 		], true));
+		eventType.autoBounds = true; // JOELwindows7: how the peck fit to screen.
+		// eventType.dropDirection = FlxUIDropDownMenuDropDirection.Up; //JOELwindows7: helep
 		var valueLabel = new FlxText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");
 		// JOELwindows7: moar of them!
@@ -940,10 +942,10 @@ class ChartingState extends MusicBeatState
 			eventType.selectedLabel = firstEventObject.type;
 			Debug.logTrace("bruh");
 			eventValue.text = firstEventObject.value + "";
-			//JOELwindows7: bruh 🕺🏻
+			// JOELwindows7: bruh 🕺🏻
 			Debug.logTrace("bruh");
 			eventValue2.text = firstEventObject.value2 + "";
-			//JOELwindows7: ye
+			// JOELwindows7: ye
 			Debug.logTrace("bruh");
 			eventValue3.text = firstEventObject.value3 + "";
 			Debug.logTrace("bruh");
@@ -980,14 +982,14 @@ class ChartingState extends MusicBeatState
 			savedValue = string;
 		};
 
-		//JOELwindows7: moar
+		// JOELwindows7: moar
 		eventValue2.callback = function(string:String, string2:String)
 		{
 			Debug.logTrace(string + " - value2");
 			savedValue2 = string;
 		};
 
-		//JOELwindows7: MOAR!
+		// JOELwindows7: MOAR!
 		eventValue3.callback = function(string:String, string2:String)
 		{
 			Debug.logTrace(string + " - value3");
@@ -1018,8 +1020,8 @@ class ChartingState extends MusicBeatState
 
 		Typeables.push(eventPos);
 		Typeables.push(eventValue);
-		Typeables.push(eventValue2); //JOELwindows7: a
-		Typeables.push(eventValue3); //JOELwindows7: b
+		Typeables.push(eventValue2); // JOELwindows7: a
+		Typeables.push(eventValue3); // JOELwindows7: b
 		Typeables.push(eventName);
 
 		var tab_events = new FlxUI(null, UI_options);
@@ -1031,8 +1033,8 @@ class ChartingState extends MusicBeatState
 		tab_events.add(typeLabel);
 		tab_events.add(eventName);
 		tab_events.add(eventValue);
-		tab_events.add(eventValue2); //JOELwindows7: moar
-		tab_events.add(eventValue3); //JOELwindows7: MOAR!
+		tab_events.add(eventValue2); // JOELwindows7: moar
+		tab_events.add(eventValue3); // JOELwindows7: MOAR!
 		tab_events.add(eventSave);
 		tab_events.add(eventAdd);
 		tab_events.add(eventRemove);

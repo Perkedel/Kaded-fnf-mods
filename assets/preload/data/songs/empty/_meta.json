@@ -23,5 +23,11 @@
     "noteStyle": "normal",
     "player1": "bf",
     "player2": "dad",
-    "gfVersion": "gf"
+    "gfVersion": "gf",
+    "eventObjects": [{
+        "name": "Init BPM",
+        "position": 0,
+        "value": 100,
+        "type": "BPM Change"
+    }]
 }

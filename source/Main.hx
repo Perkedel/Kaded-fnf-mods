@@ -31,6 +31,7 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import lime.system.JNI;
 import plugins.systems.ScanPlatform;
+import haxe.ui.Toolkit;
 
 class Main extends Sprite
 {
@@ -65,6 +66,9 @@ class Main extends Sprite
 	public static function main():Void
 	{
 		// quick checks
+
+		//JOELwindows7: here haxeUI
+		Toolkit.init();
 
 		Lib.current.addChild(new Main());
 	}

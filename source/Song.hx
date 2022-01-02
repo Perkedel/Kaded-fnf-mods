@@ -120,6 +120,7 @@ typedef SongMeta =
 	var ?player1:String;
 	var ?player2:String;
 	var ?gfVersion:String;
+	var ?eventObjects:Array<Event>; // JOELwindows7: make event objects possible to be song wide rather than just 1 diff
 }
 
 class Song
@@ -445,6 +446,14 @@ class Song
 			if (songData.epilogueTankmanVideoPath == null || songData.epilogueTankmanVideoPath == "")
 			{
 				songData.epilogueTankmanVideoPath = songMetaData.epilogueTankmanVideoPath;
+			}
+		}
+
+		if (songMetaData.eventObjects != null && songMetaData.eventObjects != [] && songMetaData.eventObjects.length > 1 )
+		{
+			if (songData.eventObjects == null || songData.eventObjects == [] || songData.eventObjects.length <= 1)
+			{
+				songData.eventObjects = songMetaData.eventObjects;
 			}
 		}
 

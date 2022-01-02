@@ -98,6 +98,8 @@ jobs:
           haxelib install svg
           haxelib install format
           haxelib install lime-tools
+          haxelib install haxeui
+          haxelib install haxeui-flixel
           haxelib list
           dir
           pwd
