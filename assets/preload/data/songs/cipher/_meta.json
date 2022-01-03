@@ -19,8 +19,15 @@
     "reversedCountdown": false,
     "invisibleCountdown": false,
     "silentCountdown": false,
+    "useCustomNoteStyle": true,
     "noteStyle": "saubo",
     "player1": "bf-covid",
     "player2": "hookx",
-    "gfVersion": "gf-covid"
+    "gfVersion": "gf-covid",
+    "eventObjects": [{
+        "name": "Init BPM",
+        "position": 0,
+        "value": 150,
+        "type": "BPM Change"
+    }]
 }

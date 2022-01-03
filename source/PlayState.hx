@@ -557,7 +557,7 @@ class PlayState extends MusicBeatState
 
 		if (SONG.eventObjects == null)
 		{
-			SONG.eventObjects = [new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change", 0, 0)]; //JOELwindows7: houv
+			SONG.eventObjects = [new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change", 0, 0)]; // JOELwindows7: houv
 		}
 
 		TimingStruct.clearTimings();
@@ -1192,9 +1192,14 @@ class PlayState extends MusicBeatState
 			+ 50, 0,
 			"Download Last Funkin Moments ($0) https://github.com/Perkedel/kaded-fnf-mods,\n"
 			+ "Kade Engine ($0) https://github.com/KadeDev/Kade-Engine ,\n"
-			+ "and vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin\n",
+			+ "and vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin\n"
+			+ "Now Playing: "
+			+ SONG.artist
+			+ " - "
+			+ SONG.songName
+			+ "\n",
 			12);
-		reuploadWatermark.setPosition((FlxG.width / 2) - (reuploadWatermark.width / 2), (FlxG.height / 2) + 50);
+		reuploadWatermark.setPosition((FlxG.width / 2) - (reuploadWatermark.width / 2), (FlxG.height / 2) - (reuploadWatermark.height / 2) + 50);
 		// Ah damn. the pivot of all Haxe Object is top left!
 		// right, let's just work this all around anyway.
 		// there I got it. hopefully it's centered.
@@ -3060,6 +3065,7 @@ class PlayState extends MusicBeatState
 			// if(SONG != null && SONG.eventObjects != null) //JOELwindows7: somehow werror if eventObject null. wait. where's it?
 			for (i in SONG.eventObjects)
 			{
+				//JOELwindows7: base this on theseEvents!
 				switch (i.type)
 				{
 					case "Scroll Speed Change":
@@ -3083,11 +3089,15 @@ class PlayState extends MusicBeatState
 						Stage.lightningStrikeShit();
 					case "Blammed Lights":
 						Stage.blammedLights(Std.int(i.value));
+					case "Appear Blackbar":
+						Stage.appearBlackBar(i.value);
+					case "Disappear Blackbar":
+						Stage.disappearBlackBar(i.value);
 					case "Camera Zoom in":
 						camZoomNow(i.value, i.value2, i.value3);
 					case "Shake camera":
-						FlxG.camera.shake(i.value, i.value2, function(){
-							
+						FlxG.camera.shake(i.value, i.value2, function()
+						{
 						}, true);
 						Controls.vibrate(0, i.value);
 					case "HUD Zoom in":

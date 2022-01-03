@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxCamera;
 import flixel.util.typeLimit.OneOfTwo;
 import flixel.util.typeLimit.OneOfFour;
 import flixel.addons.effects.FlxTrail;
@@ -859,6 +860,9 @@ class Stage extends MusicBeatState
 						sha.alpha = 0;
 					}
 			}
+
+		// JOELwindows7: additional things to be thought of
+		additionalCreateFlxSprites();
 	}
 
 	override public function update(elapsed:Float)
@@ -1658,5 +1662,63 @@ class Stage extends MusicBeatState
 					counte++;
 				});
 			}
+	}
+
+	// JOELwindows7: for that additional bellow
+	var blackbarsTop:FlxSprite;
+	var blackbarsBottom:FlxSprite;
+	var blackbarHeight:Int = 20;
+	var additionalSubCamera:FlxCamera;
+
+	// JOELwindows7: additional system wide FlxSprites
+	function additionalCreateFlxSprites()
+	{
+		// Psyched Blackbars
+		blackbarsTop = new FlxSprite(0, 0);
+		blackbarsTop.makeGraphic(FlxG.width, blackbarHeight, 0xFF000000);
+		blackbarsTop.scrollFactor.set();
+		blackbarsBottom = new FlxSprite(0, FlxG.height - blackbarHeight);
+		blackbarsBottom.makeGraphic(FlxG.width, blackbarHeight, 0xFF000000);
+		blackbarsBottom.scrollFactor.set();
+		addThe(blackbarsTop, 'blackbarsTop');
+		addThe(blackbarsBottom, 'blackbarsBottom');
+		blackbarsTop.visible = false;
+		blackbarsBottom.visible = false;
+	}
+
+	// JOELwindows7: Psyched appear blackbar
+	public function appearBlackBar(forHowLong:Float = 2)
+	{
+		blackbarsTop.visible = true;
+		blackbarsBottom.visible = true;
+		// blackbarsTop.x = -blackbarHeight;
+		// blackbarsBottom.x = FlxG.height;
+		FlxTween.color(blackbarsTop, forHowLong, blackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
+		FlxTween.color(blackbarsBottom, forHowLong, blackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
+		FlxTween.tween(blackbarsTop, {x: 0, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(blackbarsBottom, {x: FlxG.height - blackbarHeight, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+	}
+
+	// JOELwindows7: Psyched disappear blackbar
+	public function disappearBlackBar(forHowLong:Float = 2)
+	{
+		// blackbarsTop.x = 0;
+		// blackbarsBottom.x = FlxG.height - blackbarHeight;
+		FlxTween.tween(blackbarsTop, {x: -blackbarHeight}, forHowLong, {
+			ease: FlxEase.linear,
+			onComplete: function(twn:FlxTween)
+			{
+				blackbarsTop.visible = false;
+			}
+		});
+		FlxTween.tween(blackbarsBottom, {x: FlxG.height}, forHowLong, {
+			ease: FlxEase.linear,
+			onComplete: function(twn:FlxTween)
+			{
+				blackbarsBottom.visible = false;
+			}
+		});
+		FlxTween.color(blackbarsTop, forHowLong, blackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
+		FlxTween.color(blackbarsBottom, forHowLong, blackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
 	}
 }

@@ -154,7 +154,7 @@ class ChartingState extends MusicBeatState
 
 	var theseEvents:Array<String> = [
 		"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
-		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights",
+		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights", "Appear Blackbar", "Disappear Blackbar"
 	]; // JOELwindows7: these events of it.
 
 	public function new(reloadOnInit:Bool = false)

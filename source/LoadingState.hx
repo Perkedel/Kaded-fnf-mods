@@ -13,6 +13,7 @@ import lime.utils.Assets as LimeAssets;
 import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 import haxe.io.Path;
+import haxe.ui.components.Progress as ProgressBar; //JOELwindows7: a little help here?
 
 class LoadingState extends MusicBeatState
 {
@@ -25,6 +26,9 @@ class LoadingState extends MusicBeatState
 	var logo:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft = false;
+
+	//JOELwindows7: da loading bar pls
+	var loadingBar:ProgressBar;
 
 	function new(target:FlxState, stopMusic:Bool)
 	{
