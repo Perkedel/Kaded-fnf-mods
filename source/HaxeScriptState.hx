@@ -180,6 +180,18 @@ class HaxeScriptState
 				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
 			case 10:
 				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
+			case 11:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
+			case 12:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
+			case 13:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
+			case 14:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
+			case 15:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13],
+					args[14]);
+				// JOELwindows7: Okay that's enough & inefficient. wtf?!?! there's no way to procedurally do this?!?!?
 		}
 	}
 
@@ -418,6 +430,8 @@ class HaxeScriptState
 			if (position & BEHIND_BF != 0)
 				PlayState.instance.add(PlayState.boyfriend);
 		});
+		// JOELwindows7: & even more!!!
+		setVar("thisStage", PlayState.Stage); // JOELwindows7: Stage class is already FlxG.stage I think..
 		trace("setVar BulbyVR stuffs");
 
 		// You must init the function callbacks first before even considered existed.
@@ -465,6 +479,12 @@ class HaxeScriptState
 		{
 		});
 		addCallback("keyPressed", function(key)
+		{
+		});
+		addCallback("introCutscene", function()
+		{
+		});
+		addCallback("outroCutscene", function()
 		{
 		});
 		trace("Inited setVars");
@@ -623,15 +643,15 @@ class HaxeScriptState
 		});
 		addCallback("camShake", function(intensity:Float = .05, duration:Float = .5, force:Bool = true, axes:Int = 0, onComplete:String)
 		{
-			//JOELwindows7: decide which axes this shakes at. yoink from HaxeFlixel snippet of camera shake.
+			// JOELwindows7: decide which axes this shakes at. yoink from HaxeFlixel snippet of camera shake.
 			// https://snippets.haxeflixel.com/camera/shake/
 			var shakeAxes:FlxAxes = switch (axes)
-            {
-                case 0: FlxAxes.XY;
-                case 1: FlxAxes.X;
+			{
+				case 0: FlxAxes.XY;
+				case 1: FlxAxes.X;
 				case 2: FlxAxes.Y;
-                case _: FlxAxes.XY;
-            }
+				case _: FlxAxes.XY;
+			}
 
 			// JOELwindows7: "I'm, not, that, OLD!!!" lol vs. oswald damn forgor user author.
 			FlxG.camera.shake(intensity, duration, function()

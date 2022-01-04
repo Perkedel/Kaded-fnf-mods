@@ -491,6 +491,32 @@ class ModchartState
 		// Colored bg
 		setVar("originalColor", PlayState.Stage.originalColor);
 		setVar("isChromaScreen", PlayState.Stage.isChromaScreen);
+
+		// stage
+		setVar("thisStage", PlayState.Stage);
+
+		// BulbyVR specialty
+		setVar("BEHIND_GF", BEHIND_GF);
+		setVar("BEHIND_BF", BEHIND_BF);
+		setVar("BEHIND_DAD", BEHIND_DAD);
+		setVar("BEHIND_ALL", BEHIND_ALL);
+		setVar("BEHIND_NONE", 0);
+		setVar("songData", PlayState.SONG);
+		setVar("camHUD", PlayState.instance.camHUD);
+		setVar("playerStrums", PlayState.playerStrums);
+		setVar("enemyStrums", PlayState.cpuStrums);
+		setVar("hscriptPath", path);
+		setVar("boyfriend", PlayState.boyfriend);
+		setVar("gf", PlayState.gf);
+		setVar("dad", PlayState.dad);
+		setVar("vocals", PlayState.instance.vocals);
+		setVar("gfSpeed", PlayState.instance.gfSpeed);
+		setVar("health", PlayState.instance.health);
+		setVar("iconP1", PlayState.instance.iconP1);
+		setVar("iconP2", PlayState.instance.iconP2);
+		setVar("currentPlayState", PlayState.instance);
+		setVar("PlayState", PlayState);
+		setVar("window", Lib.application.window);
 		// end mirror variables
 
 		// init just in case
@@ -500,16 +526,50 @@ class ModchartState
 
 		Lua_helper.add_callback(lua, "makeSprite", makeLuaSprite);
 
+		// bulbyVR callbackers
+		Lua_helper.add_callback(lua, "add", PlayState.instance.add);
+		Lua_helper.add_callback(lua, "remove", PlayState.instance.remove);
+		Lua_helper.add_callback(lua, "insert", PlayState.instance.insert);
+		Lua_helper.add_callback(lua, "setDefaultZoom", function(zoom){
+			PlayState.Stage.camZoom = zoom;
+		});
+		Lua_helper.add_callback(lua, "removeSprite", ffunction(sprite) {
+			PlayState.instance.remove(sprite);
+		});
+		// Lua_helper.add_callback(lua, "instancePluginClass", createScriptClassInstance);
+		// Lua_helper.add_callback(lua, "instancePluginClass", function(className, ...args) {
+		// 	return createScriptClassInstance(className, ...args);
+		// });
+		Lua_helper.add_callback(lua, "addSprite", function(sprite, position)
+		{
+			// sprite is a FlxSprite
+			// position is a Int
+			if (position & BEHIND_GF != 0)
+				PlayState.instance.remove(PlayState.gf);
+			if (position & BEHIND_DAD != 0)
+				PlayState.instance.remove(PlayState.dad);
+			if (position & BEHIND_BF != 0)
+				PlayState.instance.remove(PlayState.boyfriend);
+			PlayState.instance.add(sprite);
+			if (position & BEHIND_GF != 0)
+				PlayState.instance.add(PlayState.gf);
+			if (position & BEHIND_DAD != 0)
+				PlayState.instance.add(PlayState.dad);
+			if (position & BEHIND_BF != 0)
+				PlayState.instance.add(PlayState.boyfriend);
+		});
+
 		// sprites
 
 		// JOELwindows7: Other actor stuffs old
-		/*
-			Lua_helper.add_callback(lua,"changeDadCharacter", changeDadCharacter);
+		if (PlayStateChangeables.legacyLuaModchartSupport)
+		{
+			Lua_helper.add_callback(lua, "changeDadCharacter", changeDadCharacter);
 
-			Lua_helper.add_callback(lua,"changeBoyfriendCharacter", changeBoyfriendCharacter);
+			Lua_helper.add_callback(lua, "changeBoyfriendCharacter", changeBoyfriendCharacter);
 
-			Lua_helper.add_callback(lua,"getProperty", getPropertyByName);
-		 */
+			Lua_helper.add_callback(lua, "getProperty", getPropertyByName);
+		}
 
 		// end Other actor stuffs old
 
@@ -678,18 +738,19 @@ class ModchartState
 		// JOELwindows7: whoah forgor this cam function!
 		Lua_helper.add_callback(lua, "camShake", function(intensity:Float = .05, duration:Float = .5, force:Bool = true, axes:Int = 0, onComplete:String)
 		{
-			//JOELwindows7: decide which axes this shakes at. yoink from HaxeFlixel snippet of camera shake.
+			// JOELwindows7: decide which axes this shakes at. yoink from HaxeFlixel snippet of camera shake.
 			// https://snippets.haxeflixel.com/camera/shake/
 			var shakeAxes:FlxAxes = switch (axes)
-            {
-                case 0: FlxAxes.XY;
-                case 1: FlxAxes.X;
+			{
+				case 0: FlxAxes.XY;
+				case 1: FlxAxes.X;
 				case 2: FlxAxes.Y;
-                case _: FlxAxes.XY;
-            }
+				case _: FlxAxes.XY;
+			}
 
 			// JOELwindows7: "I'm, not, that, OLD!!!" lol vs. oswald damn forgor user author.
-			FlxG.camera.shake(intensity, duration, function(){
+			FlxG.camera.shake(intensity, duration, function()
+			{
 				if (onComplete != '' && onComplete != null)
 				{
 					callLua(onComplete, ["camera"]);
@@ -1613,6 +1674,30 @@ class ModchartState
 		// So you don't have to hard code your cool effects.
 		// end Special additional functions
 	}
+
+	/**
+	 * Create instance of a class in the lua script?..
+	 * @author JOELwindows7
+	 * @param className 
+	 * @param args 
+	 * @param addModule 
+	 */
+	 /*
+	public function createScriptClassInstance(className:String, args:Array<Dynamic> = null, addModule:String)
+	{
+		if (interp != null)
+		{
+			if (addModule != null && addModule != "")
+				interp.addModule(addModule);
+			return interp.createScriptClassInstance(className, args);
+		}
+		else
+		{
+			interp = createInterp();
+			return createScriptClassInstance(className, args, addModule);
+		}
+	}
+	*/
 
 	public function executeState(name, args:Array<Dynamic>)
 	{

@@ -66,6 +66,7 @@ class Stage extends MusicBeatState
 
 	public var blammedLightsBlack:FlxSprite; // JOELwindows7: black screen for blammed lights Psyched
 	public var blammedLightsBlackTween:FlxTween; // JOELwindows7: and the tween for it.
+	public var sha:FlxSprite; // JOELwindows7: shader image sprite for the kem0x Nexus Engine stuff
 
 	// if chroma screen, then don't invisiblize, instead turn it back to original color!
 	// JOELwindows7: arraying them seems won't work at all. so let's make them separateroid instead.
@@ -852,7 +853,7 @@ class Stage extends MusicBeatState
 
 						// JOELwindows7: here kem0x's shader background yey
 						// yoink from https://github.com/kem0x/Nexus-Engine/blob/master/source/Stage.hx
-						var sha:FlxSprite = new ShaderBackground("test", 0, 0, FlxG.width, FlxG.height);
+						sha = new ShaderBackground("test", 0, 0, FlxG.width, FlxG.height);
 						sha.setGraphicSize(Std.int(sha.width * 1.4));
 						sha.updateHitbox();
 						swagBacks['sha'] = sha;
