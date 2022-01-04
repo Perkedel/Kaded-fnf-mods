@@ -6991,6 +6991,82 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	/**Do something in this dialogue when started.
+	 * @author JOELwindows7
+	 */
+	public function dialogueScene()
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState('dialogueStart', []);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState('dialogueStart', []);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState('dialogueStart', []);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState('dialogueStart', []);
+		}
+	}
+
+	/** Do something in this dialogue when finished.
+	 * @author JOELwindows7
+	 */
+	public function dialogueSceneEnding()
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState('dialogueFinish', []);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState('dialogueFinish', []);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState('dialogueFinish', []);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState('dialogueFinish', []);
+		}
+	}
+
+	/**
+	 * Do something in this dialogue when going to close
+	 * @author JOELwindows7
+	 */
+	public function dialogueSceneClose()
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState('dialogueSkip', []);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState('dialogueSkip', []);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState('dialogueSkip', []);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState('dialogueSkip', []);
+		}
+	}
+
 	// JOELwindows7: on video sprite finish callback
 
 	function onVideoSpriteFinish()

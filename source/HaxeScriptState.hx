@@ -487,6 +487,9 @@ class HaxeScriptState
 		addCallback("outroCutscene", function()
 		{
 		});
+		addCallback("dialogueStart", function(){});
+		addCallback("dialogueSkip", function(){});
+		addCallback("dialogueFinish", function(){});
 		trace("Inited setVars");
 
 		// Callbacks heres, Kade Engine like

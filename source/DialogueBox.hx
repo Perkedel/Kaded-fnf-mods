@@ -209,6 +209,7 @@ class DialogueBox extends FlxSpriteGroup
 					initiatePortraitLeft(-20, 40, 0.9, customCharXML, customCharFrame, customCharPrefix);
 				}
 		}
+		PlayState.instance.dialogScene(); // JOELwindows7: here functions when dialog starts.
 
 		this.dialogueList = dialogueList;
 
@@ -404,6 +405,7 @@ class DialogueBox extends FlxSpriteGroup
 				default:
 					trace("other song");
 			}
+			PlayState.instance.dialogSceneClose(); // JOELwindows7: do functions when this close.
 			new FlxTimer().start(0.2, function(tmr:FlxTimer)
 			{
 				box.alpha -= 1 / 5;
@@ -421,17 +423,11 @@ class DialogueBox extends FlxSpriteGroup
 			});
 		}
 		// JOELwindows7: add mouse click t continue, also auto-click
-		if ((PlayerSettings.player1.controls.ACCEPT
-			|| (FlxG.mouse.justPressed
-				&& !(FlxG.mouse.overlaps(skipButton)
-					|| FlxG.mouse.overlaps(autoClickDelayLabel)
-					|| FlxG.mouse.overlaps(autoClickDelayStepper)
-					|| FlxG.mouse.overlaps(autoClickCheckbox)))
-			|| tobeAutoClicked)
-			&& dialogueStarted == true)
+		if ((PlayerSettings.player1.controls.ACCEPT || (haveClicked) || tobeAutoClicked) && dialogueStarted == true)
 		{
 			// JOELwindows7: reset auto-click first.
 			tobeAutoClicked = false;
+			haveClicked = false;
 			autoClickTimer.cancel();
 
 			remove(dialogue);
@@ -455,6 +451,7 @@ class DialogueBox extends FlxSpriteGroup
 					{
 						sound.stop();
 					});
+					PlayState.instance.dialogSceneEnding(); // JOELwindows7: here when ending.
 
 					new FlxTimer().start(0.2, function(tmr:FlxTimer)
 					{
@@ -485,7 +482,14 @@ class DialogueBox extends FlxSpriteGroup
 		// JOELwindows7: try to watch time remaining of the auto click
 		if (autoClickCheckbox.checked)
 		{
-			autoClickTimerDisplay.amount = (autoClickTimer.timeLeft / autoClickTimer.time);
+			if (autoClickTimer.active && autoClickTimer.timeLeft > 0 && !autoClickTimer.finished)
+				autoClickTimerDisplay.amount = (autoClickTimer.timeLeft / autoClickTimer.time);
+			else
+				autoClickTimerDisplay.amount = 1;
+		}
+		else
+		{
+			autoClickTimerDisplay.amount = 0;
 		}
 
 		// JOELwindows7: unfortunately this is neither Core state we had
@@ -688,8 +692,25 @@ class DialogueBox extends FlxSpriteGroup
 		dialogueList[0] = dialogueList[0].substr(splitName[1].length + 2).trim();
 	}
 
+	// JOELwindows7: seriously.
+	var haveClicked:Bool = false;
+
 	function manageMouse()
 	{
+		if (FlxG.mouse.overlaps(box))
+		{
+			// JOELwindows7: only if not doing something in autoclick parameter or skip button
+			if (!(FlxG.mouse.overlaps(skipButton)
+				|| FlxG.mouse.overlaps(autoClickDelayLabel)
+				|| FlxG.mouse.overlaps(autoClickDelayStepper)
+				|| FlxG.mouse.overlaps(autoClickCheckbox)))
+			{
+				if (FlxG.mouse.justPressed)
+				{
+					haveClicked = true;
+				}
+			}
+		}
 	}
 
 	// JOELwindows7: check autoclick

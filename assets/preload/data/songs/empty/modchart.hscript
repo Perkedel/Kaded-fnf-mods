@@ -21,9 +21,34 @@ function songStart()
 
 }
 
-function songEng()
+function songEnd()
 {
 
+}
+
+function introCutscene()
+{
+
+}
+
+function outroCutscene()
+{
+
+}
+
+function dialogueStart()
+{
+
+}
+
+function dialogueEnd()
+{
+
+}
+
+function dialogueSkip()
+{
+    //dialogueEnd() // do you want to do the same anyway?
 }
 
 function update(elapsed)

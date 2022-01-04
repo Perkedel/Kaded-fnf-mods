@@ -22,6 +22,31 @@ function songEnd()
 
 end
 
+-- this gets called when passing intro cutscene
+function introCutscene()
+
+end
+
+-- this gets called when passing outro cutscene
+function outroCutscene()
+
+end
+
+-- this gets called when dialogue opens
+function dialogueStart()
+
+end
+
+-- this gets called when dialogue finish
+function dialogueEnd()
+
+end
+
+-- this gets called when dialogue skipped
+function dialogueSkip()
+    --dialogueEnd() -- do you want to do the same anyway
+end
+
 -- this gets called every beat
 function beatHit(beat) -- arguments, the current beat of the song
 
