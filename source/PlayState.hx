@@ -1,5 +1,6 @@
 package;
 
+import HaxeScriptState;
 import const.Perkedel;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUITypedButton;
@@ -1513,7 +1514,8 @@ class PlayState extends MusicBeatState
 
 	function tankmanIntroVidFinish(source:String, outro:Bool = false, handoverName:String = "", isNextSong:Bool = false, handoverDelayFirst:Float = 0,
 			handoverHasEpilogueVid:Bool = false, handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false,
-			handoverTankmanEpilogueVidPath:String = ""){
+			handoverTankmanEpilogueVidPath:String = "")
+	{
 		if (outro)
 		{
 			// outroScene(handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
@@ -1606,7 +1608,7 @@ class PlayState extends MusicBeatState
 			// videoSpriteFirst.kill();
 			// remove(videoSpriteFirst);
 			// remove(video);
-			tankmanIntroVidFinish(source, outro, handoverName, isNextSong handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+			tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 				handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 		};
 		// video.playMP4(source, null, videoSpriteFirst); // make the transition null so it doesn't take you out of this state
@@ -1623,9 +1625,8 @@ class PlayState extends MusicBeatState
 		{
 			remove(video);
 			// startCountdown();
-			tankmanIntroVidFinish(source, outro, handoverName, isNextSong handoverDelayFirst,
-				handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
-				handoverTankmanEpilogueVidPath);
+			tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+				handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 		}
 		video.ownCamera();
 		video.setGraphicSize(Std.int(video.width * 2));
@@ -7064,6 +7065,32 @@ class PlayState extends MusicBeatState
 		if (executeStageHscript && stageHscript != null)
 		{
 			stageHscript.executeState('dialogueSkip', []);
+		}
+	}
+
+	/**
+	 * Do something in this dialogue everytime opening next dialogue
+	 * @author JOELwindows7
+	 */
+	public function dialogueNext(index:Int)
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState('dialogueNext', [index]);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState('dialogueNext', [index]);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState('dialogueNext', [index]);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState('dialogueNext', [index]);
 		}
 	}
 

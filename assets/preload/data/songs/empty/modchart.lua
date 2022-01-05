@@ -47,6 +47,11 @@ function dialogueSkip()
     --dialogueEnd() -- do you want to do the same anyway
 end
 
+-- this gets called every next dialogue
+function dialogueNext(index)
+    -- `index` is where dialogue line number you were at
+end
+
 -- this gets called every beat
 function beatHit(beat) -- arguments, the current beat of the song
 

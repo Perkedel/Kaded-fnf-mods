@@ -1,4 +1,4 @@
-// package;
+package;
 import flixel.util.FlxAxes;
 import utils.Asset2File;
 import flixel.util.FlxDestroyUtil;
@@ -487,9 +487,18 @@ class HaxeScriptState
 		addCallback("outroCutscene", function()
 		{
 		});
-		addCallback("dialogueStart", function(){});
-		addCallback("dialogueSkip", function(){});
-		addCallback("dialogueFinish", function(){});
+		addCallback("dialogueStart", function()
+		{
+		});
+		addCallback("dialogueSkip", function()
+		{
+		});
+		addCallback("dialogueFinish", function()
+		{
+		});
+		addCallback("dialogueNext", function()
+		{
+		});
 		trace("Inited setVars");
 
 		// Callbacks heres, Kade Engine like
@@ -1534,7 +1543,7 @@ class HaxeScriptState
 			hscriptState.set(useHaxe, interp);
 		interp.execute(prog);
 		// call loaded once the file just loaded
-		executeState("loaded", [PlayState.SONG.song], useHaxe);
+		executeState("loaded", [PlayState.SONG.songId], useHaxe);
 
 		// interp.addModule(script);
 		// instancering:HaxeModBase = interp.createScriptClassInstance(className);
@@ -1611,7 +1620,8 @@ class HaxeScriptState
 	function makeHscriptSprite(spritePath:String, toBeCalled:String, drawBehind:Bool)
 	{
 		// pre lowercasing the song name (makeLuaSprite)
-		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
 		switch (songLowercase)
 		{
 			case 'dad-battle':
@@ -1677,7 +1687,8 @@ class HaxeScriptState
 	function makeAnimatedHscriptSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String)
 	{
 		// pre lowercasing the song name (makeAnimatedLuaSprite)
-		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
 		switch (songLowercase)
 		{
 			case 'dad-battle':

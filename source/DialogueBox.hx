@@ -60,7 +60,7 @@ class DialogueBox extends FlxSpriteGroup
 	var prefixGf:String = 'DialogueBox Gf';
 
 	// JOELwindows7: own FlxSound because generate song destroyed the intro music
-	var sound:FlxSound;
+	public var sound:FlxSound; // make public to let modchart perhaps manipulate it, idk.
 
 	// JOELwindows7: touchscreen stuffs
 	var skipButton:FlxUIButton;
@@ -73,6 +73,8 @@ class DialogueBox extends FlxSpriteGroup
 	public var autoClickTimer:FlxTimer;
 
 	var autoClickTimerDisplay:FlxPieDial; // JOELwindows7: yes, the timer display. see https://haxeflixel.com/demos/FlxPieDial/ & https://github.com/HaxeFlixel/flixel-demos/blob/master/Features/FlxPieDial/source/DemoState.hx
+
+	var counterEH:Int = 0; // dialog counterer
 
 	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>, ?hadChat:Bool = false, ?isEpilogue:Bool = false, ?customChar:Bool = false,
 			?customCharXML:String = "jakartaFair/Hookx-dialogueAppear", ?customCharFrame:String = "enter", ?customCharPrefix:String = "Hookx Portrait Enter")
@@ -209,7 +211,7 @@ class DialogueBox extends FlxSpriteGroup
 					initiatePortraitLeft(-20, 40, 0.9, customCharXML, customCharFrame, customCharPrefix);
 				}
 		}
-		PlayState.instance.dialogScene(); // JOELwindows7: here functions when dialog starts.
+		PlayState.instance.dialogueScene(); // JOELwindows7: here functions when dialog starts.
 
 		this.dialogueList = dialogueList;
 
@@ -400,12 +402,12 @@ class DialogueBox extends FlxSpriteGroup
 					{
 						sound.stop(); // JOELwindows7: make sure it stops for good.
 					});
-				case "roses":
+				case "roses" | "roses-midi":
 					trace("roses");
 				default:
 					trace("other song");
 			}
-			PlayState.instance.dialogSceneClose(); // JOELwindows7: do functions when this close.
+			PlayState.instance.dialogueSceneClose(); // JOELwindows7: do functions when this close.
 			new FlxTimer().start(0.2, function(tmr:FlxTimer)
 			{
 				box.alpha -= 1 / 5;
@@ -444,14 +446,12 @@ class DialogueBox extends FlxSpriteGroup
 						|| PlayState.SONG.songId.toLowerCase() == 'thorns'
 						|| PlayState.SONG.songId.toLowerCase() == 'senpai-midi'
 						|| PlayState.SONG.songId.toLowerCase() == 'thorns-midi')
-						sound.fadeOut(2.2, 0);
-
-					// JOELwindows7: Do this after that music faded out
-					new FlxTimer().start(2.2, function(tmr:FlxTimer)
-					{
-						sound.stop();
-					});
-					PlayState.instance.dialogSceneEnding(); // JOELwindows7: here when ending.
+						// JOELwindows7: Fade out & Do this after that music faded out
+						sound.fadeOut(2.2, 0, function(twn:FlxTween)
+						{
+							sound.stop();
+						});
+					PlayState.instance.dialogueSceneEnding(); // JOELwindows7: here when ending.
 
 					new FlxTimer().start(0.2, function(tmr:FlxTimer)
 					{
@@ -473,6 +473,7 @@ class DialogueBox extends FlxSpriteGroup
 			else
 			{
 				dialogueList.remove(dialogueList[0]);
+				counterEH++; // JOELwindows7: add count
 				startDialogue();
 			}
 		}
@@ -683,6 +684,9 @@ class DialogueBox extends FlxSpriteGroup
 				swagDialogue.prefix = curCharacter + ": ";
 		}
 		swagDialogue.width = Std.int(FlxG.width * .6); // JOELwindows7: don't forget to refresh the width!
+
+		// JOELwindows7: then execute the function for the modchart
+		PlayState.instance.dialogueNext(counterEH);
 	}
 
 	function cleanDialog():Void

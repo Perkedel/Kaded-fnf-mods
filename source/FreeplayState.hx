@@ -74,6 +74,7 @@ class FreeplayState extends MusicBeatState
 	var asyncLoader:FlxAsyncLoop; // JOELwindows7: here loader thingy.
 	var loadedUp:Bool = false; // JOELwindows7: flag to raise when loading complete.
 	var legacySynchronousLoading:Bool = true; // JOELwindows7: keep false to use new async loading.
+	var unthreadLoading:Bool = false; // JOELwindows7: keep false to use Kade's threaded loading.
 
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
@@ -212,6 +213,16 @@ class FreeplayState extends MusicBeatState
 	{
 		// JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
+
+		// JOELwindows7: okey how about attempt to have sys multithreading?
+		#if FEATURE_MULTITHREADING
+		Debug.logInfo("Multithreading enabled");
+		legacySynchronousLoading = false;
+		unthreadLoading = false;
+		#else
+		legacySynchronousLoading = true; // JOELwindows7: comment when FlxAsyncLoop finally works!
+		unthreadLoading = true;
+		#end
 
 		// JOELwindows7: go loading bar
 		if (legacySynchronousLoading)
@@ -417,7 +428,25 @@ class FreeplayState extends MusicBeatState
 
 		// JOELwindows7: excuse me, just just this instead
 		if (!legacySynchronousLoading)
-			asyncLoader = new FlxAsyncLoop(1, asynchronouslyLoadSongList);
+			if (!unthreadLoading)
+			{
+				asyncLoader = new FlxAsyncLoop(1, asynchronouslyLoadSongList);
+			}
+			else
+			{
+				// JOELwindows7: so yeah, maybe use already proven working Kade's way of multithreading?
+				#if FEATURE_MULTITHREADING
+				Debug.logInfo("Multi thread loading pls");
+				unthreadLoading = false;
+				sys.thread.Thread.create(function()
+				{
+					Debug.logInfo("start loading on a different thread");
+					asynchronouslyLoadSongList();
+					asyncCompleteLoad();
+				});
+				#else
+				#end
+			}
 		else
 		{
 			loadedUp = true;
@@ -488,7 +517,7 @@ class FreeplayState extends MusicBeatState
 			trace('loaded diffs for ' + songId);
 			FreeplayState.songs.push(meta);
 
-			#if FFEATURE_FILESYSTEM
+			#if FEATURE_FILESYSTEM // JOELwindows7: mitsake fixed. wait, isn't this supposed to be FEATURE_MULTITHREADING instead?
 			sys.thread.Thread.create(() ->
 			{
 				FlxG.sound.cache(Paths.inst(songId));
@@ -577,8 +606,15 @@ class FreeplayState extends MusicBeatState
 	// JOELwindows7: here list the song in that list file.
 	function listTheSongs()
 	{
+		// JOELwindows7: install loading bar too here
+		_loadingBar.setInfoText("Listing the songs");
+		_loadingBar.popNow();
+		_loadingBar.setLoadingType(ExtraLoadingType.GOING);
 		for (i in 0...songs.length)
 		{
+			_loadingBar.setInfoText("Listing the songs " + songs[i].songName + " " + i + " of " + songs.length);
+			_loadingBar.setPercentage(i / songs.length);
+
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
 			songText.isMenuItem = true;
 			songText.targetY = i;
@@ -638,16 +674,22 @@ class FreeplayState extends MusicBeatState
 		// JOELwindows7: now, begin the async process
 		if (!legacySynchronousLoading)
 		{
-			if (!asyncLoader.started)
+			if (!unthreadLoading)
 			{
-				Debug.logInfo("start da loaging");
-				asyncLoader.start();
-			}
-			else
-			{
-				if (asyncLoader.finished)
+				if (asyncLoader != null)
 				{
-					asyncCompleteLoad();
+					if (!asyncLoader.started)
+					{
+						Debug.logInfo("start da loaging");
+						asyncLoader.start();
+					}
+					else
+					{
+						if (asyncLoader.finished)
+						{
+							asyncCompleteLoad();
+						}
+					}
 				}
 			}
 		}

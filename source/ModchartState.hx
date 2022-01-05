@@ -29,6 +29,8 @@ import llua.LuaL;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
+import openfl.Lib;
+import HaxeScriptState;
 
 using StringTools;
 
@@ -496,10 +498,10 @@ class ModchartState
 		setVar("thisStage", PlayState.Stage);
 
 		// BulbyVR specialty
-		setVar("BEHIND_GF", BEHIND_GF);
-		setVar("BEHIND_BF", BEHIND_BF);
-		setVar("BEHIND_DAD", BEHIND_DAD);
-		setVar("BEHIND_ALL", BEHIND_ALL);
+		setVar("BEHIND_GF", DisplayLayer.BEHIND_GF);
+		setVar("BEHIND_BF", DisplayLayer.BEHIND_BF);
+		setVar("BEHIND_DAD", DisplayLayer.BEHIND_DAD);
+		setVar("BEHIND_ALL", DisplayLayer.BEHIND_ALL);
 		setVar("BEHIND_NONE", 0);
 		setVar("songData", PlayState.SONG);
 		setVar("camHUD", PlayState.instance.camHUD);
@@ -530,10 +532,12 @@ class ModchartState
 		Lua_helper.add_callback(lua, "add", PlayState.instance.add);
 		Lua_helper.add_callback(lua, "remove", PlayState.instance.remove);
 		Lua_helper.add_callback(lua, "insert", PlayState.instance.insert);
-		Lua_helper.add_callback(lua, "setDefaultZoom", function(zoom){
+		Lua_helper.add_callback(lua, "setDefaultZoom", function(zoom)
+		{
 			PlayState.Stage.camZoom = zoom;
 		});
-		Lua_helper.add_callback(lua, "removeSprite", ffunction(sprite) {
+		Lua_helper.add_callback(lua, "removeSprite", function(sprite)
+		{
 			PlayState.instance.remove(sprite);
 		});
 		// Lua_helper.add_callback(lua, "instancePluginClass", createScriptClassInstance);
@@ -544,18 +548,18 @@ class ModchartState
 		{
 			// sprite is a FlxSprite
 			// position is a Int
-			if (position & BEHIND_GF != 0)
+			if (position & DisplayLayer.BEHIND_GF != 0)
 				PlayState.instance.remove(PlayState.gf);
-			if (position & BEHIND_DAD != 0)
+			if (position & DisplayLayer.BEHIND_DAD != 0)
 				PlayState.instance.remove(PlayState.dad);
-			if (position & BEHIND_BF != 0)
+			if (position & DisplayLayer.BEHIND_BF != 0)
 				PlayState.instance.remove(PlayState.boyfriend);
 			PlayState.instance.add(sprite);
-			if (position & BEHIND_GF != 0)
+			if (position & DisplayLayer.BEHIND_GF != 0)
 				PlayState.instance.add(PlayState.gf);
-			if (position & BEHIND_DAD != 0)
+			if (position & DisplayLayer.BEHIND_DAD != 0)
 				PlayState.instance.add(PlayState.dad);
-			if (position & BEHIND_BF != 0)
+			if (position & DisplayLayer.BEHIND_BF != 0)
 				PlayState.instance.add(PlayState.boyfriend);
 		});
 
@@ -1682,23 +1686,22 @@ class ModchartState
 	 * @param args 
 	 * @param addModule 
 	 */
-	 /*
-	public function createScriptClassInstance(className:String, args:Array<Dynamic> = null, addModule:String)
-	{
-		if (interp != null)
+	/*
+		public function createScriptClassInstance(className:String, args:Array<Dynamic> = null, addModule:String)
 		{
-			if (addModule != null && addModule != "")
-				interp.addModule(addModule);
-			return interp.createScriptClassInstance(className, args);
+			if (interp != null)
+			{
+				if (addModule != null && addModule != "")
+					interp.addModule(addModule);
+				return interp.createScriptClassInstance(className, args);
+			}
+			else
+			{
+				interp = createInterp();
+				return createScriptClassInstance(className, args, addModule);
+			}
 		}
-		else
-		{
-			interp = createInterp();
-			return createScriptClassInstance(className, args, addModule);
-		}
-	}
-	*/
-
+	 */
 	public function executeState(name, args:Array<Dynamic>)
 	{
 		return Lua.tostring(lua, callLua(name, args));

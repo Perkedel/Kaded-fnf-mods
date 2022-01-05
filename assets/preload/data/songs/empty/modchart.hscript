@@ -51,6 +51,11 @@ function dialogueSkip()
     //dialogueEnd() // do you want to do the same anyway?
 }
 
+function dialogueNext(index)
+{
+    //`index` is where dialogue line number you were at
+}
+
 function update(elapsed)
 {
 
