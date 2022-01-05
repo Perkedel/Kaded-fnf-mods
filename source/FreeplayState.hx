@@ -71,7 +71,7 @@ class FreeplayState extends MusicBeatState
 
 	static var legacyJSONWeekList:Bool = false; // JOELwindows7: in case you want to use the old JSONed week list.
 
-	var asyncLoader:FlxAsyncLoop; // JOELwindows7: here loader thingy.
+	// var asyncLoader:FlxAsyncLoop; // JOELwindows7: here loader thingy.
 	var loadedUp:Bool = false; // JOELwindows7: flag to raise when loading complete.
 	var legacySynchronousLoading:Bool = true; // JOELwindows7: keep false to use new async loading.
 	var unthreadLoading:Bool = false; // JOELwindows7: keep false to use Kade's threaded loading.
@@ -428,12 +428,13 @@ class FreeplayState extends MusicBeatState
 
 		// JOELwindows7: excuse me, just just this instead
 		if (!legacySynchronousLoading)
-			if (!unthreadLoading)
-			{
-				asyncLoader = new FlxAsyncLoop(1, asynchronouslyLoadSongList);
-			}
-			else
-			{
+		{
+			// if (!unthreadLoading)
+			// {
+			// 	asyncLoader = new FlxAsyncLoop(1, asynchronouslyLoadSongList);
+			// }
+			// else
+			// {
 				// JOELwindows7: so yeah, maybe use already proven working Kade's way of multithreading?
 				#if FEATURE_MULTITHREADING
 				Debug.logInfo("Multi thread loading pls");
@@ -446,7 +447,8 @@ class FreeplayState extends MusicBeatState
 				});
 				#else
 				#end
-			}
+			// }
+		}
 		else
 		{
 			loadedUp = true;
@@ -652,19 +654,18 @@ class FreeplayState extends MusicBeatState
 	// JOELwindows7: and async complete
 	function asyncCompleteLoad()
 	{
-		changeSelection();
-		changeDiff();
-
 		// JOELwindows7: done loading bar
 		_loadingBar.setInfoText("Done loading!");
 		_loadingBar.setLoadingType(ExtraLoadingType.DONE);
 		_loadingBar.delayedUnPopNow(5);
 
 		// JOELwindows7: now clean up the loader.
-		asyncLoader.kill();
-		asyncLoader.destroy();
+		// asyncLoader.kill();
+		// asyncLoader.destroy();
 
 		loadedUp = true;
+		changeSelection();
+		changeDiff();
 	}
 
 	override function update(elapsed:Float)
@@ -676,21 +677,21 @@ class FreeplayState extends MusicBeatState
 		{
 			if (!unthreadLoading)
 			{
-				if (asyncLoader != null)
-				{
-					if (!asyncLoader.started)
-					{
-						Debug.logInfo("start da loaging");
-						asyncLoader.start();
-					}
-					else
-					{
-						if (asyncLoader.finished)
-						{
-							asyncCompleteLoad();
-						}
-					}
-				}
+				// if (asyncLoader != null)
+				// {
+				// 	if (!asyncLoader.started)
+				// 	{
+				// 		Debug.logInfo("start da loaging");
+				// 		asyncLoader.start();
+				// 	}
+				// 	else
+				// 	{
+				// 		if (asyncLoader.finished)
+				// 		{
+				// 			asyncCompleteLoad();
+				// 		}
+				// 	}
+				// }
 			}
 		}
 
