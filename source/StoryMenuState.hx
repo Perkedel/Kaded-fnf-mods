@@ -492,7 +492,8 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			FlxG.switchState(new MainMenuState());
+			// FlxG.switchState(new MainMenuState());
+			switchState(new MainMenuState()); // JOELwindows7: switch state hex
 
 			haveBacked = false;
 		}
@@ -568,8 +569,10 @@ class StoryMenuState extends MusicBeatState
 			{
 				// JOELwindows7: check if the song has video files
 				// #if !mobile
-				LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
-					true);
+				// LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
+				// 	true);
+				switchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
+					true, true, true); // JOELwindows7: switch state hex
 				// #else //workaround for Video cutscener not working in Android
 				// LoadingState.loadAndSwitchState(new PlayState(), true);
 				// #end

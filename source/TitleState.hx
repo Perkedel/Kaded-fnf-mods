@@ -164,10 +164,12 @@ class TitleState extends MusicBeatState
 		super.create();
 
 		#if FREEPLAY
-		FlxG.switchState(new FreeplayState());
+		// FlxG.switchState(new FreeplayState());
+		switchState(new FreeplayState()); // JOELwindows7: switch to freeplay state hexly.
 		clean();
 		#elseif CHARTING
-		FlxG.switchState(new ChartingState());
+		// FlxG.switchState(new ChartingState());
+		switchState(new ChartingState()); // JOELwindows7: switch to charting state hexly.
 		clean();
 		#else
 		#if !cpp
@@ -443,12 +445,14 @@ class TitleState extends MusicBeatState
 						trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.kadeEngineVer);
 						OutdatedSubState.needVer = returnedData[0];
 						OutdatedSubState.currChanges = returnedData[1];
-						FlxG.switchState(new OutdatedSubState());
+						// FlxG.switchState(new OutdatedSubState());
+						switchState(new OutdatedSubState()); // JOELwindows7: hex switch state lol
 						clean();
 					}
 					else
 					{
-						FlxG.switchState(new MainMenuState());
+						// FlxG.switchState(new MainMenuState());
+						switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
 						clean();
 					}
 				}
@@ -456,7 +460,8 @@ class TitleState extends MusicBeatState
 				http.onError = function(error)
 				{
 					trace('error: $error');
-					FlxG.switchState(new MainMenuState()); // fail but we go anyway
+					// FlxG.switchState(new MainMenuState()); // fail but we go anyway
+					switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: hex switch state lol
 					clean();
 				}
 
@@ -490,23 +495,27 @@ class TitleState extends MusicBeatState
 						trace('LFM outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
 						OutdatedSubState.needVerLast = returnedData[0];
 						OutdatedSubState.perubahanApaSaja = returnedData[1];
-						FlxG.switchState(new OutdatedSubState());
+						// FlxG.switchState(new OutdatedSubState());
+						switchState(new OutdatedSubState()); // JOELwindows7: get here hex switch state yeah
 					}
 					else
 					{
-						FlxG.switchState(new MainMenuState());
+						// FlxG.switchState(new MainMenuState());
+						switchState(new MainMenuState()); // JOELwindows7: get here hex switch state yeah
 					}
 				}
 
 				http.onError = function(error)
 				{
 					trace('error: $error');
-					FlxG.switchState(new MainMenuState()); // fail but we go anyway
+					// FlxG.switchState(new MainMenuState()); // fail but we go anyway
+					switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: get here hex switch state yeah
 				}
 
 				http.request();
 				#else
-				FlxG.switchState(new MainMenuState()); // Just pecking go to menu already!
+				// FlxG.switchState(new MainMenuState()); // Just pecking go to menu already!
+				switchState(new MainMenuState()); // Just pecking go to menu already! JOELwindows7: get here hex switch state yeah
 				#end
 			});
 		}

@@ -4,8 +4,12 @@ import flixel.FlxSprite;
 
 class OptionsDirect extends MusicBeatState
 {
+	public static var instance:OptionsDirect; // JOELwindows7: seriously. why so complicated, why can't auto detect class???!
+
 	override function create()
 	{
+		instance = this; // JOELwindows7: idk what supposed to do?
+
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 

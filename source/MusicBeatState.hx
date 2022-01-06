@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUI;
+import flixel.FlxState;
 import plugins.sprites.QmovephBackground;
 import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxGroup;
@@ -41,6 +43,11 @@ class MusicBeatState extends CoreState
 	private var curBeat:Int = 0;
 	private var curDecimalBeat:Float = 0;
 
+	// JOELwindows7: Kade + YinYang48 Hex stuff
+	public var fuckYou:Bool = false; // Loading canceler. marked true if somebody already using it, preventing double call.
+
+	public static var lastState:FlxState; // Last state
+
 	// private var controls(get, never):Controls; //JOELwindows7: steal controls
 	// JOELwindows7: stole this getter too
 	/*
@@ -60,6 +67,24 @@ class MusicBeatState extends CoreState
 
 	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
 	{
+		// JOELwindows7: kade + yinyang48 hex stuff
+		// https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/MusicBeatState.hx
+		if (Std.isOfType(Object, FlxUI))
+			return null;
+
+		if (Std.isOfType(Object, FlxSprite))
+		{
+			var spr:FlxSprite = cast(Object, FlxSprite);
+			if (spr.graphic != null)
+			{
+				if (spr.graphic.bitmap.image == null)
+					Debug.logWarn("you are adding a fuckin null texture (THIS WILL CRASH YOUR GAME!)");
+			}
+		}
+		// Debug.logTrace(Object);
+		MasterObjectLoader.addObject(Object);
+
+		//JOELwindows7: move it here
 		if (FlxG.save.data.optimize)
 			assets.push(Object);
 		var result = super.add(Object);
@@ -75,6 +100,74 @@ class MusicBeatState extends CoreState
 				remove(i);
 			}
 		}
+	}
+
+	// JOELwindows7: here Hex by YinYang48 + Kade yoink stuff
+	// https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/MusicBeatState.hx
+
+	/**
+	 * Better Switch state using Kade's & YinYang48's Hex loading screen, or just go straight to the game, idk.
+	 * To make sure things got loaded properly before going to the target state.
+	 * @param nextState your next state
+	 * @param goToLoading whether to load stuffs beforehand
+	 * @param trans whether to have transition
+	 * @param song is this a song loading?
+	 */
+	public function switchState(nextState:MusicBeatState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false)
+	{
+		if (fuckYou)
+			return;
+		fuckYou = true;
+		Debug.logTrace("switching");
+		if (trans)
+		{
+			transitionOut(function()
+			{
+				lastState = this;
+				if (goToLoading)
+				{
+					var state:FlxState = new LoadingScreen(nextState, song);
+
+					@:privateAccess
+					FlxG.game._requestedState = state;
+				}
+				else
+				{
+					@:privateAccess
+					FlxG.game._requestedState = nextState;
+				}
+				Debug.logTrace("switched");
+			});
+		}
+		else
+		{
+			lastState = this;
+			if (goToLoading)
+			{
+				var state:FlxState = new LoadingScreen(nextState, song);
+
+				@:privateAccess
+				FlxG.game._requestedState = state;
+			}
+			else
+			{
+				@:privateAccess
+				FlxG.game._requestedState = nextState;
+			}
+			Debug.logTrace("switched");
+		}
+	}
+
+	var loadedCompletely:Bool = false; // JOELwindows7: also used by that Switch state above
+
+	/**
+	 * mark this thing that this has completed loading.
+	 */
+	public function load()
+	{
+		loadedCompletely = true;
+
+		Debug.logInfo("State loaded!");
 	}
 
 	override function create()

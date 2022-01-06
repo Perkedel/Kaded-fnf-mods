@@ -467,6 +467,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/mods/327730 theworsttrash:v@ (WARNING: NO BETADCIU ALLOWED i think). Jaiden colored GF.
 - https://gamebanana.com/mods/342500 Popstarbird25 . Bf with beanie
 - https://github.com/kem0x/Nexus-Engine kem0x. Here his fusion of Kade Engine 1.8 ish + Psych Engine yeah. some new stuffs like shadered things like background, effects, etc.!!!!
+- https://github.com/KadeDev/Hex-The-Weekend-Update https://gamejolt.com/games/hex/644168 YinYang48 (WARNING: has ND & NC). Stuff to be yoinked here. Kade never leaves his friends away. However, how about everyone of us? Well, fine. Just yoink the code!!!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

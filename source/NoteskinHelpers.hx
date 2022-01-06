@@ -7,6 +7,7 @@ import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.FlxG;
+import utils.Asset2File;
 
 using StringTools;
 
@@ -118,7 +119,7 @@ class NoteskinHelpers
 		// JOELwindows7: here because Android requires Asset2File
 		// return BitmapData.fromFile(#if !mobile Paths.image('noteskins/Arrows-pixel',
 		// 	"shared") #else Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared")) #end);
-		return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared"));
+		return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared")));
 		#end
 	}
 }

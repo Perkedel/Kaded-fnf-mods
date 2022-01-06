@@ -36,6 +36,8 @@ using StringTools;
 
 class FreeplayState extends MusicBeatState
 {
+	public static var instance:FreeplayState; // JOELwindows7: AAAAA why no detect class!!
+
 	public static var songs:Array<FreeplaySongMetadata> = [];
 
 	var selector:FlxText;
@@ -211,6 +213,8 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		instance = this; //JOELwindows7: ugung.
+
 		// JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
 
@@ -435,18 +439,18 @@ class FreeplayState extends MusicBeatState
 			// }
 			// else
 			// {
-				// JOELwindows7: so yeah, maybe use already proven working Kade's way of multithreading?
-				#if FEATURE_MULTITHREADING
-				Debug.logInfo("Multi thread loading pls");
-				unthreadLoading = false;
-				sys.thread.Thread.create(function()
-				{
-					Debug.logInfo("start loading on a different thread");
-					asynchronouslyLoadSongList();
-					asyncCompleteLoad();
-				});
-				#else
-				#end
+			// JOELwindows7: so yeah, maybe use already proven working Kade's way of multithreading?
+			#if FEATURE_MULTITHREADING
+			Debug.logInfo("Multi thread loading pls");
+			unthreadLoading = false;
+			sys.thread.Thread.create(function()
+			{
+				Debug.logInfo("start loading on a different thread");
+				asynchronouslyLoadSongList();
+				asyncCompleteLoad();
+			});
+			#else
+			#end
 			// }
 		}
 		else
@@ -821,7 +825,8 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK || haveBacked)
 		{
-			FlxG.switchState(new MainMenuState());
+			// FlxG.switchState(new MainMenuState());
+			switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
 
 			haveBacked = false;
 		}
@@ -862,7 +867,8 @@ class FreeplayState extends MusicBeatState
 
 		var character = dad ? PlayState.SONG.player2 : PlayState.SONG.player1;
 
-		LoadingState.loadAndSwitchState(new AnimationDebug(character));
+		// LoadingState.loadAndSwitchState(new AnimationDebug(character));
+		switchState(new AnimationDebug(character)); // JOELwindows7: hex switch state lol
 	}
 
 	function loadSong(isCharting:Bool = false)
@@ -921,9 +927,11 @@ class FreeplayState extends MusicBeatState
 		PlayState.songMultiplier = rate;
 
 		if (isCharting)
-			LoadingState.loadAndSwitchState(new ChartingState(reloadSong));
+			// LoadingState.loadAndSwitchState(new ChartingState(reloadSong));
+			FreeplayState.instance.switchState(new ChartingState(reloadSong), true, true, true); // JOELwindows7: hex switch state lol
 		else
-			LoadingState.loadAndSwitchState(new PlayState());
+			// LoadingState.loadAndSwitchState(new PlayState());
+			FreeplayState.instance.switchState(new PlayState(), true, true, true); // JOELwindows7: hex switch state lol
 	}
 
 	function changeDiff(change:Int = 0)

@@ -1,5 +1,6 @@
 package;
 
+import ui.GameJoltGateway;
 import GalleryAchievements;
 #if gamejolt
 import GameJolt;
@@ -1157,10 +1158,10 @@ class FPSCapOption extends Option
 
 	override function right():Bool
 	{
-		if (FlxG.save.data.fpsCap >= Perkedel.MAX_FPS_CAP) //JOELwindows7: was 290
+		if (FlxG.save.data.fpsCap >= Perkedel.MAX_FPS_CAP) // JOELwindows7: was 290
 		{
-			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; //JOELwindows7: yeah.
-			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Perkedel.MAX_FPS_CAP); //JOELwindows7: crazy fps go brrrrr
+			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; // JOELwindows7: yeah.
+			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Perkedel.MAX_FPS_CAP); // JOELwindows7: crazy fps go brrrrr
 		}
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap + 10;
@@ -1171,8 +1172,8 @@ class FPSCapOption extends Option
 
 	override function left():Bool
 	{
-		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) //JOELwindows7: was 290
-			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; //JOELwindows7: yeye
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) // JOELwindows7: was 290
+			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; // JOELwindows7: yeye
 		else if (FlxG.save.data.fpsCap < 60)
 			FlxG.save.data.fpsCap = Application.current.window.displayMode.refreshRate;
 		else
@@ -1302,7 +1303,7 @@ class ReplayOption extends Option
 	public override function press():Bool
 	{
 		trace("switch");
-		OptionsMenu.switchState(new LoadReplayState()); // JOELwindows7: hey, check if you are in game before hand!
+		OptionsMenu.goToState(new LoadReplayState()); // JOELwindows7: hey, check if you are in game before hand!
 		return false;
 	}
 
@@ -1359,10 +1360,11 @@ class CustomizeGameplay extends Option
 
 	public override function press():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		trace("switch");
-		FlxG.switchState(new GameplayCustomizeState());
+		// FlxG.switchState(new GameplayCustomizeState());
+		OptionsMenu.goToState(new GameplayCustomizeState()); // JOELwindows7: hey, check if you are in game before hand!
 		return false;
 	}
 
@@ -1424,7 +1426,8 @@ class OffsetMenu extends Option
 		PlayState.storyWeek = 0;
 		PlayState.offsetTesting = true;
 		trace('CUR WEEK' + PlayState.storyWeek);
-		LoadingState.loadAndSwitchState(new PlayState());
+		// LoadingState.loadAndSwitchState(new PlayState());
+		OptionsMenu.goToState(new PlayState()); // JOELwindows7: hey, check if you are in game before hand!
 		return false;
 	}
 
@@ -1750,7 +1753,7 @@ class DebugMode extends Option
 	public override function press():Bool
 	{
 		// JOELwindows7: whoa easy baby! we're in gameplay!
-		OptionsMenu.switchState(new AnimationDebug());
+		OptionsMenu.goToState(new AnimationDebug());
 		return false;
 	}
 
@@ -2552,7 +2555,7 @@ class SurroundTestOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new LimeAudioBufferTester());
+		OptionsMenu.goToState(new LimeAudioBufferTester());
 		return true;
 	}
 
@@ -2579,7 +2582,7 @@ class AnVideoCutscenerTestOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new AnWebmer());
+		OptionsMenu.goToState(new AnWebmer());
 		return true;
 	}
 
@@ -2606,7 +2609,7 @@ class AnStarfieldTestOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new AnStarfielde());
+		OptionsMenu.goToState(new AnStarfielde());
 		return true;
 	}
 
@@ -2633,7 +2636,7 @@ class AnDefaultBekgronTestOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new AnDefaultBekgronde());
+		OptionsMenu.goToState(new AnDefaultBekgronde());
 		return true;
 	}
 
@@ -2685,7 +2688,7 @@ class AnLoneBopeeboOption extends Option
 
 	public override function press():Bool
 	{
-		OptionsMenu.switchState(new AnLoneBopeebo()); // open substate.
+		OptionsMenu.goToState(new AnLoneBopeebo()); // open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
 		// FlxG.switchState(new AnMIDIyeay());
 		return true;
@@ -2714,7 +2717,7 @@ class AnChangeChannelOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new AnChangeChannel());
+		OptionsMenu.goToState(new AnChangeChannel());
 		return true;
 	}
 
@@ -2740,7 +2743,7 @@ class AnMiniWindowOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new AnWindowTest());
+		OptionsMenu.goToState(new AnWindowTest());
 		return true;
 	}
 
@@ -2911,7 +2914,10 @@ class LogGameJoltIn extends Option
 	public override function press():Bool
 	{
 		#if gamejolt
-		OptionsMenu.switchState(new GameJoltLogin());
+		// OptionsMenu.goToState(new GameJoltLogin());
+		GameJoltGateway.getOut = false;
+		OptionsMenu.goToState(new GameJoltGateway(new MainMenuState()));
+		// OptionsMenu.instance.openSubState(GameJoltLogin()); // wait, it's now substate?!?!??!?!?
 		return true;
 		#else
 		// Main.gjToastManager.createToast(null, "GameJolt not supported", "Sorry, your platform does not support GameJolt.");

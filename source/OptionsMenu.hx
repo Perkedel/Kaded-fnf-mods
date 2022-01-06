@@ -520,7 +520,8 @@ class OptionsMenu extends CoreSubState
 				if (escape)
 				{
 					if (!isInPause)
-						FlxG.switchState(new MainMenuState());
+						// FlxG.switchState(new MainMenuState());
+						OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
 					else
 					{
 						PauseSubState.goBack = true;
@@ -821,7 +822,7 @@ class OptionsMenu extends CoreSubState
 	}
 
 	// JOELwindows7: go to flxState. prevent go to there if you are in gameplay.
-	public static function switchState(ofHere:FlxState)
+	public static function goToState(ofHere, goToLoading:Bool = false, transition:Bool = true, isSong:Bool = false)
 	{
 		if (isInPause)
 		{
@@ -829,8 +830,11 @@ class OptionsMenu extends CoreSubState
 			Main.gjToastManager.createToast(null, "Cannot access option", "Please leave the gameplay before accessing this option.");
 			return;
 		}
-		FlxG.switchState(ofHere);
+		// FlxG.switchState(ofHere);
+		OptionsDirect.instance.switchState(ofHere, goToLoading, transition, isSong); //JOELwindows7: cyclic reference! rename switchState of this into goToState?
 	}
+
+	//JOELwindows7: now it is easinerer
 
 	// JOELwindows7: mark needs restart song if the option requires restart
 	public static function markRestartSong()

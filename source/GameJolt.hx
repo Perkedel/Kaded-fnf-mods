@@ -68,7 +68,7 @@ package;
 // GameJolt things
 import flixel.addons.ui.FlxUIState;
 import haxe.iterators.StringIterator;
-#if gamejolt //JOELwindows7: here gamejolt if definition
+#if gamejolt // JOELwindows7: here gamejolt if definition
 import tentools.api.FlxGameJolt as GJApi;
 #end
 // Login things
@@ -92,6 +92,7 @@ import openfl.text.TextFormat;
 import openfl.Lib;
 import flixel.FlxG;
 import openfl.display.Sprite;
+import ui.GameJoltGateway;
 
 using StringTools;
 
@@ -182,6 +183,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 					{
 						GameJoltLogin.login = true;
 						FlxG.switchState(new GameJoltLogin());
+						// switchState(new GameJoltLogin(), false, false, false); //JOELwindows7: heff hex switch state
 					}
 				}
 				else
@@ -190,6 +192,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 					{
 						GameJoltLogin.login = true;
 						FlxG.switchState(new GameJoltLogin());
+						// switchState(new GameJoltLogin(), false, false, false); // JOELwindows7: heff hex switch state
 					}
 					Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Not signed in!\nSign in to save GameJolt Trophies and Leaderboard Scores!", "",
 						false);
@@ -374,12 +377,14 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 	}
 }
 
-class GameJoltInfo extends FlxSubState
+class GameJoltInfo extends CoreSubState // JOELwindows7: yeah
+// class GameJoltInfo extends CoreState // JOELwindows7: yeah
 {
 	/**
 	 * Variable to change which state to go to by hitting ESCAPE or the CONTINUE buttons.
 	 */
-	public static var changeState:FlxUIState = new MainMenuState();
+	// public static var changeState:FlxUIState = new MainMenuState();
+	public static var changeState:FlxUIState = new GameJoltGateway(new MainMenuState()); // JOELwindows7: gateway here at it
 
 	/**
 	 * Inline variable to change the font for the GameJolt API elements.
@@ -438,7 +443,7 @@ class GameJoltInfo extends FlxSubState
 	];
 }
 
-class GameJoltLogin extends MusicBeatSubstate
+class GameJoltLogin extends MusicBeatSubstate // class GameJoltLogin extends MusicBeatState
 {
 	var gamejoltText1:FlxText;
 	var gamejoltText2:FlxText;
@@ -600,7 +605,11 @@ class GameJoltLogin extends MusicBeatSubstate
 			{
 				FlxG.save.flush();
 				FlxG.sound.music.stop();
+				// JOELwindows7: must this.
+				// GameJoltInfo.changeState.getOut = true;
+				GameJoltGateway.getOut = true;
 				FlxG.switchState(GameJoltInfo.changeState);
+				// switchState(cast GameJoltInfo.changeState, false, false, false); //JOELwindows7: here we go.
 			});
 		});
 
@@ -687,7 +696,11 @@ class GameJoltLogin extends MusicBeatSubstate
 		{
 			FlxG.save.flush();
 			FlxG.mouse.visible = false;
+			// JOELwindows7: must this.
+			// GameJoltInfo.changeState.getOut = true;
+			GameJoltGateway.getOut = true;
 			FlxG.switchState(GameJoltInfo.changeState);
+			// switchState(cast GameJoltInfo.changeState, false, false, false); // JOELwindows7: heff hex switch state
 		}
 
 		super.update(elapsed);
@@ -913,11 +926,11 @@ class Toast extends Sprite
 		desc = new TextField();
 		desc.text = description;
 		// JOELwindows7: make fallback for if GameJolt not supported! Don't depend on GameJolt stuff if not supported here too
-        #if gamejolt
+		#if gamejolt
 		desc.setTextFormat(new TextFormat(openfl.utils.Assets.getFont(GameJoltInfo.fontPath).fontName, 18, 0xFFFFFF));
-        #else
+		#else
 		desc.setTextFormat(new TextFormat(openfl.utils.Assets.getFont("assets/fonts/vcr.ttf").fontName, 18, 0xFFFFFF));
-        #end
+		#end
 		desc.wordWrap = true;
 		desc.width = 360;
 		desc.height = 95;
