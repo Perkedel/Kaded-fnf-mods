@@ -13,7 +13,7 @@ import flixel.FlxState;
 
 class LoadingScreen extends MusicBeatState
 {
-	var target:MusicBeatState;
+	var target:FlxState; // JOELwindows7: must be universal for all kinds of States, right?
 	#if FEATURE_MULTITHREADING
 	var loadMutex:Mutex;
 	#end
@@ -26,13 +26,13 @@ class LoadingScreen extends MusicBeatState
 
 	var loadingSong:Bool = false;
 
-	public function new(_target:MusicBeatState, song:Bool = false)
+	public function new(_target:FlxState, song:Bool = false)
 	{
 		target = _target;
 		Debug.logTrace("bruhg");
-        #if FEATURE_MULTITHREADING
+		#if FEATURE_MULTITHREADING
 		loadMutex = new Mutex();
-        #end
+		#end
 		loadingSong = song;
 		super();
 	}
@@ -43,6 +43,7 @@ class LoadingScreen extends MusicBeatState
 
 	override function create()
 	{
+		Debug.logTrace("bruhg loading screen Kade + YinYang48 Hex");
 		// JOELwindows7: bekgron stuff
 		installStarfield3D(0, 0, FlxG.width, FlxG.height);
 
@@ -98,6 +99,7 @@ class LoadingScreen extends MusicBeatState
 			#end
 		}
 		localProg = progress;
+		_loadingBar.setPercentage(localProg);
 		super.update(elapsed);
 	}
 }

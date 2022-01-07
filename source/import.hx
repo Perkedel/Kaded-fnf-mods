@@ -21,6 +21,8 @@ import haxe.macro.Context;
 import flixel.FlxG;
 import Debug;
 #end
+// JOELwindows7: the threadening
+import utils.Threading;
 
 // JOELwindows7: everybody will eventually use StringTools, why not globalize that use then?
 using StringTools;

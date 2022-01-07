@@ -213,7 +213,7 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		instance = this; //JOELwindows7: ugung.
+		instance = this; // JOELwindows7: ugung.
 
 		// JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
@@ -443,12 +443,12 @@ class FreeplayState extends MusicBeatState
 			#if FEATURE_MULTITHREADING
 			Debug.logInfo("Multi thread loading pls");
 			unthreadLoading = false;
-			sys.thread.Thread.create(function()
+			Threading.run(function()
 			{
 				Debug.logInfo("start loading on a different thread");
 				asynchronouslyLoadSongList();
 				asyncCompleteLoad();
-			});
+			}, true);
 			#else
 			#end
 			// }

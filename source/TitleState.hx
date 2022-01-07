@@ -38,12 +38,14 @@ import Discord.DiscordClient;
 #end
 #if FEATURE_MULTITHREADING
 import sys.thread.Thread;
+import sys.thread.Mutex;
 #end
 
 using StringTools;
 
 class TitleState extends MusicBeatState
 {
+	
 	static var initialized:Bool = false;
 
 	var blackScreen:FlxSprite;
@@ -66,6 +68,12 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		// JOELwindows7: Yoinkered Kade + YinYang48 Hex
+		// https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/TitleState.hx
+		#if FEATURE_MULTITHREADING
+		MasterObjectLoader.mutex = new Mutex(); // JOELwindows7: you must first initialize the mutex.
+		#end
+
 		// JOELwindows7: fetch birthday lines
 		// hbdWhen = new Map<Date, String>();
 		hbdList = new Array<Dynamic>();

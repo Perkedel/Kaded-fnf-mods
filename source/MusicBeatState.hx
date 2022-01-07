@@ -82,13 +82,29 @@ class MusicBeatState extends CoreState
 			}
 		}
 		// Debug.logTrace(Object);
+		#if EXPERIMENTAL_HEX_WEEKEND
 		MasterObjectLoader.addObject(Object);
+		#end
 
-		//JOELwindows7: move it here
+		// JOELwindows7: move it here
 		if (FlxG.save.data.optimize)
 			assets.push(Object);
-		var result = super.add(Object);
-		return result;
+		// var result = super.add(Object);
+		// return result;
+		// JOELwindows7: hey pls functional!
+		return super.add(Object); // yeah that's better.
+	}
+
+	// JOELwindows7: also this remove override thingy
+	override function remove(Object:flixel.FlxBasic, Splice:Bool = false):flixel.FlxBasic
+	{
+		#if EXPERIMENTAL_HEX_WEEKEND
+		MasterObjectLoader.removeObject(Object);
+		#end
+		// var result = super.remove(Object, Splice);
+		// return result;
+		// JOELwindows7: hey pls functional!
+		return super.remove(Object, Splice); // yeah that's better.
 	}
 
 	public function clean()
@@ -113,19 +129,22 @@ class MusicBeatState extends CoreState
 	 * @param trans whether to have transition
 	 * @param song is this a song loading?
 	 */
-	public function switchState(nextState:MusicBeatState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false)
+	public function switchState(nextState:FlxState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false)
 	{
+		#if EXPERIMENTAL_HEX_WEEKEND
 		if (fuckYou)
 			return;
 		fuckYou = true;
 		Debug.logTrace("switching");
 		if (trans)
 		{
+			Debug.logTrace("With Transition");
 			transitionOut(function()
 			{
 				lastState = this;
 				if (goToLoading)
 				{
+					Debug.logTrace("Loading screen pls");
 					var state:FlxState = new LoadingScreen(nextState, song);
 
 					@:privateAccess
@@ -133,6 +152,7 @@ class MusicBeatState extends CoreState
 				}
 				else
 				{
+					Debug.logTrace("Straight to the core");
 					@:privateAccess
 					FlxG.game._requestedState = nextState;
 				}
@@ -141,9 +161,11 @@ class MusicBeatState extends CoreState
 		}
 		else
 		{
+			Debug.logTrace("No Transition");
 			lastState = this;
 			if (goToLoading)
 			{
+				Debug.logTrace("Loading screen pls");
 				var state:FlxState = new LoadingScreen(nextState, song);
 
 				@:privateAccess
@@ -151,11 +173,18 @@ class MusicBeatState extends CoreState
 			}
 			else
 			{
+				Debug.logTrace("Straight to the core");
 				@:privateAccess
 				FlxG.game._requestedState = nextState;
 			}
 			Debug.logTrace("switched");
 		}
+		#else
+		if (song)
+			LoadingState.loadAndSwitchState(nextState)
+		else
+			FlxG.switchState(nextState);
+		#end
 	}
 
 	var loadedCompletely:Bool = false; // JOELwindows7: also used by that Switch state above

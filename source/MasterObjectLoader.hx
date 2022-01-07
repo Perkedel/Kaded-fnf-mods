@@ -58,6 +58,7 @@ class MasterObjectLoader
 
 	public static function resetAssets(removeLoadingScreen:Bool = false)
 	{
+        Debug.logTrace("resetting Asset");
 		var keep:Array<Dynamic> = [];
 		#if FEATURE_MULTITHREADING
 		mutex.acquire();
@@ -66,6 +67,7 @@ class MasterObjectLoader
 		{
 			if (Std.isOfType(object, FlxSprite))
 			{
+                Debug.logTrace("resetting "+ Std.string(object) +" FlxSprite");
 				var sprite:FlxSprite = object;
 				if (sprite.ID >= 99999 && !removeLoadingScreen) // loading screen assets
 				{
@@ -77,6 +79,7 @@ class MasterObjectLoader
 			}
 			if (Std.isOfType(object, FlxGraphic))
 			{
+				Debug.logTrace("resetting " + Std.string(object) + " FlxGraphic");
 				var graph:FlxGraphic = object;
 				FlxG.bitmap.remove(graph);
 				// graph.destroy();

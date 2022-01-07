@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxAxes;
 import CoreState;
 import lime.app.Promise;
 import lime.app.Future;
@@ -13,6 +14,7 @@ import lime.utils.Assets as LimeAssets;
 import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 import haxe.io.Path;
+
 // import haxe.ui.components.Progress as ProgressBar; // JOELwindows7: a little help here?
 
 class LoadingState extends MusicBeatState
@@ -26,9 +28,11 @@ class LoadingState extends MusicBeatState
 	var logo:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft = false;
+	var bg:FlxSprite; // JOELwindows7: I prefer that also the week7 loading background to be global too as well.
 
 	// JOELwindows7: da loading bar pls
 	// var loadingBar:ProgressBar;
+	var loadBar:FlxSprite; // JOELwindows7: luckydog7's version
 
 	function new(target:FlxState, stopMusic:Bool)
 	{
@@ -41,11 +45,27 @@ class LoadingState extends MusicBeatState
 	{
 		// JOELwindows7: bekgron stuff
 		installStarfield3D(0, 0, FlxG.width, FlxG.height);
+		// the luckydog7's reverse engineer week7 loading bg
+		bg = new FlxSprite();
+		// bg.loadGraphic(Paths.image('funkay'));
+		bg.loadGraphic(Paths.image('loading/loading_screen', 'shared')); // JOELwindows7: the week7 loading screen LFM edition
+		bg.setGraphicSize(FlxG.width);
+		bg.updateHitbox();
+		bg.antialiasing = FlxG.save.data.antialiasing; // JOELwindows7: must set antialiasing based on setting right now!
+		add(bg);
+		bg.scrollFactor.set();
+		bg.screenCenter();
 
 		// JOELwindows7: loading stuffs
 		_loadingBar.setLoadingType(ExtraLoadingType.GOING);
 		_loadingBar.setInfoText("Loading Next State...");
 		_loadingBar.popNow();
+
+		// JOELwindows7: oh also luckydog7's reverse engineering I think loading bar & stuff?
+		// https://github.com/luckydog7/Funkin-android/blob/master/source/LoadingState.hx
+		loadBar = new FlxSprite(0, FlxG.height - 20).makeGraphic(FlxG.width, 10, -59694);
+		loadBar.screenCenter(FlxAxes.X);
+		add(loadBar);
 
 		logo = new FlxSprite(-150, -100);
 		logo.frames = Paths.getSparrowAtlas('logoBumpin');
@@ -61,10 +81,10 @@ class LoadingState extends MusicBeatState
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = FlxG.save.data.antialiasing;
-		add(gfDance);
-		add(logo);
+		// add(gfDance); // JOELwindows7: sorry man, according to luckydog7 and other credible sources:
+		// add(logo); // JOELwindows7: week 7 has already made new screen of it instead.
 
-		installBusyHourglassScreenSaver();
+		installBusyHourglassScreenSaver(); // JOELwindows7: another indicator making sure no hang
 
 		initSongsManifest().onComplete(function(lib)
 		{
@@ -136,6 +156,14 @@ class LoadingState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		// JOELwindows7: and to see loading progress here. luckydog7 thing
+		if (callbacks != null)
+		{
+			loadBar.scale.x = callbacks.getFired().length / callbacks.getUnfired().length;
+			// _loadingBar.setPercentage((callbacks.getFired().length / callbacks.getUnfired().length)*100);
+		}
+
 		#if debug
 		if (FlxG.keys.justPressed.SPACE)
 			trace('fired: ' + callbacks.getFired() + " unfired:" + callbacks.getUnfired());
@@ -173,21 +201,25 @@ class LoadingState extends MusicBeatState
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
 		Paths.setCurrentLevel("week" + PlayState.storyWeek);
-		#if NO_PRELOAD_ALL
-		var loaded = isSoundLoaded(getSongPath())
-			&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
-			&& isLibraryLoaded("shared");
+		// #if NO_PRELOAD_ALL // JOELwindows7: This should be no longer necessary even on cpp right?
+		if (!PlayState.isSM)
+		{ // JOELwindows7: folks, unfortunately it cannot load stepmania this way. there is different instruction!
+			var loaded = isSoundLoaded(getSongPath())
+				&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
+				&& isLibraryLoaded("shared");
 
-		if (!loaded)
-			return new LoadingState(target, stopMusic);
-		#end
+			if (!loaded)
+				return new LoadingState(target, stopMusic);
+		}
+		// #end
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
 		return target;
+		// return switchState(target,true,true,true); //JOELwindows7: idk man.
 	}
 
-	#if NO_PRELOAD_ALL
+	// #if NO_PRELOAD_ALL //JOELwindows7: comment this! open it up to all!
 	static function isSoundLoaded(path:String):Bool
 	{
 		return OpenFlAssets.cache.hasSound(path);
@@ -197,7 +229,8 @@ class LoadingState extends MusicBeatState
 	{
 		return OpenFlAssets.getLibrary(library) != null;
 	}
-	#end
+
+	// #end
 
 	override function destroy()
 	{

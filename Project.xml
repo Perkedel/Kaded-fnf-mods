@@ -73,8 +73,9 @@
 	<assets path="assets/preload_thief" rename="assets/preload_thief" exclude="*.mp3" unless="web" if="thief"/>
 
 	<!-- JOELwindows7: put ndll files to game root dir -->
-	<assets path="ndll" rename="." exclude="*.ogg" if="web"/>
-	<assets path="ndll" rename="." exclude="*.mp3" unless="web"/>
+	<assets path="ndll" rename="." exclude="*.ogg" if="web" unless="flash"/>
+	<assets path="ndll" rename="." exclude="*.mp3" unless="web || flash"/>
+	<!-- oh, looks like flash can't embed >16MB. eh flash is not cpp, whatever. -->
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web || neko || hl" />
@@ -318,7 +319,7 @@
 	<!-- JOELwindows7: TentaRJ's GameJolt tools -->
 	<haxelib name="tentools" />
 	<haxelib name="systools" unless = "mobile"/>
-	<ndll name="systools" haxelib="systools" unless = "mobile"/>
+	<ndll name="systools" haxelib="systools" unless = "flash"/>
 	<!-- Final touch to have this -->
 	<haxedef name="gamejolt" if="tentools systools" unless= "mobile"/>
 	
@@ -413,14 +414,14 @@
 	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
 
 	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
-	<haxedef name="FEATURE_DISCORD" if="desktop || cpp" unless="mobile" />
+	<haxedef name="FEATURE_DISCORD" if="desktop || cpp" unless="mobile || neko || hl" />
 	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
 	<haxedef name="FEATURE_FILESYSTEM" if="desktop || sys" />
 	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
 	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile"/>
 	<!-- JOELwindows7: okay fam, we've got libraries for most of the platform here yey, mobile still broken tho, Android yess. -->
 	<!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
-	<haxedef name="FEATURE_WEBM" if="windows" />
+	<haxedef name="FEATURE_WEBM" if="windows" unless = "neko || hl"/>
 	<!-- Defines whether StepMania files can be loaded. -->
 	<haxedef name="FEATURE_STEPMANIA" if="desktop || sys" />
 	<!-- Defines whether the Thread class can be used. -->
@@ -428,11 +429,11 @@
 	<!-- JOELwindows7: Defines whether uh I forgot -->
 
 	<!-- JOELwindows7: Defines whether the WebMer native should be enabled. This is for cpp-->
-	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="mobile"/>
+	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="hl || neko"/>
 	<!-- JOELwindows7: and for JS -->
 	<haxedef name="FEATURE_WEBM_JS" if="web"/>
 	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
-	<haxedef name="FEATURE_VLC" if="cpp windows"/>
+	<haxedef name="FEATURE_VLC" if="cpp windows" unless="neko || hl"/>
 	<!-- JOELwindows7: additional howl for LIME project xml here -->
 	<echo value="This is Odysee build" if="odysee"/>
 	<echo value="we have stolen mods in it" if="thief"/>
@@ -455,5 +456,15 @@
 
 	<!-- FORCE_INCLUDE_DLC to include separate_mods anyway which previously included only in debug build -->
 	<haxedef name="FORCE_INCLUDE_DLC" if="debug"/>
+
+	<!-- Experimentals -->
+	<!-- Kade + YinYang48 Hex Weekend Kade Engine features. BUG on FlxDrawQuadItem on function render: 
+		`shader.bitmap.input = graphics.bitmap;` goes still null unless 
+		```
+		var bitmap = graphics.bitmap;
+		shader.bitmap.input = bitmap;
+		``` 
+		Weird, isn't that same?? what the? -->
+	<!-- <haxedef name="EXPERIMENTAL_HEX_WEEKEND"/> -->
 
 </project>
