@@ -129,7 +129,7 @@ class MusicBeatState extends CoreState
 	 * @param trans whether to have transition
 	 * @param song is this a song loading?
 	 */
-	public function switchState(nextState:FlxState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false)
+	public function switchState(nextState:FlxState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false, stopMusic:Bool = false)
 	{
 		#if EXPERIMENTAL_HEX_WEEKEND
 		if (fuckYou)
@@ -181,7 +181,7 @@ class MusicBeatState extends CoreState
 		}
 		#else
 		if (song)
-			LoadingState.loadAndSwitchState(nextState)
+			LoadingState.loadAndSwitchState(nextState, stopMusic)
 		else
 			FlxG.switchState(nextState);
 		#end

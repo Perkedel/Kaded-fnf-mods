@@ -1198,14 +1198,17 @@ class PlayState extends MusicBeatState
 			+ SONG.artist
 			+ " - "
 			+ SONG.songName
+			+ "\n"
+			+ "Song ID: "
+			+ SONG.songId
 			+ "\n",
-			12);
+			14);
 		reuploadWatermark.setPosition((FlxG.width / 2) - (reuploadWatermark.width / 2), (FlxG.height / 2) - (reuploadWatermark.height / 2) + 50);
 		// Ah damn. the pivot of all Haxe Object is top left!
 		// right, let's just work this all around anyway.
 		// there I got it. hopefully it's centered.
 		reuploadWatermark.scrollFactor.set();
-		reuploadWatermark.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		reuploadWatermark.setFormat(Paths.font("UbuntuMono-R.ttf"), 14, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // was vcr.ttf
 		add(reuploadWatermark);
 		reuploadWatermark.visible = false;
 		// follow this example, you must be protected too from those credit-less YouTubers the bastards!
@@ -1269,9 +1272,10 @@ class PlayState extends MusicBeatState
 		// Literally copy-paste of the above, fu
 		botPlayState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
 			"BOTPLAY", 20);
-		botPlayState.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botPlayState.setPosition((FlxG.width / 2) - 75, 130); // JOELwindows7: oh wait, Psych this up pls!
+		botPlayState.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // JOELwindows7: was size 42
 		botPlayState.scrollFactor.set();
-		botPlayState.borderSize = 4;
+		botPlayState.borderSize = 2; // JOELwindows7: was 4
 		botPlayState.borderQuality = 2;
 		botPlayState.cameras = [camHUD];
 		if (PlayStateChangeables.botPlay && !loadRep)
@@ -1301,7 +1305,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// JOELwindows7: install pause button
-		addPauseButton(Std.int((FlxG.width / 2) - (128 / 2)), 80);
+		addPauseButton(Std.int((FlxG.width / 2) - (128 / 2)), 80 - 20); // was 80
 		trace("install pause button");
 
 		// JOELwindows7: install credit Rolls
@@ -1508,6 +1512,9 @@ class PlayState extends MusicBeatState
 
 		// FlxG.autoPause = true; // JOELwindows7: because somehow the film does not return it back
 
+		// JOELwindows7: unpop loading bar!
+		_loadingBar.unPopNow();
+
 		// JOELwindows7: why the peck with touchscreen button game crash on second run?!
 		trace("finish create PlayState");
 	}
@@ -1527,11 +1534,15 @@ class PlayState extends MusicBeatState
 				new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
 				{
 					// JOELwindows7: if has video, then load the video first before going to new playstate!
-					LoadingState.loadAndSwitchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
+					// LoadingState.loadAndSwitchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
+					// 	(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+					// 		new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()));
+					switchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
 						(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
-							new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()));
+							new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()),
+						true, true, true, true);
 					// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
-					// JOELwindows7: oh God, so complicated. I hope it works!
+					// JOELwindows7: oh God, so complicated. I hope it works! use Hex weekend switchState
 					clean();
 				});
 			}
@@ -1566,7 +1577,9 @@ class PlayState extends MusicBeatState
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
 						Conductor.changeBPM(102);
 						// FlxG.switchState(new StoryMenuState());
-						FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
+						// FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
+						switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
+							new StoryMenuState()) : new StoryMenuState()); // JOELwindows7: use Hex Kade YinYang48 version!
 						// JOELwindows7: complicated! oh MY GOD!
 						clean();
 					}
@@ -3299,7 +3312,8 @@ class PlayState extends MusicBeatState
 			if (FlxG.random.bool(0.1))
 			{
 				trace('GITAROO MAN EASTER EGG');
-				FlxG.switchState(new GitarooPause());
+				// FlxG.switchState(new GitarooPause());
+				switchState(new GitarooPause()); // JOELwindows7: use YinYang48 Kade Hex version
 				clean();
 			}
 			else
@@ -3325,7 +3339,8 @@ class PlayState extends MusicBeatState
 			cannotDie = true;
 			removeTouchScreenButtons();
 
-			FlxG.switchState(new WaveformTestState());
+			// FlxG.switchState(new WaveformTestState());
+			switchState(new WaveformTestState()); // JOELwindows7: use Kade + YinYang48 Hex yess
 			clean();
 			PlayState.stageTesting = false;
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
@@ -3359,7 +3374,8 @@ class PlayState extends MusicBeatState
 			cannotDie = true;
 			removeTouchScreenButtons();
 
-			FlxG.switchState(new ChartingState());
+			// FlxG.switchState(new ChartingState());
+			switchState(new ChartingState());
 			clean();
 			PlayState.stageTesting = false;
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
@@ -3423,7 +3439,8 @@ class PlayState extends MusicBeatState
 			}
 
 			removeTouchScreenButtons();
-			FlxG.switchState(new AnimationDebug(dad.curCharacter));
+			// FlxG.switchState(new AnimationDebug(dad.curCharacter));
+			switchState(new AnimationDebug(dad.curCharacter)); // JOELwindows7: use Kade + YinYang48 Hex yess
 			clean();
 			PlayState.stageTesting = false;
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
@@ -3477,7 +3494,9 @@ class PlayState extends MusicBeatState
 					remove(dad);
 					remove(gf);
 				});
-				FlxG.switchState(new StageDebugState(Stage.curStage, gf.curCharacter, boyfriend.curCharacter, dad.curCharacter));
+				// FlxG.switchState(new StageDebugState(Stage.curStage, gf.curCharacter, boyfriend.curCharacter, dad.curCharacter));
+				switchState(new StageDebugState(Stage.curStage, gf.curCharacter, boyfriend.curCharacter,
+					dad.curCharacter)); // JOELwindows7: use Kade + YinYang48 Hex yess
 				clean();
 				FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 				FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
@@ -3499,7 +3518,8 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.ZERO)
 		{
 			removeTouchScreenButtons();
-			FlxG.switchState(new AnimationDebug(boyfriend.curCharacter));
+			// FlxG.switchState(new AnimationDebug(boyfriend.curCharacter));
+			switchState(new AnimationDebug(boyfriend.curCharacter)); // JOELwindows7: use Kade + YinYang48 Hex yess
 			clean();
 			PlayState.stageTesting = false;
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
@@ -4011,7 +4031,8 @@ class PlayState extends MusicBeatState
 
 				if (FlxG.save.data.InstantRespawn)
 				{
-					FlxG.switchState(new PlayState());
+					// FlxG.switchState(new PlayState());
+					switchState(new PlayState()); // JOELwindows7: use hex weekend version Kade + YinYang48
 				}
 				else
 				{
@@ -4061,7 +4082,8 @@ class PlayState extends MusicBeatState
 
 				if (FlxG.save.data.InstantRespawn)
 				{
-					FlxG.switchState(new PlayState());
+					// FlxG.switchState(new PlayState());
+					switchState(new PlayState()); // JOELwindows7: use hex weekend version Kade + YinYang48
 				}
 				else
 				{
@@ -4663,7 +4685,8 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			offsetTesting = false;
-			LoadingState.loadAndSwitchState(new OptionsMenu());
+			// LoadingState.loadAndSwitchState(new OptionsMenu());
+			switchState(new OptionsMenu(), true, true, true, true); // JOELwindows7: hex switch state lol
 			clean();
 			FlxG.save.data.offset = offsetTest;
 		}
@@ -4684,7 +4707,8 @@ class PlayState extends MusicBeatState
 				remove(dad);
 				remove(gf);
 			});
-			FlxG.switchState(new StageDebugState(Stage.curStage));
+			// FlxG.switchState(new StageDebugState(Stage.curStage));
+			switchState(new StageDebugState(Stage.curStage)); // JOELwindows7: hex switch state lol
 		}
 		else
 		{
@@ -4869,7 +4893,8 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{
-					FlxG.switchState(new FreeplayState());
+					// FlxG.switchState(new FreeplayState());
+					switchState(new FreeplayState()); // JOELwindows7: hex switch state lol
 					clean();
 				}
 			}
@@ -6944,11 +6969,15 @@ class PlayState extends MusicBeatState
 				new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
 				{
 					// JOELwindows7: if has video, then load the video first before going to new playstate!
-					LoadingState.loadAndSwitchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
+					// LoadingState.loadAndSwitchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
+					// 	(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+					// 		new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()));
+					switchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
 						(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
-							new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()));
+							new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()),
+						true, true, true, true);
 					// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
-					// JOELwindows7: oh God, so complicated. I hope it works!
+					// JOELwindows7: oh God, so complicated. I hope it works! use Hex Weekend switchState
 					clean();
 				});
 			}
@@ -6983,8 +7012,9 @@ class PlayState extends MusicBeatState
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
 						Conductor.changeBPM(102);
 						// FlxG.switchState(new StoryMenuState());
-						FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
-						// JOELwindows7: complicated! oh MY GOD!
+						// FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
+						switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
+						// JOELwindows7: complicated! oh MY GOD! use Hex Weekend switchState
 						clean();
 					}
 				});

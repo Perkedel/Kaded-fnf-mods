@@ -207,7 +207,8 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (FlxG.save.data.InstantRespawn)
 		{
-			LoadingState.loadAndSwitchState(new PlayState());
+			// LoadingState.loadAndSwitchState(new PlayState());
+			PlayState.instance.switchState(new PlayState(), true, true, true, true); // JOELwindows7: Hex weekend switchstate pls
 		}
 
 		if (controls.BACK || haveBacked)
@@ -223,10 +224,12 @@ class GameOverSubstate extends MusicBeatSubstate
 				GameplayCustomizeState.freeplayStage = 'stage';
 				GameplayCustomizeState.freeplaySong = 'bopeebo';
 				GameplayCustomizeState.freeplayWeek = 1;
-				FlxG.switchState(new StoryMenuState());
+				// FlxG.switchState(new StoryMenuState());
+				PlayState.instance.switchState(new StoryMenuState()); // JOELwindows7: Hex weekend switchstate pls
 			}
 			else
-				FlxG.switchState(new FreeplayState());
+				// FlxG.switchState(new FreeplayState());
+				PlayState.instance.switchState(new FreeplayState()); // JOELwindows7: Hex weekend switchstate pls
 			PlayState.loadRep = false;
 			PlayState.stageTesting = false;
 			haveBacked = false;
@@ -331,7 +334,8 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{
-					LoadingState.loadAndSwitchState(new PlayState());
+					// LoadingState.loadAndSwitchState(new PlayState());
+					PlayState.instance.switchState(new PlayState()); //JOELwindows7: hex switch state lol
 					PlayState.stageTesting = false;
 				});
 			});

@@ -220,8 +220,9 @@ class FreeplayState extends MusicBeatState
 
 		// JOELwindows7: okey how about attempt to have sys multithreading?
 		#if FEATURE_MULTITHREADING
+		// TODO: have option to enable/disable threaded loading.
 		Debug.logInfo("Multithreading enabled");
-		legacySynchronousLoading = false;
+		legacySynchronousLoading = true;
 		unthreadLoading = false;
 		#else
 		legacySynchronousLoading = true; // JOELwindows7: comment when FlxAsyncLoop finally works!
@@ -441,6 +442,7 @@ class FreeplayState extends MusicBeatState
 			// {
 			// JOELwindows7: so yeah, maybe use already proven working Kade's way of multithreading?
 			#if FEATURE_MULTITHREADING
+			// TODO: have cancel when back button pressed
 			Debug.logInfo("Multi thread loading pls");
 			unthreadLoading = false;
 			Threading.run(function()
@@ -825,9 +827,12 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK || haveBacked)
 		{
-			// FlxG.switchState(new MainMenuState());
-			switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
-
+			if (loadedUp) // JOELwindows7: workaround for no cancel in sys.thread.Thread . do not go out until that thread finished
+				// otherwise it'll null object reference
+			{
+				// FlxG.switchState(new MainMenuState());
+				switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+			}
 			haveBacked = false;
 		}
 

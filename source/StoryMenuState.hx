@@ -572,7 +572,7 @@ class StoryMenuState extends MusicBeatState
 				// LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
 				// 	true);
 				switchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
-					true, true, true); // JOELwindows7: switch state hex
+					true, true, true, true); // JOELwindows7: switch state hex
 				// #else //workaround for Video cutscener not working in Android
 				// LoadingState.loadAndSwitchState(new PlayState(), true);
 				// #end

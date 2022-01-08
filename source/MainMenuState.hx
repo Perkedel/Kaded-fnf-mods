@@ -249,7 +249,8 @@ class MainMenuState extends MusicBeatState
 
 			if (controls.BACK || haveBacked)
 			{
-				FlxG.switchState(new TitleState());
+				// FlxG.switchState(new TitleState());
+				switchState(new TitleState()); // JOELwindows7: use this Kade + YinYang48 Hex version
 
 				haveBacked = false;
 			}
@@ -366,16 +367,20 @@ class MainMenuState extends MusicBeatState
 
 		switch (daChoice)
 		{
+			// JOELwindows7: you must use this new stuff versionao on it!
 			case 'story mode':
-				FlxG.switchState(new StoryMenuState());
+				// FlxG.switchState(new StoryMenuState());
+				switchState(new StoryMenuState());
 				trace("Story Menu Selected");
 			case 'freeplay':
-				FlxG.switchState(new FreeplayState());
+				// FlxG.switchState(new FreeplayState());
+				switchState(new FreeplayState());
 
 				trace("Freeplay Menu Selected");
 
 			case 'options':
-				FlxG.switchState(new OptionsDirect());
+				// FlxG.switchState(new OptionsDirect());
+				switchState(new OptionsDirect());
 		}
 	}
 

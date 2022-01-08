@@ -425,7 +425,8 @@
 	<!-- Defines whether StepMania files can be loaded. -->
 	<haxedef name="FEATURE_STEPMANIA" if="desktop || sys" />
 	<!-- Defines whether the Thread class can be used. -->
-	<haxedef name="FEATURE_MULTITHREADING" if="cpp" />
+	<haxedef name="FEATURE_MULTITHREADING" if="cpp || neko || hl || cs || python" />
+	<!-- <haxedef name="FEATURE_MULTITHREADING" if="target.threaded" /> -->
 	<!-- JOELwindows7: Defines whether uh I forgot -->
 
 	<!-- JOELwindows7: Defines whether the WebMer native should be enabled. This is for cpp-->
