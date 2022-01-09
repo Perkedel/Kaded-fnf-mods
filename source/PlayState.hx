@@ -137,6 +137,8 @@ class PlayState extends MusicBeatState
 	public static var noteskinSpriteMine:FlxAtlasFrames; // JOElwindows7: the mine, don't step on it
 	public static var noteskinPixelSprite:BitmapData;
 	public static var noteskinPixelSpriteEnds:BitmapData;
+	public static var noteskinPixelSpriteMine:BitmapData; // JOElwindows7: the mine, don't step on it
+	public static var noteskinPixelSpriteEndsMine:BitmapData; // JOElwindows7: the mine, don't step on it
 
 	public static var rep:Replay;
 	public static var loadRep:Bool = false;
@@ -977,16 +979,29 @@ class PlayState extends MusicBeatState
 		Debug.logTrace("Pls prepare Noteskin sprites");
 		// JOELwindows7: folks, let's not ignore the fact some song wants to use custom noteskin rather than user option. idk man.
 		// noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.useCustomNoteStyle? SONG.noteStyle :FlxG.save.data.noteskin);
-		noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
+		noteskinPixelSprite = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, false, 0,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin); // JOELwindows7: new try
+		// noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
+		Debug.logTrace("Go the pixel mine noteskin");
+		noteskinPixelSpriteMine = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, true, 2,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, 2); // JOELwindows7: new try
 		Debug.logTrace("Go the regular noteskin");
-		noteskinSprite = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' +
-			SONG.noteStyle) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+		// noteskinSprite = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(Note.giveMeNoteSkinPath(0)) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+		noteskinSprite = SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(SONG.noteStyle, 0,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
 		// noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
 		Debug.logTrace("Go the mine noteskin");
-		noteskinSpriteMine = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + SONG.noteStyle +
-			"-mine") : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 2);
+		// noteskinSpriteMine = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(Note.giveMeNoteSkinPath(2) +
+		// 	"-mine") : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 2);
+		noteskinSpriteMine = SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(SONG.noteStyle, 2,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 2);
 		Debug.logTrace("Go the pixel hold end");
-		noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
+		// noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
+		noteskinPixelSpriteEnds = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, true, 0,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
+		Debug.logTrace("Go the pixel hold end mine");
+		noteskinPixelSpriteEndsMine = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, true, 2,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true, 2);
 
 		Debug.logTrace("Now for static arrows");
 		generateStaticArrows(0);

@@ -26,6 +26,7 @@
         "sections": 0,
         "validScore": true,
         "noteStyle": "normal",
+        "loadNoteStyleOtherWayAround": false,
         "useCustomNoteStyle": false,
         "hasVideo": false,
         "videoPath": "",

@@ -82,6 +82,7 @@ typedef SongData =
 	var silentCountdown:Bool;
 	var skipCountdown:Bool;
 	// JOELwindows7: more configs
+	var loadNoteStyleOtherWayAround:Bool; // use foldered noteskin
 	var useCustomNoteStyle:Bool; // enable to custom noteskin
 	// JOELwindows7: Delays
 	var ?delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
@@ -116,6 +117,9 @@ typedef SongMeta =
 	var ?isCreditRoll:Bool; // JOELwindows7: is this credit roll? if yes then roll credit.
 	var ?creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
+	// JOELwindows7: more configs
+	var ?loadNoteStyleOtherWayAround:Bool; // use foldered noteskin
+	var ?useCustomNoteStyle:Bool; // enable to custom noteskin
 	// JOELwindows7: fallbackers
 	var ?player1:String;
 	var ?player2:String;
@@ -455,6 +459,16 @@ class Song
 			{
 				songData.eventObjects = songMetaData.eventObjects;
 			}
+		}
+
+		if(songMetaData.loadNoteStyleOtherWayAround != null)
+		{
+			songData.loadNoteStyleOtherWayAround = songMetaData.loadNoteStyleOtherWayAround;
+		}
+
+		if(songMetaData.useCustomNoteStyle!= null)
+		{
+			songData.useCustomNoteStyle = songMetaData.useCustomNoteStyle;
 		}
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!

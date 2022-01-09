@@ -20,6 +20,7 @@
     "invisibleCountdown": false,
     "silentCountdown": false,
     "useCustomNoteStyle": false,
+    "loadNoteStyleOtherWayAround": false,
     "noteStyle": "normal",
     "player1": "bf",
     "player2": "dad",

@@ -45,7 +45,6 @@ using StringTools;
 
 class TitleState extends MusicBeatState
 {
-	
 	static var initialized:Bool = false;
 
 	var blackScreen:FlxSprite;
@@ -70,9 +69,9 @@ class TitleState extends MusicBeatState
 	{
 		// JOELwindows7: Yoinkered Kade + YinYang48 Hex
 		// https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/TitleState.hx
-		#if FEATURE_MULTITHREADING
-		MasterObjectLoader.mutex = new Mutex(); // JOELwindows7: you must first initialize the mutex.
-		#end
+		// #if FEATURE_MULTITHREADING
+		// MasterObjectLoader.mutex = new Mutex(); // JOELwindows7: you must first initialize the mutex.
+		// #end
 
 		// JOELwindows7: fetch birthday lines
 		// hbdWhen = new Map<Date, String>();
@@ -121,45 +120,46 @@ class TitleState extends MusicBeatState
 			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
 		}
 
-		FlxG.autoPause = false;
+		// FlxG.autoPause = false;
 
-		FlxG.save.bind('funkin', 'ninjamuffin99');
+		// FlxG.save.bind('funkin', 'ninjamuffin99');
 
-		PlayerSettings.init();
+		// PlayerSettings.init();
 
-		KadeEngineData.initSave();
+		// KadeEngineData.initSave();
 
 		// JOELwindows7: TentaRJ GameJolter
-		#if gamejolt
-		// Main.gjToastManager.createToast(Paths.image("art/LFMicon64"), "Cool and good", "Welcome to Last Funkin Moments",
-		// 	false); // JOELwindows7: create GameJolt Toast here.
-		GameJoltAPI.connect();
-		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
-		#end
+		// #if gamejolt
+		// // Main.gjToastManager.createToast(Paths.image("art/LFMicon64"), "Cool and good", "Welcome to Last Funkin Moments",
+		// // 	false); // JOELwindows7: create GameJolt Toast here.
+		// GameJoltAPI.connect();
+		// GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+		// #end
 
-		KeyBinds.keyCheck();
+		// KeyBinds.keyCheck();
 		// It doesn't reupdate the list before u restart rn lmao
 
-		NoteskinHelpers.updateNoteskins();
+		// NoteskinHelpers.updateNoteskins();
 
-		if (FlxG.save.data.volDownBind == null)
-			FlxG.save.data.volDownBind = "MINUS";
-		if (FlxG.save.data.volUpBind == null)
-			FlxG.save.data.volUpBind = "PLUS";
+		// if (FlxG.save.data.volDownBind == null)
+		// 	FlxG.save.data.volDownBind = "MINUS";
+		// if (FlxG.save.data.volUpBind == null)
+		// 	FlxG.save.data.volUpBind = "PLUS";
 
-		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+		// FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+		// FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+		// FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
 
 		FlxG.mouse.visible = false;
 
-		FlxG.worldBounds.set(0, 0);
+		// FlxG.worldBounds.set(0, 0);
 
-		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+		// FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
-		MusicBeatState.initSave = true;
+		// MusicBeatState.initSave = true;
 
 		fullscreenBind = FlxKey.fromString(FlxG.save.data.fullscreenBind);
+		// JOElwindows7: save inits & some other inits are already splashed
 
 		Highscore.load();
 

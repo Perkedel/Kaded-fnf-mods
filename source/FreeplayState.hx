@@ -854,6 +854,12 @@ class FreeplayState extends MusicBeatState
 		#end
 	}
 
+	//JOELwindows7: maybe clean up variables?
+	override public function destroy()
+	{
+		super.destroy();
+	}
+
 	function loadAnimDebug(dad:Bool = true)
 	{
 		// First, get the song data.

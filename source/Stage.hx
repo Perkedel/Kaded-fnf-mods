@@ -144,13 +144,13 @@ class Stage extends MusicBeatState
 		],
 		'cruelThesis' => ['NULL-bf' => [1070, 500], 'NULL-gf' => [400, 130], 'NULL-dad' => [-100, 150]],
 		'lapanganParalax' => ['NULL-bf' => [970, 450], 'NULL-gf' => [400, 130], 'NULL-dad' => [0, 100]],
-		'blank' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
-		'greenscreen' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
-		'bluechroma' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
-		'semple' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
-		'whitening' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
-		'kuning' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
-		'blood' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [300, 100]],
+		'blank' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [100, 100]],
+		'greenscreen' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [100, 100]],
+		'bluechroma' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [100, 100]],
+		'semple' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [100, 100]],
+		'whitening' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [100, 100]],
+		'kuning' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [100, 100]],
+		'blood' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [100, 100]],
 		'NULL' => ['NULL-bf' => [770, 450], 'NULL-gf' => [400, 130], 'NULL-dad' => [100, 100]] // JOELwindows7: default fallback, don't change!
 	];
 

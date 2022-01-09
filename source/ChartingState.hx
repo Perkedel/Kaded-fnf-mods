@@ -251,6 +251,7 @@ class ChartingState extends MusicBeatState
 				invisibleCountdown: false,
 				silentCountdown: false,
 				skipCountdown: false,
+				loadNoteStyleOtherWayAround: false,
 				useCustomNoteStyle: false,
 				delayBeforeStart: 0.0,
 				delayAfterFinish: 0.0,

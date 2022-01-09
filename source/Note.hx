@@ -150,11 +150,12 @@ class Note extends FlxSprite
 				case 2:
 					Debug.logTrace("Whoah dude he adds mine?");
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
-						2);
+						noteType);
 					// frames = PlayState.noteskinSpriteMine;
 					Debug.logTrace("Mine graphic loaded");
 				default:
-					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
+					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+						noteType);
 					// frames = PlayState.noteskinSprite;
 			}
 			// frames = PlayState.noteskinSprite;
@@ -198,11 +199,12 @@ class Note extends FlxSprite
 			{
 				case 'pixel':
 					// JOELwindows7: resafety check I guess.
-					loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin),
+					loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+						false, noteType),
 						true, 17, 17);
 					if (isSustainNote)
 						loadGraphic(PlayState.noteskinPixelSpriteEnds != null ? PlayState.noteskinPixelSpriteEnds : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
-							true),
+							true, noteType),
 							true, 7, 6);
 
 					for (i in 0...4)
@@ -266,13 +268,16 @@ class Note extends FlxSprite
 					switch (noteType)
 					{
 						case 2:
-							frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle +
-								'-mine') : PlayState.noteskinSpriteMine;
-						// frames = PlayState.noteskinSpriteMine;
+							// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(NoteSkinHelpers.giveMeNoteSkinPath(noteType) +
+							// 	'-mine') : PlayState.noteskinSpriteMine;
+							// frames = PlayState.SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(PlayState.SONG.noteStyle, noteType,
+							// 	PlayState.SONG.loadNoteStyleOtherWayAround) : PlayState.noteskinSpriteMine;
+							frames = PlayState.noteskinSpriteMine; // JOELwindows7: smaller memory footprint
 						default:
-							frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' +
-								PlayState.SONG.noteStyle) : PlayState.noteskinSprite;
-							// frames = PlayState.noteskinSprite;
+							// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(NoteSkinHelpers.giveMeNoteSkinPath(noteType)) : PlayState.noteskinSprite;
+							// frames = PlayState.SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(PlayState.SONG.noteStyle, noteType,
+							// 	PlayState.SONG.loadNoteStyleOtherWayAround) : PlayState.noteskinSprite;
+							frames = PlayState.noteskinSprite; // JOELwindows7: smaller memory footprint
 					}
 
 					for (i in 0...4)

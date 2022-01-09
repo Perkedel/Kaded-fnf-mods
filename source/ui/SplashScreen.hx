@@ -18,6 +18,14 @@
 
 package ui;
 
+#if FEATURE_MULTITHREADING
+import sys.thread.Mutex;
+#end
+import GameJolt;
+import flixel.input.keyboard.FlxKey;
+import flixel.graphics.FlxGraphic;
+import flixel.effects.FlxFlicker;
+import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxColor;
 import flixel.FlxState;
@@ -51,6 +59,7 @@ class SplashScreen extends MusicBeatState
 	var _sprite:Sprite;
 	var _gfx:Graphics;
 	var _text:TextField;
+	var _poweredByText:TextField;
 
 	var _times:Array<Float>;
 	var _colors:Array<Int>;
@@ -60,6 +69,9 @@ class SplashScreen extends MusicBeatState
 	var _cachedTimestep:Bool;
 	var _cachedAutoPause:Bool;
 
+	var _productLogo:FlxSprite;
+	var _companyLogo:FlxSprite;
+
 	public function new()
 	{
 		super();
@@ -67,11 +79,30 @@ class SplashScreen extends MusicBeatState
 
 	override public function create():Void
 	{
+		// JOELwindows7: Yoinkered Kade + YinYang48 Hex
+		// https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/TitleState.hx
+		#if FEATURE_MULTITHREADING
+		MasterObjectLoader.mutex = new Mutex(); // JOELwindows7: you must first initialize the mutex.
+		#end
+		
 		super.create();
+
+		_cachedBgColor = FlxG.cameras.bgColor;
+		FlxG.cameras.bgColor = FlxColor.BLACK;
 
 		transIn = FlxTransitionableState.defaultTransIn;
 
 		// JOELwindows7: here init first!
+		// JOELwindows7: TentaRJ GameJolter
+		#if gamejolt
+		// Main.gjToastManager.createToast(Paths.image("art/LFMicon64"), "Cool and good", "Welcome to Last Funkin Moments",
+		// 	false); // JOELwindows7: create GameJolt Toast here.
+		GameJoltAPI.connect();
+		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+		#end
+
+		FlxG.mouse.visible = false;
+
 		FlxG.autoPause = false;
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
@@ -80,12 +111,168 @@ class SplashScreen extends MusicBeatState
 
 		KadeEngineData.initSave();
 
+		// It doesn't reupdate the list before u restart rn lmao
+		KeyBinds.keyCheck();
+		NoteskinHelpers.updateNoteskins();
+
+		if (FlxG.save.data.volDownBind == null)
+			FlxG.save.data.volDownBind = "MINUS";
+		if (FlxG.save.data.volUpBind == null)
+			FlxG.save.data.volUpBind = "PLUS";
+
+		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+
+		FlxG.worldBounds.set(0, 0);
+
+		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+
+		MusicBeatState.initSave = true;
+
+		// HaxeFlixel logo yess
 		_times = [0.041, 0.184, 0.334, 0.495, 0.636];
 		_colors = [0x00b922, 0xffc132, 0xf5274e, 0x3641ff, 0x04cdfb];
 		_functions = [drawGreen, drawYellow, drawRed, drawBlue, drawLightBlue];
 
-		if (nextState != null)
-			FlxG.switchState(nextState);
+		for (time in _times)
+		{
+			new FlxTimer().start(time, timerCallback);
+		}
+
+		var stageWidth:Int = Lib.current.stage.stageWidth;
+		var stageHeight:Int = Lib.current.stage.stageHeight;
+
+		_sprite = new Sprite();
+		FlxG.stage.addChild(_sprite);
+		_sprite.scaleX = _sprite.scaleY = .5;
+		_sprite.y = stageHeight - 40;
+		_gfx = _sprite.graphics;
+
+		_text = new TextField();
+		_text.selectable = false;
+		_text.embedFonts = true;
+		var dtf = new TextFormat(openfl.utils.Assets.getFont("assets/fonts/vcr.ttf").fontName, 24, 0xffffff);
+		dtf.align = TextFormatAlign.CENTER;
+		_text.defaultTextFormat = dtf;
+		_text.text = "HaxeFlixel";
+		FlxG.stage.addChild(_text);
+		_text.x = stageWidth / 2 - _text.textWidth / 2;
+		_text.y = stageHeight - 40;
+
+		_sprite.x = stageWidth / 2 - _text.x - 50;
+
+		_poweredByText = new TextField();
+		_poweredByText.selectable = false;
+		_poweredByText.embedFonts = true;
+		var dtf2 = new TextFormat(openfl.utils.Assets.getFont("assets/fonts/vcr.ttf").fontName, 18, 0xffffff);
+		dtf2.align = TextFormatAlign.CENTER;
+		_poweredByText.defaultTextFormat = dtf2;
+		_poweredByText.text = "Powered by";
+		FlxG.stage.addChild(_poweredByText);
+		_poweredByText.y = stageHeight - 90;
+
+		onResize(stageWidth, stageHeight);
+
+		_productLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("LFMLogoSplash"));
+		_productLogo.setPosition((FlxG.width / 2) - (_productLogo.width / 2), (FlxG.height / 2) - (_productLogo.height / 2));
+		add(_productLogo);
+
+		_companyLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("Perkedel_Logo_Typeborder"));
+		// _companyLogo.scale.x = _companyLogo.scale.y = .5;
+		_companyLogo.setGraphicSize(Std.int(_companyLogo.width * .075), Std.int(_companyLogo.height * .075));
+		_companyLogo.setPosition((FlxG.width / 2) - (_companyLogo.width / 2), (FlxG.height / 2) - (_companyLogo.height / 2) + 80);
+		add(_companyLogo);
+
+		FlxG.sound.play(Paths.sound('scrollMenu'));
+
+		// if (nextState != null)
+		// 	FlxG.switchState(nextState);
+	}
+
+	override public function destroy():Void
+	{
+		_sprite = null;
+		_gfx = null;
+		_text = null;
+		_times = null;
+		_colors = null;
+		_functions = null;
+		super.destroy();
+	}
+
+	function beginSplashShow()
+	{
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			intoStateNow();
+		});
+	}
+
+	function intoStateNow()
+	{
+		FlxG.sound.play(Paths.sound('confirmMenu'));
+		if (FlxG.save.data.flashing)
+		{
+			FlxFlicker.flicker(_productLogo, 2, 0.06, false, false, function(flicker:FlxFlicker)
+			{
+				if (nextState != null)
+					FlxG.switchState(nextState);
+
+				justComplete();
+				// flicker.stop();
+			});
+		}
+		else
+		{
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+				if (nextState != null)
+					FlxG.switchState(nextState);
+
+				justComplete();
+			});
+		}
+	}
+
+	override public function onResize(Width:Int, Height:Int):Void
+	{
+		super.onResize(Width, Height);
+
+		_sprite.x = (Width / 2) - (_sprite.width / 2) - 50;
+		// _sprite.y = (Height / 2) - 20 * FlxG.game.scaleY;
+		_sprite.y = (Height) - 50 * FlxG.game.scaleY;
+
+		_text.width = Width / FlxG.game.scaleX;
+		// _text.x = 0;
+		_text.x = 50;
+		// _text.y = _sprite.y + 80 * FlxG.game.scaleY;
+		_text.y = (_sprite.y) * FlxG.game.scaleY;
+
+		// _sprite.scaleX = _text.scaleX = FlxG.game.scaleX;
+		// _sprite.scaleY = _text.scaleY = FlxG.game.scaleY;
+
+		_poweredByText.width = Width / FlxG.game.scaleX;
+	}
+
+	function timerCallback(Timer:FlxTimer):Void
+	{
+		_functions[_curPart]();
+		_text.textColor = _colors[_curPart];
+		_text.text = "HaxeFlixel";
+		_curPart++;
+
+		if (_curPart == 5)
+		{
+			// Make the logo a tad bit longer, so our users fully appreciate our hard work :D
+			// FlxTween.tween(_sprite, {alpha: 0}, 3.0, {ease: FlxEase.quadOut, onComplete: onComplete});
+			// FlxTween.tween(_text, {alpha: 0}, 3.0, {ease: FlxEase.quadOut});
+			// new FlxTimer().start(1, function(tmr:FlxTimer)
+			// {
+			// 	beginSplashShow();
+			// });
+			beginSplashShow();
+		}
 	}
 
 	function drawGreen():Void
@@ -149,5 +336,35 @@ class SplashScreen extends MusicBeatState
 		_gfx.lineTo(50, 25);
 		_gfx.lineTo(50, 50);
 		_gfx.endFill();
+	}
+
+	function onComplete(Tween:FlxTween):Void
+	{
+		FlxG.cameras.bgColor = _cachedBgColor;
+		// FlxG.fixedTimestep = _cachedTimestep;
+		// FlxG.autoPause = _cachedAutoPause;
+		#if FLX_KEYBOARD
+		FlxG.keys.enabled = true;
+		#end
+		FlxG.stage.removeChild(_sprite);
+		FlxG.stage.removeChild(_text);
+		FlxG.stage.removeChild(_poweredByText);
+		// FlxG.switchState(Type.createInstance(nextState, []));
+		// FlxG.game._gameJustStarted = true;
+	}
+
+	function justComplete():Void
+	{
+		FlxG.cameras.bgColor = _cachedBgColor;
+		// FlxG.fixedTimestep = _cachedTimestep;
+		// FlxG.autoPause = _cachedAutoPause;
+		#if FLX_KEYBOARD
+		FlxG.keys.enabled = true;
+		#end
+		FlxG.stage.removeChild(_sprite);
+		FlxG.stage.removeChild(_text);
+		FlxG.stage.removeChild(_poweredByText);
+		// FlxG.switchState(Type.createInstance(nextState, []));
+		// FlxG.game._gameJustStarted = true;
 	}
 }
