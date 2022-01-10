@@ -89,6 +89,8 @@ function update(elapsed)
             triggeredAlready3 = true;
         }
     } else triggeredAlready3 = false;
+
+    
 }
 
 function beatHit(beat)
@@ -188,6 +190,16 @@ function beatHit(beat)
             troggur = true;
         }
     } else troggur = false;
+
+    // blackbar
+    if (beat == 128)
+    {
+        thisStage.appearBlackBar(1);
+    }
+    if (beat == 256)
+    {
+        thisStage.disappearBlackBar(1);
+    }
 }
 
 function stepHit(step)

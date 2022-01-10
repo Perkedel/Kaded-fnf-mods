@@ -310,11 +310,11 @@ class ModchartState
 		// var data:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + '/' + spritePath + ".png");
 		var data:BitmapData = BitmapData.fromFile(#if !mobile Sys.getCwd()
 			+ "assets/"
-			+ (imageFolder ? (library != null && library != ''?library + "/") + "images" : "data/songs/" + PlayState.SONG.songId)
+			+ (imageFolder ? (library != null && library != ''?library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 			+ '/'
 			+ spritePath
 			+ ".png" #else Asset2File.getPath("assets/"
-				+ (imageFolder ? (library != null && library != ''?library + "/") + "images" : "data/songs/" + PlayState.SONG.songId)
+				+ (imageFolder ? (library != null && library != ''?library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 				+ '/'
 				+ spritePath
 				+ ".png") #end);
@@ -326,12 +326,12 @@ class ModchartState
 			#if !mobile // Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + "/" + spritePath + ".xml");
 			Sys.getCwd()
 			+ "assets/"
-			+ (imageFolder ? (library != null && library != ''?library + "/") + "images" : "data/songs/" + PlayState.SONG.songId)
+			+ (imageFolder ? (library != null && library != ''?library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 			+ '/'
 			+ spritePath
 			+ ".xml" #else
 			Asset2File.getPath("assets/"
-				+ (imageFolder ? (library != null && library != ''?library + "/") + "images" : "data/songs/" + PlayState.SONG.songId)
+				+ (imageFolder ? (library != null && library != ''?library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 				+ '/'
 				+ spritePath
 				+ ".xml")

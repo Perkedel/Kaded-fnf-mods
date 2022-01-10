@@ -1,5 +1,6 @@
 package;
 
+import cpp.Stdio;
 import HaxeScriptState;
 import const.Perkedel;
 import flixel.addons.ui.FlxUIButton;
@@ -1865,6 +1866,8 @@ class PlayState extends MusicBeatState
 
 		var swagCounter:Int = 0;
 
+		musicCompleted = false; // JOELwindows7: just in case somebody out of cage. unraise the flag, until music finished.
+
 		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 		{
 			// this just based on beatHit stuff but compact
@@ -2362,7 +2365,14 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.music.looped = false; // JOELwindows7: okay try to make this unloop.
 		// FlxG.sound.music.onComplete = endSong;
-		// FlxG.sound.music.onComplete = checkEpilogueChat; // Moved to somewhere again
+		// FlxG.sound.music.onComplete = checkEpilogueChat; // Moved to somewhere again ; This is needed again as Kade's current one ends abruptly
+		FlxG.sound.music.onComplete = function()
+		{
+			Debug.logTrace("Music is really complete");
+			// JOELwindows7: here raise the flag!
+			musicCompleted = true;
+		}
+		musicCompleted = false; // JOELwindows7: only after the music is finished
 		// JOELwindows7: now instead pls check the epilogue chat!
 		FlxG.sound.music.pause();
 
@@ -2372,7 +2382,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.cache(Paths.inst(PlayState.SONG.songId));
 
 		// Song duration in a float, useful for the time left feature
-		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000);
+		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000); // JOELwindows7: pinpoint song length set
 
 		Conductor.crochet = ((60 / (SONG.bpm) * 1000));
 		Conductor.stepCrochet = Conductor.crochet / 4;
@@ -2967,7 +2977,12 @@ class PlayState extends MusicBeatState
 				// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
 				// so no reason to delete it at all
 				// JOELwindows7: hey don't early songLength that 100 early wtf? was 100 less, now 50 less.. idk. screw this! 0?
-				if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 0))
+				if (unspawnNotes.length == 0
+					&& notes.length == 0 // && FlxG.sound.music.time / songMultiplier > (songLength - 0) // JOELwindows7: was here. now deleted. rely only on Music complete.
+						// as you can see, there is a something. music stop, minute second counter resets. that's not reliable to measured on here.
+						// requiring this exactly passes song length, while it already reset before it be seen, causes softlock. musicComplete flag raised, but the counter goes zero??
+						// see that? confusing!
+					&& musicCompleted) // JOELwindows7: fine here music complete
 				{
 					Debug.logTrace("we're fuckin ending the song ");
 
@@ -3050,39 +3065,64 @@ class PlayState extends MusicBeatState
 							trace("SCROLL SPEED CHANGE to " + i.value);
 							newScroll = i.value;
 						}
-					// JOELwindows7: moar effeks
+					// JOELwindows7: moar effeks. do not forget check position with curDecimalBeat (precise) / curBeat (exact) first!
 					case "Cheer Now":
-						justCheer(true);
-					case "Hey Now":
-						justHey(true);
-					case "Cheer Hey Now":
-						if (i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0)
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
 							justCheer(true);
-						if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
+					case "Hey Now":
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
 							justHey(true);
-					case "Lightning Strike":
-						Stage.lightningStrikeShit();
-					case "Blammed Lights":
-						Stage.blammedLights(Std.int(i.value));
-					case "Appear Blackbar":
-						Stage.appearBlackBar(i.value);
-					case "Disappear Blackbar":
-						Stage.disappearBlackBar(i.value);
-					case "Camera Zoom in":
-						camZoomNow(i.value, i.value2, i.value3);
-					case "Shake camera":
-						FlxG.camera.shake(i.value, i.value2, function()
+					case "Cheer Hey Now":
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
 						{
-						}, true);
-						Controls.vibrate(0, i.value);
+							if (i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0)
+								justCheer(true);
+							if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
+								justHey(true);
+						}
+					case "Lightning Strike":
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+							Stage.lightningStrikeShit();
+					case "Blammed Lights":
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+							Stage.blammedLights(Std.int(i.value));
+					case "Appear Blackbar":
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						{
+							// Debug.logTrace("appear blackbar");
+							Stage.appearBlackBar(i.value);
+						}
+					case "Disappear Blackbar":
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						{
+							// Debug.logTrace("disappear blackbar");
+							Stage.disappearBlackBar(i.value);
+						}
+					case "Camera Zoom in":
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+							camZoomNow(i.value, i.value2, i.value3);
+					case "Shake camera":
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						{
+							FlxG.camera.shake(i.value, i.value2, function()
+							{
+							}, true);
+							Controls.vibrate(0, i.value);
+						}
 					case "HUD Zoom in":
-						camZoomNow(0, i.value);
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+							camZoomNow(0, i.value);
 					case "Both Zoom in":
-						camZoomNow(i.value, i.value);
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+							camZoomNow(i.value, i.value);
 					case "LED ON for":
-					// JOELwindows7: turn LED on for how long second i.value
+						// JOELwindows7: turn LED on for how long second i.value
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						{
+						}
 					case "Vibrate for":
-						Controls.vibrate(0, i.value, i.value2);
+						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+							Controls.vibrate(0, i.value, i.value2);
 				}
 			}
 
@@ -4685,8 +4725,8 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
-		FlxG.sound.music.stop();
-		vocals.stop();
+		// FlxG.sound.music.stop(); // JOELwindows7: Woha do not stop music because there is delay defined in the song!
+		// vocals.stop(); // JOELwindows7: Woha do not stop vocal because there is delay defined in the song!
 		if (SONG.validScore)
 		{
 			#if !switch
@@ -4862,6 +4902,7 @@ class PlayState extends MusicBeatState
 					// JOELwindows7: fix the song with conversionChecks
 					// JOELwindows7: conform the story mode oid based on dash is space like StoryMenuState.hx
 					FlxG.sound.music.stop();
+					vocals.stop();
 
 					// JOELwindows7: log this one in will ya?
 					Debug.logTrace("Here's path for this outro " + epilogueVideoPath + "\n and next song intro " + SONG.videoPath);
@@ -4888,30 +4929,34 @@ class PlayState extends MusicBeatState
 			else
 			{
 				Debug.logInfo('WENT BACK TO FREEPLAY??');
+				var delayFirstBeforeThat:Float = SONG.delayAfterFinish; // JOELwindows7: forgor
 
-				paused = true;
+				new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+				{ // JOELwindows7: here this delay wow.
+					paused = true;
 
-				FlxG.sound.music.stop();
-				vocals.stop();
+					FlxG.sound.music.stop();
+					vocals.stop();
 
-				// JOELwindows7: don't forget clean modchart if haven't already
-				scronchLuaScript();
-				scronchHscript();
+					// JOELwindows7: don't forget clean modchart if haven't already
+					scronchLuaScript();
+					scronchHscript();
 
-				if (FlxG.save.data.scoreScreen)
-				{
-					openSubState(new ResultsScreen());
-					new FlxTimer().start(1, function(tmr:FlxTimer)
+					if (FlxG.save.data.scoreScreen)
 					{
-						inResults = true;
-					});
-				}
-				else
-				{
-					// FlxG.switchState(new FreeplayState());
-					switchState(new FreeplayState()); // JOELwindows7: hex switch state lol
-					clean();
-				}
+						openSubState(new ResultsScreen());
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							inResults = true;
+						});
+					}
+					else
+					{
+						// FlxG.switchState(new FreeplayState());
+						switchState(new FreeplayState()); // JOELwindows7: hex switch state lol
+						clean();
+					}
+				});
 			}
 		}
 
@@ -4920,6 +4965,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var endingSong:Bool = false;
+	public var musicCompleted:Bool = false; // JOELwindows7: sigh, I guess we got to resort on it this instead. check if music is actually completed
 
 	var hits:Array<Float> = [];
 	var offsetTest:Float = 0;

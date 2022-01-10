@@ -1434,6 +1434,15 @@ class HaxeScriptState
 			PlayState.instance.justHey(forceIt);
 		});
 
+		addCallback("appearBlackbar", function(forHowLong:Float = 1){
+			PlayState.Stage.appearBlackBar(forHowLong);
+		});
+
+		addCallback("disappearBlackbar", function(forHowLong:Float = 1)
+		{
+			PlayState.Stage.disappearBlackBar(forHowLong);
+		});
+
 		addCallback("prepareColorableBg",
 			function(useImage:Bool = false, positionX:Float = -500, positionY:Float = -500, imagePath:String = '', animated:Bool = false,
 					color:String = "WHITE", width:Int = 1, height:Int = 1, upscaleX:Int = 1, upscaleY:Int = 1, antialiasing:Bool = true,

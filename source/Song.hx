@@ -71,19 +71,19 @@ typedef SongData =
 	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
 	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
-	var useCustomStage:Bool; // JOELwindows7: should use custom stage?
+	var ?useCustomStage:Bool; // JOELwindows7: should use custom stage?
 	// be allowed at certain moments in time
-	var forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	var ?forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
 	var ?forceLuaModchartLegacy:Bool; // JOELwindows7: force to support legacy Lua modchart system as in <1.7 I guess
-	var forceHscriptModchart:Bool; // JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
+	var ?forceHscriptModchart:Bool; // JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 	// JOELwindows7: Countdown funny configs
-	var reversedCountdown:Bool;
-	var invisibleCountdown:Bool;
-	var silentCountdown:Bool;
-	var skipCountdown:Bool;
+	var ?reversedCountdown:Bool;
+	var ?invisibleCountdown:Bool;
+	var ?silentCountdown:Bool;
+	var ?skipCountdown:Bool;
 	// JOELwindows7: more configs
-	var loadNoteStyleOtherWayAround:Bool; // use foldered noteskin
-	var useCustomNoteStyle:Bool; // enable to custom noteskin
+	var ?loadNoteStyleOtherWayAround:Bool; // use foldered noteskin
+	var ?useCustomNoteStyle:Bool; // enable to custom noteskin
 	// JOELwindows7: Delays
 	var ?delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
 	var ?delayAfterFinish:Float; // Delay after song finish before load next song. for cutscene before epilogue video
@@ -286,7 +286,8 @@ class Song
 		// JOELwindows7: yut
 		if (songMetaData.creditRunsOnce != null)
 		{
-			songData.creditRunsOnce = songMetaData.creditRunsOnce;
+			if(songData.creditRunsOnce == null)
+				songData.creditRunsOnce = songMetaData.creditRunsOnce;
 		}
 		else
 		{
@@ -295,7 +296,8 @@ class Song
 		// JOELwindows7: dude, is there a procedural way to fill these all up?
 		if (songMetaData.hasVideo != null)
 		{
-			songData.hasVideo = songMetaData.hasVideo;
+			if(songData.hasVideo == null)
+				songData.hasVideo = songMetaData.hasVideo;
 		}
 		else
 		{
@@ -304,7 +306,8 @@ class Song
 		// JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
 		if (songMetaData.videoPath != null)
 		{
-			songData.videoPath = songMetaData.videoPath;
+			if(songData.videoPath == null)
+				songData.videoPath = songMetaData.videoPath;
 		}
 		else
 		{
@@ -313,7 +316,8 @@ class Song
 		// JOELwindows7: haaaaaaaaaaaaaaaa!!!!
 		if (songMetaData.hasEpilogueVideo != null)
 		{
-			songData.hasEpilogueVideo = songMetaData.hasEpilogueVideo;
+			if(songData.hasEpilogueVideo == null)
+				songData.hasEpilogueVideo = songMetaData.hasEpilogueVideo;
 		}
 		else
 		{
@@ -322,7 +326,8 @@ class Song
 		// JOELwindows7: boooooooof
 		if (songMetaData.epilogueVideoPath != null)
 		{
-			songData.epilogueVideoPath = songMetaData.epilogueVideoPath;
+			if(songData.epilogueVideoPath == null)
+				songData.epilogueVideoPath = songMetaData.epilogueVideoPath;
 		}
 		else
 		{
@@ -331,7 +336,8 @@ class Song
 		// JOELwindows7: yay GitHub Copilot yey
 		if (songMetaData.hasDialogueChat != null)
 		{
-			songData.hasDialogueChat = songMetaData.hasDialogueChat;
+			if(songData.hasDialogueChat == null)
+				songData.hasDialogueChat = songMetaData.hasDialogueChat;
 		}
 		else
 		{
@@ -340,7 +346,8 @@ class Song
 		// JOELwindows7: yay GitHub Copilot yeyu
 		if (songMetaData.hasEpilogueChat != null)
 		{
-			songData.hasEpilogueChat = songMetaData.hasEpilogueChat;
+			if(songData.hasEpilogueChat == null)
+				songData.hasEpilogueChat = songMetaData.hasEpilogueChat;
 		}
 		else
 		{
@@ -349,14 +356,16 @@ class Song
 		// JOELwindows7: try casting, but no. that's aggressive and destroys per difficulty basis.
 		if (songMetaData.delayBeforeStart != null)
 		{
-			songData.delayBeforeStart = songMetaData.delayBeforeStart;
+			if(songData.delayBeforeStart == null)
+				songData.delayBeforeStart = songMetaData.delayBeforeStart;
 		}
 		else
 		{
 		}
 		if (songMetaData.delayAfterFinish != null)
 		{
-			songData.delayAfterFinish = songMetaData.delayAfterFinish;
+			if(songData.delayAfterFinish == null)
+				songData.delayAfterFinish = songMetaData.delayAfterFinish;
 		}
 		else
 		{
@@ -365,7 +374,8 @@ class Song
 		// JOELwindows7: right, these are all we have.
 		if (songMetaData.allowedToHeadbang != null)
 		{
-			songData.allowedToHeadbang = songMetaData.allowedToHeadbang;
+			if(songData.allowedToHeadbang == null)
+				songData.allowedToHeadbang = songMetaData.allowedToHeadbang;
 		}
 		else
 		{
@@ -374,7 +384,8 @@ class Song
 		// JOELwindows7: lua & haxescript stuffs
 		if (songMetaData.forceLuaModchartLegacy != null)
 		{
-			songData.forceLuaModchartLegacy = songMetaData.forceLuaModchartLegacy;
+			if(songData.forceLuaModchartLegacy == null)
+				songData.forceLuaModchartLegacy = songMetaData.forceLuaModchartLegacy;
 		}
 		else
 		{
@@ -382,7 +393,8 @@ class Song
 
 		if (songMetaData.forceLuaModchart != null)
 		{
-			songData.forceLuaModchart = songMetaData.forceLuaModchart;
+			if(songData.forceLuaModchart == null)
+				songData.forceLuaModchart = songMetaData.forceLuaModchart;
 		}
 		else
 		{
@@ -390,7 +402,8 @@ class Song
 
 		if (songMetaData.forceHscriptModchart != null)
 		{
-			songData.forceHscriptModchart = songMetaData.forceHscriptModchart;
+			if(songData.forceHscriptModchart == null)
+				songData.forceHscriptModchart = songMetaData.forceHscriptModchart;
 		}
 		else
 		{
@@ -463,12 +476,14 @@ class Song
 
 		if(songMetaData.loadNoteStyleOtherWayAround != null)
 		{
-			songData.loadNoteStyleOtherWayAround = songMetaData.loadNoteStyleOtherWayAround;
+			if(songData.loadNoteStyleOtherWayAround == null)
+				songData.loadNoteStyleOtherWayAround = songMetaData.loadNoteStyleOtherWayAround;
 		}
 
 		if(songMetaData.useCustomNoteStyle!= null)
 		{
-			songData.useCustomNoteStyle = songMetaData.useCustomNoteStyle;
+			if(songData.useCustomNoteStyle == null)
+				songData.useCustomNoteStyle = songMetaData.useCustomNoteStyle;
 		}
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!

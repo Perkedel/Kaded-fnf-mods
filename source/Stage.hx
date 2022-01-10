@@ -1668,7 +1668,7 @@ class Stage extends MusicBeatState
 	// JOELwindows7: for that additional bellow
 	var blackbarsTop:FlxSprite;
 	var blackbarsBottom:FlxSprite;
-	var blackbarHeight:Int = 20;
+	var blackbarHeight:Int = 100;
 	var additionalSubCamera:FlxCamera;
 
 	// JOELwindows7: additional system wide FlxSprites
@@ -1685,6 +1685,10 @@ class Stage extends MusicBeatState
 		addThe(blackbarsBottom, 'blackbarsBottom');
 		blackbarsTop.visible = false;
 		blackbarsBottom.visible = false;
+		// disappearBlackBar(0.1); // Now delegate their dormant positions yeah!
+		// or maybe just pecking do it?
+		blackbarsTop.y = -blackbarHeight;
+		blackbarsBottom.y = FlxG.height;
 	}
 
 	// JOELwindows7: Psyched appear blackbar
@@ -1696,8 +1700,8 @@ class Stage extends MusicBeatState
 		// blackbarsBottom.x = FlxG.height;
 		FlxTween.color(blackbarsTop, forHowLong, blackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
 		FlxTween.color(blackbarsBottom, forHowLong, blackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
-		FlxTween.tween(blackbarsTop, {x: 0, alpha: 1}, forHowLong, {ease: FlxEase.linear});
-		FlxTween.tween(blackbarsBottom, {x: FlxG.height - blackbarHeight, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(blackbarsTop, {y: 0, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(blackbarsBottom, {y: FlxG.height - blackbarHeight, alpha: 1}, forHowLong, {ease: FlxEase.linear});
 	}
 
 	// JOELwindows7: Psyched disappear blackbar
@@ -1705,14 +1709,14 @@ class Stage extends MusicBeatState
 	{
 		// blackbarsTop.x = 0;
 		// blackbarsBottom.x = FlxG.height - blackbarHeight;
-		FlxTween.tween(blackbarsTop, {x: -blackbarHeight}, forHowLong, {
+		FlxTween.tween(blackbarsTop, {y: -blackbarHeight}, forHowLong, {
 			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{
 				blackbarsTop.visible = false;
 			}
 		});
-		FlxTween.tween(blackbarsBottom, {x: FlxG.height}, forHowLong, {
+		FlxTween.tween(blackbarsBottom, {y: FlxG.height}, forHowLong, {
 			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{
