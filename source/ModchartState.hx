@@ -147,7 +147,7 @@ class ModchartState
 
 	private function convert(v:Any, type:String):Dynamic
 	{ // I didn't write this lol
-		if (Std.is(v, String) && type != null)
+		if (Std.isOfType(v, String) && type != null) // JOELwindows7: was Std.is(v,t). unuse deprecated function pls!
 		{
 			var v:String = v;
 			if (type.substr(0, 4) == 'array')
@@ -301,16 +301,41 @@ class ModchartState
 		PlayState.instance.iconP1.changeIcon(id);
 	}
 
-	function makeAnimatedLuaSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String)
+	function makeAnimatedLuaSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String, imageFolder:Bool = false,
+			?library:String = '')
 	{
+		// JOELwindows7: heuristical
 		#if FEATURE_FILESYSTEM
 		// TODO: Make this use OpenFlAssets.
-		var data:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + '/' + spritePath + ".png");
+		// var data:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + '/' + spritePath + ".png");
+		var data:BitmapData = BitmapData.fromFile(#if !mobile Sys.getCwd()
+			+ "assets/"
+			+ (imageFolder ? (library != null && library != ''?library + "/") + "images" : "data/songs/" + PlayState.SONG.songId)
+			+ '/'
+			+ spritePath
+			+ ".png" #else Asset2File.getPath("assets/"
+				+ (imageFolder ? (library != null && library != ''?library + "/") + "images" : "data/songs/" + PlayState.SONG.songId)
+				+ '/'
+				+ spritePath
+				+ ".png") #end);
 
 		var sprite:FlxSprite = new FlxSprite(0, 0);
 
+		// JOELwindows7: heuristical
 		sprite.frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data),
-			Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + "/" + spritePath + ".xml");
+			#if !mobile // Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + "/" + spritePath + ".xml");
+			Sys.getCwd()
+			+ "assets/"
+			+ (imageFolder ? (library != null && library != ''?library + "/") + "images" : "data/songs/" + PlayState.SONG.songId)
+			+ '/'
+			+ spritePath
+			+ ".xml" #else
+			Asset2File.getPath("assets/"
+				+ (imageFolder ? (library != null && library != ''?library + "/") + "images" : "data/songs/" + PlayState.SONG.songId)
+				+ '/'
+				+ spritePath
+				+ ".xml")
+			#end);
 
 		trace(sprite.frames.frames.length);
 
@@ -330,27 +355,33 @@ class ModchartState
 		return id;
 	}
 
-	function makeLuaSprite(spritePath:String, toBeCalled:String, drawBehind:Bool)
+	function makeLuaSprite(spritePath:String, toBeCalled:String, drawBehind:Bool, imageFolder:Bool = false, ?library:String = '')
 	{
 		#if FEATURE_FILESYSTEM
 		// pre lowercasing the song name (makeLuaSprite)
-		var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
-		switch (songLowercase)
-		{
-			case 'dad-battle':
-				songLowercase = 'dadbattle';
-			case 'philly-nice':
-				songLowercase = 'philly';
-			case 'm.i.l.f':
-				songLowercase = 'milf';
-		}
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// 	case 'm.i.l.f':
+		// 		songLowercase = 'milf';
+		// }
 
-		var path = Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + '/';
+		// var path = Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + '/';
+		var path = Sys.getCwd()
+			+ "assets/"
+			+ (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
+			+ '/';
 
 		if (PlayState.isSM)
 			path = PlayState.pathToSm + "/";
 
-		var data:BitmapData = BitmapData.fromFile(path + spritePath + ".png");
+		// var data:BitmapData = BitmapData.fromFile(path + spritePath + ".png");
+		var data:BitmapData = BitmapData.fromFile(#if !mobile path + "/" + spritePath + ".png" #else Asset2File.getPath(path + "/" + spritePath + ".png") #end);
 
 		var sprite:FlxSprite = new FlxSprite(0, 0);
 		var imgWidth:Float = FlxG.width / data.width;
@@ -508,9 +539,11 @@ class ModchartState
 		setVar("playerStrums", PlayState.playerStrums);
 		setVar("enemyStrums", PlayState.cpuStrums);
 		setVar("hscriptPath", path);
-		setVar("boyfriend", PlayState.boyfriend);
-		setVar("gf", PlayState.gf);
-		setVar("dad", PlayState.dad);
+		@:privateAccess { // JOELwindows7: Oh yeah, I suggest that uh... idk. maybe keep those characters private? no idk.
+			setVar("boyfriend", PlayState.boyfriend);
+			setVar("gf", PlayState.gf);
+			setVar("dad", PlayState.dad);
+		}
 		setVar("vocals", PlayState.instance.vocals);
 		setVar("gfSpeed", PlayState.instance.gfSpeed);
 		setVar("health", PlayState.instance.health);
@@ -518,6 +551,7 @@ class ModchartState
 		setVar("iconP2", PlayState.instance.iconP2);
 		setVar("currentPlayState", PlayState.instance);
 		setVar("PlayState", PlayState);
+		setVar("Paths", Paths);
 		setVar("window", Lib.application.window);
 		// end mirror variables
 

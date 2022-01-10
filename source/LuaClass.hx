@@ -1,4 +1,4 @@
-#if FEATURE_LUAMODCHART //JOELwindows7: linux error. lua hpp not found
+#if FEATURE_LUAMODCHART // JOELwindows7: linux error. lua hpp not found
 import flixel.FlxG;
 import llua.Convert;
 import llua.Lua;
@@ -929,6 +929,21 @@ class LuaCamera extends LuaClass
 					return 0;
 				}
 			},
+
+			"shake" => {
+				// JOELwindows7: now camera shake lol
+				defaultValue: 0,
+				getter: function(l:State, data:Any)
+				{
+					Lua.pushcfunction(l, shakeC);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "shake is read-only.");
+					return 0;
+				}
+			},
 		];
 
 		LuaStorage.ListOfCameras.push(this);
@@ -1075,9 +1090,41 @@ class LuaCamera extends LuaClass
 		return 0;
 	}
 
+	// JOELwindows7: shake da cam
+	private static function shake(l:StatePointer):Int
+	{
+		// 1 = self
+		// 2 = intensity
+		// 3 = duration
+		var intensity = LuaL.checknumber(state, 2);
+		var duration = LuaL.checknumber(state, 3);
+
+		Lua.getfield(state, 1, "id");
+		var index = Lua.tostring(state, -1);
+
+		var camera:FlxCamera = null;
+
+		for (i in LuaStorage.ListOfCameras)
+		{
+			if (i.className == index)
+				camera = i.cam;
+		}
+
+		if (camera == null)
+		{
+			LuaL.error(state, "Failure to shake (couldn't find camera " + index + ")");
+			return 0;
+		}
+
+		camera.shake(intensity, duration);
+
+		return 0;
+	}
+
 	private static var tweenPosC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenPos);
 	private static var tweenAngleC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenAngle);
 	private static var tweenAlphaC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenAlpha);
+	private static var shakeC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(shake); // JOELwindows7: look! I touched new Lua Kade
 
 	override function Register(l:State)
 	{

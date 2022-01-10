@@ -152,6 +152,10 @@ class ChartingState extends MusicBeatState
 
 	public var paused:Bool = false; // JOELwindows7: mark for file menu open
 
+	public var snapSound:FlxSound; // JOELwindows7: bring snap sound to one memory rather than new again I guess
+	public var metronomeSound:FlxSound; // JOELwindows7: bring metronome sound to one memory rather than new again I guess
+	public var metronomeDingSound:FlxSound; // JOELwindows7: bring metronome ding sound to one memory rather than new again I guess
+
 	var theseEvents:Array<String> = [
 		"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
 		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights", "Appear Blackbar", "Disappear Blackbar"
@@ -171,6 +175,11 @@ class ChartingState extends MusicBeatState
 	{
 		// JOELwindows7: move super create here
 		super.create();
+
+		// JOELwindows7: init the sound
+		snapSound = new FlxSound().loadEmbedded(Paths.sound('SNAP'));
+		snapSound.stop();
+		FlxG.sound.list.add(snapSound);
 
 		#if FEATURE_DISCORD
 		DiscordClient.changePresence("Chart Editor", null, null, true);
@@ -2879,7 +2888,8 @@ class ChartingState extends MusicBeatState
 					if (note.strumTime <= Conductor.songPosition && !claps.contains(note) && FlxG.sound.music.playing)
 					{
 						claps.push(note);
-						FlxG.sound.play(Paths.sound('SNAP'));
+						// FlxG.sound.play(Paths.sound('SNAP'));
+						snapSound.play(); //JOELwindows7: use this one address instead
 					}
 				}
 			}

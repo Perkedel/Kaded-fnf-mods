@@ -1,4 +1,5 @@
 package;
+
 import flixel.util.FlxAxes;
 import utils.Asset2File;
 import flixel.util.FlxDestroyUtil;
@@ -388,9 +389,11 @@ class HaxeScriptState
 		setVar("playerStrums", PlayState.playerStrums);
 		setVar("enemyStrums", PlayState.cpuStrums);
 		setVar("hscriptPath", path);
-		setVar("boyfriend", PlayState.boyfriend);
-		setVar("gf", PlayState.gf);
-		setVar("dad", PlayState.dad);
+		@:privateAccess { // JOELwindows7: Oh yeah, I suggest that uh... idk. maybe keep those characters private? no idk.
+			setVar("boyfriend", PlayState.boyfriend);
+			setVar("gf", PlayState.gf);
+			setVar("dad", PlayState.dad);
+		}
 		setVar("vocals", PlayState.instance.vocals);
 		setVar("gfSpeed", PlayState.instance.gfSpeed);
 		setVar("tweenCamIn", PlayState.instance.tweenCamIn);
@@ -432,6 +435,7 @@ class HaxeScriptState
 		});
 		// JOELwindows7: & even more!!!
 		setVar("thisStage", PlayState.Stage); // JOELwindows7: Stage class is already FlxG.stage I think..
+		setVar("Paths", Paths);
 		trace("setVar BulbyVR stuffs");
 
 		// You must init the function callbacks first before even considered existed.
@@ -1617,20 +1621,21 @@ class HaxeScriptState
 		return Reflect.field(PlayState.instance, id);
 	}
 
-	function makeHscriptSprite(spritePath:String, toBeCalled:String, drawBehind:Bool)
+	function makeHscriptSprite(spritePath:String, toBeCalled:String, drawBehind:Bool, imageFolder:Bool = false, ?library:String = '')
 	{
 		// pre lowercasing the song name (makeLuaSprite)
 		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
 		var songLowercase = PlayState.SONG.songId;
-		switch (songLowercase)
-		{
-			case 'dad-battle':
-				songLowercase = 'dadbattle';
-			case 'philly-nice':
-				songLowercase = 'philly';
-		}
-
-		var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// }
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != ''? library + "/":'') + "images" : "data/songs" + songLowercase);
+		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
 
 		#if sys
 		if (PlayState.isSM)
@@ -1684,20 +1689,22 @@ class HaxeScriptState
 		return toBeCalled;
 	}
 
-	function makeAnimatedHscriptSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String)
+	function makeAnimatedHscriptSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String, imageFolder:Bool = false,
+			?library:String = '')
 	{
 		// pre lowercasing the song name (makeAnimatedLuaSprite)
 		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
 		var songLowercase = PlayState.SONG.songId;
-		switch (songLowercase)
-		{
-			case 'dad-battle':
-				songLowercase = 'dadbattle';
-			case 'philly-nice':
-				songLowercase = 'philly';
-		}
-
-		var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// }
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != ''? library + "/":'') + "images" : "data/songs" + songLowercase);
+		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
 
 		#if sys
 		if (PlayState.isSM)

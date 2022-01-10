@@ -18,6 +18,9 @@
 
 package ui;
 
+import flixel.addons.transition.FlxTransitionSprite;
+import flixel.addons.transition.TransitionData;
+import utils.Initializations;
 #if FEATURE_MULTITHREADING
 import sys.thread.Mutex;
 #end
@@ -41,6 +44,8 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 
 /**
  * A splash screen for the application.
@@ -79,56 +84,23 @@ class SplashScreen extends MusicBeatState
 
 	override public function create():Void
 	{
-		// JOELwindows7: Yoinkered Kade + YinYang48 Hex
-		// https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/TitleState.hx
-		#if FEATURE_MULTITHREADING
-		MasterObjectLoader.mutex = new Mutex(); // JOELwindows7: you must first initialize the mutex.
-		#end
-		
 		super.create();
+
+		Initializations.begin();
 
 		_cachedBgColor = FlxG.cameras.bgColor;
 		FlxG.cameras.bgColor = FlxColor.BLACK;
 
-		transIn = FlxTransitionableState.defaultTransIn;
+		// JOELwindows7: temporary diamond from TitleScreen
+		var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
+		diamond.persist = true;
+		diamond.destroyOnNoUse = false;
 
-		// JOELwindows7: here init first!
-		// JOELwindows7: TentaRJ GameJolter
-		#if gamejolt
-		// Main.gjToastManager.createToast(Paths.image("art/LFMicon64"), "Cool and good", "Welcome to Last Funkin Moments",
-		// 	false); // JOELwindows7: create GameJolt Toast here.
-		GameJoltAPI.connect();
-		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
-		#end
+		transIn = FlxTransitionableState.defaultTransIn;
+		transOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32},
+			new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
 
 		FlxG.mouse.visible = false;
-
-		FlxG.autoPause = false;
-
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-
-		PlayerSettings.init();
-
-		KadeEngineData.initSave();
-
-		// It doesn't reupdate the list before u restart rn lmao
-		KeyBinds.keyCheck();
-		NoteskinHelpers.updateNoteskins();
-
-		if (FlxG.save.data.volDownBind == null)
-			FlxG.save.data.volDownBind = "MINUS";
-		if (FlxG.save.data.volUpBind == null)
-			FlxG.save.data.volUpBind = "PLUS";
-
-		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
-
-		FlxG.worldBounds.set(0, 0);
-
-		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
-
-		MusicBeatState.initSave = true;
 
 		// HaxeFlixel logo yess
 		_times = [0.041, 0.184, 0.334, 0.495, 0.636];
