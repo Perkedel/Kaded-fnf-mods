@@ -2753,6 +2753,33 @@ class AnMiniWindowOption extends Option
 	}
 }
 
+// JOELwindows7: kem0x test
+class AnKem0xTestStateOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.goToState(new AnKem0xTestState());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Kem0x Test";
+	}
+}
+
 // JOELwindows7: Force all weeks to unlock
 class PreUnlockAllWeeksOption extends Option
 {
@@ -3046,5 +3073,39 @@ class AutoClickDelayOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Dialogue AutoClick Delay < " + Std.string(FlxG.save.data.autoClickDelay) + " > seconds";
+	}
+}
+
+// JOELwindows7: toggle freeplay threaded loading
+class FreeplayThreadedOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.freeplayThreadedLoading = !FlxG.save.data.freeplayThreadedLoading;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Freeplay Threaded Loading < " + (FlxG.save.data.freeplayThreadedLoading ? "ON" : "OFF") + " >";
 	}
 }

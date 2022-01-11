@@ -180,6 +180,12 @@ class ChartingState extends MusicBeatState
 		snapSound = new FlxSound().loadEmbedded(Paths.sound('SNAP'));
 		snapSound.stop();
 		FlxG.sound.list.add(snapSound);
+		metronomeSound = new FlxSound().loadEmbedded(Paths.sound('CLAP-midi'));
+		metronomeSound.stop();
+		FlxG.sound.list.add(metronomeSound);
+		metronomeDingSound = new FlxSound().loadEmbedded(Paths.sound('CLAP-midi-ding'));
+		metronomeDingSound.stop();
+		FlxG.sound.list.add(metronomeDingSound);
 
 		#if FEATURE_DISCORD
 		DiscordClient.changePresence("Chart Editor", null, null, true);
@@ -2888,8 +2894,8 @@ class ChartingState extends MusicBeatState
 					if (note.strumTime <= Conductor.songPosition && !claps.contains(note) && FlxG.sound.music.playing)
 					{
 						claps.push(note);
-						// FlxG.sound.play(Paths.sound('SNAP'));
-						snapSound.play(); //JOELwindows7: use this one address instead
+						FlxG.sound.play(Paths.sound('SNAP')); // JOELwindows7: nope, not working. let's just spawn sounds instead.
+						// snapSound.play(); // JOELwindows7: use this one address instead
 					}
 				}
 			}

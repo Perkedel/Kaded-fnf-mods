@@ -198,7 +198,9 @@ class OptionsMenu extends CoreSubState
 				new AnDefaultBekgronTestOption("EXPERIMENTAL! Test default background of Hexagon Engine"),
 				new AnChangeChannelOption("EXPERIMENTAL! Test change channel and rate"),
 				new AnMiniWindowOption("EXPERIMENTAL! Test MiniWindow using debugger's windowing"),
+				new AnKem0xTestStateOption("EXPERIMENTAL! Test Kem0x's Nexus Engine stuffs"),
 				// new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
+				new FreeplayThreadedOption("BETA! Enable Freeplay Threading, may cause system instabilities"),
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
 			]),
 			// JOELwindows7: was 935, 40
@@ -831,11 +833,11 @@ class OptionsMenu extends CoreSubState
 			return;
 		}
 		// FlxG.switchState(ofHere);
-		OptionsDirect.instance.switchState(ofHere, goToLoading, transition, isSong); //JOELwindows7: cyclic reference! rename switchState of this into goToState?
+		OptionsDirect.instance.switchState(ofHere, goToLoading, transition,
+			isSong); // JOELwindows7: cyclic reference! rename switchState of this into goToState?
 	}
 
-	//JOELwindows7: now it is easinerer
-
+	// JOELwindows7: now it is easinerer
 	// JOELwindows7: mark needs restart song if the option requires restart
 	public static function markRestartSong()
 	{

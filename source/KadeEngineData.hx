@@ -189,6 +189,12 @@ class KadeEngineData
 			FlxG.save.data.autoClickDelay = 2;
 		}
 
+		// JOELwindows7: freeplay threaded loading
+		if (FlxG.save.data.freeplayThreadedLoading == null)
+		{
+			FlxG.save.data.freeplayThreadedLoading = false;
+		}
+
 		FlxG.save.data.cacheImages = false;
 
 		if (FlxG.save.data.middleScroll == null)

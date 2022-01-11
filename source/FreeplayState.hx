@@ -221,10 +221,20 @@ class FreeplayState extends MusicBeatState
 		// JOELwindows7: okey how about attempt to have sys multithreading?
 		#if FEATURE_MULTITHREADING
 		// TODO: have option to enable/disable threaded loading.
-		Debug.logInfo("Multithreading enabled");
-		legacySynchronousLoading = true;
-		unthreadLoading = false;
+		if (FlxG.save.data.freeplayThreadedLoading)
+		{
+			Debug.logInfo("Multithreading enabled");
+			legacySynchronousLoading = false;
+			unthreadLoading = false;
+		}
+		else
+		{
+			Debug.logInfo("Multithreading disabled");
+			legacySynchronousLoading = true;
+			unthreadLoading = true;
+		}
 		#else
+		Debug.logInfo("No multithread support");
 		legacySynchronousLoading = true; // JOELwindows7: comment when FlxAsyncLoop finally works!
 		unthreadLoading = true;
 		#end
@@ -854,7 +864,7 @@ class FreeplayState extends MusicBeatState
 		#end
 	}
 
-	//JOELwindows7: maybe clean up variables?
+	// JOELwindows7: maybe clean up variables?
 	override public function destroy()
 	{
 		super.destroy();

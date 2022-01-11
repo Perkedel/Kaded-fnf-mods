@@ -418,13 +418,14 @@ class Note extends FlxSprite
 				angle = modAngle + localAngle;
 			else
 				angle = modAngle;
-		}
-
-		if (!modifiedByLua)
-		{
-			if (!sustainActive)
+		
+			// JOELwindows7: sneaky little punk! you can't get away from this!
+			if (!modifiedByLua)
 			{
-				alpha = 0.3;
+				if (!sustainActive)
+				{
+					alpha = 0.3;
+				}
 			}
 		}
 

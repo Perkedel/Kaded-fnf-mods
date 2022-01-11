@@ -2744,6 +2744,12 @@ class PlayState extends MusicBeatState
 	{
 		if (paused)
 		{
+			// JOELwindows7: pause credit rollout
+			if (creditRollout != null)
+			{
+				creditRollout.pauseRolling();
+			}
+
 			if (FlxG.sound.music.playing)
 			{
 				FlxG.sound.music.pause();
@@ -2801,6 +2807,12 @@ class PlayState extends MusicBeatState
 		}
 		else if (paused)
 		{
+			// JOELwindows7: resume credit rollout
+			if (creditRollout != null)
+			{
+				creditRollout.resumeRolling();
+			}
+
 			if (FlxG.sound.music != null && !startingSong)
 			{
 				resyncVocals();
@@ -3065,64 +3077,64 @@ class PlayState extends MusicBeatState
 							trace("SCROLL SPEED CHANGE to " + i.value);
 							newScroll = i.value;
 						}
-					// JOELwindows7: moar effeks. do not forget check position with curDecimalBeat (precise) / curBeat (exact) first!
-					case "Cheer Now":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-							justCheer(true);
-					case "Hey Now":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-							justHey(true);
-					case "Cheer Hey Now":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-						{
-							if (i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0)
-								justCheer(true);
-							if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
-								justHey(true);
-						}
-					case "Lightning Strike":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-							Stage.lightningStrikeShit();
-					case "Blammed Lights":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-							Stage.blammedLights(Std.int(i.value));
-					case "Appear Blackbar":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-						{
-							// Debug.logTrace("appear blackbar");
-							Stage.appearBlackBar(i.value);
-						}
-					case "Disappear Blackbar":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-						{
-							// Debug.logTrace("disappear blackbar");
-							Stage.disappearBlackBar(i.value);
-						}
-					case "Camera Zoom in":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-							camZoomNow(i.value, i.value2, i.value3);
-					case "Shake camera":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-						{
-							FlxG.camera.shake(i.value, i.value2, function()
-							{
-							}, true);
-							Controls.vibrate(0, i.value);
-						}
-					case "HUD Zoom in":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-							camZoomNow(0, i.value);
-					case "Both Zoom in":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-							camZoomNow(i.value, i.value);
-					case "LED ON for":
-						// JOELwindows7: turn LED on for how long second i.value
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-						{
-						}
-					case "Vibrate for":
-						if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
-							Controls.vibrate(0, i.value, i.value2);
+						// JOELwindows7: moar effeks. do not forget check position with curDecimalBeat (precise) / curBeat (exact) first!
+						// case "Cheer Now":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		justCheer(true);
+						// case "Hey Now":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		justHey(true);
+						// case "Cheer Hey Now":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 		if (i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0)
+						// 			justCheer(true);
+						// 		if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
+						// 			justHey(true);
+						// 	}
+						// case "Lightning Strike":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		Stage.lightningStrikeShit();
+						// case "Blammed Lights":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		Stage.blammedLights(Std.int(i.value));
+						// case "Appear Blackbar":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 		// Debug.logTrace("appear blackbar");
+						// 		Stage.appearBlackBar(i.value);
+						// 	}
+						// case "Disappear Blackbar":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 		// Debug.logTrace("disappear blackbar");
+						// 		Stage.disappearBlackBar(i.value);
+						// 	}
+						// case "Camera Zoom in":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		camZoomNow(i.value, i.value2, i.value3);
+						// case "Shake camera":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 		FlxG.camera.shake(i.value, i.value2, function()
+						// 		{
+						// 		}, true);
+						// 		Controls.vibrate(0, i.value);
+						// 	}
+						// case "HUD Zoom in":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		camZoomNow(0, i.value);
+						// case "Both Zoom in":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		camZoomNow(i.value, i.value);
+						// case "LED ON for":
+						// 	// JOELwindows7: turn LED on for how long second i.value
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 	}
+						// case "Vibrate for":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		Controls.vibrate(0, i.value, i.value2);
 				}
 			}
 
@@ -4569,6 +4581,8 @@ class PlayState extends MusicBeatState
 	// JOELwindows7: check if the song should display epilogue chat once the song has finished.
 	function checkEpilogueChat():Void
 	{
+		if(creditRollout != null)
+			creditRollout.stopRolling();
 		endingSong = true; // Just in case somekind of forgor
 		songStarted = false; // try to do this?
 		// startingSong = true; //Oh maybe this helps simulate like if the song is on preparation?
@@ -6079,6 +6093,57 @@ class PlayState extends MusicBeatState
 			stageHscript.setVar('curStep', curStep);
 			stageHscript.executeState('stepHit', [curStep]);
 		}
+
+		// JOELwindows7: here event object that meant to be beat hit rather than precise or section next (scroll speed change e.g.).
+		// wait, how about put this in Step? this one is more precise... idk.
+		if (SONG != null && SONG.eventObjects != null)
+			for (i in SONG.eventObjects)
+			{
+				if (i.position == HelperFunctions.truncateFloat(curDecimalBeat,3) || Std.int(i.position) == curBeat) // JOELwindows7: can we do it like this instead? because the evaluation for these are essentially be the same.
+				{
+					switch (i.type)
+					{
+						// JOELwindows7: moar effeks. do not forget check position with curDecimalBeat (precise) / curBeat (exact) first!
+						case "Cheer Now":
+							justCheer(true);
+						case "Hey Now":
+							justHey(true);
+						case "Cheer Hey Now":
+							if (i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0)
+								justCheer(true);
+							if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
+								justHey(true);
+						case "Lightning Strike":
+							Stage.lightningStrikeShit();
+						case "Blammed Lights":
+							Stage.blammedLights(Std.int(i.value));
+						case "Appear Blackbar":
+							// Debug.logTrace("appear blackbar");
+							Stage.appearBlackBar(i.value);
+						case "Disappear Blackbar":
+							// Debug.logTrace("disappear blackbar");
+							Stage.disappearBlackBar(i.value);
+
+						case "Camera Zoom in":
+							camZoomNow(i.value, i.value2, i.value3);
+						case "Shake camera":
+							FlxG.camera.shake(i.value, i.value2, function()
+							{
+							}, true);
+							Controls.vibrate(0, i.value);
+
+						case "HUD Zoom in":
+							camZoomNow(0, i.value);
+						case "Both Zoom in":
+							camZoomNow(i.value, i.value);
+						case "LED ON for":
+						// JOELwindows7: turn LED on for how long second i.value
+
+						case "Vibrate for":
+							Controls.vibrate(0, i.value, i.value2);
+					}
+				}
+			}
 	}
 
 	override function beatHit()

@@ -211,7 +211,8 @@ class DialogueBox extends FlxSpriteGroup
 					initiatePortraitLeft(-20, 40, 0.9, customCharXML, customCharFrame, customCharPrefix);
 				}
 		}
-		PlayState.instance.dialogueScene(); // JOELwindows7: here functions when dialog starts.
+		if (PlayState.instance != null)
+			PlayState.instance.dialogueScene(); // JOELwindows7: here functions when dialog starts.
 
 		this.dialogueList = dialogueList;
 
@@ -407,7 +408,8 @@ class DialogueBox extends FlxSpriteGroup
 				default:
 					trace("other song");
 			}
-			PlayState.instance.dialogueSceneClose(); // JOELwindows7: do functions when this close.
+			if (PlayState.instance != null)
+				PlayState.instance.dialogueSceneClose(); // JOELwindows7: do functions when this close.
 			new FlxTimer().start(0.2, function(tmr:FlxTimer)
 			{
 				box.alpha -= 1 / 5;
@@ -451,7 +453,8 @@ class DialogueBox extends FlxSpriteGroup
 						{
 							sound.stop();
 						});
-					PlayState.instance.dialogueSceneEnding(); // JOELwindows7: here when ending.
+					if(PlayState.instance != null)
+						PlayState.instance.dialogueSceneEnding(); // JOELwindows7: here when ending.
 
 					new FlxTimer().start(0.2, function(tmr:FlxTimer)
 					{
@@ -686,7 +689,8 @@ class DialogueBox extends FlxSpriteGroup
 		swagDialogue.width = Std.int(FlxG.width * .6); // JOELwindows7: don't forget to refresh the width!
 
 		// JOELwindows7: then execute the function for the modchart
-		PlayState.instance.dialogueNext(counterEH);
+		if (PlayState.instance != null)
+			PlayState.instance.dialogueNext(counterEH);
 	}
 
 	function cleanDialog():Void
