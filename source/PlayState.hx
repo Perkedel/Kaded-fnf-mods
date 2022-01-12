@@ -2989,12 +2989,13 @@ class PlayState extends MusicBeatState
 				// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
 				// so no reason to delete it at all
 				// JOELwindows7: hey don't early songLength that 100 early wtf? was 100 less, now 50 less.. idk. screw this! 0?
+				// JOELwindows7: end song early was here. now deleted (nvm). rely only on Music complete.
+				// as you can see, there is a something. music stop, minute second counter resets. that's not reliable to measured on here.
+				// requiring this exactly passes song length, while it already reset before it be seen, causes softlock. musicComplete flag raised, but the counter goes zero??
+				// see that? confusing!
 				if (unspawnNotes.length == 0
-					&& notes.length == 0 // && FlxG.sound.music.time / songMultiplier > (songLength - 0) // JOELwindows7: was here. now deleted. rely only on Music complete.
-						// as you can see, there is a something. music stop, minute second counter resets. that's not reliable to measured on here.
-						// requiring this exactly passes song length, while it already reset before it be seen, causes softlock. musicComplete flag raised, but the counter goes zero??
-						// see that? confusing!
-					&& musicCompleted) // JOELwindows7: fine here music complete
+					&& notes.length == 0
+					&& (FlxG.save.data.endSongEarly ? FlxG.sound.music.time / songMultiplier > (songLength - 0) : musicCompleted)) // JOELwindows7: fine here music complete
 				{
 					Debug.logTrace("we're fuckin ending the song ");
 
@@ -4581,7 +4582,7 @@ class PlayState extends MusicBeatState
 	// JOELwindows7: check if the song should display epilogue chat once the song has finished.
 	function checkEpilogueChat():Void
 	{
-		if(creditRollout != null)
+		if (creditRollout != null)
 			creditRollout.stopRolling();
 		endingSong = true; // Just in case somekind of forgor
 		songStarted = false; // try to do this?
@@ -6099,7 +6100,8 @@ class PlayState extends MusicBeatState
 		if (SONG != null && SONG.eventObjects != null)
 			for (i in SONG.eventObjects)
 			{
-				if (i.position == HelperFunctions.truncateFloat(curDecimalBeat,3) || Std.int(i.position) == curBeat) // JOELwindows7: can we do it like this instead? because the evaluation for these are essentially be the same.
+				if (i.position == HelperFunctions.truncateFloat(curDecimalBeat, 3)
+					|| Std.int(i.position) == curBeat) // JOELwindows7: can we do it like this instead? because the evaluation for these are essentially be the same.
 				{
 					switch (i.type)
 					{

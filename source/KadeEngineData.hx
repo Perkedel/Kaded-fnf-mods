@@ -195,6 +195,12 @@ class KadeEngineData
 			FlxG.save.data.freeplayThreadedLoading = false;
 		}
 
+		// JOELwindows7: end song early
+		if (FlxG.save.data.endSongEarly == null)
+		{
+			FlxG.save.data.endSongEarly = false;
+		}
+
 		FlxG.save.data.cacheImages = false;
 
 		if (FlxG.save.data.middleScroll == null)

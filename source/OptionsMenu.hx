@@ -148,6 +148,7 @@ class OptionsMenu extends CoreSubState
 				new LuaLegacyModchartOption("Enable Lua modchart compatibility for <1.7 modchart files."),
 				new AutoClickEnabledOption("Let the game click the dialogue for you"),
 				new AutoClickDelayOption("Set the delay of click between dialogue typing completition"),
+				new EndSongEarlyOption("Toggle whether or not to end song early or wait music complete 1st"),
 			]),
 			new OptionCata(345, 40, "Appearance", [
 				new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),

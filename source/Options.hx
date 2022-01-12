@@ -3109,3 +3109,37 @@ class FreeplayThreadedOption extends Option
 		return "Freeplay Threaded Loading < " + (FlxG.save.data.freeplayThreadedLoading ? "ON" : "OFF") + " >";
 	}
 }
+
+//JOELwindows7: whether or not end song early or wait until music complete
+class EndSongEarlyOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.endSongEarly = !FlxG.save.data.endSongEarly;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "End Song Early < " + (FlxG.save.data.endSongEarly ? "ON" : "OFF") + " >";
+	}
+}
