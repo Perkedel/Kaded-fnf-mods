@@ -453,6 +453,9 @@ class OptionsMenu extends CoreSubState
 
 		any = FlxG.keys.justPressed.ANY || (gamepad != null ? gamepad.justPressed.ANY : false);
 		escape = FlxG.keys.justPressed.ESCAPE || (gamepad != null ? gamepad.justPressed.B : false) || haveBacked;
+		// JOELwindows7: turns out, double back was because this escape bool is not updated until you go back here again.
+		// when you thought you've flipped haveBacked false, the escape is not. you should also flip back false that too.
+		// you only see escape while you should see haveBacked directly instead.
 
 		if (selectedCat != null && !isInCat)
 		{
@@ -518,6 +521,7 @@ class OptionsMenu extends CoreSubState
 					selectOption(selectedCat.options[0]);
 
 					haveClicked = false; // JOELwindows7: don't forget
+					accept = false; // JOELwindows7: update this too
 				}
 
 				if (escape)
@@ -541,6 +545,7 @@ class OptionsMenu extends CoreSubState
 					}
 
 					haveBacked = false; // JOELwindows7: don't forget
+					escape = false; // JOELwindows7: update this too
 				}
 			}
 			else
@@ -565,6 +570,7 @@ class OptionsMenu extends CoreSubState
 							// JOELwindows7: reset value again.
 							markForGameplayRestart = false;
 							haveBacked = false; // JOELwindows7: whie
+							escape = false; // JOELwindows7: update this too
 							return;
 						}
 						else if (any)
@@ -573,6 +579,8 @@ class OptionsMenu extends CoreSubState
 							selectedOption.onType(gamepad == null ? FlxG.keys.getIsDown()[0].ID.toString() : gamepad.firstJustPressedID());
 							object.text = "> " + selectedOption.getValue();
 							Debug.logTrace("New text: " + object.text);
+
+							any = false; // JOELwindows7: don't forget
 						}
 					}
 				if (selectedOption.acceptType || !selectedOption.acceptType)
@@ -590,6 +598,7 @@ class OptionsMenu extends CoreSubState
 							object.text = "> " + selectedOption.getValue();
 						}
 						haveClicked = false; // JOELwindows7: mouse supports
+						accept = false; // JOELwindows7: update this too
 					}
 
 					if (down)
@@ -626,6 +635,8 @@ class OptionsMenu extends CoreSubState
 						selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
 						haveDowned = false; // JOELwindows7: yea
 						haveClicked = false; // JOELwindows7: mouse supports
+						down = false; // JOELwindows7: update this too
+						accept = false; // JOELwindows7: update this too
 					}
 					else if (up)
 					{
@@ -669,6 +680,8 @@ class OptionsMenu extends CoreSubState
 						selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
 						haveUpped = false; // JOELwindows7: yep
 						haveClicked = false; // JOELwindows7: mouse supports
+						up = false; // JOELwindows7: update this too
+						accept = false; // JOELwindows7: update this too
 					}
 
 					if (right)
@@ -683,6 +696,7 @@ class OptionsMenu extends CoreSubState
 						Debug.logTrace("New text: " + object.text);
 
 						haveRighted = false; // JOELwindows7: oye
+						right = false; // JOELwindows7: update this too
 					}
 					else if (left)
 					{
@@ -696,6 +710,7 @@ class OptionsMenu extends CoreSubState
 						Debug.logTrace("New text: " + object.text);
 
 						haveLefted = false; // JOELwindows7: ok
+						left = false; // JOELwindows7: update this too
 					}
 
 					if (escape)
@@ -749,6 +764,7 @@ class OptionsMenu extends CoreSubState
 						markForGameplayRestart = false;
 
 						haveBacked = false; // JOELwindows7: okeh.
+						escape = false; // JOELwindows7: update this too
 					}
 				}
 			}
