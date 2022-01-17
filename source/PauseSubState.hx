@@ -283,17 +283,22 @@ class PauseSubState extends MusicBeatSubstate
 					inCharter = false; // JOELwindows7: reset the mode back to normal.
 					PlayState.startTime = 0;
 					// JOELwindows7: VLC is here!
-					if (PlayState.instance.useVideo && !PlayState.instance.useVLC)
+					if (PlayState.instance != null)
 					{
-						GlobalVideo.get().stop();
-						PlayState.instance.remove(PlayState.instance.videoSprite);
-						PlayState.instance.removedVideo = true;
-					}
-					else if (PlayState.instance.useVLC)
-					{
-						PlayState.instance.vlcHandler.kill();
-						PlayState.instance.remove(PlayState.instance.videoSprite);
-						PlayState.instance.removedVideo = true;
+						if (PlayState.instance.useVideo && !PlayState.instance.useVLC)
+						{
+							GlobalVideo.get().stop();
+							PlayState.instance.remove(PlayState.instance.videoSprite);
+							PlayState.instance.removedVideo = true;
+						}
+						else if (PlayState.instance.useVLC)
+						{
+							PlayState.instance.vlcHandler.kill();
+							PlayState.instance.remove(PlayState.instance.videoSprite);
+							PlayState.instance.removedVideo = true;
+						}
+						PlayState.instance.scronchModcharts(); // JOELwindows7: you must scronch both Lua modchart & stage modchart
+						PlayState.instance.removeTouchScreenButtons(); // JOELwindows7: the controller destroy
 					}
 					if (PlayState.loadRep)
 					{
@@ -310,12 +315,14 @@ class PauseSubState extends MusicBeatSubstate
 					// 	PlayState.luaModchart = null;
 					// }
 					#end
-					PlayState.instance.scronchModcharts(); // JOELwindows7: you must scronch both Lua modchart & stage modchart
-					PlayState.instance.removeTouchScreenButtons(); // JOELwindows7: the controller destroy
+					
 					if (FlxG.save.data.fpsCap > 340)
 						(cast(Lib.current.getChildAt(0), Main)).setFPSCap(120);
 
-					PlayState.instance.clean();
+					if (PlayState.instance != null)
+					{
+						PlayState.instance.clean();
+					}
 
 					if (PlayState.isStoryMode)
 					{

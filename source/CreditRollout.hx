@@ -39,7 +39,7 @@ class CreditRollout extends FlxTypedGroup<FlxText>
 	public var textName:FlxText;
 	public var textRole:FlxText;
 
-	var linesOfThem:Array<String>; // lines of the credit roll
+	var linesOfThem:Array<String> = ["Lorem Ipsum:Dolor Sit Amet:Consectetur Adipiscing Elit",]; // lines of the credit roll
 	var indexening:Int = 0;
 	var currentLineSet:Array<String>; // each line has 3 strings here
 	var interval:Float = 3;
@@ -63,7 +63,7 @@ class CreditRollout extends FlxTypedGroup<FlxText>
 		textName.scrollFactor.set();
 		textName.alpha = 0;
 
-		textRole = new FlxText(100, textRole.y + textRole.height + 10, 0, "Dolor sit", 14);
+		textRole = new FlxText(100, textName.y + textName.height + 10, 0, "Dolor sit", 14);
 		textRole.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		textRole.scrollFactor.set();
 		textRole.alpha = 0;
@@ -113,15 +113,15 @@ class CreditRollout extends FlxTypedGroup<FlxText>
 		started = false;
 	}
 
-    public function pauseRolling()
-    {
-        stopRolling(); // same too?
-    }
+	public function pauseRolling()
+	{
+		stopRolling(); // same too?
+	}
 
-    public function resumeRolling()
-    {
-        startRolling(); // same too?
-    }
+	public function resumeRolling()
+	{
+		startRolling(); // same too?
+	}
 
 	public function fadeToOther(isPrevious:Bool = true, duration:Float = .5)
 	{
@@ -184,15 +184,21 @@ class CreditRollout extends FlxTypedGroup<FlxText>
 	public function changeLine(which:Int = 0)
 	{
 		indexening = which;
-		if (indexening > linesOfThem.length - 1)
+		try
 		{
-			indexening = 0;
-			if (runsOnce)
-				stopRolling();
+			if (indexening > linesOfThem.length - 1)
+			{
+				indexening = 0;
+				if (runsOnce)
+					stopRolling();
+			}
+			if (indexening < 0)
+				indexening = linesOfThem.length - 1;
+			currentLineSet = linesOfThem[indexening].split(":");
 		}
-		if (indexening < 0)
-			indexening = linesOfThem.length - 1;
-		currentLineSet = linesOfThem[indexening].split(":");
+		catch (e)
+		{
+		}
 
 		updateTexts();
 	}
