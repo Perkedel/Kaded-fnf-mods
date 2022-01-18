@@ -78,7 +78,8 @@ class MusicBeatState extends CoreState
 			if (spr.graphic != null)
 			{
 				if (spr.graphic.bitmap.image == null)
-					Debug.logWarn("you are adding a fuckin null texture (THIS WILL CRASH YOUR GAME!)");
+					if (FlxG.save.data.annoyingWarns)
+						Debug.logWarn("you are adding a fuckin null texture (THIS WILL CRASH YOUR GAME!)");
 			}
 		}
 		// Debug.logTrace(Object);

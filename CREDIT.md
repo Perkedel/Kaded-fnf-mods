@@ -438,6 +438,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://gamebanana.com/mods/298149 inspiration for using copyrighted ideas which in this case, Disney Pixar, Luca. yep. that's it.
 - https://odysee.com/@JOELwindows7:a/OldMacDonald-Had-a-bin-cannon:2?r=72GvXbostV9AxDEqgXmRx9Sp1hBw7qqx OldMcdonal had a bin cannot lol Bill Wurtz. full credit in end of video & that description.
 - https://github.com/kem0x/openfl-haxeflixel-video-code/tree/main/source/ndll webm helper to count frames right wawa instead of manually `ffprobe`.
+- https://github.com/ItIsIWeeg/WeegModPublic/tree/9a0bb36819d7b7129bc3ee1c5347d1ff1575b977/source/ndll ItIsIWeeg. backed up the source code above of that kem0x frame counter that now privated
 - http://songsindonesia.didiharyadi.com/midi/index.html (WARNING: except Indonesia Raya and some: For Personal & Education Purpose only) Didi Haryadi MIDIs. take Indonesia Raya MIDI cover.
 - https://api.haxeflixel.com/flixel/system/FlxPreloader.html polgon Preloadering
 - https://gamebanana.com/blogs/19216 BonkMayker's meme of Old web. Check this project's README.md to see in action. you can implement yourself too in comments and post anywhere that complies with the HTML syntaxes.
@@ -456,7 +457,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.youtube.com/watch?v=iiQfjYcpJfQ https://pastebin.com/eLy6Mxte . add mine note type
 - https://github.com/TentaRJ/GameJolt-FNF-Integration https://github.com/TentaRJ/tentools TentaRJ. Stuffs like GameJolt Achievements and perhaps other things later.
 - https://design.ubuntu.com/font/ Canonical. Ubuntu font set yeay!
-- https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Conso ah this tool right here to get hex color. 
+- https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Consortium. ah this tool right here to get hex color. 
 - https://github.com/marketplace/actions/butler-push push to itch and
 - https://github.com/marketplace/actions/setup-haxe-environment setup da haxe CI now
 - https://gamebanana.com/mods/336567 https://twitter.com/RedstyP/status/1460982660751257601?s=20 (WARNING: CC4.0-BY-NC-ND, but can reuse if you credit all these 3 on credit sidebar) Redsty Phoenix (everything this thing, Co-Animator, Artis), P (16th letter), & IronB (banner). The Playable Standalone GF yess! 
@@ -470,6 +471,8 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://github.com/KadeDev/Hex-The-Weekend-Update https://gamejolt.com/games/hex/644168 YinYang48 (WARNING: has ND & NC). Stuff to be yoinked here. Kade never leaves his friends away. However, how about everyone of us? Well, fine. Just yoink the code!!!
 - https://gamebanana.com/tools/7714 Punkinator7. Top Psych Notes & Events here. Has Banbuds mine, Kolsan HD important, etc. etc.
 - https://gamebanana.com/tools/7923 Catt47. Cool Notes for Free yey!
+- https://www.dafont.com/a-atmospheric.font https://www.fontspace.com/a-atmospheric-font-f46808 wepfont (Uhh: Freeware). just a cool sci-fi atmospheric font.
+- https://github.com/kem0x/FNF-ModShaders kem0x. proper modshader thingy yey. [Fireable](https://github.com/ItzFireable ) did lua implementation wow! [SqirraRNG](https://github.com/gedehari ) workaroundeh runtime.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

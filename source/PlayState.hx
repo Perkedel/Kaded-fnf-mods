@@ -1,5 +1,6 @@
 package;
 
+import DynamicShaderHandler; // JOELwindows7: kem0x mod shader https://github.com/kem0x/FNF-ModShaders
 import cpp.Stdio;
 import HaxeScriptState;
 import const.Perkedel;
@@ -188,6 +189,7 @@ class PlayState extends MusicBeatState
 	#end
 
 	public var vocals:FlxSound; // JOELwindows7: make public for Moddchart. oh wait. Kade already done that.
+	public var vocals2:FlxSound; // JOELwindows7: second vocal set, for player2 if available.
 
 	public static var isSM:Bool = false;
 	#if FEATURE_STEPMANIA
@@ -366,6 +368,7 @@ class PlayState extends MusicBeatState
 
 	// JOELwindows7: other stuffs
 	public static var creditRollout:CreditRollout; // Credit fade rolls
+	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>(); // kem0x mod shader
 
 	// API stuff
 
@@ -1074,7 +1077,7 @@ class PlayState extends MusicBeatState
 			new LuaCamera(camGame, "camGame").Register(ModchartState.lua);
 			new LuaCamera(camHUD, "camHUD").Register(ModchartState.lua);
 			new LuaCamera(camSustains, "camSustains").Register(ModchartState.lua);
-			new LuaCamera(camSustains, "camNotes").Register(ModchartState.lua);
+			new LuaCamera(camNotes, "camNotes").Register(ModchartState.lua); // JOELwindows7: oops! somebody typo
 			new LuaCharacter(dad, "dad").Register(ModchartState.lua);
 			new LuaCharacter(gf, "gf").Register(ModchartState.lua);
 			new LuaCharacter(boyfriend, "boyfriend").Register(ModchartState.lua);
@@ -1225,6 +1228,7 @@ class PlayState extends MusicBeatState
 		// there I got it. hopefully it's centered.
 		reuploadWatermark.scrollFactor.set();
 		reuploadWatermark.setFormat(Paths.font("UbuntuMono-R.ttf"), 14, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // was vcr.ttf
+		reuploadWatermark.screenCenter(XY); // JOELwindows7: turns out everything solves just with this thing right here whoahow!!!
 		add(reuploadWatermark);
 		reuploadWatermark.visible = false;
 		// follow this example, you must be protected too from those credit-less YouTubers the bastards!
@@ -1262,13 +1266,16 @@ class PlayState extends MusicBeatState
 		add(scoreTxt);
 
 		judgementCounter = new FlxText(20, 0, 0, "", 20);
-		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		// JOELwindows7: I think this should be placed on right as where your player strum is at.
+		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		judgementCounter.borderSize = 2;
 		judgementCounter.borderQuality = 2;
 		judgementCounter.scrollFactor.set();
 		judgementCounter.cameras = [camHUD];
 		judgementCounter.screenCenter(Y);
 		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
+		judgementCounter.setPosition(FlxG.width - judgementCounter.width - 20, 0); // JOELwindows7: hey! place it actually right side of screen!
+		judgementCounter.screenCenter(Y); // JOELwindows7: do center it again just in case.
 		if (FlxG.save.data.judgementCounter)
 		{
 			add(judgementCounter);
@@ -2808,10 +2815,11 @@ class PlayState extends MusicBeatState
 		else if (paused)
 		{
 			// JOELwindows7: resume credit rollout
-			if (creditRollout != null)
-			{
-				creditRollout.resumeRolling();
-			}
+			if (SONG.isCreditRoll)
+				if (creditRollout != null)
+				{
+					creditRollout.resumeRolling();
+				}
 
 			if (FlxG.sound.music != null && !startingSong)
 			{
@@ -2928,6 +2936,44 @@ class PlayState extends MusicBeatState
 		if (!PlayStateChangeables.Optimize)
 			Stage.update(elapsed);
 
+		// JOELwindows7: kem0x mod shader
+		for (shader in animatedShaders)
+		{
+			shader.update(elapsed);
+		}
+
+		// JOELwindows7: kemox mod shader lua thingy
+		#if FEATURE_LUAMODCHART
+		if (luaModchart != null)
+		{
+			for (key => value in luaModchart.luaShaders)
+			{
+				value.update(elapsed);
+			}
+		}
+		if (stageScript != null)
+		{
+			for (key => value in stageScript.luaShaders)
+			{
+				value.update(elapsed);
+			}
+		}
+		#end
+		if (hscriptModchart != null)
+		{
+			for (key => value in hscriptModchart.luaShaders)
+			{
+				value.update(elapsed);
+			}
+		}
+		if (stageHscript != null)
+		{
+			for (key => value in stageHscript.luaShaders)
+			{
+				value.update(elapsed);
+			}
+		}
+
 		if (!addedBotplay && FlxG.save.data.botplay)
 		{
 			PlayStateChangeables.botPlay = true;
@@ -2949,15 +2995,20 @@ class PlayState extends MusicBeatState
 					dunceNote.luaID = currentLuaIndex;
 				}
 				#end
-
-				if (executeModchart)
+				// JOELwindows7: help, this is complicated. idk what's going on this here.
+				if (executeModHscript)
 				{
-					#if FEATURE_LUAMODCHART
+					dunceNote.luaID = currentLuaIndex;
+				}
+
+				if (executeModchart || executeModHscript) // JOELwindows7: hey, hscript too pls
+				{
+					// #if FEATURE_LUAMODCHART //JOELwindows7: why tho? there is also hscript too.
 					if (!dunceNote.isSustainNote)
 						dunceNote.cameras = [camNotes];
 					else
 						dunceNote.cameras = [camSustains];
-					#end
+					// #end
 				}
 				else
 				{
@@ -3301,6 +3352,15 @@ class PlayState extends MusicBeatState
 				if (i <= playerStrums.length)
 					playerStrums.members[i].visible = p2;
 			}
+
+			camNotes.zoom = camHUD.zoom;
+			camNotes.x = camHUD.x;
+			camNotes.y = camHUD.y;
+			camNotes.angle = camHUD.angle;
+			camSustains.zoom = camHUD.zoom;
+			camSustains.x = camHUD.x;
+			camSustains.y = camHUD.y;
+			camSustains.angle = camHUD.angle;
 		}
 		// JOELwindows7: stage hscript
 		if (executeStageHscript && stageHscript != null && songStarted)
@@ -4021,7 +4081,8 @@ class PlayState extends MusicBeatState
 			if (FlxG.save.data.zoom > 1.2)
 				FlxG.save.data.zoom = 1.2;
 
-			if (!executeModchart)
+			// JOELwindows7: make sure to choose using zoom save data only if no modchart are ON.
+			if (!executeModchart && !executeModHscript && !executeStageScript && !executeStageHscript)
 			{
 				FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
 				camHUD.zoom = FlxMath.lerp(FlxG.save.data.zoom, camHUD.zoom, 0.95);
@@ -5986,6 +6047,8 @@ class PlayState extends MusicBeatState
 		{
 			if (!note.isSustainNote)
 			{
+				// JOELwindows7: Pinpoint! if you want Pump it Up rapid combo
+				// add even sustain note, this is where you consider it.
 				combo += 1;
 				popUpScore(note);
 			}

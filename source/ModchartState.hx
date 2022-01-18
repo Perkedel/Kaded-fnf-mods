@@ -16,6 +16,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.tweens.FlxEase;
 import openfl.filters.ShaderFilter;
+import openfl.filters.BitmapFilter;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import openfl.geom.Matrix;
@@ -38,6 +39,10 @@ class ModchartState
 {
 	// public static var shaders:Array<LuaShader> = null; // JOELwindows7: uncomment now!!! nvm
 	public static var lua:State = null;
+
+	// JOELwindows7: kem0x mod shader
+	public var luaShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
+	public var camTarget:FlxCamera;
 
 	function callLua(func_name:String, args:Array<Dynamic>, ?type:String):Dynamic
 	{
@@ -1569,6 +1574,65 @@ class ModchartState
 		}
 		// end tweener old
 
+		// JOELwindows7: kem0x mod shader
+		Lua_helper.add_callback(lua, "createShaders", function(shaderName, ?optimize:Bool = false)
+		{
+			var shader = new DynamicShaderHandler(shaderName, optimize);
+
+			return shaderName;
+		});
+
+		Lua_helper.add_callback(lua, "modifyShaderProperty", function(shaderName, propertyName, value)
+		{
+			var handler = luaShaders[shaderName];
+			handler.modifyShaderProperty(propertyName, value);
+		});
+
+		// shader set
+
+		Lua_helper.add_callback(lua, "setShadersToCamera", function(shaderName:Array<String>, cameraName)
+		{
+			switch (cameraName)
+			{
+				case 'hud':
+					camTarget = PlayState.instance.camHUD;
+				case 'notes':
+					camTarget = PlayState.instance.camNotes;
+				case 'sustains':
+					camTarget = PlayState.instance.camSustains;
+				case 'game':
+					camTarget = FlxG.camera;
+			}
+
+			var shaderArray = new Array<BitmapFilter>();
+
+			for (i in shaderName)
+			{
+				shaderArray.push(new ShaderFilter(luaShaders[i].shader));
+			}
+
+			camTarget.setFilters(shaderArray);
+		});
+
+		// shader clear
+
+		Lua_helper.add_callback(lua, "clearShadersFromCamera", function(cameraName)
+		{
+			switch (cameraName)
+			{
+				case 'hud':
+					camTarget = PlayState.instance.camHUD;
+				case 'notes':
+					camTarget = PlayState.instance.camNotes;
+				case 'sustains':
+					camTarget = PlayState.instance.camSustains;
+				case 'game':
+					camTarget = FlxG.camera;
+			}
+			camTarget.setFilters([]);
+		});
+		// end kem0x mod shader
+
 		// JOELwindows7: HUD rest old
 		if (PlayStateChangeables.legacyLuaModchartSupport)
 		{
@@ -1708,6 +1772,9 @@ class ModchartState
 			// JOELwindows7: gamejolt toast
 			Main.gjToastManager.createToast(iconPath, title, description, sound);
 		});
+
+		
+
 		// end more special functions
 		// So you don't have to hard code your cool effects.
 		// end Special additional functions

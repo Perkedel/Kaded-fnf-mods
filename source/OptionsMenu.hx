@@ -203,6 +203,7 @@ class OptionsMenu extends CoreSubState
 				// new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
 				new FreeplayThreadedOption("BETA! Enable Freeplay Threading, may cause system instabilities"),
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
+				new PrintAnnoyingDebugWarnOption("Toggle whether should frequent warns appears (is annoying)"),
 			]),
 			// JOELwindows7: was 935, 40
 			new OptionCata(1100, 40, "Saves", [

@@ -2925,6 +2925,40 @@ class PrintSongChartContentOption extends Option
 	}
 }
 
+// JOELwindows7: Print annoying Debug Warn message that often happens. (Warn & Error pops debugger up)
+class PrintAnnoyingDebugWarnOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.annoyingWarns = !FlxG.save.data.annoyingWarns;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Debug Warns < " + (FlxG.save.data.annoyingWarns ? "Printed" : "SSSSHHHH") + " >";
+	}
+}
+
 // JOELwindows7: GameJolt login TentaRJ
 class LogGameJoltIn extends Option
 {

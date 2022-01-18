@@ -53,17 +53,17 @@ class CreditRollout extends FlxTypedGroup<FlxText>
 
 	public function build()
 	{
-		textTitle = new FlxText(100, FlxG.height - 130, 0, "Title", 20);
+		textTitle = new FlxText(90, FlxG.height - 200, 0, "Title", 20);
 		textTitle.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		textTitle.scrollFactor.set();
 		textTitle.alpha = 0;
 
-		textName = new FlxText(100, textTitle.y + textTitle.height + 10, 0, "Lorem Ipsum", 44);
+		textName = new FlxText(90, textTitle.y + textTitle.height + 2, 0, "Lorem Ipsum", 44);
 		textName.setFormat(Paths.font("vcr.ttf"), 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		textName.scrollFactor.set();
 		textName.alpha = 0;
 
-		textRole = new FlxText(100, textName.y + textName.height + 10, 0, "Dolor sit", 14);
+		textRole = new FlxText(90, textName.y + textName.height + 2, 0, "Dolor sit", 14);
 		textRole.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		textRole.scrollFactor.set();
 		textRole.alpha = 0;
@@ -126,21 +126,21 @@ class CreditRollout extends FlxTypedGroup<FlxText>
 	public function fadeToOther(isPrevious:Bool = true, duration:Float = .5)
 	{
 		FlxTween.tween(textTitle, {alpha: 0}, duration, {
-			ease: FlxEase.quadInOut,
+			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{
 			}
 		});
 
 		FlxTween.tween(textName, {alpha: 0}, duration, {
-			ease: FlxEase.quadInOut,
+			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{
 			}
 		});
 
 		FlxTween.tween(textRole, {alpha: 0}, duration, {
-			ease: FlxEase.quadInOut,
+			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{
 			}
@@ -159,21 +159,21 @@ class CreditRollout extends FlxTypedGroup<FlxText>
 		if (started)
 		{
 			FlxTween.tween(textTitle, {alpha: 1}, duration, {
-				ease: FlxEase.quadInOut,
+				ease: FlxEase.linear,
 				onComplete: function(twn:FlxTween)
 				{
 				}
 			});
 
 			FlxTween.tween(textName, {alpha: 1}, duration, {
-				ease: FlxEase.quadInOut,
+				ease: FlxEase.linear,
 				onComplete: function(twn:FlxTween)
 				{
 				}
 			});
 
 			FlxTween.tween(textRole, {alpha: 1}, duration, {
-				ease: FlxEase.quadInOut,
+				ease: FlxEase.linear,
 				onComplete: function(twn:FlxTween)
 				{
 				}

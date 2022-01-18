@@ -63,6 +63,7 @@ import flixel.util.FlxTimer;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
 import openfl.filters.ShaderFilter;
+import openfl.filters.BitmapFilter;
 import openfl.display.DisplayObject;
 import openfl.display.Stage;
 import openfl.display.Sprite;
@@ -119,6 +120,10 @@ class HaxeScriptState
 	public static var hscriptSprite:Map<String, FlxSprite> = [];
 
 	public var haxeWiggles:Map<String, WiggleEffect> = new Map<String, WiggleEffect>();
+
+	// JOELwindows7: kem0x mod shader
+	public var luaShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
+	public var camTarget:FlxCamera;
 
 	/**
 	 * Instance HaxeScriptState.
@@ -1410,6 +1415,65 @@ class HaxeScriptState
 			addCallback("setFilterCam", function(shaderIndex:Int) {
 				FlxG.camera.setFilters([new ShaderFilter(shaders[shaderIndex])]);
 		});*/
+
+		// JOELwindows7: kem0x mod shader
+		addCallback("createShaders", function(shaderName, ?optimize:Bool = false)
+		{
+			var shader = new DynamicShaderHandler(shaderName, optimize);
+
+			return shaderName;
+		});
+
+		addCallback("modifyShaderProperty", function(shaderName, propertyName, value)
+		{
+			var handler = luaShaders[shaderName];
+			handler.modifyShaderProperty(propertyName, value);
+		});
+
+		// shader set
+
+		addCallback("setShadersToCamera", function(shaderName:Array<String>, cameraName)
+		{
+			switch (cameraName)
+			{
+				case 'hud':
+					camTarget = PlayState.instance.camHUD;
+				case 'notes':
+					camTarget = PlayState.instance.camNotes;
+				case 'sustains':
+					camTarget = PlayState.instance.camSustains;
+				case 'game':
+					camTarget = FlxG.camera;
+			}
+
+			var shaderArray = new Array<BitmapFilter>();
+
+			for (i in shaderName)
+			{
+				shaderArray.push(new ShaderFilter(luaShaders[i].shader));
+			}
+
+			camTarget.setFilters(shaderArray);
+		});
+
+		// shader clear
+
+		addCallback("clearShadersFromCamera", function(cameraName)
+		{
+			switch (cameraName)
+			{
+				case 'hud':
+					camTarget = PlayState.instance.camHUD;
+				case 'notes':
+					camTarget = PlayState.instance.camNotes;
+				case 'sustains':
+					camTarget = PlayState.instance.camSustains;
+				case 'game':
+					camTarget = FlxG.camera;
+			}
+			camTarget.setFilters([]);
+		});
+		// end kem0x mod shader
 
 		// Special JOELwindows7
 		addCallback("cheerNow",

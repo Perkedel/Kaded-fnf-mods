@@ -165,6 +165,12 @@ class KadeEngineData
 			FlxG.save.data.traceSongChart = false;
 		}
 
+		// JOELwindows7: Print annoying debug messages, the warning messages
+		if(FlxG.save.data.annoyingWarns == null)
+		{
+			FlxG.save.data.annoyingWarns = false;
+		}
+
 		// JOELwindows7: enable legacy lua modchart supports
 		if (FlxG.save.data.legacyLuaScript == null)
 		{
