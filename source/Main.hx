@@ -33,6 +33,10 @@ import openfl.events.Event;
 import lime.system.JNI;
 import plugins.systems.ScanPlatform;
 import haxe.ui.Toolkit;
+#if EXPERIMENTAL_OPENFL_XINPUT
+import com.furusystems.openfl.input.xinput.*;
+// import com.furusystems.openfl.input.xinput.XBox360Controller;
+#end
 
 class Main extends Sprite
 {
@@ -58,6 +62,12 @@ class Main extends Sprite
 
 	public static var gjToastManager:GJToastManager; // JOELwindows7: TentaRJ Gamejolter now has Toast yey! FORMATTER STOP PECK THIS UP FEMALE DOG!!!
 	public static var loadingBar:LoadingBar; // JOELwindows7: the loading bar thingy.
+
+	//JOELwindows7: furusystem & karaidon Xinput thingy
+	#if EXPERIMENTAL_OPENFL_XINPUT
+	public static var xboxControllers:Array<XBox360Controller> = [];
+	public static final xboxControllerNum:Int = 7;
+	#end
 
 	// JOELwindows7: Please no demonic reference about Mark of what the peck!
 	/*
@@ -221,6 +231,14 @@ class Main extends Sprite
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
+
+		// JOELwindows7: now build Xbox controllers
+		#if EXPERIMENTAL_OPENFL_XINPUT
+		for (i in 0...xboxControllerNum)
+		{
+			xboxControllers[i] = new XBox360Controller(i);
+		}
+		#end
 
 		#if FEATURE_DISPLAY_FPS_CHANGE
 		addChild(fpsCounter);

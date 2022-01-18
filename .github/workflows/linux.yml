@@ -81,6 +81,7 @@ jobs:
           haxelib install haxeui-core
           haxelib install haxeui-openfl
           haxelib install haxeui-flixel
+          haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
           haxelib list
       
       - name: Obtain stuffs of Linux

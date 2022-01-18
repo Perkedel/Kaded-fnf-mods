@@ -182,6 +182,14 @@ class CoreState extends FlxUIState
 	{
 		super.update(elapsed);
 
+		// JOELwindows7: manage Xbox Controller
+		#if EXPERIMENTAL_OPENFL_XINPUT
+		for (i in 0...Main.xboxControllerNum)
+		{
+			Main.xboxControllers[i].poll();
+		}
+		#end
+
 		// JOELwindows7: manage Stuffs
 		manageMouse();
 	}

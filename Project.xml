@@ -287,7 +287,9 @@
 
 	<!-- JOELwindows7: Xinput API for OpenFL -->
 	<!-- <haxelib name="xinput" if="windows"/> -->
+	<!-- <haxelib name="openfl-xinput" if="EXPERIMENTAL_OPENFL_XINPUT || windows"/> -->
 	<!-- - haxelib git xinput https://github.com/furusystems/openfl-xinput.git -->
+	<!-- - haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput.git -->
 
 	<!-- JOELwindows7: try VLC maybe. -->
 	<!-- <haxelib name="haxevlc" if="windows"/> -->
@@ -467,5 +469,30 @@
 		``` 
 		Weird, isn't that same?? what the? -->
 	<!-- <haxedef name="EXPERIMENTAL_HEX_WEEKEND"/> -->
+
+	<!-- furusystem's OpenFL XInput & Karaidon XInput -->
+	<!-- https://github.com/furusystems/openfl-xinput -->
+	<!-- https://github.com/karaidon/hXInput -->
+	<!-- <haxedef name="EXPERIMENTAL_OPENFL_XINPUT" if = "windows"/> -->
+	<!-- Error: Malfunction today as OpenFL updates drastically:
+	```
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:171: characters 16-22 : id: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:197: characters 27-44 : vibrationLeft: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:197: characters 46-63 : vibrationLeft: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:198: characters 31-52 : vibrationLeftNorm: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:198: characters 54-75 : vibrationLeftNorm: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:224: characters 28-46 : vibrationRight: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:224: characters 48-66 : vibrationRight: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:225: characters 32-54 : vibrationRightNorm: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:225: characters 56-78 : vibrationRightNorm: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:87: characters 22-34 : deadZone: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:87: characters 36-48 : deadZone: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:88: characters 26-42 : deadZoneNorm: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:88: characters 44-60 : deadZoneNorm: Custom property accessor is no longer supported, please use `set`
+	source/CoreState.hx:189: characters 4-19 : Unknown identifier : xboxControllers
+	source/Controls.hx:561: characters 6-20 : Unknown identifier : xboxController
+	source/Controls.hx:563: characters 4-18 : Unknown identifier : xboxController
+	```
+	 -->
 
 </project>

@@ -260,14 +260,16 @@ class MainMenuState extends MusicBeatState
 				if (optionShit[curSelected] == 'donate')
 				{
 					FlxG.sound.play(Paths.sound('confirmMenu')); // JOELwindows7: hey, pls don't forget the confirm sound for Kickstarter go to one also!
-					fancyOpenURL("https://ninja-muffin24.itch.io/funkin");
+					// fancyOpenURL("https://ninja-muffin24.itch.io/funkin");
+					fancyOpenURL("https://odysee.com/@JOELwindows7:a/LFM-links:a"); // JOELwindows7: hey, open all links there is to it.
 					AchievementUnlocked.whichIs("acknowledgement");
 				}
 				else
 				{
+					// FlxG.gamepads.lastActive.vibrate(0.1);
 					_loadingBar.popNow();
 					_loadingBar.setInfoText("Selected " + optionShit[curSelected]);
-					_loadingBar.setLoadingType(ExtraLoadingType.NONE);
+					_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
 					FlxG.mouse.visible = false;
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
