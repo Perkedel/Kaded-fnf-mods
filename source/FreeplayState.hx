@@ -907,6 +907,8 @@ class FreeplayState extends MusicBeatState
 	 */
 	public static function loadSongInFreePlay(songName:String, difficulty:Int, isCharting:Bool, reloadSong:Bool = false)
 	{
+		Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
+
 		// Make sure song data is initialized first.
 		if (songData == null || Lambda.count(songData) == 0)
 			populateSongData();

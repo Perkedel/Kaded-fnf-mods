@@ -259,6 +259,7 @@ class MainMenuState extends MusicBeatState
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
+					Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
 					FlxG.sound.play(Paths.sound('confirmMenu')); // JOELwindows7: hey, pls don't forget the confirm sound for Kickstarter go to one also!
 					// fancyOpenURL("https://ninja-muffin24.itch.io/funkin");
 					fancyOpenURL("https://odysee.com/@JOELwindows7:a/LFM-links:a"); // JOELwindows7: hey, open all links there is to it.
@@ -266,7 +267,8 @@ class MainMenuState extends MusicBeatState
 				}
 				else
 				{
-					// FlxG.gamepads.lastActive.vibrate(0.1);
+					// FlxG.gamepads.lastActive.vibrate(0.1); //JOELwindows7: wtf bro, no vibration????
+					Controls.vibrate(0, 50); //JOELwindows7: give feedback!!!
 					_loadingBar.popNow();
 					_loadingBar.setInfoText("Selected " + optionShit[curSelected]);
 					_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);

@@ -539,6 +539,7 @@ class StoryMenuState extends MusicBeatState
 			if (stopspamming == false)
 			{
 				// JOELwindows7: change click sound based on week selected
+				Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
 				FlxG.sound.play(Paths.sound(weekClickSoundPath[curWeek] != null
 					&& weekClickSoundPath[curWeek] != '' ? weekClickSoundPath[curWeek] : 'confirmMenu'));
 
