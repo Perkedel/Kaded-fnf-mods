@@ -1421,9 +1421,11 @@ class HaxeScriptState
 		// JOELwindows7: kem0x mod shader
 		addCallback("createShaders", function(shaderName, ?optimize:Bool = false)
 		{
+			#if EXPERIMENTAL_KEM0X_SHADERS
 			var shader = new DynamicShaderHandler(shaderName, optimize);
 
 			return shaderName;
+			#end
 		});
 
 		addCallback("modifyShaderProperty", function(shaderName, propertyName, value)

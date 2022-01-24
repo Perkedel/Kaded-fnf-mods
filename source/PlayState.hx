@@ -372,8 +372,10 @@ class PlayState extends MusicBeatState
 
 	// JOELwindows7: other stuffs
 	public static var creditRollout:CreditRollout; // Credit fade rolls
+	#if EXPERIMENTAL_KEM0X_SHADERS
 	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>(); // kem0x mod shader
 
+	#end
 	// API stuff
 
 	public function addObject(object:FlxBasic)
@@ -2941,10 +2943,12 @@ class PlayState extends MusicBeatState
 			Stage.update(elapsed);
 
 		// JOELwindows7: kem0x mod shader
+		#if EXPERIMENTAL_KEM0X_SHADERS
 		for (shader in animatedShaders)
 		{
 			shader.update(elapsed);
 		}
+		#end
 
 		// JOELwindows7: kemox mod shader lua thingy
 		#if EXPERIMENTAL_KEM0X_SHADERS
