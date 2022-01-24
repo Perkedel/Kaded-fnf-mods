@@ -1,7 +1,11 @@
 package;
 
+#if EXPERIMENTAL_KEM0X_SHADERS
 import DynamicShaderHandler; // JOELwindows7: kem0x mod shader https://github.com/kem0x/FNF-ModShaders
+#end
+#if cpp
 import cpp.Stdio;
+#end
 import HaxeScriptState;
 import const.Perkedel;
 import flixel.addons.ui.FlxUIButton;
@@ -2943,6 +2947,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// JOELwindows7: kemox mod shader lua thingy
+		#if EXPERIMENTAL_KEM0X_SHADERS
 		#if FEATURE_LUAMODCHART
 		if (luaModchart != null)
 		{
@@ -2973,6 +2978,7 @@ class PlayState extends MusicBeatState
 				value.update(elapsed);
 			}
 		}
+		#end
 
 		if (!addedBotplay && FlxG.save.data.botplay)
 		{

@@ -1,9 +1,11 @@
+#if EXPERIMENTAL_KEM0X_SHADERS
 // JOELwindows7: kem0x mod shader https://github.com/kem0x/FNF-ModShaders
 package;
 
 import openfl.display.GraphicsShader;
 import flixel.FlxG;
-import graphics.tile.FlxGraphicsShader; // JOELwindows7: according to luckydog7, we should not conflict flixel package!
+import flixel.graphics.tile.FlxGraphicsShader; // JOELwindows7: according to luckydog7, we should not conflict flixel package!
+import openfl.utils.Assets as OpenFlAssets;
 
 /*
 	Class to handle animated shaders, calling the new consturctor is enough, 
@@ -35,7 +37,11 @@ class DynamicShaderHandler
 
 		if (Paths.doesTextAssetExist(path))
 		{
+			#if sys
 			fragSource = sys.io.File.getContent(path);
+			#else
+			fragSource = OpenFlAssets.getText(path);
+			#end
 		}
 
 		if (fragSource != "")
@@ -64,10 +70,12 @@ class DynamicShaderHandler
 
 		if (PlayState.instance.executeModchart)
 		{
+			#if FEATURE_LUAMODCHART
 			if (PlayState.luaModchart != null)
 			{
 				PlayState.luaModchart.luaShaders[fileName] = this;
 			}
+			#end
 		}
 		// JOELwindows7: wait, there's more!
 		if (PlayState.instance.executeModHscript)
@@ -79,10 +87,12 @@ class DynamicShaderHandler
 		}
 		if (PlayState.instance.executeStageScript)
 		{
+			#if FEATURE_LUAMODCHART
 			if (PlayState.stageScript != null)
 			{
 				PlayState.stageScript.luaShaders[fileName] = this;
 			}
+			#end
 		}
 		if (PlayState.instance.executeStageHscript)
 		{
@@ -124,3 +134,4 @@ class DynamicShaderHandler
 		}
 	}
 }
+#end

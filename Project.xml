@@ -455,12 +455,15 @@
 	<!-- oh, also MasterEric's way of defining -->
 	<haxedef name="FEATURE_GAMEJOLT" if="gamejolt"/>
 
+	
+
 	<!-- JOELwindows7: here force defines to know. -->
 	<!-- Write override defines for development special features -->
 
 	<!-- FORCE_INCLUDE_DLC to include separate_mods anyway which previously included only in debug build -->
 	<haxedef name="FORCE_INCLUDE_DLC" if="debug"/>
 
+	
 	<!-- Experimentals -->
 	<!-- Kade + YinYang48 Hex Weekend Kade Engine features. BUG on FlxDrawQuadItem on function render: 
 		`shader.bitmap.input = graphics.bitmap;` goes still null unless 
@@ -495,5 +498,9 @@
 	source/Controls.hx:563: characters 4-18 : Unknown identifier : xboxController
 	```
 	 -->
+	
+	<!-- kem0x Shaderer -->
+	<!-- <haxedef name="EXPERIMENTAL_KEM0X_SHADERS" unless="debug"/> -->
+
 
 </project>

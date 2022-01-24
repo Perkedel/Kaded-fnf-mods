@@ -1,3 +1,5 @@
+// JOELwindows7: kem0x mod shader https://github.com/kem0x/FNF-ModShaders
+#if EXPERIMENTAL_KEM0X_SHADERS
 package openfl.filters;
 
 #if !flash
@@ -313,4 +315,5 @@ private class ColorMatrixShader extends BitmapFilterShader
 }
 #else
 typedef ColorMatrixFilter = flash.filters.ColorMatrixFilter;
+#end
 #end

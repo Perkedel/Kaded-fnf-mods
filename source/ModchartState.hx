@@ -41,7 +41,9 @@ class ModchartState
 	public static var lua:State = null;
 
 	// JOELwindows7: kem0x mod shader
+	#if EXPERIMENTAL_KEM0X_SHADERS
 	public var luaShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
+	#end
 	public var camTarget:FlxCamera;
 
 	function callLua(func_name:String, args:Array<Dynamic>, ?type:String):Dynamic
@@ -315,11 +317,11 @@ class ModchartState
 		// var data:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + '/' + spritePath + ".png");
 		var data:BitmapData = BitmapData.fromFile(#if !mobile Sys.getCwd()
 			+ "assets/"
-			+ (imageFolder ? (library != null && library != ''?library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
+			+ (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 			+ '/'
 			+ spritePath
 			+ ".png" #else Asset2File.getPath("assets/"
-				+ (imageFolder ? (library != null && library != ''?library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
+				+ (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 				+ '/'
 				+ spritePath
 				+ ".png") #end);
@@ -331,12 +333,12 @@ class ModchartState
 			#if !mobile // Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + "/" + spritePath + ".xml");
 			Sys.getCwd()
 			+ "assets/"
-			+ (imageFolder ? (library != null && library != ''?library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
+			+ (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 			+ '/'
 			+ spritePath
 			+ ".xml" #else
 			Asset2File.getPath("assets/"
-				+ (imageFolder ? (library != null && library != ''?library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
+				+ (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 				+ '/'
 				+ spritePath
 				+ ".xml")
@@ -1577,15 +1579,21 @@ class ModchartState
 		// JOELwindows7: kem0x mod shader
 		Lua_helper.add_callback(lua, "createShaders", function(shaderName, ?optimize:Bool = false)
 		{
+			#if EXPERIMENTAL_KEM0X_SHADERS
 			var shader = new DynamicShaderHandler(shaderName, optimize);
 
 			return shaderName;
+			#else
+			return null;
+			#end
 		});
 
 		Lua_helper.add_callback(lua, "modifyShaderProperty", function(shaderName, propertyName, value)
 		{
+			#if EXPERIMENTAL_KEM0X_SHADERS
 			var handler = luaShaders[shaderName];
 			handler.modifyShaderProperty(propertyName, value);
+			#end
 		});
 
 		// shader set
@@ -1604,6 +1612,7 @@ class ModchartState
 					camTarget = FlxG.camera;
 			}
 
+			#if EXPERIMENTAL_KEM0X_SHADERS
 			var shaderArray = new Array<BitmapFilter>();
 
 			for (i in shaderName)
@@ -1612,6 +1621,7 @@ class ModchartState
 			}
 
 			camTarget.setFilters(shaderArray);
+			#end
 		});
 
 		// shader clear
@@ -1772,8 +1782,6 @@ class ModchartState
 			// JOELwindows7: gamejolt toast
 			Main.gjToastManager.createToast(iconPath, title, description, sound);
 		});
-
-		
 
 		// end more special functions
 		// So you don't have to hard code your cool effects.

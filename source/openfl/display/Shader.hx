@@ -1,3 +1,4 @@
+#if EXPERIMENTAL_KEM0X_SHADERS
 package openfl.display;
 
 #if !flash
@@ -948,4 +949,5 @@ class Shader
 }
 #else
 typedef Shader = flash.display.Shader;
+#end
 #end

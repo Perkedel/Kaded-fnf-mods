@@ -1,3 +1,5 @@
+// JOELwindows7: kem0x mod shader https://github.com/kem0x/FNF-ModShaders
+#if EXPERIMENTAL_KEM0X_SHADERS
 package openfl.display;
 
 import openfl.utils.ByteArray;
@@ -134,3 +136,4 @@ class GraphicsShader extends Shader
 		}
 	}
 }
+#end

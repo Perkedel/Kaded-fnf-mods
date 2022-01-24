@@ -1,8 +1,9 @@
+#if EXPERIMENTAL_KEM0X_SHADERS
 // JOELwindows7: kem0x mod shader https://github.com/kem0x/FNF-ModShaders
 package;
 
 import flixel.util.FlxTimer;
-import graphics.tile.FlxGraphicsShader; // JOELwindows7: according to luckydog7, we should not conflict flixel package!
+import flixel.graphics.tile.FlxGraphicsShader; // JOELwindows7: according to luckydog7, we should not conflict flixel package!
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -30,9 +31,10 @@ class ShaderSprite extends FlxSprite
 
 		if (hShader.shader != null)
 		{
-			shader = cast hShader.shader; // JOELwindows7: then this must be casted. data type different.
+			shader = hShader.shader; // JOELwindows7: then this must be casted. data type different. nvm e
 		}
 
 		antialiasing = FlxG.save.data.antialiasing;
 	}
 }
+#end

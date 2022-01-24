@@ -1,4 +1,5 @@
-package graphics.tile; // JOELwindows7: according to luckydog7, we should not conflict flixel package!
+#if EXPERIMENTAL_KEM0X_SHADERS
+package flixel.graphics.tile; // JOELwindows7: according to luckydog7, we should not conflict flixel package!
 
 import openfl.display.ShaderParameter;
 #if sys // JOELwindows7: don't forget
@@ -112,4 +113,5 @@ class FlxGraphicsShader extends GraphicsShader
 		hasColorTransform = data.hasColorTransform;
 	}
 }
+#end
 #end

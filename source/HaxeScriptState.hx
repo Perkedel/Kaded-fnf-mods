@@ -122,7 +122,9 @@ class HaxeScriptState
 	public var haxeWiggles:Map<String, WiggleEffect> = new Map<String, WiggleEffect>();
 
 	// JOELwindows7: kem0x mod shader
+	#if EXPERIMENTAL_KEM0X_SHADERS
 	public var luaShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
+	#end
 	public var camTarget:FlxCamera;
 
 	/**
@@ -1426,8 +1428,10 @@ class HaxeScriptState
 
 		addCallback("modifyShaderProperty", function(shaderName, propertyName, value)
 		{
+			#if EXPERIMENTAL_KEM0X_SHADERS
 			var handler = luaShaders[shaderName];
 			handler.modifyShaderProperty(propertyName, value);
+			#end
 		});
 
 		// shader set
@@ -1446,6 +1450,7 @@ class HaxeScriptState
 					camTarget = FlxG.camera;
 			}
 
+			#if EXPERIMENTAL_KEM0X_SHADERS
 			var shaderArray = new Array<BitmapFilter>();
 
 			for (i in shaderName)
@@ -1454,6 +1459,7 @@ class HaxeScriptState
 			}
 
 			camTarget.setFilters(shaderArray);
+			#end
 		});
 
 		// shader clear
