@@ -166,7 +166,7 @@ class KadeEngineData
 		}
 
 		// JOELwindows7: Print annoying debug messages, the warning messages
-		if(FlxG.save.data.annoyingWarns == null)
+		if (FlxG.save.data.annoyingWarns == null)
 		{
 			FlxG.save.data.annoyingWarns = false;
 		}
@@ -205,6 +205,18 @@ class KadeEngineData
 		if (FlxG.save.data.endSongEarly == null)
 		{
 			FlxG.save.data.endSongEarly = false;
+		}
+
+		// JOELwindows7: score text zoom Psychedly
+		if (FlxG.save.data.scoreTxtZoom == null)
+		{
+			FlxG.save.data.scoreTxtZoom = true;
+		}
+
+		// JOELwindows7: note splash Psychedly
+		if (FlxG.save.data.noteSplashes == null)
+		{
+			FlxG.save.data.noteSplashes = true;
 		}
 
 		FlxG.save.data.cacheImages = false;

@@ -26,11 +26,8 @@ class NoteskinHelpers
 		{
 			// JOELwindows7: make sure the special type are not considered different option.
 			// these are pixel, mine do not step, special power up, important must step or ded, never step or ded. idk.
-			if (i.contains("-pixel")
-				|| i.contains("-mine")
-				|| i.contains("-special")
-				|| i.contains("-important")
-				|| i.contains("-never"))
+			if (i.contains("-pixel") || i.contains("-mine") || i.contains("-special") || i.contains("-important") || i.contains("-never")
+				|| i.contains("-splash"))
 				continue;
 			if (i.endsWith(".xml"))
 			{
@@ -223,7 +220,7 @@ class NoteskinHelpers
 		// JOELwindows7: nom so complicated!
 	}
 
-	//JOELwindows7: No! I don't want that
+	// JOELwindows7: No! I don't want that
 	static public function giveMeRealNoteSkinPath(say:String, noteType:Int = 0, pixel:Bool = false, pixelEnd:Bool = false)
 	{
 		// #if FEATURE_FILESYSTEM

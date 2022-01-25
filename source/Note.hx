@@ -61,6 +61,13 @@ class Note extends FlxSprite
 	public static var BLUE_NOTE:Int = 1;
 	public static var RED_NOTE:Int = 3;
 
+	// JOELwindows7: Psyched Lua shit
+	public var noteSplashDisabled:Bool = false;
+	public var noteSplashTexture:String = null;
+	public var noteSplashHue:Float = 0;
+	public var noteSplashSat:Float = 0;
+	public var noteSplashBrt:Float = 0;
+
 	public var rating:String = "shit";
 
 	public var modAngle:Float = 0; // The angle set by modcharts
@@ -418,7 +425,7 @@ class Note extends FlxSprite
 				angle = modAngle + localAngle;
 			else
 				angle = modAngle;
-		
+
 			// JOELwindows7: sneaky little punk! you can't get away from this!
 			if (!modifiedByLua)
 			{

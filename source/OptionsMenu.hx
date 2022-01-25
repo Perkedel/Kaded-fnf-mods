@@ -151,7 +151,8 @@ class OptionsMenu extends CoreSubState
 				new EndSongEarlyOption("Toggle whether or not to end song early or wait music complete 1st"),
 			]),
 			new OptionCata(345, 40, "Appearance", [
-				new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),
+				new NoteskinOption("Change your current noteskin"), new NoteSplashOption("Have your note press splash"),
+				new EditorRes("Not showing the editor grid will greatly increase editor performance"),
 				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
 				new MiddleScrollOption("Put your lane in the center or on the right."), new HealthBarOption("Toggles health bar visibility"),
 				new JudgementCounter("Show your judgements that you've gotten in the song"),
@@ -192,6 +193,7 @@ class OptionsMenu extends CoreSubState
 				new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty."),
 				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
 				new ScoreScreen("Show the score screen after the end of a song"),
+				new ScoreTxtZoomOption("Toggle score screen side zooming for each successive note"),
 				new ShowInput("Display every single input on the score screen."),
 				new ExportSaveToJson("BETA! Export entire save data into JSON file"),
 				new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"),

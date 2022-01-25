@@ -94,21 +94,23 @@ class Ratings
 
 	public static var timingWindows = [];
 
-	public static function judgeHeartBeat(heartBeat:Int, heartTier:Int){
-        var classify:String = "Nrml";
-        switch(heartTier){
-            case 0:
-                classify = "Nrml";
-            case 1:
-                classify = "Fast";
-            case 2:
-                classify = "Rcing";
-            case 3:
-                classify = "Poundn";
-        }
+	public static function judgeHeartBeat(heartBeat:Int, heartTier:Int)
+	{
+		var classify:String = "Nrml";
+		switch (heartTier)
+		{
+			case 0:
+				classify = "Nrml";
+			case 1:
+				classify = "Fast";
+			case 2:
+				classify = "Rcing";
+			case 3:
+				classify = "Poundn";
+		}
 
-        return Std.string(heartBeat) + " BPM (" + classify + ")";
-    }	
+		return Std.string(heartBeat) + " BPM (" + classify + ")";
+	}
 
 	public static function judgeNote(noteDiff:Float)
 	{
@@ -129,6 +131,8 @@ class Ratings
 						return "good";
 					case 3: // sick
 						return "sick";
+						// TODO: JOELwindows7: add more insane ratings like Stepmania & semi-vapourware Pulsen!
+						// Those are Flawless (dank), Ludicrous (mvp), etc.
 				}
 			}
 		}
@@ -155,7 +159,7 @@ class Ratings
 						+ // 	Accuracy
 						" | "
 						+ GenerateLetterRank(accuracy) : "") : "") // 	Letter Rank
-			+ (FlxG.save.data.cardiophile? " | HR: " + judgeHeartBeat(hR,hTier) : "") // JOELwindows7: in game heartbeat rate
+			+ (FlxG.save.data.cardiophile ? " | HR: " + judgeHeartBeat(hR, hTier) : "") // JOELwindows7: in game heartbeat rate
 			;
 	}
 }

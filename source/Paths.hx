@@ -279,6 +279,12 @@ class Paths
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
+	// JOELwindows7: xml SparrowAtlas path
+	inline static public function sparrowXml(key:String, ?library:String)
+	{
+		return getPath('images/$key.xml', TEXT, library);
+	}
+
 	inline static public function font(key:String)
 	{
 		return 'assets/fonts/$key';

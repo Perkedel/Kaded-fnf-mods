@@ -335,7 +335,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{
 					// LoadingState.loadAndSwitchState(new PlayState());
-					PlayState.instance.switchState(new PlayState()); //JOELwindows7: hex switch state lol
+					PlayState.instance.switchState(new PlayState()); // JOELwindows7: hex switch state lol
 					PlayState.stageTesting = false;
 				});
 			});

@@ -230,6 +230,7 @@ class PlayState extends MusicBeatState
 	public static var strumLineNotes:FlxTypedGroup<StaticArrow> = null;
 	public static var playerStrums:FlxTypedGroup<StaticArrow> = null;
 	public static var cpuStrums:FlxTypedGroup<StaticArrow> = null;
+	public static var grpNoteSplashes:FlxTypedGroup<NoteSplash>; // JOELwindows7: Psyched note splash
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -316,6 +317,7 @@ class PlayState extends MusicBeatState
 	var scoreTxt:FlxText;
 	var judgementCounter:FlxText;
 	var replayTxt:FlxText;
+	var scoreTxtTween:FlxTween; // JOELwindows7: Psyched score zoom yeah!
 
 	var needSkip:Bool = false;
 	var skipActive:Bool = false;
@@ -376,6 +378,8 @@ class PlayState extends MusicBeatState
 	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>(); // kem0x mod shader
 
 	#end
+	public static var judgementWords:Array<String> = ["Misses", "Shits", "Bads", "Goods", "Sicks", "Danks", "MVPs"];
+
 	// API stuff
 
 	public function addObject(object:FlxBasic)
@@ -1279,8 +1283,10 @@ class PlayState extends MusicBeatState
 		judgementCounter.scrollFactor.set();
 		judgementCounter.cameras = [camHUD];
 		judgementCounter.screenCenter(Y);
-		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
-		judgementCounter.setPosition(FlxG.width - judgementCounter.width - 20, 0); // JOELwindows7: hey! place it actually right side of screen!
+		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words.
+		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
+		judgementCounter.text = '${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
+		judgementCounter.setPosition(FlxG.width - judgementCounter.width - 15, 0); // JOELwindows7: hey! place it actually right side of screen!
 		judgementCounter.screenCenter(Y); // JOELwindows7: do center it again just in case.
 		if (FlxG.save.data.judgementCounter)
 		{
@@ -1289,6 +1295,7 @@ class PlayState extends MusicBeatState
 
 		replayTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0, "REPLAY",
 			20);
+		replayTxt.setPosition((FlxG.width / 2) - 75, 130); // JOELwindows7: oh wait, Psych this up pls!
 		replayTxt.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		replayTxt.borderSize = 4;
 		replayTxt.borderQuality = 2;
@@ -5168,7 +5175,17 @@ class PlayState extends MusicBeatState
 						totalNotesHit += 1;
 					sicks++;
 				}
+				// TODO: JOELwindows7: add more insane ratings!
 		}
+
+		// JOELwindows7: yoink splash notes. idk where the peck suppose we get the asset from
+		// because these baa..... I mean.. whatever, did not license it royalty free / free culture compliant!!! I hate that!
+		// yoink from Psych https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
+		if (daRating == 'sick' && !daNote.noteSplashDisabled)
+		{
+			spawnNoteSplashOnNote(daNote, daNote.noteType);
+		}
+		// C'mon, Cam (ninjamuffin)!!! finish embargo rn!!! do not finish plot twistly as a demo for the full ass!!! that's not polite!
 
 		if (songMultiplier >= 1.05)
 			score = getRatesScore(songMultiplier, score);
@@ -5179,6 +5196,24 @@ class PlayState extends MusicBeatState
 			&& daNote.noteType != 2) // JOELwindows7: do not count if note type is mine or powerup i guess.
 		{
 			songScore += Math.round(score);
+
+			// JOELwindows7: Try to tween that scoreTxt up
+			// Psychedly yoinked from https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
+			if (FlxG.save.data.scoreTxtZoom)
+			{
+				if (scoreTxtTween != null)
+				{
+					scoreTxtTween.cancel();
+				}
+				scoreTxt.scale.x = 1.075;
+				scoreTxt.scale.y = 1.075;
+				scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
+					onComplete: function(twn:FlxTween)
+					{
+						scoreTxtTween = null;
+					}
+				});
+			}
 
 			/* if (combo > 60)
 					daRating = 'sick';
@@ -5953,7 +5988,9 @@ class PlayState extends MusicBeatState
 
 		// JOELwindows7: here's where we moved. the bottom score text
 		scoreTxt.text = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy, heartRate[0], heartTierIsRightNow[0]);
-		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
+		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words. here this too!
+		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
+		judgementCounter.text = '${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
 	}
 
 	function getKeyPresses(note:Note):Int
@@ -7426,6 +7463,42 @@ class PlayState extends MusicBeatState
 				default:
 			}
 		}
+	}
+
+	// JOELwindows7: Psyched splash note yeahow
+	function spawnNoteSplashOnNote(note:Note, noteType:Int = 0)
+	{
+		if (FlxG.save.data.noteSplashes && note != null)
+		{
+			var strum:StaticArrow = playerStrums.members[note.noteData];
+			if (strum != null)
+			{
+				spawnNoteSplash(strum.x, strum.y, note.noteData, note, noteType);
+			}
+		}
+	}
+
+	// JOELwindows7: spawn note splash core
+	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0)
+	{
+		var skin:String = 'Arrow-splash'; // TODO: JOELwindows7: use `-duar` for mines (note type 2)
+		if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0 && PlayState.SONG.useCustomNoteStyle)
+			skin = PlayState.SONG.noteStyle + "-splash" + (noteType == 2 ? "-duar" : "");
+
+		// var hue:Float = ClientPrefs.arrowHSV[data % 4][0] / 360;
+		// var sat:Float = ClientPrefs.arrowHSV[data % 4][1] / 100;
+		// var brt:Float = ClientPrefs.arrowHSV[data % 4][2] / 100;
+		// if(note != null) {
+		// 	skin = note.noteSplashTexture;
+		// 	hue = note.noteSplashHue;
+		// 	sat = note.noteSplashSat;
+		// 	brt = note.noteSplashBrt;
+		// }
+
+		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
+		// splash.setupNoteSplash(x, y, data, skin, hue, sat, brt, noteType);
+		splash.setupNoteSplash(x, y, data, skin, 0, 0, 0, noteType);
+		grpNoteSplashes.add(splash);
 	}
 }
 // u looked :O -ides

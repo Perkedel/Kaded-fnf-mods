@@ -3144,7 +3144,7 @@ class FreeplayThreadedOption extends Option
 	}
 }
 
-//JOELwindows7: whether or not end song early or wait until music complete
+// JOELwindows7: whether or not end song early or wait until music complete
 class EndSongEarlyOption extends Option
 {
 	public function new(desc:String)
@@ -3175,5 +3175,73 @@ class EndSongEarlyOption extends Option
 	private override function updateDisplay():String
 	{
 		return "End Song Early < " + (FlxG.save.data.endSongEarly ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: toggle whether to enable or disable scoreTxtZoom
+class ScoreTxtZoomOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.scoreTxtZoom = !FlxG.save.data.scoreTxtZoom;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Score Text Zoom < " + (FlxG.save.data.scoreTxtZoom ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: enable/disable note splash
+class NoteSplashOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.noteSplashes = !FlxG.save.data.noteSplashes;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Note Splash < " + (FlxG.save.data.noteSplashes ? "ON" : "OFF") + " >";
 	}
 }
