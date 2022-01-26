@@ -550,6 +550,9 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(camHUD);
 		FlxG.cameras.add(camSustains);
 		FlxG.cameras.add(camNotes);
+		grpNoteSplashes = new FlxTypedGroup<NoteSplash>(); // JOELwindows7: okey why ShadowMario or whoever
+		// in the blame init that notesplash group here? Psyched
+		// maybe because it's after add all those cameras?
 
 		camHUD.zoom = PlayStateChangeables.zoom;
 
@@ -986,6 +989,12 @@ class PlayState extends MusicBeatState
 
 		strumLineNotes = new FlxTypedGroup<StaticArrow>();
 		add(strumLineNotes);
+		add(grpNoteSplashes); // JOELwindows7: Psyched! now here add the group of Notesplash here this state.
+
+		// JOELwindows7: Psyched notesplash. Have atleast 1 splash first so that it can be recycled, idk.
+		var splash:NoteSplash = new NoteSplash(100, 100, 0);
+		grpNoteSplashes.add(splash);
+		splash.alpha = 0.0;
 
 		playerStrums = new FlxTypedGroup<StaticArrow>();
 		cpuStrums = new FlxTypedGroup<StaticArrow>();
@@ -1353,6 +1362,7 @@ class PlayState extends MusicBeatState
 		add(creditRollout.textRole);
 
 		strumLineNotes.cameras = [camHUD];
+		grpNoteSplashes.cameras = [camHUD]; // JOELwindows7: notesplash group put in camHUD! Psychedly
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];

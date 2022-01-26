@@ -21,6 +21,7 @@ import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
 import haxe.Json;
 import haxe.format.JsonParser;
+import tjson.TJSON;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
@@ -528,7 +529,8 @@ class StoryMenuState extends MusicBeatState
 	// changing valid score which SwagWeeks typedef doesn't have, idk..
 	public static function parseJSONshit(rawJson:String):SwagWeeks
 	{
-		var swagShit:SwagWeeks = cast Json.parse(rawJson);
+		// var swagShit:SwagWeeks = cast Json.parse(rawJson);
+		var swagShit:SwagWeeks = cast TJSON.parse(rawJson); // JOELwindows7: use TJSON from now on, I guess.
 		return swagShit;
 	}
 
@@ -572,8 +574,8 @@ class StoryMenuState extends MusicBeatState
 				// #if !mobile
 				// LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
 				// 	true);
-				switchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
-					true, true, true, true); // JOELwindows7: switch state hex
+				switchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(), true, true, true,
+					true); // JOELwindows7: switch state hex
 				// #else //workaround for Video cutscener not working in Android
 				// LoadingState.loadAndSwitchState(new PlayState(), true);
 				// #end

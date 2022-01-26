@@ -162,7 +162,7 @@ class KadeEngineFPS extends TextField
 					extraLoadingBar = "[SH";
 					for (i in 0...Std.int(_vague_space_left / 10))
 					{
-						extraLoadingBar += "-";
+						extraLoadingBar += "_";
 					}
 					extraLoadingBar += "O";
 					if (_vague_goToLeft)
@@ -185,7 +185,7 @@ class KadeEngineFPS extends TextField
 					}
 					for (i in 0...Std.int(_vague_space_right / 10))
 					{
-						extraLoadingBar += "-";
+						extraLoadingBar += "_";
 					}
 					extraLoadingBar += "M]";
 				case ExtraLoadingType.GOING:
@@ -198,7 +198,7 @@ class KadeEngineFPS extends TextField
 					}
 					for (i in 0...leftHowMuch)
 					{
-						extraLoadingBar += " ";
+						extraLoadingBar += "_";
 					}
 					extraLoadingBar += "M]";
 				case ExtraLoadingType.DONE:

@@ -12,6 +12,7 @@ import experiments.LimeAudioBufferTester;
 import experiments.*;
 import openfl.net.FileFilter;
 import haxe.Json;
+import tjson.TJSON;
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
@@ -2070,7 +2071,8 @@ class ImportSaveFromJSON extends Option
 		if (_file.browse([new FileFilter("JSON file", "json")]))
 		{
 			_file.load();
-			data = Json.parse(cast _file.data);
+			// data = Json.parse(cast _file.data);
+			data = TJSON.parse(cast _file.data); // JOELwindows7: use the new TJSON library
 
 			// FlxG.save.data = data;
 		}

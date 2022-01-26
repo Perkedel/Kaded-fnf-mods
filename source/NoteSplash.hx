@@ -62,8 +62,7 @@ class NoteSplash extends FlxSprite
 	function loadAnims(skin:String)
 	{
 		frames = Paths.doesTextAssetExist(Paths.sparrowXml("noteskins/" + skin,
-			"shared")) ? Paths.getSparrowAtlas("noteskins/" + skin,
-				"shared") : Paths.getSparrowAtlas("noteskins/" + ("Arrow-splash" + noteTypeIs == 2 ? "-duar" : ""), "shared");
+			"shared")) ? Paths.getSparrowAtlas("noteskins/" + skin) : Paths.getSparrowAtlas("noteskins/" + ("Arrow-splash" + (noteTypeIs == 2 ? "-duar" : "")));
 		for (i in 1...3)
 		{
 			animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);

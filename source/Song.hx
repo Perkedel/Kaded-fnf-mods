@@ -4,6 +4,7 @@ import Section.SwagSection;
 import haxe.Json;
 import haxe.format.JsonParser;
 import openfl.utils.Assets as OpenFlAssets;
+import tjson.TJSON;
 
 using StringTools;
 
@@ -138,7 +139,8 @@ class Song
 			rawJson = rawJson.substr(0, rawJson.length - 1);
 			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
-		var jsonData = Json.parse(rawJson);
+		// var jsonData = Json.parse(rawJson);
+		var jsonData = TJSON.parse(rawJson); // JOELwindows7: use TJSON instead of regular Haxe Json, let's see..
 
 		return parseJSONshit("rawsong", jsonData, ["name" => jsonData.name]);
 	}
@@ -286,7 +288,7 @@ class Song
 		// JOELwindows7: yut
 		if (songMetaData.creditRunsOnce != null)
 		{
-			if(songData.creditRunsOnce == null)
+			if (songData.creditRunsOnce == null)
 				songData.creditRunsOnce = songMetaData.creditRunsOnce;
 		}
 		else
@@ -296,7 +298,7 @@ class Song
 		// JOELwindows7: dude, is there a procedural way to fill these all up?
 		if (songMetaData.hasVideo != null)
 		{
-			if(songData.hasVideo == null)
+			if (songData.hasVideo == null)
 				songData.hasVideo = songMetaData.hasVideo;
 		}
 		else
@@ -306,7 +308,7 @@ class Song
 		// JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
 		if (songMetaData.videoPath != null)
 		{
-			if(songData.videoPath == null)
+			if (songData.videoPath == null)
 				songData.videoPath = songMetaData.videoPath;
 		}
 		else
@@ -316,7 +318,7 @@ class Song
 		// JOELwindows7: haaaaaaaaaaaaaaaa!!!!
 		if (songMetaData.hasEpilogueVideo != null)
 		{
-			if(songData.hasEpilogueVideo == null)
+			if (songData.hasEpilogueVideo == null)
 				songData.hasEpilogueVideo = songMetaData.hasEpilogueVideo;
 		}
 		else
@@ -326,7 +328,7 @@ class Song
 		// JOELwindows7: boooooooof
 		if (songMetaData.epilogueVideoPath != null)
 		{
-			if(songData.epilogueVideoPath == null)
+			if (songData.epilogueVideoPath == null)
 				songData.epilogueVideoPath = songMetaData.epilogueVideoPath;
 		}
 		else
@@ -336,7 +338,7 @@ class Song
 		// JOELwindows7: yay GitHub Copilot yey
 		if (songMetaData.hasDialogueChat != null)
 		{
-			if(songData.hasDialogueChat == null)
+			if (songData.hasDialogueChat == null)
 				songData.hasDialogueChat = songMetaData.hasDialogueChat;
 		}
 		else
@@ -346,7 +348,7 @@ class Song
 		// JOELwindows7: yay GitHub Copilot yeyu
 		if (songMetaData.hasEpilogueChat != null)
 		{
-			if(songData.hasEpilogueChat == null)
+			if (songData.hasEpilogueChat == null)
 				songData.hasEpilogueChat = songMetaData.hasEpilogueChat;
 		}
 		else
@@ -356,7 +358,7 @@ class Song
 		// JOELwindows7: try casting, but no. that's aggressive and destroys per difficulty basis.
 		if (songMetaData.delayBeforeStart != null)
 		{
-			if(songData.delayBeforeStart == null)
+			if (songData.delayBeforeStart == null)
 				songData.delayBeforeStart = songMetaData.delayBeforeStart;
 		}
 		else
@@ -364,7 +366,7 @@ class Song
 		}
 		if (songMetaData.delayAfterFinish != null)
 		{
-			if(songData.delayAfterFinish == null)
+			if (songData.delayAfterFinish == null)
 				songData.delayAfterFinish = songMetaData.delayAfterFinish;
 		}
 		else
@@ -374,7 +376,7 @@ class Song
 		// JOELwindows7: right, these are all we have.
 		if (songMetaData.allowedToHeadbang != null)
 		{
-			if(songData.allowedToHeadbang == null)
+			if (songData.allowedToHeadbang == null)
 				songData.allowedToHeadbang = songMetaData.allowedToHeadbang;
 		}
 		else
@@ -384,7 +386,7 @@ class Song
 		// JOELwindows7: lua & haxescript stuffs
 		if (songMetaData.forceLuaModchartLegacy != null)
 		{
-			if(songData.forceLuaModchartLegacy == null)
+			if (songData.forceLuaModchartLegacy == null)
 				songData.forceLuaModchartLegacy = songMetaData.forceLuaModchartLegacy;
 		}
 		else
@@ -393,7 +395,7 @@ class Song
 
 		if (songMetaData.forceLuaModchart != null)
 		{
-			if(songData.forceLuaModchart == null)
+			if (songData.forceLuaModchart == null)
 				songData.forceLuaModchart = songMetaData.forceLuaModchart;
 		}
 		else
@@ -402,7 +404,7 @@ class Song
 
 		if (songMetaData.forceHscriptModchart != null)
 		{
-			if(songData.forceHscriptModchart == null)
+			if (songData.forceHscriptModchart == null)
 				songData.forceHscriptModchart = songMetaData.forceHscriptModchart;
 		}
 		else
@@ -466,7 +468,7 @@ class Song
 			}
 		}
 
-		if (songMetaData.eventObjects != null && songMetaData.eventObjects != [] && songMetaData.eventObjects.length > 1 )
+		if (songMetaData.eventObjects != null && songMetaData.eventObjects != [] && songMetaData.eventObjects.length > 1)
 		{
 			if (songData.eventObjects == null || songData.eventObjects == [] || songData.eventObjects.length <= 1)
 			{
@@ -474,15 +476,15 @@ class Song
 			}
 		}
 
-		if(songMetaData.loadNoteStyleOtherWayAround != null)
+		if (songMetaData.loadNoteStyleOtherWayAround != null)
 		{
-			if(songData.loadNoteStyleOtherWayAround == null)
+			if (songData.loadNoteStyleOtherWayAround == null)
 				songData.loadNoteStyleOtherWayAround = songMetaData.loadNoteStyleOtherWayAround;
 		}
 
-		if(songMetaData.useCustomNoteStyle!= null)
+		if (songMetaData.useCustomNoteStyle != null)
 		{
-			if(songData.useCustomNoteStyle == null)
+			if (songData.useCustomNoteStyle == null)
 				songData.useCustomNoteStyle = songMetaData.useCustomNoteStyle;
 		}
 

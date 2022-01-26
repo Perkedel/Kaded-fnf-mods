@@ -24,6 +24,7 @@ import ui.FlxVirtualPad;
 import flixel.input.actions.FlxActionInput;
 import plugins.sprites.DVDScreenSaver;
 import haxe.Json;
+import tjson.TJSON;
 import flixel.FlxG;
 import flixel.FlxCamera;
 import flixel.group.FlxGroup;
@@ -215,7 +216,8 @@ class CoreState extends FlxUIState
 	// changing valid score which SwagWeeks typedef doesn't have, idk..
 	public static function parseJSONshit(rawJson:String):SwagWeeks
 	{
-		var swagShit:SwagWeeks = cast Json.parse(rawJson);
+		// var swagShit:SwagWeeks = cast Json.parse(rawJson);
+		var swagShit:SwagWeeks = cast TJSON.parse(rawJson); // JOELwindows7: use TJSON instead!
 		return swagShit;
 	}
 
