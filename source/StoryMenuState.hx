@@ -692,7 +692,7 @@ class StoryMenuState extends MusicBeatState
 			}
 			catch (e)
 			{
-				Debug.logWarn("Werror " + e);
+				Debug.logError("Werror " + e + ": " + e.message);
 				underlayBG.makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
 				underlayBG.alpha = .3;
 			}

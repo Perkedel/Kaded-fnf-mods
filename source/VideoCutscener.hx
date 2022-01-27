@@ -113,7 +113,7 @@ class VideoSelfContained extends MusicBeatState
 		}
 		catch (e)
 		{
-			trace("Werror faile video!\n\n" + Std.string(e));
+			trace("Werror faile video!\n\n" + Std.string(e) + ": " + e.message);
 			Debug.logError("Werror faile video!\n\n" + e);
 			donedCallback();
 		}

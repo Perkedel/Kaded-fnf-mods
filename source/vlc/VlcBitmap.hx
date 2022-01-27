@@ -184,7 +184,7 @@ class VlcBitmap extends Bitmap
 			onResume();
 	}
 
-	//JOELwindows7: you missed restart bruh
+	// JOELwindows7: you missed restart bruh
 	// public function restart()
 	// {
 	// 	libvlc.restart();
@@ -372,7 +372,7 @@ class VlcBitmap extends Bitmap
 				}
 				catch (e:Error)
 				{
-					trace("error: " + e);
+					trace("error: " + e + ": " + e.message); // JOELwindows7: error title & description
 					throw new Error("render broke xd");
 				}
 			}

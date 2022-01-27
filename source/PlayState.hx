@@ -6660,7 +6660,7 @@ class PlayState extends MusicBeatState
 		}
 		catch (e)
 		{
-			trace(SONG.player1 + " heart error " + e);
+			trace(SONG.player1 + " heart error " + e + ": " + e.message);
 			trace("attempting rescue");
 			HEART[0] = DokiDoki.hearts.get('bf');
 		}
@@ -6673,7 +6673,7 @@ class PlayState extends MusicBeatState
 		}
 		catch (e)
 		{
-			trace(SONG.player2 + " heart error " + e);
+			trace(SONG.player2 + " heart error " + e + ": " + e.message);
 			trace("attempting rescue");
 			HEART[1] = DokiDoki.hearts.get('dad');
 		}
@@ -6686,7 +6686,7 @@ class PlayState extends MusicBeatState
 		}
 		catch (e)
 		{
-			trace(SONG.gfVersion + " heart error " + e);
+			trace(SONG.gfVersion + " heart error " + e + ": " + e.message);
 			trace("attempting rescue");
 			HEART[2] = DokiDoki.hearts.get('gf');
 		}

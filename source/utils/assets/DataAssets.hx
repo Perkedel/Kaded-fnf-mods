@@ -90,7 +90,7 @@ class DataAssets
 		catch (e)
 		{
 			Debug.logError('AN ERROR OCCURRED trying to read a JSON file (${library}:${key}). It probably does not exist.');
-			Debug.logError(e.message);
+			Debug.logError(e + ": " + e.message); // JOELwindows7: error title & description
 			return null;
 		}
 

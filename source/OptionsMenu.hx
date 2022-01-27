@@ -405,7 +405,7 @@ class OptionsMenu extends CoreSubState
 		}
 		catch (e)
 		{
-			Debug.logError("oops\n" + e);
+			Debug.logError("oops\n" + e + ": " + e.message);
 			selectedCatIndex = 0;
 		}
 
@@ -774,7 +774,7 @@ class OptionsMenu extends CoreSubState
 		}
 		catch (e)
 		{
-			Debug.logError("wtf we actually did something wrong, but we dont crash bois.\n" + e);
+			Debug.logError("wtf we actually did something wrong, but we dont crash bois.\n" + e + ": " + e.message);
 			selectedCatIndex = 0;
 			selectedOptionIndex = 0;
 			FlxG.sound.play(Paths.sound('scrollMenu'));

@@ -147,7 +147,7 @@ class Replay
 		}
 		catch (e)
 		{
-			trace('failed!\n' + e.message);
+			trace('failed!\n' + e + ": " + e.message);
 		}
 		#end
 	}

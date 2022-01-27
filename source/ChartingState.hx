@@ -3212,7 +3212,7 @@ class ChartingState extends MusicBeatState
 		}
 		catch (e)
 		{
-			Debug.logError("Error on this shit???\n" + e);
+			Debug.logError("Error on this shit???\n" + e + ": " + e.message); // JOELwindows7: error title & description
 		}
 		super.update(elapsed);
 	}

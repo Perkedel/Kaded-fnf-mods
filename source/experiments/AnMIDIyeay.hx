@@ -165,7 +165,7 @@ class AnMIDIyeay extends MusicBeatState{
                             //trace("default MIDI message");
                     }
                 } catch(e){
-                    trace("Werror MIDIfiler " + Std.string(e));
+					trace("Werror MIDIfiler " + Std.string(e) + ": " + e.message);
                 }
             }
         }

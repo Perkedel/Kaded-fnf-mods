@@ -40,7 +40,7 @@ class AnDefaultBekgronde extends MusicBeatState{
             // add(defaultBackgrounder);
             installSophisticatedDefaultBekgron();
         } catch(e){
-            trace(e);
+			trace(e + ": " + e.message);
         }
 
         infoText = new FlxText();

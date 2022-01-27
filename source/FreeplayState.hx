@@ -200,7 +200,7 @@ class FreeplayState extends MusicBeatState
 		catch (ex)
 		{
 			// werror
-			Debug.logError("wError " + ex + "\n unable to load weeklist");
+			Debug.logError("wError " + ex + ": " + ex.message + "\n unable to load weeklist");
 			return null;
 		}
 	}
@@ -1193,7 +1193,7 @@ class FreeplayState extends MusicBeatState
 				}
 				catch (e)
 				{
-					Debug.logError("error Week color selection no. " + Std.string(curSelected) + ". " + e);
+					Debug.logError("error Week color selection no. " + Std.string(curSelected) + ". " + e + ": " + e.message);
 					Debug.logInfo("Week datas " + Std.string(weekInfo));
 					// FlxG.log.warn(e);
 					// bg.color = FlxColor.fromString("purple");
