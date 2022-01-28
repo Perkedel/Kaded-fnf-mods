@@ -4,6 +4,8 @@
 // LuaJit only works for C++; JOELwindows7: wtf Linux not working?
 // https://lib.haxe.org/p/linc_luajit/
 // Lua
+import LuaClass;
+import flixel.FlxGifSprite;
 import flixel.util.FlxAxes;
 #if FEATURE_LUAMODCHART
 import LuaClass.LuaGame;
@@ -435,6 +437,79 @@ class ModchartState
 		return toBeCalled;
 	}
 
+	function makeLuaGifSprite(spritePath:String, toBeCalled:String, drawBehind:Bool, imageFolder:Bool = false, ?library:String = '')
+	{
+		#if FEATURE_FILESYSTEM
+		// pre lowercasing the song name (makeLuaGifSprite)
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// 	case 'm.i.l.f':
+		// 		songLowercase = 'milf';
+		// }
+
+		// var path = Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + '/';
+		var path = Sys.getCwd()
+			+ "assets/"
+			+ (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
+			+ '/';
+
+		if (PlayState.isSM)
+			path = PlayState.pathToSm + "/";
+
+		// var data:BitmapData = BitmapData.fromFile(path + spritePath + ".png");
+		// var data:BitmapData = BitmapData.fromFile(#if !mobile path + "/" + spritePath + ".png" #else Asset2File.getPath(path + "/" + spritePath + ".png") #end);
+
+		var sprite:FlxGifSprite = new FlxGifSprite(path, 0, 0);
+		// var imgWidth:Float = FlxG.width / data.width;
+		// var imgHeight:Float = FlxG.height / data.height;
+		// var scale:Float = imgWidth <= imgHeight ? imgWidth : imgHeight;
+
+		// Cap the scale at x1
+		// if (scale > 1)
+		// 	scale = 1;
+
+		// sprite.makeGraphic(Std.int(data.width * scale), Std.int(data.width * scale), FlxColor.TRANSPARENT);
+
+		// var data2:BitmapData = sprite.pixels.clone();
+		// var matrix:Matrix = new Matrix();
+		// matrix.identity();
+		// matrix.scale(scale, scale);
+		// data2.fillRect(data2.rect, FlxColor.TRANSPARENT);
+		// data2.draw(data, matrix, null, null, null, true);
+		// sprite.pixels = data2;
+
+		luaSprites.set(toBeCalled, sprite);
+		// and I quote:
+		// shitty layering but it works!
+		@:privateAccess
+		{
+			if (drawBehind)
+			{
+				PlayState.instance.removeObject(PlayState.gf);
+				PlayState.instance.removeObject(PlayState.boyfriend);
+				PlayState.instance.removeObject(PlayState.dad);
+			}
+			PlayState.instance.addObject(sprite);
+			if (drawBehind)
+			{
+				PlayState.instance.addObject(PlayState.gf);
+				PlayState.instance.addObject(PlayState.boyfriend);
+				PlayState.instance.addObject(PlayState.dad);
+			}
+		}
+		#end
+
+		new LuaGifSprite(sprite, toBeCalled).Register(lua);
+
+		return toBeCalled;
+	}
+
 	public function die()
 	{
 		Lua.close(lua);
@@ -568,6 +643,7 @@ class ModchartState
 		// callbacks
 
 		Lua_helper.add_callback(lua, "makeSprite", makeLuaSprite);
+		Lua_helper.add_callback(lua, "makeGifSprite", makeLuaGifSprite); // JOELwindows7: gifs are now supported. GWebDev gif sprite
 
 		// bulbyVR callbackers
 		Lua_helper.add_callback(lua, "add", PlayState.instance.add);

@@ -1696,6 +1696,7 @@ class Stage extends MusicBeatState
 	// JOELwindows7: Psyched appear blackbar
 	public function appearBlackBar(forHowLong:Float = 2)
 	{
+		if(blackbarsTop == null || blackbarsBottom == null) return;
 		blackbarsTop.visible = true;
 		blackbarsBottom.visible = true;
 		// blackbarsTop.x = -blackbarHeight;
@@ -1709,6 +1710,8 @@ class Stage extends MusicBeatState
 	// JOELwindows7: Psyched disappear blackbar
 	public function disappearBlackBar(forHowLong:Float = 2)
 	{
+		if (blackbarsTop == null || blackbarsBottom == null)
+			return;
 		// blackbarsTop.x = 0;
 		// blackbarsBottom.x = FlxG.height - blackbarHeight;
 		FlxTween.tween(blackbarsTop, {y: -blackbarHeight}, forHowLong, {

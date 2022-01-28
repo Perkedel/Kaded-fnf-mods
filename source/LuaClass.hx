@@ -1,3 +1,4 @@
+import flixel.FlxGifSprite;
 #if FEATURE_LUAMODCHART // JOELwindows7: linux error. lua hpp not found
 import flixel.FlxG;
 import llua.Convert;
@@ -1757,6 +1758,306 @@ class LuaSprite extends LuaClass
 		var sprite:FlxSprite = null;
 
 		for (i in ListOfSprites)
+		{
+			if (i.className == index)
+				sprite = i.sprite;
+		}
+
+		if (sprite == null)
+		{
+			LuaL.error(state, "Failure to tween (couldn't find sprite " + index + ")");
+			return 0;
+		}
+
+		PlayState.instance.remove(sprite);
+		sprite.destroy();
+
+		return 0;
+	}
+
+	private static var destroyC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(destroy);
+	private static var tweenPosC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenPos);
+	private static var tweenAngleC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenAngle);
+	private static var tweenAlphaC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenAlpha);
+
+	private function SetNumProperty(l:State)
+	{
+		// 1 = self
+		// 2 = key
+		// 3 = value
+		// 4 = metatable
+		if (Lua.type(l, 3) != Lua.LUA_TNUMBER)
+		{
+			LuaL.error(l, "invalid argument #3 (number expected, got " + Lua.typename(l, Lua.type(l, 3)) + ")");
+			return 0;
+		}
+		Reflect.setProperty(sprite, Lua.tostring(l, 2), Lua.tonumber(l, 3));
+		return 0;
+	}
+
+	override function Register(l:State)
+	{
+		state = l;
+		super.Register(l);
+	}
+}
+
+// JOELwindows7: yo here gif sprite
+class LuaGifSprite extends LuaClass
+{ // again, stolen from andromeda but improved a lot for better thinking interoperability (I made that up)
+	private static var state:State;
+
+	public var sprite:FlxGifSprite;
+	public static var ListOfGifSprites:Array<LuaGifSprite> = []; // JOELwindows7: oh just wow, they have this. Gwebdev gif sprite
+
+	public function new(connectedSprite:FlxGifSprite, name:String)
+	{
+		super();
+		className = name;
+
+		properties = [
+			"alpha" => {
+				defaultValue: 1,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, connectedSprite.alpha);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
+			"angle" => {
+				defaultValue: 1,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, connectedSprite.angle);
+					return 1;
+				},
+				setter: function(l:State):Int
+				{
+					// 1 = self
+					// 2 = key
+					// 3 = value
+					// 4 = metatable
+					if (Lua.type(l, 3) != Lua.LUA_TNUMBER)
+					{
+						LuaL.error(l, "invalid argument #3 (number expected, got " + Lua.typename(l, Lua.type(l, 3)) + ")");
+						return 0;
+					}
+
+					var angle = Lua.tonumber(l, 3);
+					connectedSprite.angle = angle;
+
+					LuaClass.DefaultSetter(l);
+					return 0;
+				}
+			},
+
+			"x" => {
+				defaultValue: connectedSprite.x,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, connectedSprite.x);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
+			"tweenPos" => {
+				defaultValue: 0,
+				getter: function(l:State, data:Any)
+				{
+					Lua.pushcfunction(l, tweenPosC);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "tweenPos is read-only.");
+					return 0;
+				}
+			},
+
+			"id" => {
+				defaultValue: name,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushstring(l, name);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
+			"tweenAlpha" => {
+				defaultValue: 0,
+				getter: function(l:State, data:Any)
+				{
+					Lua.pushcfunction(l, tweenAlphaC);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "tweenAlpha is read-only.");
+					return 0;
+				}
+			},
+
+			"tweenAngle" => {
+				defaultValue: 0,
+				getter: function(l:State, data:Any)
+				{
+					Lua.pushcfunction(l, tweenAngleC);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "tweenAngle is read-only.");
+					return 0;
+				}
+			},
+
+			"destroy" => {
+				defaultValue: 0,
+				getter: function(l:State, data:Any)
+				{
+					Lua.pushcfunction(l, destroyC);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "destroy is read-only.");
+					return 0;
+				}
+			},
+
+			"y" => {
+				defaultValue: connectedSprite.y,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, connectedSprite.y);
+					return 1;
+				},
+				setter: SetNumProperty
+			}
+
+		];
+
+		ListOfGifSprites.push(this);
+	}
+
+	private static function findNote(time:Float, data:Int)
+	{
+		for (i in PlayState.instance.notes)
+		{
+			if (i.strumTime == time && i.noteData == data)
+			{
+				return i;
+			}
+		}
+		return null;
+	}
+
+	private static function tweenPos(l:StatePointer):Int
+	{
+		// 1 = self
+		// 2 = x
+		// 3 = y
+		// 4 = time
+		var xp = LuaL.checknumber(state, 2);
+		var yp = LuaL.checknumber(state, 3);
+		var time = LuaL.checknumber(state, 4);
+
+		Lua.getfield(state, 1, "id");
+		var index = Lua.tostring(state, -1);
+
+		var sprite:FlxGifSprite = null;
+
+		for (i in ListOfGifSprites)
+		{
+			if (i.className == index)
+				sprite = i.sprite;
+		}
+
+		if (sprite == null)
+		{
+			LuaL.error(state, "Failure to tween (couldn't find sprite " + index + ")");
+			return 0;
+		}
+
+		FlxTween.tween(sprite, {x: xp, y: yp}, time);
+
+		return 0;
+	}
+
+	private static function tweenAngle(l:StatePointer):Int
+	{
+		// 1 = self
+		// 2 = angle
+		// 3 = time
+		var nangle = LuaL.checknumber(state, 2);
+		var time = LuaL.checknumber(state, 3);
+
+		Lua.getfield(state, 1, "id");
+		var index = Lua.tostring(state, -1);
+
+		var sprite:FlxGifSprite = null;
+
+		for (i in ListOfGifSprites)
+		{
+			if (i.className == index)
+				sprite = i.sprite;
+		}
+
+		if (sprite == null)
+		{
+			LuaL.error(state, "Failure to tween (couldn't find sprite " + index + ")");
+			return 0;
+		}
+
+		FlxTween.tween(sprite, {angle: nangle}, time);
+
+		return 0;
+	}
+
+	private static function tweenAlpha(l:StatePointer):Int
+	{
+		// 1 = self
+		// 2 = alpha
+		// 3 = time
+		var nalpha = LuaL.checknumber(state, 2);
+		var time = LuaL.checknumber(state, 3);
+
+		Lua.getfield(state, 1, "id");
+		var index = Lua.tostring(state, -1);
+
+		var sprite:FlxGifSprite = null;
+
+		for (i in ListOfGifSprites)
+		{
+			if (i.className == index)
+				sprite = i.sprite;
+		}
+
+		if (sprite == null)
+		{
+			LuaL.error(state, "Failure to tween (couldn't find sprite " + index + ")");
+			return 0;
+		}
+
+		FlxTween.tween(sprite, {alpha: nalpha}, time);
+
+		return 0;
+	}
+
+	private static function destroy(l:StatePointer):Int
+	{
+		// 1 = self
+
+		Lua.getfield(state, 1, "id");
+		var index = Lua.tostring(state, -1);
+
+		var sprite:FlxGifSprite = null;
+
+		for (i in ListOfGifSprites)
 		{
 			if (i.className == index)
 				sprite = i.sprite;

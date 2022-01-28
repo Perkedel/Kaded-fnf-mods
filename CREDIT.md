@@ -331,6 +331,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://github.com/HaxeFlixel/flixel-demos/blob/master/Effects/FlxTween/source/PlayState.hx more tween like Tween color
 - https://fridaynightfunking.fandom.com/wiki/Carol info about bbpanzu's Carol yess.
 - https://ninjamuffin99.newgrounds.com/news/post/1091199 tips & trick of html5 build
+- https://ashes999.github.io/learnhaxe/animated-gifs-in-haxeflixel.html loading GIF in Flixel
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -473,6 +474,8 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/tools/7923 Catt47. Cool Notes for Free yey!
 - https://www.dafont.com/a-atmospheric.font https://www.fontspace.com/a-atmospheric-font-f46808 wepfont (Uhh: Freeware). just a cool sci-fi atmospheric font.
 - https://github.com/kem0x/FNF-ModShaders kem0x. proper modshader thingy yey. [Fireable](https://github.com/ItzFireable ) did lua implementation wow! [SqirraRNG](https://github.com/gedehari ) workaroundeh runtime.
+- https://github.com/GrowtopiaFli/openfl-haxeflixel-gif-code GWebDev / GrowtopiaFli. WHOAHOW!!! finally GIF loader. not complete yet, no frame select yet, but that should help recoup those who are not from SparrowAtlas XML days.
+- 
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

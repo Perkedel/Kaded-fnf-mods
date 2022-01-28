@@ -515,6 +515,7 @@ class HaxeScriptState
 		// Callbacks heres, Kade Engine like
 		// Sprites
 		addCallback("makeSprite", makeHscriptSprite);
+		addCallback("makeGifSprite", makeHscriptGifSprite); // JOELwindows7: the Gif Sprite GWebdev
 		addCallback("changeDadCharacter", changeDadCharacter);
 		addCallback("changeBoyfriendCharacter", changeBoyfriendCharacter);
 		addCallback("getProperty", getPropertyByName);
@@ -1506,7 +1507,8 @@ class HaxeScriptState
 			PlayState.instance.justHey(forceIt);
 		});
 
-		addCallback("appearBlackbar", function(forHowLong:Float = 1){
+		addCallback("appearBlackbar", function(forHowLong:Float = 1)
+		{
 			PlayState.Stage.appearBlackBar(forHowLong);
 		});
 
@@ -1714,7 +1716,7 @@ class HaxeScriptState
 		// 	case 'philly-nice':
 		// 		songLowercase = 'philly';
 		// }
-		var convertingPath = "assets/" + (imageFolder ? (library != null && library != ''? library + "/":'') + "images" : "data/songs" + songLowercase);
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs" + songLowercase);
 		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
 		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
 
@@ -1770,6 +1772,76 @@ class HaxeScriptState
 		return toBeCalled;
 	}
 
+	// JOELwindows7: here gif sprite
+	function makeHscriptGifSprite(spritePath:String, toBeCalled:String, drawBehind:Bool, imageFolder:Bool = false, ?library:String = '')
+	{
+		// pre lowercasing the song name (makeLuaSprite)
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// }
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs" + songLowercase);
+		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
+
+		#if sys
+		if (PlayState.isSM)
+			path = PlayState.pathToSm;
+		#end
+		trace(path);
+
+		// var data:BitmapData = BitmapData.fromFile(#if !mobile path + "/" + spritePath + ".png" #else Asset2File.getPath(path + "/" + spritePath + ".png") #end
+		// );
+		// trace("bitmap data " + Std.string(data));
+
+		var sprite:FlxGifSprite = new FlxGifSprite(path, 0, 0);
+		// var imgWidth:Float = FlxG.width / data.width;
+		// var imgHeight:Float = FlxG.height / data.height;
+		// var scale:Float = imgWidth <= imgHeight ? imgWidth : imgHeight;
+		// var sprite:FlxGifSprite = new FlxGifSprite(spritePath, 0, 0, Std.int(imgWidth), Std.int(imgHeight));
+
+		// Cap the scale at x1
+		// if (scale > 1)
+		// 	scale = 1;
+
+		// sprite.makeGraphic(Std.int(data.width * scale), Std.int(data.width * scale), FlxColor.TRANSPARENT);
+
+		// var data2:BitmapData = sprite.pixels.clone();
+		// var matrix:Matrix = new Matrix();
+		// matrix.identity();
+		// matrix.scale(scale, scale);
+		// data2.fillRect(data2.rect, FlxColor.TRANSPARENT);
+		// data2.draw(data, matrix, null, null, null, true);
+		// sprite.pixels = data2;
+
+		hscriptSprite.set(toBeCalled, sprite);
+		trace("new " + toBeCalled + " GIF Sprite added \n" + Std.string(hscriptSprite.get(toBeCalled)));
+		// and I quote:
+		// shitty layering but it works!
+		@:privateAccess
+		{
+			if (drawBehind)
+			{
+				PlayState.instance.removeObject(PlayState.gf);
+				PlayState.instance.removeObject(PlayState.boyfriend);
+				PlayState.instance.removeObject(PlayState.dad);
+			}
+			PlayState.instance.addObject(sprite);
+			if (drawBehind)
+			{
+				PlayState.instance.addObject(PlayState.gf);
+				PlayState.instance.addObject(PlayState.boyfriend);
+				PlayState.instance.addObject(PlayState.dad);
+			}
+		}
+		return toBeCalled;
+	}
+
 	function makeAnimatedHscriptSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String, imageFolder:Bool = false,
 			?library:String = '')
 	{
@@ -1783,7 +1855,7 @@ class HaxeScriptState
 		// 	case 'philly-nice':
 		// 		songLowercase = 'philly';
 		// }
-		var convertingPath = "assets/" + (imageFolder ? (library != null && library != ''? library + "/":'') + "images" : "data/songs" + songLowercase);
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs" + songLowercase);
 		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
 		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
 

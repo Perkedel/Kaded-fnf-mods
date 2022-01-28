@@ -82,6 +82,7 @@ jobs:
           haxelib install haxeui-openfl
           haxelib install haxeui-flixel
           haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
+          haxelib install yagp
           haxelib list
       
       - name: Obtain stuffs of Linux

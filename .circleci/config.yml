@@ -79,6 +79,8 @@ jobs:
             haxelib install svg
             haxelib install format
             haxelib install lime-tools
+            haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
+            haxelib install yagp
             haxelib list
             wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
             unzip butler.zip

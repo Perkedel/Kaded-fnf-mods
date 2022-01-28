@@ -220,6 +220,11 @@ class PlayState extends MusicBeatState
 
 	private static var prevCamFollow:FlxObject;
 
+	// JOELwindows7: oh the blackbars but right here
+	public var realBlackbarsTop:FlxSprite;
+	public var realBlackbarsBottom:FlxSprite;
+	public var realBlackbarHeight:Int = 100;
+
 	// JOELwindows7: flag to let stage or whatever override camFollow position
 	private var manualCamFollowPosP1:Array<Float> = [0, 0];
 	private var manualCamFollowPosP2:Array<Float> = [0, 0];
@@ -762,6 +767,7 @@ class PlayState extends MusicBeatState
 			add(i);
 		}
 		if (!PlayStateChangeables.Optimize)
+		{
 			for (index => array in Stage.layInFront)
 			{
 				switch (index)
@@ -781,6 +787,9 @@ class PlayState extends MusicBeatState
 							add(bg);
 				}
 			}
+			// JOELwindows7: first, build the blackbar
+			buildRealBlackBars();
+		}
 
 		camPos = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 
@@ -7509,6 +7518,65 @@ class PlayState extends MusicBeatState
 		// splash.setupNoteSplash(x, y, data, skin, hue, sat, brt, noteType);
 		splash.setupNoteSplash(x, y, data, skin, 0, 0, 0, noteType);
 		grpNoteSplashes.add(splash);
+	}
+
+	// JOELwindows7: Psyched blackbar stuff
+	function buildRealBlackBars()
+	{
+		realBlackbarsTop = new FlxSprite(0, 0);
+		realBlackbarsTop.makeGraphic(FlxG.width, realBlackbarHeight, 0xFF000000);
+		realBlackbarsTop.scrollFactor.set();
+		realBlackbarsBottom = new FlxSprite(0, FlxG.height - realBlackbarHeight);
+		realBlackbarsBottom.makeGraphic(FlxG.width, realBlackbarHeight, 0xFF000000);
+		realBlackbarsBottom.scrollFactor.set();
+		add(realBlackbarsTop);
+		add(realBlackbarsBottom);
+		realBlackbarsTop.visible = false;
+		realBlackbarsBottom.visible = false;
+		// disappearRealBlackBar(0.1); // Now delegate their dormant positions yeah!
+		// or maybe just pecking do it?
+		realBlackbarsTop.y = -realBlackbarHeight;
+		realBlackbarsBottom.y = FlxG.height;
+	}
+
+	// JOELwindows7: Psyched appear blackbar
+	public function appearRealBlackBar(forHowLong:Float = 2)
+	{
+		if (realBlackbarsTop == null || realBlackbarsBottom == null)
+			return;
+		realBlackbarsTop.visible = true;
+		realBlackbarsBottom.visible = true;
+		// realBlackbarsTop.x = -blackbarHeight;
+		// realBlackbarsBottom.x = FlxG.height;
+		FlxTween.color(realBlackbarsTop, forHowLong, realBlackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
+		FlxTween.color(realBlackbarsBottom, forHowLong, realBlackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
+		FlxTween.tween(realBlackbarsTop, {y: 0, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(realBlackbarsBottom, {y: FlxG.height - realBlackbarHeight, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+	}
+
+	// JOELwindows7: Psyched disappear blackbar
+	public function disappearRealBlackBar(forHowLong:Float = 2)
+	{
+		if (realBlackbarsTop == null || realBlackbarsBottom == null)
+			return;
+		// realBlackbarsTop.x = 0;
+		// realBlackbarsBottom.x = FlxG.height - blackbarHeight;
+		FlxTween.tween(realBlackbarsTop, {y: -realBlackbarHeight}, forHowLong, {
+			ease: FlxEase.linear,
+			onComplete: function(twn:FlxTween)
+			{
+				realBlackbarsTop.visible = false;
+			}
+		});
+		FlxTween.tween(realBlackbarsBottom, {y: FlxG.height}, forHowLong, {
+			ease: FlxEase.linear,
+			onComplete: function(twn:FlxTween)
+			{
+				realBlackbarsBottom.visible = false;
+			}
+		});
+		FlxTween.color(realBlackbarsTop, forHowLong, realBlackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
+		FlxTween.color(realBlackbarsBottom, forHowLong, realBlackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
 	}
 }
 // u looked :O -ides

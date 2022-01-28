@@ -194,11 +194,13 @@ function beatHit(beat)
     // blackbar
     if (beat == 128)
     {
-        thisStage.appearBlackBar(1);
+        //thisStage.appearBlackBar(1);
+        currentPlayState.appearRealBlackBar(1);
     }
     if (beat == 256)
     {
-        thisStage.disappearBlackBar(1);
+        //thisStage.disappearBlackBar(1);
+        currentPlayState.disappearRealBlackBar(1);
     }
 }
 

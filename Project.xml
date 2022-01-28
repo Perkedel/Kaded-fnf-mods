@@ -332,6 +332,10 @@
 	<haxelib name="haxe-strings" />
 	<!-- A localization library. We'll start using this eventually for multiple language support. -->
 	<haxelib name="firetongue" />
+
+	<!-- JOELwindows7: GIF image support that should've been there since we are not from SparrowAtlas XML days -->
+	<!-- GrowtopiaFli / GwebDev too -->
+	<haxelib name="yagp"/>
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
