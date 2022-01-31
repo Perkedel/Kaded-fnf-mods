@@ -50,6 +50,8 @@
         "delayBeforeStart": 0.0,
         "delayAfterFinish": 0.0,
         "isCreditRoll": false,
-        "creditRunsOnce": false
+        "creditRunsOnce": false,
+        "introCutSceneDoneManually": false,
+        "outroCutSceneDoneManually": false
     }
 }

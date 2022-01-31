@@ -7106,9 +7106,16 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	// JOELwindows7: flaggrants for Cutscene calls
+	var introSceneCalled = false;
+	var introDoneCalled = false;
+	var outroSceneCalled = false;
+	var outroDoneCalled = false;
+
 	// JOELwindows7: Psyched intro after video and before dialogue chat
 	function introScene()
 	{
+		introSceneCalled = true;
 		inCutscene = true;
 		switch (curSong)
 		{
@@ -7132,23 +7139,45 @@ class PlayState extends MusicBeatState
 					stageHscript.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
 				}
 				// No cutscene intro
-				introSceneIsDone();
+				decideIntroSceneDone(SONG.introCutSceneDoneManually);
 		}
+	}
+
+	// JOELwindows7: decide if intro must be done manually through modchart.
+	function decideIntroSceneDone(isItManually:Bool = false)
+	{
+		if (isItManually)
+		{
+			// JOELwindows7: then modchart must trigger it.
+		}
+		else
+		{
+			introSceneIsDone();
+		}
+	}
+
+	function recallIntroSceneDone()
+	{
+		if (!introDoneCalled)
+			introSceneIsDone();
 	}
 
 	// JOELwindows7: call this for intro is done
 	function introSceneIsDone()
 	{
+		introDoneCalled = true;
 		new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
 		{
 			checkSongStartAfterTankman(); // I know, this is spaghetti code. because I believe there's more somebody uses the method.
 		});
 	}
 
+	// JOELwindows7: Outro Done fillout vars
 	// JOELwindows7: Psyched outro after dialogue chat & before epilogue video
 	function outroScene(handoverName:String, isNextSong:Bool = false, handoverDelayFirst:Float = 0, handoverHasEpilogueVid:Bool = false,
 			handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false, handoverTankmanEpilogueVidPath:String = "")
 	{
+		outroSceneCalled = true;
 		switch (handoverName.toLowerCase())
 		{
 			case 'mayday': // blacken the screen like going to Winter Horrorland but slowed and sadder
@@ -7200,15 +7229,47 @@ class PlayState extends MusicBeatState
 				{
 					stageHscript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
 				}
-				outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
-					handoverTankmanEpilogueVidPath);
+				decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+					handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath, SONG.outroCutSceneDoneManually);
 		}
+	}
+
+	// JOELwindows7: refill Fillout first, if outro scene done manually through modchart
+	function decideOutroSceneDone(isNextSong:Bool = false, handoverName:String, handoverDelayFirst:Float = 0, handoverHasEpilogueVid:Bool = false,
+			handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false, handoverTankmanEpilogueVidPath:String = "",
+			isItManual:Bool = false)
+	{
+		CarryAround.__isNextSong = isNextSong;
+		CarryAround.__handoverName = handoverName;
+		CarryAround.__handoverDelayFirst = handoverDelayFirst;
+		CarryAround.__handoverHasEpilogueVid = handoverHasEpilogueVid;
+		CarryAround.__handoverEpilogueVidPath = handoverEpilogueVidPath;
+		CarryAround.__handoverHasTankmanEpilogueVid = handoverHasTankmanEpilogueVid;
+		CarryAround.__handoverTankmanEpilogueVidPath = handoverTankmanEpilogueVidPath;
+		if (isItManual)
+		{
+			// then the modchart must manually done it.
+		}
+		else
+		{
+			outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
+				handoverTankmanEpilogueVidPath);
+		}
+	}
+
+	// JOELwindows7: here the recall for easy access.
+	function recallOutroSceneDone()
+	{
+		if (!outroDoneCalled)
+			outroSceneIsDone(CarryAround.__isNextSong, CarryAround.__handoverName, CarryAround.__handoverDelayFirst, CarryAround.__handoverHasEpilogueVid,
+				CarryAround.__handoverEpilogueVidPath, CarryAround.__handoverHasTankmanEpilogueVid, CarryAround.__handoverTankmanEpilogueVidPath);
 	}
 
 	// JOELwindows7: call this when outro is done
 	function outroSceneIsDone(isNextSong:Bool = false, lastSongNameInPlaylist:String = "", delayFirstBeforeThat:Float = 0, hasEpilogueVideo:Bool = false,
 			epilogueVideoPath:String = "", hasEpilogueTankmanVideo:Bool = false, epilogueTankmanVideoPath:String = "")
 	{
+		outroDoneCalled = true;
 		// JOELwindows7: 1st, clean modcharts
 		scronchLuaScript();
 		scronchHscript();

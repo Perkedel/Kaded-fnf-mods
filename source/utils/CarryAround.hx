@@ -28,4 +28,16 @@ class CarryAround
 	 * 
 	 */
 	public static var hbdLines:Array<String>;
+
+	/**
+	 * JOELwindows7: fillout vars for Outro
+	 */
+	public static var __isNextSong:Bool;
+	public static var __handoverName:String;
+	public static var __handoverDelayFirst:Float;
+	public static var __handoverHasEpilogueVid:Bool;
+	public static var __handoverEpilogueVidPath:String;
+	public static var __handoverHasTankmanEpilogueVid:Bool;
+	public static var __handoverTankmanEpilogueVidPath:String;
+
 }

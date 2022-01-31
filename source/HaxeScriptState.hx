@@ -518,6 +518,7 @@ class HaxeScriptState
 		addCallback("makeGifSprite", makeHscriptGifSprite); // JOELwindows7: the Gif Sprite GWebdev
 		addCallback("changeDadCharacter", changeDadCharacter);
 		addCallback("changeBoyfriendCharacter", changeBoyfriendCharacter);
+		addCallback("changeGirlfriendCharacter", changeGirlfriendCharacter); // JOELwindows7: change GF
 		addCallback("getProperty", getPropertyByName);
 
 		addCallback("setNoteWiggle", function(wiggleId)
@@ -875,6 +876,12 @@ class HaxeScriptState
 			getActorByName(id).flipY = flip;
 		});
 
+		// JOELwindows7: moar
+		addCallback("setActorScrollFactor", function(x:Float, y:Float, id:String)
+		{
+			getActorByName(id).scrollFactor.set(x, y);
+		});
+
 		addCallback("getActorWidth", function(id:String)
 		{
 			return getActorByName(id).width;
@@ -903,6 +910,27 @@ class HaxeScriptState
 		addCallback("getActorY", function(id:String)
 		{
 			return getActorByName(id).y;
+		});
+
+		// JOELwindows7: moar get
+		addCallback("getActorScrollFactorX", function(id:String)
+		{
+			return getActorByName(id).scrollFactor.x;
+		});
+
+		addCallback("getActorScrollFactorY", function(id:String)
+		{
+			return getActorByName(id).scrollFactor.y;
+		});
+
+		addCallback("getActorVelocityX", function(id:String)
+		{
+			return getActorByName(id).velocity.x;
+		});
+
+		addCallback("getActorVelocityY", function(id:String)
+		{
+			return getActorByName(id).velocity.y;
 		});
 
 		addCallback("setWindowPos", function(x:Int, y:Int)
@@ -1605,6 +1633,24 @@ class HaxeScriptState
 			// JOELwindows7: gamejolt toast
 			Main.gjToastManager.createToast(iconPath, title, description, sound);
 		});
+
+		// Cutscene calls
+		addCallback("introSceneIsDone", function()
+		{
+			@:privateAccess {
+				if (!PlayState.instance.introDoneCalled)
+					PlayState.instance.recallIntroSceneDone();
+			}
+		});
+
+		addCallback("outroSceneIsDone", function()
+		{
+			@:privateAccess {
+				if (!PlayState.instance.outroDoneCalled)
+					PlayState.instance.recallOutroSceneDone();
+			}
+		});
+
 		// end more special functions
 		// So you don't have to hard code your cool effects.
 
@@ -1716,12 +1762,12 @@ class HaxeScriptState
 		// 	case 'philly-nice':
 		// 		songLowercase = 'philly';
 		// }
-		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs" + songLowercase);
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + songLowercase);
 		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
 		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
 
 		#if sys
-		if (PlayState.isSM)
+		if (PlayState.isSM && !imageFolder)
 			path = PlayState.pathToSm;
 		#end
 		trace(path);
@@ -1785,12 +1831,12 @@ class HaxeScriptState
 		// 	case 'philly-nice':
 		// 		songLowercase = 'philly';
 		// }
-		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs" + songLowercase);
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + songLowercase);
 		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
 		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
 
 		#if sys
-		if (PlayState.isSM)
+		if (PlayState.isSM && !imageFolder)
 			path = PlayState.pathToSm;
 		#end
 		trace(path);
@@ -1949,6 +1995,16 @@ class HaxeScriptState
 		PlayState.boyfriend = new Boyfriend(oldboyfriendx, oldboyfriendy, id);
 		PlayState.instance.addObject(PlayState.boyfriend);
 		PlayState.instance.iconP2.animation.play(id);
+	}
+
+	// JOELwindows7: also change girlfriend yess
+	function changeGirlfriendCharacter(id:String)
+	{
+		var oldgfx = PlayState.gf.x;
+		var oldgfy = PlayState.gf.y;
+		PlayState.instance.removeObject(PlayState.gf);
+		PlayState.gf = new Character(oldgfx, oldgfy, id);
+		PlayState.instance.addObject(PlayState.gf);
 	}
 
 	public static function createModchartState(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart", useRetail:Bool = false):HaxeScriptState

@@ -310,6 +310,16 @@ class ModchartState
 		PlayState.instance.iconP1.changeIcon(id);
 	}
 
+	// JOELwindows7: also change girlfriend yess
+	function changeGirlfriendCharacter(id:String)
+	{
+		var oldgfx = PlayState.gf.x;
+		var oldgfy = PlayState.gf.y;
+		PlayState.instance.removeObject(PlayState.gf);
+		PlayState.gf = new Character(oldgfx, oldgfy, id);
+		PlayState.instance.addObject(PlayState.gf);
+	}
+
 	function makeAnimatedLuaSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String, imageFolder:Bool = false,
 			?library:String = '')
 	{
@@ -386,7 +396,7 @@ class ModchartState
 			+ (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 			+ '/';
 
-		if (PlayState.isSM)
+		if (PlayState.isSM && !imageFolder)
 			path = PlayState.pathToSm + "/";
 
 		// var data:BitmapData = BitmapData.fromFile(path + spritePath + ".png");
@@ -459,7 +469,7 @@ class ModchartState
 			+ (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + PlayState.SONG.songId)
 			+ '/';
 
-		if (PlayState.isSM)
+		if (PlayState.isSM && !imageFolder)
 			path = PlayState.pathToSm + "/";
 
 		// var data:BitmapData = BitmapData.fromFile(path + spritePath + ".png");
@@ -688,6 +698,8 @@ class ModchartState
 			Lua_helper.add_callback(lua, "changeDadCharacter", changeDadCharacter);
 
 			Lua_helper.add_callback(lua, "changeBoyfriendCharacter", changeBoyfriendCharacter);
+			
+			Lua_helper.add_callback(lua, "changeGirlfriendCharacter", changeGirlfriendCharacter);
 
 			Lua_helper.add_callback(lua, "getProperty", getPropertyByName);
 		}
@@ -1004,6 +1016,12 @@ class ModchartState
 				getActorByName(id).x = x;
 			});
 
+			// JOELwindows7: moar
+			Lua_helper.add_callback(lua, "setActorScrollFactor", function(x:Int, y:Int, id:String)
+			{
+				getActorByName(id).scrollFactor.set(x, y);
+			});
+
 			Lua_helper.add_callback(lua, "setActorAccelerationX", function(x:Int, id:String)
 			{
 				getActorByName(id).acceleration.x = x;
@@ -1102,6 +1120,27 @@ class ModchartState
 			Lua_helper.add_callback(lua, "getActorY", function(id:String)
 			{
 				return getActorByName(id).y;
+			});
+
+			// JOELwindows7: moar get
+			Lua_helper.add_callback(lua, "getActorScrollFactorX", function(id:String)
+			{
+				return getActorByName(id).scrollFactor.x;
+			});
+
+			Lua_helper.add_callback(lua, "getActorScrollFactorY", function(id:String)
+			{
+				return getActorByName(id).scrollFactor.y;
+			});
+
+			Lua_helper.add_callback(lua, "getActorVelocityX", function(id:String)
+			{
+				return getActorByName(id).velocity.x;
+			});
+
+			Lua_helper.add_callback(lua, "getActorVelocityY", function(id:String)
+			{
+				return getActorByName(id).velocity.y;
 			});
 		}
 		// end olde
@@ -1857,6 +1896,23 @@ class ModchartState
 		{
 			// JOELwindows7: gamejolt toast
 			Main.gjToastManager.createToast(iconPath, title, description, sound);
+		});
+
+		// Cutscene Calls
+		Lua_helper.add_callback(lua, "introSceneIsDone", function()
+		{
+			@:privateAccess {
+				if (!PlayState.instance.introDoneCalled)
+					PlayState.instance.recallIntroSceneDone();
+			}
+		});
+
+		Lua_helper.add_callback(lua, "outroSceneIsDone", function()
+		{
+			@:privateAccess {
+				if (!PlayState.instance.outroDoneCalled)
+					PlayState.instance.recallOutroSceneDone();
+			}
 		});
 
 		// end more special functions

@@ -24,6 +24,8 @@
     "player1": "bf-covid",
     "player2": "hookx",
     "gfVersion": "gf-covid",
+    "introCutSceneDoneManually": true,
+    "outroCutSceneDoneManually": false,
     "eventObjects": [{
         "name": "Init BPM",
         "position": 0,

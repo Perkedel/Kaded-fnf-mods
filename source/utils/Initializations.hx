@@ -58,10 +58,13 @@ class Initializations
 		KeyBinds.keyCheck();
 		NoteskinHelpers.updateNoteskins();
 
+		//JOELwindows7: this should be nulled because these buttons can accident volkeys
 		if (FlxG.save.data.volDownBind == null)
 			FlxG.save.data.volDownBind = "MINUS";
+			// FlxG.save.data.volDownBind = "";
 		if (FlxG.save.data.volUpBind == null)
 			FlxG.save.data.volUpBind = "PLUS";
+			// FlxG.save.data.volUpBind = "";
 
 		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
 		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];

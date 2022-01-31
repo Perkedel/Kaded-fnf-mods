@@ -72,6 +72,8 @@ typedef SongData =
 	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
 	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
+	var ?introCutSceneDoneManually:Bool; // JOELwindows7: mark whether intro done manually with modchart
+	var ?outroCutSceneDoneManually:Bool; // JOELwindows7: mark whether outro done manually with modchart
 	var ?useCustomStage:Bool; // JOELwindows7: should use custom stage?
 	// be allowed at certain moments in time
 	var ?forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
@@ -115,6 +117,8 @@ typedef SongMeta =
 	var ?forceHscriptModchart:Bool; // JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 	var ?delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
 	var ?delayAfterFinish:Float; // Delay after song finish before load next song. for cutscene before epilogue video
+	var ?introCutSceneDoneManually:Bool; // JOELwindows7: mark whether intro done manually with modchart
+	var ?outroCutSceneDoneManually:Bool; // JOELwindows7: mark whether outro done manually with modchart
 	var ?isCreditRoll:Bool; // JOELwindows7: is this credit roll? if yes then roll credit.
 	var ?creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
@@ -356,22 +360,19 @@ class Song
 		}
 
 		// JOELwindows7: try casting, but no. that's aggressive and destroys per difficulty basis.
-		if (songMetaData.delayBeforeStart != null)
+		if (songMetaData.delayBeforeStart == null)
 		{
-			if (songData.delayBeforeStart == null)
-				songData.delayBeforeStart = songMetaData.delayBeforeStart;
+			songData.delayBeforeStart = 0;
 		}
-		else
+		if (songData.delayBeforeStart == null)
+			songData.delayBeforeStart = songMetaData.delayBeforeStart;
+
+		if (songMetaData.delayAfterFinish == null)
 		{
+			songData.delayAfterFinish = 0;
 		}
-		if (songMetaData.delayAfterFinish != null)
-		{
-			if (songData.delayAfterFinish == null)
-				songData.delayAfterFinish = songMetaData.delayAfterFinish;
-		}
-		else
-		{
-		}
+		if (songData.delayAfterFinish == null)
+			songData.delayAfterFinish = songMetaData.delayAfterFinish;
 
 		// JOELwindows7: right, these are all we have.
 		if (songMetaData.allowedToHeadbang != null)
@@ -487,6 +488,20 @@ class Song
 			if (songData.useCustomNoteStyle == null)
 				songData.useCustomNoteStyle = songMetaData.useCustomNoteStyle;
 		}
+
+		if (songMetaData.introCutSceneDoneManually == null)
+		{
+			songMetaData.introCutSceneDoneManually = false;
+		}
+		if (songData.introCutSceneDoneManually == null)
+			songData.introCutSceneDoneManually = songMetaData.introCutSceneDoneManually;
+
+		if (songMetaData.outroCutSceneDoneManually == null)
+		{
+			songMetaData.outroCutSceneDoneManually = false;
+		}
+		if (songData.outroCutSceneDoneManually == null)
+			songData.outroCutSceneDoneManually = songMetaData.outroCutSceneDoneManually;
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!
 

@@ -25,6 +25,8 @@
     "player1": "bf",
     "player2": "dad",
     "gfVersion": "gf",
+    "introCutSceneDoneManually": false,
+    "outroCutSceneDoneManually": false,
     "eventObjects": [{
         "name": "Init BPM",
         "position": 0,
