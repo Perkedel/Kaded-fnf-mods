@@ -904,14 +904,14 @@ class PlayState extends MusicBeatState
 
 		if (isStoryMode)
 		{
-			doof = new DialogueBox(false, dialogue, SONG.hasDialogueChat);
+			doof = new DialogueBox(false, dialogue, SONG.hasDialogueChat, false, SONG.hasDialogueChat);
 			// doof.x += 70;
 			// doof.y = FlxG.height * 0.5;
 			doof.scrollFactor.set();
 			doof.finishThing = startCountdown;
 
 			// JOELwindows7: new epilogue way
-			eoof = new DialogueBox(false, epilogue, SONG.hasEpilogueChat, true);
+			eoof = new DialogueBox(false, epilogue, SONG.hasEpilogueChat, true, SONG.hasEpilogueChat);
 			// eoof.x += 70;
 			// eoof.y = FlxG.height * 0.5;
 			eoof.scrollFactor.set(); // JOELwindows7: also set scroll factor too for epilogue box!

@@ -208,7 +208,7 @@ class DialogueBox extends FlxSpriteGroup
 				if (customChar)
 				{
 					customCharPls = true;
-					initiatePortraitLeft(-20, 40, 0.9, customCharXML, customCharFrame, customCharPrefix);
+					initiatePortraitLeft(-20, 40, 0.9, customCharXML, customCharFrame, customCharPrefix, 24, false, 'shared');
 				}
 		}
 		if (PlayState.instance != null)
@@ -453,7 +453,7 @@ class DialogueBox extends FlxSpriteGroup
 						{
 							sound.stop();
 						});
-					if(PlayState.instance != null)
+					if (PlayState.instance != null)
 						PlayState.instance.dialogueSceneEnding(); // JOELwindows7: here when ending.
 
 					new FlxTimer().start(0.2, function(tmr:FlxTimer)

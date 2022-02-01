@@ -7,7 +7,7 @@
 // templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
 
 var titleImage = 'overbuse/kevin_macleod/0_title';
-var imagesPath = 'overbuse/kevin_macleod/1_cipher';
+var imagePath = 'overbuse/kevin_macleod/1_cipher';
 
 function loaded(song)
 {
@@ -61,6 +61,15 @@ function outroCutscene()
 
 }
 
+// Just for this, because there is flashing here.
+function closeCamera(){
+    FlxG.camera.fade(FlxColor.BLACK, 1);
+}
+
+function openCamera(){
+    FlxG.camera.fade(FlxColor.BLACK, 1, true);
+}
+
 function dialogueStart()
 {
 
@@ -88,7 +97,19 @@ function update(elapsed)
 
 function beatHit(beat)
 {
-    
+    // Epilepsy alert! censor Hookx flash crazy if Flashing Lights disabled
+    if (!flashing)
+    {
+        if (beat == 152)
+        {
+            closeCamera();
+        }
+
+        if (beat == 192)
+        {
+            openCamera();
+        }
+    }
 }
 
 function stepHit(step)

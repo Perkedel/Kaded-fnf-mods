@@ -297,6 +297,8 @@ class Song
 		}
 		else
 		{
+			if (songData.creditRunsOnce == null)
+				songData.creditRunsOnce = false;
 		}
 
 		// JOELwindows7: dude, is there a procedural way to fill these all up?
@@ -307,6 +309,8 @@ class Song
 		}
 		else
 		{
+			if (songData.hasVideo == null)
+				songData.hasVideo = false;
 		}
 
 		// JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
@@ -317,6 +321,8 @@ class Song
 		}
 		else
 		{
+			if (songData.videoPath == null)
+				songData.videoPath = "";
 		}
 
 		// JOELwindows7: haaaaaaaaaaaaaaaa!!!!
@@ -327,6 +333,8 @@ class Song
 		}
 		else
 		{
+			if (songData.hasEpilogueVideo == null)
+				songData.hasEpilogueVideo = false;
 		}
 
 		// JOELwindows7: boooooooof
@@ -337,6 +345,8 @@ class Song
 		}
 		else
 		{
+			if (songData.epilogueVideoPath == null)
+				songData.epilogueVideoPath = "";
 		}
 
 		// JOELwindows7: yay GitHub Copilot yey
@@ -347,6 +357,8 @@ class Song
 		}
 		else
 		{
+			if (songData.hasDialogueChat == null)
+				songData.hasDialogueChat = false;
 		}
 
 		// JOELwindows7: yay GitHub Copilot yeyu
@@ -357,6 +369,8 @@ class Song
 		}
 		else
 		{
+			if (songData.hasEpilogueChat == null)
+				songData.hasEpilogueChat = false;
 		}
 
 		// JOELwindows7: try casting, but no. that's aggressive and destroys per difficulty basis.
@@ -382,6 +396,8 @@ class Song
 		}
 		else
 		{
+			if (songData.allowedToHeadbang == null)
+				songData.allowedToHeadbang = false;
 		}
 
 		// JOELwindows7: lua & haxescript stuffs
@@ -392,6 +408,8 @@ class Song
 		}
 		else
 		{
+			if (songData.forceLuaModchartLegacy == null)
+				songData.forceLuaModchartLegacy = false;
 		}
 
 		if (songMetaData.forceLuaModchart != null)
@@ -401,6 +419,8 @@ class Song
 		}
 		else
 		{
+			if (songData.forceLuaModchart == null)
+				songData.forceLuaModchart = false;
 		}
 
 		if (songMetaData.forceHscriptModchart != null)
@@ -410,6 +430,8 @@ class Song
 		}
 		else
 		{
+			if (songData.forceHscriptModchart == null)
+				songData.forceHscriptModchart = false;
 		}
 
 		// JOELwindows7: fallbackers of the stuffs. the metadata should only overwrite if the variable is empty or null
@@ -420,12 +442,26 @@ class Song
 				songData.player1 = songMetaData.player1;
 			}
 		}
+		else
+		{
+			if (songData.player1 == null || songData.player1 == "")
+			{
+				songData.player1 = "bf";
+			}
+		}
 
 		if (songMetaData.player2 != null)
 		{
 			if (songData.player2 == null || songData.player2 == "")
 			{
 				songData.player2 = songMetaData.player2;
+			}
+		}
+		else
+		{
+			if (songData.player2 == null || songData.player2 == "")
+			{
+				songData.player2 = "dad";
 			}
 		}
 
@@ -436,12 +472,26 @@ class Song
 				songData.gfVersion = songMetaData.gfVersion;
 			}
 		}
+		else
+		{
+			if (songData.gfVersion == null || songData.gfVersion == "")
+			{
+				songData.gfVersion = "gf";
+			}
+		}
 
 		if (songMetaData.hasTankmanVideo != null)
 		{
 			if (songData.hasTankmanVideo == null)
 			{
 				songData.hasTankmanVideo = songMetaData.hasTankmanVideo;
+			}
+		}
+		else
+		{
+			if (songData.hasTankmanVideo == null)
+			{
+				songData.hasTankmanVideo = false;
 			}
 		}
 
@@ -452,6 +502,13 @@ class Song
 				songData.hasEpilogueTankmanVideo = songMetaData.hasEpilogueTankmanVideo;
 			}
 		}
+		else
+		{
+			if (songData.hasEpilogueTankmanVideo == null)
+			{
+				songData.hasEpilogueTankmanVideo = false;
+			}
+		}
 
 		if (songMetaData.tankmanVideoPath != null)
 		{
@@ -460,12 +517,26 @@ class Song
 				songData.tankmanVideoPath = songMetaData.tankmanVideoPath;
 			}
 		}
+		else
+		{
+			if (songData.tankmanVideoPath == null || songData.tankmanVideoPath == "")
+			{
+				songData.tankmanVideoPath = "";
+			}
+		}
 
 		if (songMetaData.epilogueTankmanVideoPath != null)
 		{
 			if (songData.epilogueTankmanVideoPath == null || songData.epilogueTankmanVideoPath == "")
 			{
 				songData.epilogueTankmanVideoPath = songMetaData.epilogueTankmanVideoPath;
+			}
+		}
+		else
+		{
+			if (songData.epilogueTankmanVideoPath == null || songData.epilogueTankmanVideoPath == "")
+			{
+				songData.epilogueTankmanVideoPath = "";
 			}
 		}
 
@@ -482,26 +553,56 @@ class Song
 			if (songData.loadNoteStyleOtherWayAround == null)
 				songData.loadNoteStyleOtherWayAround = songMetaData.loadNoteStyleOtherWayAround;
 		}
+		else
+		{
+			if (songData.loadNoteStyleOtherWayAround == null)
+				songData.loadNoteStyleOtherWayAround = false;
+		}
 
 		if (songMetaData.useCustomNoteStyle != null)
 		{
 			if (songData.useCustomNoteStyle == null)
 				songData.useCustomNoteStyle = songMetaData.useCustomNoteStyle;
 		}
-
-		if (songMetaData.introCutSceneDoneManually == null)
+		else
 		{
-			songMetaData.introCutSceneDoneManually = false;
+			if (songData.useCustomNoteStyle == null)
+				songData.useCustomNoteStyle = false;
 		}
-		if (songData.introCutSceneDoneManually == null)
-			songData.introCutSceneDoneManually = songMetaData.introCutSceneDoneManually;
 
-		if (songMetaData.outroCutSceneDoneManually == null)
+		// if (songMetaData.introCutSceneDoneManually == null)
+		// {
+		// 	songMetaData.introCutSceneDoneManually = false;
+		// }
+		// if (songData.introCutSceneDoneManually == null)
+		// 	songData.introCutSceneDoneManually = songMetaData.introCutSceneDoneManually;
+		if (songMetaData.introCutSceneDoneManually != null)
 		{
-			songMetaData.outroCutSceneDoneManually = false;
+			if (songData.introCutSceneDoneManually == null)
+				songData.introCutSceneDoneManually = songMetaData.introCutSceneDoneManually;
 		}
-		if (songData.outroCutSceneDoneManually == null)
-			songData.outroCutSceneDoneManually = songMetaData.outroCutSceneDoneManually;
+		else
+		{
+			if (songData.introCutSceneDoneManually == null)
+				songData.introCutSceneDoneManually = false;
+		}
+
+		// if (songMetaData.outroCutSceneDoneManually == null)
+		// {
+		// 	songMetaData.outroCutSceneDoneManually = false;
+		// }
+		// if (songData.outroCutSceneDoneManually == null)
+		// 	songData.outroCutSceneDoneManually = songMetaData.outroCutSceneDoneManually;
+		if (songMetaData.outroCutSceneDoneManually != null)
+		{
+			if (songData.outroCutSceneDoneManually == null)
+				songData.outroCutSceneDoneManually = songMetaData.outroCutSceneDoneManually;
+		}
+		else
+		{
+			if (songData.outroCutSceneDoneManually == null)
+				songData.outroCutSceneDoneManually = false;
+		}
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!
 
