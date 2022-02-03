@@ -614,6 +614,7 @@ class ChartingState extends MusicBeatState
 	var stepperDiv:FlxUINumericStepper;
 	var check_snap:FlxUICheckBox;
 	var listOfEvents:FlxUIDropDownMenu;
+	var newListOfEvents:DropDown; // JOELwindows7: here list of event but HaxeUI
 	var currentSelectedEventName:String = "";
 	var savedType:String = "BPM Change";
 	var savedValue:String = "100";
@@ -669,7 +670,10 @@ class ChartingState extends MusicBeatState
 		// JOELwindows7: attempt HaxeUI version of it
 		var newEventType = new DropDown();
 		newEventType.x = 10;
-		newEventType.y = 90;
+		newEventType.y = 100;
+		newListOfEvents = new DropDown();
+		newListOfEvents.x = 10;
+		newListOfEvents.y = 90;
 		for (i in 0...theseEvents.length)
 		{
 			newEventType.dataSource.add({
@@ -757,6 +761,17 @@ class ChartingState extends MusicBeatState
 
 			listOfEvents.selectedLabel = pog.name;
 
+			// JOELwindows7: now the HaxeUI list of events
+			newListOfEvents.dataSource.clear();
+			for (i in 0...listofnames.length)
+			{
+				newListOfEvents.dataSource.add({
+					text: listofnames[i],
+					item: listofnames[i],
+				});
+			}
+			newListOfEvents.selectedItem = pog.name;
+
 			Debug.logTrace('end');
 		});
 		var posLabel = new FlxText(150, 85, 'Event Position');
@@ -804,6 +819,17 @@ class ChartingState extends MusicBeatState
 			listOfEvents.setData(FlxUIDropDownMenu.makeStrIdLabelArray(listofnames, true));
 
 			listOfEvents.selectedLabel = pog.name;
+
+			// JOELwindows7: add list event HaxeUI
+			newListOfEvents.dataSource.clear();
+			for (i in 0...listofnames.length)
+			{
+				newListOfEvents.dataSource.add({
+					text: listofnames[i],
+					item: listofnames[i],
+				});
+			}
+			newListOfEvents.selectedItem = pog.name;
 
 			TimingStruct.clearTimings();
 
@@ -895,6 +921,17 @@ class ChartingState extends MusicBeatState
 			listOfEvents.setData(FlxUIDropDownMenu.makeStrIdLabelArray(listofnames, true));
 
 			listOfEvents.selectedLabel = firstEvent.name;
+
+			// JOELwindows7: remove list event HaxeUI
+			newListOfEvents.dataSource.clear();
+			for (i in 0...listofnames.length)
+			{
+				newListOfEvents.dataSource.add({
+					text: listofnames[i],
+					item: listofnames[i],
+				});
+			}
+			newListOfEvents.selectedItem = firstEvent.name;
 
 			TimingStruct.clearTimings();
 
@@ -1016,6 +1053,7 @@ class ChartingState extends MusicBeatState
 			eventPos.text = event.position + "";
 			eventType.selectedLabel = event.type;
 			newEventType.selectedItem = event.type; // JOELwindows7: helep me pelis
+			newListOfEvents.selectedItem = event.name; // JOELwindows7: responsible to update this HaxeUI version too
 			currentSelectedEventName = event.name;
 			currentEventPosition = event.position;
 		});
@@ -1052,6 +1090,25 @@ class ChartingState extends MusicBeatState
 			Debug.logTrace("Change event type to " + newEventType.selectedItem);
 			savedType = newEventType.selectedItem.item;
 			eventType.selectedLabel = newEventType.selectedItem.item;
+		};
+
+		// JOELwindows7: helep list of event HaxeUI
+		newListOfEvents.onChange = function(e)
+		{
+			var event = containsName(newListOfEvents.selectedItem.item, _song.eventObjects);
+
+			Debug.logTrace("Change event selection to " + newListOfEvents.selectedItem);
+			listOfEvents.selectedLabel = newListOfEvents.selectedItem.item;
+
+			eventName.text = event.name;
+			eventValue.text = event.value + "";
+			eventValue2.text = event.value2 + "";
+			eventValue3.text = event.value3 + "";
+			eventPos.text = event.position + "";
+			eventType.selectedLabel = event.type;
+			newEventType.selectedItem = event.type; // JOELwindows7: helep me pelis
+			currentSelectedEventName = event.name;
+			currentEventPosition = event.position;
 		};
 
 		eventName.callback = function(string:String, string2:String)
@@ -1096,6 +1153,7 @@ class ChartingState extends MusicBeatState
 		tab_events.add(eventType);
 		tab_events.add(newEventType); // JOELwindows7: okeh here attemption
 		tab_events.add(listOfEvents);
+		tab_events.add(newListOfEvents); // JOELwindows7: okeh here attemption HaxeUI edition
 		UI_options.addGroup(tab_events);
 	}
 
