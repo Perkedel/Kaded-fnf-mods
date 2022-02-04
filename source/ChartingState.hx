@@ -670,10 +670,12 @@ class ChartingState extends MusicBeatState
 		// JOELwindows7: attempt HaxeUI version of it
 		var newEventType = new DropDown();
 		newEventType.x = 10;
-		newEventType.y = 100;
+		newEventType.y = 120;
+		newEventType.width = 140;
 		newListOfEvents = new DropDown();
 		newListOfEvents.x = 10;
 		newListOfEvents.y = 90;
+		newListOfEvents.width = 140;
 		for (i in 0...theseEvents.length)
 		{
 			newEventType.dataSource.add({
@@ -761,7 +763,7 @@ class ChartingState extends MusicBeatState
 
 			listOfEvents.selectedLabel = pog.name;
 
-			// JOELwindows7: now the HaxeUI list of events
+			// JOELwindows7: now the HaxeUI list of events save
 			newListOfEvents.dataSource.clear();
 			for (i in 0...listofnames.length)
 			{
@@ -1093,22 +1095,39 @@ class ChartingState extends MusicBeatState
 		};
 
 		// JOELwindows7: helep list of event HaxeUI
+		for (i in 0...listofnames.length)
+		{
+			newListOfEvents.dataSource.add({
+				text: listofnames[i],
+				item: listofnames[i],
+			});
+		}
 		newListOfEvents.onChange = function(e)
 		{
-			var event = containsName(newListOfEvents.selectedItem.item, _song.eventObjects);
+			try
+			{
+				var event = containsName(newListOfEvents.selectedItem.item, _song.eventObjects);
 
-			Debug.logTrace("Change event selection to " + newListOfEvents.selectedItem);
-			listOfEvents.selectedLabel = newListOfEvents.selectedItem.item;
+				if (event == null)
+					return;
 
-			eventName.text = event.name;
-			eventValue.text = event.value + "";
-			eventValue2.text = event.value2 + "";
-			eventValue3.text = event.value3 + "";
-			eventPos.text = event.position + "";
-			eventType.selectedLabel = event.type;
-			newEventType.selectedItem = event.type; // JOELwindows7: helep me pelis
-			currentSelectedEventName = event.name;
-			currentEventPosition = event.position;
+				Debug.logTrace("Change event selection to " + newListOfEvents.selectedItem);
+				listOfEvents.selectedLabel = newListOfEvents.selectedItem.item;
+
+				eventName.text = event.name;
+				eventValue.text = event.value + "";
+				eventValue2.text = event.value2 + "";
+				eventValue3.text = event.value3 + "";
+				eventPos.text = event.position + "";
+				eventType.selectedLabel = event.type;
+				newEventType.selectedItem = event.type; // JOELwindows7: helep me pelis
+				currentSelectedEventName = event.name;
+				currentEventPosition = event.position;
+			}
+			catch (e)
+			{
+				Debug.logWarn("Werror Selection New List of Events! " + e + ": " + e.message);
+			}
 		};
 
 		eventName.callback = function(string:String, string2:String)
