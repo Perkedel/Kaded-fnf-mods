@@ -26,11 +26,11 @@ import sys.thread.Mutex;
 
 class Initializations
 {
-    /**
-     * Initialize save datas & stuffs
-     */
-    static public function begin()
-    {
+	/**
+	 * Initialize save datas & stuffs
+	 */
+	static public function begin()
+	{
 		// JOELwindows7: Yoinkered Kade + YinYang48 Hex
 		// https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/TitleState.hx
 		#if FEATURE_MULTITHREADING
@@ -58,22 +58,23 @@ class Initializations
 		KeyBinds.keyCheck();
 		NoteskinHelpers.updateNoteskins();
 
-		//JOELwindows7: this should be nulled because these buttons can accident volkeys
+		// JOELwindows7: this should be nulled because these buttons can accident volkeys
 		if (FlxG.save.data.volDownBind == null)
 			FlxG.save.data.volDownBind = "MINUS";
-			// FlxG.save.data.volDownBind = "";
+		// FlxG.save.data.volDownBind = "";
 		if (FlxG.save.data.volUpBind == null)
 			FlxG.save.data.volUpBind = "PLUS";
-			// FlxG.save.data.volUpBind = "";
+		// FlxG.save.data.volUpBind = "";
 
-		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+		// JOELwindows7: now depending on what happened, there you can have the accident volume keys null if you don't want it.
+		FlxG.sound.muteKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.muteBind)] : null;
+		FlxG.sound.volumeDownKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.volDownBind)] : null;
+		FlxG.sound.volumeUpKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.volUpBind)] : null;
 
 		FlxG.worldBounds.set(0, 0);
 
 		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
 		MusicBeatState.initSave = true;
-    }
+	}
 }

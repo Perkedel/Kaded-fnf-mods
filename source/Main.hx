@@ -339,6 +339,16 @@ class Main extends Sprite
 		FlxG.sound.volumeUpKeys = null;
 		FlxG.sound.volumeDownKeys = null;
 		FlxG.sound.muteKeys = null;
+
+		//sorry! nowadays this invoke update vol key assignments based on status. nvm.
+	}
+
+	// JOELwindows7: Padzal! update volkeys assignments fate! copy from Kade's title state vol key assigner.
+	public function checkAccidentVolKeys()
+	{
+		FlxG.sound.muteKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.muteBind)] : null;
+		FlxG.sound.volumeDownKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.volDownBind)] : null;
+		FlxG.sound.volumeUpKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.volUpBind)] : null;
 	}
 
 	// JOELwindows7: mini platform scanner

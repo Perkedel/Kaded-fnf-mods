@@ -217,7 +217,7 @@ class Debug
 		logInfo('HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
 		logInfo('Friday Night Funkin\' version: ${MainMenuState.gameVer}');
 		logInfo('KadeEngine version: ${MainMenuState.kadeEngineVer}');
-		logInfo('Last Funkin Moments version: ${MainMenuState.lastFunkinMomentVer}');
+		logInfo('Last Funkin Moments version: ${MainMenuState.lastFunkinMomentVer}'); // JOELwindows7: haha yeah!
 	}
 
 	/**

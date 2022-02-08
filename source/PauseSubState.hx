@@ -171,6 +171,14 @@ class PauseSubState extends MusicBeatSubstate
 		FlxTween.tween(upButton, {x: FlxG.width - 100}, 2, {ease: FlxEase.elasticInOut});
 		FlxTween.tween(acceptButton, {x: FlxG.width - 100}, 2, {ease: FlxEase.elasticInOut});
 		FlxTween.tween(downButton, {x: FlxG.width - 100}, 2, {ease: FlxEase.elasticInOut});
+
+		// JOELwindows7: temporarily assign accident volume keys to the same buttons configured. do this if you disabled accident volume keys, otherwise leave as is
+		if (!FlxG.save.data.accidentVolumeKeys)
+		{
+			FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+			FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+			FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+		}
 	}
 
 	override function update(elapsed:Float)
@@ -241,7 +249,12 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				case "Resume":
 					if (!inCharter)
+					{
 						FlxG.mouse.visible = false; // JOELwindows7: just in case
+
+						// JOELwindows7: Hey! prepare unpause first! maybe do it only if not botplay?
+						PlayState.instance.waitLemmePrepareUnpauseFirst = true;
+					}
 					else
 						FlxG.mouse.visible = true; // JOELwindows7: sigh, do not invisiblize mouse in charter!
 					close();
@@ -315,7 +328,7 @@ class PauseSubState extends MusicBeatSubstate
 					// 	PlayState.luaModchart = null;
 					// }
 					#end
-					
+
 					if (FlxG.save.data.fpsCap > 340)
 						(cast(Lib.current.getChildAt(0), Main)).setFPSCap(120);
 
@@ -338,6 +351,11 @@ class PauseSubState extends MusicBeatSubstate
 					else
 						FlxG.switchState(new FreeplayState());
 			}
+
+			// JOELwindows7: additionally, be responsible to restore the current accident volume keys assignment back to
+			// the configured statuses
+			Main.instance.checkAccidentVolKeys();
+
 			haveClicked = false;
 		}
 		else
@@ -361,6 +379,23 @@ class PauseSubState extends MusicBeatSubstate
 					FlxG.mouse.visible = false;
 				}
 				// peck this I'm tired! plns work lol
+			}
+
+			// JOELwindows7: accident volkeys only on this pause menu
+			if (!FlxG.save.data.accidentVolumeKeys)
+			{
+				// if (FlxG.keys.justPressed.PLUS)
+				// {
+				// 	FlxG.sound.changeVolume(.1);
+				// }
+				// if (FlxG.keys.justPressed.MINUS)
+				// {
+				// 	FlxG.sound.changeVolume(-.1);
+				// }
+				// if (FlxG.keys.justPressed.ZERO)
+				// {
+				// 	FlxG.sound.toggleMuted();
+				// }
 			}
 		}
 

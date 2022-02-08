@@ -1,5 +1,6 @@
 package;
 
+import ui.states.PrepareUnpauseSubstate;
 #if EXPERIMENTAL_KEM0X_SHADERS
 import DynamicShaderHandler; // JOELwindows7: kem0x mod shader https://github.com/kem0x/FNF-ModShaders
 #end
@@ -1511,50 +1512,65 @@ class PlayState extends MusicBeatState
 
 		// JOELwindows7: install debugge haxeflixeler
 		// commands
-		FlxG.console.registerFunction("startFakeCountdown", function()
+		// formerly use tedious `FlxG.console.registerFunction()`
+		Debug.addConsoleCommand("startFakeCountdown", function()
 		{
 			startFakeCountdown();
 		});
-		FlxG.console.registerFunction("trainStart", function()
+		Debug.addConsoleCommand("trainStart", function()
 		{
 			PlayState.Stage.trainStart();
 		});
-		FlxG.console.registerFunction("trainReset", function()
+		Debug.addConsoleCommand("trainReset", function()
 		{
 			PlayState.Stage.trainReset();
 		});
-		FlxG.console.registerFunction("fastCarDrive", function()
+		Debug.addConsoleCommand("fastCarDrive", function()
 		{
 			PlayState.Stage.fastCarDrive();
 		});
-		FlxG.console.registerFunction("resetFastCar", function()
+		Debug.addConsoleCommand("resetFastCar", function()
 		{
 			PlayState.Stage.resetFastCar();
 		});
-		FlxG.console.registerFunction("debugSeven", function()
+		Debug.addConsoleCommand("debugSeven", function()
 		{
 			haveDebugSevened = true;
 		});
-		FlxG.console.registerFunction("lightningStrikeShit", function()
+		Debug.addConsoleCommand("lightningStrikeShit", function()
 		{
 			PlayState.Stage.lightningStrikeShit();
 		});
-		FlxG.console.registerFunction("justCheer", function()
+		Debug.addConsoleCommand("justCheer", function()
 		{
 			justCheer();
 		});
-		FlxG.console.registerFunction("justHey", function()
+		Debug.addConsoleCommand("justHey", function()
 		{
 			justHey();
 		});
-		FlxG.console.registerFunction("justCheerHey", function()
+		Debug.addConsoleCommand("justCheerHey", function()
 		{
 			justHey();
 			justCheer();
 		});
 
+		// object debugs. also register objects for debugs
+		Debug.addObject("PlayState", this);
+		Debug.addObject("Stage", Stage);
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+			Debug.addObject("luaModchart", luaModchart);
+		if (executeStageScript && stageScript != null)
+			Debug.addObject("stageScript", stageScript);
+		#end
+		if (executeModHscript && hscriptModchart != null)
+			Debug.addObject("hscriptModchart", hscriptModchart);
+		if (executeStageHscript && stageHscript != null)
+			Debug.addObject("stageHscript", stageHscript);
+
 		// JOELwindows7: Now Init CustomStage scripts if had to.
-		if (attemptStageScript)
+		if (attemptStageScript || Stage.attemptStageScript)
 		{
 			Stage.spawnStageScript("stages/" + CoolUtil.toCompatCase(SONG.stage) + "/stageScript");
 		}
@@ -2844,8 +2860,17 @@ class PlayState extends MusicBeatState
 			else
 				openSubState(new OptionsMenu(true));
 		}
+		else if (waitLemmePrepareUnpauseFirst)
+		{
+			// JOELwindows7: appear this substate first before play again!
+			openSubState(new PrepareUnpauseSubstate());
+			// The Skeleton Appears
+		}
 		else if (paused)
 		{
+			// JOELwindows7: okay make mouse invisible again
+			FlxG.mouse.visible = false;
+
 			// JOELwindows7: resume credit rollout
 			if (SONG.isCreditRoll)
 				if (creditRollout != null)
@@ -2941,6 +2966,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var paused:Bool = false;
+	public var waitLemmePrepareUnpauseFirst:Bool = false; // JOELwindows7: to appear substate after unpause which counts down before actually play again.
 
 	var startedCountdown:Bool = false;
 	var startedFakeCounting:Bool = false; // JOELwindows7: oh fake countdown

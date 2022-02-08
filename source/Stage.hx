@@ -854,13 +854,13 @@ class Stage extends MusicBeatState
 						// JOELwindows7: here kem0x's shader background yey
 						// yoink from https://github.com/kem0x/Nexus-Engine/blob/master/source/Stage.hx
 						/*
-						sha = new ShaderBackground("test", 0, 0, FlxG.width, FlxG.height);
-						sha.setGraphicSize(Std.int(sha.width * 1.4));
-						sha.updateHitbox();
-						swagBacks['sha'] = sha;
-						toAdd.push(sha);
-						sha.alpha = 0;
-						*/
+							sha = new ShaderBackground("test", 0, 0, FlxG.width, FlxG.height);
+							sha.setGraphicSize(Std.int(sha.width * 1.4));
+							sha.updateHitbox();
+							swagBacks['sha'] = sha;
+							toAdd.push(sha);
+							sha.alpha = 0;
+						 */
 					}
 			}
 
@@ -1321,7 +1321,7 @@ class Stage extends MusicBeatState
 	public var customStage:SwagStage;
 
 	var useStageScript:Bool = false; // JOELwindows7: flag to start try the stage Lua script
-	var attemptStageScript:Bool = false; // JOELwindows7: flag to start prepare stage script after all stuffs loaded
+	public var attemptStageScript:Bool = false; // JOELwindows7: flag to start prepare stage script after all stuffs loaded
 
 	function loadStageFile(path:String)
 	{
@@ -1696,7 +1696,8 @@ class Stage extends MusicBeatState
 	// JOELwindows7: Psyched appear blackbar
 	public function appearBlackBar(forHowLong:Float = 2)
 	{
-		if(blackbarsTop == null || blackbarsBottom == null) return;
+		if (blackbarsTop == null || blackbarsBottom == null)
+			return;
 		blackbarsTop.visible = true;
 		blackbarsBottom.visible = true;
 		// blackbarsTop.x = -blackbarHeight;

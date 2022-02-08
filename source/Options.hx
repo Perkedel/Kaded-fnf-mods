@@ -2540,6 +2540,43 @@ class AdjustVolumeOption extends Option
 	}
 }
 
+// JOELwindows7: option to disable / enable accident volume keys assignation
+class AccidentVolumeKeysOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.accidentVolumeKeys = !FlxG.save.data.accidentVolumeKeys;
+		display = updateDisplay();
+
+		// apply immediately! copy from Kade's title state vol key assigner.
+		Main.instance.checkAccidentVolKeys();
+		return true;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Accident volume keys < " + (FlxG.save.data.accidentVolumeKeys ? "Enabled" : "Disabled") + " >";
+	}
+}
+
 // JOELwindows7: attempt the surround sound test using Lime audio source.
 class SurroundTestOption extends Option
 {

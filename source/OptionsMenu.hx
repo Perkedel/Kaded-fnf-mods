@@ -169,6 +169,8 @@ class OptionsMenu extends CoreSubState
 			new OptionCata(640, 40, 'Audio', [
 				new AdjustVolumeOption("Adjust Audio volume"),
 				// new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."), //JOELwindows7: how about move it here?
+				new AccidentVolumeKeysOption("Enable / Disable volume shortcut key all time beyond pause menu (- decrease, + increase, 0 mute)"),
+				// JOELwindows7: IDEA: only enable volume keys on pause menu?
 				new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
 				// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
 				new AnLoneBopeeboOption("Test gameplay music"),
@@ -176,11 +178,12 @@ class OptionsMenu extends CoreSubState
 			// JOELwindows7: Account options
 			new OptionCata(935, 40, 'Accounts', [
 				new LogGameJoltIn(#if gamejolt "(" + GameJoltAPI.getUserInfo(true) +
-					") Log your GameJolt account in" #else "GameJolt not supported. SADD!" #end)
+					") Log your GameJolt account in & manage" #else "GameJolt not supported. SADD!" #end)
 			]),
 			// JOELwindows7: was 640, 40
 			new OptionCata(1040, 40, "Misc", [
 				new FPSOption("Toggle the FPS Counter"),
+				new PreUnlockAllWeeksOption("Toggle to Pre-unlock all weeks"),
 				new CardiophileOption("Toggle heartbeat features that contains doki-doki stuffs"),
 				new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), // JOELwindows7: make this Odysee exclusive pls. how!
 				new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),

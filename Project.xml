@@ -193,7 +193,11 @@
 	<!-- JOELwindows7: separate mods folder to not include at all unless debug or forced anyway -->
 	<assets path='separate_mods' rename='mods' embed='false' if='debug || FORCE_INCLUDE_DLC'/>
 	<assets path='Admiral_Zumi' rename='mods' embed='false' if='debug || FORCE_INCLUDE_DLC' unless='HATE_XOP1R4T3 || HATE_PIRACY || LOVE_NFT || NOT_DECENTRALIZED || CENTRALIZED'/>
-	<assets path='art/readme.txt' rename='do NOT readme.txt' />
+	<!-- <assets path='art/readme.txt' rename='do NOT readme.txt' /> -->
+	<!-- JOELwindows7: now, the readme file is my warez ANSI art description yeyeyeye! cool and good -->
+	<assets path='art/perkedel_readme.txt' rename='do NOT readme.txt' />
+	<assets path='art/perkedel_readme.txt' rename='do NOT readme.nfo' />
+	<assets path='art/LFM_readme.ans' rename='do NOT readme.ans' />
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	<assets path='CREDIT.md' rename='CREDIT.txt'/>
 	<!-- JOELwindows7: also export credit too as well -->

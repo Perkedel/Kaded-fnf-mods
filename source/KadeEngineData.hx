@@ -45,6 +45,10 @@ class KadeEngineData
 			FlxG.save.data.changedHit = false;
 		}
 
+		// JOELwindows7: accident vol keys
+		if (FlxG.save.data.accidentVolumeKeys == null)
+			FlxG.save.data.accidentVolumeKeys = false;
+
 		// JOELwindows7: don't forget init save data of fullscreen mode
 		if (FlxG.save.data.fullscreen == null)
 			FlxG.save.data.fullscreen == FlxG.fullscreen;
