@@ -253,7 +253,20 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.mouse.visible = false; // JOELwindows7: just in case
 
 						// JOELwindows7: Hey! prepare unpause first! maybe do it only if not botplay?
-						PlayState.instance.waitLemmePrepareUnpauseFirst = FlxG.save.data.unpausePreparation;
+
+						var checkManuallyForUnPause:Bool = ((PlayStateChangeables.botPlay || PlayState.loadRep) ? false : true);
+
+						PlayState.instance.waitLemmePrepareUnpauseFirst = switch (Std.int(FlxG.save.data.unpausePreparation))
+						{
+							case 0:
+								false;
+							case 1:
+								true;
+							case 2:
+								checkManuallyForUnPause;
+							case _:
+								true;
+						};
 					}
 					else
 						FlxG.mouse.visible = true; // JOELwindows7: sigh, do not invisiblize mouse in charter!

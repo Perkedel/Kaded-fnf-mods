@@ -3286,10 +3286,10 @@ class NoteSplashOption extends Option
 }
 
 // JOELwindows7: force stepmania quantization no matter what. did you know, it's OFF when there is modchart? yeah!
-class ForceStepmaniaOption extends Option{
+class ForceStepmaniaOption extends Option
+{
 	// this is maybe because in case of rerotation craze of arrow idk.
-
-	//toggle `forceStepmania` ON or OFF
+	// toggle `forceStepmania` ON or OFF
 	public function new(desc:String)
 	{
 		super();
@@ -3332,25 +3332,44 @@ class UnpausePreparationOption extends Option
 
 	public override function left():Bool
 	{
-		press(); // same as press
+		// press(); // same as press
+		FlxG.save.data.unpausePreparation--;
+		if (FlxG.save.data.unpausePreparation < 0)
+			FlxG.save.data.unpausePreparation = 2;
+		display = updateDisplay();
 		return false;
 	}
 
 	public override function right():Bool
 	{
-		press(); // same as press
+		// press(); // same as press
+		FlxG.save.data.unpausePreparation++;
+		if (FlxG.save.data.unpausePreparation > 2)
+			FlxG.save.data.unpausePreparation = 0;
+		display = updateDisplay();
 		return false;
 	}
 
 	public override function press():Bool
 	{
-		FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
-		display = updateDisplay();
+		// FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
+		right();
+		// display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return "Unpause Preparation < " + (FlxG.save.data.unpausePreparation ? "ON" : "OFF") + " >";
+		return "Unpause Preparation < " + (switch (Std.int(FlxG.save.data.unpausePreparation))
+		{
+			case 0:
+				"OFF";
+			case 1:
+				"Always";
+			case 2:
+				"Manual Only"; // this only allow unpause prep if not botplay or replay
+			case _:
+				"???";
+		}) + " >";
 	}
 }

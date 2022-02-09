@@ -232,7 +232,7 @@ class KadeEngineData
 		// JOELwindows7: unpause preparation countdown
 		if (FlxG.save.data.unpausePreparation == null)
 		{
-			FlxG.save.data.unpausePreparation = true;
+			FlxG.save.data.unpausePreparation = 1;
 		}
 
 		FlxG.save.data.cacheImages = false;
