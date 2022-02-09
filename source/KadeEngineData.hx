@@ -223,9 +223,16 @@ class KadeEngineData
 			FlxG.save.data.noteSplashes = true;
 		}
 
+		// JOELwindows7: Force quantization even modchart loaded (note, stage modchart won't cancel quantization even this OFF)
 		if (FlxG.save.data.forceStepmania == null)
 		{
 			FlxG.save.data.forceStepmania = false;
+		}
+
+		// JOELwindows7: unpause preparation countdown
+		if (FlxG.save.data.unpausePreparation == null)
+		{
+			FlxG.save.data.unpausePreparation = true;
 		}
 
 		FlxG.save.data.cacheImages = false;

@@ -3320,3 +3320,37 @@ class ForceStepmaniaOption extends Option{
 		return "Force Quantization < " + (FlxG.save.data.forceStepmania ? "ON" : "OFF") + " >";
 	}
 }
+
+// JOELwindows7: unpause preparation countdown. toggle to have countdown preparation after unpause.
+class UnpausePreparationOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Unpause Preparation < " + (FlxG.save.data.unpausePreparation ? "ON" : "OFF") + " >";
+	}
+}

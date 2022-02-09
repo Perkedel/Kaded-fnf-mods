@@ -149,6 +149,7 @@ class OptionsMenu extends CoreSubState
 				new AutoClickEnabledOption("Let the game click the dialogue for you"),
 				new AutoClickDelayOption("Set the delay of click between dialogue typing completition"),
 				new EndSongEarlyOption("Toggle whether or not to end song early or wait music complete 1st"),
+				new UnpausePreparationOption("(RECOMMENDED ON) Initiate quick preparation countdown after unpausing"),
 			]),
 			new OptionCata(345, 40, "Appearance", [
 				new NoteskinOption("Change your current noteskin"), new NoteSplashOption("Have your note press splash"),
