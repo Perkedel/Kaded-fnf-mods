@@ -418,6 +418,7 @@ class TitleState extends MusicBeatState
 					{
 						createToast(null, "Late HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
 					}
+					createToast(null, "This month HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
 				}
 			}
 

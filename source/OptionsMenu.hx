@@ -158,6 +158,7 @@ class OptionsMenu extends CoreSubState
 				new JudgementCounter("Show your judgements that you've gotten in the song"),
 				new LaneUnderlayOption("How transparent your lane is, higher = more visible."),
 				new StepManiaOption("Sets the colors of the arrows depending on quantization instead of direction."),
+				new ForceStepmaniaOption("Force that quantization even when any modcharts are loaded."), // JOELwindows7: yeha! sneaky sneaky!
 				new AccuracyOption("Display accuracy information on the info bar."),
 				new SongPositionOption("Show the song's current position as a scrolling bar."),
 				new Colour("The color behind icons now fit with their theme. (e.g. Pico = green)"),

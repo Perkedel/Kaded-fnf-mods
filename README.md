@@ -9,6 +9,15 @@
 
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
+## Kontraktua Majoris
+
+`☁️Saubo ⏳` [`💣Copiar ✅`](https://gamebanana.com/mods/354884 ) `⛪Alfaheur 💥`
+
+> *by wearing the following noteskin, you are agree to abide by the rules to always keep & make sure that following Majoris*
+> *are safe & sound, away from any disaster particularly made by a group of terrorist in the world of cyber.*
+> *You will also will be given pledge card in form of this game itself in which hereby you are certified members of*
+> *the Last Funkin Moment campaign, for you will do the activism, telling worlds about what is happening around us.*
+
 ## Download NOW
 - Odysee
   - [Linux x64](https://odysee.com/@JOELwindows7:a/last-funkin-moments:b?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
@@ -25,6 +34,13 @@ If your antivirus went **sus**, they're dumb! None of these file are impostor, t
 I mean, if the antivirus thought that file is `malicious`, it's false positive. Ignore that, it's safe.  
 if you don't trust it, check around the source code and its libraries referred.
 
+## To share mods made for this LFM. IMPORTANT!!!
+Please just upload publish the Polymod LFM, **NOT** the executable. Please, have respect with the disk space! storage is luxury.
+
+It is also ***PRO GAMER MOVE*** if you completely rely only towards Polymod LFM rather than modifying the source code, and then upload the executable which is **PECKING HUGE**. NA ah! Please utilize Polymod LFM! if you believe there are serveral feature missing in e.g. the modchart capabilities, Please submit [`ISSUE`](https://github.com/Perkedel/Kaded-fnf-mods/issues) with `FEATURE_REQUEST` as the template. We will happily discuss and consider as best as we can to grant your wish.
+
+see folder `/example_mods/`, `/Admiral_Zumi/`, `/separate_mods/` for examples of Polymod LFM sub-mods.
+
 ## Using API
 - GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (**Private, do not share** if filled with your keys). Here's the code:
 ```haxe
@@ -35,6 +51,8 @@ class GJKeys
     public static var key:String = ""; // Put your game's private API key here
 }
 ```
+
+Unfortunately folks, we still not witness JUCE integrator to Haxe, OpenFl, HaxeFlixel, or whatever around here. 😭😭😭😭😭😭😭😭😭😭😭😭😭😭
 
 ## Status
 ## Build
@@ -143,6 +161,9 @@ as always, credits to all stuff involved will be on [`CREDIT.md`](https://github
 ...
 
 # Misc
+## Legacy Majoris
+- https://gamebanana.com/mods/44214
+
 ## [For the badge](https://forthebadge.com/ )
 [![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)

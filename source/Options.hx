@@ -3284,3 +3284,39 @@ class NoteSplashOption extends Option
 		return "Note Splash < " + (FlxG.save.data.noteSplashes ? "ON" : "OFF") + " >";
 	}
 }
+
+// JOELwindows7: force stepmania quantization no matter what. did you know, it's OFF when there is modchart? yeah!
+class ForceStepmaniaOption extends Option{
+	// this is maybe because in case of rerotation craze of arrow idk.
+
+	//toggle `forceStepmania` ON or OFF
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.forceStepmania = !FlxG.save.data.forceStepmania;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Force Quantization < " + (FlxG.save.data.forceStepmania ? "ON" : "OFF") + " >";
+	}
+}

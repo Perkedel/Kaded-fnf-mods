@@ -306,67 +306,43 @@ class Note extends FlxSprite
 		originColor = noteData; // The note's origin color will be checked by its sustain notes
 
 		// JOELwindows7: whoa, the PlayState.instance can be null! make sure be careful
-		if (PlayState.instance != null)
+		// JOELwindows7: okay we still have to quantize color.
+		if (FlxG.save.data.stepMania
+			&& !isSustainNote
+			&& ((FlxG.save.data.forceStepmania) ? true : ((PlayState.instance != null) ? (!PlayState.instance.executeModchart
+				&& !PlayState.instance.executeModHscript) : true)))
+			// JOELwindows7: huh! turns out Kade decided to not quantize note if any modchart is running.
+			// perhaps for authenticity in retransform craze, due to to this quantization only select other arrow,
+			// and rotates it which dislodge the supposed original angle. idk just saying.
+			// Okay, now I have installed force option. idk this still not recommended because again, pre-rotate messes up your rotation
+			// craze calculations!
 		{
-			if (FlxG.save.data.stepMania && !isSustainNote && !PlayState.instance.executeModchart)
-			{
-				var col:Int = 0;
+			var col:Int = 0;
 
-				var beatRow = Math.round(beat * 48);
+			var beatRow = Math.round(beat * 48);
 
-				// STOLEN ETTERNA CODE (IN 2002)
+			// STOLEN ETTERNA CODE (IN 2002)
 
-				if (beatRow % (192 / 4) == 0)
-					col = quantityColor[0];
-				else if (beatRow % (192 / 8) == 0)
-					col = quantityColor[2];
-				else if (beatRow % (192 / 12) == 0)
-					col = quantityColor[4];
-				else if (beatRow % (192 / 16) == 0)
-					col = quantityColor[6];
-				else if (beatRow % (192 / 24) == 0)
-					col = quantityColor[4];
-				else if (beatRow % (192 / 32) == 0)
-					col = quantityColor[4];
+			if (beatRow % (192 / 4) == 0)
+				col = quantityColor[0];
+			else if (beatRow % (192 / 8) == 0)
+				col = quantityColor[2];
+			else if (beatRow % (192 / 12) == 0)
+				col = quantityColor[4];
+			else if (beatRow % (192 / 16) == 0)
+				col = quantityColor[6];
+			else if (beatRow % (192 / 24) == 0)
+				col = quantityColor[4];
+			else if (beatRow % (192 / 32) == 0)
+				col = quantityColor[4];
 
-				animation.play(dataColor[col] + 'Scroll');
-				localAngle -= arrowAngles[col];
-				localAngle += arrowAngles[noteData];
-				originAngle = localAngle;
-				originColor = col;
-			}
+			animation.play(dataColor[col] + 'Scroll');
+			localAngle -= arrowAngles[col];
+			localAngle += arrowAngles[noteData];
+			originAngle = localAngle;
+			originColor = col;
 		}
-		else
-		{
-			// JOELwindows7: okay we still have to quantize color.
-			if (FlxG.save.data.stepMania && !isSustainNote)
-			{
-				var col:Int = 0;
 
-				var beatRow = Math.round(beat * 48);
-
-				// STOLEN ETTERNA CODE (IN 2002)
-
-				if (beatRow % (192 / 4) == 0)
-					col = quantityColor[0];
-				else if (beatRow % (192 / 8) == 0)
-					col = quantityColor[2];
-				else if (beatRow % (192 / 12) == 0)
-					col = quantityColor[4];
-				else if (beatRow % (192 / 16) == 0)
-					col = quantityColor[6];
-				else if (beatRow % (192 / 24) == 0)
-					col = quantityColor[4];
-				else if (beatRow % (192 / 32) == 0)
-					col = quantityColor[4];
-
-				animation.play(dataColor[col] + 'Scroll');
-				localAngle -= arrowAngles[col];
-				localAngle += arrowAngles[noteData];
-				originAngle = localAngle;
-				originColor = col;
-			}
-		}
 		// we make sure its downscroll and its a SUSTAIN NOTE (aka a trail, not a note)
 		// and flip it so it doesn't look weird.
 		// THIS DOESN'T FUCKING FLIP THE NOTE, CONTRIBUTERS DON'T JUST COMMENT THIS OUT JESUS

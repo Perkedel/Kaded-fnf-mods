@@ -3113,7 +3113,8 @@ class PlayState extends MusicBeatState
 					Debug.logTrace("we're fuckin ending the song ");
 
 					endingSong = true;
-					new FlxTimer().start(3, function(timer) // JOELwindows7: it was 2, now extend to 5!!! nvm, 3! yess.
+					new FlxTimer().start(0, function(timer) // JOELwindows7: it was 2, now extend to 5!!! nvm, 3! yess. 
+					//NO MORE! there is wait for music complete 1st!
 					{
 						// endSong();
 						checkEpilogueChat(); // JOELwindows7: you sneaky little punk!

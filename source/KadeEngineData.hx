@@ -223,6 +223,11 @@ class KadeEngineData
 			FlxG.save.data.noteSplashes = true;
 		}
 
+		if (FlxG.save.data.forceStepmania == null)
+		{
+			FlxG.save.data.forceStepmania = false;
+		}
+
 		FlxG.save.data.cacheImages = false;
 
 		if (FlxG.save.data.middleScroll == null)
