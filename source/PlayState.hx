@@ -109,6 +109,7 @@ import Discord.DiscordClient;
 import hx.files.*;
 
 using StringTools;
+using flixel.util.FlxSpriteUtil;
 
 class PlayState extends MusicBeatState
 {
@@ -3106,20 +3107,27 @@ class PlayState extends MusicBeatState
 				// as you can see, there is a something. music stop, minute second counter resets. that's not reliable to measured on here.
 				// requiring this exactly passes song length, while it already reset before it be seen, causes softlock. musicComplete flag raised, but the counter goes zero??
 				// see that? confusing!
-				if (unspawnNotes.length == 0
-					&& notes.length == 0
-					&& (FlxG.save.data.endSongEarly ? FlxG.sound.music.time / songMultiplier > (songLength - 0) : musicCompleted)) // JOELwindows7: fine here music complete
+				if (unspawnNotes.length == 0 && notes.length == 0) // JOELwindows7: fine here music complete
 				{
-					Debug.logTrace("we're fuckin ending the song ");
-
-					endingSong = true;
-					new FlxTimer().start(0, function(timer) // JOELwindows7: it was 2, now extend to 5!!! nvm, 3! yess. 
-					//NO MORE! there is wait for music complete 1st!
+					// JOELwindows7: install cartoon pipehose film strip corner dot pop up and disappear after few seconds.
+					if (!hasAppearedDot)
 					{
+						// JOELwindows7: Yes I know, redundant, because something there!
+						cartoonCornerDot();
+					}
+
+					if (FlxG.save.data.endSongEarly ? FlxG.sound.music.time / songMultiplier > (songLength - 0) : musicCompleted)
+					{
+						Debug.logTrace("we're fuckin ending the song ");
+
+						endingSong = true;
+						// JOELwindows7: it was 2, now extend to 5!!! nvm, 3! yess.
+						// NO MORE! there is wait for music complete 1st!
+
 						// endSong();
 						checkEpilogueChat(); // JOELwindows7: you sneaky little punk!
 						// you have endSong just little bit earlier in case stroffs.
-					});
+					}
 				}
 			}
 		}
@@ -7665,6 +7673,40 @@ class PlayState extends MusicBeatState
 		});
 		FlxTween.color(realBlackbarsTop, forHowLong, realBlackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
 		FlxTween.color(realBlackbarsBottom, forHowLong, realBlackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
+	}
+
+	// JOELwindows7: and the flag for bellow cartoon corner dot
+	var hasAppearedDot:Bool = false;
+
+	// JOELwindows7: appear this infamous dot on top right corner, found on classic pipehose cartoon.
+	// It appears at the end of the episode marking ending of film strip. so to prepare End card next.
+	public function cartoonCornerDot()
+	{
+		// Copy from cheat sheet, section Drawing Shapes
+		var lineStyle:LineStyle = {color: FlxColor.RED, thickness: 1};
+		var drawStyle:DrawStyle = {smoothing: true};
+		var daDot = new FlxSprite();
+		daDot.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+		daDot.drawCircle(FlxG.width - 100, 300, 100, FlxColor.PURPLE, lineStyle, drawStyle);
+		// where is draw n-gon (draw polygon easy with just Int num of vertices)?
+		// the polygon requires you put vertices one by one! what the peck?!?
+		if (!hasAppearedDot)
+		{
+			add(daDot);
+
+			new FlxTimer().start(1, function(tmr:FlxTimer)
+			{
+				daDot.destroy();
+			});
+
+			hasAppearedDot = true;
+		}
+	}
+
+	// TODO: RESERVED: JOELwindows7: Pushing P in nekopara does fun things. Pushing P song
+	public function pushP()
+	{
+		// TODO: jump all characters in the game. the fun begins if the character skin has yea you know.
 	}
 }
 // u looked :O -ides
