@@ -88,6 +88,12 @@ class Note extends FlxSprite
 	public var inCharter:Bool = false; // JOELwindows7: globalize inCharter for all charting state detection
 	public var noteTypeCheck:String; // JOELwindows7: globalize noteTypeCheck for all noteSkin detection
 
+	public var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound audio file to play when hit & hitsound option enabled.
+
+	// IDEA: JOELwindows7: you can have more variables about string or whatever too! like
+	// sylables or phoneme for VOCALOID
+	// noteNumber MIDI note number for everything
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
 			?bet:Float = 0, ?noteType:Int = 0) // JOELwindows7: edge long noteType
 	{
@@ -103,6 +109,7 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		this.inCharter = inCharter;
 		isSustainNote = sustainNote;
+		// hitsoundPath = hitsoundId; // yeah the note hitsound
 
 		x += 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?

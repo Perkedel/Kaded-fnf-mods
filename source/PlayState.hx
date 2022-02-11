@@ -6152,6 +6152,17 @@ class PlayState extends MusicBeatState
 				// add even sustain note, this is where you consider it.
 				combo += 1;
 				popUpScore(note);
+
+				// JOELwindows7: Hit sound like osu!
+				if (FlxG.save.data.hitsound)
+				{
+					// allow custom hitsound just like in osu! and also testables in charting state right away.
+					FlxG.sound.play(Paths.sound(note.hitsoundPath));
+				}
+			}
+			else
+			{
+				// JOELwindows7: if Pump it Up rapid combo is active, then increase combo still even if sustain note
 			}
 
 			var altAnim:String = "";
@@ -7687,7 +7698,7 @@ class PlayState extends MusicBeatState
 		var drawStyle:DrawStyle = {smoothing: true};
 		var daDot = new FlxSprite();
 		daDot.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
-		daDot.drawCircle(FlxG.width - 100, 300, 100, FlxColor.PURPLE, lineStyle, drawStyle);
+		daDot.drawCircle(FlxG.width - 10, 400, 100, FlxColor.PURPLE, lineStyle, drawStyle);
 		// where is draw n-gon (draw polygon easy with just Int num of vertices)?
 		// the polygon requires you put vertices one by one! what the peck?!?
 		if (!hasAppearedDot)

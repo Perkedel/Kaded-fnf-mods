@@ -235,6 +235,12 @@ class KadeEngineData
 			FlxG.save.data.unpausePreparation = 1;
 		}
 
+		// JOELwindows7: hitsound in gameplay bool
+		if (FlxG.save.data.hitsound == null)
+		{
+			FlxG.save.data.hitsound = false; // originally in this game FNF, it's OFF. while osu! is ON
+		}
+
 		FlxG.save.data.cacheImages = false;
 
 		if (FlxG.save.data.middleScroll == null)

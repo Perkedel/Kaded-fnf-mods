@@ -163,10 +163,11 @@ class StoryMenuState extends MusicBeatState
 		weekBannerPath = new Array<String>();
 		weekUnderlayPath = new Array<String>();
 		weekClickSoundPath = new Array<String>();
-		for (i in 0...weekLoads.length)
+		// use the first standardized (from top most upstream possible) array of weeks, which in this one is Week Names array.
+		for (i in 0...weekNames.length)
 		{
 			var weekLine:Array<String> = weekLoads[i].split(':');
-			var weekSongs:Array<String> = new Array<String>();
+			var weekSongs:Array<String> = new Array<String>(); // remember, if empty, must initialize!
 			for (j in 0...weekLine.length)
 			{
 				var song:String = weekLine[j];
@@ -183,6 +184,8 @@ class StoryMenuState extends MusicBeatState
 		}
 	}
 
+	// TODO: JOELwindows7: use better week loading JSON granular from Master Eric's Enigma or whatever.
+
 	override function create()
 	{
 		// JOELwindows7: Do the work for the weeklist pls!
@@ -191,11 +194,12 @@ class StoryMenuState extends MusicBeatState
 		// hmm isn't that better to use JSON instead? it's easier to manage!
 		// just copy 3 week list variables above, JSONify them all! yeah!
 		/*
-			Pain is temporary
-			GLORY IS FOREVER
-			LOL wintergatan
-		 */
-		legacyJSONWeekList = false; // JOELwindows7: turn off after you completed new weeklist
+				Pain is temporary
+				GLORY IS FOREVER
+				LOL wintergatan
+			// */ // a fed. looks like comment inside comment block doesn't affect. only after closing.
+		legacyJSONWeekList = false; // JOELwindows7: turn off after you completed new weeklist. DONE
+		// TODO: JOELwindow7: implement Master Eric's granular week JSON.
 		if (legacyJSONWeekList)
 			jsonWeekList();
 		else

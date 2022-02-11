@@ -18,6 +18,8 @@
 
 package ui;
 
+import flixel.text.FlxText;
+import flixel.addons.ui.FlxUIText;
 import flixel.addons.transition.FlxTransitionSprite;
 import flixel.addons.transition.TransitionData;
 import utils.Initializations;
@@ -74,6 +76,7 @@ class SplashScreen extends MusicBeatState
 	var _cachedTimestep:Bool;
 	var _cachedAutoPause:Bool;
 
+	var _aModOfText:FlxUIText;
 	var _productLogo:FlxSprite;
 	var _companyLogo:FlxSprite;
 
@@ -146,14 +149,23 @@ class SplashScreen extends MusicBeatState
 
 		onResize(stageWidth, stageHeight);
 
+		_aModOfText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 150), 0, "A mod of Friday Night Funkin", 24);
+		_aModOfText.setFormat(Paths.font("UbuntuMono-R.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		_aModOfText.scrollFactor.set();
+		_aModOfText.screenCenter(XY);
+		_aModOfText.y += 150;
+		add(_aModOfText);
+
 		_productLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("LFMLogoSplash"));
 		_productLogo.setPosition((FlxG.width / 2) - (_productLogo.width / 2), (FlxG.height / 2) - (_productLogo.height / 2));
+		_productLogo.scrollFactor.set();
 		add(_productLogo);
 
 		_companyLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("Perkedel_Logo_Typeborder"));
 		// _companyLogo.scale.x = _companyLogo.scale.y = .5;
 		_companyLogo.setGraphicSize(Std.int(_companyLogo.width * .075), Std.int(_companyLogo.height * .075));
 		_companyLogo.setPosition((FlxG.width / 2) - (_companyLogo.width / 2), (FlxG.height / 2) - (_companyLogo.height / 2) + 80);
+		_companyLogo.scrollFactor.set();
 		add(_companyLogo);
 
 		FlxG.sound.play(Paths.sound('scrollMenu'));
