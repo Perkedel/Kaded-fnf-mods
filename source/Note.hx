@@ -167,6 +167,7 @@ class Note extends FlxSprite
 						noteType);
 					// frames = PlayState.noteskinSpriteMine;
 					Debug.logTrace("Mine graphic loaded");
+				// TODO: other note types! special 1, important 3, never 4, etc.
 				default:
 					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
 						noteType);

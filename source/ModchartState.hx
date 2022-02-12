@@ -1810,6 +1810,23 @@ class ModchartState
 			PlayState.instance.justHey(forceIt);
 		});
 
+		// JOELwindows7: blackbars yey
+		Lua_helper.add_callback(lua, "appearBlackbar", function(forHowLong:Float = 1, useStageLevel:Bool = false)
+		{
+			if (useStageLevel)
+				PlayState.Stage.appearBlackBar(forHowLong)
+			else
+				PlayState.instance.appearRealBlackBar(forHowLong);
+		});
+
+		Lua_helper.add_callback(lua, "disappearBlackbar", function(forHowLong:Float = 1, useStageLevel:Bool = false)
+		{
+			if (useStageLevel)
+				PlayState.Stage.disappearBlackBar(forHowLong)
+			else
+				PlayState.instance.disappearRealBlackBar(forHowLong);
+		});
+
 		Lua_helper.add_callback(lua, "prepareColorableBg",
 			function(useImage:Bool = false, positionX:Float = -500, positionY:Float = -500, imagePath:String = '', animated:Bool = false,
 					color:String = "WHITE", width:Int = 1, height:Int = 1, upscaleX:Int = 1, upscaleY:Int = 1, antialiasing:Bool = true,

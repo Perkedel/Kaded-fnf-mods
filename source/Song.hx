@@ -50,6 +50,7 @@ typedef SongData =
 	 */
 	var artist:String; // JOELwindows7: the artist of it
 
+	var ?charter:String; // JOELwindows7: who charted the song.
 	var chartVersion:String;
 	var notes:Array<SwagSection>;
 	var eventObjects:Array<Event>;
@@ -99,6 +100,8 @@ typedef SongData =
 typedef SongMeta =
 {
 	var ?artist:String;
+
+	var ?charter:String; // JOELwindows7: who charted the song.
 	var ?offset:Int;
 	var ?name:String;
 

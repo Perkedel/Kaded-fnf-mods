@@ -1,6 +1,7 @@
 {
     "ProgramUsed": "Visual Studio Code",
     "generatedBy": "manually",
+    "charter": "YOUR_NAME",
     "song": {
         "player2": "dad",
         "player1": "bf",

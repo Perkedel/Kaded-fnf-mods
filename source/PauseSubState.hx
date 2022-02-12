@@ -113,15 +113,27 @@ class PauseSubState extends MusicBeatSubstate
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
+		// JOELwindows7: show how many you failed during playing this song.
+		var levelBlueballs:FlxText = new FlxText(20, 15 + (32 * 2), 0, "", 32);
+		levelBlueballs.text += "Blueballed: " + Std.string(GameOverSubstate.getBlueballCounter());
+		levelBlueballs.scrollFactor.set();
+		// levelBlueballs.setFormat(Paths.font('vcr.ttf'), 32);
+		levelBlueballs.setFormat(Paths.font('UbuntuMono-R.ttf'), 32); // JOELwindows7: use universal language font
+		levelBlueballs.updateHitbox();
+		add(levelBlueballs);
+
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
+		levelBlueballs.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
+		levelBlueballs.x = FlxG.width - (levelBlueballs.width + 20);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
+		FlxTween.tween(levelBlueballs, {alpha: 1, y: levelBlueballs.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);

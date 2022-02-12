@@ -25,7 +25,7 @@ class NoteskinHelpers
 		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/noteskins")))
 		{
 			// JOELwindows7: make sure the special type are not considered different option.
-			// these are pixel, mine do not step, special power up, important must step or ded, never step or ded. idk.
+			// these are pixel, mine do not step, special power up, important must step or ded, never step or ded, splash, etc. idk.
 			if (i.contains("-pixel") || i.contains("-mine") || i.contains("-special") || i.contains("-important") || i.contains("-never")
 				|| i.contains("-splash"))
 				continue;

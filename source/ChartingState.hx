@@ -1,5 +1,6 @@
 package;
 
+import tjson.TJSON;
 import haxe.ui.components.DropDown;
 import flixel.FlxSubState;
 import flixel.addons.ui.FlxButtonPlus;
@@ -118,6 +119,7 @@ class ChartingState extends MusicBeatState
 	public static var _song:SongData;
 
 	var typingShit:FlxInputText;
+	var typingShit2:FlxInputText; // JOELwindows7: this is to put charter name.
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
 	**/
@@ -1431,6 +1433,10 @@ class ChartingState extends MusicBeatState
 			body: "Tick if your song has separate voice audio.",
 		});
 
+		// JOELwindows7: put the charter / author input text field here somewhere
+		var UI_charter = new FlxUIInputText(10, 50, 70, _song.charter, 8);
+		typingShit2 = UI_charter;
+
 		var saveButton:FlxUIButton = new FlxUIButton(110, 8, "Save", function()
 		{
 			saveLevel();
@@ -1566,6 +1572,7 @@ class ChartingState extends MusicBeatState
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
 		tab_group_song.add(UI_songTitle);
+		tab_group_song.add(UI_charter); // JOELwindows7: hoho yeah!
 		tab_group_song.add(restart);
 		tab_group_song.add(check_voices);
 		// tab_group_song.add(check_mute_inst);
@@ -1838,7 +1845,7 @@ class ChartingState extends MusicBeatState
 
 		var stepperNoteTypeLabel = new FlxText(74, 40, 'Note Type'); // JOELwindows7: note type label
 
-		var hitsoundNotePathLabel = new FlxText(85, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label
+		var hitsoundNotePathLabel = new FlxText(95, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label
 
 		var applyLength:FlxUIButton = new FlxUIButton(10, 100, 'Apply Data');
 
@@ -2895,6 +2902,7 @@ class ChartingState extends MusicBeatState
 
 			Conductor.songPosition = FlxG.sound.music.time;
 			_song.songId = typingShit.text;
+			_song.charter = typingShit2.text;
 
 			var timingSeg = TimingStruct.getTimingAtTimestamp(Conductor.songPosition);
 
@@ -3247,7 +3255,7 @@ class ChartingState extends MusicBeatState
 					}
 				}
 
-				if (!typingShit.hasFocus)
+				if (!typingShit.hasFocus && !typingShit2.hasFocus) // JOELwindows7: woo yeah baby
 				{
 					var shiftThing:Int = 1;
 					if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: oh yeah baby
@@ -3689,6 +3697,7 @@ class ChartingState extends MusicBeatState
 			changeBPM: false,
 			mustHitSection: true,
 			sectionNotes: [],
+			betterSectionNotes: [],
 			typeOfSection: 0,
 			altAnim: false,
 			CPUAltAnim: false,
@@ -4254,14 +4263,60 @@ class ChartingState extends MusicBeatState
 
 		toRemove = []; // clear memory
 
+		// JOELwindows7: copy migrate from sectionNotes into betterSectionNotes
+		for (i in _song.notes)
+		{
+			//JOELwindows7: for safety, init that betterSectionNotes array
+			i.betterSectionNotes = []; // yeah basically this is auto-conversion output anyway.
+			// btw, this type of section notes should've been built like so.
+			// ah well, let this by my own sTILE note section.
+
+			for (j in 0...i.sectionNotes.length)
+			{
+				var stringedNoteType:String = switch (i.sectionNotes[j][5])
+				{
+					case 0:
+						'default';
+					case 1:
+						'special';
+					case 2:
+						'mine';
+					case 3:
+						'important';
+					case 4:
+						'never';
+					case _:
+						'default';
+				};
+
+				// i.betterSectionNotes
+				i.betterSectionNotes[j] = {
+					strumTime: i.sectionNotes[j][0],
+					noteData: i.sectionNotes[j][1],
+					sustainLength: i.sectionNotes[j][2],
+					isAlt: i.sectionNotes[j][3],
+					beat: i.sectionNotes[j][4],
+					noteType: i.sectionNotes[j][5],
+					noteTypeId: stringedNoteType,
+					hitsoundPath: i.sectionNotes[j][6],
+				}
+			}
+		}
+
 		var json = {
-			"song": _song
+			"ProgramUsed": 'Last Funkin Moments',
+			"generatedBy": 'charting',
+			"charter": _song.charter,
+			"song": _song,
 		};
 
 		// JOELwindows7: make save JSON pretty
 		// https://haxe.org/manual/std-Json-encoding.html
 		// var data:String = Json.stringify(json, "\t");
-		var data:String = Json.stringify(json, null, " ");
+		// var data:String = Json.stringify(json, null, " ");
+		// var data:String = Json.stringify(json, null, "\t"); // JOELwindows7: must use `TAB` instead!!!!
+		// var data:String = TJSON.stringify(json, null, " "); // JOELwindows7: what?! you don't have stringify?
+		var data:String = TJSON.encode(json, "fancy"); // JOELwindows7: wait, it's called encode!
 
 		if ((data != null) && (data.length > 0))
 		{

@@ -13,6 +13,7 @@ import flixel.util.FlxTimer;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
+	// class TesMo{} // TEST: JOELwindows7: class definition is not allowed inside a class defintion.
 	var bf:Boyfriend;
 	var camFollow:FlxObject;
 
@@ -27,8 +28,17 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var workaroundDidStopCurrentMusic:Bool = false;
 
+	static var blueBallCounter:Int = 0; // JOELwindows7: and now! for the moment of truth, blueball counter!!!
+
 	public function new(x:Float, y:Float, ?handoverUnspawnNotes:Array<Note>, ?handoverStaticArrow:Array<StaticArrow>)
 	{
+		// JOELwindows7: add blueball
+		addBlueball();
+
+		// JOELwindows7: flash red in background
+		if (FlxG.save.data.flashing)
+			FlxG.camera.flash(FlxColor.CYAN, 0.1);
+
 		// JOELwindows7: debug slag! stop voice & sound again!
 		if (PlayState.instance != null && PlayState.instance.vocals != null)
 			PlayState.instance.vocals.stop();
@@ -340,5 +350,22 @@ class GameOverSubstate extends MusicBeatSubstate
 				});
 			});
 		}
+	}
+
+	// JOELwindows7: blueball managements
+	public static function addBlueball()
+	{
+		GameOverSubstate.blueBallCounter++;
+	}
+
+	// JOELwindows7: reset blueball counter
+	public static function resetBlueball()
+	{
+		GameOverSubstate.blueBallCounter = 0;
+	}
+
+	public static function getBlueballCounter()
+	{
+		return GameOverSubstate.blueBallCounter;
 	}
 }

@@ -907,6 +907,9 @@ class FreeplayState extends MusicBeatState
 	 */
 	public static function loadSongInFreePlay(songName:String, difficulty:Int, isCharting:Bool, reloadSong:Bool = false)
 	{
+		// JOELwindows7: first, reset blueball counter
+		GameOverSubstate.resetBlueball();
+
 		Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
 
 		// Make sure song data is initialized first.

@@ -540,6 +540,9 @@ class StoryMenuState extends MusicBeatState
 
 	function selectWeek()
 	{
+		// JOELwindows7: reset blue balls
+		GameOverSubstate.resetBlueball();
+
 		if (weekUnlocked[curWeek])
 		{
 			if (stopspamming == false)

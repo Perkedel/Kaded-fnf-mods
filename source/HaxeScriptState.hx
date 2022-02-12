@@ -1535,14 +1535,20 @@ class HaxeScriptState
 			PlayState.instance.justHey(forceIt);
 		});
 
-		addCallback("appearBlackbar", function(forHowLong:Float = 1)
+		addCallback("appearBlackbar", function(forHowLong:Float = 1, useStageLevel:Bool = false)
 		{
-			PlayState.Stage.appearBlackBar(forHowLong);
+			if(useStageLevel)
+				PlayState.Stage.appearBlackBar(forHowLong)
+			else
+				PlayState.instance.appearRealBlackBar(forHowLong);
 		});
 
-		addCallback("disappearBlackbar", function(forHowLong:Float = 1)
+		addCallback("disappearBlackbar", function(forHowLong:Float = 1, useStageLevel:Bool = false)
 		{
-			PlayState.Stage.disappearBlackBar(forHowLong);
+			if(useStageLevel)
+				PlayState.Stage.disappearBlackBar(forHowLong)
+			else
+				PlayState.instance.disappearRealBlackBar(forHowLong);
 		});
 
 		addCallback("prepareColorableBg",

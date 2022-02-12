@@ -2530,6 +2530,7 @@ class PlayState extends MusicBeatState
 
 				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4],
 					songNotes[5]); // JOELwindows7: the note with type
+				swagNote.hitsoundPath = songNotes[6]; // JOELwindows7: and the hit sound file name;
 
 				if (!gottaHitNote && PlayStateChangeables.Optimize)
 					continue;
@@ -2557,6 +2558,7 @@ class PlayState extends MusicBeatState
 
 					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false,
 						false, songNotes[4], songNotes[5]); // JOELwindows7: here sustain note too.
+					sustainNote.hitsoundPath = songNotes[6]; // JOELwindows7: and the hit sound file name as well.
 					sustainNote.scrollFactor.set();
 					unspawnNotes.push(sustainNote);
 					sustainNote.isAlt = songNotes[3]
@@ -3114,6 +3116,9 @@ class PlayState extends MusicBeatState
 					{
 						// JOELwindows7: Yes I know, redundant, because something there!
 						cartoonCornerDot();
+
+						// JOELwindows7: reset blue ball because yey we succeed
+						GameOverSubstate.resetBlueball();
 					}
 
 					if (FlxG.save.data.endSongEarly ? FlxG.sound.music.time / songMultiplier > (songLength - 0) : musicCompleted)
@@ -4502,7 +4507,7 @@ class PlayState extends MusicBeatState
 					daNote.active = false;
 
 					if (!daNote.isSustainNote)
-						successfullyStep(1); // JOELwindows7:successfully step for p2
+						successfullyStep(1, daNote); // JOELwindows7:successfully step for p2
 
 					daNote.kill();
 					notes.remove(daNote, true);
@@ -5235,6 +5240,8 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: yoink splash notes. idk where the peck suppose we get the asset from
 		// because these baa..... I mean.. whatever, did not license it royalty free / free culture compliant!!! I hate that!
 		// yoink from Psych https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
+		// pls draw me royalty free notesplash for me for $0! jk, don't have to. I need time alot to do that.
+		// but feel free to become generous yeah!
 		if (daRating == 'sick' && !daNote.noteSplashDisabled)
 		{
 			spawnNoteSplashOnNote(daNote, daNote.noteType);
@@ -6154,11 +6161,11 @@ class PlayState extends MusicBeatState
 				popUpScore(note);
 
 				// JOELwindows7: Hit sound like osu!
-				if (FlxG.save.data.hitsound)
-				{
-					// allow custom hitsound just like in osu! and also testables in charting state right away.
-					FlxG.sound.play(Paths.sound(note.hitsoundPath));
-				}
+				// if (FlxG.save.data.hitsound)
+				// {
+				// 	// allow custom hitsound just like in osu! and also testables in charting state right away.
+				// 	FlxG.sound.play(Paths.sound((note.hitsoundPath != null && note.hitsoundPath != "")? note.hitsoundPath : 'SNAP', 'shared'));
+				// }
 			}
 			else
 			{
@@ -6209,7 +6216,7 @@ class PlayState extends MusicBeatState
 				note.destroy();
 
 				// JOELwindows7: successfully step, add adrenaline heartbeat fass
-				successfullyStep();
+				successfullyStep(0, note);
 			}
 			else
 			{
@@ -6782,8 +6789,37 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function successfullyStep(whichOne:Int = 0)
+	// JOELwindows7: when successfully step
+	function successfullyStep(whichOne:Int = 0, ?handoverNote:Note)
 	{
+		// JOELwindows7: Hit sound like osu!
+		if (FlxG.save.data.hitsound)
+		{
+			// allow custom hitsound just like in osu! and also testables in charting state right away.
+			if (handoverNote != null)
+				FlxG.sound.play(Paths.sound((handoverNote.hitsoundPath != null && handoverNote.hitsoundPath != "") ? handoverNote.hitsoundPath : 'SNAP',
+					'shared'));
+		}
+
+		// option only for specific player
+		switch (whichOne)
+		{
+			case 0:
+			// boyfriend.playAnim('hit', true);
+			// break;
+			// notesplash no needed because previous good note hit handler had it. only splash if SICK (PERFECT) and beyond.
+			case 1:
+				// dad.playAnim('hit', true);
+				// break;
+				spawnNoteSplashOnNote(handoverNote, handoverNote.noteType, whichOne); // yay Psyched note splash on player 2 as well!
+
+			case 2:
+			// girlfriend.playAnim('hit', true);
+			// break;
+			// okay I know, Copilot.
+			default:
+		}
+
 		increaseHR(successionAdrenalAdd[whichOne][heartTierIsRightNow[whichOne]], whichOne);
 	}
 
@@ -7592,11 +7628,19 @@ class PlayState extends MusicBeatState
 	}
 
 	// JOELwindows7: Psyched splash note yeahow
-	function spawnNoteSplashOnNote(note:Note, noteType:Int = 0)
+	function spawnNoteSplashOnNote(note:Note, noteType:Int = 0, whichPlayer:Int = 0)
 	{
 		if (FlxG.save.data.noteSplashes && note != null)
 		{
 			var strum:StaticArrow = playerStrums.members[note.noteData];
+			// JOELwindows7: handle which player properly. we have strum variable to get where position for each
+			// strum receptors.
+			switch (whichPlayer)
+			{
+				case 1:
+					strum = cpuStrums.members[note.noteData];
+				default:
+			}
 			if (strum != null)
 			{
 				spawnNoteSplash(strum.x, strum.y, note.noteData, note, noteType);
@@ -7604,7 +7648,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	// JOELwindows7: spawn note splash core
+	// JOELwindows7: spawn note splash core Pyschedly
 	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0)
 	{
 		var skin:String = 'Arrow-splash'; // TODO: JOELwindows7: use `-duar` for mines (note type 2)
@@ -7698,7 +7742,10 @@ class PlayState extends MusicBeatState
 		var drawStyle:DrawStyle = {smoothing: true};
 		var daDot = new FlxSprite();
 		daDot.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
-		daDot.drawCircle(FlxG.width - 10, 400, 100, FlxColor.PURPLE, lineStyle, drawStyle);
+		daDot.drawCircle(FlxG.width - 10, 140, 100, FlxColor.PURPLE, lineStyle, drawStyle);
+		daDot.scrollFactor.set(); // don't forget!
+		// leave daDot in camGame / default because it makes sense as this would be part of film strip.
+		daDot.cameras = [camHUD]; // NOPE!!! without putting on HUD, it stays there.
 		// where is draw n-gon (draw polygon easy with just Int num of vertices)?
 		// the polygon requires you put vertices one by one! what the peck?!?
 		if (!hasAppearedDot)

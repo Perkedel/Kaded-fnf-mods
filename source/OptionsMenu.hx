@@ -166,12 +166,14 @@ class OptionsMenu extends CoreSubState
 				new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
 				new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
 				new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
+				new CpuSplashOption("Toggle the CPU's note splash when it hits a note (REQUIRES: Note Splash to be ON)"),
 			]),
 			// JOELwindows7: Audio
 			new OptionCata(640, 40, 'Audio', [
 				new AdjustVolumeOption("Adjust Audio volume"),
 				// new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."), //JOELwindows7: how about move it here?
 				new AccidentVolumeKeysOption("Enable / Disable volume shortcut key all time beyond pause menu (- decrease, + increase, 0 mute)"),
+				new HitsoundOption("Enable / Disable Gameplay Hitsound everytime note got hit in Gameplay (not in Editor)"),
 				// JOELwindows7: IDEA: only enable volume keys on pause menu?
 				new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
 				// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),

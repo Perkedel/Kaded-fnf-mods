@@ -223,6 +223,12 @@ class KadeEngineData
 			FlxG.save.data.noteSplashes = true;
 		}
 
+		// JOELwindows7: and note splash CPU Psychedly
+		if (FlxG.save.data.cpuSplash)
+		{
+			FlxG.save.data.cpuSplash = true;
+		}
+
 		// JOELwindows7: Force quantization even modchart loaded (note, stage modchart won't cancel quantization even this OFF)
 		if (FlxG.save.data.forceStepmania == null)
 		{
