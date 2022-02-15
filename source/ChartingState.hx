@@ -4266,7 +4266,7 @@ class ChartingState extends MusicBeatState
 		// JOELwindows7: copy migrate from sectionNotes into betterSectionNotes
 		for (i in _song.notes)
 		{
-			//JOELwindows7: for safety, init that betterSectionNotes array
+			// JOELwindows7: for safety, init that betterSectionNotes array
 			i.betterSectionNotes = []; // yeah basically this is auto-conversion output anyway.
 			// btw, this type of section notes should've been built like so.
 			// ah well, let this by my own sTILE note section.
