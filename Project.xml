@@ -326,7 +326,7 @@
 	<!-- JOELwindows7: TentaRJ's GameJolt tools -->
 	<haxelib name="tentools" />
 	<haxelib name="systools" unless = "mobile"/>
-	<ndll name="systools" haxelib="systools" unless = "flash"/>
+	<ndll name="systools" haxelib="systools" unless = "flash || mobile"/>
 	<!-- Final touch to have this -->
 	<haxedef name="gamejolt" if="tentools systools" unless= "mobile"/>
 	
@@ -339,7 +339,33 @@
 
 	<!-- JOELwindows7: GIF image support that should've been there since we are not from SparrowAtlas XML days -->
 	<!-- GrowtopiaFli / GwebDev too -->
-	<haxelib name="yagp"/>
+	<haxelib name="yagp" unless = "web"/>
+	<!-- ah peck, i can't believe not work on web -->
+	<!-- 
+	```
+	Warning: Could not generate *.woff web font for "assets/fonts/Ubuntu-C.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/Ubuntu-B.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/UbuntuMono-RI.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/Ubuntu-LI.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/Ubuntu-L.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/Ubuntu-MI.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/Ubuntu-RI.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/UbuntuMono-R.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/Ubuntu-R.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/Ubuntu-M.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/Ubuntu-BI.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/vcr.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/pixel.otf"
+	Warning: Could not generate *.woff web font for "assets/fonts/UbuntuMono-BI.ttf"
+	Warning: Could not generate *.woff web font for "assets/fonts/UbuntuMono-B.ttf"
+	Warning: Could not generate *.woff web font for "/opt/hostedtoolcache/haxe/4.2.4/x64/lib/flixel/4,11,0/assets/fonts/nokiafc22.ttf"
+	Warning: Could not generate *.woff web font for "/opt/hostedtoolcache/haxe/4.2.4/x64/lib/flixel/4,11,0/assets/fonts/monsterrat.ttf"
+	/opt/hostedtoolcache/haxe/4.2.4/x64/lib/haxe-files/3,0,0/src/hx/files/internal/Macros.hx:41: [INFO] NOT setting compiler define 'filesystem_support'.
+	/opt/hostedtoolcache/haxe/4.2.4/x64/lib/haxe-concurrent/3,0,2/src/hx/concurrent/internal/Macros.hx:38: [INFO] NOT setting compiler define 'threads'.
+	/opt/hostedtoolcache/haxe/4.2.4/x64/lib/yagp/1,1,4/com/yagp/GifDecoder.hx:82: characters 46-54 : openfl.utils.ByteArray has no field byteView
+	Error: Process completed with exit code 1.
+	```
+	 -->
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
