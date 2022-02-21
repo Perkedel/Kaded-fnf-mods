@@ -92,6 +92,7 @@ jobs:
           haxelib git tentools https://github.com/TentaRJ/tentools.git
           haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools windows
+          haxelib run lime rebuild systools android
           haxelib install haxe-strings
           haxelib install firetongue
           haxelib install hxp
