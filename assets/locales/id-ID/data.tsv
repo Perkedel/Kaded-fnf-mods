@@ -1,0 +1,6 @@
+flag	content
+$INSTRUCTIONS	Klik sebuah bendera untuk memuat teks dari bahasa tersebut.<N>Beberapa file memang hilang secara sengaja dari bahasa-bahasa lainnya.<N> Ini untuk menunjukan fitur <LQ>cek file yang tidak ditemukan<RQ>.
+$HELLO_WORLD	Halo, Dunia!
+$TEST_STRING	Ibu saya menggunakan lift untuk pergi ke departmen pertahanan.
+$MISSING_FLAGS	<X> bendera lokalisasi tidak ditemukan:
+$MISSING_FILES	<X> file lokaslisasi tidak ditemukan:

@@ -137,6 +137,7 @@ class DialogueBox extends FlxSpriteGroup
 		bgFade.scrollFactor.set();
 		bgFade.alpha = 0;
 		add(bgFade);
+		// IDEA: JOELwindows7: color the background of dialogue based on the color chosen by song data.
 
 		new FlxTimer().start(0.83, function(tmr:FlxTimer)
 		{
