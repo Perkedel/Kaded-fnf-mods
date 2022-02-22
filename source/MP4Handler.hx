@@ -9,6 +9,7 @@ import openfl.events.Event;
 import flixel.FlxG;
 import openfl.media.Video; // Oh this exist?! https://github.com/polybiusproxy/PolyEngine/blob/master/source/VideoHandler.hx
 
+#if FEATURE_VLC
 /**
  * Play a video using cpp.
  * Use bitmap to connect to a graphic or use `MP4Sprite`.
@@ -159,3 +160,4 @@ class MP4Handler extends vlc.VlcBitmap
 		#end
 	}
 }
+#end

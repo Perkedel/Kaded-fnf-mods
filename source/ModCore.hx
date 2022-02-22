@@ -253,14 +253,14 @@ class ModCore
 		// Perform an action based on the error code.
 		switch (error.code)
 		{
-			// JOELwindows7: more werror messages!
+			// JOELwindows7: more werror messages! & Advanced readout
 			case MOD_LOAD_PREPARE:
-				Debug.logInfo(error.message, null);
+				Debug.logInfo('PREPARE when ${error.origin}: ${error.message}', null);
 			case MOD_LOAD_DONE:
-				Debug.logInfo(error.message, null);
+				Debug.logInfo('DONE when ${error.origin}: ${error.message}', null);
 			// case MOD_LOAD_FAILED:
 			case MISSING_ICON:
-				Debug.logWarn('A mod is missing an icon, will load anyways but please add one: ${error.message}', null);
+				Debug.logWarn('When ${error.origin}, a mod is missing an icon, will load anyways but please add one : ${error.message}', null);
 			// case "parse_mod_version":
 			// case "parse_api_version":
 			// case "parse_mod_api_version":
@@ -281,12 +281,13 @@ class ModCore
 				// Log the message based on its severity.
 				switch (error.severity)
 				{
+					// JOELwindows7: advanced readout now yey
 					case NOTICE:
-						Debug.logInfo(error.message, null);
+						Debug.logInfo('NOTICE ${error.code} when ${error.origin}: ${error.message}', null);
 					case WARNING:
-						Debug.logWarn(error.message, null);
+						Debug.logWarn('WARNING ${error.code} when ${error.origin}: ${error.message}', null);
 					case ERROR:
-						Debug.logError(error.message, null);
+						Debug.logError('WERROR ${error.code} when ${error.origin}: ${error.message}', null);
 				}
 		}
 	}

@@ -92,7 +92,7 @@ class Ratings
 		return ranking;
 	}
 
-	public static var timingWindows = [];
+	public static var timingWindows:Array<Float> = []; // JOELwindows7: hey, you forgot to type!
 
 	public static function judgeHeartBeat(heartBeat:Int, heartTier:Int)
 	{
@@ -115,6 +115,8 @@ class Ratings
 	public static function judgeNote(noteDiff:Float)
 	{
 		var diff = Math.abs(noteDiff);
+		// JOELwindows7: oh maybe you should also use non-absolute noteDiff to titld which direction it goes?
+		// depending on how late or early you are... idk
 		for (index in 0...timingWindows.length) // based on 4 timing windows, will break with anything else
 		{
 			var time = timingWindows[index];
@@ -131,12 +133,58 @@ class Ratings
 						return "good";
 					case 3: // sick
 						return "sick";
-						// TODO: JOELwindows7: add more insane ratings like Stepmania & semi-vapourware Pulsen!
-						// Those are Flawless (dank), Ludicrous (mvp), etc.
+					// JOELwindows7: add more insane ratings like Stepmania & semi-vapourware Pulsen!
+					// Those are Flawless (dank), Ludicrous (mvp, or maybe `JESUS CHRIST!` idk), etc.
+					// Oh maybe it's safe, because the timing windows are only loaded 4 of them everytime this game
+					// starts.
+					case 4: // dank (Flawless)
+						return "dank";
+					case 5: // mvp (Ludicrous)
+						return "mvp";
 				}
 			}
 		}
 		return "good";
+	}
+
+	// JOELwindows7: scored integered version of judgenote for those who need to count it
+	public static function judgeNoteInt(noteDiff:Float):Int
+	{
+		var diff = Math.abs(noteDiff);
+		// JOELwindows7: oh maybe you should also use non-absolute noteDiff to titld which direction it goes?
+		// depending on how late or early you are... idk
+		for (index in 0...timingWindows.length) // based on 4 timing windows, will break with anything else
+		{
+			var time = timingWindows[index];
+			var nextTime = index + 1 > timingWindows.length - 1 ? 0 : timingWindows[index + 1];
+
+			if (diff < time && diff >= nextTime)
+			{
+				// JOELwindows7: idk if I should let it wild.
+				return index; // immediately stuff like that..
+				// miss is zero. nvm, minus one!
+				// switch (index)
+				// {
+				// 	case 0: // shit
+				// 		return 1;
+				// 	case 1: // bad
+				// 		return 2;
+				// 	case 2: // good
+				// 		return 3;
+				// 	case 3: // sick
+				// 		return 4;
+				// 	// JOELwindows7: add more insane ratings like Stepmania & semi-vapourware Pulsen!
+				// 	// Those are Flawless (dank), Ludicrous (mvp, or maybe `JESUS CHRIST!` idk), etc.
+				// 	// Oh maybe it's safe, because the timing windows are only loaded 4 of them everytime this game
+				// 	// starts.
+				// 	case 4: // dank (Flawless)
+				// 		return 5;
+				// 	case 5: // mvp (Ludicrous)
+				// 		return 6;
+				// }
+			}
+		}
+		return 2;
 	}
 
 	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float, hR:Int, hTier:Int):String

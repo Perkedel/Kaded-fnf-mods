@@ -15,9 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package ui;
 
+#if gamejolt
 import GameJolt;
+#end
 
 /**
  * Gateway to and out from GameJolt, for compatibilities kludgeing.
@@ -44,7 +47,14 @@ class GameJoltGateway extends MusicBeatState
 		}
 		else
 		{
+			#if gamejolt
 			FlxG.switchState(new GameJoltLogin());
+			#else
+			Debug.logWarn("GameJolt unsupported! getting out immediately");
+			getOut = true;
+			createToast(null, "GameJolt unsupported!", "getting out immediately.");
+			switchState(handoverState, false, false, false);
+			#end
 		}
 	}
 }

@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxSprite;
 
+#if FEATURE_VLC
 /**
  * Compared to `MP4Handler`. This loads slower!!
  */
@@ -57,3 +58,4 @@ class MP4Sprite extends FlxSprite
 		video.resume();
 	}
 }
+#end

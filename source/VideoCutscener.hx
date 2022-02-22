@@ -237,6 +237,7 @@ class VLCState extends MusicBeatState
 			donedCallback();
 		}
 		#else
+		Debug.logWarn("You are trying to load VLC state in an unsupported platform, lol!? going out immediately.");
 		donedCallback();
 		#end
 

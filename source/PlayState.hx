@@ -4252,7 +4252,7 @@ class PlayState extends MusicBeatState
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes, playerStrums.members));
 				}
 
-				//JOELwindows7: modchart gameover pls
+				// JOELwindows7: modchart gameover pls
 				#if FEATURE_LUAMODCHART
 				if (executeModchart && luaModchart != null)
 				{
@@ -4324,7 +4324,7 @@ class PlayState extends MusicBeatState
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes, playerStrums.members));
 				}
 
-				//JOELwindows7: modchart gameover pls psychedly
+				// JOELwindows7: modchart gameover pls psychedly
 				#if FEATURE_LUAMODCHART
 				if (executeModchart && luaModchart != null)
 				{
@@ -5222,6 +5222,7 @@ class PlayState extends MusicBeatState
 			totalNotesHit += wife;
 
 		var daRating = Ratings.judgeNote(noteDiff);
+		var daRatingInt = Ratings.judgeNoteInt(noteDiff); // JOELwindows7: this is the rating integer
 
 		switch (daRating)
 		{
@@ -5292,7 +5293,8 @@ class PlayState extends MusicBeatState
 		// yoink from Psych https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
 		// pls draw me royalty free notesplash for me for $0! jk, don't have to. I need time alot to do that.
 		// but feel free to become generous yeah!
-		if (daRating == 'sick' && !daNote.noteSplashDisabled)
+		// if (daRating == 'sick' && !daNote.noteSplashDisabled)
+		if (daRatingInt >= 3 && !daNote.noteSplashDisabled)
 		{
 			spawnNoteSplashOnNote(daNote, daNote.noteType);
 		}
@@ -5345,10 +5347,14 @@ class PlayState extends MusicBeatState
 				pixelShitPart3 = 'week6';
 			}
 
+			// TODO: JOELwindows7: marker of late & early. either of these:
+			// - Tilt ranking sprite particle left & right
+			// - Trapesium particle above & bellow
 			rating.loadGraphic(Paths.loadImage(pixelShitPart1 + daRating + pixelShitPart2, pixelShitPart3));
 			rating.screenCenter();
 			rating.y -= 50;
 			rating.x = coolText.x - 125;
+			// JOELwindows7: I notice there is no "MISS" particles here.
 
 			if (FlxG.save.data.changedHit)
 			{
