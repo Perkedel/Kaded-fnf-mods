@@ -378,7 +378,7 @@ class HaxeScriptState
 		trace("Camera target & Strumline height setVar");
 
 		// JOELwindows7: Statusoid
-		setVar("inGameOver", false); //psychedly
+		setVar("inGameOver", false); // psychedly
 
 		// JOELwindows7: mirror the variables here!
 		// Colored bg
@@ -388,6 +388,8 @@ class HaxeScriptState
 
 		// init just in case
 		setVar("songLength", 0);
+		setVar('variables', PlayState.SONG.variables);
+		setVar('diffVariables', PlayState.SONG.diffVariables);
 
 		// callbacks
 
@@ -449,6 +451,7 @@ class HaxeScriptState
 		// JOELwindows7: & even more!!!
 		setVar("thisStage", PlayState.Stage); // JOELwindows7: Stage class is already FlxG.stage I think..
 		setVar("Paths", Paths);
+
 		trace("setVar BulbyVR stuffs");
 
 		// You must init the function callbacks first before even considered existed.

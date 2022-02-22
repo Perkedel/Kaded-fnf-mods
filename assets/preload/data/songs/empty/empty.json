@@ -53,6 +53,7 @@
         "isCreditRoll": false,
         "creditRunsOnce": false,
         "introCutSceneDoneManually": false,
-        "outroCutSceneDoneManually": false
+        "outroCutSceneDoneManually": false,
+        "diffVariables": {}
     }
 }

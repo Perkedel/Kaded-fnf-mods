@@ -1066,11 +1066,15 @@ class PlayState extends MusicBeatState
 			luaModchart = ModchartState.createModchartState(isStoryMode);
 			luaModchart.executeState('start', [PlayState.SONG.songId]);
 			luaModchart.setVar('songLength', songLength);
+			luaModchart.setVar('variables', SONG.variables);
+			luaModchart.setVar('diffVariables', SONG.diffVariables);
 		}
 		if (executeStageScript && stageScript != null)
 		{
 			stageScript.executeState('start', [PlayState.SONG.songId]);
 			stageScript.setVar('songLength', songLength);
+			stageScript.setVar('variables', SONG.variables);
+			stageScript.setVar('diffVariables', SONG.diffVariables);
 		}
 		#end
 		// JOELwindows7: now for the hscript init
@@ -1081,11 +1085,15 @@ class PlayState extends MusicBeatState
 			hscriptModchart.setVar('executeModchart', executeModchart);
 			hscriptModchart.setVar('executeModHscript', executeModHscript);
 			hscriptModchart.setVar('songLength', songLength);
+			hscriptModchart.setVar('variables', SONG.variables);
+			hscriptModchart.setVar('diffVariables', SONG.diffVariables);
 		}
 		if (executeStageHscript && stageHscript != null)
 		{
 			stageHscript.executeState('start', [PlayState.SONG.songId]);
 			stageHscript.setVar('songLength', songLength);
+			stageHscript.setVar('variables', SONG.variables);
+			stageHscript.setVar('diffVariables', SONG.diffVariables);
 		}
 		// JOELwindows7: tell Lua script whether hscript is running too
 		#if FEATURE_LUAMODCHART

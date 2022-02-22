@@ -32,5 +32,6 @@
         "position": 0,
         "value": 100,
         "type": "BPM Change"
-    }]
+    }],
+    "variables": {}
 }

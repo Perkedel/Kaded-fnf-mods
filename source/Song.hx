@@ -95,6 +95,8 @@ typedef SongData =
 	var ?creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
 	var ?validScore:Bool;
 	var ?offset:Int;
+	var ?variables:Dynamic; // JOELwindows7: Variables for all difficulty to be accessed by elements of the gameplay. Stage, song, modchart, whatever.
+	var ?diffVariables:Dynamic; // JOELwindows7: like `variables`, but only to be filled by each song difficulty, not meta.
 }
 
 typedef SongMeta =
@@ -104,7 +106,6 @@ typedef SongMeta =
 	var ?charter:String; // JOELwindows7: who charted the song.
 	var ?offset:Int;
 	var ?name:String;
-
 	var ?hasVideo:Bool; // JOELwindows7: mark that this has video
 	var ?videoPath:String; // JOELwindows7: the video file path
 	var ?hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
@@ -133,6 +134,8 @@ typedef SongMeta =
 	var ?player2:String;
 	var ?gfVersion:String;
 	var ?eventObjects:Array<Event>; // JOELwindows7: make event objects possible to be song wide rather than just 1 diff
+	var ?variables:Dynamic; // JOELwindows7: Variables for all difficulty to be accessed by elements of the gameplay. Stage, song, modchart, whatever.
+	var ?diffVariables:Dynamic; // JOELwindows7: like `variables`, but only to be filled by each song difficulty, not meta.
 }
 
 class Song
@@ -382,6 +385,16 @@ class Song
 
 		if (songData.outroCutSceneDoneManually == null)
 			songData.outroCutSceneDoneManually = songMetaData.outroCutSceneDoneManually != null ? songMetaData.outroCutSceneDoneManually : false;
+
+		// if (songData.variables == null)
+		// 	songData.variables = songMetaData.variables != null ? songMetaData.variables : {};
+
+		songData.variables = songMetaData.variables != null ? songMetaData.variables : {};
+		// always overwrite from meta.
+
+		if (songData.diffVariables == null)
+			songData.diffVariables = songMetaData.diffVariables != null ? songMetaData.diffVariables : {};
+		// in case meta defines it instead, which is why would you.
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!
 
