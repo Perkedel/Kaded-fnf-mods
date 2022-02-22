@@ -12,6 +12,7 @@ import openfl.display3D.textures.RectangleTexture;
 import openfl.errors.Error;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
+#if FEATURE_VLC // JOELwindows7: everythin must be brebeb
 import vlc.LibVLC;
 
 /**
@@ -563,3 +564,4 @@ class VlcBitmap extends Bitmap
 
 	/////////////////////////////////////////////////////////////////////////////////////
 }
+#end

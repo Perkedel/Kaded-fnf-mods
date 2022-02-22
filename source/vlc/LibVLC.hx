@@ -5,6 +5,8 @@ import cpp.Pointer;
 import cpp.UInt8;
 #end
 
+#if FEATURE_VLC // JOELwindows7: pls why faile?!?!?
+
 /**
  * ...
  * @author Tommy S
@@ -123,3 +125,6 @@ extern class LibVLC
 		// untyped __cpp__('::delete this');
 	}
 }
+#end
+
+// JOELwindows7: I got an idea, I think we can JUCE this way??
