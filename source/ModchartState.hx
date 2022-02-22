@@ -5,7 +5,9 @@
 // https://lib.haxe.org/p/linc_luajit/
 // Lua
 import LuaClass;
+#if FEATURE_GIF
 import flixel.FlxGifSprite;
+#end
 import flixel.util.FlxAxes;
 #if FEATURE_LUAMODCHART
 import LuaClass.LuaGame;
@@ -440,16 +442,16 @@ class ModchartState
 				PlayState.instance.addObject(PlayState.dad);
 			}
 		}
-		#end
-
+		
 		new LuaSprite(sprite, toBeCalled).Register(lua);
+		#end // JOELwindows7: do not register if there is no sprite! null object reference
 
 		return toBeCalled;
 	}
 
 	function makeLuaGifSprite(spritePath:String, toBeCalled:String, drawBehind:Bool, imageFolder:Bool = false, ?library:String = '')
 	{
-		#if FEATURE_FILESYSTEM
+		#if (FEATURE_FILESYSTEM && FEATURE_GIF)
 		// pre lowercasing the song name (makeLuaGifSprite)
 		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
 		var songLowercase = PlayState.SONG.songId;
@@ -513,9 +515,9 @@ class ModchartState
 				PlayState.instance.addObject(PlayState.dad);
 			}
 		}
-		#end
-
+		
 		new LuaGifSprite(sprite, toBeCalled).Register(lua);
+		#end // JOELwindows7: do not register if there is no sprite! null object reference
 
 		return toBeCalled;
 	}

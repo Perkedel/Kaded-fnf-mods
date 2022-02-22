@@ -62,6 +62,9 @@ import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
+#if FEATURE_GIF
+import flixel.FlxGifSprite;
+#end
 import openfl.filters.ShaderFilter;
 import openfl.filters.BitmapFilter;
 import openfl.display.DisplayObject;
@@ -1850,7 +1853,7 @@ class HaxeScriptState
 		// var data:BitmapData = BitmapData.fromFile(#if !mobile path + "/" + spritePath + ".png" #else Asset2File.getPath(path + "/" + spritePath + ".png") #end
 		// );
 		// trace("bitmap data " + Std.string(data));
-
+		#if FEATURE_GIF
 		var sprite:FlxGifSprite = new FlxGifSprite(path, 0, 0);
 		// var imgWidth:Float = FlxG.width / data.width;
 		// var imgHeight:Float = FlxG.height / data.height;
@@ -1891,6 +1894,7 @@ class HaxeScriptState
 				PlayState.instance.addObject(PlayState.dad);
 			}
 		}
+		#end
 		return toBeCalled;
 	}
 

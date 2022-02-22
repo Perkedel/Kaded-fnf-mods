@@ -18,6 +18,9 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.FlxCamera;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+#if FEATURE_GIF
+import flixel.FlxGifSprite;
+#end
 import haxe.DynamicAccess;
 
 // completely yoinked from andromeda (thats what you get for stealing my callback inputs you fuckers /j)
@@ -1803,11 +1806,13 @@ class LuaSprite extends LuaClass
 }
 
 // JOELwindows7: yo here gif sprite
+#if FEATURE_GIF
 class LuaGifSprite extends LuaClass
 { // again, stolen from andromeda but improved a lot for better thinking interoperability (I made that up)
 	private static var state:State;
 
 	public var sprite:FlxGifSprite;
+
 	public static var ListOfGifSprites:Array<LuaGifSprite> = []; // JOELwindows7: oh just wow, they have this. Gwebdev gif sprite
 
 	public function new(connectedSprite:FlxGifSprite, name:String)
@@ -2101,6 +2106,7 @@ class LuaGifSprite extends LuaClass
 		super.Register(l);
 	}
 }
+#end
 
 class LuaWindow extends LuaClass
 { // again, stolen from andromeda but improved a lot for better thinking interoperability (I made that up)
