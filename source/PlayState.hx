@@ -4244,6 +4244,27 @@ class PlayState extends MusicBeatState
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes, playerStrums.members));
 				}
 
+				//JOELwindows7: modchart gameover pls
+				#if FEATURE_LUAMODCHART
+				if (executeModchart && luaModchart != null)
+				{
+					luaModchart.setVar('inGameOver', true);
+				}
+				if (executeStageScript && stageScript != null)
+				{
+					stageScript.setVar('inGameOver', true);
+				}
+				#end
+				// JOELwindows7: hscriptoid gameover
+				if (executeModHscript && hscriptModchart != null)
+				{
+					hscriptModchart.setVar('inGameOver', true);
+				}
+				if (executeStageHscript && stageHscript != null)
+				{
+					stageHscript.setVar('inGameOver', true);
+				}
+
 				// JOELwindows7: whyn't stop
 				vocals.stop();
 				FlxG.sound.music.stop();
@@ -4293,6 +4314,27 @@ class PlayState extends MusicBeatState
 				else
 				{
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes, playerStrums.members));
+				}
+
+				//JOELwindows7: modchart gameover pls psychedly
+				#if FEATURE_LUAMODCHART
+				if (executeModchart && luaModchart != null)
+				{
+					luaModchart.setVar('inGameOver', true);
+				}
+				if (executeStageScript && stageScript != null)
+				{
+					stageScript.setVar('inGameOver', true);
+				}
+				#end
+				// JOELwindows7: hscriptoid gameover
+				if (executeModHscript && hscriptModchart != null)
+				{
+					hscriptModchart.setVar('inGameOver', true);
+				}
+				if (executeStageHscript && stageHscript != null)
+				{
+					stageHscript.setVar('inGameOver', true);
 				}
 
 				// JOELwindows7: whyn't stop

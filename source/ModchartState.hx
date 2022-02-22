@@ -614,6 +614,9 @@ class ModchartState
 
 		setVar("strumLineY", PlayState.instance.strumLine.y);
 
+		//JOELwindows7: Statusoid
+		setVar("inGameOver", false); //psychedly
+
 		// JOELwindows7: mirror the variables here!
 		// Colored bg
 		setVar("originalColor", PlayState.Stage.originalColor);

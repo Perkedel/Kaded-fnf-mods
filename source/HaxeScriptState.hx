@@ -377,6 +377,9 @@ class HaxeScriptState
 		setVar("strumLineY", PlayState.instance.strumLine.y);
 		trace("Camera target & Strumline height setVar");
 
+		// JOELwindows7: Statusoid
+		setVar("inGameOver", false); //psychedly
+
 		// JOELwindows7: mirror the variables here!
 		// Colored bg
 		setVar("originalColor", PlayState.Stage.originalColor);
@@ -1540,7 +1543,7 @@ class HaxeScriptState
 
 		addCallback("appearBlackbar", function(forHowLong:Float = 1, useStageLevel:Bool = false)
 		{
-			if(useStageLevel)
+			if (useStageLevel)
 				PlayState.Stage.appearBlackBar(forHowLong)
 			else
 				PlayState.instance.appearRealBlackBar(forHowLong);
@@ -1548,7 +1551,7 @@ class HaxeScriptState
 
 		addCallback("disappearBlackbar", function(forHowLong:Float = 1, useStageLevel:Bool = false)
 		{
-			if(useStageLevel)
+			if (useStageLevel)
 				PlayState.Stage.disappearBlackBar(forHowLong)
 			else
 				PlayState.instance.disappearRealBlackBar(forHowLong);
