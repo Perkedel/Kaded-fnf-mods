@@ -471,7 +471,7 @@
 	<!-- JOELwindows7: and for JS -->
 	<haxedef name="FEATURE_WEBM_JS" if="web"/>
 	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
-	<haxedef name="FEATURE_VLC" if="cpp windows" unless="neko || hl"/>
+	<haxedef name="FEATURE_VLC" if="cpp windows" unless="neko || hl || mobile"/>
 	<haxedef name="FEATURE_GIF" unless="web"/>
 	<!-- JOELwindows7: additional howl for LIME project xml here -->
 	<echo value="This is Odysee build" if="odysee"/>
