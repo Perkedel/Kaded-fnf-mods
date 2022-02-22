@@ -774,7 +774,9 @@ class ModchartState
 			{
 				if (PlayState.instance.useVLC)
 				{
+					#if FEATURE_VLC
 					PlayState.instance.vlcHandler.pause();
+					#end
 				}
 				else if (!GlobalVideo.get().paused)
 					GlobalVideo.get().pause();
@@ -784,7 +786,9 @@ class ModchartState
 			{
 				if (PlayState.instance.useVLC)
 				{
+					#if FEATURE_VLC
 					PlayState.instance.vlcHandler.resume();
+					#end
 				}
 				else if (GlobalVideo.get().paused)
 					GlobalVideo.get().pause();
@@ -794,7 +798,9 @@ class ModchartState
 			{
 				if (PlayState.instance.useVLC)
 				{
+					#if FEATURE_VLC
 					// PlayState.instance.vlcHandler.restart();
+					#end
 				}
 				else
 					GlobalVideo.get().restart();

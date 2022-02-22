@@ -60,8 +60,10 @@ class PauseSubState extends MusicBeatSubstate
 			else if (PlayState.instance.useVLC)
 			{
 				menuItems.remove("Resume");
+				#if FEATURE_VLC
 				// if (PlayState.instance.vlcHandler.isPlaying)
 				PlayState.instance.vlcHandler.pause();
+				#end
 			}
 
 		if (FlxG.sound.music.playing)
@@ -303,7 +305,9 @@ class PauseSubState extends MusicBeatSubstate
 					}
 					else if (PlayState.instance.useVLC)
 					{
+						#if FEATURE_VLC
 						PlayState.instance.vlcHandler.kill();
+						#end
 						PlayState.instance.remove(PlayState.instance.videoSprite);
 						PlayState.instance.removedVideo = true;
 					}
@@ -331,7 +335,9 @@ class PauseSubState extends MusicBeatSubstate
 						}
 						else if (PlayState.instance.useVLC)
 						{
+							#if FEATURE_VLC
 							PlayState.instance.vlcHandler.kill();
+							#end
 							PlayState.instance.remove(PlayState.instance.videoSprite);
 							PlayState.instance.removedVideo = true;
 						}
