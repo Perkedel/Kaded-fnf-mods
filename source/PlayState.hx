@@ -2288,8 +2288,10 @@ class PlayState extends MusicBeatState
 			GlobalVideo.get().resume();
 		else if (useVLC)
 		{
+			#if FEATURE_VLC
 			if (vlcHandler != null)
 				vlcHandler.resume();
+			#end
 		}
 
 		#if FEATURE_LUAMODCHART
@@ -3288,7 +3290,9 @@ class PlayState extends MusicBeatState
 			if (GlobalVideo.get().ended && !removedVideo)
 			{
 				// remove(videoSprite);
+				#if FEATURE_VLC
 				remove(vlcHandler);
+				#end
 				removedVideo = true;
 			}
 		}
@@ -3542,10 +3546,12 @@ class PlayState extends MusicBeatState
 			{
 				GlobalVideo.get().stop();
 				// JOELwindows7: VLC stop!
+				#if FEATURE_VLC
 				if (vlcHandler != null)
 					vlcHandler.kill();
 				// remove(videoSprite);
 				remove(vlcHandler);
+				#end
 				removedVideo = true;
 			}
 			cannotDie = true;
@@ -3577,10 +3583,12 @@ class PlayState extends MusicBeatState
 			{
 				GlobalVideo.get().stop();
 				// JOELwindows7: VLC stop!
+				#if FEATURE_VLC
 				if (vlcHandler != null)
 					vlcHandler.kill();
 				// remove(videoSprite);
 				remove(vlcHandler);
+				#end
 				removedVideo = true;
 			}
 			cannotDie = true;
@@ -3644,8 +3652,8 @@ class PlayState extends MusicBeatState
 			{
 				GlobalVideo.get().stop();
 				// JOELwindows7: VLC stop!
-				if (vlcHandler != null)
-					vlcHandler.kill();
+				#if FEATURE_VLC if (vlcHandler != null)
+					vlcHandler.kill(); #end // JOELwindows7: FEAR_VLC?!??! wtf, Copilot?!?!?
 				remove(videoSprite);
 				removedVideo = true;
 			}
@@ -3682,8 +3690,10 @@ class PlayState extends MusicBeatState
 				{
 					GlobalVideo.get().stop();
 					// JOELwindows7: VLC stop!
+					#if FEATURE_VLC
 					if (vlcHandler != null)
 						vlcHandler.kill();
+					#end
 					remove(videoSprite);
 					removedVideo = true;
 				}
@@ -4844,10 +4854,12 @@ class PlayState extends MusicBeatState
 		{
 			GlobalVideo.get().stop();
 			// JOELwindows7: VLC stop!
+			#if FEATURE_VLC
 			if (vlcHandler != null)
 				vlcHandler.kill();
 			// PlayState.instance.remove(PlayState.instance.videoSprite);
 			PlayState.instance.remove(PlayState.instance.vlcHandler);
+			#end
 		}
 
 		if (!loadRep)
@@ -5889,8 +5901,10 @@ class PlayState extends MusicBeatState
 
 	public static var webmHandler:WebmHandler;
 
+	#if FEATURE_VLC
 	public var vlcHandler:MP4Sprite; // JOELwindows7: globalize VLC handler
 
+	#end
 	public var playingDathing = false;
 
 	public var videoSprite:FlxSprite;

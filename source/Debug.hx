@@ -264,15 +264,11 @@ class Debug
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(HealthIcon, ["char", "isPlayer", "isOldIcon"], [FlxSprite]));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(Note, ["x", "y", "strumTime", "mustPress", "rawNoteData", "sustainLength"], []));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(Song, [
-			"chartVersion",
-			"song",
-			"speed",
-			"player1",
-			"player2",
-			"gfVersion",
-			"noteStyle",
-			"stage"
+			"chartVersion", "song", "speed", "player1", "player2", "gfVersion", "noteStyle", "stage", "variables", "diffVariables",
 		], []));
+		// JOELwindows7: oh haaiii
+		// JOELwindows7: oh hi there. lol A Hat in Time, Hat kid yey!!!
+		// add variables & diffVariables to that tracker profile for that song yeah
 	}
 
 	/**
@@ -333,7 +329,7 @@ class Debug
 		{
 			inArray = ['<NULL>'];
 		}
-		else if (!Std.is(input, Array))
+		else if (!Std.isOfType(input, Array)) // JOElwindows7: was Sts.id(v,t) (Deprecated). hohoho! you sneaky little punk!
 		{
 			inArray = [input];
 		}

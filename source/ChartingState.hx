@@ -277,6 +277,8 @@ class ChartingState extends MusicBeatState
 			};
 		}
 
+		// JOELwindows7: damn, how do I supposed to use Waveform to add here?!?!??!
+
 		addGrid(1);
 
 		if (_song.chartVersion == null)
