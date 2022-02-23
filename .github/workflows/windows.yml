@@ -32,6 +32,8 @@ jobs:
       - name: Schlob Chocolatey
         run: |
           choco install vcredist140
+          cinst make -y
+          cinst cmake -y
           cinst wget -y # downloader
           cinst butler -y # upload to itch io
           cinst android-sdk -y
