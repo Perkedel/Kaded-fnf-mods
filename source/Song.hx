@@ -97,6 +97,11 @@ typedef SongData =
 	var ?offset:Int;
 	var ?variables:Dynamic; // JOELwindows7: Variables for all difficulty to be accessed by elements of the gameplay. Stage, song, modchart, whatever.
 	var ?diffVariables:Dynamic; // JOELwindows7: like `variables`, but only to be filled by each song difficulty, not meta.
+	var ?strumCounts:Int; // JOELwindows7: how many strum collumns? 4 keys, 6 keys, or 9 keys? (Unused)
+	var ?strumProfile:String; // JOELwindows7: what strum profile to use? Dance Dance Revolution? 6 keys? 9 keys?
+	var ?difficulty:Int; // JOELwindows7: the difficulty of the song. New way of defining rather than by name (unused, current system exist using name)
+	var ?difficultyId:String; // JOELwindows7: what's the difficulty ID? easy, medium, hard, or any other?
+	var ?difficultyStrength:Float; // JOELwindows7: how much number is the difficulty? just like Stepmania diff number.
 }
 
 typedef SongMeta =
@@ -136,6 +141,11 @@ typedef SongMeta =
 	var ?eventObjects:Array<Event>; // JOELwindows7: make event objects possible to be song wide rather than just 1 diff
 	var ?variables:Dynamic; // JOELwindows7: Variables for all difficulty to be accessed by elements of the gameplay. Stage, song, modchart, whatever.
 	var ?diffVariables:Dynamic; // JOELwindows7: like `variables`, but only to be filled by each song difficulty, not meta.
+	var ?strumCounts:Int; // JOELwindows7: how many strum collumns? 4 keys, 6 keys, or 9 keys? (Unused)
+	var ?strumProfile:String; // JOELwindows7: what strum profile to use? Dance Dance Revolution? 6 keys? 9 keys?
+	var ?difficulty:Int; // JOELwindows7: the difficulty of the song. New way of defining rather than by name (unused, current system exist using name)
+	var ?difficultyId:String; // JOELwindows7: what's the difficulty ID? easy, medium, hard, or any other?
+	var ?difficultyStrength:Float; // JOELwindows7: how much number is the difficulty? just like Stepmania diff number.
 }
 
 class Song
@@ -395,6 +405,21 @@ class Song
 		if (songData.diffVariables == null)
 			songData.diffVariables = songMetaData.diffVariables != null ? songMetaData.diffVariables : {};
 		// in case meta defines it instead, which is why would you.
+
+		if (songData.difficulty == null)
+			songData.difficulty = songMetaData.difficulty != null ? songMetaData.difficulty : 0;
+
+		if (songData.difficultyId == null)
+			songData.difficultyId = songMetaData.difficultyId != null ? songMetaData.difficultyId : "";
+
+		if (songData.difficultyStrength == null)
+			songData.difficultyStrength = songMetaData.difficultyStrength != null ? songMetaData.difficultyStrength : 1;
+
+		if (songData.strumCounts == null)
+			songData.strumCounts = songMetaData.strumCounts != null && songMetaData.strumCounts > 0 ? songMetaData.strumCounts : 4;
+
+		if (songData.strumProfile == null)
+			songData.strumProfile = songMetaData.strumProfile != null ? songMetaData.strumProfile : "Dance-Single";
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!
 

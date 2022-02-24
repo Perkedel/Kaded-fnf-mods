@@ -489,7 +489,7 @@ class TitleState extends MusicBeatState
 				// Get the current version of Last Funkin Moments
 
 				#if FEATURE_HTTP
-				var http = new haxe.Http("https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe");
+				var http = new haxe.Http(Perkedel.ENGINE_VERSION_URL);
 				var returnedData:Array<String> = [];
 
 				http.onData = function(data:String)

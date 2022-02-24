@@ -1,5 +1,6 @@
 package;
 
+import const.Perkedel;
 import CoreState;
 import GalleryAchievements;
 import flixel.ui.FlxSpriteButton;
@@ -45,11 +46,11 @@ class MainMenuState extends MusicBeatState
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
-	public static var larutMalam:String = ""; // JOELwindows7: Last Funkin Nightly mark
+	public static var larutMalam:String = Perkedel.ENGINE_NIGHTLY; // JOELwindows7: Last Funkin Nightly mark
 
 	public static var kadeEngineVer:String = "1.8" + nightly;
 	public static var gameVer:String = "0.2.7.1";
-	public static var lastFunkinMomentVer:String = "2022.02.180" + larutMalam; // JOELwindows7: last funkin moments version
+	public static var lastFunkinMomentVer:String = Perkedel.ENGINE_VERSION + larutMalam; // JOELwindows7: last funkin moments version
 	public static var yourModVer:String = "0.0.0.0"; // JOELwindows7: your own mod version
 
 	var magenta:FlxSprite;
@@ -262,13 +263,13 @@ class MainMenuState extends MusicBeatState
 					Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
 					FlxG.sound.play(Paths.sound('confirmMenu')); // JOELwindows7: hey, pls don't forget the confirm sound for Kickstarter go to one also!
 					// fancyOpenURL("https://ninja-muffin24.itch.io/funkin");
-					fancyOpenURL("https://odysee.com/@JOELwindows7:a/LFM-links:a"); // JOELwindows7: hey, open all links there is to it.
+					fancyOpenURL(Perkedel.DONATE_BUTTON_URL); // JOELwindows7: hey, open all links there is to it.
 					AchievementUnlocked.whichIs("acknowledgement");
 				}
 				else
 				{
 					// FlxG.gamepads.lastActive.vibrate(0.1); //JOELwindows7: wtf bro, no vibration????
-					Controls.vibrate(0, 50); //JOELwindows7: give feedback!!!
+					Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
 					_loadingBar.popNow();
 					_loadingBar.setInfoText("Selected " + optionShit[curSelected]);
 					_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);

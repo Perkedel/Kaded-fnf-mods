@@ -3,6 +3,7 @@ import Paths;
 import CoreState;
 // JOELwindows7:yo, carry arounds!
 import utils.CarryAround;
+import const.Perkedel;
 // JOELwindows7: also MasterEric enigma imports
 #if macro
 // Imports used only for macros.

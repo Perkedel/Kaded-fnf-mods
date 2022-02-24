@@ -1,5 +1,6 @@
 package;
 
+import const.Perkedel;
 import tjson.TJSON;
 import haxe.ui.components.DropDown;
 import flixel.FlxSubState;
@@ -4305,8 +4306,12 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
+		// JOELwindows7: some modificates first
+		// _modificatesBeforeSave(difficultyArray);
+		_modificatesBeforeSave();
+
 		var json = {
-			"ProgramUsed": 'Last Funkin Moments',
+			"ProgramUsed": Perkedel.ENGINE_NAME,
 			"generatedBy": 'charting',
 			"charter": _song.charter,
 			"song": _song,
@@ -4335,47 +4340,65 @@ class ChartingState extends MusicBeatState
 
 	public function justSaveNow():Void
 	{
+		// TODO: save button instead of save as if already loaded or saved before. directly write save file.
 		if (alreadySavedBefore)
 		{
 			// JOELwindows7: copy above, but this time only save without dialog box
-			var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+			// var difficultyArray:Array<String> = ["-easy", "", "-hard"];
 
-			var toRemove = [];
+			// var toRemove = [];
 
-			for (i in _song.notes)
-			{
-				if (i.startTime > FlxG.sound.music.length)
-					toRemove.push(i);
-			}
+			// for (i in _song.notes)
+			// {
+			// 	if (i.startTime > FlxG.sound.music.length)
+			// 		toRemove.push(i);
+			// }
 
-			for (i in toRemove)
-				_song.notes.remove(i);
+			// for (i in toRemove)
+			// 	_song.notes.remove(i);
 
-			toRemove = []; // clear memory
+			// toRemove = []; // clear memory
 
-			var json = {
-				"song": _song
-			};
+			// // JOELwindows7: some modificates first
+			// _modificatesBeforeSave();
 
-			// JOELwindows7: make save JSON pretty
-			// https://haxe.org/manual/std-Json-encoding.html
-			// var data:String = Json.stringify(json, "\t");
-			var data:String = Json.stringify(json, null, " ");
+			// var json = {
+			// 	"ProgramUsed": 'Last Funkin Moments',
+			// 	"generatedBy": 'charting',
+			// 	"charter": _song.charter,
+			// 	"song": _song,
+			// };
 
-			if ((data != null) && (data.length > 0))
-			{
-				_file = new FileReference();
-				_file.addEventListener(Event.COMPLETE, onSaveComplete);
-				_file.addEventListener(Event.CANCEL, onSaveCancel);
-				_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-				// JOELwindows7: DAMN!!! how the peck I supposed to just pecking save?!?!?!? no dialog!!!!!
-				_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
-			}
+			// // JOELwindows7: make save JSON pretty
+			// // https://haxe.org/manual/std-Json-encoding.html
+			// // var data:String = Json.stringify(json, "\t");
+			// var data:String = Json.stringify(json, null, " ");
+
+			// if ((data != null) && (data.length > 0))
+			// {
+			// 	_file = new FileReference();
+			// 	_file.addEventListener(Event.COMPLETE, onSaveComplete);
+			// 	_file.addEventListener(Event.CANCEL, onSaveCancel);
+			// 	_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			// 	// JOELwindows7: DAMN!!! how the peck I supposed to just pecking save?!?!?!? no dialog!!!!!
+			// 	_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
+			// }
+
+			// TEMPORARY!!! pls help me write file instead of dialog box
+			saveLevel();
 		}
 		else
 		{
 			saveLevel();
 		}
+	}
+
+	// JOELwindows7: modificates before save
+	function _modificatesBeforeSave()
+	{
+		var difficultyArray = ["easy", "normal", "hard"]; // note, this is different than above's array! this is for ID, not file namer.
+		_song.difficultyId = difficultyArray[PlayState.storyDifficulty];
+		_song.difficultyStrength = DiffCalc.CalculateDiff(_song, .93, true);
 	}
 
 	function onSaveComplete(_):Void
