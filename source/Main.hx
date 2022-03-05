@@ -35,9 +35,9 @@ import plugins.systems.ScanPlatform;
 import haxe.ui.Toolkit;
 #if EXPERIMENTAL_OPENFL_XINPUT
 import com.furusystems.openfl.input.xinput.*;
+
 // import com.furusystems.openfl.input.xinput.XBox360Controller;
 #end
-
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -63,7 +63,7 @@ class Main extends Sprite
 	public static var gjToastManager:GJToastManager; // JOELwindows7: TentaRJ Gamejolter now has Toast yey! FORMATTER STOP PECK THIS UP FEMALE DOG!!!
 	public static var loadingBar:LoadingBar; // JOELwindows7: the loading bar thingy.
 
-	//JOELwindows7: furusystem & karaidon Xinput thingy
+	// JOELwindows7: furusystem & karaidon Xinput thingy
 	#if EXPERIMENTAL_OPENFL_XINPUT
 	public static var xboxControllers:Array<XBox360Controller> = [];
 	public static final xboxControllerNum:Int = 7;
@@ -78,6 +78,9 @@ class Main extends Sprite
 	public static function main():Void
 	{
 		// quick checks
+		trace("yey");
+		trace("Last Funkin Moments v" + Perkedel.ENGINE_VERSION); // JOELwindows7: idk why crash on android.
+		// pls don't destroy debug only because you don't have filesystem access!!
 
 		// JOELwindows7: here haxeUI
 		Toolkit.init();
@@ -87,6 +90,8 @@ class Main extends Sprite
 
 	public function new()
 	{
+		trace("Yay");
+		trace("Last Funkin Moments v" + Perkedel.ENGINE_VERSION); // JOELwindows7: idk why crash on android.
 		instance = this;
 
 		super();
@@ -340,7 +345,7 @@ class Main extends Sprite
 		FlxG.sound.volumeDownKeys = null;
 		FlxG.sound.muteKeys = null;
 
-		//sorry! nowadays this invoke update vol key assignments based on status. nvm.
+		// sorry! nowadays this invoke update vol key assignments based on status. nvm.
 	}
 
 	// JOELwindows7: Padzal! update volkeys assignments fate! copy from Kade's title state vol key assigner.

@@ -1550,3 +1550,5 @@ o seven--soju
 ggagag--ggaggag
 trust--nobody
 fafaff--fafffafaf
+capture just window--not entire screen
+dont entire screen--team viewer pops up

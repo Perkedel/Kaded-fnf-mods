@@ -29,6 +29,9 @@ class Debug
 
 	static var logFileWriter:DebugLogWriter = null;
 
+	// JOELwindows7: make sure you can use fancy debug!
+	static var canBeFancy:Bool = false;
+
 	/**
 	 * Log an error message to the game's console.
 	 * Plays a beep to the user and forces the console open if this is a debug build.

@@ -401,7 +401,7 @@
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
 	<!-- JOELwindows7: the ARM64 definition for ARM PC. for that BrightFyre VLC thingy -->
-	<haxedef name="HXCPP_ARM64" if="arm64"/>
+	<haxedef name="HXCPP_ARM64" if="arm64" unless="mobile"/>
 
 	<!-- _________________________________ Custom _______________________________ -->
 
@@ -426,7 +426,8 @@
 	<icon path="art/LFMicon512.png" size='512'/>
 	<icon path="LastFunkinMomentsLogo.png" />
 
-	<haxeflag name="--no-traces" unless="debug" />
+	<!-- Never disable debug message, especially on Mobile -->
+	<haxeflag name="--no-traces" unless="debug || mobile" />
 	<haxeflag name="--dce full" if="release" />
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->

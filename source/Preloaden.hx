@@ -34,6 +34,7 @@ class Preloaden extends FlxBasePreloader
 {
 	public function new(MinDisplayTime:Float = 3, ?AllowedURLs:Array<String>)
 	{
+		trace("Perkedel Technologies"); // JOELwindows7: WHY CRASH on android
 		super(MinDisplayTime, AllowedURLs);
 	}
 
@@ -45,6 +46,7 @@ class Preloaden extends FlxBasePreloader
 
 	override function create():Void
 	{
+		trace("Welcome"); // JOELwindows7: pls help!
 		buffer = new Sprite();
 		buffer.scaleX = buffer.scaleY = 2;
 		addChild(buffer);
