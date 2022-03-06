@@ -10,8 +10,16 @@ jobs:
       - run:
           name: Just check updates & install dependencies
           command: |
-            sudo apt-get update
-            sudo apt-get -y install wget zip unzip
+            sudo add-apt-repository ppa:haxe/releases -y
+            sudo apt update
+            sudo apt upgrade -y
+            sudo apt -y install wget zip unzip
+            sudo apt install neko -y
+            sudo apt install luajit -y
+            sudo apt install build-essential avr-libc -y
+            sudo apt install libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev -y
+            sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
+      
       - run:
           name: setup Haxe and libraries and build them all
           environment:
@@ -19,13 +27,6 @@ jobs:
             HAXE_INSTALLDIR: /home/circleci/haxe
           command: |
             cd ~
-            sudo add-apt-repository ppa:haxe/releases -y
-            sudo apt update
-            sudo apt upgrade -y
-            sudo apt install luajit -y
-            sudo apt install build-essential avr-libc -y
-            sudo apt install libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev -y
-            sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
             wget https://github.com/HaxeFoundation/haxe/releases/download/4.2.4/haxe-4.2.4-linux64.tar.gz
             mkdir -p $HAXE_INSTALLDIR
             tar -xf haxe-4.2.4-linux64.tar.gz -C $HAXE_INSTALLDIR
@@ -33,6 +34,10 @@ jobs:
             ls
             pwd
             mkdir -p $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
+      
+      - run:
+          name: Install Libraries of Haxe yeah
+          command: |
             haxelib install lime
             haxelib install openfl
             haxelib install flixel
@@ -48,12 +53,10 @@ jobs:
             haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
             haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
             haxelib run lime rebuild extension-webm linux
-            haxelib run lime rebuild extension-webm html5
             haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
             haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
             haxelib install actuate 
             haxelib git faxe https://github.com/uhrobots/faxe
-            haxelib git polymod https://github.com/MasterEric/polymod.git
             haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
             haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
             haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
@@ -80,9 +83,18 @@ jobs:
             haxelib install svg
             haxelib install format
             haxelib install lime-tools
+            haxelib install haxeui
+            haxelib install haxeui-core
+            haxelib install haxeui-openfl
+            haxelib install haxeui-flixel
             haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
             haxelib install yagp
+            haxelib run lime rebuild yagp linux
             haxelib list
+      
+      - run:
+          name: get more stuffs!
+          command: |
             wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
             unzip butler.zip
             chmod +x ./butler
@@ -105,6 +117,7 @@ jobs:
             tar -cvf last-funkin-moments-32bit.tar -C ~/project/kaded-fnf-mods/export/32bit/linux/bin .
             cd ~
             ./butler push ~/project/kaded-fnf-mods/export/release/linux/bin joelwindows7/last-funkin-moments:linux-circleCI
+            
       - run:
           name: Just build this game already HTML5
           command: |
