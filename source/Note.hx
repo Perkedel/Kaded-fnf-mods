@@ -89,6 +89,7 @@ class Note extends FlxSprite
 	public var noteTypeCheck:String; // JOELwindows7: globalize noteTypeCheck for all noteSkin detection
 
 	public var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound audio file to play when hit & hitsound option enabled.
+	public var vowelType:Int = 0; // JOELwindows7: vowel type. radpas12131's mod. a i u e o.
 
 	// IDEA: JOELwindows7: you can have more variables about string or whatever too! like
 	// sylables or phoneme for VOCALOID
@@ -162,7 +163,7 @@ class Note extends FlxSprite
 			switch (noteType)
 			{
 				case 2:
-					Debug.logTrace("Whoah dude he adds mine?");
+					Debug.logTrace("Whoah dude they adds mine?");
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
 						noteType);
 					// frames = PlayState.noteskinSpriteMine;

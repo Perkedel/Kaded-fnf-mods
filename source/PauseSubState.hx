@@ -24,14 +24,20 @@ class PauseSubState extends MusicBeatSubstate
 
 	public static var goToOptions:Bool = false;
 	public static var goBack:Bool = false;
+	public static var goConfirmation:Bool = false; // JOELwindows7: here confirmation mode.
 
 	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
+	// JOELwindows7: Oh we got more here!
 	var officeButtonMenuItems:Array<String> = ['Resume', 'Save', 'Save as', 'Options', 'Play Song', 'Exit to menu'];
+	var confirmationMenuItems:Array<String> = ['Yes', 'No'];
+	var resumeWeekMenuItems:Array<String> = ['Continue', 'New Game', 'Options', 'Close'];
 	var curSelected:Int = 0;
 
 	public static var playingPause:Bool = false;
 
 	var pauseMusic:FlxSound;
+
+	var noMusicPls:Bool = false; // JOELwindows7: enable to skip adding music.
 
 	var perSongOffset:FlxText;
 
@@ -41,12 +47,26 @@ class PauseSubState extends MusicBeatSubstate
 	var bg:FlxSprite;
 
 	public static var inCharter:Bool = false; // JOELwindows7: set this for in chartener or not.
+	public static var inStoryMenu:Bool = false; // JOELwindows7: maybe we should make this substate aware where state are we instead?
 
 	public function new()
 	{
 		// JOELwindows7: first, check the mode.
 		if (inCharter)
+		{
 			menuItems = officeButtonMenuItems; // JOELwindows7: for charter menu
+			noMusicPls = true; // JOELwindows7: no music pls.
+		}
+		if (goConfirmation)
+		{
+			menuItems = confirmationMenuItems; // JOELwindows7: for confirmation menu
+			noMusicPls = true; // JOELwindows7: no music pls.
+		}
+		if (inStoryMenu)
+		{
+			menuItems = resumeWeekMenuItems; // JOELwindows7: for story menu
+			noMusicPls = true; // JOELwindows7: no music pls.
+		}
 
 		super();
 
@@ -77,13 +97,16 @@ class PauseSubState extends MusicBeatSubstate
 
 		if (!playingPause)
 		{
-			playingPause = true;
-			pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
-			pauseMusic.volume = 0;
-			pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
-			pauseMusic.ID = 9000;
+			if (!noMusicPls) // JOELwindows7: hey no music if not allowed pls!
+			{
+				playingPause = true;
+				pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+				pauseMusic.volume = 0;
+				pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
+				pauseMusic.ID = 9000;
 
-			FlxG.sound.list.add(pauseMusic);
+				FlxG.sound.list.add(pauseMusic);
+			}
 		}
 		else
 		{
@@ -92,6 +115,8 @@ class PauseSubState extends MusicBeatSubstate
 				if (i.ID == 9000) // jankiest static variable
 					pauseMusic = i;
 			}
+			if (noMusicPls && pauseMusic != null)
+				pauseMusic.destroy(); // JOELwindows7: make sure it completely destroy for no music allowed mode.
 		}
 
 		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -197,8 +222,16 @@ class PauseSubState extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		if (pauseMusic.volume < 0.5)
-			pauseMusic.volume += 0.01 * elapsed;
+		if (pauseMusic != null)
+			if (!noMusicPls) // JOELwindows7: mute if no music is allowed
+			{
+				if (pauseMusic.volume < 0.5)
+					pauseMusic.volume += 0.01 * elapsed;
+			}
+			else
+			{
+				pauseMusic.volume = 0; // JOELwindows7: pecking make sure it sounds like no music at all!!!
+			}
 
 		super.update(elapsed);
 
@@ -370,6 +403,9 @@ class PauseSubState extends MusicBeatSubstate
 
 					if (PlayState.isStoryMode)
 					{
+						// JOELwindows7: BrightFyre! save the week so to resume later!
+						StoryMenuState.saveWeek(true);
+
 						GameplayCustomizeState.freeplayBf = 'bf';
 						GameplayCustomizeState.freeplayDad = 'dad';
 						GameplayCustomizeState.freeplayGf = 'gf';
@@ -381,6 +417,23 @@ class PauseSubState extends MusicBeatSubstate
 					}
 					else
 						FlxG.switchState(new FreeplayState());
+				case 'Continue':
+					// JOELwindows7: continue week
+					Debug.logTrace("Recontinue Week");
+				case 'New Game':
+					Debug.logTrace("Reset week progress");
+					StoryMenuState.resetWeekSave();
+					close();
+				case 'Yes':
+					// JOELwindows7: confirm yes
+					Debug.logTrace("Selected Yes");
+					close();
+				case 'No':
+					// JOELwindows7: confirm no
+					Debug.logTrace("Selected No");
+					close();
+				case 'Close':
+					close();
 			}
 
 			// JOELwindows7: additionally, be responsible to restore the current accident volume keys assignment back to
@@ -528,10 +581,11 @@ class PauseSubState extends MusicBeatSubstate
 
 	override function destroy()
 	{
-		if (!goToOptions)
+		if (!goToOptions && !goConfirmation) // JOELwindows7: check for other go modes
 		{
 			Debug.logTrace("destroying music for pauseeta");
-			pauseMusic.destroy();
+			if (pauseMusic != null) // JOELwindows7: safety pause music
+				pauseMusic.destroy();
 			playingPause = false;
 		}
 

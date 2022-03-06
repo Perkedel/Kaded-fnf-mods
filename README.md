@@ -32,6 +32,7 @@ also a **Friday Night Funkin modding engine** yey!!!
 - GameBanana https://gamebanana.com/mods/293257
 - NexusMods https://www.nexusmods.com/fridaynightfunkin/mods/247 
 - Itch.io https://joelwindows7.itch.io/last-funkin-moments
+- GameJolt https://gamejolt.com/games/last-funkin-moments/634559
 
 If your antivirus went **sus**, they're dumb! None of these file are impostor, the antivirus is. vote that!  
 I mean, if the antivirus thought that file is `malicious`, it's false positive. Ignore that, it's safe.  

@@ -1,6 +1,12 @@
 # Big shoutout yay
 thancc for all these resources! without them, everything is impossible.
 
+# Visit website!
+- GitHub https://github.com/Perkedel/Kaded-fnf-mods
+- Odysee https://odysee.com/@JOELwindows7:a/last-funkin-moments:b
+- GameBanana https://gamebanana.com/mods/293257
+- GameJolt https://gamejolt.com/games/last-funkin-moments/634559
+
 # About the License
 Hey, am I allowed to relicense? I was meant to just license part of my mods that's it, your original code is still yours.
 
@@ -332,6 +338,8 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://fridaynightfunking.fandom.com/wiki/Carol info about bbpanzu's Carol yess.
 - https://ninjamuffin99.newgrounds.com/news/post/1091199 tips & trick of html5 build
 - https://ashes999.github.io/learnhaxe/animated-gifs-in-haxeflixel.html loading GIF in Flixel
+- https://twitter.com/radpas12131/status/1500159332377559040?s=20&t=5MiBaghroIAKZTWklFv4fQ radpas13121 the voweltype. select mouth type for the lip sync yey! btw, he's Indonesian wow!
+- https://twitter.com/fyre_bright/status/1500253535044354051?s=20&t=KMnR9Pkzf6sqBkFR9KXSSg BrightFyre week resume!
 
 # in event of git merge conflict
 use VScode and Github desktop!

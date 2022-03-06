@@ -247,6 +247,69 @@ class KadeEngineData
 			FlxG.save.data.hitsound = false; // originally in this game FNF, it's OFF. while osu! is ON
 		}
 
+		// JOELwindows7: left stuffs
+		if (FlxG.save.data.leftAWeek == null)
+		{
+			FlxG.save.data.leftAWeek = false;
+		}
+
+		if (FlxG.save.data.leftStoryWeek == null)
+		{
+			FlxG.save.data.leftStoryWeek = 0;
+		}
+
+		if (FlxG.save.data.leftWeekSongAt == null)
+		{
+			FlxG.save.data.leftWeekSongAt = '';
+		}
+
+		if (FlxG.save.data.leftFullPlaylistCurrently == null)
+		{
+			FlxG.save.data.leftFullPlaylistCurrently = [];
+		}
+
+		if (FlxG.save.data.leftCampaignScore == null)
+		{
+			FlxG.save.data.leftCampaignScore = 0;
+		}
+
+		if (FlxG.save.data.leftCampaignMisses == null)
+		{
+			FlxG.save.data.leftCampaignMisses = 0;
+		}
+
+		if (FlxG.save.data.leftCampaignSicks == null)
+		{
+			FlxG.save.data.leftCampaignSicks = 0;
+		}
+
+		if (FlxG.save.data.leftCampaignGoods == null)
+		{
+			FlxG.save.data.leftCampaignGoods = 0;
+		}
+
+		if (FlxG.save.data.leftCampaignBads == null)
+		{
+			FlxG.save.data.leftCampaignBads = 0;
+		}
+
+		// Oh God, so many!!! pls help me what efficient way to do this?!?!?!?
+		if (FlxG.save.data.leftCapaignShits == null)
+		{
+			FlxG.save.data.leftCapaignShits = 0;
+		}
+
+		if (FlxG.save.data.leftBlueBall == null)
+		{
+			FlxG.save.data.leftBlueBall = 0; // blueball counter / fail counter
+		}
+
+		// JOELwindows7: blueballWeek
+		if (FlxG.save.data.blueballWeek == null)
+		{
+			FlxG.save.data.blueballWeek = false;
+		}
+
 		FlxG.save.data.cacheImages = false;
 
 		if (FlxG.save.data.middleScroll == null)

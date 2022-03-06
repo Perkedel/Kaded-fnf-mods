@@ -52,7 +52,7 @@ class StoryMenuState extends MusicBeatState
 				['satin-panties', "high", "milf"],
 				['cocoa', 'eggnog', 'winter-horrorland'],
 				['senpai', 'roses', 'thorns'],
-				['Windfall', 'Rule The World', 'Well Meet Again'],
+				['windfall', 'rule-the-world', 'well-meet-again'],
 			];
 		else
 			return weekDatas;
@@ -538,10 +538,14 @@ class StoryMenuState extends MusicBeatState
 		return swagShit;
 	}
 
+	// JOELwindows7: a.k.a. new week game
 	function selectWeek()
 	{
 		// JOELwindows7: reset blue balls
 		GameOverSubstate.resetBlueball();
+
+		// JOELwindows7: also reset the week
+		resetWeekSave();
 
 		if (weekUnlocked[curWeek])
 		{
@@ -812,5 +816,38 @@ class StoryMenuState extends MusicBeatState
 					}
 			}
 		});
+	}
+
+	// JOELwindows7: Week save functions people! BrightFyre!!!!!!!!
+	public static function saveWeek(andQuit:Bool = false)
+	{
+		FlxG.save.data.leftAWeek = andQuit;
+		FlxG.save.data.leftStoryWeek = PlayState.storyWeek;
+		FlxG.save.data.leftWeekSongAt = PlayState.storyPlaylist[0];
+		FlxG.save.data.leftFullPlaylistCurrently = PlayState.storyPlaylist;
+		FlxG.save.data.leftCampaignScore = PlayState.campaignScore;
+		FlxG.save.data.leftCampaignMisses = PlayState.campaignMisses;
+		FlxG.save.data.leftCampaignSicks = PlayState.campaignSicks;
+		FlxG.save.data.leftCampaignGoods = PlayState.campaignGoods;
+		FlxG.save.data.leftCampaignBads = PlayState.campaignBads;
+		FlxG.save.data.leftCapaignShits = PlayState.campaignShits;
+		FlxG.save.data.leftBlueBall = GameOverSubstate.getBlueballCounter();
+		FlxG.save.flush();
+	}
+
+	public static function resetWeekSave()
+	{
+		FlxG.save.data.leftAWeek = false;
+		FlxG.save.data.leftStoryWeek = 0;
+		FlxG.save.data.leftWeekSongAt = '';
+		FlxG.save.data.leftFullPlaylistCurrently = [];
+		FlxG.save.data.leftCampaignScore = 0;
+		FlxG.save.data.leftCampaignMisses = 0;
+		FlxG.save.data.leftCampaignSicks = 0;
+		FlxG.save.data.leftCampaignGoods = 0;
+		FlxG.save.data.leftCampaignBads = 0;
+		FlxG.save.data.leftCapaignShits = 0;
+		FlxG.save.data.leftBlueBall = 0;
+		FlxG.save.flush();
 	}
 }

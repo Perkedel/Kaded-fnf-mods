@@ -1763,6 +1763,8 @@ class ChartingState extends MusicBeatState
 
 	var stepperNoteType:FlxUINumericStepper; // JOELwindows7: spin number choose note type
 
+	var stepperVowelType:FlxUINumericStepper; // JOELwindows7: spin number choose vowel type radpas13121
+
 	var hitsoundNotePath:FlxUIInputText; // JOELwindows7: name the audio filename for which file to play when hit.
 
 	var tab_group_note:FlxUI;
@@ -1825,6 +1827,11 @@ class ChartingState extends MusicBeatState
 		}
 		hitsoundNotePath.name = 'note_hitsoundPath';
 
+		// JOELwindows7: number roller for vowel type radpas13121. a i u e o, with 0 'a' default.
+		stepperVowelType = new FlxUINumericStepper(10, 100, 1, 0, 0, 4);
+		stepperVowelType.value = 0;
+		stepperVowelType.name = 'note_vowelType';
+
 		check_naltAnim = new FlxUICheckBox(10, 150, null, null, "Toggle Alternative Animation", 100);
 		check_naltAnim.callback = function()
 		{
@@ -1850,6 +1857,8 @@ class ChartingState extends MusicBeatState
 
 		var hitsoundNotePathLabel = new FlxText(95, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label
 
+		var stepperVowelTypeLabel = new FlxText(74, 100, 'Vowel Type'); // JOELwindows7: vowel type label
+
 		var applyLength:FlxUIButton = new FlxUIButton(10, 100, 'Apply Data');
 
 		tab_group_note.add(stepperSusLength);
@@ -1858,6 +1867,8 @@ class ChartingState extends MusicBeatState
 		tab_group_note.add(stepperNoteType); // JOELwindows7: now add it this note type numberer
 		tab_group_note.add(stepperNoteTypeLabel); // JOELwindows7: and also that label.
 		tab_group_note.add(hitsoundNotePath); // JOELwindows7: and the hitsound path text field
+		tab_group_note.add(stepperVowelType); // JOELwindows7: and the vowel type numberer
+		tab_group_note.add(stepperVowelTypeLabel); // JOELwindows7: and the vowel type label
 		tab_group_note.add(applyLength);
 		tab_group_note.add(check_naltAnim);
 
@@ -1958,7 +1969,8 @@ class ChartingState extends MusicBeatState
 						originalNote.isAlt,
 						originalNote.beat,
 						originalNote.noteType,
-						originalNote.hitsoundPath
+						originalNote.hitsoundPath,
+						originalNote.vowelType,
 					];
 					ii.sectionNotes.push(newData);
 
@@ -1969,6 +1981,7 @@ class ChartingState extends MusicBeatState
 					note.rawNoteData = originalNote.rawNoteData;
 					note.sustainLength = originalNote.sustainLength;
 					note.hitsoundPath = originalNote.hitsoundPath; // JOELwindows7: here hitsound path woohoo
+					note.vowelType = originalNote.vowelType; // JOELwindows7: a i u e o from radpas13121 yess
 					note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 					note.updateHitbox();
 					note.x = Math.floor(originalNote.rawNoteData * GRID_SIZE);
@@ -2211,6 +2224,20 @@ class ChartingState extends MusicBeatState
 				// 	// JOELwindows7: the hitsound audio file to play which one yess
 				// 	if (curSelectedNote == null)
 				// 		return;
+				case 'note_vowelType':
+					// JOELwindows7: the vowel type radpas13121. a i u e o mouth lip sync! select mouth frame.
+					if (curSelectedNote == null)
+						return;
+					if (nums.value <= 0)
+						nums.value = 0;
+					// there are 5 common vowels based on Homo sapienic / humanoid oral anatomy. a i u e o.
+					// Although, these days there are alot of accented vowels & even intergalactic vowels.
+					// yeah, so you can set the num > 5, no limit.
+					// Just.. we know & use often 5 of them. feel free to animate them all if you want. I guess lol.
+					// lemme know if you had it. Keep in mind, there is no consorted standard about vowels yet like Emoji had.
+					curSelectedNote[7] = nums.value;
+					Debug.logTrace("Change vowel type mouth to " + Std.int(curSelectedNote[7]));
+					updateGrid();
 				case 'section_bpm':
 					if (nums.value <= 0.1)
 						nums.value = 0.1;
@@ -3597,7 +3624,10 @@ class ChartingState extends MusicBeatState
 			// 	stepperNoteType.value = 0;
 			// }
 
-			hitsoundNotePath.text = "";
+			hitsoundNotePath.text = curSelectedNote[6];
+
+			// JOELwindows7: oh yeah vowel type radpas13121
+			stepperVowelType.value = curSelectedNote[7];
 		}
 	}
 
@@ -3639,6 +3669,7 @@ class ChartingState extends MusicBeatState
 				var daSus = i[2];
 				var daType = i[5]; // JOELwindows7: da type yeahhhh
 				var hitsoundPath = i[6]; // JOELwindows7: hitsound path yeahhhh
+				var vowelType = i[7]; // JOELwindows7: vowel type radpas13121 yeahhhh
 				if (daType == 2)
 					Debug.logTrace("It's a pecking MINE!!! no way!!!");
 				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], daType); // JOELwindows7: note type pls mine duar
@@ -3647,6 +3678,7 @@ class ChartingState extends MusicBeatState
 				note.rawNoteData = daNoteInfo;
 				note.sustainLength = daSus;
 				note.hitsoundPath = hitsoundPath; // JOELwindows7: just directly change value
+				note.vowelType = vowelType; // JOELwindows7: just directly change value woahow
 				note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 				note.updateHitbox();
 				note.x = Math.floor(daNoteInfo * GRID_SIZE);
@@ -3970,12 +4002,14 @@ class ChartingState extends MusicBeatState
 		var noteSus = 0;
 		var noteType = 0; // JOELwindows7: press hold? alt + add note (1 2 3 4 or click collumn to add) to add mine.
 		var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound file sound.
+		var vowelType:Int = 0; // JOELwindows7: radpas13121 vowel a i u e o choosen. defaults to 'a'. lol gawr gura!
 		// if (FlxG.keys.pressed.ONE)
 		// 	noteType = 1;
 		if (FlxG.keys.pressed.ALT)
 			noteType = 2;
 
-		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData + " & noteType " + Std.string(noteType));
+		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData + " & noteType " + Std.string(noteType) + "& also vowel "
+			+ Std.string(vowelType));
 
 		// JOELwindows7: push noteType too
 		if (n != null)
@@ -3986,7 +4020,8 @@ class ChartingState extends MusicBeatState
 				false,
 				TimingStruct.getBeatFromTime(n.strumTime),
 				n.noteType,
-				n.hitsoundPath
+				n.hitsoundPath,
+				n.vowelType,
 			]);
 		else
 			section.sectionNotes.push([
@@ -3996,7 +4031,8 @@ class ChartingState extends MusicBeatState
 				false,
 				TimingStruct.getBeatFromTime(noteStrum),
 				noteType,
-				hitsoundPath
+				hitsoundPath,
+				vowelType,
 			]);
 
 		// Debug.logTrace("MROGIN");
@@ -4018,6 +4054,7 @@ class ChartingState extends MusicBeatState
 			note.rawNoteData = noteData;
 			note.sustainLength = noteSus;
 			note.hitsoundPath = hitsoundPath; // JOELwindows7: directly value
+			note.vowelType = vowelType; // JOELwindows7: directly value wow
 			note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 			note.updateHitbox();
 			note.x = Math.floor(noteData * GRID_SIZE);
@@ -4302,6 +4339,7 @@ class ChartingState extends MusicBeatState
 					noteType: i.sectionNotes[j][5],
 					noteTypeId: stringedNoteType,
 					hitsoundPath: i.sectionNotes[j][6],
+					vowelType: i.sectionNotes[j][7],
 				}
 			}
 		}

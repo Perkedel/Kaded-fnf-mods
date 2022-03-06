@@ -355,17 +355,22 @@ class GameOverSubstate extends MusicBeatSubstate
 	// JOELwindows7: blueball managements
 	public static function addBlueball()
 	{
-		GameOverSubstate.blueBallCounter++;
+		return GameOverSubstate.blueBallCounter++;
 	}
 
 	// JOELwindows7: reset blueball counter
 	public static function resetBlueball()
 	{
-		GameOverSubstate.blueBallCounter = 0;
+		return GameOverSubstate.blueBallCounter = 0;
 	}
 
 	public static function getBlueballCounter()
 	{
 		return GameOverSubstate.blueBallCounter;
+	}
+
+	public static function reloadBlueballCounterFromWeekSave()
+	{
+		return GameOverSubstate.blueBallCounter = FlxG.save.data.leftBlueball;
 	}
 }

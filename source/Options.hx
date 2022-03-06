@@ -2146,7 +2146,7 @@ class FullScreenOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Screen mode " + (FlxG.fullscreen ? "Fullscreen" : "Windowed");
+		return "Screen mode < " + (FlxG.fullscreen ? "Fullscreen" : "Windowed") + " >";
 	}
 }
 
@@ -3439,5 +3439,39 @@ class CpuSplashOption extends Option
 	private override function updateDisplay():String
 	{
 		return "CPU Splash < " + (FlxG.save.data.cpuSplash ? "MOIST ON" : "DRIED OFF") + " >";
+	}
+}
+
+// JOELwindows7: Whether or not the blueball carries in total a week or just each song
+class BlueballWeekOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.blueballWeek = !FlxG.save.data.blueballWeek;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Blueball count carries for < " + (FlxG.save.data.blueballWeek ? "Week Total" : "Per song only") + " >";
 	}
 }

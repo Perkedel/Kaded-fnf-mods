@@ -149,6 +149,7 @@ class OptionsMenu extends CoreSubState
 				new AutoClickEnabledOption("Let the game click the dialogue for you"),
 				new AutoClickDelayOption("Set the delay of click between dialogue typing completition"),
 				new EndSongEarlyOption("Toggle whether or not to end song early or wait music complete 1st"),
+				new BlueballWeekOption("Toggle whether or not should blueball counts carries entire week or just this song"),
 				new UnpausePreparationOption("(RECOMMENDED Always / Manual Only) Initiate quick preparation countdown after unpausing"),
 			]),
 			new OptionCata(345, 40, "Appearance", [

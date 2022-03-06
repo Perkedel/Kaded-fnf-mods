@@ -1980,7 +1980,7 @@ class PlayState extends MusicBeatState
 				case 0:
 					// JOELwindows7:Lol! I added reverse
 					if (!silent)
-						FlxG.sound.play(Paths.sound('intro3' + altSuffix + midiSuffix), 0.6);
+						FlxG.sound.play(Paths.sound((reversed ? 'intro1' : 'intro3') + altSuffix + midiSuffix), 0.6);
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[0], week6Bullshit));
 					ready.scrollFactor.set();
@@ -2020,8 +2020,8 @@ class PlayState extends MusicBeatState
 							set.destroy();
 						}
 					});
-					if (!silent) // JOELwindows7: ssshhh
-						FlxG.sound.play(Paths.sound('intro1' + altSuffix + midiSuffix), 0.6);
+					if (!silent) // JOELwindows7: ssshhh + reverse pls dont gone!
+						FlxG.sound.play(Paths.sound((reversed ? 'intro3' : 'intro1') + altSuffix + midiSuffix), 0.6);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[2], week6Bullshit));
 					go.scrollFactor.set();
@@ -3128,7 +3128,19 @@ class PlayState extends MusicBeatState
 						cartoonCornerDot();
 
 						// JOELwindows7: reset blue ball because yey we succeed
-						GameOverSubstate.resetBlueball();
+						if (isStoryMode)
+						{
+							// story mode
+							if (!FlxG.save.data.blueballWeek)
+								GameOverSubstate.resetBlueball();
+							// well only if in the story mode, gamers chose to not carry them for total week.
+						}
+						else
+						{
+							// free play
+							GameOverSubstate.resetBlueball();
+						}
+						// Oh my God, confusing complexity! my brain could not build obfuscated if else at the moment.
 					}
 
 					if (FlxG.save.data.endSongEarly ? FlxG.sound.music.time / songMultiplier > (songLength - 0) : musicCompleted)
@@ -4991,12 +5003,13 @@ class PlayState extends MusicBeatState
 				campaignShits += shits;
 
 				// JOELwindows7: wait! remember the song name first!
-				var lastSonginPlaylist = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
+				// var lastSonginPlaylist = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
+				var lastSonginPlaylist = PlayState.storyPlaylist[0]; // raw SONG id.
 				// var lastSonginPlaylist = StringTools.replace(PlayState.storyPlaylist[0], " ", "-");
 
 				storyPlaylist.remove(storyPlaylist[0]);
 
-				if (storyPlaylist.length <= 0)
+				if (storyPlaylist.length <= 0) // when all song in this week finished
 				{
 					transIn = FlxTransitionableState.defaultTransIn;
 					transOut = FlxTransitionableState.defaultTransOut;
@@ -5072,10 +5085,13 @@ class PlayState extends MusicBeatState
 						Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 					}
 
+					StoryMenuState.resetWeekSave(); // JOELwindows7: reset week
 					StoryMenuState.unlockNextWeek(storyWeek);
 				}
 				else
 				{
+					StoryMenuState.saveWeek(false); // JOELwindows7: okay, save the week pls!
+
 					var diff:String = ["-easy", "", "-hard"][storyDifficulty];
 
 					Debug.logInfo('PlayState: Loading next story song ${PlayState.storyPlaylist[0]}-${diff}');
@@ -6974,7 +6990,7 @@ class PlayState extends MusicBeatState
 			{
 				case 0:
 					if (!silent)
-						FlxG.sound.play(Paths.sound(reversed ? 'intro1' : 'intro3' + altSuffix + midiSuffix), 0.6);
+						FlxG.sound.play(Paths.sound((reversed ? 'intro1' : 'intro3') + altSuffix + midiSuffix), 0.6);
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
 					ready.scrollFactor.set();
@@ -7015,7 +7031,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					if (!silent)
-						FlxG.sound.play(Paths.sound(reversed ? 'intro3' : 'intro1' + altSuffix + midiSuffix), 0.6);
+						FlxG.sound.play(Paths.sound((reversed ? 'intro3' : 'intro1') + altSuffix + midiSuffix), 0.6);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 					go.scrollFactor.set();
