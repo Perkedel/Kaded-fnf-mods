@@ -483,7 +483,9 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.dafont.com/a-atmospheric.font https://www.fontspace.com/a-atmospheric-font-f46808 wepfont (Uhh: Freeware). just a cool sci-fi atmospheric font.
 - https://github.com/kem0x/FNF-ModShaders kem0x. proper modshader thingy yey. [Fireable](https://github.com/ItzFireable ) did lua implementation wow! [SqirraRNG](https://github.com/gedehari ) workaroundeh runtime.
 - https://github.com/GrowtopiaFli/openfl-haxeflixel-gif-code GWebDev / GrowtopiaFli. WHOAHOW!!! finally GIF loader. not complete yet, no frame select yet, but that should help recoup those who are not from SparrowAtlas XML days.
-- 
+- https://github.com/marketplace/actions/cache GitHub. cache build cache stuffs for faster CI building.
+- https://github.com/marketplace/actions/upload-a-build-artifact GitHub. upload build results
+- https://github.com/marketplace?type=actions&query=mingw+ GitHub. wait, what is this for? we don't use mingw right now. that's for Zumi's new factory in his palace.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
