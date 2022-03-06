@@ -18,12 +18,22 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+
+      - name: first, begin caching stuffs
+        uses: actions/cache@v2.1.7
+        id: cache-stuff
+        with:
+          path: |
+            ~/work/Kaded-fnf-mods/Kaded-fnf-mods/export/
+            /opt/hostedtoolcache/haxe/
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+
       - uses: krdlab/setup-haxe@v1.1.6
         with:
           haxe-version: 4.2.4
       # Runs a set of commands using the runners shell
 
-      - name: script run line haha
+      - name: Linuxly set things up first!
         run: |
           sudo apt-get update
           sudo apt upgrade -y
@@ -32,6 +42,11 @@ jobs:
           sudo apt-get install gcc g++ gcc-multilib g++-multilib -y
           sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
           sudo apt install libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev
+
+      - name: script run line haha
+        # if: steps.cache-stuff.outputs.cache-hit != 'true'
+        run: |
+          haxe -version
           haxelib install lime
           haxelib install openfl
           haxelib install flixel
@@ -86,6 +101,18 @@ jobs:
           haxelib run lime rebuild yagp linux
           haxelib list
       
+      - name: if there is cache still then just update everything
+        if: steps.cache-stuff.outputs.cache-hit == 'true'
+        run: |
+          haxe -version
+          haxelib update --always
+          haxelib run lime setup flixel -y
+          haxelib run lime setup -y
+          haxelib run lime rebuild extension-webm linux
+          haxelib run lime rebuild systools linux
+          haxelib run lime rebuild yagp linux
+          haxelib list
+      
       - name: Obtain stuffs of Linux
         run: |
           wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
@@ -99,7 +126,7 @@ jobs:
 
       - name: Build Linux now
         run: |
-          haxelib run lime build linux -html
+          haxelib run lime build linux -final
           
       - uses: actions/upload-artifact@v2
         with:

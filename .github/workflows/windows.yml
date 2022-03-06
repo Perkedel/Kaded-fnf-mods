@@ -24,6 +24,16 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+
+      - name: first, begin caching stuffs
+        uses: actions/cache@v2.1.7
+        id: cache-stuff
+        with:
+          path: |
+            D:\a\Kaded-fnf-mods\Kaded-fnf-mods\export\
+            C:\hostedtoolcache\haxe\
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+
       - uses: krdlab/setup-haxe@v1.1.6
         with:
           haxe-version: 4.2.4
@@ -39,6 +49,8 @@ jobs:
           cinst android-sdk -y
           cinst android-ndk --version=16.2 -y
           cinst adb -y
+          cinst haxe -y
+          RefreshEnv
 
       - name: first, lemme download android stuff
         run: |
@@ -51,12 +63,11 @@ jobs:
           unzip -q .\android_cmd.zip -d "%ANDROID_SDK_LOC%"
           unzip -q -n .\android_build-tools.zip -d %ANDROID_SDK_LOC%\build-tools
           unzip -q .\android_platforms.zip -d "%ANDROID_SDK_LOC%"
-          unzip -q -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%" 
+          unzip -q -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%"  
 
       - name: script run line haha
+        # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
-          cinst haxe -y
-          RefreshEnv
           haxelib install lime
           RefreshEnv
           haxelib install openfl
@@ -108,6 +119,18 @@ jobs:
           haxelib list
           dir
           pwd
+      
+      - name: if there is cache still then just update everything
+        if: steps.cache-stuff.outputs.cache-hit == 'true'
+        run: |
+          haxe -version
+          haxelib update --always
+          haxelib run lime setup flixel -y
+          haxelib run lime setup -y
+          haxelib run lime rebuild extension-webm linux
+          haxelib run lime rebuild systools linux
+          haxelib run lime rebuild yagp linux
+          haxelib list
       
       - name: TEMP patch FlxAction.hx workaround
         run: |
