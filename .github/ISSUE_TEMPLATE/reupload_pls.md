@@ -15,4 +15,4 @@ assignees: ''
 
 ## Does / Do the author(s) consent for us reuploading the mod? (Answering `NO` won't immediately cancel the idea, and will be used for further discussion)
 
-<!-- PRO TIPS: If your Reupload Pls issues happened to be closed immediately, Please do not panic and protest if the message contains `Protoglin Amexamlef` with the codename next to it. This special message means that we have been considering to lorecast & reupload mentioned mods and still in our discussion. 😉 ;) -->
+<!-- PRO TIPS: If your `Reupload Pls` issues happened to be closed immediately, Please do not panic and protest if the message contains `Protoglin Amexamlef` with the codename next to it. This special message means that we have been considering to lorecast & reupload mentioned mods and still in our discussion. 😉 ;) -->

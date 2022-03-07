@@ -1,5 +1,10 @@
 package;
 
+import const.Perkedel;
+import tjson.TJSON;
+import haxe.ui.components.DropDown;
+import flixel.FlxSubState;
+import flixel.addons.ui.FlxButtonPlus;
 import Song.SongMeta;
 import openfl.system.System;
 import lime.app.Application;
@@ -38,6 +43,7 @@ import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
+import flixel.addons.ui.FlxUIButton;
 import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxColor;
 import haxe.Json;
@@ -59,7 +65,10 @@ class ChartingState extends MusicBeatState
 	public static var instance:ChartingState;
 
 	var _file:FileReference;
+	#if FEATURE_FILESYSTEM
+	var _regFile:File; // JOElwindows7: here regular file.
 
+	#end
 	public var playClaps:Bool = false;
 
 	public var snap:Int = 16;
@@ -111,6 +120,7 @@ class ChartingState extends MusicBeatState
 	public static var _song:SongData;
 
 	var typingShit:FlxInputText;
+	var typingShit2:FlxInputText; // JOELwindows7: this is to put charter name.
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
 	**/
@@ -143,6 +153,17 @@ class ChartingState extends MusicBeatState
 
 	public static var latestChartVersion = "2";
 
+	public var paused:Bool = false; // JOELwindows7: mark for file menu open
+
+	public var snapSound:FlxSound; // JOELwindows7: bring snap sound to one memory rather than new again I guess
+	public var metronomeSound:FlxSound; // JOELwindows7: bring metronome sound to one memory rather than new again I guess
+	public var metronomeDingSound:FlxSound; // JOELwindows7: bring metronome ding sound to one memory rather than new again I guess
+
+	var theseEvents:Array<String> = [
+		"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
+		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights", "Appear Blackbar", "Disappear Blackbar"
+	]; // JOELwindows7: these events of it.
+
 	public function new(reloadOnInit:Bool = false)
 	{
 		super();
@@ -155,6 +176,20 @@ class ChartingState extends MusicBeatState
 
 	override function create()
 	{
+		// JOELwindows7: move super create here
+		super.create();
+
+		// JOELwindows7: init the sound
+		snapSound = new FlxSound().loadEmbedded(Paths.sound('SNAP'));
+		snapSound.stop();
+		FlxG.sound.list.add(snapSound);
+		metronomeSound = new FlxSound().loadEmbedded(Paths.sound('CLAP-midi'));
+		metronomeSound.stop();
+		FlxG.sound.list.add(metronomeSound);
+		metronomeDingSound = new FlxSound().loadEmbedded(Paths.sound('CLAP-midi-ding'));
+		metronomeDingSound.stop();
+		FlxG.sound.list.add(metronomeDingSound);
+
 		#if FEATURE_DISCORD
 		DiscordClient.changePresence("Chart Editor", null, null, true);
 		#end
@@ -234,6 +269,7 @@ class ChartingState extends MusicBeatState
 				invisibleCountdown: false,
 				silentCountdown: false,
 				skipCountdown: false,
+				loadNoteStyleOtherWayAround: false,
 				useCustomNoteStyle: false,
 				delayBeforeStart: 0.0,
 				delayAfterFinish: 0.0,
@@ -241,6 +277,8 @@ class ChartingState extends MusicBeatState
 				creditRunsOnce: false,
 			};
 		}
+
+		// JOELwindows7: damn, how do I supposed to use Waveform to add here?!?!??!
 
 		addGrid(1);
 
@@ -276,10 +314,10 @@ class ChartingState extends MusicBeatState
 		var index = 0;
 
 		if (_song.eventObjects == null)
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change")];
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: ouh
 
 		if (_song.eventObjects.length == 0)
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change")];
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: ha!
 
 		Debug.logTrace("goin");
 
@@ -290,6 +328,8 @@ class ChartingState extends MusicBeatState
 			var type = Reflect.field(i, "type");
 			var pos = Reflect.field(i, "position");
 			var value = Reflect.field(i, "value");
+			var value2 = Reflect.field(i, "value2"); // JOELwindows7: hyeye
+			var value3 = Reflect.field(i, "value3"); // JOELwindows7: nyenye
 
 			if (type == "BPM Change")
 			{
@@ -423,7 +463,12 @@ class ChartingState extends MusicBeatState
 		UI_box.x = FlxG.width / 2 + 40;
 		UI_box.y = 20;
 
-		var opt_tabs = [{name: "Options", label: 'Song Options'}, {name: "Events", label: 'Song Events'}];
+		// JOELwindows7: make sure to register your bottom tab here too.
+		var opt_tabs = [
+			{name: "Options", label: 'Song Options'},
+			{name: "Events", label: 'Song Events'},
+			{name: "Controls", label: 'Play Controls'}, // JOELwindows7: yeah transport control!
+		];
 
 		UI_options = new FlxUITabMenu(null, opt_tabs, true);
 
@@ -435,12 +480,14 @@ class ChartingState extends MusicBeatState
 		add(UI_options);
 		add(UI_box);
 
+		// JOELwindows7: all buttons has been changed into FlxUIButton instead of classic FlxButton
 		addSongUI();
 		addSectionUI();
 		addNoteUI();
 
 		addOptionsUI();
 		addEventsUI();
+		addControlUI(); // JOELwindows7: here the touchscreen control
 
 		regenerateLines();
 
@@ -467,9 +514,12 @@ class ChartingState extends MusicBeatState
 
 		Debug.logTrace("bruh");
 
+		// JOELwindows7: One last thing! Toolbars!
+		addFileMenuButton(); // JOELwindows7: here the file menu button a.k.a. Office button.
+
 		Debug.logTrace("create");
 
-		super.create();
+		// super.create(); //JOELwindows7: moved to top
 	}
 
 	public var texts:FlxTypedGroup<FlxText>;
@@ -569,9 +619,12 @@ class ChartingState extends MusicBeatState
 	var stepperDiv:FlxUINumericStepper;
 	var check_snap:FlxUICheckBox;
 	var listOfEvents:FlxUIDropDownMenu;
+	var newListOfEvents:DropDown; // JOELwindows7: here list of event but HaxeUI
 	var currentSelectedEventName:String = "";
 	var savedType:String = "BPM Change";
 	var savedValue:String = "100";
+	var savedValue2:String = "1"; // JOELwindows7: yekstra extra
+	var savedValue3:String = "0"; // JOELwindows7: exkt extra
 	var currentEventPosition:Float = 0;
 
 	function containsName(name:String, events:Array<Song.Event>):Song.Event
@@ -594,7 +647,7 @@ class ChartingState extends MusicBeatState
 	{
 		if (_song.eventObjects == null)
 		{
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change")];
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: oh
 		}
 
 		var firstEvent = "";
@@ -608,17 +661,42 @@ class ChartingState extends MusicBeatState
 		var nameLabel = new FlxText(150, 5, 'Event Name');
 		var eventName = new FlxUIInputText(150, 20, 80, "");
 		var typeLabel = new FlxText(10, 45, 'Type of Event');
+		// JOELwindows7: alright, here events
+		// theseEvents; //here.
 		// JOELwindows7: list of event here
-		var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray([
-			"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
-			"Scroll Speed Change", "Vibrate for", "LED ON for",
-		], true));
+		// var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray([
+		// 	"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
+		// 	"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights",
+		// ], true));
+		// JOELwindows7: here with tidy version I guess
+		var eventType = new FlxUIDropDownMenu(10, 60, FlxUIDropDownMenu.makeStrIdLabelArray(theseEvents, true));
+		eventType.autoBounds = true; // JOELwindows7: how the peck fit to screen.
+		// eventType.dropDirection = FlxUIDropDownMenuDropDirection.Up; //JOELwindows7: helep
+		// JOELwindows7: attempt HaxeUI version of it
+		var newEventType = new DropDown();
+		newEventType.x = 10;
+		newEventType.y = 120;
+		newEventType.width = 140;
+		newListOfEvents = new DropDown();
+		newListOfEvents.x = 10;
+		newListOfEvents.y = 90;
+		newListOfEvents.width = 140;
+		for (i in 0...theseEvents.length)
+		{
+			newEventType.dataSource.add({
+				text: theseEvents[i],
+				item: theseEvents[i],
+			});
+		}
 		var valueLabel = new FlxText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");
-		var eventSave = new FlxButton(10, 155, "Save Event", function()
+		// JOELwindows7: moar of them!
+		var eventValue2 = new FlxUIInputText(230, 60, 80, "");
+		var eventValue3 = new FlxUIInputText(310, 60, 80, "");
+		var eventSave = new FlxUIButton(10, 155, "Save Event", function()
 		{
 			var pog:Song.Event = new Song.Event(currentSelectedEventName, currentEventPosition, HelperFunctions.truncateFloat(Std.parseFloat(savedValue), 3),
-				savedType);
+				savedType, HelperFunctions.truncateFloat(Std.parseFloat(savedValue2), 3), HelperFunctions.truncateFloat(Std.parseFloat(savedValue3), 3));
 
 			Debug.logTrace("trying to save " + currentSelectedEventName);
 
@@ -644,6 +722,9 @@ class ChartingState extends MusicBeatState
 				var type = Reflect.field(i, "type");
 				var pos = Reflect.field(i, "position");
 				var value = Reflect.field(i, "value");
+				// JOELwindows7: here more
+				var value2 = Reflect.field(i, "value2");
+				var value3 = Reflect.field(i, "value3");
 
 				Debug.logTrace(i.type);
 				if (type == "BPM Change")
@@ -687,14 +768,26 @@ class ChartingState extends MusicBeatState
 
 			listOfEvents.selectedLabel = pog.name;
 
+			// JOELwindows7: now the HaxeUI list of events save
+			newListOfEvents.dataSource.clear();
+			for (i in 0...listofnames.length)
+			{
+				newListOfEvents.dataSource.add({
+					text: listofnames[i],
+					item: listofnames[i],
+				});
+			}
+			newListOfEvents.selectedItem = pog.name;
+
 			Debug.logTrace('end');
 		});
 		var posLabel = new FlxText(150, 85, 'Event Position');
 		var eventPos = new FlxUIInputText(150, 100, 80, "");
-		var eventAdd = new FlxButton(95, 155, "Add Event", function()
+		var eventAdd = new FlxUIButton(95, 155, "Add Event", function()
 		{
+			// JOELwindows7: O poggers
 			var pog:Song.Event = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3),
-				HelperFunctions.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change");
+				HelperFunctions.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change", 0, 0);
 
 			Debug.logTrace("adding " + pog.name);
 
@@ -709,13 +802,19 @@ class ChartingState extends MusicBeatState
 
 			eventName.text = pog.name;
 			eventType.selectedLabel = pog.type;
+			newEventType.selectedItem = pog.type; // JOELwindows7: helep me pelis
 			eventValue.text = pog.value + "";
+			// JOELwindows7: here more
+			eventValue2.text = pog.value2 + "";
+			eventValue3.text = pog.value3 + "";
 			eventPos.text = pog.position + "";
 			currentSelectedEventName = pog.name;
 			currentEventPosition = pog.position;
 
 			savedType = pog.type;
 			savedValue = pog.value + "";
+			savedValue2 = pog.value2 + "";
+			savedValue3 = pog.value3 + "";
 
 			var listofnames = [];
 
@@ -727,6 +826,17 @@ class ChartingState extends MusicBeatState
 			listOfEvents.setData(FlxUIDropDownMenu.makeStrIdLabelArray(listofnames, true));
 
 			listOfEvents.selectedLabel = pog.name;
+
+			// JOELwindows7: add list event HaxeUI
+			newListOfEvents.dataSource.clear();
+			for (i in 0...listofnames.length)
+			{
+				newListOfEvents.dataSource.add({
+					text: listofnames[i],
+					item: listofnames[i],
+				});
+			}
+			newListOfEvents.selectedItem = pog.name;
 
 			TimingStruct.clearTimings();
 
@@ -770,7 +880,7 @@ class ChartingState extends MusicBeatState
 
 			regenerateLines();
 		});
-		var eventRemove = new FlxButton(180, 155, "Remove Event", function()
+		var eventRemove = new FlxUIButton(180, 155, "Remove Event", function()
 		{
 			Debug.logTrace("lets see if we can remove " + listOfEvents.selectedLabel);
 
@@ -789,19 +899,24 @@ class ChartingState extends MusicBeatState
 
 			if (firstEvent == null)
 			{
-				_song.eventObjects.push(new Song.Event("Init BPM", 0, _song.bpm, "BPM Change"));
+				_song.eventObjects.push(new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)); // JOELwindows7: initda
 				firstEvent = _song.eventObjects[0];
 			}
 
 			eventName.text = firstEvent.name;
 			eventType.selectedLabel = firstEvent.type;
+			newEventType.selectedItem = firstEvent.type; // JOELwindows7: helep me pelis
 			eventValue.text = firstEvent.value + "";
+			eventValue2.text = firstEvent.value2 + "";
+			eventValue3.text = firstEvent.value3 + "";
 			eventPos.text = firstEvent.position + "";
 			currentSelectedEventName = firstEvent.name;
 			currentEventPosition = firstEvent.position;
 
 			savedType = firstEvent.type;
 			savedValue = firstEvent.value + '';
+			savedValue2 = firstEvent.value2 + ''; // JOELwindows7: here more
+			savedValue3 = firstEvent.value3 + ''; // JOELwindows7: here ye
 
 			var listofnames = [];
 
@@ -813,6 +928,17 @@ class ChartingState extends MusicBeatState
 			listOfEvents.setData(FlxUIDropDownMenu.makeStrIdLabelArray(listofnames, true));
 
 			listOfEvents.selectedLabel = firstEvent.name;
+
+			// JOELwindows7: remove list event HaxeUI
+			newListOfEvents.dataSource.clear();
+			for (i in 0...listofnames.length)
+			{
+				newListOfEvents.dataSource.add({
+					text: listofnames[i],
+					item: listofnames[i],
+				});
+			}
+			newListOfEvents.selectedItem = firstEvent.name;
 
 			TimingStruct.clearTimings();
 
@@ -852,7 +978,7 @@ class ChartingState extends MusicBeatState
 
 			regenerateLines();
 		});
-		var updatePos = new FlxButton(150, 120, "Update Pos", function()
+		var updatePos = new FlxUIButton(150, 120, "Update Pos", function()
 		{
 			var obj = containsName(currentSelectedEventName, _song.eventObjects);
 			if (obj == null)
@@ -872,10 +998,13 @@ class ChartingState extends MusicBeatState
 			var type = Reflect.field(event, "type");
 			var pos = Reflect.field(event, "position");
 			var value = Reflect.field(event, "value");
+			// JOElwindows7: byev
+			var value2 = Reflect.field(event, "value2");
+			var value3 = Reflect.field(event, "value3");
 
 			Debug.logTrace(value);
 
-			var eventt = new Song.Event(name, pos, value, type);
+			var eventt = new Song.Event(name, pos, value, type, value2, value3); // JOELwindows7: weuw
 
 			chartEvents.push(eventt);
 			listofnames.push(name);
@@ -897,7 +1026,15 @@ class ChartingState extends MusicBeatState
 			Debug.logTrace("bruh");
 			eventType.selectedLabel = firstEventObject.type;
 			Debug.logTrace("bruh");
+			newEventType.selectedItem = firstEventObject.type; // JOELwindows7: helep me pelis
+			Debug.logTrace("bruh");
 			eventValue.text = firstEventObject.value + "";
+			// JOELwindows7: bruh 🕺🏻
+			Debug.logTrace("bruh");
+			eventValue2.text = firstEventObject.value2 + "";
+			// JOELwindows7: ye
+			Debug.logTrace("bruh");
+			eventValue3.text = firstEventObject.value3 + "";
 			Debug.logTrace("bruh");
 			currentSelectedEventName = firstEventObject.name;
 			Debug.logTrace("bruh");
@@ -918,8 +1055,12 @@ class ChartingState extends MusicBeatState
 
 			eventName.text = event.name;
 			eventValue.text = event.value + "";
+			eventValue2.text = event.value2 + "";
+			eventValue3.text = event.value3 + "";
 			eventPos.text = event.position + "";
 			eventType.selectedLabel = event.type;
+			newEventType.selectedItem = event.type; // JOELwindows7: helep me pelis
+			newListOfEvents.selectedItem = event.name; // JOELwindows7: responsible to update this HaxeUI version too
 			currentSelectedEventName = event.name;
 			currentEventPosition = event.position;
 		});
@@ -930,9 +1071,68 @@ class ChartingState extends MusicBeatState
 			savedValue = string;
 		};
 
+		// JOELwindows7: moar
+		eventValue2.callback = function(string:String, string2:String)
+		{
+			Debug.logTrace(string + " - value2");
+			savedValue2 = string;
+		};
+
+		// JOELwindows7: MOAR!
+		eventValue3.callback = function(string:String, string2:String)
+		{
+			Debug.logTrace(string + " - value3");
+			savedValue3 = string;
+		};
+
 		eventType.callback = function(type:String)
 		{
 			savedType = eventType.selectedLabel;
+			newEventType.selectedItem = eventType.selectedLabel; // JOELwindows7: helep me pelis
+		};
+
+		// JOELwindows7: helep
+		newEventType.onChange = function(e)
+		{
+			Debug.logTrace("Change event type to " + newEventType.selectedItem);
+			savedType = newEventType.selectedItem.item;
+			eventType.selectedLabel = newEventType.selectedItem.item;
+		};
+
+		// JOELwindows7: helep list of event HaxeUI
+		for (i in 0...listofnames.length)
+		{
+			newListOfEvents.dataSource.add({
+				text: listofnames[i],
+				item: listofnames[i],
+			});
+		}
+		newListOfEvents.onChange = function(e)
+		{
+			try
+			{
+				var event = containsName(newListOfEvents.selectedItem.item, _song.eventObjects);
+
+				if (event == null)
+					return;
+
+				Debug.logTrace("Change event selection to " + newListOfEvents.selectedItem);
+				listOfEvents.selectedLabel = newListOfEvents.selectedItem.item;
+
+				eventName.text = event.name;
+				eventValue.text = event.value + "";
+				eventValue2.text = event.value2 + "";
+				eventValue3.text = event.value3 + "";
+				eventPos.text = event.position + "";
+				eventType.selectedLabel = event.type;
+				newEventType.selectedItem = event.type; // JOELwindows7: helep me pelis
+				currentSelectedEventName = event.name;
+				currentEventPosition = event.position;
+			}
+			catch (e)
+			{
+				Debug.logWarn("Werror Selection New List of Events! " + e + ": " + e.message);
+			}
 		};
 
 		eventName.callback = function(string:String, string2:String)
@@ -954,6 +1154,8 @@ class ChartingState extends MusicBeatState
 
 		Typeables.push(eventPos);
 		Typeables.push(eventValue);
+		Typeables.push(eventValue2); // JOELwindows7: a
+		Typeables.push(eventValue3); // JOELwindows7: b
 		Typeables.push(eventName);
 
 		var tab_events = new FlxUI(null, UI_options);
@@ -965,13 +1167,17 @@ class ChartingState extends MusicBeatState
 		tab_events.add(typeLabel);
 		tab_events.add(eventName);
 		tab_events.add(eventValue);
+		tab_events.add(eventValue2); // JOELwindows7: moar
+		tab_events.add(eventValue3); // JOELwindows7: MOAR!
 		tab_events.add(eventSave);
 		tab_events.add(eventAdd);
 		tab_events.add(eventRemove);
 		tab_events.add(eventPos);
 		tab_events.add(updatePos);
 		tab_events.add(eventType);
+		tab_events.add(newEventType); // JOELwindows7: okeh here attemption
 		tab_events.add(listOfEvents);
+		tab_events.add(newListOfEvents); // JOELwindows7: okeh here attemption HaxeUI edition
 		UI_options.addGroup(tab_events);
 	}
 
@@ -999,8 +1205,221 @@ class ChartingState extends MusicBeatState
 		UI_options.addGroup(tab_options);
 	}
 
+	// JOELwindows7: left side is Tool menu. add Menu button and its toolbar bellow
+	function addFileMenuButton():Void
+	{
+		var fileMenuButton = new FlxUIButton(170, 40, "File", function()
+		{
+			openDaFileMenuNow();
+		});
+		fileMenuButton.loadGraphic(Paths.loadImage('fileButtonSmall'), false);
+		add(fileMenuButton);
+
+		addShiftButton(170, FlxG.height - 80);
+	}
+
+	// JOELwindows7: now add player control tab UI
+
+	/**
+	 * This function adds the player control tab UI to the UI_options group.
+	 * It contains Play/Pause & Seek buttons to scroll the chart & play the song.
+	 */
+	function addControlUI():Void
+	{
+		/**
+		 * Play button
+		* **/
+		var playButton = new FlxUIButton(70, 70, "Play", function()
+		{
+			// JOELwindows7: steal function when press SPACE
+			if (FlxG.sound.music.playing)
+			{
+				FlxG.sound.music.pause();
+				if (!PlayState.isSM)
+					vocals.pause();
+				claps.splice(0, claps.length);
+			}
+			else
+			{
+				if (!PlayState.isSM)
+					vocals.play();
+				FlxG.sound.music.play();
+			}
+		});
+
+		playButton.loadGraphic(Paths.loadImage('playPauseButtonSmall'), false);
+		// playButton.loadButtonGraphic(Paths.loadImage('playPauseButton'), Paths.loadImage('playPauseButton'));
+		playButton.setSize(25, 25);
+		playButton.updateHitbox();
+		// playButton.alpha = 0;
+
+		/**
+		 * Seek Up button, scroll the chart up
+		 */
+		var seekUpButton = new FlxUIButton(70, 10, "Scroll Up", function()
+		{
+		});
+
+		seekUpButton.onDown.callback = function() // seekUpButton.onClickCallback = function()
+		{
+			// JOELwindows7: steal from keyboard function of it. this is when press W
+			FlxG.sound.music.pause();
+			if (!PlayState.isSM)
+				vocals.pause();
+
+			var daTime:Float;
+			// TODO: You should just take scroll wheel's seek instead.
+			if (FlxG.keys.pressed.SHIFT || haveShiftedHeld)
+			{
+				daTime = 700 * FlxG.elapsed;
+				FlxG.sound.music.time -= daTime;
+			}
+			else
+			{
+				if (doSnapShit)
+				{
+					// Here mouse wheel snap.
+					var increase:Float = 0;
+					var beats:Float = 0;
+
+					increase = -1 / deezNuts.get(snap);
+					beats = ((Math.ceil(curDecimalBeat * deezNuts.get(snap)) - 0.001) / deezNuts.get(snap)) + increase;
+
+					Debug.logTrace("SNAP - " + snap + " INCREASE - " + increase + " - GO TO BEAT " + beats);
+
+					var data = TimingStruct.getTimingAtBeat(beats);
+
+					if (beats <= 0)
+						FlxG.sound.music.time = 0;
+
+					var bpm = data != null ? data.bpm : _song.bpm;
+
+					if (data != null)
+					{
+						FlxG.sound.music.time = (data.startTime + ((beats - data.startBeat) / (bpm / 60))) * 1000;
+					}
+				}
+				else
+				{
+					daTime = Conductor.stepCrochet * 2;
+					FlxG.sound.music.time -= daTime;
+				}
+			}
+
+			// FlxG.sound.music.time -= daTime;
+
+			if (!PlayState.isSM)
+				vocals.time = FlxG.sound.music.time;
+		};
+		seekUpButton.loadGraphic(Paths.loadImage('upAdjustButtonSmall'), false);
+		seekUpButton.setSize(25, 25);
+		seekUpButton.updateHitbox();
+		// seekUpButton.alpha = 0;
+
+		/**
+		 * Seek down button. scroll the chart down
+		 */
+		var seekDownButton = new FlxUIButton(70, 130, "Scroll Down", function()
+		{
+		});
+
+		seekDownButton.onDown.callback = function() // seekDownButton.onClickCallback = function()
+		{
+			// JOELwindows7: steal from keyboard function of it. this is when press S
+			FlxG.sound.music.pause();
+			if (!PlayState.isSM)
+				vocals.pause();
+
+			var daTime:Float;
+			if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: here shift touchscreen button
+			{
+				daTime = 700 * FlxG.elapsed;
+				FlxG.sound.music.time += daTime;
+			}
+			else
+			{
+				if (doSnapShit)
+				{
+					// Here mouse wheel snap.
+					var increase:Float = 0;
+					var beats:Float = 0;
+
+					increase = 1 / deezNuts.get(snap);
+					beats = (Math.floor((curDecimalBeat * deezNuts.get(snap)) + 0.001) / deezNuts.get(snap)) + increase;
+
+					Debug.logTrace("SNAP - " + snap + " INCREASE - " + increase + " - GO TO BEAT " + beats);
+
+					var data = TimingStruct.getTimingAtBeat(beats);
+
+					if (beats <= 0)
+						FlxG.sound.music.time = 0;
+
+					var bpm = data != null ? data.bpm : _song.bpm;
+
+					if (data != null)
+					{
+						FlxG.sound.music.time = (data.startTime + ((beats - data.startBeat) / (bpm / 60))) * 1000;
+					}
+				}
+				else
+				{
+					daTime = Conductor.stepCrochet * 2;
+					FlxG.sound.music.time += daTime;
+				}
+			}
+
+			// FlxG.sound.music.time += daTime;
+
+			if (!PlayState.isSM)
+				vocals.time = FlxG.sound.music.time;
+		};
+		seekDownButton.loadGraphic(Paths.loadImage('downAdjustButtonSmall'), false);
+		seekDownButton.setSize(25, 25);
+		seekDownButton.updateHitbox();
+		// seekDownButton.alpha = 0;
+
+		var nextSectionButton = new FlxUIButton(125, 70, "Next Section", function()
+		{
+			// JOELwindows7: steal from keyboard function of it. this is when press D
+			if (FlxG.keys.pressed.CONTROL)
+			{
+				speed += 0.1;
+			}
+			else
+				goToSection(curSection + 1);
+		});
+		nextSectionButton.loadGraphic(Paths.loadImage('rightAdjustButtonSmall'), false);
+		nextSectionButton.setSize(25, 25);
+		nextSectionButton.updateHitbox();
+
+		var prevSectionButton = new FlxUIButton(10, 70, "Previous Section", function()
+		{
+			// JOELwindows7: steal from keyboard function of it. this is when press A
+			if (FlxG.keys.pressed.CONTROL)
+			{
+				speed -= 0.1;
+			}
+			else
+				goToSection(curSection - 1);
+		});
+		prevSectionButton.loadGraphic(Paths.loadImage('leftAdjustButtonSmall'), false);
+		prevSectionButton.setSize(25, 25);
+		prevSectionButton.updateHitbox();
+
+		var tab_control = new FlxUI(null, UI_options);
+		tab_control.name = "Controls";
+		tab_control.add(playButton);
+		tab_control.add(seekUpButton);
+		tab_control.add(seekDownButton);
+		tab_control.add(nextSectionButton);
+		tab_control.add(prevSectionButton);
+		UI_options.addGroup(tab_control);
+	}
+
 	function addSongUI():Void
 	{
+		// JOELwindows7: here I add tooltip yeye
+
 		var UI_songTitle = new FlxUIInputText(10, 10, 70, _song.songId, 8);
 		typingShit = UI_songTitle;
 
@@ -1012,23 +1431,36 @@ class ChartingState extends MusicBeatState
 			_song.needsVoices = check_voices.checked;
 			Debug.logTrace('CHECKED!');
 		};
+		tooltips.add(check_voices, {
+			title: "Has voice track",
+			body: "Tick if your song has separate voice audio.",
+		});
 
-		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
+		// JOELwindows7: put the charter / author input text field here somewhere
+		var UI_charter = new FlxUIInputText(10, 50, 70, _song.charter, 8);
+		typingShit2 = UI_charter;
+
+		var saveButton:FlxUIButton = new FlxUIButton(110, 8, "Save", function()
 		{
 			saveLevel();
 		});
+		// JOELwindows7: try add tooltip?
+		tooltips.add(saveButton, {
+			title: "Save As",
+			body: "Open dialog box to save as a chart JSON.",
+		});
 
-		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
+		var reloadSong:FlxUIButton = new FlxUIButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
 			loadSong(_song.songId, true);
 		});
 
-		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
+		var reloadSongJson:FlxUIButton = new FlxUIButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
 		{
 			loadJson(_song.songId.toLowerCase());
 		});
 
-		var restart = new FlxButton(10, 140, "Reset Chart", function()
+		var restart = new FlxUIButton(10, 140, "Reset Chart", function()
 		{
 			for (ii in 0..._song.notes.length)
 			{
@@ -1040,7 +1472,7 @@ class ChartingState extends MusicBeatState
 			resetSection(true);
 		});
 
-		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
+		var loadAutosaveBtn:FlxUIButton = new FlxUIButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
 		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 65, 0.1, 1, 1.0, 5000.0, 1);
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
@@ -1082,9 +1514,15 @@ class ChartingState extends MusicBeatState
 		var stepperShiftNoteDialms:FlxUINumericStepper = new FlxUINumericStepper(10, 320, 1, 0, -1000, 1000, 2);
 		stepperShiftNoteDialms.name = 'song_shiftnotems';
 
-		var shiftNoteButton:FlxButton = new FlxButton(10, 335, "Shift", function()
+		var shiftNoteButton:FlxUIButton = new FlxUIButton(10, 335, "Shift", function()
 		{
 			shiftNotes(Std.int(stepperShiftNoteDial.value), Std.int(stepperShiftNoteDialstep.value), Std.int(stepperShiftNoteDialms.value));
+		});
+		// JOELwindows7: tootipsed
+		// see https://github.com/HaxeFlixel/flixel-demos/blob/master/UserInterface/Tooltips/source/State_DemoCode.hx
+		tooltips.add(shiftNoteButton, {
+			title: "Shift Notes",
+			body: "Commence shifting notes according to the values above you've set.\nNot to be confused with SHIFT on your keyboard or bottom left.",
 		});
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
@@ -1137,6 +1575,7 @@ class ChartingState extends MusicBeatState
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
 		tab_group_song.add(UI_songTitle);
+		tab_group_song.add(UI_charter); // JOELwindows7: hoho yeah!
 		tab_group_song.add(restart);
 		tab_group_song.add(check_voices);
 		// tab_group_song.add(check_mute_inst);
@@ -1198,14 +1637,14 @@ class ChartingState extends MusicBeatState
 		var stepperCopy:FlxUINumericStepper = new FlxUINumericStepper(110, 132, 1, 1, -999, 999, 0);
 		var stepperCopyLabel = new FlxText(174, 132, 'sections back');
 
-		var copyButton:FlxButton = new FlxButton(10, 130, "Copy last section", function()
+		var copyButton:FlxUIButton = new FlxUIButton(10, 130, "Copy last section", function()
 		{
 			copySection(Std.int(stepperCopy.value));
 		});
 
-		var clearSectionButton:FlxButton = new FlxButton(10, 150, "Clear Section", clearSection);
+		var clearSectionButton:FlxUIButton = new FlxUIButton(10, 150, "Clear Section", clearSection);
 
-		var swapSection:FlxButton = new FlxButton(10, 170, "Swap Section", function()
+		var swapSection:FlxUIButton = new FlxUIButton(10, 170, "Swap Section", function()
 		{
 			var secit = _song.notes[curSection];
 
@@ -1258,7 +1697,7 @@ class ChartingState extends MusicBeatState
 		check_playerAltAnim = new FlxUICheckBox(180, 340, null, null, "Player Alternate Animation", 100);
 		check_playerAltAnim.name = 'check_playerAltAnim';
 
-		var refresh = new FlxButton(10, 60, 'Refresh Section', function()
+		var refresh = new FlxUIButton(10, 60, 'Refresh Section', function()
 		{
 			var section = getSectionByTime(Conductor.songPosition);
 
@@ -1270,7 +1709,7 @@ class ChartingState extends MusicBeatState
 			check_playerAltAnim.checked = section.playerAltAnim;
 		});
 
-		var startSection:FlxButton = new FlxButton(10, 85, "Play Here", function()
+		var startSection:FlxUIButton = new FlxUIButton(10, 85, "Play Here", function()
 		{
 			PlayState.SONG = _song;
 			FlxG.sound.music.stop();
@@ -1324,6 +1763,10 @@ class ChartingState extends MusicBeatState
 
 	var stepperNoteType:FlxUINumericStepper; // JOELwindows7: spin number choose note type
 
+	var stepperVowelType:FlxUINumericStepper; // JOELwindows7: spin number choose vowel type radpas13121
+
+	var hitsoundNotePath:FlxUIInputText; // JOELwindows7: name the audio filename for which file to play when hit.
+
 	var tab_group_note:FlxUI;
 
 	function goToSection(section:Int)
@@ -1363,9 +1806,31 @@ class ChartingState extends MusicBeatState
 		stepperSusLength.name = 'note_susLength';
 
 		// JOELwindows7: number roller for note type notetype
-		stepperNoteType = new FlxUINumericStepper(10, 15, 1, 0, 0, 2);
+		stepperNoteType = new FlxUINumericStepper(10, 40, 1, 0, 0, 2);
 		stepperNoteType.value = 0;
 		stepperNoteType.name = 'note_noteType';
+
+		// JOELwindows7: text field for note hitsound audio file to play
+		hitsoundNotePath = new FlxUIInputText(10, 70, 80, "SNAP");
+		hitsoundNotePath.callback = function(text:String, action:String)
+		{
+			// JOELwindows7: the hitsound audio file to play which one yess
+			if (curSelectedNote == null)
+				return;
+
+			var toxt = text;
+			if (toxt == '' || toxt == null)
+				toxt = 'SNAP';
+
+			curSelectedNote[6] = toxt;
+			updateGrid();
+		}
+		hitsoundNotePath.name = 'note_hitsoundPath';
+
+		// JOELwindows7: number roller for vowel type radpas13121. a i u e o, with 0 'a' default.
+		stepperVowelType = new FlxUINumericStepper(10, 100, 1, 0, 0, 4);
+		stepperVowelType.value = 0;
+		stepperVowelType.name = 'note_vowelType';
 
 		check_naltAnim = new FlxUICheckBox(10, 150, null, null, "Toggle Alternative Animation", 100);
 		check_naltAnim.callback = function()
@@ -1388,14 +1853,22 @@ class ChartingState extends MusicBeatState
 
 		var stepperSusLengthLabel = new FlxText(74, 10, 'Note Sustain Length');
 
-		var stepperNoteTypeLabel = new FlxText(74, 15, 'Note Sustain Length'); // JOELwindows7: note type label
+		var stepperNoteTypeLabel = new FlxText(74, 40, 'Note Type'); // JOELwindows7: note type label
 
-		var applyLength:FlxButton = new FlxButton(10, 100, 'Apply Data');
+		var hitsoundNotePathLabel = new FlxText(95, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label
+
+		var stepperVowelTypeLabel = new FlxText(74, 100, 'Vowel Type'); // JOELwindows7: vowel type label
+
+		var applyLength:FlxUIButton = new FlxUIButton(10, 100, 'Apply Data');
 
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(stepperSusLengthLabel);
+		tab_group_note.add(hitsoundNotePathLabel); // JOELwindows7: add the hitsound path label
 		tab_group_note.add(stepperNoteType); // JOELwindows7: now add it this note type numberer
 		tab_group_note.add(stepperNoteTypeLabel); // JOELwindows7: and also that label.
+		tab_group_note.add(hitsoundNotePath); // JOELwindows7: and the hitsound path text field
+		tab_group_note.add(stepperVowelType); // JOELwindows7: and the vowel type numberer
+		tab_group_note.add(stepperVowelTypeLabel); // JOELwindows7: and the vowel type label
 		tab_group_note.add(applyLength);
 		tab_group_note.add(check_naltAnim);
 
@@ -1427,7 +1900,7 @@ class ChartingState extends MusicBeatState
 				{
 					Debug.logTrace("new strum " + strum + " - at section " + section);
 					// alright we're in this section lets paste the note here.
-					var newData = [strum, i[1], i[2], i[3], i[4], i[5]]; // JOELwindows7: here notetype I hope
+					var newData = [strum, i[1], i[2], i[3], i[4], i[5], i[6]]; // JOELwindows7: here notetype I hope
 					ii.sectionNotes.push(newData);
 
 					var thing = ii.sectionNotes[ii.sectionNotes.length - 1];
@@ -1435,6 +1908,7 @@ class ChartingState extends MusicBeatState
 					var note:Note = new Note(strum, Math.floor(i[1] % 4), null, false, true, i[3], i[4], i[5]); // JOELwindows7: here notetype I hope
 					note.rawNoteData = i[1];
 					note.sustainLength = i[2];
+					note.hitsoundPath = i[6]; // JOELwindows7: here hitsound path I hope
 					note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 					note.updateHitbox();
 					note.x = Math.floor(i[1] * GRID_SIZE);
@@ -1494,7 +1968,9 @@ class ChartingState extends MusicBeatState
 						originalNote.sustainLength,
 						originalNote.isAlt,
 						originalNote.beat,
-						originalNote.noteType
+						originalNote.noteType,
+						originalNote.hitsoundPath,
+						originalNote.vowelType,
 					];
 					ii.sectionNotes.push(newData);
 
@@ -1504,6 +1980,8 @@ class ChartingState extends MusicBeatState
 						originalNote.beat, originalNote.noteType); // JOELwindows7: put notetype woohoo
 					note.rawNoteData = originalNote.rawNoteData;
 					note.sustainLength = originalNote.sustainLength;
+					note.hitsoundPath = originalNote.hitsoundPath; // JOELwindows7: here hitsound path woohoo
+					note.vowelType = originalNote.vowelType; // JOELwindows7: a i u e o from radpas13121 yess
 					note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 					note.updateHitbox();
 					note.x = Math.floor(originalNote.rawNoteData * GRID_SIZE);
@@ -1737,10 +2215,29 @@ class ChartingState extends MusicBeatState
 					if (nums.value <= 0)
 						nums.value = 0;
 					curSelectedNote[5] = nums.value;
-					curSelectedNoteObject.noteType = curSelectedNote[5];
-					curSelectedNoteObject.refreshNoteLook();
+					// curSelectedNoteObject.noteType = curSelectedNote[5];
+					Debug.logTrace("Change note type look to " + Std.int(curSelectedNote[5]));
+					// curSelectedNoteObject.refreshNoteLook();
 					updateGrid();
 
+				// case 'note_hitsoundPath':
+				// 	// JOELwindows7: the hitsound audio file to play which one yess
+				// 	if (curSelectedNote == null)
+				// 		return;
+				case 'note_vowelType':
+					// JOELwindows7: the vowel type radpas13121. a i u e o mouth lip sync! select mouth frame.
+					if (curSelectedNote == null)
+						return;
+					if (nums.value <= 0)
+						nums.value = 0;
+					// there are 5 common vowels based on Homo sapienic / humanoid oral anatomy. a i u e o.
+					// Although, these days there are alot of accented vowels & even intergalactic vowels.
+					// yeah, so you can set the num > 5, no limit.
+					// Just.. we know & use often 5 of them. feel free to animate them all if you want. I guess lol.
+					// lemme know if you had it. Keep in mind, there is no consorted standard about vowels yet like Emoji had.
+					curSelectedNote[7] = nums.value;
+					Debug.logTrace("Change vowel type mouth to " + Std.int(curSelectedNote[7]));
+					updateGrid();
 				case 'section_bpm':
 					if (nums.value <= 0.1)
 						nums.value = 0.1;
@@ -2139,7 +2636,7 @@ class ChartingState extends MusicBeatState
 					}
 				}
 
-				if (FlxG.keys.pressed.SHIFT)
+				if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: here shift button touchscreen
 				{
 					if (FlxG.keys.justPressed.RIGHT)
 						speed += 0.1;
@@ -2422,11 +2919,11 @@ class ChartingState extends MusicBeatState
 				Debug.logTrace("new snap " + snap + " | " + snapSelection);
 			}
 
-			if (FlxG.keys.justPressed.SHIFT)
+			if (FlxG.keys.justPressed.SHIFT || haveShiftedHeld) // JOELwindows7: shift button
 				doSnapShit = !doSnapShit;
 
 			doSnapShit = defaultSnap;
-			if (FlxG.keys.pressed.SHIFT)
+			if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: shift button
 			{
 				doSnapShit = !defaultSnap;
 			}
@@ -2435,6 +2932,7 @@ class ChartingState extends MusicBeatState
 
 			Conductor.songPosition = FlxG.sound.music.time;
 			_song.songId = typingShit.text;
+			_song.charter = typingShit2.text;
 
 			var timingSeg = TimingStruct.getTimingAtTimestamp(Conductor.songPosition);
 
@@ -2492,24 +2990,12 @@ class ChartingState extends MusicBeatState
 				+ "\n"
 				+ (doSnapShit ? "Snap enabled" : "Snap disabled")
 				+ // JOELwindows7: helep! string hard to read!!!
-				(FlxG.save.data.showHelp ? "\n\n
-					Help:\n
-					Ctrl-MWheel : Zoom in/out\n
-					Shift-Left/Right :\nChange playback speed\n
-					Ctrl-Drag Click : Select notes\n
-					Ctrl-C : Copy notes\n
-					Ctrl-V : Paste notes\n
-					Ctrl-Z : Undo\n
-					Delete : Delete selection\n
-					CTRL-Left/Right :\n  Change Snap\n
-					  Hold Shift : Disable Snap\n
-					  Click or 1/2/3/4/5/6/7/8 :\nPlace notes\n
-					  Place Note + ALT: Place mines
-					Up/Down :\n  Move selected notes 1 step\n
-					Shift-Up/Down :\nMove selected notes 1 beat\n
-					Space: Play Music\n
-					Enter : Preview\n
-					Press F1 to hide/show this!" : "");
+				(FlxG.save.data.showHelp ? "\n\n" + "Help:\n" + "Ctrl-MWheel : Zoom in/out\n" + "Shift-Left/Right :\nChange playback speed\n"
+					+ "Ctrl-Drag Click : Select notes\n" + "Ctrl-C : Copy notes\n" + "Ctrl-V : Paste notes\n" + "Ctrl-Z : Undo\n"
+					+ "Delete : Delete selection\n" + "CTRL-Left/Right :\n  Change Snap\n" + "Hold Shift : Disable Snap\n"
+					+ "Click or 1/2/3/4/5/6/7/8 :\n\tPlace notes\n" + "Place Note + ALT: Place mines\n" + "Up/Down :\n  Move selected notes 1 step\n"
+					+ "Shift-Up/Down :\nMove selected notes 1 beat\n" + "Space: Play Music\n" + "Enter : Preview\n" +
+					"Press F1 to hide/show help!" : "\nPress F1 to hide/show help!");
 
 			var left = FlxG.keys.justPressed.ONE;
 			var down = FlxG.keys.justPressed.TWO;
@@ -2541,7 +3027,7 @@ class ChartingState extends MusicBeatState
 					var i = pressArray[p];
 					if (i && !delete)
 					{
-						addNote(new Note(Conductor.songPosition, p, null, null, null, null, null)); // JOELwindows7: traverse to notetype
+						addNote(new Note(Conductor.songPosition, p, null, null, null, null, null, 0)); // JOELwindows7: traverse to notetype
 					}
 				}
 			}
@@ -2553,7 +3039,11 @@ class ChartingState extends MusicBeatState
 					if (note.strumTime <= Conductor.songPosition && !claps.contains(note) && FlxG.sound.music.playing)
 					{
 						claps.push(note);
-						FlxG.sound.play(Paths.sound('SNAP'));
+						FlxG.sound.play(Paths.sound('SNAP')); // JOELwindows7: nope, not working. let's just spawn sounds instead.
+						// JOELwindows7: Now try to use note's hitsound instead??
+						// if checkbox of use note's hitsound active, play that file name. otherwise play default above instead.
+
+						// snapSound.play(); // JOELwindows7: use this one address instead
 					}
 				}
 			}
@@ -2652,10 +3142,13 @@ class ChartingState extends MusicBeatState
 				{
 					if (FlxG.mouse.x > 0 && FlxG.mouse.x < 0 + gridBG.width && FlxG.mouse.y > 0 && FlxG.mouse.y < 0 + height)
 					{
-						FlxG.log.add('added note');
+						// FlxG.log.add('added note');
+						Debug.logInfo('added note');
 						addNote();
+						Debug.logInfo('Completed da Note');
 					}
 				}
+				// Debug.logTrace('mouse pressed');
 			}
 
 			if (FlxG.mouse.x > 0 && FlxG.mouse.x < gridBG.width && FlxG.mouse.y > 0 && FlxG.mouse.y < height)
@@ -2685,9 +3178,16 @@ class ChartingState extends MusicBeatState
 
 			if (doInput)
 			{
-				//JOELwindows7: press back on Android to exit this chart editor lol
+				// JOELwindows7: escape for open file menu
+				if (FlxG.keys.justPressed.ESCAPE /*#if android || FlxG.android.justReleased.BACK #end*/)
+				{
+					openDaFileMenuNow();
+				}
+
+				// JOELwindows7: press back on Android to exit this chart editor lol. nvm, back Android to open menu.
 				if (FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end)
 				{
+					PauseSubState.inCharter = false; // JOELwindows7: make sure the mode is turned back to normal.
 					lastSection = curSection;
 
 					PlayState.SONG = _song;
@@ -2771,7 +3271,7 @@ class ChartingState extends MusicBeatState
 
 				if (FlxG.keys.justPressed.TAB)
 				{
-					if (FlxG.keys.pressed.SHIFT)
+					if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: shift button
 					{
 						UI_box.selected_tab -= 1;
 						if (UI_box.selected_tab < 0)
@@ -2785,10 +3285,10 @@ class ChartingState extends MusicBeatState
 					}
 				}
 
-				if (!typingShit.hasFocus)
+				if (!typingShit.hasFocus && !typingShit2.hasFocus) // JOELwindows7: woo yeah baby
 				{
 					var shiftThing:Int = 1;
-					if (FlxG.keys.pressed.SHIFT)
+					if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: oh yeah baby
 						shiftThing = 4;
 					if (FlxG.keys.justPressed.SPACE)
 					{
@@ -2810,7 +3310,8 @@ class ChartingState extends MusicBeatState
 					if (FlxG.sound.music.time < 0 || curDecimalBeat < 0)
 						FlxG.sound.music.time = 0;
 
-					if (!FlxG.keys.pressed.SHIFT)
+					// JOELwindows7: here touchscreen shift
+					if (!FlxG.keys.pressed.SHIFT || haveShiftedHeld)
 					{
 						if (FlxG.keys.pressed.W || FlxG.keys.pressed.S)
 						{
@@ -2859,9 +3360,62 @@ class ChartingState extends MusicBeatState
 		}
 		catch (e)
 		{
-			Debug.logError("Error on this shit???\n" + e);
+			Debug.logError("Error on this shit???\n" + e + ": " + e.message); // JOELwindows7: error title & description
 		}
 		super.update(elapsed);
+	}
+
+	// JOELwindows7: make press Enter to play song a function method
+	public function playDaSongNow():Void
+	{
+		PauseSubState.inCharter = false; // JOELwindows7: make sure the mode is turned back to normal.
+		lastSection = curSection;
+
+		PlayState.SONG = _song;
+		FlxG.sound.music.stop();
+		if (!PlayState.isSM)
+			vocals.stop();
+
+		while (curRenderedNotes.members.length > 0)
+		{
+			curRenderedNotes.remove(curRenderedNotes.members[0], true);
+		}
+
+		while (curRenderedSustains.members.length > 0)
+		{
+			curRenderedSustains.remove(curRenderedSustains.members[0], true);
+		}
+
+		while (sectionRenderes.members.length > 0)
+		{
+			sectionRenderes.remove(sectionRenderes.members[0], true);
+		}
+
+		var toRemove = [];
+
+		for (i in _song.notes)
+		{
+			if (i.startTime > FlxG.sound.music.length)
+				toRemove.push(i);
+		}
+
+		for (i in toRemove)
+			_song.notes.remove(i);
+
+		toRemove = []; // clear memory
+
+		// LoadingState.loadAndSwitchState(new PlayState());
+		switchState(new PlayState(), true, true, true, true);
+	}
+
+	// JOELwindows7: open the menu here yo
+	function openDaFileMenuNow():Void
+	{
+		// Yoink from PlayState when you press ENTER or Start.
+		PauseSubState.inCharter = true;
+		var officeButtonMenu:PauseSubState = new PauseSubState();
+		paused = true;
+		openSubState(officeButtonMenu);
 	}
 
 	// JOELwindows7: change note type
@@ -3059,6 +3613,7 @@ class ChartingState extends MusicBeatState
 				check_naltAnim.checked = false;
 			}
 
+			// JOELwindows7: also the note type too as well.
 			stepperNoteType.value = curSelectedNote[5];
 			// if (stepperNoteType.value != null)
 			// {
@@ -3068,6 +3623,11 @@ class ChartingState extends MusicBeatState
 			// 	curSelectedNote[5] = 0;
 			// 	stepperNoteType.value = 0;
 			// }
+
+			hitsoundNotePath.text = curSelectedNote[6];
+
+			// JOELwindows7: oh yeah vowel type radpas13121
+			stepperVowelType.value = curSelectedNote[7];
 		}
 	}
 
@@ -3108,9 +3668,17 @@ class ChartingState extends MusicBeatState
 				var daStrumTime = i[0];
 				var daSus = i[2];
 				var daType = i[5]; // JOELwindows7: da type yeahhhh
-				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], daType); // JOELwindows7: note type pls mine duar.
+				var hitsoundPath = i[6]; // JOELwindows7: hitsound path yeahhhh
+				var vowelType = i[7]; // JOELwindows7: vowel type radpas13121 yeahhhh
+				if (daType == 2)
+					Debug.logTrace("It's a pecking MINE!!! no way!!!");
+				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], daType); // JOELwindows7: note type pls mine duar
+				if (daType == 2)
+					Debug.logTrace("Mine placered");
 				note.rawNoteData = daNoteInfo;
 				note.sustainLength = daSus;
+				note.hitsoundPath = hitsoundPath; // JOELwindows7: just directly change value
+				note.vowelType = vowelType; // JOELwindows7: just directly change value woahow
 				note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 				note.updateHitbox();
 				note.x = Math.floor(daNoteInfo * GRID_SIZE);
@@ -3164,6 +3732,7 @@ class ChartingState extends MusicBeatState
 			changeBPM: false,
 			mustHitSection: true,
 			sectionNotes: [],
+			betterSectionNotes: [],
 			typeOfSection: 0,
 			altAnim: false,
 			CPUAltAnim: false,
@@ -3432,12 +4001,15 @@ class ChartingState extends MusicBeatState
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
 		var noteType = 0; // JOELwindows7: press hold? alt + add note (1 2 3 4 or click collumn to add) to add mine.
+		var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound file sound.
+		var vowelType:Int = 0; // JOELwindows7: radpas13121 vowel a i u e o choosen. defaults to 'a'. lol gawr gura!
 		// if (FlxG.keys.pressed.ONE)
 		// 	noteType = 1;
 		if (FlxG.keys.pressed.ALT)
 			noteType = 2;
 
-		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData);
+		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData + " & noteType " + Std.string(noteType) + "& also vowel "
+			+ Std.string(vowelType));
 
 		// JOELwindows7: push noteType too
 		if (n != null)
@@ -3447,7 +4019,9 @@ class ChartingState extends MusicBeatState
 				n.sustainLength,
 				false,
 				TimingStruct.getBeatFromTime(n.strumTime),
-				n.noteType
+				n.noteType,
+				n.hitsoundPath,
+				n.vowelType,
 			]);
 		else
 			section.sectionNotes.push([
@@ -3456,8 +4030,12 @@ class ChartingState extends MusicBeatState
 				noteSus,
 				false,
 				TimingStruct.getBeatFromTime(noteStrum),
-				noteType
+				noteType,
+				hitsoundPath,
+				vowelType,
 			]);
+
+		// Debug.logTrace("MROGIN");
 
 		var thingy = section.sectionNotes[section.sectionNotes.length - 1];
 
@@ -3468,9 +4046,15 @@ class ChartingState extends MusicBeatState
 		if (n == null)
 		{
 			// JOELwindows7: put notetype yea
+			if (noteType == 2)
+				Debug.logTrace("add mine n null ");
 			var note:Note = new Note(noteStrum, noteData % 4, null, false, true, TimingStruct.getBeatFromTime(noteStrum), noteType);
+			if (noteType == 2)
+				Debug.logTrace("add mine n null success");
 			note.rawNoteData = noteData;
 			note.sustainLength = noteSus;
+			note.hitsoundPath = hitsoundPath; // JOELwindows7: directly value
+			note.vowelType = vowelType; // JOELwindows7: directly value wow
 			note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 			note.updateHitbox();
 			note.x = Math.floor(noteData * GRID_SIZE);
@@ -3499,10 +4083,15 @@ class ChartingState extends MusicBeatState
 		else
 		{
 			// JOELwindows7: put notetype
+			if (noteType == 2)
+				Debug.logTrace("add mine n exist ");
 			var note:Note = new Note(n.strumTime, n.noteData % 4, null, false, true, n.isAlt, TimingStruct.getBeatFromTime(n.strumTime), noteType);
+			if (noteType == 2)
+				Debug.logTrace("add mine n exist success");
 			note.beat = TimingStruct.getBeatFromTime(n.strumTime);
 			note.rawNoteData = n.noteData;
 			note.sustainLength = noteSus;
+			note.hitsoundPath = n.hitsoundPath; // JOELwindows7: directly value
 			note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 			note.updateHitbox();
 			note.x = Math.floor(n.noteData * GRID_SIZE);
@@ -3529,9 +4118,13 @@ class ChartingState extends MusicBeatState
 			curRenderedNotes.add(note);
 		}
 
+		// Debug.logTrace("Doned note, update note UI & Autosave");
+
 		updateNoteUI();
+		// Debug.logTrace("Updated note UI");
 
 		autosaveSong();
+		// Debug.logTrace("autoSaved");
 	}
 
 	function getStrumTime(yPos:Float):Float
@@ -3681,17 +4274,19 @@ class ChartingState extends MusicBeatState
 
 	function autosaveSong():Void
 	{
+		// JOELwindows7: whoaho here more data
 		FlxG.save.data.autosave = Json.stringify({
 			"song": _song,
 			"songMeta": {
-				"name": _song.songId,
+				"name": _song.songName,
+				"artist": _song.artist,
 				"offset": 0,
 			}
 		});
 		FlxG.save.flush();
 	}
 
-	private function saveLevel()
+	public function saveLevel() // JOELwindows7: make this public for others to tell idk.
 	{
 		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
 
@@ -3708,14 +4303,65 @@ class ChartingState extends MusicBeatState
 
 		toRemove = []; // clear memory
 
+		// JOELwindows7: copy migrate from sectionNotes into betterSectionNotes
+		for (i in _song.notes)
+		{
+			// JOELwindows7: for safety, init that betterSectionNotes array
+			i.betterSectionNotes = []; // yeah basically this is auto-conversion output anyway.
+			// btw, this type of section notes should've been built like so.
+			// ah well, let this by my own sTILE note section.
+
+			for (j in 0...i.sectionNotes.length)
+			{
+				var stringedNoteType:String = switch (i.sectionNotes[j][5])
+				{
+					case 0:
+						'default';
+					case 1:
+						'special';
+					case 2:
+						'mine';
+					case 3:
+						'important';
+					case 4:
+						'never';
+					case _:
+						'default';
+				};
+
+				// i.betterSectionNotes
+				i.betterSectionNotes[j] = {
+					strumTime: i.sectionNotes[j][0],
+					noteData: i.sectionNotes[j][1],
+					sustainLength: i.sectionNotes[j][2],
+					isAlt: i.sectionNotes[j][3],
+					beat: i.sectionNotes[j][4],
+					noteType: i.sectionNotes[j][5],
+					noteTypeId: stringedNoteType,
+					hitsoundPath: i.sectionNotes[j][6],
+					vowelType: i.sectionNotes[j][7],
+				}
+			}
+		}
+
+		// JOELwindows7: some modificates first
+		// _modificatesBeforeSave(difficultyArray);
+		_modificatesBeforeSave();
+
 		var json = {
-			"song": _song
+			"ProgramUsed": Perkedel.ENGINE_NAME,
+			"generatedBy": 'charting',
+			"charter": _song.charter,
+			"song": _song,
 		};
 
 		// JOELwindows7: make save JSON pretty
 		// https://haxe.org/manual/std-Json-encoding.html
 		// var data:String = Json.stringify(json, "\t");
-		var data:String = Json.stringify(json, null, " ");
+		// var data:String = Json.stringify(json, null, " ");
+		// var data:String = Json.stringify(json, null, "\t"); // JOELwindows7: must use `TAB` instead!!!!
+		// var data:String = TJSON.stringify(json, null, " "); // JOELwindows7: what?! you don't have stringify?
+		var data:String = TJSON.encode(json, "fancy"); // JOELwindows7: wait, it's called encode!
 
 		if ((data != null) && (data.length > 0))
 		{
@@ -3727,12 +4373,79 @@ class ChartingState extends MusicBeatState
 		}
 	}
 
+	// JOELwindows7: the just save function. if you already saved as before like above, here save just save without dialog box
+	public var alreadySavedBefore:Bool = false;
+
+	public function justSaveNow():Void
+	{
+		// TODO: save button instead of save as if already loaded or saved before. directly write save file.
+		if (alreadySavedBefore)
+		{
+			// JOELwindows7: copy above, but this time only save without dialog box
+			// var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+
+			// var toRemove = [];
+
+			// for (i in _song.notes)
+			// {
+			// 	if (i.startTime > FlxG.sound.music.length)
+			// 		toRemove.push(i);
+			// }
+
+			// for (i in toRemove)
+			// 	_song.notes.remove(i);
+
+			// toRemove = []; // clear memory
+
+			// // JOELwindows7: some modificates first
+			// _modificatesBeforeSave();
+
+			// var json = {
+			// 	"ProgramUsed": 'Last Funkin Moments',
+			// 	"generatedBy": 'charting',
+			// 	"charter": _song.charter,
+			// 	"song": _song,
+			// };
+
+			// // JOELwindows7: make save JSON pretty
+			// // https://haxe.org/manual/std-Json-encoding.html
+			// // var data:String = Json.stringify(json, "\t");
+			// var data:String = Json.stringify(json, null, " ");
+
+			// if ((data != null) && (data.length > 0))
+			// {
+			// 	_file = new FileReference();
+			// 	_file.addEventListener(Event.COMPLETE, onSaveComplete);
+			// 	_file.addEventListener(Event.CANCEL, onSaveCancel);
+			// 	_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			// 	// JOELwindows7: DAMN!!! how the peck I supposed to just pecking save?!?!?!? no dialog!!!!!
+			// 	_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
+			// }
+
+			// TEMPORARY!!! pls help me write file instead of dialog box
+			saveLevel();
+		}
+		else
+		{
+			saveLevel();
+		}
+	}
+
+	// JOELwindows7: modificates before save
+	function _modificatesBeforeSave()
+	{
+		var difficultyArray = ["easy", "normal", "hard"]; // note, this is different than above's array! this is for ID, not file namer.
+		_song.difficultyId = difficultyArray[PlayState.storyDifficulty];
+		_song.difficultyStrength = DiffCalc.CalculateDiff(_song, .93, true);
+	}
+
 	function onSaveComplete(_):Void
 	{
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+		alreadySavedBefore = true; // JOELwindows7: mark this already saved before.
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
 		// JOELwindows7: trace the success & sound it
 		Debug.logInfo("Yay level saved! cool and good");
@@ -3765,7 +4478,54 @@ class ChartingState extends MusicBeatState
 		FlxG.log.error("Problem saving Level data");
 		// JOELwindows7: also trace the error & sound it
 		Debug.logError("Weror! problem saving data");
-		createToast(null, "Oh no! Our table", "It's brogen! Problem saving level data. warm and bad!");
+		createToast(null, "Oh no! Our table", "It's brogen!\nProblem saving level data. warm and bad!");
 		FlxG.sound.play(Paths.sound('cancelMenu'));
+	}
+
+	/**
+	 * Called when you press menu button. yoink pause function from PlayState yess.
+	 * @author JOELwindows7
+	 * @param SubState 
+	 */
+	override function openSubState(SubState:FlxSubState)
+	{
+		if (paused)
+		{
+			if (FlxG.sound.music.playing)
+			{
+				FlxG.sound.music.pause();
+				if (!PlayState.isSM)
+					vocals.pause();
+				claps.splice(0, claps.length);
+			}
+		}
+		super.openSubState(SubState);
+	}
+
+	/**
+	 * Called when close menu. yoink pause function from PlayState yess.
+	 * @author JOELwindows7
+	 */
+	override function closeSubState()
+	{
+		if (PauseSubState.goToOptions)
+		{
+			Debug.logTrace("pause thingyt");
+			if (PauseSubState.goBack)
+			{
+				Debug.logTrace("pause thingyt");
+				PauseSubState.goToOptions = false;
+				PauseSubState.goBack = false;
+				openSubState(new PauseSubState());
+			}
+			else
+				openSubState(new OptionsMenu(true));
+		}
+		else if (paused)
+		{
+			FlxG.mouse.visible = true;
+			paused = false;
+		}
+		super.closeSubState();
 	}
 }

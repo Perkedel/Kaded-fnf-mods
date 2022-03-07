@@ -16,9 +16,9 @@ import flixel.input.actions.FlxActionSet;
 import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
-//import haxe.hardware.Hardware;
+// import haxe.hardware.Hardware;
 #if windows
-//JOELwindows7: Xinput now yeah
+// JOELwindows7: Xinput now yeah
 // import com.furusystems.openfl.input.xinput.*;
 // import com.furusystems.openfl.input.*;
 #end
@@ -141,7 +141,6 @@ class Controls extends FlxActionSet
 	#if windows
 	// var controller:Map<Int,XBox360Controller>;
 	#end
-
 	public var UP(get, never):Bool;
 
 	inline function get_UP()
@@ -230,13 +229,13 @@ class Controls extends FlxActionSet
 	#if (haxe >= "4.0.0")
 	public function new(name, scheme = None)
 	{
-		//JOELwindows7: Xinput API stuff
+		// JOELwindows7: Xinput API stuff
 		#if windows
 		// controller = new Map<Int,XBox360Controller>();
 		// controller.set(0,new XBox360Controller(0));
 		#end
 
-		mappedinputs = new Map<FlxActionDigital,FlxActionInput>();
+		mappedinputs = new Map<FlxActionDigital, FlxActionInput>();
 		super(name);
 
 		add(_up);
@@ -297,8 +296,8 @@ class Controls extends FlxActionSet
 	// JOELwindows7: read function bellow
 	public var trackedinputs:Array<FlxActionInput> = [];
 
-	//JOELwindows7: map the inputer
-	public var mappedinputs:Map<FlxActionDigital,FlxActionInput>;
+	// JOELwindows7: map the inputer
+	public var mappedinputs:Map<FlxActionDigital, FlxActionInput>;
 
 	/**
 	 * JOELwindows7: attempted to install things touchscreen.
@@ -308,53 +307,58 @@ class Controls extends FlxActionSet
 	 * @param thing the button
 	 * @param state the state of that button
 	 */
-	public function installActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState){
-		//trace("install action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
+	public function installActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState)
+	{
+		// trace("install action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
 		var input = new FlxActionInputDigitalIFlxInput(thing, state);
 		trackedinputs.push(input);
 
 		action.add(input);
 		mappedinputs.set(action, input);
-		//trace("add the " + mappedinputs.toString() + " a " + Std.string(action) + " in " + Std.string(state));
+		// trace("add the " + mappedinputs.toString() + " a " + Std.string(action) + " in " + Std.string(state));
 	}
 
-	public function uninstallActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState){
-		//trace("uninstall action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
-		//var input = new FlxActionInputDigitalIFlxInput(thing, state);
+	public function uninstallActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState)
+	{
+		// trace("uninstall action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
+		// var input = new FlxActionInputDigitalIFlxInput(thing, state);
 
-		//trace("remove the " + mappedinputs.toString() + " a " + Std.string(action) + " in " + Std.string(state));
+		// trace("remove the " + mappedinputs.toString() + " a " + Std.string(action) + " in " + Std.string(state));
 		action.remove(mappedinputs.get(action));
 	}
 
-	public function deleteActionButtonings(action:FlxActionDigital, inputOfIt:FlxActionInput){
+	public function deleteActionButtonings(action:FlxActionDigital, inputOfIt:FlxActionInput)
+	{
 		action.remove(inputOfIt);
 	}
- 
+
 	/**
 	 * JOELwindows7: okeh set action buttonings, Hitbox version
 	 * https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
 	 * @param handoverTouchscreenButtons give the instance of Hitbox
 	 * @param howManyButtons How many are the buttons? is this DDR, or Shaggy time again?
 	 */
-	public function installTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4){
-		//trace("install the bind for hitbox");
+	public function installTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4)
+	{
+		// trace("install the bind for hitbox");
 		inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonLeft, state));
 		inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonDown, state));
 		inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonUp, state));
 		inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.buttonRight, state));
 
 		/*
-		inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[0], state));
-		inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[1], state));
-		inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[2], state));
-		inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[3], state));
-		*/
+			inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[0], state));
+			inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[1], state));
+			inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[2], state));
+			inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, handoverTouchscreenButtons.daButtoners.members[3], state));
+		 */
 
-		//trace("You have now mapped inputs " + mappedinputs.toString());
+		// trace("You have now mapped inputs " + mappedinputs.toString());
 	}
 
-	public function uninstallTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4){
-		//trace("You were having mapped inputs " + mappedinputs.toString());
+	public function uninstallTouchScreenGameplays(handoverTouchscreenButtons:TouchScreenControls, howManyButtons:Int = 4)
+	{
+		// trace("You were having mapped inputs " + mappedinputs.toString());
 		inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, handoverTouchscreenButtons.buttonLeft, state));
 		inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, handoverTouchscreenButtons.buttonDown, state));
 		inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, handoverTouchscreenButtons.buttonUp, state));
@@ -362,6 +366,7 @@ class Controls extends FlxActionSet
 	}
 
 	//
+
 	/**
 	 * JOELwindows7: yeah this one too
 	 * https://github.com/luckydog7/Funkin-android/blob/master/source/Controls.hx
@@ -369,15 +374,16 @@ class Controls extends FlxActionSet
 	 * @param DPad Which Dpad type you'd like to have?
 	 * @param Action Which Action button do you want? A, B, X, Y? or C?
 	 */
-	public function setVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode, ?isGameplay:Bool = false) {
+	public function setVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode, ?isGameplay:Bool = false)
+	{
 		trace("install bind for FlxVirtualPad " + Std.string(virtualPad) + " " + Std.string(DPad) + " " + Std.string(Action));
-		//Safety feature of it the handover optional variable value isn't given.
+		// Safety feature of it the handover optional variable value isn't given.
 		if (DPad == null)
 			DPad = NONE;
 		if (Action == null)
 			Action = NONE;
-		
-		//Now onto the action!
+
+		// Now onto the action!
 		trace("install DPAD touch " + Std.string(DPad));
 		switch (DPad)
 		{
@@ -391,8 +397,8 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
 				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonRight, state));
-			case FULL | RIGHT_FULL: 
-				//We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
+			case FULL | RIGHT_FULL:
+				// We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
 				trace("inlined assignations");
 				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonDown, state));
@@ -414,12 +420,15 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
 				inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
 			case A_B_X_Y:
-				if(isGameplay){
+				if (isGameplay)
+				{
 					inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonY, state));
 					inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
 					inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonX, state));
 					inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
-				} else {
+				}
+				else
+				{
 					inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
 					inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
 				}
@@ -430,16 +439,17 @@ class Controls extends FlxActionSet
 		trace("You have now mapped inputs " + mappedinputs.toString());
 	}
 
-	public function unsetVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode, ?isGameplay:Bool = false){
+	public function unsetVirtualPad(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode, ?isGameplay:Bool = false)
+	{
 		trace("uninstall bind for FlxVirtualPad " + Std.string(virtualPad) + " " + Std.string(DPad) + " " + Std.string(Action));
-		//Safety feature of it the handover optional variable value isn't given.
+		// Safety feature of it the handover optional variable value isn't given.
 		if (DPad == null)
 			DPad = NONE;
 		if (Action == null)
 			Action = NONE;
 		trace("You were having mapped inputs " + mappedinputs.toString());
 
-		//Now onto the action!
+		// Now onto the action!
 		trace("uninstall DPAD touch " + Std.string(DPad));
 		switch (DPad)
 		{
@@ -453,8 +463,8 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonLeft, state));
 				inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonRight, state));
-			case FULL | RIGHT_FULL: 
-				//We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
+			case FULL | RIGHT_FULL:
+				// We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
 				trace("inlined unassignations");
 				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonUp, state));
 				inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonDown, state));
@@ -476,12 +486,15 @@ class Controls extends FlxActionSet
 				inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonA, state));
 				inline forEachBound(Control.BACK, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonB, state));
 			case A_B_X_Y:
-				if(isGameplay){
+				if (isGameplay)
+				{
 					inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonX, state));
 					inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonY, state));
 					inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonB, state));
 					inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonA, state));
-				} else {
+				}
+				else
+				{
 					inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonA, state));
 					inline forEachBound(Control.BACK, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonB, state));
 				}
@@ -496,16 +509,17 @@ class Controls extends FlxActionSet
 	 * @author JOELwindows7
 	 * @param Tinputs 
 	 */
-	public function removeFlxInput(Tinputs) {
+	public function removeFlxInput(Tinputs)
+	{
 		for (action in this.digitalActions)
 		{
 			var i = action.inputs.length;
-			
+
 			while (i-- > 0)
 			{
 				var input = action.inputs[i];
 				/*if (input.device == IFLXINPUT_OBJECT)
-					action.remove(input);*/
+					action.remove(input); */
 
 				var x = Tinputs.length;
 				while (x-- > 0)
@@ -520,20 +534,24 @@ class Controls extends FlxActionSet
 	 * @param duration how long is vibration in milisecond
 	 * @param player which gamepad it should vibrates
 	 */
-	public static function vibrate(player:Int = 0,duration:Float = 100, period:Float = 0, strengthLeft:Float = 0, strengthRight:Float = 0){
-		//JOELwindows7: yess vibration go BRRR
-		if(FlxG.save.data.vibration){
-			new FlxTimer().start(FlxG.save.data.vibrationOffset, function(timer:FlxTimer){
-				Haptic.vibrate(Std.int(period),Std.int(duration)); //uh, lime got better implementation lol
+	public static function vibrate(player:Int = 0, duration:Float = 100, period:Float = 0, strengthLeft:Float = 0, strengthRight:Float = 0)
+	{
+		// JOELwindows7: yess vibration go BRRR
+		if (FlxG.save.data.vibration)
+		{
+			new FlxTimer().start(FlxG.save.data.vibrationOffset, function(timer:FlxTimer)
+			{
+				Haptic.vibrate(Std.int(period), Std.int(duration)); // uh, lime got better implementation lol
 			});
 
 			#if android
-			//Hardware.vibrate(Std.int(duration));
+			// Hardware.vibrate(Std.int(duration));
 			#end
 
-			rumble(player,strengthLeft,strengthRight);
-			new FlxTimer().start(duration, function(timer:FlxTimer){
-				rumble(player,0,0); //stop after it reaches the duration.
+			rumble(player, strengthLeft, strengthRight);
+			new FlxTimer().start(duration, function(timer:FlxTimer)
+			{
+				rumble(player, 0, 0); // stop after it reaches the duration.
 			});
 		}
 	}
@@ -545,7 +563,8 @@ class Controls extends FlxActionSet
 	 * @param strengthLeft left vibrator (coarse) strength, 0 - 65535
 	 * @param stregthRight right vibrator (fine) strength, 0 - 65535
 	 */
-	public static function rumble(player:Int = 0, strengthLeft:Float = 0, strengthRight:Float = 0){
+	public static function rumble(player:Int = 0, strengthLeft:Float = 0, strengthRight:Float = 0)
+	{
 		#if (windows && sys)
 		// if(
 		// 	(cast (Lib.current.getChildAt(0), Controls)).controller != null &&
@@ -554,7 +573,12 @@ class Controls extends FlxActionSet
 		// 		(cast (Lib.current.getChildAt(0), Controls)).controller.get(player).vibrationLeft = Std.int(strengthLeft);
 		// 		(cast (Lib.current.getChildAt(0), Controls)).controller.get(player).vibrationRight = Std.int(strengthRight);
 		// }
+		#end
 
+		#if EXPERIMENTAL_OPENFL_XINPUT
+		if (Main.xboxControllers[player].isConnected)
+			Main.xboxControllers[player].vibrationLeft = Std.int(strengthLeft);
+		Main.xboxControllers[player].vibrationRight = Std.int(strengthRight);
 		#end
 	}
 
@@ -619,7 +643,7 @@ class Controls extends FlxActionSet
 	 */
 	function forEachBound(control:Control, func:FlxActionDigital->FlxInputState->Void)
 	{
-		//trace("Check for each bound " + Std.string(control) + " " + Std.string(func));
+		// trace("Check for each bound " + Std.string(control) + " " + Std.string(func));
 		switch (control)
 		{
 			case UP:

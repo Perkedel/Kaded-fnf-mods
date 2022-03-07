@@ -113,7 +113,7 @@ class VideoSelfContained extends MusicBeatState
 		}
 		catch (e)
 		{
-			trace("Werror faile video!\n\n" + Std.string(e));
+			trace("Werror faile video!\n\n" + Std.string(e) + ": " + e.message);
 			Debug.logError("Werror faile video!\n\n" + e);
 			donedCallback();
 		}
@@ -172,17 +172,17 @@ class VLCState extends MusicBeatState
 
 	public function new(source:String, toTrans:FlxState, frameSkipLimit:Int = -1, autopause:Bool = true)
 	{
+		super();
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
-		super();
 		this.toTrans = toTrans;
 		this.source = source;
 		// videoSprite = new FlxSprite(0,0);
 		// VideoPlayer.SKIP_STEP_LIMIT = frameSkipLimit;
-		#if FEATURE_VLC
-		theVLC = new MP4Handler();
-		theVLC.finishCallback = donedCallback;
-		#end
+		// #if FEATURE_VLC
+		// theVLC = new MP4Handler();
+		// theVLC.finishCallback = donedCallback;
+		// #end
 		// videoSprite.finishCallback = donedCallback;
 	}
 
@@ -191,6 +191,11 @@ class VLCState extends MusicBeatState
 		super.create();
 		// FlxG.autoPause = false;
 
+		#if FEATURE_VLC
+		theVLC = new MP4Handler();
+		theVLC.finishCallback = donedCallback;
+		#end
+
 		FlxG.sound.music.stop();
 		peckingVolume = FlxG.sound.music.volume;
 
@@ -198,24 +203,32 @@ class VLCState extends MusicBeatState
 		// FlxG.sound.music.volume = 0;
 		try
 		{
-			if (videoSprite != null)
+			// if (videoSprite != null)
+			// {
+			// 	new FlxTimer().start(0.1, function(tmr:FlxTimer)
+			// 	{
+			// 		// theVLC.playMP4(source, false, videoSprite);
+			// 		theVLC.playVideo(source, false, true);
+			// 		// videoSprite.play();
+			// 	});
+			// 	// add(videoSprite);
+			// }
+			// else
+			// {
+			// 	trace("Werror VLC null, just peck this out");
+			// 	new FlxTimer().start(0.1, function(tmr:FlxTimer)
+			// 	{
+			// 		// theVLC.playMP4(source);
+			// 		theVLC.playVideo(source);
+			// 	});
+			// 	// donedCallback();
+			// }
+
+			new FlxTimer().start(0.1, function(tmr:FlxTimer)
 			{
-				new FlxTimer().start(0.1, function(tmr:FlxTimer)
-				{
-					theVLC.playMP4(source, false, videoSprite);
-					// videoSprite.play();
-				});
-				// add(videoSprite);
-			}
-			else
-			{
-				trace("Werror VLC null, just peck this out");
-				new FlxTimer().start(0.1, function(tmr:FlxTimer)
-				{
-					theVLC.playMP4(source);
-				});
-				// donedCallback();
-			}
+				// theVLC.playMP4(source);
+				theVLC.playVideo(source);
+			});
 		}
 		catch (e)
 		{
@@ -224,6 +237,7 @@ class VLCState extends MusicBeatState
 			donedCallback();
 		}
 		#else
+		Debug.logWarn("You are trying to load VLC state in an unsupported platform, lol!? going out immediately.");
 		donedCallback();
 		#end
 
@@ -262,31 +276,30 @@ class VLCState extends MusicBeatState
 	}
 
 	/*
-	override function onFocusLost()
-	{
-		super.onFocusLost();
-		#if FEATURE_VLC
-		if (theVLC != null)
+		override function onFocusLost()
 		{
-			// pause the VLC
-			theVLC.pause();
+			super.onFocusLost();
+			#if FEATURE_VLC
+			if (theVLC != null)
+			{
+				// pause the VLC
+				theVLC.pause();
+			}
+			#end
 		}
-		#end
-	}
 
-	override function onFocus()
-	{
-		super.onFocus();
-		#if FEATURE_VLC
-		if (theVLC != null)
+		override function onFocus()
 		{
-			// unpause the VLC
-			theVLC.resume();
-		}	
-		#end
-	}
-	*/
-
+			super.onFocus();
+			#if FEATURE_VLC
+			if (theVLC != null)
+			{
+				// unpause the VLC
+				theVLC.resume();
+			}	
+			#end
+		}
+	 */
 	override function onWindowFocusOut()
 	{
 		super.onWindowFocusOut();

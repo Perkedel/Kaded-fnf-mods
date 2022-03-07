@@ -1,3 +1,4 @@
+import const.Perkedel;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
 import flixel.FlxG;
@@ -44,7 +45,11 @@ class KadeEngineData
 			FlxG.save.data.changedHit = false;
 		}
 
-		//JOELwindows7: don't forget init save data of fullscreen mode
+		// JOELwindows7: accident vol keys
+		if (FlxG.save.data.accidentVolumeKeys == null)
+			FlxG.save.data.accidentVolumeKeys = false;
+
+		// JOELwindows7: don't forget init save data of fullscreen mode
 		if (FlxG.save.data.fullscreen == null)
 			FlxG.save.data.fullscreen == FlxG.fullscreen;
 
@@ -54,7 +59,8 @@ class KadeEngineData
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 120;
 
-		if (FlxG.save.data.fpsCap > 340 || FlxG.save.data.fpsCap < 60)
+		// JOELwindows7: was 340
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP || FlxG.save.data.fpsCap < 60)
 			FlxG.save.data.fpsCap = 120; // baby proof so you can't hard lock ur copy of kade engine
 
 		if (FlxG.save.data.scrollSpeed == null)
@@ -72,15 +78,15 @@ class KadeEngineData
 		if (FlxG.save.data.watermark == null)
 			FlxG.save.data.watermark = true;
 
-		//JOELwindows7: odysee watermark
+		// JOELwindows7: odysee watermark
 		if (FlxG.save.data.odyseeMark == null)
 			FlxG.save.data.odyseeMark = true;
 
-		//JOELwindows7: Perkedel watermark
+		// JOELwindows7: Perkedel watermark
 		if (FlxG.save.data.perkedelMark == null)
 			FlxG.save.data.perkedelMark = true;
 
-		//JOELwindows7: naughtiness option
+		// JOELwindows7: naughtiness option
 		if (FlxG.save.data.naughtiness == null)
 			FlxG.save.data.naughtiness = true;
 
@@ -132,35 +138,176 @@ class KadeEngineData
 		if (FlxG.save.data.optimize == null)
 			FlxG.save.data.optimize = false;
 
-		//JOELwindows7: Touch screened button
+		// JOELwindows7: Touch screened button
 		if (FlxG.save.data.useTouchScreenButtons == null)
 			FlxG.save.data.useTouchScreenButtons = false;
 
 		if (FlxG.save.data.selectTouchScreenButtons == null)
 			FlxG.save.data.useTouchScreenButtons == 0;
 
-		//JOELwindows7: Vibrations
+		// JOELwindows7: Vibrations
 		if (FlxG.save.data.vibration == null)
 			FlxG.save.data.vibration = true;
 
-		//JOELwindows7: PreUnlock weeks like in Stepmania Home mode
+		// JOELwindows7: PreUnlock weeks like in Stepmania Home mode
 		if (FlxG.save.data.preUnlocked == null)
 			FlxG.save.data.preUnlocked = false;
 
-		//JOELwindows7: vibration offset
-		if (FlxG.save.data.vibrationOffset == null || 
-			FlxG.save.data.vibrationOffset < 0.0
-			)
+		// JOELwindows7: vibration offset
+		if (FlxG.save.data.vibrationOffset == null || FlxG.save.data.vibrationOffset < 0.0)
 			FlxG.save.data.vibrationOffset = 0.18;
 
-		//JOELwindows7: Timing struct out of any segs warning
-		if (FlxG.save.data.outOfSegsWarning == null){
+		// JOELwindows7: Timing struct out of any segs warning
+		if (FlxG.save.data.outOfSegsWarning == null)
+		{
 			FlxG.save.data.outOfSegsWarning = false;
 		}
 
-		//JOELwindows7: Print Song Chart content
-		if (FlxG.save.data.traceSongChart == null){
+		// JOELwindows7: Print Song Chart content
+		if (FlxG.save.data.traceSongChart == null)
+		{
 			FlxG.save.data.traceSongChart = false;
+		}
+
+		// JOELwindows7: Print annoying debug messages, the warning messages
+		if (FlxG.save.data.annoyingWarns == null)
+		{
+			FlxG.save.data.annoyingWarns = false;
+		}
+
+		// JOELwindows7: enable legacy lua modchart supports
+		if (FlxG.save.data.legacyLuaScript == null)
+		{
+			FlxG.save.data.legacyLuaScript = false;
+		}
+
+		// JOELwindows7: enigma init mod data
+		if (FlxG.save.data.modData == null || FlxG.save.data.modData.get == null)
+		{
+			// JOELwindows7: take from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/behavior/SaveData.hx
+			var properValue:Map<String, Dynamic> = [];
+			FlxG.save.data.modData = properValue;
+		}
+
+		// JOELwindows7: dialogue autoclick
+		if (FlxG.save.data.autoClick == null)
+		{
+			FlxG.save.data.autoClick = false;
+		}
+		if (FlxG.save.data.autoClickDelay == null)
+		{
+			FlxG.save.data.autoClickDelay = 2;
+		}
+
+		// JOELwindows7: freeplay threaded loading
+		if (FlxG.save.data.freeplayThreadedLoading == null)
+		{
+			FlxG.save.data.freeplayThreadedLoading = false;
+		}
+
+		// JOELwindows7: end song early
+		if (FlxG.save.data.endSongEarly == null)
+		{
+			FlxG.save.data.endSongEarly = false;
+		}
+
+		// JOELwindows7: score text zoom Psychedly
+		if (FlxG.save.data.scoreTxtZoom == null)
+		{
+			FlxG.save.data.scoreTxtZoom = true;
+		}
+
+		// JOELwindows7: note splash Psychedly
+		if (FlxG.save.data.noteSplashes == null)
+		{
+			FlxG.save.data.noteSplashes = true;
+		}
+
+		// JOELwindows7: and note splash CPU Psychedly
+		if (FlxG.save.data.cpuSplash)
+		{
+			FlxG.save.data.cpuSplash = true;
+		}
+
+		// JOELwindows7: Force quantization even modchart loaded (note, stage modchart won't cancel quantization even this OFF)
+		if (FlxG.save.data.forceStepmania == null)
+		{
+			FlxG.save.data.forceStepmania = false;
+		}
+
+		// JOELwindows7: unpause preparation countdown
+		if (FlxG.save.data.unpausePreparation == null)
+		{
+			FlxG.save.data.unpausePreparation = 1;
+		}
+
+		// JOELwindows7: hitsound in gameplay bool
+		if (FlxG.save.data.hitsound == null)
+		{
+			FlxG.save.data.hitsound = false; // originally in this game FNF, it's OFF. while osu! is ON
+		}
+
+		// JOELwindows7: left stuffs
+		if (FlxG.save.data.leftAWeek == null)
+		{
+			FlxG.save.data.leftAWeek = false;
+		}
+
+		if (FlxG.save.data.leftStoryWeek == null)
+		{
+			FlxG.save.data.leftStoryWeek = 0;
+		}
+
+		if (FlxG.save.data.leftWeekSongAt == null)
+		{
+			FlxG.save.data.leftWeekSongAt = '';
+		}
+
+		if (FlxG.save.data.leftFullPlaylistCurrently == null)
+		{
+			FlxG.save.data.leftFullPlaylistCurrently = [];
+		}
+
+		if (FlxG.save.data.leftCampaignScore == null)
+		{
+			FlxG.save.data.leftCampaignScore = 0;
+		}
+
+		if (FlxG.save.data.leftCampaignMisses == null)
+		{
+			FlxG.save.data.leftCampaignMisses = 0;
+		}
+
+		if (FlxG.save.data.leftCampaignSicks == null)
+		{
+			FlxG.save.data.leftCampaignSicks = 0;
+		}
+
+		if (FlxG.save.data.leftCampaignGoods == null)
+		{
+			FlxG.save.data.leftCampaignGoods = 0;
+		}
+
+		if (FlxG.save.data.leftCampaignBads == null)
+		{
+			FlxG.save.data.leftCampaignBads = 0;
+		}
+
+		// Oh God, so many!!! pls help me what efficient way to do this?!?!?!?
+		if (FlxG.save.data.leftCapaignShits == null)
+		{
+			FlxG.save.data.leftCapaignShits = 0;
+		}
+
+		if (FlxG.save.data.leftBlueBall == null)
+		{
+			FlxG.save.data.leftBlueBall = 0; // blueball counter / fail counter
+		}
+
+		// JOELwindows7: blueballWeek
+		if (FlxG.save.data.blueballWeek == null)
+		{
+			FlxG.save.data.blueballWeek = false;
 		}
 
 		FlxG.save.data.cacheImages = false;
@@ -221,13 +368,13 @@ class KadeEngineData
 		KeyBinds.keyCheck();
 
 		Main.watermarks = FlxG.save.data.watermark;
-		//JOELwindows7: hey, remember to load the data first!
+		// JOELwindows7: hey, remember to load the data first!
 		Main.odyseeMark = FlxG.save.data.odyseeMark;
 		Main.perkedelMark = FlxG.save.data.perkedelMark;
 		FlxG.fullscreen = FlxG.save.data.fullscreen;
 
-		Debug.logInfo("set FPS stuff from setting"); //JOELwindows7: trace this for android crashsures
+		Debug.logInfo("set FPS stuff from setting"); // JOELwindows7: trace this for android crashsures
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-		Debug.logInfo("successfully set FPS settings"); //JOELwindows7: see if Android version crash!
+		Debug.logInfo("successfully set FPS settings"); // JOELwindows7: see if Android version crash!
 	}
 }

@@ -1,5 +1,7 @@
 package;
 
+import ui.SplashScreen;
+import plugins.sprites.LoadingBar;
 import GameJolt;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.input.keyboard.FlxKey;
@@ -30,18 +32,25 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import lime.system.JNI;
 import plugins.systems.ScanPlatform;
+import haxe.ui.Toolkit;
+#if EXPERIMENTAL_OPENFL_XINPUT
+import com.furusystems.openfl.input.xinput.*;
 
+// import com.furusystems.openfl.input.xinput.XBox360Controller;
+#end
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
+	// var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
+	var initialState:Class<FlxState> = SplashScreen; // The FlxState the game starts with.; JOELwindows7: use my splashscreen yey!
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var framerate:Int = 120; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 
 	public static var bitmapFPS:Bitmap;
+	public static var bitmapLoadingBar:Bitmap; // JOELwindows7: The loading bar bitmap I guess
 
 	public static var instance:Main;
 
@@ -52,6 +61,13 @@ class Main extends Sprite
 	public static var chosenMarkNum:Int = 0;
 
 	public static var gjToastManager:GJToastManager; // JOELwindows7: TentaRJ Gamejolter now has Toast yey! FORMATTER STOP PECK THIS UP FEMALE DOG!!!
+	public static var loadingBar:LoadingBar; // JOELwindows7: the loading bar thingy.
+
+	// JOELwindows7: furusystem & karaidon Xinput thingy
+	#if EXPERIMENTAL_OPENFL_XINPUT
+	public static var xboxControllers:Array<XBox360Controller> = [];
+	public static final xboxControllerNum:Int = 7;
+	#end
 
 	// JOELwindows7: Please no demonic reference about Mark of what the peck!
 	/*
@@ -62,12 +78,20 @@ class Main extends Sprite
 	public static function main():Void
 	{
 		// quick checks
+		trace("yey");
+		trace("Last Funkin Moments v" + Perkedel.ENGINE_VERSION); // JOELwindows7: idk why crash on android.
+		// pls don't destroy debug only because you don't have filesystem access!!
+
+		// JOELwindows7: here haxeUI
+		Toolkit.init();
 
 		Lib.current.addChild(new Main());
 	}
 
 	public function new()
 	{
+		trace("Yay");
+		trace("Last Funkin Moments v" + Perkedel.ENGINE_VERSION); // JOELwindows7: idk why crash on android.
 		instance = this;
 
 		super();
@@ -196,7 +220,7 @@ class Main extends Sprite
 		ModCore.initialize();
 
 		trace("init FPS counter");
-		#if !mobile
+		#if FEATURE_DISPLAY_FPS_CHANGE
 		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
@@ -213,6 +237,14 @@ class Main extends Sprite
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
 
+		// JOELwindows7: now build Xbox controllers
+		#if EXPERIMENTAL_OPENFL_XINPUT
+		for (i in 0...xboxControllerNum)
+		{
+			xboxControllers[i] = new XBox360Controller(i);
+		}
+		#end
+
 		#if FEATURE_DISPLAY_FPS_CHANGE
 		addChild(fpsCounter);
 		new FlxTimer().start(1, function(timer:FlxTimer)
@@ -223,6 +255,12 @@ class Main extends Sprite
 		// JOELwindows7: finally, have a GameJolt toast
 		addChild(gjToastManager); // Needs to be added after the game. that's how stack workss
 		gjToastManager.createToast(Paths.image("art/LFMicon128"), "Cool and good", "Welcome to Last Funkin Moments", false);
+
+		// JOELwindows7: Oh don't forget! the loading bar
+		loadingBar = new LoadingBar(0, 0, 0xFFFFFF);
+		bitmapLoadingBar = ImageOutline.renderImage(loadingBar, 1, 0x000000, true);
+		bitmapLoadingBar.smoothing = true;
+		addChild(loadingBar);
 
 		// JOELwindows7: GameBanana seems notorious.
 		// let's just hide everything that "trashworthy" / "blammworthy"
@@ -306,6 +344,16 @@ class Main extends Sprite
 		FlxG.sound.volumeUpKeys = null;
 		FlxG.sound.volumeDownKeys = null;
 		FlxG.sound.muteKeys = null;
+
+		// sorry! nowadays this invoke update vol key assignments based on status. nvm.
+	}
+
+	// JOELwindows7: Padzal! update volkeys assignments fate! copy from Kade's title state vol key assigner.
+	public function checkAccidentVolKeys()
+	{
+		FlxG.sound.muteKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.muteBind)] : null;
+		FlxG.sound.volumeDownKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.volDownBind)] : null;
+		FlxG.sound.volumeUpKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.volUpBind)] : null;
 	}
 
 	// JOELwindows7: mini platform scanner

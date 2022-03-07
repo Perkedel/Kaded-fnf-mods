@@ -40,7 +40,7 @@ jobs:
             {
               "type": "title",
               "regex": ".*reupload whitty*",
-              "message": "@${issue.user.login}, Protoglin Amexamlef::Copiar"
+              "message": "@${issue.user.login}, Protoglin Amexamlef::Copiar, Kontraktua Majoris = https://gamebanana.com/mods/354884 (NEW) & https://gamebanana.com/mods/44214 (LEGACY)"
             }
           ]
     - name: Autoclose Mid Fight Masses issues

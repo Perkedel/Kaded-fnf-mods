@@ -11,3 +11,4 @@ hookx:bf:gf:white:::confirmMenu
 hookx:bf:gf:#ffff99:::confirmMenu
 :bf:gf:red:::confirmMenu
 hookx:bf:gf:#0050BB:::confirmMenu
+hookx:bf:gf:#EEEEEE:::confirmMenu

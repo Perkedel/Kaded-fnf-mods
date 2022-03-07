@@ -1,0 +1,22 @@
+{
+    "name": "Симпл димпл поп ит сквиш",
+    "offset": 0,
+    "artist": "M&A, Бэтси",
+    "isCreditRoll": false,
+    "creditRunsOnce": false,
+    "delayBeforeStart": 0.0,
+    "delayAfterFinish": 0.0,
+    "hasVideo": false,
+    "videoPath": "",
+    "hasEpilogueVideo": false,
+    "epilogueVideoPath": "",
+    "hasDialogueChat": false,
+    "hasEpilogueChat": false,
+    "allowedToHeadbang": true,
+    "forceLuaModchart": true,
+    "forceHscriptModchart": false,
+    "reversedCountdown": false,
+    "invisibleCountdown": false,
+    "silentCountdown": false,
+    "noteStyle": "normal"
+}

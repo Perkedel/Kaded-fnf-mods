@@ -112,6 +112,8 @@ class OptionsMenu extends CoreSubState
 
 	public var upToHowManyCatsOnScreen:Int = 6; // JOELwindows7: by default there was 4 categories.
 
+	public static var markForGameplayRestart:Bool = false; // JOELwindows7: mark this true to tell that you have to restart song.
+
 	public function new(pauseMenu:Bool = false)
 	{
 		super();
@@ -143,37 +145,50 @@ class OptionsMenu extends CoreSubState
 				new DFJKOption(),
 				new Judgement("Create a custom judgement preset"),
 				new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!"),
-
+				new LuaLegacyModchartOption("Enable Lua modchart compatibility for <1.7 modchart files."),
+				new AutoClickEnabledOption("Let the game click the dialogue for you"),
+				new AutoClickDelayOption("Set the delay of click between dialogue typing completition"),
+				new EndSongEarlyOption("Toggle whether or not to end song early or wait music complete 1st"),
+				new BlueballWeekOption("Toggle whether or not should blueball counts carries entire week or just this song"),
+				new UnpausePreparationOption("(RECOMMENDED Always / Manual Only) Initiate quick preparation countdown after unpausing"),
 			]),
 			new OptionCata(345, 40, "Appearance", [
-				new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),
+				new NoteskinOption("Change your current noteskin"), new NoteSplashOption("Have your note press splash"),
+				new EditorRes("Not showing the editor grid will greatly increase editor performance"),
 				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
 				new MiddleScrollOption("Put your lane in the center or on the right."), new HealthBarOption("Toggles health bar visibility"),
 				new JudgementCounter("Show your judgements that you've gotten in the song"),
 				new LaneUnderlayOption("How transparent your lane is, higher = more visible."),
 				new StepManiaOption("Sets the colors of the arrows depending on quantization instead of direction."),
+				new ForceStepmaniaOption("Force that quantization even when any modcharts are loaded."), // JOELwindows7: yeha! sneaky sneaky!
 				new AccuracyOption("Display accuracy information on the info bar."),
 				new SongPositionOption("Show the song's current position as a scrolling bar."),
 				new Colour("The color behind icons now fit with their theme. (e.g. Pico = green)"),
 				new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
 				new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
 				new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
+				new CpuSplashOption("Toggle the CPU's note splash when it hits a note (REQUIRES: Note Splash to be ON)"),
 			]),
 			// JOELwindows7: Audio
 			new OptionCata(640, 40, 'Audio', [
 				new AdjustVolumeOption("Adjust Audio volume"),
 				// new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."), //JOELwindows7: how about move it here?
+				new AccidentVolumeKeysOption("Enable / Disable volume shortcut key all time beyond pause menu (- decrease, + increase, 0 mute)"),
+				new HitsoundOption("Enable / Disable Gameplay Hitsound everytime note got hit in Gameplay (not in Editor)"),
+				// JOELwindows7: IDEA: only enable volume keys on pause menu?
 				new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
 				// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
+				new AnLoneBopeeboOption("Test gameplay music"),
 			]),
 			// JOELwindows7: Account options
 			new OptionCata(935, 40, 'Accounts', [
 				new LogGameJoltIn(#if gamejolt "(" + GameJoltAPI.getUserInfo(true) +
-					") Log your GameJolt account in" #else "GameJolt not supported. SADD!" #end)
+					") Log your GameJolt account in & manage" #else "GameJolt not supported. SADD!" #end)
 			]),
 			// JOELwindows7: was 640, 40
 			new OptionCata(1040, 40, "Misc", [
 				new FPSOption("Toggle the FPS Counter"),
+				new PreUnlockAllWeeksOption("Toggle to Pre-unlock all weeks"),
 				new CardiophileOption("Toggle heartbeat features that contains doki-doki stuffs"),
 				new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), // JOELwindows7: make this Odysee exclusive pls. how!
 				new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
@@ -186,14 +201,19 @@ class OptionsMenu extends CoreSubState
 				new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty."),
 				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
 				new ScoreScreen("Show the score screen after the end of a song"),
+				new ScoreTxtZoomOption("Toggle score screen side zooming for each successive note"),
 				new ShowInput("Display every single input on the score screen."),
 				new ExportSaveToJson("BETA! Export entire save data into JSON file"),
 				new AnVideoCutscenerTestOption("EXPERIMENTAL! Test Video Cutscener capability"),
 				new AnStarfieldTestOption("EXPERIMENTAL! Test FlxStarfield"),
 				new AnDefaultBekgronTestOption("EXPERIMENTAL! Test default background of Hexagon Engine"),
 				new AnChangeChannelOption("EXPERIMENTAL! Test change channel and rate"),
+				new AnMiniWindowOption("EXPERIMENTAL! Test MiniWindow using debugger's windowing"),
+				new AnKem0xTestStateOption("EXPERIMENTAL! Test Kem0x's Nexus Engine stuffs"),
 				// new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
+				new FreeplayThreadedOption("BETA! Enable Freeplay Threading, may cause system instabilities"),
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
+				new PrintAnnoyingDebugWarnOption("Toggle whether should frequent warns appears (is annoying)"),
 			]),
 			// JOELwindows7: was 935, 40
 			new OptionCata(1100, 40, "Saves", [
@@ -393,7 +413,7 @@ class OptionsMenu extends CoreSubState
 		}
 		catch (e)
 		{
-			Debug.logError("oops\n" + e);
+			Debug.logError("oops\n" + e + ": " + e.message);
 			selectedCatIndex = 0;
 		}
 
@@ -444,6 +464,9 @@ class OptionsMenu extends CoreSubState
 
 		any = FlxG.keys.justPressed.ANY || (gamepad != null ? gamepad.justPressed.ANY : false);
 		escape = FlxG.keys.justPressed.ESCAPE || (gamepad != null ? gamepad.justPressed.B : false) || haveBacked;
+		// JOELwindows7: turns out, double back was because this escape bool is not updated until you go back here again.
+		// when you thought you've flipped haveBacked false, the escape is not. you should also flip back false that too.
+		// you only see escape while you should see haveBacked directly instead.
 
 		if (selectedCat != null && !isInCat)
 		{
@@ -509,20 +532,31 @@ class OptionsMenu extends CoreSubState
 					selectOption(selectedCat.options[0]);
 
 					haveClicked = false; // JOELwindows7: don't forget
+					accept = false; // JOELwindows7: update this too
 				}
 
 				if (escape)
 				{
 					if (!isInPause)
-						FlxG.switchState(new MainMenuState());
+						// FlxG.switchState(new MainMenuState());
+						OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
 					else
 					{
 						PauseSubState.goBack = true;
 						PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * PlayState.songMultiplier;
+						// JOELwindows7: heurestic to see if a marker has raised
+						if (markForGameplayRestart)
+						{
+							createToast(null, "Please Restart Song",
+								"You have changed options that needs reloading. Please restart the song to apply the changes.");
+						}
+						// JOELwindows7: reset value again.
+						markForGameplayRestart = false;
 						close();
 					}
 
 					haveBacked = false; // JOELwindows7: don't forget
+					escape = false; // JOELwindows7: update this too
 				}
 			}
 			else
@@ -537,7 +571,17 @@ class OptionsMenu extends CoreSubState
 							var object = selectedCat.optionObjects.members[selectedOptionIndex];
 							object.text = "> " + selectedOption.getValue();
 							Debug.logTrace("New text: " + object.text);
+
+							// JOELwindows7: heurestic to see if a marker has raised
+							if (markForGameplayRestart)
+							{
+								createToast(null, "Please Restart Song",
+									"You have changed options that needs reloading. Please restart the song to apply the changes.");
+							}
+							// JOELwindows7: reset value again.
+							markForGameplayRestart = false;
 							haveBacked = false; // JOELwindows7: whie
+							escape = false; // JOELwindows7: update this too
 							return;
 						}
 						else if (any)
@@ -546,6 +590,8 @@ class OptionsMenu extends CoreSubState
 							selectedOption.onType(gamepad == null ? FlxG.keys.getIsDown()[0].ID.toString() : gamepad.firstJustPressedID());
 							object.text = "> " + selectedOption.getValue();
 							Debug.logTrace("New text: " + object.text);
+
+							any = false; // JOELwindows7: don't forget
 						}
 					}
 				if (selectedOption.acceptType || !selectedOption.acceptType)
@@ -563,6 +609,7 @@ class OptionsMenu extends CoreSubState
 							object.text = "> " + selectedOption.getValue();
 						}
 						haveClicked = false; // JOELwindows7: mouse supports
+						accept = false; // JOELwindows7: update this too
 					}
 
 					if (down)
@@ -599,6 +646,8 @@ class OptionsMenu extends CoreSubState
 						selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
 						haveDowned = false; // JOELwindows7: yea
 						haveClicked = false; // JOELwindows7: mouse supports
+						down = false; // JOELwindows7: update this too
+						accept = false; // JOELwindows7: update this too
 					}
 					else if (up)
 					{
@@ -642,6 +691,8 @@ class OptionsMenu extends CoreSubState
 						selectOption(options[selectedCatIndex].options[selectedOptionIndex]);
 						haveUpped = false; // JOELwindows7: yep
 						haveClicked = false; // JOELwindows7: mouse supports
+						up = false; // JOELwindows7: update this too
+						accept = false; // JOELwindows7: update this too
 					}
 
 					if (right)
@@ -656,6 +707,7 @@ class OptionsMenu extends CoreSubState
 						Debug.logTrace("New text: " + object.text);
 
 						haveRighted = false; // JOELwindows7: oye
+						right = false; // JOELwindows7: update this too
 					}
 					else if (left)
 					{
@@ -669,6 +721,7 @@ class OptionsMenu extends CoreSubState
 						Debug.logTrace("New text: " + object.text);
 
 						haveLefted = false; // JOELwindows7: ok
+						left = false; // JOELwindows7: update this too
 					}
 
 					if (escape)
@@ -712,14 +765,24 @@ class OptionsMenu extends CoreSubState
 						if (selectedCat.middle)
 							switchCat(options[0]);
 
+						// JOELwindows7: heurestic to see if a marker has raised
+						if (markForGameplayRestart)
+						{
+							createToast(null, "Please Restart Song",
+								"You have changed options that needs reloading. Please restart the song to apply the changes.");
+						}
+						// JOELwindows7: reset value again.
+						markForGameplayRestart = false;
+
 						haveBacked = false; // JOELwindows7: okeh.
+						escape = false; // JOELwindows7: update this too
 					}
 				}
 			}
 		}
 		catch (e)
 		{
-			Debug.logError("wtf we actually did something wrong, but we dont crash bois.\n" + e);
+			Debug.logError("wtf we actually did something wrong, but we dont crash bois.\n" + e + ": " + e.message);
 			selectedCatIndex = 0;
 			selectedOptionIndex = 0;
 			FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -789,7 +852,7 @@ class OptionsMenu extends CoreSubState
 	}
 
 	// JOELwindows7: go to flxState. prevent go to there if you are in gameplay.
-	public static function switchState(ofHere:FlxState)
+	public static function goToState(ofHere, goToLoading:Bool = false, transition:Bool = true, isSong:Bool = false)
 	{
 		if (isInPause)
 		{
@@ -797,7 +860,16 @@ class OptionsMenu extends CoreSubState
 			Main.gjToastManager.createToast(null, "Cannot access option", "Please leave the gameplay before accessing this option.");
 			return;
 		}
-		FlxG.switchState(ofHere);
+		// FlxG.switchState(ofHere);
+		OptionsDirect.instance.switchState(ofHere, goToLoading, transition,
+			isSong); // JOELwindows7: cyclic reference! rename switchState of this into goToState?
+	}
+
+	// JOELwindows7: now it is easinerer
+	// JOELwindows7: mark needs restart song if the option requires restart
+	public static function markRestartSong()
+	{
+		markForGameplayRestart = true;
 	}
 
 	// JOELwindows7: assign ID to category on screen

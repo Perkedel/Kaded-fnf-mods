@@ -333,6 +333,10 @@ class GameplayCustomizeState extends MusicBeatState
 		sick.y = FlxG.save.data.changedHitY;
 
 		FlxG.mouse.visible = true;
+
+		// JOELwindows7: build buttons
+		addBackButton();
+		backButton.cameras = [camHUD];
 	}
 
 	override function update(elapsed:Float)
@@ -473,11 +477,12 @@ class GameplayCustomizeState extends MusicBeatState
 			FlxG.save.data.changedHit = false;
 		}
 
-		if (controls.BACK)
+		if (controls.BACK || haveBacked)
 		{
 			FlxG.mouse.visible = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			FlxG.switchState(new OptionsDirect());
+			haveBacked = false; // JOELwindows7: here yo!
 		}
 	}
 

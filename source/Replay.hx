@@ -7,6 +7,7 @@ import openfl.events.IOErrorEvent;
 import openfl.events.Event;
 import openfl.net.FileReference;
 import haxe.Json;
+import tjson.TJSON;
 import flixel.input.keyboard.FlxKey;
 import openfl.utils.Dictionary;
 
@@ -100,7 +101,7 @@ class Replay
 		#end
 
 		var json = {
-			"songName": PlayState.SONG.song,
+			"songName": PlayState.SONG.songName, // JOELwindows7: use new name system
 			"songId": PlayState.SONG.songId,
 			"songDiff": PlayState.storyDifficulty,
 			"chartPath": chartPath,
@@ -129,8 +130,8 @@ class Replay
 
 		replay.ana = ana;
 		#else
-        //JOELwindows7: trouble with Android version
-        trace("WERROR: File save replay fail, sys functions is crashing in Android");
+		// JOELwindows7: trouble with Android version
+		trace("WERROR: File save replay fail, sys functions is crashing in Android");
 		#end
 	}
 
@@ -140,12 +141,13 @@ class Replay
 		trace('loading ' + Sys.getCwd() + 'assets/replays/' + path + ' replay...');
 		try
 		{
-			var repl:ReplayJSON = cast Json.parse(File.getContent(Sys.getCwd() + "assets/replays/" + path));
+			// var repl:ReplayJSON = cast Json.parse(File.getContent(Sys.getCwd() + "assets/replays/" + path));
+			var repl:ReplayJSON = cast TJSON.parse(File.getContent(Sys.getCwd() + "assets/replays/" + path)); // JOELwindows7: use TJSON to parse JSON instead
 			replay = repl;
 		}
 		catch (e)
 		{
-			trace('failed!\n' + e.message);
+			trace('failed!\n' + e + ": " + e.message);
 		}
 		#end
 	}

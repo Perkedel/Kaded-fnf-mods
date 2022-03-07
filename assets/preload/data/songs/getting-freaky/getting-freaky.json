@@ -26298,8 +26298,10 @@
         "isCheer": false,
         "cutsceneType": "none",
         "isSpooky": false,
-        "song": "Getting-Freaky",
+        "song": "getting-freaky",
+        "songId": "getting-freaky",
         "useCustomStage": true,
+        "useCustomNoteStyle": true,
         "validScore": true,
         "artist": "Kawai Sprite",
         "speed": 2,
@@ -26325,6 +26327,6 @@
         "stage": "amfrost",
         "sections": 0,
         "bpm": 102,
-        "noteStyle": "saubo"
+        "noteStyle": "Saubo"
     }
 }

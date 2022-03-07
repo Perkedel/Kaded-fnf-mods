@@ -100,7 +100,8 @@ class SMFile
 		}
 		catch (e:Exception)
 		{
-			Application.current.window.alert("Failure to load file.\n" + e, "SM File loading");
+			// JOELwindows7: add message to it!
+			Application.current.window.alert("Failure to load file.\n" + e + ": " + e.message, "SM File loading");
 		}
 	}
 

@@ -21,6 +21,7 @@ import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
 import haxe.Json;
 import haxe.format.JsonParser;
+import tjson.TJSON;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
@@ -51,7 +52,7 @@ class StoryMenuState extends MusicBeatState
 				['satin-panties', "high", "milf"],
 				['cocoa', 'eggnog', 'winter-horrorland'],
 				['senpai', 'roses', 'thorns'],
-				['Windfall', 'Rule The World', 'Well Meet Again'],
+				['windfall', 'rule-the-world', 'well-meet-again'],
 			];
 		else
 			return weekDatas;
@@ -162,10 +163,11 @@ class StoryMenuState extends MusicBeatState
 		weekBannerPath = new Array<String>();
 		weekUnderlayPath = new Array<String>();
 		weekClickSoundPath = new Array<String>();
-		for (i in 0...weekLoads.length)
+		// use the first standardized (from top most upstream possible) array of weeks, which in this one is Week Names array.
+		for (i in 0...weekNames.length)
 		{
 			var weekLine:Array<String> = weekLoads[i].split(':');
-			var weekSongs:Array<String> = new Array<String>();
+			var weekSongs:Array<String> = new Array<String>(); // remember, if empty, must initialize!
 			for (j in 0...weekLine.length)
 			{
 				var song:String = weekLine[j];
@@ -182,6 +184,8 @@ class StoryMenuState extends MusicBeatState
 		}
 	}
 
+	// TODO: JOELwindows7: use better week loading JSON granular from Master Eric's Enigma or whatever.
+
 	override function create()
 	{
 		// JOELwindows7: Do the work for the weeklist pls!
@@ -190,11 +194,12 @@ class StoryMenuState extends MusicBeatState
 		// hmm isn't that better to use JSON instead? it's easier to manage!
 		// just copy 3 week list variables above, JSONify them all! yeah!
 		/*
-			Pain is temporary
-			GLORY IS FOREVER
-			LOL wintergatan
-		 */
-		legacyJSONWeekList = false; // JOELwindows7: turn off after you completed new weeklist
+				Pain is temporary
+				GLORY IS FOREVER
+				LOL wintergatan
+			// */ // a fed. looks like comment inside comment block doesn't affect. only after closing.
+		legacyJSONWeekList = false; // JOELwindows7: turn off after you completed new weeklist. DONE
+		// TODO: JOELwindow7: implement Master Eric's granular week JSON.
 		if (legacyJSONWeekList)
 			jsonWeekList();
 		else
@@ -492,7 +497,8 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			FlxG.switchState(new MainMenuState());
+			// FlxG.switchState(new MainMenuState());
+			switchState(new MainMenuState()); // JOELwindows7: switch state hex
 
 			haveBacked = false;
 		}
@@ -527,17 +533,26 @@ class StoryMenuState extends MusicBeatState
 	// changing valid score which SwagWeeks typedef doesn't have, idk..
 	public static function parseJSONshit(rawJson:String):SwagWeeks
 	{
-		var swagShit:SwagWeeks = cast Json.parse(rawJson);
+		// var swagShit:SwagWeeks = cast Json.parse(rawJson);
+		var swagShit:SwagWeeks = cast TJSON.parse(rawJson); // JOELwindows7: use TJSON from now on, I guess.
 		return swagShit;
 	}
 
+	// JOELwindows7: a.k.a. new week game
 	function selectWeek()
 	{
+		// JOELwindows7: reset blue balls
+		GameOverSubstate.resetBlueball();
+
+		// JOELwindows7: also reset the week
+		resetWeekSave();
+
 		if (weekUnlocked[curWeek])
 		{
 			if (stopspamming == false)
 			{
 				// JOELwindows7: change click sound based on week selected
+				Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
 				FlxG.sound.play(Paths.sound(weekClickSoundPath[curWeek] != null
 					&& weekClickSoundPath[curWeek] != '' ? weekClickSoundPath[curWeek] : 'confirmMenu'));
 
@@ -568,8 +583,10 @@ class StoryMenuState extends MusicBeatState
 			{
 				// JOELwindows7: check if the song has video files
 				// #if !mobile
-				LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
-					true);
+				// LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
+				// 	true);
+				switchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(), true, true, true,
+					true); // JOELwindows7: switch state hex
 				// #else //workaround for Video cutscener not working in Android
 				// LoadingState.loadAndSwitchState(new PlayState(), true);
 				// #end
@@ -686,7 +703,7 @@ class StoryMenuState extends MusicBeatState
 			}
 			catch (e)
 			{
-				Debug.logWarn("Werror " + e);
+				Debug.logError("Werror " + e + ": " + e.message);
 				underlayBG.makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
 				underlayBG.alpha = .3;
 			}
@@ -799,5 +816,38 @@ class StoryMenuState extends MusicBeatState
 					}
 			}
 		});
+	}
+
+	// JOELwindows7: Week save functions people! BrightFyre!!!!!!!!
+	public static function saveWeek(andQuit:Bool = false)
+	{
+		FlxG.save.data.leftAWeek = andQuit;
+		FlxG.save.data.leftStoryWeek = PlayState.storyWeek;
+		FlxG.save.data.leftWeekSongAt = PlayState.storyPlaylist[0];
+		FlxG.save.data.leftFullPlaylistCurrently = PlayState.storyPlaylist;
+		FlxG.save.data.leftCampaignScore = PlayState.campaignScore;
+		FlxG.save.data.leftCampaignMisses = PlayState.campaignMisses;
+		FlxG.save.data.leftCampaignSicks = PlayState.campaignSicks;
+		FlxG.save.data.leftCampaignGoods = PlayState.campaignGoods;
+		FlxG.save.data.leftCampaignBads = PlayState.campaignBads;
+		FlxG.save.data.leftCapaignShits = PlayState.campaignShits;
+		FlxG.save.data.leftBlueBall = GameOverSubstate.getBlueballCounter();
+		FlxG.save.flush();
+	}
+
+	public static function resetWeekSave()
+	{
+		FlxG.save.data.leftAWeek = false;
+		FlxG.save.data.leftStoryWeek = 0;
+		FlxG.save.data.leftWeekSongAt = '';
+		FlxG.save.data.leftFullPlaylistCurrently = [];
+		FlxG.save.data.leftCampaignScore = 0;
+		FlxG.save.data.leftCampaignMisses = 0;
+		FlxG.save.data.leftCampaignSicks = 0;
+		FlxG.save.data.leftCampaignGoods = 0;
+		FlxG.save.data.leftCampaignBads = 0;
+		FlxG.save.data.leftCapaignShits = 0;
+		FlxG.save.data.leftBlueBall = 0;
+		FlxG.save.flush();
 	}
 }

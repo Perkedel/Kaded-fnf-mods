@@ -48,13 +48,13 @@ function playerTwoMiss(note, position)
 
 function playerTwoSing(note, position)
 {
-    trace("P2 sing " + note + " at " + position + " hscript");
+    //trace("P2 sing " + note + " at " + position + " hscript");
     if ((curBeat >= 0 && curBeat < 16) || (curBeat >= 144)){
         if(flashing)
             //colorizeColorablebyKey(note,false,0);
             randomizeColoring();
         if(distractions){
-            trace("BRUMM " + curBeat);
+            //trace("BRUMM " + curBeat);
             camZoomNow(0.015, 0.03, 1.35);
             vibrate(0, 200);
         }
@@ -75,7 +75,7 @@ function playerOneMiss(note, position)
 
 function playerOneSing(note, position)
 {
-    trace("P1 sing " + note + " at " + position + " hscript");
+    //trace("P1 sing " + note + " at " + position + " hscript");
     if ((curBeat >= 0 && curBeat < 16) || (curBeat >= 144)){
         if(flashing)
             //colorizeColorablebyKey(note,false,0);
@@ -89,22 +89,22 @@ function colorizeColorablebyKey(note, justOne, toWhichBg)
 {
     if (note == 0 /*'left'*/)
     {
-        trace("set color magenta (hscript)");
+        //trace("set color magenta (hscript)");
         chooseColoringColor("magenta", justOne, toWhichBg);
     }
     else if (note == 1 /*'down'*/)
     {
-        trace("set color cyan (hscript)");
+        //trace("set color cyan (hscript)");
         chooseColoringColor("cyan", justOne, toWhichBg);
     }
     else if (note == 2 /*'up'*/)
     {
-        trace("set color lime (hscript)");
+        //trace("set color lime (hscript)");
         chooseColoringColor("lime", justOne, toWhichBg);
     }
     else if (note == 3 /*'right'*/)
     {
-        trace("set color red (hscript)");
+        //trace("set color red (hscript)");
         chooseColoringColor("red", justOne, toWhichBg);
     }
 }

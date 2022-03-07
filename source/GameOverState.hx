@@ -67,7 +67,8 @@ class GameOverState extends FlxTransitionableState
 			FlxG.sound.music.fadeOut(0.5, 0, function(twn:FlxTween)
 			{
 				FlxG.sound.music.stop();
-				LoadingState.loadAndSwitchState(new PlayState());
+				// LoadingState.loadAndSwitchState(new PlayState());
+				PlayState.instance.switchState(new PlayState(), true, true, true, true); // JOELwindows7: hex switch state lol
 			});
 		}
 
@@ -85,7 +86,8 @@ class GameOverState extends FlxTransitionableState
 			FlxG.sound.music.fadeOut(0.5, 0, function(twn:FlxTween)
 			{
 				FlxG.sound.music.stop();
-				LoadingState.loadAndSwitchState(new PlayState());
+				// LoadingState.loadAndSwitchState(new PlayState());
+				PlayState.instance.switchState(new PlayState()); // JOELwindows7: hex switch state lol
 			});
 		}
 		super.update(elapsed);

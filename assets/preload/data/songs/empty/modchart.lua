@@ -12,9 +12,44 @@ function update(elapsed) -- arguments, how long it took to complete a frame
 
 end
 
-
+-- this gets called after GO!
 function songStart()
 
+end
+
+-- this gets called when song is ended right before unloading the script. not to be confused with epilogue cutscene things!
+function songEnd()
+
+end
+
+-- this gets called when passing intro cutscene
+function introCutscene()
+
+end
+
+-- this gets called when passing outro cutscene
+function outroCutscene()
+
+end
+
+-- this gets called when dialogue opens
+function dialogueStart()
+
+end
+
+-- this gets called when dialogue finish
+function dialogueEnd()
+
+end
+
+-- this gets called when dialogue skipped
+function dialogueSkip()
+    --dialogueEnd() -- do you want to do the same anyway
+end
+
+-- this gets called every next dialogue
+function dialogueNext(index)
+    -- `index` is where dialogue line number you were at
 end
 
 -- this gets called every beat
@@ -57,16 +92,16 @@ end
 
 function colorizeColorablebyKey(note, justOne, toWhichBg)
     if note == "left" or note == 0 then
-        print("set color magenta")
+        -- print("set color magenta")
         chooseColoringColor("magenta", justOne, toWhichBg)
     elseif note == "down" or note == 1 then
-        print("set color cyan")
+        -- print("set color cyan")
         chooseColoringColor("cyan", justOne, toWhichBg)
     elseif note == "up" or note == 2 then
-        print("set color lime")
+        -- print("set color lime")
         chooseColoringColor("lime", justOne, toWhichBg)
     elseif note == "right" or note == 3 then
-        print("set color red")
+        -- print("set color red")
         chooseColoringColor("red", justOne, toWhichBg)
     end
 end

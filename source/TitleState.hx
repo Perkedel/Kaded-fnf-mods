@@ -38,6 +38,7 @@ import Discord.DiscordClient;
 #end
 #if FEATURE_MULTITHREADING
 import sys.thread.Thread;
+import sys.thread.Mutex;
 #end
 
 using StringTools;
@@ -61,9 +62,35 @@ class TitleState extends MusicBeatState
 	var alreadyDecideOutdated:Bool = false; // JOELwindows7: flag to decide outdated.
 
 	// to prevent reselectoid after seen outdated on previously
+	// var hbdWhen:Map<Date, String>; // JOELwindows7: store lines of birthday stuffs, and its date when.
+	var hbdList:Array<Dynamic>;
 
 	override public function create():Void
 	{
+		// JOELwindows7: Yoinkered Kade + YinYang48 Hex
+		// https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/TitleState.hx
+		// #if FEATURE_MULTITHREADING
+		// MasterObjectLoader.mutex = new Mutex(); // JOELwindows7: you must first initialize the mutex.
+		// #end
+
+		// JOELwindows7: fetch birthday lines
+		// hbdWhen = new Map<Date, String>();
+		hbdList = new Array<Dynamic>();
+		CarryAround.hbdLines = CoolUtil.coolTextFile(Paths.txt("data/hbd"));
+		for (i in 0...CarryAround.hbdLines.length)
+		{
+			var line:String = CarryAround.hbdLines[i];
+			var breakdown:Array<String> = line.split(":");
+			var name:String = breakdown[0];
+			var month:Int = Std.parseInt(breakdown[1]);
+			var day:Int = Std.parseInt(breakdown[2]);
+			// var date:Date = Date.;
+			// hbdWhen.set(new Date(null, month, day), name);
+			var hbdCell:Array<Dynamic> = [name, month, day];
+			hbdList.push(hbdCell);
+			// JOELwindows7: pls idk how to make it elegant and work.
+		}
+
 		// JOELwindows7: luckydog7 added this, maybe to prevent absolute quit by back button.
 		// https://github.com/luckydog7/trickster/blob/master/source/TitleState.hx
 		// https://github.com/luckydog7/trickster/commit/677e0c5e7d644482066322a8ab99ee67c2d18088
@@ -93,45 +120,46 @@ class TitleState extends MusicBeatState
 			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
 		}
 
-		FlxG.autoPause = false;
+		// FlxG.autoPause = false;
 
-		FlxG.save.bind('funkin', 'ninjamuffin99');
+		// FlxG.save.bind('funkin', 'ninjamuffin99');
 
-		PlayerSettings.init();
+		// PlayerSettings.init();
 
-		KadeEngineData.initSave();
+		// KadeEngineData.initSave();
 
 		// JOELwindows7: TentaRJ GameJolter
-		#if gamejolt
-		// Main.gjToastManager.createToast(Paths.image("art/LFMicon64"), "Cool and good", "Welcome to Last Funkin Moments",
-		// 	false); // JOELwindows7: create GameJolt Toast here.
-		GameJoltAPI.connect();
-		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
-		#end
+		// #if gamejolt
+		// // Main.gjToastManager.createToast(Paths.image("art/LFMicon64"), "Cool and good", "Welcome to Last Funkin Moments",
+		// // 	false); // JOELwindows7: create GameJolt Toast here.
+		// GameJoltAPI.connect();
+		// GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+		// #end
 
-		KeyBinds.keyCheck();
+		// KeyBinds.keyCheck();
 		// It doesn't reupdate the list before u restart rn lmao
 
-		NoteskinHelpers.updateNoteskins();
+		// NoteskinHelpers.updateNoteskins();
 
-		if (FlxG.save.data.volDownBind == null)
-			FlxG.save.data.volDownBind = "MINUS";
-		if (FlxG.save.data.volUpBind == null)
-			FlxG.save.data.volUpBind = "PLUS";
+		// if (FlxG.save.data.volDownBind == null)
+		// 	FlxG.save.data.volDownBind = "MINUS";
+		// if (FlxG.save.data.volUpBind == null)
+		// 	FlxG.save.data.volUpBind = "PLUS";
 
-		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+		// FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+		// FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+		// FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
 
 		FlxG.mouse.visible = false;
 
-		FlxG.worldBounds.set(0, 0);
+		// FlxG.worldBounds.set(0, 0);
 
-		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+		// FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
-		MusicBeatState.initSave = true;
+		// MusicBeatState.initSave = true;
 
 		fullscreenBind = FlxKey.fromString(FlxG.save.data.fullscreenBind);
+		// JOElwindows7: save inits & some other inits are already splashed
 
 		Highscore.load();
 
@@ -144,10 +172,12 @@ class TitleState extends MusicBeatState
 		super.create();
 
 		#if FREEPLAY
-		FlxG.switchState(new FreeplayState());
+		// FlxG.switchState(new FreeplayState());
+		switchState(new FreeplayState()); // JOELwindows7: switch to freeplay state hexly.
 		clean();
 		#elseif CHARTING
-		FlxG.switchState(new ChartingState());
+		// FlxG.switchState(new ChartingState());
+		switchState(new ChartingState()); // JOELwindows7: switch to charting state hexly.
 		clean();
 		#else
 		#if !cpp
@@ -370,6 +400,28 @@ class TitleState extends MusicBeatState
 			if (Date.now().getDay() == 5)
 				AchievementUnlocked.whichIs("just_like_the_game");
 
+			// JOELwindows7: oke now hbd time.
+			for (i in 0...hbdList.length)
+			{
+				// Today, Early & late birthday too
+				if (Date.now().getMonth() == (Std.int(hbdList[i][2])-1))
+				{
+					if (Date.now().getDate() == Std.int(hbdList[i][1]))
+					{
+						createToast(null, "HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!! ");
+					}
+					if (Date.now().getDate() == Std.int(hbdList[i][1] - 1) || Date.now().getDate() == Std.int(hbdList[i][1] - 2))
+					{
+						createToast(null, "Early HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
+					}
+					if (Date.now().getDate() == Std.int(hbdList[i][1] + 1) || Date.now().getDate() == Std.int(hbdList[i][1] + 2))
+					{
+						createToast(null, "Late HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
+					}
+					createToast(null, "This month HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
+				}
+			}
+
 			if (FlxG.save.data.flashing)
 				titleText.animation.play('press');
 
@@ -402,12 +454,14 @@ class TitleState extends MusicBeatState
 						trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.kadeEngineVer);
 						OutdatedSubState.needVer = returnedData[0];
 						OutdatedSubState.currChanges = returnedData[1];
-						FlxG.switchState(new OutdatedSubState());
+						// FlxG.switchState(new OutdatedSubState());
+						switchState(new OutdatedSubState()); // JOELwindows7: hex switch state lol
 						clean();
 					}
 					else
 					{
-						FlxG.switchState(new MainMenuState());
+						// FlxG.switchState(new MainMenuState());
+						switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
 						clean();
 					}
 				}
@@ -415,7 +469,8 @@ class TitleState extends MusicBeatState
 				http.onError = function(error)
 				{
 					trace('error: $error');
-					FlxG.switchState(new MainMenuState()); // fail but we go anyway
+					// FlxG.switchState(new MainMenuState()); // fail but we go anyway
+					switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: hex switch state lol
 					clean();
 				}
 
@@ -434,7 +489,7 @@ class TitleState extends MusicBeatState
 				// Get the current version of Last Funkin Moments
 
 				#if FEATURE_HTTP
-				var http = new haxe.Http("https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe");
+				var http = new haxe.Http(Perkedel.ENGINE_VERSION_URL);
 				var returnedData:Array<String> = [];
 
 				http.onData = function(data:String)
@@ -449,23 +504,27 @@ class TitleState extends MusicBeatState
 						trace('LFM outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
 						OutdatedSubState.needVerLast = returnedData[0];
 						OutdatedSubState.perubahanApaSaja = returnedData[1];
-						FlxG.switchState(new OutdatedSubState());
+						// FlxG.switchState(new OutdatedSubState());
+						switchState(new OutdatedSubState()); // JOELwindows7: get here hex switch state yeah
 					}
 					else
 					{
-						FlxG.switchState(new MainMenuState());
+						// FlxG.switchState(new MainMenuState());
+						switchState(new MainMenuState()); // JOELwindows7: get here hex switch state yeah
 					}
 				}
 
 				http.onError = function(error)
 				{
 					trace('error: $error');
-					FlxG.switchState(new MainMenuState()); // fail but we go anyway
+					// FlxG.switchState(new MainMenuState()); // fail but we go anyway
+					switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: get here hex switch state yeah
 				}
 
 				http.request();
 				#else
-				FlxG.switchState(new MainMenuState()); // Just pecking go to menu already!
+				// FlxG.switchState(new MainMenuState()); // Just pecking go to menu already!
+				switchState(new MainMenuState()); // Just pecking go to menu already! JOELwindows7: get here hex switch state yeah
 				#end
 			});
 		}

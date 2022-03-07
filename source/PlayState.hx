@@ -1,5 +1,18 @@
 package;
 
+import ui.states.PrepareUnpauseSubstate;
+#if EXPERIMENTAL_KEM0X_SHADERS
+import DynamicShaderHandler; // JOELwindows7: kem0x mod shader https://github.com/kem0x/FNF-ModShaders
+#end
+#if cpp
+import cpp.Stdio;
+#end
+import HaxeScriptState;
+import const.Perkedel;
+import flixel.addons.ui.FlxUIButton;
+import flixel.addons.ui.FlxUITypedButton;
+import flixel.addons.ui.FlxUINumericStepper;
+import flixel.addons.ui.FlxUICheckBox;
 import GalleryAchievements.AchievementUnlocked;
 import Controls;
 import TouchScreenControls;
@@ -96,6 +109,7 @@ import Discord.DiscordClient;
 import hx.files.*;
 
 using StringTools;
+using flixel.util.FlxSpriteUtil;
 
 class PlayState extends MusicBeatState
 {
@@ -128,8 +142,11 @@ class PlayState extends MusicBeatState
 	public static var songPosBar:FlxBar;
 
 	public static var noteskinSprite:FlxAtlasFrames;
+	public static var noteskinSpriteMine:FlxAtlasFrames; // JOElwindows7: the mine, don't step on it
 	public static var noteskinPixelSprite:BitmapData;
 	public static var noteskinPixelSpriteEnds:BitmapData;
+	public static var noteskinPixelSpriteMine:BitmapData; // JOElwindows7: the mine, don't step on it
+	public static var noteskinPixelSpriteEndsMine:BitmapData; // JOElwindows7: the mine, don't step on it
 
 	public static var rep:Replay;
 	public static var loadRep:Bool = false;
@@ -178,6 +195,7 @@ class PlayState extends MusicBeatState
 	#end
 
 	public var vocals:FlxSound; // JOELwindows7: make public for Moddchart. oh wait. Kade already done that.
+	public var vocals2:FlxSound; // JOELwindows7: second vocal set, for player2 if available.
 
 	public static var isSM:Bool = false;
 	#if FEATURE_STEPMANIA
@@ -204,6 +222,11 @@ class PlayState extends MusicBeatState
 
 	private static var prevCamFollow:FlxObject;
 
+	// JOELwindows7: oh the blackbars but right here
+	public var realBlackbarsTop:FlxSprite;
+	public var realBlackbarsBottom:FlxSprite;
+	public var realBlackbarHeight:Int = 100;
+
 	// JOELwindows7: flag to let stage or whatever override camFollow position
 	private var manualCamFollowPosP1:Array<Float> = [0, 0];
 	private var manualCamFollowPosP2:Array<Float> = [0, 0];
@@ -214,6 +237,7 @@ class PlayState extends MusicBeatState
 	public static var strumLineNotes:FlxTypedGroup<StaticArrow> = null;
 	public static var playerStrums:FlxTypedGroup<StaticArrow> = null;
 	public static var cpuStrums:FlxTypedGroup<StaticArrow> = null;
+	public static var grpNoteSplashes:FlxTypedGroup<NoteSplash>; // JOELwindows7: Psyched note splash
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -300,6 +324,7 @@ class PlayState extends MusicBeatState
 	var scoreTxt:FlxText;
 	var judgementCounter:FlxText;
 	var replayTxt:FlxText;
+	var scoreTxtTween:FlxTween; // JOELwindows7: Psyched score zoom yeah!
 
 	var needSkip:Bool = false;
 	var skipActive:Bool = false;
@@ -356,6 +381,11 @@ class PlayState extends MusicBeatState
 
 	// JOELwindows7: other stuffs
 	public static var creditRollout:CreditRollout; // Credit fade rolls
+	#if EXPERIMENTAL_KEM0X_SHADERS
+	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>(); // kem0x mod shader
+
+	#end
+	public static var judgementWords:Array<String> = ["Misses", "Shits", "Bads", "Goods", "Sicks", "Danks", "MVPs"];
 
 	// API stuff
 
@@ -388,11 +418,11 @@ class PlayState extends MusicBeatState
 		if (previousRate < 1.00)
 			previousRate = 1;
 
-		if (FlxG.save.data.fpsCap > 290)
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) // JOELwindows7: was 290
 		{
 			// JOELwindows7: android issue. cast lib current technic crash
 			#if FEATURE_DISPLAY_FPS_CHANGE
-			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(800);
+			// (cast(Lib.current.getChildAt(0), Main)).setFPSCap(800);
 			#end
 		}
 
@@ -425,12 +455,14 @@ class PlayState extends MusicBeatState
 		PlayStateChangeables.botPlay = FlxG.save.data.botplay;
 		PlayStateChangeables.Optimize = FlxG.save.data.optimize;
 		PlayStateChangeables.zoom = FlxG.save.data.zoom;
+		PlayStateChangeables.legacyLuaModchartSupport = FlxG.save.data.legacyLuaScript || SONG.forceLuaModchartLegacy;
 
 		removedVideo = false;
 
 		#if FEATURE_LUAMODCHART
-		// TODO: Refactor this to use OpenFlAssets.
-		executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'));
+		// TODO: Refactor this to use OpenFlAssets
+		executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'))
+			|| SONG.forceLuaModchart; // JOELwindows7: don't forgot force it.
 		if (isSM)
 			executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
 		if (executeModchart)
@@ -525,6 +557,9 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(camHUD);
 		FlxG.cameras.add(camSustains);
 		FlxG.cameras.add(camNotes);
+		grpNoteSplashes = new FlxTypedGroup<NoteSplash>(); // JOELwindows7: okey why ShadowMario or whoever
+		// in the blame init that notesplash group here? Psyched
+		// maybe because it's after add all those cameras?
 
 		camHUD.zoom = PlayStateChangeables.zoom;
 
@@ -534,6 +569,7 @@ class PlayState extends MusicBeatState
 		// nope. well it works, but
 		// alot of semantics here has to be changed first before hand, so uh. unfortunately
 		// I can't yet.
+		// hey bbpanzu how the peck do we supposed to make this work??!?!?
 
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -548,7 +584,7 @@ class PlayState extends MusicBeatState
 
 		if (SONG.eventObjects == null)
 		{
-			SONG.eventObjects = [new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change")];
+			SONG.eventObjects = [new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change", 0, 0)]; // JOELwindows7: houv
 		}
 
 		TimingStruct.clearTimings();
@@ -733,6 +769,7 @@ class PlayState extends MusicBeatState
 			add(i);
 		}
 		if (!PlayStateChangeables.Optimize)
+		{
 			for (index => array in Stage.layInFront)
 			{
 				switch (index)
@@ -752,6 +789,9 @@ class PlayState extends MusicBeatState
 							add(bg);
 				}
 			}
+			// JOELwindows7: first, build the blackbar
+			buildRealBlackBars();
+		}
 
 		camPos = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 
@@ -866,14 +906,14 @@ class PlayState extends MusicBeatState
 
 		if (isStoryMode)
 		{
-			doof = new DialogueBox(false, dialogue, SONG.hasDialogueChat);
+			doof = new DialogueBox(false, dialogue, SONG.hasDialogueChat, false, SONG.hasDialogueChat);
 			// doof.x += 70;
 			// doof.y = FlxG.height * 0.5;
 			doof.scrollFactor.set();
 			doof.finishThing = startCountdown;
 
 			// JOELwindows7: new epilogue way
-			eoof = new DialogueBox(false, epilogue, SONG.hasEpilogueChat, true);
+			eoof = new DialogueBox(false, epilogue, SONG.hasEpilogueChat, true, SONG.hasEpilogueChat);
 			// eoof.x += 70;
 			// eoof.y = FlxG.height * 0.5;
 			eoof.scrollFactor.set(); // JOELwindows7: also set scroll factor too for epilogue box!
@@ -950,7 +990,8 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.save.data.laneUnderlay && !PlayStateChangeables.Optimize)
 		{
-			if (!FlxG.save.data.middleScroll || executeModchart)
+			// JOELwindows7: haxe script too
+			if (!FlxG.save.data.middleScroll || executeModchart || executeModHscript)
 			{
 				add(laneunderlayOpponent);
 			}
@@ -959,16 +1000,48 @@ class PlayState extends MusicBeatState
 
 		strumLineNotes = new FlxTypedGroup<StaticArrow>();
 		add(strumLineNotes);
+		add(grpNoteSplashes); // JOELwindows7: Psyched! now here add the group of Notesplash here this state.
+
+		// JOELwindows7: Psyched notesplash. Have atleast 1 splash first so that it can be recycled, idk.
+		var splash:NoteSplash = new NoteSplash(100, 100, 0);
+		grpNoteSplashes.add(splash);
+		splash.alpha = 0.0;
 
 		playerStrums = new FlxTypedGroup<StaticArrow>();
 		cpuStrums = new FlxTypedGroup<StaticArrow>();
 
-		noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin);
-		noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
-		noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
+		Debug.logTrace("Pls prepare Noteskin sprites");
+		// JOELwindows7: folks, let's not ignore the fact some song wants to use custom noteskin rather than user option. idk man.
+		// noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.useCustomNoteStyle? SONG.noteStyle :FlxG.save.data.noteskin);
+		noteskinPixelSprite = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, false, 0,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin); // JOELwindows7: new try
+		// noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
+		Debug.logTrace("Go the pixel mine noteskin");
+		noteskinPixelSpriteMine = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, true, 2,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, 2); // JOELwindows7: new try
+		Debug.logTrace("Go the regular noteskin");
+		// noteskinSprite = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(Note.giveMeNoteSkinPath(0)) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+		noteskinSprite = SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(SONG.noteStyle, 0,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+		// noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin); // JOElwindows7: damn it! doesn't work! it's the index they ask!
+		Debug.logTrace("Go the mine noteskin");
+		// noteskinSpriteMine = SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(Note.giveMeNoteSkinPath(2) +
+		// 	"-mine") : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 2);
+		noteskinSpriteMine = SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(SONG.noteStyle, 2,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 2);
+		Debug.logTrace("Go the pixel hold end");
+		// noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
+		noteskinPixelSpriteEnds = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, true, 0,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
+		Debug.logTrace("Go the pixel hold end mine");
+		noteskinPixelSpriteEndsMine = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, true, 2,
+			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true, 2);
 
+		Debug.logTrace("Now for static arrows");
 		generateStaticArrows(0);
+		Debug.logTrace("and other player static arrows");
 		generateStaticArrows(1);
+		Debug.logTrace("Doned static arrows");
 
 		// Update lane underlay positions AFTER static arrows :)
 
@@ -993,11 +1066,15 @@ class PlayState extends MusicBeatState
 			luaModchart = ModchartState.createModchartState(isStoryMode);
 			luaModchart.executeState('start', [PlayState.SONG.songId]);
 			luaModchart.setVar('songLength', songLength);
+			luaModchart.setVar('variables', SONG.variables);
+			luaModchart.setVar('diffVariables', SONG.diffVariables);
 		}
 		if (executeStageScript && stageScript != null)
 		{
 			stageScript.executeState('start', [PlayState.SONG.songId]);
 			stageScript.setVar('songLength', songLength);
+			stageScript.setVar('variables', SONG.variables);
+			stageScript.setVar('diffVariables', SONG.diffVariables);
 		}
 		#end
 		// JOELwindows7: now for the hscript init
@@ -1008,11 +1085,15 @@ class PlayState extends MusicBeatState
 			hscriptModchart.setVar('executeModchart', executeModchart);
 			hscriptModchart.setVar('executeModHscript', executeModHscript);
 			hscriptModchart.setVar('songLength', songLength);
+			hscriptModchart.setVar('variables', SONG.variables);
+			hscriptModchart.setVar('diffVariables', SONG.diffVariables);
 		}
 		if (executeStageHscript && stageHscript != null)
 		{
 			stageHscript.executeState('start', [PlayState.SONG.songId]);
 			stageHscript.setVar('songLength', songLength);
+			stageHscript.setVar('variables', SONG.variables);
+			stageHscript.setVar('diffVariables', SONG.diffVariables);
 		}
 		// JOELwindows7: tell Lua script whether hscript is running too
 		#if FEATURE_LUAMODCHART
@@ -1034,7 +1115,7 @@ class PlayState extends MusicBeatState
 			new LuaCamera(camGame, "camGame").Register(ModchartState.lua);
 			new LuaCamera(camHUD, "camHUD").Register(ModchartState.lua);
 			new LuaCamera(camSustains, "camSustains").Register(ModchartState.lua);
-			new LuaCamera(camSustains, "camNotes").Register(ModchartState.lua);
+			new LuaCamera(camNotes, "camNotes").Register(ModchartState.lua); // JOELwindows7: oops! somebody typo
 			new LuaCharacter(dad, "dad").Register(ModchartState.lua);
 			new LuaCharacter(gf, "gf").Register(ModchartState.lua);
 			new LuaCharacter(boyfriend, "boyfriend").Register(ModchartState.lua);
@@ -1169,14 +1250,23 @@ class PlayState extends MusicBeatState
 			+ 50, 0,
 			"Download Last Funkin Moments ($0) https://github.com/Perkedel/kaded-fnf-mods,\n"
 			+ "Kade Engine ($0) https://github.com/KadeDev/Kade-Engine ,\n"
-			+ "and vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin\n",
-			12);
-		reuploadWatermark.setPosition((FlxG.width / 2) - (reuploadWatermark.width / 2), (FlxG.height / 2) + 50);
+			+ "and vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin\n"
+			+ "Now Playing: "
+			+ SONG.artist
+			+ " - "
+			+ SONG.songName
+			+ "\n"
+			+ "Song ID: "
+			+ SONG.songId
+			+ "\n",
+			14);
+		reuploadWatermark.setPosition((FlxG.width / 2) - (reuploadWatermark.width / 2), (FlxG.height / 2) - (reuploadWatermark.height / 2) + 50);
 		// Ah damn. the pivot of all Haxe Object is top left!
 		// right, let's just work this all around anyway.
 		// there I got it. hopefully it's centered.
 		reuploadWatermark.scrollFactor.set();
-		reuploadWatermark.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		reuploadWatermark.setFormat(Paths.font("UbuntuMono-R.ttf"), 14, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // was vcr.ttf
+		reuploadWatermark.screenCenter(XY); // JOELwindows7: turns out everything solves just with this thing right here whoahow!!!
 		add(reuploadWatermark);
 		reuploadWatermark.visible = false;
 		// follow this example, you must be protected too from those credit-less YouTubers the bastards!
@@ -1186,7 +1276,7 @@ class PlayState extends MusicBeatState
 		// Add Kade Engine watermark
 		kadeEngineWatermark = new FlxText(4, healthBarBG.y
 			+ 50, 0,
-			SONG.songName
+			SONG.songId // JOELwindows7: damn, you should've used Song ID instead. the top bar already covered the name for us!
 			+ (FlxMath.roundDecimal(songMultiplier, 2) != 1.00 ? " (" + FlxMath.roundDecimal(songMultiplier, 2) + "x)" : "")
 			+ " - "
 			+ CoolUtil.difficultyFromInt(storyDifficulty) // + (Main.watermarks ? " | KE " + MainMenuState.kadeEngineVer : "")
@@ -1214,13 +1304,18 @@ class PlayState extends MusicBeatState
 		add(scoreTxt);
 
 		judgementCounter = new FlxText(20, 0, 0, "", 20);
-		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		// JOELwindows7: I think this should be placed on right as where your player strum is at.
+		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		judgementCounter.borderSize = 2;
 		judgementCounter.borderQuality = 2;
 		judgementCounter.scrollFactor.set();
 		judgementCounter.cameras = [camHUD];
 		judgementCounter.screenCenter(Y);
-		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
+		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words.
+		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
+		judgementCounter.text = '${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
+		judgementCounter.setPosition(FlxG.width - judgementCounter.width - 15, 0); // JOELwindows7: hey! place it actually right side of screen!
+		judgementCounter.screenCenter(Y); // JOELwindows7: do center it again just in case.
 		if (FlxG.save.data.judgementCounter)
 		{
 			add(judgementCounter);
@@ -1228,6 +1323,7 @@ class PlayState extends MusicBeatState
 
 		replayTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0, "REPLAY",
 			20);
+		replayTxt.setPosition((FlxG.width / 2) - 75, 130); // JOELwindows7: oh wait, Psych this up pls!
 		replayTxt.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		replayTxt.borderSize = 4;
 		replayTxt.borderQuality = 2;
@@ -1240,9 +1336,10 @@ class PlayState extends MusicBeatState
 		// Literally copy-paste of the above, fu
 		botPlayState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
 			"BOTPLAY", 20);
-		botPlayState.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botPlayState.setPosition((FlxG.width / 2) - 75, 130); // JOELwindows7: oh wait, Psych this up pls!
+		botPlayState.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // JOELwindows7: was size 42
 		botPlayState.scrollFactor.set();
-		botPlayState.borderSize = 4;
+		botPlayState.borderSize = 2; // JOELwindows7: was 4
 		botPlayState.borderQuality = 2;
 		botPlayState.cameras = [camHUD];
 		if (PlayStateChangeables.botPlay && !loadRep)
@@ -1272,7 +1369,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// JOELwindows7: install pause button
-		addPauseButton(Std.int((FlxG.width / 2) - (128 / 2)), 80);
+		addPauseButton(Std.int((FlxG.width / 2) - (128 / 2)), 80 - 20); // was 80
 		trace("install pause button");
 
 		// JOELwindows7: install credit Rolls
@@ -1284,6 +1381,7 @@ class PlayState extends MusicBeatState
 		add(creditRollout.textRole);
 
 		strumLineNotes.cameras = [camHUD];
+		grpNoteSplashes.cameras = [camHUD]; // JOELwindows7: notesplash group put in camHUD! Psychedly
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
@@ -1373,24 +1471,31 @@ class PlayState extends MusicBeatState
 				case 'thorns' | 'thorns-midi':
 					schoolIntro(doof);
 				default:
-					introScene(); // JOELwindows7: start intro cutscene!
+					if (SONG.hasTankmanVideo)
+					{
+						tankmanIntro(Paths.video(SONG.tankmanVideoPath));
+					}
+					else
+					{
+						introScene(); // JOELwindows7: start intro cutscene!
 
-					new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
-					{ // JOELwindows7: also add delay before start
-						// for intro cutscene after video and before dialogue chat you know!
-						// JOELwindows7: Heuristic for using JSON chart instead
-						if (SONG.hasDialogueChat)
-						{
-							schoolIntro(doof);
-						}
-						else
-						{
-							new FlxTimer().start(1, function(timer)
-							{
-								startCountdown();
-							});
-						}
-					});
+						// new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
+						// { // JOELwindows7: also add delay before start
+						// 	// for intro cutscene after video and before dialogue chat you know!
+						// 	// JOELwindows7: Heuristic for using JSON chart instead
+						// 	if (SONG.hasDialogueChat)
+						// 	{
+						// 		schoolIntro(doof);
+						// 	}
+						// 	else
+						// 	{
+						// 		new FlxTimer().start(1, function(timer)
+						// 		{
+						// 			startCountdown();
+						// 		});
+						// 	}
+						// });
+					}
 			}
 		}
 		else
@@ -1416,50 +1521,65 @@ class PlayState extends MusicBeatState
 
 		// JOELwindows7: install debugge haxeflixeler
 		// commands
-		FlxG.console.registerFunction("startFakeCountdown", function()
+		// formerly use tedious `FlxG.console.registerFunction()`
+		Debug.addConsoleCommand("startFakeCountdown", function()
 		{
 			startFakeCountdown();
 		});
-		FlxG.console.registerFunction("trainStart", function()
+		Debug.addConsoleCommand("trainStart", function()
 		{
 			PlayState.Stage.trainStart();
 		});
-		FlxG.console.registerFunction("trainReset", function()
+		Debug.addConsoleCommand("trainReset", function()
 		{
 			PlayState.Stage.trainReset();
 		});
-		FlxG.console.registerFunction("fastCarDrive", function()
+		Debug.addConsoleCommand("fastCarDrive", function()
 		{
 			PlayState.Stage.fastCarDrive();
 		});
-		FlxG.console.registerFunction("resetFastCar", function()
+		Debug.addConsoleCommand("resetFastCar", function()
 		{
 			PlayState.Stage.resetFastCar();
 		});
-		FlxG.console.registerFunction("debugSeven", function()
+		Debug.addConsoleCommand("debugSeven", function()
 		{
 			haveDebugSevened = true;
 		});
-		FlxG.console.registerFunction("lightningStrikeShit", function()
+		Debug.addConsoleCommand("lightningStrikeShit", function()
 		{
 			PlayState.Stage.lightningStrikeShit();
 		});
-		FlxG.console.registerFunction("justCheer", function()
+		Debug.addConsoleCommand("justCheer", function()
 		{
 			justCheer();
 		});
-		FlxG.console.registerFunction("justHey", function()
+		Debug.addConsoleCommand("justHey", function()
 		{
 			justHey();
 		});
-		FlxG.console.registerFunction("justCheerHey", function()
+		Debug.addConsoleCommand("justCheerHey", function()
 		{
 			justHey();
 			justCheer();
 		});
 
+		// object debugs. also register objects for debugs
+		Debug.addObject("PlayState", this);
+		Debug.addObject("Stage", Stage);
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+			Debug.addObject("luaModchart", luaModchart);
+		if (executeStageScript && stageScript != null)
+			Debug.addObject("stageScript", stageScript);
+		#end
+		if (executeModHscript && hscriptModchart != null)
+			Debug.addObject("hscriptModchart", hscriptModchart);
+		if (executeStageHscript && stageHscript != null)
+			Debug.addObject("stageHscript", stageHscript);
+
 		// JOELwindows7: Now Init CustomStage scripts if had to.
-		if (attemptStageScript)
+		if (attemptStageScript || Stage.attemptStageScript)
 		{
 			Stage.spawnStageScript("stages/" + CoolUtil.toCompatCase(SONG.stage) + "/stageScript");
 		}
@@ -1472,8 +1592,141 @@ class PlayState extends MusicBeatState
 
 		// FlxG.autoPause = true; // JOELwindows7: because somehow the film does not return it back
 
+		// JOELwindows7: unpop loading bar!
+		_loadingBar.unPopNow();
+
 		// JOELwindows7: why the peck with touchscreen button game crash on second run?!
 		trace("finish create PlayState");
+	}
+
+	function tankmanIntroVidFinish(source:String, outro:Bool = false, handoverName:String = "", isNextSong:Bool = false, handoverDelayFirst:Float = 0,
+			handoverHasEpilogueVid:Bool = false, handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false,
+			handoverTankmanEpilogueVidPath:String = "")
+	{
+		if (outro)
+		{
+			// outroScene(handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
+			// 	handoverTankmanEpilogueVidPath);
+
+			if (isNextSong)
+			{
+				// JOELwindows7: here timer guys
+				new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
+				{
+					// JOELwindows7: if has video, then load the video first before going to new playstate!
+					// LoadingState.loadAndSwitchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
+					// 	(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+					// 		new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()));
+					switchState(handoverHasEpilogueVid ? (VideoCutscener.getThe(handoverEpilogueVidPath,
+						(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+							new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()),
+						true, true, true, true);
+					// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					// JOELwindows7: oh God, so complicated. I hope it works! use Hex weekend switchState
+					clean();
+				});
+			}
+			else
+			{
+				// JOELwindows7: yep move from that function. this one is when song has ran out in the playlist.
+				new FlxTimer().start(handoverDelayFirst, function(tmr:FlxTimer)
+				{
+					if (FlxG.save.data.scoreScreen)
+					{
+						if (FlxG.save.data.songPosition)
+						{
+							FlxTween.tween(songPosBar, {alpha: 0}, 1);
+							FlxTween.tween(bar, {alpha: 0}, 1);
+							FlxTween.tween(songName, {alpha: 0}, 1);
+						}
+						openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							inResults = true;
+						});
+					}
+					else
+					{
+						GameplayCustomizeState.freeplayBf = 'bf';
+						GameplayCustomizeState.freeplayDad = 'dad';
+						GameplayCustomizeState.freeplayGf = 'gf';
+						GameplayCustomizeState.freeplayNoteStyle = 'normal';
+						GameplayCustomizeState.freeplayStage = 'stage';
+						GameplayCustomizeState.freeplaySong = 'bopeebo';
+						GameplayCustomizeState.freeplayWeek = 1;
+						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						Conductor.changeBPM(102);
+						// FlxG.switchState(new StoryMenuState());
+						// FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
+						switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
+							new StoryMenuState()) : new StoryMenuState()); // JOELwindows7: use Hex Kade YinYang48 version!
+						// JOELwindows7: complicated! oh MY GOD!
+						clean();
+					}
+				});
+			}
+		}
+		else
+		{
+			introScene(); // JOELwindows7: start intro cutscene!
+		}
+	}
+
+	function tankmanIntro(source:String, outro:Bool = false, handoverName:String = "", isNextSong:Bool = false, handoverDelayFirst:Float = 0,
+			handoverHasEpilogueVid:Bool = false, handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false,
+			handoverTankmanEpilogueVidPath:String = ""):Void
+	{
+		// JOELwindows7: okay here video for week7. fun fact, this is how week7 vanilla video loads.
+		// Essentially is a dialogue but instead it's a video FlxSprite spawned above the gameplay, replacing the dialogue.
+		// steal this luckydog7's android port, it yoinked the week7 and looks fine on GameBanana even still in embargo somehow.
+		// Coding is at that PlayState.hx . there are 3 week7 intro methods unprocedurally: `ughIntro`, `gunsIntro`, & `stressIntro`.
+
+		#if (FEATURE_VLC)
+		// JOELwindows7: inspire that luckydog7's webmer bellow, build the VLC version of function!
+		// inspire from function backgroundVideo if the FEATURE_VLC is available!
+
+		// var videoSpriteFirst = new FlxSprite();
+		// Build own cam!
+		// var ownCam = new FlxCamera();
+		// FlxG.cameras.add(ownCam);
+		// ownCam.bgColor.alpha = 0;
+		// videoSpriteFirst.cameras = [ownCam];
+
+		// var video = new MP4Sprite(0, 0, FlxG.width, FlxG.height);
+		var video = new MP4Handler();
+		// video.cameras = [ownCam];
+
+		video.finishCallback = function()
+		{
+			// videoSpriteFirst.kill();
+			// remove(videoSpriteFirst);
+			// remove(video);
+			tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+				handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+		};
+		// video.playMP4(source, null, videoSpriteFirst); // make the transition null so it doesn't take you out of this state
+		video.playVideo(source, false, false); // make the transition null so it doesn't take you out of this state
+		// videoSpriteFirst.setGraphicSize(Std.int(videoSpriteFirst.width * 1.2));
+		// video.setGraphicSize(Std.int(video.width * 1.2));
+		// videoSpriteFirst.updateHitbox();
+		// video.updateHitbox();
+		// add(videoSpriteFirst);
+		// add(video);
+		#elseif (FEATURE_WEBM && !FEATURE_VLC)
+		var video = new VideoPlayer(source);
+		video.finishCallback = () ->
+		{
+			remove(video);
+			// startCountdown();
+			tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+				handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+		}
+		video.ownCamera();
+		video.setGraphicSize(Std.int(video.width * 2));
+		video.updateHitbox();
+		add(video);
+		video.play();
+		#end
 	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
@@ -1677,6 +1930,8 @@ class PlayState extends MusicBeatState
 
 		var swagCounter:Int = 0;
 
+		musicCompleted = false; // JOELwindows7: just in case somebody out of cage. unraise the flag, until music finished.
+
 		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 		{
 			// this just based on beatHit stuff but compact
@@ -1725,7 +1980,7 @@ class PlayState extends MusicBeatState
 				case 0:
 					// JOELwindows7:Lol! I added reverse
 					if (!silent)
-						FlxG.sound.play(Paths.sound('intro3' + altSuffix), 0.6);
+						FlxG.sound.play(Paths.sound((reversed ? 'intro1' : 'intro3') + altSuffix + midiSuffix), 0.6);
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[0], week6Bullshit));
 					ready.scrollFactor.set();
@@ -1746,7 +2001,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					if (!silent) // JOELwindows7: Silencio Bruno!
-						FlxG.sound.play(Paths.sound('intro2' + altSuffix), 0.6);
+						FlxG.sound.play(Paths.sound('intro2' + altSuffix + midiSuffix), 0.6);
 				case 2:
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[1], week6Bullshit));
 					set.scrollFactor.set();
@@ -1765,8 +2020,8 @@ class PlayState extends MusicBeatState
 							set.destroy();
 						}
 					});
-					if (!silent) // JOELwindows7: ssshhh
-						FlxG.sound.play(Paths.sound('intro1' + altSuffix), 0.6);
+					if (!silent) // JOELwindows7: ssshhh + reverse pls dont gone!
+						FlxG.sound.play(Paths.sound((reversed ? 'intro3' : 'intro1') + altSuffix + midiSuffix), 0.6);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[2], week6Bullshit));
 					go.scrollFactor.set();
@@ -1788,7 +2043,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					if (!silent) // JOELwindows7: quiet!
-						FlxG.sound.play(Paths.sound('introGo' + altSuffix), 0.6);
+						FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
 
 					// JOELwindows7: now visiblize the touchscreen buttons
 					// trace("visiblize touchscreen button now");
@@ -2028,8 +2283,16 @@ class PlayState extends MusicBeatState
 				// use "allowedToHeadbang": true to your JSON chart (per difficulty) to enable headbangs.
 		}
 
-		if (useVideo)
+		// JOELwindows7: there is VLC!
+		if (useVideo && !useVLC)
 			GlobalVideo.get().resume();
+		else if (useVLC)
+		{
+			#if FEATURE_VLC
+			if (vlcHandler != null)
+				vlcHandler.resume();
+			#end
+		}
 
 		#if FEATURE_LUAMODCHART
 		if (executeModchart)
@@ -2164,9 +2427,18 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
+		Debug.logInfo("SONGeh " + Std.string(FlxG.sound.music));
+
 		FlxG.sound.music.looped = false; // JOELwindows7: okay try to make this unloop.
 		// FlxG.sound.music.onComplete = endSong;
-		// FlxG.sound.music.onComplete = checkEpilogueChat; // Moved to somewhere again
+		// FlxG.sound.music.onComplete = checkEpilogueChat; // Moved to somewhere again ; This is needed again as Kade's current one ends abruptly
+		FlxG.sound.music.onComplete = function()
+		{
+			Debug.logTrace("Music is really complete");
+			// JOELwindows7: here raise the flag!
+			musicCompleted = true;
+		}
+		musicCompleted = false; // JOELwindows7: only after the music is finished
 		// JOELwindows7: now instead pls check the epilogue chat!
 		FlxG.sound.music.pause();
 
@@ -2176,7 +2448,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.cache(Paths.inst(PlayState.SONG.songId));
 
 		// Song duration in a float, useful for the time left feature
-		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000);
+		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000); // JOELwindows7: pinpoint song length set
 
 		Conductor.crochet = ((60 / (SONG.bpm) * 1000));
 		Conductor.stepCrochet = Conductor.crochet / 4;
@@ -2211,7 +2483,9 @@ class PlayState extends MusicBeatState
 				SONG.artist
 				+ " - "
 				+ SONG.songName, 16);
-			songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			// songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			songName.setFormat(Paths.font("UbuntuMono-R.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,
+				FlxColor.BLACK); // JOELwindows7: I want international support!
 			songName.scrollFactor.set();
 
 			// JOELwindows7: YOU SNEAKY LITTLE PUNK!!! WHY TEXT CHANGE AGAIN HERE?!??!
@@ -2264,7 +2538,9 @@ class PlayState extends MusicBeatState
 				else
 					oldNote = null;
 
-				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4]);
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4],
+					songNotes[5]); // JOELwindows7: the note with type
+				swagNote.hitsoundPath = songNotes[6]; // JOELwindows7: and the hit sound file name;
 
 				if (!gottaHitNote && PlayStateChangeables.Optimize)
 					continue;
@@ -2290,7 +2566,9 @@ class PlayState extends MusicBeatState
 				{
 					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
-					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true);
+					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false,
+						false, songNotes[4], songNotes[5]); // JOELwindows7: here sustain note too.
+					sustainNote.hitsoundPath = songNotes[6]; // JOELwindows7: and the hit sound file name as well.
 					sustainNote.scrollFactor.set();
 					unspawnNotes.push(sustainNote);
 					sustainNote.isAlt = songNotes[3]
@@ -2407,25 +2685,25 @@ class PlayState extends MusicBeatState
 					{
 						babyArrow.animation.add('dirCon' + j, [12 + j, 16 + j], 24, false);
 					}
-				case 'saubo':
-					// JOELwindows7: LFM original noteskin
-					babyArrow.frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-					for (j in 0...4)
-					{
-						babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
-						babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
-					}
+				// case 'saubo':
+				// 	// JOELwindows7: LFM original noteskin
+				// 	babyArrow.frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+				// 	for (j in 0...4)
+				// 	{
+				// 		babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
+				// 		babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
+				// 	}
 
-					var lowerDir:String = dataSuffix[i].toLowerCase();
+				// 	var lowerDir:String = dataSuffix[i].toLowerCase();
 
-					babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
-					babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
-					babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
+				// 	babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
+				// 	babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
+				// 	babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
 
-					babyArrow.x += Note.swagWidth * i;
+				// 	babyArrow.x += Note.swagWidth * i;
 
-					babyArrow.antialiasing = FlxG.save.data.antialiasing;
-					babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
+				// 	babyArrow.antialiasing = FlxG.save.data.antialiasing;
+				// 	babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
 
 				default:
 					babyArrow.frames = noteskinSprite;
@@ -2480,7 +2758,23 @@ class PlayState extends MusicBeatState
 
 			// JOELwindows7: filtere Haxe script
 			if (PlayStateChangeables.Optimize || (FlxG.save.data.middleScroll && !(executeModchart || executeModHscript)))
+			{
 				babyArrow.x -= 320;
+
+				// JOELwindows7: interupt now! We got Psyched cpu static arrow positionings in middle scroll mode. watch this!
+				if (player == 0)
+				{
+					babyArrow.x += 320; // JOELwindows7: hey push the position back for the CPU okay.
+					if (i >= 0 && i <= 1) // JOELwindows7: here 1st two of CPU arrow
+					{
+						babyArrow.x += 20;
+					}
+					else if (i >= 2 && i <= 3) // JOELwindows7: and then rest 2 of the CPU arrow.
+					{
+						babyArrow.x += 600;
+					}
+				}
+			}
 
 			cpuStrums.forEach(function(spr:FlxSprite)
 			{
@@ -2499,6 +2793,9 @@ class PlayState extends MusicBeatState
 			// JOELwindows7: if or haxescript
 			if (isStoryMode && !FlxG.save.data.middleScroll || (executeModchart || executeModHscript))
 				babyArrow.alpha = 1;
+			// JOELwindows7: semi visible CPU static arrow if middle scroll
+			if (index <= 3 && FlxG.save.data.middleScroll)
+				babyArrow.alpha = .5;
 			if (index > 3 && FlxG.save.data.middleScroll)
 				babyArrow.alpha = 1;
 			index++;
@@ -2515,6 +2812,12 @@ class PlayState extends MusicBeatState
 	{
 		if (paused)
 		{
+			// JOELwindows7: pause credit rollout
+			if (creditRollout != null)
+			{
+				creditRollout.pauseRolling();
+			}
+
 			if (FlxG.sound.music.playing)
 			{
 				FlxG.sound.music.pause();
@@ -2570,8 +2873,24 @@ class PlayState extends MusicBeatState
 			else
 				openSubState(new OptionsMenu(true));
 		}
+		else if (waitLemmePrepareUnpauseFirst)
+		{
+			// JOELwindows7: appear this substate first before play again!
+			openSubState(new PrepareUnpauseSubstate());
+			// The Skeleton Appears
+		}
 		else if (paused)
 		{
+			// JOELwindows7: okay make mouse invisible again
+			FlxG.mouse.visible = false;
+
+			// JOELwindows7: resume credit rollout
+			if (SONG.isCreditRoll)
+				if (creditRollout != null)
+				{
+					creditRollout.resumeRolling();
+				}
+
 			if (FlxG.sound.music != null && !startingSong)
 			{
 				resyncVocals();
@@ -2660,6 +2979,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var paused:Bool = false;
+	public var waitLemmePrepareUnpauseFirst:Bool = false; // JOELwindows7: to appear substate after unpause which counts down before actually play again.
 
 	var startedCountdown:Bool = false;
 	var startedFakeCounting:Bool = false; // JOELwindows7: oh fake countdown
@@ -2687,6 +3007,48 @@ class PlayState extends MusicBeatState
 		if (!PlayStateChangeables.Optimize)
 			Stage.update(elapsed);
 
+		// JOELwindows7: kem0x mod shader
+		#if EXPERIMENTAL_KEM0X_SHADERS
+		for (shader in animatedShaders)
+		{
+			shader.update(elapsed);
+		}
+		#end
+
+		// JOELwindows7: kemox mod shader lua thingy
+		#if EXPERIMENTAL_KEM0X_SHADERS
+		#if FEATURE_LUAMODCHART
+		if (luaModchart != null)
+		{
+			for (key => value in luaModchart.luaShaders)
+			{
+				value.update(elapsed);
+			}
+		}
+		if (stageScript != null)
+		{
+			for (key => value in stageScript.luaShaders)
+			{
+				value.update(elapsed);
+			}
+		}
+		#end
+		if (hscriptModchart != null)
+		{
+			for (key => value in hscriptModchart.luaShaders)
+			{
+				value.update(elapsed);
+			}
+		}
+		if (stageHscript != null)
+		{
+			for (key => value in stageHscript.luaShaders)
+			{
+				value.update(elapsed);
+			}
+		}
+		#end
+
 		if (!addedBotplay && FlxG.save.data.botplay)
 		{
 			PlayStateChangeables.botPlay = true;
@@ -2708,15 +3070,20 @@ class PlayState extends MusicBeatState
 					dunceNote.luaID = currentLuaIndex;
 				}
 				#end
-
-				if (executeModchart)
+				// JOELwindows7: help, this is complicated. idk what's going on this here.
+				if (executeModHscript)
 				{
-					#if FEATURE_LUAMODCHART
+					dunceNote.luaID = currentLuaIndex;
+				}
+
+				if (executeModchart || executeModHscript) // JOELwindows7: hey, hscript too pls
+				{
+					// #if FEATURE_LUAMODCHART //JOELwindows7: why tho? there is also hscript too.
 					if (!dunceNote.isSustainNote)
 						dunceNote.cameras = [camNotes];
 					else
 						dunceNote.cameras = [camSustains];
-					#end
+					// #end
 				}
 				else
 				{
@@ -2748,17 +3115,46 @@ class PlayState extends MusicBeatState
 				// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
 				// so no reason to delete it at all
 				// JOELwindows7: hey don't early songLength that 100 early wtf? was 100 less, now 50 less.. idk. screw this! 0?
-				if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 0))
+				// JOELwindows7: end song early was here. now deleted (nvm). rely only on Music complete.
+				// as you can see, there is a something. music stop, minute second counter resets. that's not reliable to measured on here.
+				// requiring this exactly passes song length, while it already reset before it be seen, causes softlock. musicComplete flag raised, but the counter goes zero??
+				// see that? confusing!
+				if (unspawnNotes.length == 0 && notes.length == 0) // JOELwindows7: fine here music complete
 				{
-					Debug.logTrace("we're fuckin ending the song ");
-
-					endingSong = true;
-					new FlxTimer().start(3, function(timer) // JOELwindows7: it was 2, now extend to 5!!! nvm, 3! yess.
+					// JOELwindows7: install cartoon pipehose film strip corner dot pop up and disappear after few seconds.
+					if (!hasAppearedDot)
 					{
+						// JOELwindows7: Yes I know, redundant, because something there!
+						cartoonCornerDot();
+
+						// JOELwindows7: reset blue ball because yey we succeed
+						if (isStoryMode)
+						{
+							// story mode
+							if (!FlxG.save.data.blueballWeek)
+								GameOverSubstate.resetBlueball();
+							// well only if in the story mode, gamers chose to not carry them for total week.
+						}
+						else
+						{
+							// free play
+							GameOverSubstate.resetBlueball();
+						}
+						// Oh my God, confusing complexity! my brain could not build obfuscated if else at the moment.
+					}
+
+					if (FlxG.save.data.endSongEarly ? FlxG.sound.music.time / songMultiplier > (songLength - 0) : musicCompleted)
+					{
+						Debug.logTrace("we're fuckin ending the song ");
+
+						endingSong = true;
+						// JOELwindows7: it was 2, now extend to 5!!! nvm, 3! yess.
+						// NO MORE! there is wait for music complete 1st!
+
 						// endSong();
 						checkEpilogueChat(); // JOELwindows7: you sneaky little punk!
 						// you have endSong just little bit earlier in case stroffs.
-					});
+					}
 				}
 			}
 		}
@@ -2821,6 +3217,7 @@ class PlayState extends MusicBeatState
 			// if(SONG != null && SONG.eventObjects != null) //JOELwindows7: somehow werror if eventObject null. wait. where's it?
 			for (i in SONG.eventObjects)
 			{
+				// JOELwindows7: base this on theseEvents!
 				switch (i.type)
 				{
 					case "Scroll Speed Change":
@@ -2830,31 +3227,64 @@ class PlayState extends MusicBeatState
 							trace("SCROLL SPEED CHANGE to " + i.value);
 							newScroll = i.value;
 						}
-					//JOELwindows7: moar effeks
-					case "Cheer Now":
-						justCheer(true);
-					case "Hey Now":
-						justHey(true);
-					case "Cheer Hey Now":
-						if (i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0)
-							justCheer(true);
-						if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
-							justHey(true);
-					case "Lightning Strike":
-						Stage.lightningStrikeShit();
-					case "Camera Zoom in":
-						camZoomNow(i.value);
-					case "Shake camera":
-						FlxG.camera.shake(i.value, 1, null, true);
-						Controls.vibrate(0, i.value);
-					case "HUD Zoom in":
-						camZoomNow(0, i.value);
-					case "Both Zoom in":
-						camZoomNow(i.value, i.value);
-					case "LED ON for":
-					// JOELwindows7: turn LED on for how long second i.value
-					case "Vibrate for":
-						Controls.vibrate(0, i.value);
+						// JOELwindows7: moar effeks. do not forget check position with curDecimalBeat (precise) / curBeat (exact) first!
+						// case "Cheer Now":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		justCheer(true);
+						// case "Hey Now":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		justHey(true);
+						// case "Cheer Hey Now":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 		if (i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0)
+						// 			justCheer(true);
+						// 		if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
+						// 			justHey(true);
+						// 	}
+						// case "Lightning Strike":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		Stage.lightningStrikeShit();
+						// case "Blammed Lights":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		Stage.blammedLights(Std.int(i.value));
+						// case "Appear Blackbar":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 		// Debug.logTrace("appear blackbar");
+						// 		Stage.appearBlackBar(i.value);
+						// 	}
+						// case "Disappear Blackbar":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 		// Debug.logTrace("disappear blackbar");
+						// 		Stage.disappearBlackBar(i.value);
+						// 	}
+						// case "Camera Zoom in":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		camZoomNow(i.value, i.value2, i.value3);
+						// case "Shake camera":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 		FlxG.camera.shake(i.value, i.value2, function()
+						// 		{
+						// 		}, true);
+						// 		Controls.vibrate(0, i.value);
+						// 	}
+						// case "HUD Zoom in":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		camZoomNow(0, i.value);
+						// case "Both Zoom in":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		camZoomNow(i.value, i.value);
+						// case "LED ON for":
+						// 	// JOELwindows7: turn LED on for how long second i.value
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 	{
+						// 	}
+						// case "Vibrate for":
+						// 	if (i.position == curDecimalBeat /*|| Std.int(i.position) == curBeat*/)
+						// 		Controls.vibrate(0, i.value, i.value2);
 				}
 			}
 
@@ -2871,7 +3301,10 @@ class PlayState extends MusicBeatState
 		{
 			if (GlobalVideo.get().ended && !removedVideo)
 			{
-				remove(videoSprite);
+				// remove(videoSprite);
+				#if FEATURE_VLC
+				remove(vlcHandler);
+				#end
 				removedVideo = true;
 			}
 		}
@@ -3019,6 +3452,15 @@ class PlayState extends MusicBeatState
 				if (i <= playerStrums.length)
 					playerStrums.members[i].visible = p2;
 			}
+
+			camNotes.zoom = camHUD.zoom;
+			camNotes.x = camHUD.x;
+			camNotes.y = camHUD.y;
+			camNotes.angle = camHUD.angle;
+			camSustains.zoom = camHUD.zoom;
+			camSustains.x = camHUD.x;
+			camSustains.y = camHUD.y;
+			camSustains.angle = camHUD.angle;
 		}
 		// JOELwindows7: stage hscript
 		if (executeStageHscript && stageHscript != null && songStarted)
@@ -3098,7 +3540,8 @@ class PlayState extends MusicBeatState
 			if (FlxG.random.bool(0.1))
 			{
 				trace('GITAROO MAN EASTER EGG');
-				FlxG.switchState(new GitarooPause());
+				// FlxG.switchState(new GitarooPause());
+				switchState(new GitarooPause()); // JOELwindows7: use YinYang48 Kade Hex version
 				clean();
 			}
 			else
@@ -3114,13 +3557,20 @@ class PlayState extends MusicBeatState
 			if (useVideo)
 			{
 				GlobalVideo.get().stop();
-				remove(videoSprite);
+				// JOELwindows7: VLC stop!
+				#if FEATURE_VLC
+				if (vlcHandler != null)
+					vlcHandler.kill();
+				// remove(videoSprite);
+				remove(vlcHandler);
+				#end
 				removedVideo = true;
 			}
 			cannotDie = true;
 			removeTouchScreenButtons();
 
-			FlxG.switchState(new WaveformTestState());
+			// FlxG.switchState(new WaveformTestState());
+			switchState(new WaveformTestState()); // JOELwindows7: use Kade + YinYang48 Hex yess
 			clean();
 			PlayState.stageTesting = false;
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
@@ -3144,13 +3594,20 @@ class PlayState extends MusicBeatState
 			if (useVideo)
 			{
 				GlobalVideo.get().stop();
-				remove(videoSprite);
+				// JOELwindows7: VLC stop!
+				#if FEATURE_VLC
+				if (vlcHandler != null)
+					vlcHandler.kill();
+				// remove(videoSprite);
+				remove(vlcHandler);
+				#end
 				removedVideo = true;
 			}
 			cannotDie = true;
 			removeTouchScreenButtons();
 
-			FlxG.switchState(new ChartingState());
+			// FlxG.switchState(new ChartingState());
+			switchState(new ChartingState());
 			clean();
 			PlayState.stageTesting = false;
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
@@ -3206,12 +3663,16 @@ class PlayState extends MusicBeatState
 			if (useVideo)
 			{
 				GlobalVideo.get().stop();
+				// JOELwindows7: VLC stop!
+				#if FEATURE_VLC if (vlcHandler != null)
+					vlcHandler.kill(); #end // JOELwindows7: FEAR_VLC?!??! wtf, Copilot?!?!?
 				remove(videoSprite);
 				removedVideo = true;
 			}
 
 			removeTouchScreenButtons();
-			FlxG.switchState(new AnimationDebug(dad.curCharacter));
+			// FlxG.switchState(new AnimationDebug(dad.curCharacter));
+			switchState(new AnimationDebug(dad.curCharacter)); // JOELwindows7: use Kade + YinYang48 Hex yess
 			clean();
 			PlayState.stageTesting = false;
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
@@ -3240,6 +3701,11 @@ class PlayState extends MusicBeatState
 				if (useVideo)
 				{
 					GlobalVideo.get().stop();
+					// JOELwindows7: VLC stop!
+					#if FEATURE_VLC
+					if (vlcHandler != null)
+						vlcHandler.kill();
+					#end
 					remove(videoSprite);
 					removedVideo = true;
 				}
@@ -3262,7 +3728,9 @@ class PlayState extends MusicBeatState
 					remove(dad);
 					remove(gf);
 				});
-				FlxG.switchState(new StageDebugState(Stage.curStage, gf.curCharacter, boyfriend.curCharacter, dad.curCharacter));
+				// FlxG.switchState(new StageDebugState(Stage.curStage, gf.curCharacter, boyfriend.curCharacter, dad.curCharacter));
+				switchState(new StageDebugState(Stage.curStage, gf.curCharacter, boyfriend.curCharacter,
+					dad.curCharacter)); // JOELwindows7: use Kade + YinYang48 Hex yess
 				clean();
 				FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 				FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
@@ -3284,7 +3752,8 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.ZERO)
 		{
 			removeTouchScreenButtons();
-			FlxG.switchState(new AnimationDebug(boyfriend.curCharacter));
+			// FlxG.switchState(new AnimationDebug(boyfriend.curCharacter));
+			switchState(new AnimationDebug(boyfriend.curCharacter)); // JOELwindows7: use Kade + YinYang48 Hex yess
 			clean();
 			PlayState.stageTesting = false;
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
@@ -3718,7 +4187,8 @@ class PlayState extends MusicBeatState
 			if (FlxG.save.data.zoom > 1.2)
 				FlxG.save.data.zoom = 1.2;
 
-			if (!executeModchart)
+			// JOELwindows7: make sure to choose using zoom save data only if no modchart are ON.
+			if (!executeModchart && !executeModHscript && !executeStageScript && !executeStageHscript)
 			{
 				FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
 				camHUD.zoom = FlxMath.lerp(FlxG.save.data.zoom, camHUD.zoom, 0.95);
@@ -3796,12 +4266,38 @@ class PlayState extends MusicBeatState
 
 				if (FlxG.save.data.InstantRespawn)
 				{
-					FlxG.switchState(new PlayState());
+					// FlxG.switchState(new PlayState());
+					switchState(new PlayState()); // JOELwindows7: use hex weekend version Kade + YinYang48
 				}
 				else
 				{
-					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes, playerStrums.members));
 				}
+
+				// JOELwindows7: modchart gameover pls
+				#if FEATURE_LUAMODCHART
+				if (executeModchart && luaModchart != null)
+				{
+					luaModchart.setVar('inGameOver', true);
+				}
+				if (executeStageScript && stageScript != null)
+				{
+					stageScript.setVar('inGameOver', true);
+				}
+				#end
+				// JOELwindows7: hscriptoid gameover
+				if (executeModHscript && hscriptModchart != null)
+				{
+					hscriptModchart.setVar('inGameOver', true);
+				}
+				if (executeStageHscript && stageHscript != null)
+				{
+					stageHscript.setVar('inGameOver', true);
+				}
+
+				// JOELwindows7: whyn't stop
+				vocals.stop();
+				FlxG.sound.music.stop();
 
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here
@@ -3842,12 +4338,38 @@ class PlayState extends MusicBeatState
 
 				if (FlxG.save.data.InstantRespawn)
 				{
-					FlxG.switchState(new PlayState());
+					// FlxG.switchState(new PlayState());
+					switchState(new PlayState()); // JOELwindows7: use hex weekend version Kade + YinYang48
 				}
 				else
 				{
-					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, unspawnNotes, playerStrums.members));
 				}
+
+				// JOELwindows7: modchart gameover pls psychedly
+				#if FEATURE_LUAMODCHART
+				if (executeModchart && luaModchart != null)
+				{
+					luaModchart.setVar('inGameOver', true);
+				}
+				if (executeStageScript && stageScript != null)
+				{
+					stageScript.setVar('inGameOver', true);
+				}
+				#end
+				// JOELwindows7: hscriptoid gameover
+				if (executeModHscript && hscriptModchart != null)
+				{
+					hscriptModchart.setVar('inGameOver', true);
+				}
+				if (executeStageHscript && stageHscript != null)
+				{
+					stageHscript.setVar('inGameOver', true);
+				}
+
+				// JOELwindows7: whyn't stop
+				vocals.stop();
+				FlxG.sound.music.stop();
 
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here
@@ -4057,7 +4579,7 @@ class PlayState extends MusicBeatState
 					daNote.active = false;
 
 					if (!daNote.isSustainNote)
-						successfullyStep(1); // JOELwindows7:successfully step for p2
+						successfullyStep(1, daNote); // JOELwindows7:successfully step for p2
 
 					daNote.kill();
 					notes.remove(daNote, true);
@@ -4091,8 +4613,9 @@ class PlayState extends MusicBeatState
 					daNote.modAngle = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
 				}
 
-				if (!daNote.mustPress && FlxG.save.data.middleScroll && !executeModchart)
-					daNote.alpha = 0;
+				// JOELwindows7: moverd hscript & also alpha note pls
+				if (!daNote.mustPress && FlxG.save.data.middleScroll && !(executeModchart || executeModHscript))
+					daNote.alpha = 0.5;
 
 				if (daNote.isSustainNote)
 				{
@@ -4126,7 +4649,7 @@ class PlayState extends MusicBeatState
 						// JOELwindows7: Skip da mine
 						if (daNote.noteType == 2)
 						{
-							trace("Sneaked past the mine whew");
+							// trace("Sneaked past the mine whew");
 						}
 						// JOELwindows7: Missed supposed note
 						if (daNote.noteType == 1 || daNote.noteType == 0)
@@ -4268,6 +4791,8 @@ class PlayState extends MusicBeatState
 	// JOELwindows7: check if the song should display epilogue chat once the song has finished.
 	function checkEpilogueChat():Void
 	{
+		if (creditRollout != null)
+			creditRollout.stopRolling();
 		endingSong = true; // Just in case somekind of forgor
 		songStarted = false; // try to do this?
 		// startingSong = true; //Oh maybe this helps simulate like if the song is on preparation?
@@ -4340,7 +4865,13 @@ class PlayState extends MusicBeatState
 		if (useVideo)
 		{
 			GlobalVideo.get().stop();
-			PlayState.instance.remove(PlayState.instance.videoSprite);
+			// JOELwindows7: VLC stop!
+			#if FEATURE_VLC
+			if (vlcHandler != null)
+				vlcHandler.kill();
+			// PlayState.instance.remove(PlayState.instance.videoSprite);
+			PlayState.instance.remove(PlayState.instance.vlcHandler);
+			#end
 		}
 
 		if (!loadRep)
@@ -4352,30 +4883,62 @@ class PlayState extends MusicBeatState
 			PlayStateChangeables.useDownscroll = false;
 		}
 
-		if (FlxG.save.data.fpsCap > 290)
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP)
 		{
-			trace("return the FPS cap");
+			Debug.logTrace("return the FPS cap");
 			// JOELwindows7: issue with Android version. cast lib current technic crash it
 			#if FEATURE_DISPLAY_FPS_CHANGE
-			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
+			// (cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
 			#end
 		}
 
-		trace("unload mod chart");
+		Debug.logTrace("unload mod chart");
 
+		/*
+			#if FEATURE_LUAMODCHART
+			if (luaModchart != null)
+			{
+				luaModchart.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
+				luaModchart.die();
+				luaModchart = null;
+			}
+			if (stageScript != null)
+			{
+				stageScript.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
+				stageScript.die();
+				stageScript = null;
+			}
+			#end
+			if (hscriptModchart != null)
+			{
+				hscriptModchart.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
+			}
+			if (stageHscript != null)
+			{
+				stageHscript.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
+			}
+			scronchHscript();
+		 */
+
+		// JOELwindows7: instead just
 		#if FEATURE_LUAMODCHART
 		if (luaModchart != null)
 		{
-			luaModchart.die();
-			luaModchart = null;
+			luaModchart.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
 		}
 		if (stageScript != null)
 		{
-			stageScript.die();
-			stageScript = null;
+			stageScript.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
 		}
 		#end
-		scronchHscript();
+		if (hscriptModchart != null)
+		{
+			hscriptModchart.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
+		}
+		if (stageHscript != null)
+		{
+			stageHscript.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
+		}
 
 		// JOELwindows7: stuff to end
 		if (creditRollout != null)
@@ -4388,8 +4951,8 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
-		FlxG.sound.music.stop();
-		vocals.stop();
+		// FlxG.sound.music.stop(); // JOELwindows7: Woha do not stop music because there is delay defined in the song!
+		// vocals.stop(); // JOELwindows7: Woha do not stop vocal because there is delay defined in the song!
 		if (SONG.validScore)
 		{
 			#if !switch
@@ -4403,7 +4966,8 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			offsetTesting = false;
-			LoadingState.loadAndSwitchState(new OptionsMenu());
+			// LoadingState.loadAndSwitchState(new OptionsMenu());
+			switchState(new OptionsMenu(), true, true, true, true); // JOELwindows7: hex switch state lol
 			clean();
 			FlxG.save.data.offset = offsetTest;
 		}
@@ -4424,7 +4988,8 @@ class PlayState extends MusicBeatState
 				remove(dad);
 				remove(gf);
 			});
-			FlxG.switchState(new StageDebugState(Stage.curStage));
+			// FlxG.switchState(new StageDebugState(Stage.curStage));
+			switchState(new StageDebugState(Stage.curStage)); // JOELwindows7: hex switch state lol
 		}
 		else
 		{
@@ -4438,11 +5003,13 @@ class PlayState extends MusicBeatState
 				campaignShits += shits;
 
 				// JOELwindows7: wait! remember the song name first!
-				var lastSonginPlaylist = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
+				// var lastSonginPlaylist = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
+				var lastSonginPlaylist = PlayState.storyPlaylist[0]; // raw SONG id.
+				// var lastSonginPlaylist = StringTools.replace(PlayState.storyPlaylist[0], " ", "-");
 
 				storyPlaylist.remove(storyPlaylist[0]);
 
-				if (storyPlaylist.length <= 0)
+				if (storyPlaylist.length <= 0) // when all song in this week finished
 				{
 					transIn = FlxTransitionableState.defaultTransIn;
 					transOut = FlxTransitionableState.defaultTransOut;
@@ -4456,56 +5023,60 @@ class PlayState extends MusicBeatState
 					FlxG.sound.music.stop();
 					vocals.stop();
 					// JOELwindows7: here timer guys
-					outroScene(lastSonginPlaylist);
-					new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
-					{
-						if (FlxG.save.data.scoreScreen)
-						{
-							if (FlxG.save.data.songPosition)
-							{
-								FlxTween.tween(songPosBar, {alpha: 0}, 1);
-								FlxTween.tween(bar, {alpha: 0}, 1);
-								FlxTween.tween(songName, {alpha: 0}, 1);
-							}
-							openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
-							new FlxTimer().start(1, function(tmr:FlxTimer)
-							{
-								inResults = true;
-							});
-						}
-						else
-						{
-							GameplayCustomizeState.freeplayBf = 'bf';
-							GameplayCustomizeState.freeplayDad = 'dad';
-							GameplayCustomizeState.freeplayGf = 'gf';
-							GameplayCustomizeState.freeplayNoteStyle = 'normal';
-							GameplayCustomizeState.freeplayStage = 'stage';
-							GameplayCustomizeState.freeplaySong = 'bopeebo';
-							GameplayCustomizeState.freeplayWeek = 1;
-							FlxG.sound.playMusic(Paths.music('freakyMenu'));
-							Conductor.changeBPM(102);
-							// FlxG.switchState(new StoryMenuState());
-							FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
-								new StoryMenuState()) : new StoryMenuState());
-							// JOELwindows7: complicated! oh MY GOD!
-							clean();
-						}
-					});
+					outroScene(lastSonginPlaylist, false, delayFirstBeforeThat, SONG.hasEpilogueVideo, SONG.epilogueVideoPath, SONG.hasEpilogueTankmanVideo,
+						SONG.epilogueTankmanVideoPath);
+					// outroScene(lastSonginPlaylist);
+					// new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+					// {
+					// 	if (FlxG.save.data.scoreScreen)
+					// 	{
+					// 		if (FlxG.save.data.songPosition)
+					// 		{
+					// 			FlxTween.tween(songPosBar, {alpha: 0}, 1);
+					// 			FlxTween.tween(bar, {alpha: 0}, 1);
+					// 			FlxTween.tween(songName, {alpha: 0}, 1);
+					// 		}
+					// 		openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
+					// 		new FlxTimer().start(1, function(tmr:FlxTimer)
+					// 		{
+					// 			inResults = true;
+					// 		});
+					// 	}
+					// 	else
+					// 	{
+					// 		GameplayCustomizeState.freeplayBf = 'bf';
+					// 		GameplayCustomizeState.freeplayDad = 'dad';
+					// 		GameplayCustomizeState.freeplayGf = 'gf';
+					// 		GameplayCustomizeState.freeplayNoteStyle = 'normal';
+					// 		GameplayCustomizeState.freeplayStage = 'stage';
+					// 		GameplayCustomizeState.freeplaySong = 'bopeebo';
+					// 		GameplayCustomizeState.freeplayWeek = 1;
+					// 		FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					// 		Conductor.changeBPM(102);
+					// 		// FlxG.switchState(new StoryMenuState());
+					// 		FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
+					// 			new StoryMenuState()) : new StoryMenuState());
+					// 		// JOELwindows7: complicated! oh MY GOD!
+					// 		clean();
+					// 	}
+					// });
 					// JOELwindows7: clean was here, but now inside that?!
 
-					#if FEATURE_LUAMODCHART
-					if (luaModchart != null)
-					{
-						luaModchart.die();
-						luaModchart = null;
-					}
-					if (stageScript != null)
-					{
-						stageScript.die();
-						stageScript = null;
-					}
-					#end
-					scronchHscript();
+					/*
+						#if FEATURE_LUAMODCHART
+						if (luaModchart != null)
+						{
+							luaModchart.die();
+							luaModchart = null;
+						}
+						if (stageScript != null)
+						{
+							stageScript.die();
+							stageScript = null;
+						}
+						#end
+						scronchHscript();
+					 */
 
 					if (SONG.validScore)
 					{
@@ -4514,10 +5085,13 @@ class PlayState extends MusicBeatState
 						Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 					}
 
+					StoryMenuState.resetWeekSave(); // JOELwindows7: reset week
 					StoryMenuState.unlockNextWeek(storyWeek);
 				}
 				else
 				{
+					StoryMenuState.saveWeek(false); // JOELwindows7: okay, save the week pls!
+
 					var diff:String = ["-easy", "", "-hard"][storyDifficulty];
 
 					Debug.logInfo('PlayState: Loading next story song ${PlayState.storyPlaylist[0]}-${diff}');
@@ -4540,7 +5114,7 @@ class PlayState extends MusicBeatState
 
 						FlxG.sound.play(Paths.sound('Lights_Shut_off'));
 					}
-					outroScene(lastSonginPlaylist);
+					// outroScene(lastSonginPlaylist);
 					// JOELwindows7: Psychedly Successfully fixed the light shut off scene!
 
 					FlxTransitionableState.skipNextTransIn = true;
@@ -4558,6 +5132,7 @@ class PlayState extends MusicBeatState
 					// JOELwindows7: fix the song with conversionChecks
 					// JOELwindows7: conform the story mode oid based on dash is space like StoryMenuState.hx
 					FlxG.sound.music.stop();
+					vocals.stop();
 
 					// JOELwindows7: log this one in will ya?
 					Debug.logTrace("Here's path for this outro " + epilogueVideoPath + "\n and next song intro " + SONG.videoPath);
@@ -4566,41 +5141,52 @@ class PlayState extends MusicBeatState
 					Debug.logInfo("and outro is enabled " + Std.string(hasEpilogueVideo) + "and next song intro enabled" + SONG.hasVideo);
 
 					// JOELwindows7: here timer guys
-					new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
-					{
-						// JOELwindows7: if has video, then load the video first before going to new playstate!
-						LoadingState.loadAndSwitchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
-							(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
-								new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
-								new PlayState()) : new PlayState()));
-						// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
-						// JOELwindows7: oh God, so complicated. I hope it works!
-						clean();
-					});
+					// new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+					// {
+					// 	// JOELwindows7: if has video, then load the video first before going to new playstate!
+					// 	LoadingState.loadAndSwitchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
+					// 		(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+					// 			new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+					// 			new PlayState()) : new PlayState()));
+					// 	// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					// 	// JOELwindows7: oh God, so complicated. I hope it works!
+					// 	clean();
+					// });
+					outroScene(lastSonginPlaylist, true, delayFirstBeforeThat, hasEpilogueVideo, epilogueVideoPath, SONG.hasEpilogueTankmanVideo,
+						SONG.epilogueTankmanVideoPath);
 				}
 			}
 			else
 			{
 				Debug.logInfo('WENT BACK TO FREEPLAY??');
+				var delayFirstBeforeThat:Float = SONG.delayAfterFinish; // JOELwindows7: forgor
 
-				paused = true;
+				new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+				{ // JOELwindows7: here this delay wow.
+					paused = true;
 
-				FlxG.sound.music.stop();
-				vocals.stop();
+					FlxG.sound.music.stop();
+					vocals.stop();
 
-				if (FlxG.save.data.scoreScreen)
-				{
-					openSubState(new ResultsScreen());
-					new FlxTimer().start(1, function(tmr:FlxTimer)
+					// JOELwindows7: don't forget clean modchart if haven't already
+					scronchLuaScript();
+					scronchHscript();
+
+					if (FlxG.save.data.scoreScreen)
 					{
-						inResults = true;
-					});
-				}
-				else
-				{
-					FlxG.switchState(new FreeplayState());
-					clean();
-				}
+						openSubState(new ResultsScreen());
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							inResults = true;
+						});
+					}
+					else
+					{
+						// FlxG.switchState(new FreeplayState());
+						switchState(new FreeplayState()); // JOELwindows7: hex switch state lol
+						clean();
+					}
+				});
 			}
 		}
 
@@ -4609,6 +5195,7 @@ class PlayState extends MusicBeatState
 	}
 
 	public var endingSong:Bool = false;
+	public var musicCompleted:Bool = false; // JOELwindows7: sigh, I guess we got to resort on it this instead. check if music is actually completed
 
 	var hits:Array<Float> = [];
 	var offsetTest:Float = 0;
@@ -4663,6 +5250,7 @@ class PlayState extends MusicBeatState
 			totalNotesHit += wife;
 
 		var daRating = Ratings.judgeNote(noteDiff);
+		var daRatingInt = Ratings.judgeNoteInt(noteDiff); // JOELwindows7: this is the rating integer
 
 		switch (daRating)
 		{
@@ -4670,7 +5258,7 @@ class PlayState extends MusicBeatState
 				// JOELwindows7: add da noteType effex
 				if (daNote.noteType == 2)
 				{
-					health -= 10;
+					health -= 1;
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -4686,7 +5274,7 @@ class PlayState extends MusicBeatState
 			case 'bad':
 				if (daNote.noteType == 2)
 				{
-					health -= 10;
+					health -= 1;
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -4701,7 +5289,7 @@ class PlayState extends MusicBeatState
 			case 'good':
 				if (daNote.noteType == 2)
 				{
-					health -= 10;
+					health -= 1;
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -4715,7 +5303,7 @@ class PlayState extends MusicBeatState
 			case 'sick':
 				if (daNote.noteType == 2)
 				{
-					health -= 10;
+					health -= 1;
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -4725,16 +5313,48 @@ class PlayState extends MusicBeatState
 						totalNotesHit += 1;
 					sicks++;
 				}
+				// TODO: JOELwindows7: add more insane ratings!
 		}
+
+		// JOELwindows7: yoink splash notes. idk where the peck suppose we get the asset from
+		// because these baa..... I mean.. whatever, did not license it royalty free / free culture compliant!!! I hate that!
+		// yoink from Psych https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
+		// pls draw me royalty free notesplash for me for $0! jk, don't have to. I need time alot to do that.
+		// but feel free to become generous yeah!
+		// if (daRating == 'sick' && !daNote.noteSplashDisabled)
+		if (daRatingInt >= 3 && !daNote.noteSplashDisabled)
+		{
+			spawnNoteSplashOnNote(daNote, daNote.noteType);
+		}
+		// C'mon, Cam (ninjamuffin)!!! finish embargo rn!!! do not finish plot twistly as a demo for the full ass!!! that's not polite!
 
 		if (songMultiplier >= 1.05)
 			score = getRatesScore(songMultiplier, score);
 
 		// trace('Wife accuracy loss: ' + wife + ' | Rating: ' + daRating + ' | Score: ' + score + ' | Weight: ' + (1 - wife));
 
-		if (daRating != 'shit' || daRating != 'bad')
+		if ((daRating != 'shit' || daRating != 'bad')
+			&& daNote.noteType != 2) // JOELwindows7: do not count if note type is mine or powerup i guess.
 		{
 			songScore += Math.round(score);
+
+			// JOELwindows7: Try to tween that scoreTxt up
+			// Psychedly yoinked from https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
+			if (FlxG.save.data.scoreTxtZoom)
+			{
+				if (scoreTxtTween != null)
+				{
+					scoreTxtTween.cancel();
+				}
+				scoreTxt.scale.x = 1.075;
+				scoreTxt.scale.y = 1.075;
+				scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
+					onComplete: function(twn:FlxTween)
+					{
+						scoreTxtTween = null;
+					}
+				});
+			}
 
 			/* if (combo > 60)
 					daRating = 'sick';
@@ -4755,10 +5375,14 @@ class PlayState extends MusicBeatState
 				pixelShitPart3 = 'week6';
 			}
 
+			// TODO: JOELwindows7: marker of late & early. either of these:
+			// - Tilt ranking sprite particle left & right
+			// - Trapesium particle above & bellow
 			rating.loadGraphic(Paths.loadImage(pixelShitPart1 + daRating + pixelShitPart2, pixelShitPart3));
 			rating.screenCenter();
 			rating.y -= 50;
 			rating.x = coolText.x - 125;
+			// JOELwindows7: I notice there is no "MISS" particles here.
 
 			if (FlxG.save.data.changedHit)
 			{
@@ -5228,8 +5852,11 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
-						goodNoteHit(daNote);
-						boyfriend.holdTimer = 0;
+						if (daNote.noteType != 2)
+						{ // JOELwindows7: do not hit mine!!! also if power up there, do not hit negative powerup!
+							goodNoteHit(daNote);
+							boyfriend.holdTimer = 0;
+						}
 					}
 				}
 			});
@@ -5286,11 +5913,14 @@ class PlayState extends MusicBeatState
 
 	public var fuckingVolume:Float = 1;
 	public var useVideo = false;
+	public var useVLC = false; // JOELwindows7 marking for it.
 
 	public static var webmHandler:WebmHandler;
 
-	public var vlcHandler:MP4Handler; //JOELwindows7: globalize VLC handler
+	#if FEATURE_VLC
+	public var vlcHandler:MP4Sprite; // JOELwindows7: globalize VLC handler
 
+	#end
 	public var playingDathing = false;
 
 	public var videoSprite:FlxSprite;
@@ -5301,21 +5931,25 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: from that BrightFyre MP4 support, outputting to FlxSprite
 		// https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support#outputting-to-a-flxsprite
 		useVideo = true;
+		useVLC = true; // JOELwindows7: yes VLC
 
 		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
 
-		videoSprite = new FlxSprite(-470, -30);
+		// videoSprite = new FlxSprite(-470, -30);
 
-		vlcHandler = new MP4Handler();
+		vlcHandler = new MP4Sprite(-470, -30);
 		vlcHandler.finishCallback = onVideoSpriteFinish;
-		vlcHandler.playMP4(source, null, videoSprite); // make the transition null so it doesn't take you out of this state
+		// vlcHandler.playMP4(source, null, videoSprite); // make the transition null so it doesn't take you out of this state
+		vlcHandler.playVideo(source, false, false); // make the transition null so it doesn't take you out of this state
 
-		videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
+		// videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
+		vlcHandler.setGraphicSize(Std.int(vlcHandler.width * 1.2));
 
 		remove(gf);
 		remove(boyfriend);
 		remove(dad);
-		add(videoSprite);
+		// add(videoSprite);
+		add(vlcHandler);
 		add(gf);
 		add(boyfriend);
 		add(dad);
@@ -5328,6 +5962,7 @@ class PlayState extends MusicBeatState
 			vlcHandler.resume();
 		#elseif (FEATURE_WEBM && !FEATURE_VLC)
 		useVideo = true;
+		useVLC = false; // JOELwindows7: not VLC
 
 		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
 		// #if (!mobile)
@@ -5500,7 +6135,9 @@ class PlayState extends MusicBeatState
 
 		// JOELwindows7: here's where we moved. the bottom score text
 		scoreTxt.text = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy, heartRate[0], heartTierIsRightNow[0]);
-		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
+		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words. here this too!
+		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
+		judgementCounter.text = '${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
 	}
 
 	function getKeyPresses(note:Note):Int
@@ -5604,8 +6241,21 @@ class PlayState extends MusicBeatState
 		{
 			if (!note.isSustainNote)
 			{
+				// JOELwindows7: Pinpoint! if you want Pump it Up rapid combo
+				// add even sustain note, this is where you consider it.
 				combo += 1;
 				popUpScore(note);
+
+				// JOELwindows7: Hit sound like osu!
+				// if (FlxG.save.data.hitsound)
+				// {
+				// 	// allow custom hitsound just like in osu! and also testables in charting state right away.
+				// 	FlxG.sound.play(Paths.sound((note.hitsoundPath != null && note.hitsoundPath != "")? note.hitsoundPath : 'SNAP', 'shared'));
+				// }
+			}
+			else
+			{
+				// JOELwindows7: if Pump it Up rapid combo is active, then increase combo still even if sustain note
 			}
 
 			var altAnim:String = "";
@@ -5652,7 +6302,7 @@ class PlayState extends MusicBeatState
 				note.destroy();
 
 				// JOELwindows7: successfully step, add adrenaline heartbeat fass
-				successfullyStep();
+				successfullyStep(0, note);
 			}
 			else
 			{
@@ -5712,6 +6362,58 @@ class PlayState extends MusicBeatState
 			stageHscript.setVar('curStep', curStep);
 			stageHscript.executeState('stepHit', [curStep]);
 		}
+
+		// JOELwindows7: here event object that meant to be beat hit rather than precise or section next (scroll speed change e.g.).
+		// wait, how about put this in Step? this one is more precise... idk.
+		if (SONG != null && SONG.eventObjects != null)
+			for (i in SONG.eventObjects)
+			{
+				if (i.position == HelperFunctions.truncateFloat(curDecimalBeat, 3)
+					|| Std.int(i.position) == curBeat) // JOELwindows7: can we do it like this instead? because the evaluation for these are essentially be the same.
+				{
+					switch (i.type)
+					{
+						// JOELwindows7: moar effeks. do not forget check position with curDecimalBeat (precise) / curBeat (exact) first!
+						case "Cheer Now":
+							justCheer(true);
+						case "Hey Now":
+							justHey(true);
+						case "Cheer Hey Now":
+							if (i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0)
+								justCheer(true);
+							if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
+								justHey(true);
+						case "Lightning Strike":
+							Stage.lightningStrikeShit();
+						case "Blammed Lights":
+							Stage.blammedLights(Std.int(i.value));
+						case "Appear Blackbar":
+							// Debug.logTrace("appear blackbar");
+							Stage.appearBlackBar(i.value);
+						case "Disappear Blackbar":
+							// Debug.logTrace("disappear blackbar");
+							Stage.disappearBlackBar(i.value);
+
+						case "Camera Zoom in":
+							camZoomNow(i.value, i.value2, i.value3);
+						case "Shake camera":
+							FlxG.camera.shake(i.value, i.value2, function()
+							{
+							}, true);
+							Controls.vibrate(0, i.value);
+
+						case "HUD Zoom in":
+							camZoomNow(0, i.value);
+						case "Both Zoom in":
+							camZoomNow(i.value, i.value);
+						case "LED ON for":
+						// JOELwindows7: turn LED on for how long second i.value
+
+						case "Vibrate for":
+							Controls.vibrate(0, i.value, i.value2);
+					}
+				}
+			}
 	}
 
 	override function beatHit()
@@ -6106,7 +6808,7 @@ class PlayState extends MusicBeatState
 		}
 		catch (e)
 		{
-			trace(SONG.player1 + " heart error " + e);
+			trace(SONG.player1 + " heart error " + e + ": " + e.message);
 			trace("attempting rescue");
 			HEART[0] = DokiDoki.hearts.get('bf');
 		}
@@ -6119,7 +6821,7 @@ class PlayState extends MusicBeatState
 		}
 		catch (e)
 		{
-			trace(SONG.player2 + " heart error " + e);
+			trace(SONG.player2 + " heart error " + e + ": " + e.message);
 			trace("attempting rescue");
 			HEART[1] = DokiDoki.hearts.get('dad');
 		}
@@ -6132,7 +6834,7 @@ class PlayState extends MusicBeatState
 		}
 		catch (e)
 		{
-			trace(SONG.gfVersion + " heart error " + e);
+			trace(SONG.gfVersion + " heart error " + e + ": " + e.message);
 			trace("attempting rescue");
 			HEART[2] = DokiDoki.hearts.get('gf');
 		}
@@ -6173,8 +6875,37 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function successfullyStep(whichOne:Int = 0)
+	// JOELwindows7: when successfully step
+	function successfullyStep(whichOne:Int = 0, ?handoverNote:Note)
 	{
+		// JOELwindows7: Hit sound like osu!
+		if (FlxG.save.data.hitsound)
+		{
+			// allow custom hitsound just like in osu! and also testables in charting state right away.
+			if (handoverNote != null)
+				FlxG.sound.play(Paths.sound((handoverNote.hitsoundPath != null && handoverNote.hitsoundPath != "") ? handoverNote.hitsoundPath : 'SNAP',
+					'shared'));
+		}
+
+		// option only for specific player
+		switch (whichOne)
+		{
+			case 0:
+			// boyfriend.playAnim('hit', true);
+			// break;
+			// notesplash no needed because previous good note hit handler had it. only splash if SICK (PERFECT) and beyond.
+			case 1:
+				// dad.playAnim('hit', true);
+				// break;
+				spawnNoteSplashOnNote(handoverNote, handoverNote.noteType, whichOne); // yay Psyched note splash on player 2 as well!
+
+			case 2:
+			// girlfriend.playAnim('hit', true);
+			// break;
+			// okay I know, Copilot.
+			default:
+		}
+
 		increaseHR(successionAdrenalAdd[whichOne][heartTierIsRightNow[whichOne]], whichOne);
 	}
 
@@ -6259,7 +6990,7 @@ class PlayState extends MusicBeatState
 			{
 				case 0:
 					if (!silent)
-						FlxG.sound.play(Paths.sound(reversed ? 'intro1' : 'intro3' + altSuffix + midiSuffix), 0.6);
+						FlxG.sound.play(Paths.sound((reversed ? 'intro1' : 'intro3') + altSuffix + midiSuffix), 0.6);
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
 					ready.scrollFactor.set();
@@ -6300,7 +7031,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					if (!silent)
-						FlxG.sound.play(Paths.sound(reversed ? 'intro3' : 'intro1' + altSuffix + midiSuffix), 0.6);
+						FlxG.sound.play(Paths.sound((reversed ? 'intro3' : 'intro1') + altSuffix + midiSuffix), 0.6);
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 					go.scrollFactor.set();
@@ -6523,19 +7254,98 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	// JOELwindows7: Psyched intro after video and before dialogue chat
-	function introScene()
+	// JOELwindows7: check song start
+	function checkSongStartAfterTankman()
 	{
-		switch (curSong)
+		// JOELwindows7: also add delay before start
+		// for intro cutscene after video and before dialogue chat you know!
+		// JOELwindows7: Heuristic for using JSON chart instead
+		if (SONG.hasDialogueChat)
 		{
-			default:
-				// No cutscene intro
+			schoolIntro(doof);
+		}
+		else
+		{
+			// inCutscene = false;
+			new FlxTimer().start(1, function(timer)
+			{
+				startCountdown();
+			});
 		}
 	}
 
-	// JOELwindows7: Psyched outro after dialogue chat & before epilogue video
-	function outroScene(handoverName:String)
+	// JOELwindows7: flaggrants for Cutscene calls
+	var introSceneCalled = false;
+	var introDoneCalled = false;
+	var outroSceneCalled = false;
+	var outroDoneCalled = false;
+
+	// JOELwindows7: Psyched intro after video and before dialogue chat
+	function introScene()
 	{
+		introSceneCalled = true;
+		inCutscene = true;
+		switch (curSong)
+		{
+			default:
+				#if FEATURE_LUAMODCHART
+				if (luaModchart != null)
+				{
+					luaModchart.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
+				}
+				if (stageScript != null)
+				{
+					stageScript.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
+				}
+				#end
+				if (hscriptModchart != null)
+				{
+					hscriptModchart.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
+				}
+				if (stageHscript != null)
+				{
+					stageHscript.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
+				}
+				// No cutscene intro
+				decideIntroSceneDone(SONG.introCutSceneDoneManually);
+		}
+	}
+
+	// JOELwindows7: decide if intro must be done manually through modchart.
+	function decideIntroSceneDone(isItManually:Bool = false)
+	{
+		if (isItManually)
+		{
+			// JOELwindows7: then modchart must trigger it.
+		}
+		else
+		{
+			introSceneIsDone();
+		}
+	}
+
+	function recallIntroSceneDone()
+	{
+		if (!introDoneCalled)
+			introSceneIsDone();
+	}
+
+	// JOELwindows7: call this for intro is done
+	function introSceneIsDone()
+	{
+		introDoneCalled = true;
+		new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
+		{
+			checkSongStartAfterTankman(); // I know, this is spaghetti code. because I believe there's more somebody uses the method.
+		});
+	}
+
+	// JOELwindows7: Outro Done fillout vars
+	// JOELwindows7: Psyched outro after dialogue chat & before epilogue video
+	function outroScene(handoverName:String, isNextSong:Bool = false, handoverDelayFirst:Float = 0, handoverHasEpilogueVid:Bool = false,
+			handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false, handoverTankmanEpilogueVidPath:String = "")
+	{
+		outroSceneCalled = true;
 		switch (handoverName.toLowerCase())
 		{
 			case 'mayday': // blacken the screen like going to Winter Horrorland but slowed and sadder
@@ -6546,8 +7356,8 @@ class PlayState extends MusicBeatState
 				// blackShit.alpha = 0;
 				// add(blackShit);
 
-				//JOELwindows7: better! use camera fade
-				FlxG.camera.fade(FlxColor.BLACK,5);
+				// JOELwindows7: better! use camera fade
+				FlxG.camera.fade(FlxColor.BLACK, 5);
 
 				// camHUD.alpha = 0;
 				FlxTween.tween(camHUD, {alpha: 0}, 5, {
@@ -6562,7 +7372,241 @@ class PlayState extends MusicBeatState
 				// 	{
 				// 	}
 				// });
+
+				new FlxTimer().start(10, function(tmr:FlxTimer)
+				{
+					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+				});
 			default:
+				#if FEATURE_LUAMODCHART
+				if (luaModchart != null)
+				{
+					luaModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+				}
+				if (stageScript != null)
+				{
+					stageScript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+				}
+				#end
+				if (hscriptModchart != null)
+				{
+					hscriptModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+				}
+				if (stageHscript != null)
+				{
+					stageHscript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+				}
+				decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+					handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath, SONG.outroCutSceneDoneManually);
+		}
+	}
+
+	// JOELwindows7: refill Fillout first, if outro scene done manually through modchart
+	function decideOutroSceneDone(isNextSong:Bool = false, handoverName:String, handoverDelayFirst:Float = 0, handoverHasEpilogueVid:Bool = false,
+			handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false, handoverTankmanEpilogueVidPath:String = "",
+			isItManual:Bool = false)
+	{
+		CarryAround.__isNextSong = isNextSong;
+		CarryAround.__handoverName = handoverName;
+		CarryAround.__handoverDelayFirst = handoverDelayFirst;
+		CarryAround.__handoverHasEpilogueVid = handoverHasEpilogueVid;
+		CarryAround.__handoverEpilogueVidPath = handoverEpilogueVidPath;
+		CarryAround.__handoverHasTankmanEpilogueVid = handoverHasTankmanEpilogueVid;
+		CarryAround.__handoverTankmanEpilogueVidPath = handoverTankmanEpilogueVidPath;
+		if (isItManual)
+		{
+			// then the modchart must manually done it.
+		}
+		else
+		{
+			outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
+				handoverTankmanEpilogueVidPath);
+		}
+	}
+
+	// JOELwindows7: here the recall for easy access.
+	function recallOutroSceneDone()
+	{
+		if (!outroDoneCalled)
+			outroSceneIsDone(CarryAround.__isNextSong, CarryAround.__handoverName, CarryAround.__handoverDelayFirst, CarryAround.__handoverHasEpilogueVid,
+				CarryAround.__handoverEpilogueVidPath, CarryAround.__handoverHasTankmanEpilogueVid, CarryAround.__handoverTankmanEpilogueVidPath);
+	}
+
+	// JOELwindows7: call this when outro is done
+	function outroSceneIsDone(isNextSong:Bool = false, lastSongNameInPlaylist:String = "", delayFirstBeforeThat:Float = 0, hasEpilogueVideo:Bool = false,
+			epilogueVideoPath:String = "", hasEpilogueTankmanVideo:Bool = false, epilogueTankmanVideoPath:String = "")
+	{
+		outroDoneCalled = true;
+		// JOELwindows7: 1st, clean modcharts
+		scronchLuaScript();
+		scronchHscript();
+
+		if (hasEpilogueTankmanVideo)
+		{
+			tankmanIntro(epilogueTankmanVideoPath, true, lastSongNameInPlaylist, isNextSong, delayFirstBeforeThat, hasEpilogueVideo, epilogueVideoPath,
+				hasEpilogueTankmanVideo, epilogueTankmanVideoPath);
+		}
+		else
+		{
+			if (isNextSong)
+			{
+				// JOELwindows7: here timer guys
+				new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+				{
+					// JOELwindows7: if has video, then load the video first before going to new playstate!
+					// LoadingState.loadAndSwitchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
+					// 	(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+					// 		new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()));
+					switchState(hasEpilogueVideo ? (VideoCutscener.getThe(epilogueVideoPath,
+						(SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath,
+							new PlayState()) : new PlayState()))) : (SONG.hasVideo ? VideoCutscener.getThe(SONG.videoPath, new PlayState()) : new PlayState()),
+						true, true, true, true);
+					// LoadingState.loadAndSwitchState(new PlayState()); //Legacy
+					// JOELwindows7: oh God, so complicated. I hope it works! use Hex Weekend switchState
+					clean();
+				});
+			}
+			else
+			{
+				// JOELwindows7: yep move from that function. this one is when song has ran out in the playlist.
+				new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
+				{
+					if (FlxG.save.data.scoreScreen)
+					{
+						if (FlxG.save.data.songPosition)
+						{
+							FlxTween.tween(songPosBar, {alpha: 0}, 1);
+							FlxTween.tween(bar, {alpha: 0}, 1);
+							FlxTween.tween(songName, {alpha: 0}, 1);
+						}
+						openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							inResults = true;
+						});
+					}
+					else
+					{
+						GameplayCustomizeState.freeplayBf = 'bf';
+						GameplayCustomizeState.freeplayDad = 'dad';
+						GameplayCustomizeState.freeplayGf = 'gf';
+						GameplayCustomizeState.freeplayNoteStyle = 'normal';
+						GameplayCustomizeState.freeplayStage = 'stage';
+						GameplayCustomizeState.freeplaySong = 'bopeebo';
+						GameplayCustomizeState.freeplayWeek = 1;
+						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						Conductor.changeBPM(102);
+						// FlxG.switchState(new StoryMenuState());
+						// FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
+						switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
+						// JOELwindows7: complicated! oh MY GOD! use Hex Weekend switchState
+						clean();
+					}
+				});
+			}
+		}
+	}
+
+	/**Do something in this dialogue when started.
+	 * @author JOELwindows7
+	 */
+	public function dialogueScene()
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState('dialogueStart', []);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState('dialogueStart', []);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState('dialogueStart', []);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState('dialogueStart', []);
+		}
+	}
+
+	/** Do something in this dialogue when finished.
+	 * @author JOELwindows7
+	 */
+	public function dialogueSceneEnding()
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState('dialogueFinish', []);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState('dialogueFinish', []);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState('dialogueFinish', []);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState('dialogueFinish', []);
+		}
+	}
+
+	/**
+	 * Do something in this dialogue when going to close
+	 * @author JOELwindows7
+	 */
+	public function dialogueSceneClose()
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState('dialogueSkip', []);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState('dialogueSkip', []);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState('dialogueSkip', []);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState('dialogueSkip', []);
+		}
+	}
+
+	/**
+	 * Do something in this dialogue everytime opening next dialogue
+	 * @author JOELwindows7
+	 */
+	public function dialogueNext(index:Int)
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState('dialogueNext', [index]);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState('dialogueNext', [index]);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState('dialogueNext', [index]);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState('dialogueNext', [index]);
 		}
 	}
 
@@ -6621,6 +7665,192 @@ class PlayState extends MusicBeatState
 				pauseButton.visible = false;
 			}
 		}
+	}
+
+	// JOELwindows7: well the getEvent thingy like everybody that uses FlxUI value input stuff.
+	override public function getEvent(name:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void
+	{
+		// JOELwindows7: inspire from ChartingState.hx & FlxSound demo Flixel yess.
+		// https://github.com/HaxeFlixel/flixel-demos/blob/master/Features/FlxSound/source/MenuState.hx
+
+		if (destroyed)
+		{
+			return;
+		}
+
+		super.getEvent(name, sender, data, params);
+
+		if (name == FlxUICheckBox.CLICK_EVENT)
+		{
+			var check:FlxUICheckBox = cast sender;
+			var label = check.getLabel().text;
+			switch (label)
+			{
+				default:
+			}
+		}
+		else if (name == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper))
+		{
+			var nums:FlxUINumericStepper = cast sender;
+			var wname = nums.name;
+			switch (wname)
+			{
+				case 'autoClick_delay':
+					Debug.logTrace("Change Auto click delay into " + Std.string(nums.value) + "s");
+					FlxG.save.data.autoClickDelay = nums.value;
+					FlxG.save.flush();
+				default:
+			}
+		}
+		else if (name == FlxUITypedButton.CLICK_EVENT && (sender is FlxUIButton))
+		{
+			var fuib:FlxUIButton = cast sender;
+			var label = fuib.label.text;
+			switch (label)
+			{
+				default:
+			}
+		}
+	}
+
+	// JOELwindows7: Psyched splash note yeahow
+	function spawnNoteSplashOnNote(note:Note, noteType:Int = 0, whichPlayer:Int = 0)
+	{
+		if (FlxG.save.data.noteSplashes && note != null)
+		{
+			var strum:StaticArrow = playerStrums.members[note.noteData];
+			// JOELwindows7: handle which player properly. we have strum variable to get where position for each
+			// strum receptors.
+			switch (whichPlayer)
+			{
+				case 1:
+					strum = cpuStrums.members[note.noteData];
+				default:
+			}
+			if (strum != null)
+			{
+				spawnNoteSplash(strum.x, strum.y, note.noteData, note, noteType);
+			}
+		}
+	}
+
+	// JOELwindows7: spawn note splash core Pyschedly
+	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0)
+	{
+		var skin:String = 'Arrow-splash'; // TODO: JOELwindows7: use `-duar` for mines (note type 2)
+		if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0 && PlayState.SONG.useCustomNoteStyle)
+			skin = PlayState.SONG.noteStyle + "-splash" + (noteType == 2 ? "-duar" : "");
+
+		// var hue:Float = ClientPrefs.arrowHSV[data % 4][0] / 360;
+		// var sat:Float = ClientPrefs.arrowHSV[data % 4][1] / 100;
+		// var brt:Float = ClientPrefs.arrowHSV[data % 4][2] / 100;
+		// if(note != null) {
+		// 	skin = note.noteSplashTexture;
+		// 	hue = note.noteSplashHue;
+		// 	sat = note.noteSplashSat;
+		// 	brt = note.noteSplashBrt;
+		// }
+
+		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
+		// splash.setupNoteSplash(x, y, data, skin, hue, sat, brt, noteType);
+		splash.setupNoteSplash(x, y, data, skin, 0, 0, 0, noteType);
+		grpNoteSplashes.add(splash);
+	}
+
+	// JOELwindows7: Psyched blackbar stuff
+	function buildRealBlackBars()
+	{
+		realBlackbarsTop = new FlxSprite(0, 0);
+		realBlackbarsTop.makeGraphic(FlxG.width, realBlackbarHeight, 0xFF000000);
+		realBlackbarsTop.scrollFactor.set();
+		realBlackbarsBottom = new FlxSprite(0, FlxG.height - realBlackbarHeight);
+		realBlackbarsBottom.makeGraphic(FlxG.width, realBlackbarHeight, 0xFF000000);
+		realBlackbarsBottom.scrollFactor.set();
+		add(realBlackbarsTop);
+		add(realBlackbarsBottom);
+		realBlackbarsTop.visible = false;
+		realBlackbarsBottom.visible = false;
+		// disappearRealBlackBar(0.1); // Now delegate their dormant positions yeah!
+		// or maybe just pecking do it?
+		realBlackbarsTop.y = -realBlackbarHeight;
+		realBlackbarsBottom.y = FlxG.height;
+	}
+
+	// JOELwindows7: Psyched appear blackbar
+	public function appearRealBlackBar(forHowLong:Float = 2)
+	{
+		if (realBlackbarsTop == null || realBlackbarsBottom == null)
+			return;
+		realBlackbarsTop.visible = true;
+		realBlackbarsBottom.visible = true;
+		// realBlackbarsTop.x = -blackbarHeight;
+		// realBlackbarsBottom.x = FlxG.height;
+		FlxTween.color(realBlackbarsTop, forHowLong, realBlackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
+		FlxTween.color(realBlackbarsBottom, forHowLong, realBlackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
+		FlxTween.tween(realBlackbarsTop, {y: 0, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(realBlackbarsBottom, {y: FlxG.height - realBlackbarHeight, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+	}
+
+	// JOELwindows7: Psyched disappear blackbar
+	public function disappearRealBlackBar(forHowLong:Float = 2)
+	{
+		if (realBlackbarsTop == null || realBlackbarsBottom == null)
+			return;
+		// realBlackbarsTop.x = 0;
+		// realBlackbarsBottom.x = FlxG.height - blackbarHeight;
+		FlxTween.tween(realBlackbarsTop, {y: -realBlackbarHeight}, forHowLong, {
+			ease: FlxEase.linear,
+			onComplete: function(twn:FlxTween)
+			{
+				realBlackbarsTop.visible = false;
+			}
+		});
+		FlxTween.tween(realBlackbarsBottom, {y: FlxG.height}, forHowLong, {
+			ease: FlxEase.linear,
+			onComplete: function(twn:FlxTween)
+			{
+				realBlackbarsBottom.visible = false;
+			}
+		});
+		FlxTween.color(realBlackbarsTop, forHowLong, realBlackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
+		FlxTween.color(realBlackbarsBottom, forHowLong, realBlackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
+	}
+
+	// JOELwindows7: and the flag for bellow cartoon corner dot
+	var hasAppearedDot:Bool = false;
+
+	// JOELwindows7: appear this infamous dot on top right corner, found on classic pipehose cartoon.
+	// It appears at the end of the episode marking ending of film strip. so to prepare End card next.
+	public function cartoonCornerDot()
+	{
+		// Copy from cheat sheet, section Drawing Shapes
+		var lineStyle:LineStyle = {color: FlxColor.RED, thickness: 1};
+		var drawStyle:DrawStyle = {smoothing: true};
+		var daDot = new FlxSprite();
+		daDot.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+		daDot.drawCircle(FlxG.width - 10, 140, 100, FlxColor.PURPLE, lineStyle, drawStyle);
+		daDot.scrollFactor.set(); // don't forget!
+		// leave daDot in camGame / default because it makes sense as this would be part of film strip.
+		daDot.cameras = [camHUD]; // NOPE!!! without putting on HUD, it stays there.
+		// where is draw n-gon (draw polygon easy with just Int num of vertices)?
+		// the polygon requires you put vertices one by one! what the peck?!?
+		if (!hasAppearedDot)
+		{
+			add(daDot);
+
+			new FlxTimer().start(1, function(tmr:FlxTimer)
+			{
+				daDot.destroy();
+			});
+
+			hasAppearedDot = true;
+		}
+	}
+
+	// TODO: RESERVED: JOELwindows7: Pushing P in nekopara does fun things. Pushing P song
+	public function pushP()
+	{
+		// TODO: jump all characters in the game. the fun begins if the character skin has yea you know.
 	}
 }
 // u looked :O -ides

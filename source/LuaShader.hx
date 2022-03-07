@@ -1,4 +1,7 @@
-/*import flixel.system.FlxAssets.FlxShader;
+//JOELwindows7: NO!!! DO NOT DELETE D:<
+//nvm
+/*
+import flixel.system.FlxAssets.FlxShader;
 
 class LuaShader extends FlxShader
 {
@@ -66,7 +69,8 @@ class LuaShader extends FlxShader
 
         ' + frag;
         
-        iResolution
+        iResolution;
         super();
     }
-}*/
+}
+*/

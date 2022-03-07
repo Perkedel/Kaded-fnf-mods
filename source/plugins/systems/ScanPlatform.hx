@@ -53,6 +53,10 @@ class ScanPlatform{
         trace("you're phantomjs");
         sayTotal += " PhantomJS";
         #end
+        #if emscripten
+        trace("you're emscripten");
+        sayTotal += " emscripten";
+        #end
         #if electron
         trace("you're electron");
         sayTotal += " ElectronJS";
@@ -117,6 +121,36 @@ class ScanPlatform{
         #if hl
         trace("you're hash link");
         sayTotal += " HashLink";
+        #end
+
+        // JOELwindows7: Additionally there maybe more
+        #if firefox
+        trace("you're firefox OS, no pecking way!");
+        sayTotal += " FirefoxOS";
+        #end
+        #if chrome
+        trace("you're chrome OS, no pecking way!");
+        sayTotal += " ChromeOS";
+        #end
+        #if opera
+        trace("you're opera OS, no pecking way!");
+        sayTotal += " OperaOS";
+        #end
+        #if ie
+        trace("you're internet explorer, wow you're, idk!");
+        sayTotal += " IE";
+        #end
+        #if edge
+        trace("you're edge, uhhh ok!");
+        sayTotal += " Edge";
+        #end
+        #if safari
+        trace("you're safari, Let us know when can we repair this!");
+        sayTotal += " Safari";
+        #end
+        #if tvos
+        trace("you're tvos, no pecking way!");
+        sayTotal += " tvOS";
         #end
 
         trace("In total, you're: " + sayTotal);

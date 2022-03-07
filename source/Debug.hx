@@ -21,12 +21,16 @@ using StringTools;
  */
 class Debug
 {
+	// JOELwindows7: add icon to these
 	static final LOG_STYLE_ERROR:LogStyle = new LogStyle('[ERROR] ', 'FF8888', 12, true, false, false, 'flixel/sounds/beep', true);
 	static final LOG_STYLE_WARN:LogStyle = new LogStyle('[WARN ] ', 'D9F85C', 12, true, false, false, 'flixel/sounds/beep', true);
 	static final LOG_STYLE_INFO:LogStyle = new LogStyle('[INFO ] ', '5CF878', 12, false);
 	static final LOG_STYLE_TRACE:LogStyle = new LogStyle('[TRACE] ', '5CF878', 12, false);
 
 	static var logFileWriter:DebugLogWriter = null;
+
+	// JOELwindows7: make sure you can use fancy debug!
+	static var canBeFancy:Bool = false;
 
 	/**
 	 * Log an error message to the game's console.
@@ -40,7 +44,7 @@ class Debug
 			return;
 		var output = formatOutput(input, pos);
 		writeToFlxGLog(output, LOG_STYLE_ERROR);
-		writeToLogFile(output, 'ERROR');
+		writeToLogFile(output, 'ERROR'); // JOELwindows7: I add icon.
 	}
 
 	/**
@@ -55,7 +59,7 @@ class Debug
 			return;
 		var output = formatOutput(input, pos);
 		writeToFlxGLog(output, LOG_STYLE_WARN);
-		writeToLogFile(output, 'WARN');
+		writeToLogFile(output, 'WARN'); // JOELwindows7: I add icon.
 	}
 
 	/**
@@ -69,7 +73,7 @@ class Debug
 			return;
 		var output = formatOutput(input, pos);
 		writeToFlxGLog(output, LOG_STYLE_INFO);
-		writeToLogFile(output, 'INFO');
+		writeToLogFile(output, 'INFO'); // JOELwindows7: I add icon.
 	}
 
 	/**
@@ -84,7 +88,7 @@ class Debug
 			return;
 		var output = formatOutput(input, pos);
 		writeToFlxGLog(output, LOG_STYLE_TRACE);
-		writeToLogFile(output, 'TRACE');
+		writeToLogFile(output, 'TRACE'); // JOELwindows7: I add icon.
 	}
 
 	/**
@@ -216,7 +220,7 @@ class Debug
 		logInfo('HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
 		logInfo('Friday Night Funkin\' version: ${MainMenuState.gameVer}');
 		logInfo('KadeEngine version: ${MainMenuState.kadeEngineVer}');
-		logInfo('Last Funkin Moments version: ${MainMenuState.lastFunkinMomentVer}');
+		logInfo('Last Funkin Moments version: ${MainMenuState.lastFunkinMomentVer}'); // JOELwindows7: haha yeah!
 	}
 
 	/**
@@ -263,15 +267,11 @@ class Debug
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(HealthIcon, ["char", "isPlayer", "isOldIcon"], [FlxSprite]));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(Note, ["x", "y", "strumTime", "mustPress", "rawNoteData", "sustainLength"], []));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(Song, [
-			"chartVersion",
-			"song",
-			"speed",
-			"player1",
-			"player2",
-			"gfVersion",
-			"noteStyle",
-			"stage"
+			"chartVersion", "song", "speed", "player1", "player2", "gfVersion", "noteStyle", "stage", "variables", "diffVariables",
 		], []));
+		// JOELwindows7: oh haaiii
+		// JOELwindows7: oh hi there. lol A Hat in Time, Hat kid yey!!!
+		// add variables & diffVariables to that tracker profile for that song yeah
 	}
 
 	/**
@@ -332,7 +332,7 @@ class Debug
 		{
 			inArray = ['<NULL>'];
 		}
-		else if (!Std.is(input, Array))
+		else if (!Std.isOfType(input, Array)) // JOElwindows7: was Sts.id(v,t) (Deprecated). hohoho! you sneaky little punk!
 		{
 			inArray = [input];
 		}

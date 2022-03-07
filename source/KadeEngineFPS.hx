@@ -1,3 +1,4 @@
+import CoreState;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import openfl.Lib;
@@ -30,6 +31,18 @@ class KadeEngineFPS extends TextField
 		The current frame rate, expressed using frames-per-second
 	**/
 	public var currentFPS(default, null):Int;
+
+	public static var extraInfo:String; // JOELwindows7: extra text to be placed underneath.
+	public static var extraLoadingText:String; // JOELwindows7: loading text to be placed underneath.
+	public static var extraLoadingBar:String; // JOELwindows7: loading bar to be placed underneath. fancy SHOOM loading bar.
+	public static var extraLoadingPercentage:Float; // JOELwindows7: loading percentage to be placed underneath.
+	public static var extraLoadingType:ExtraLoadingType = ExtraLoadingType.NONE; // JOELwindows7: loading type to be placed underneath.
+	static var _vague_space_left:Int = 0; // JOELwindows7: vague space left to be placed underneath.
+	static var _vague_space_right:Int = 10; // JOELwindows7: vague space right to be placed underneath.
+	static var _vague_goToLeft:Bool = false; // JOELwindows7: vague direction to be placed underneath.
+	public static var extraLoadingSpinner:String = "-"; // JOELwindows7: loading spinner to be placed underneath.
+	public static var extraLoadingSpinnerIndex:Int = 0; // JOELwindows7: loading spinner index to be placed underneath. `-`,`\`,`|`,`/`
+	public static var showLoadingText:Bool; // JOELwindows7: visibility of loading text
 
 	public var bitmap:Bitmap;
 
@@ -81,10 +94,124 @@ class KadeEngineFPS extends TextField
 
 	public static var currentColor = 0;
 
+	// JOELwindows7: set loading text
+	public static function setLoadingText(text:String):Void
+	{
+		extraLoadingText = text;
+	}
+
+	//JOELwindows7: set loading percentage
+	public static function setLoadingPercentage(percentage:Float):Void
+	{
+		extraLoadingPercentage = percentage;
+	}
+
+	// JOELwindows7: set loading type
+	public static function setLoadingType(type:ExtraLoadingType):Void
+	{
+		extraLoadingType = type;
+	}
+
+	// JOELwindows7: set visibility of loading text
+	public static function setLoadingTextVisibility(visible:Bool):Void
+	{
+		showLoadingText = visible;
+	}
+
+	// JOELwindows7 enable/disable loading text
+	public static function toggleLoadingText():Void
+	{
+		showLoadingText = !showLoadingText;
+	}
+
 	// Event Handlers
 	@:noCompletion
 	private #if !flash override #end function __enterFrame(deltaTime:Float):Void
 	{
+		// JOELwindows7: clear extra info text beforehand
+		extraInfo = "";
+		if (extraLoadingPercentage > 100)
+			extraLoadingPercentage = 100;
+		if (extraLoadingPercentage < 0)
+			extraLoadingPercentage = 0;
+
+		// JOELwindows7: show loading text
+		if (showLoadingText)
+		{
+			if (extraLoadingSpinnerIndex > 3)
+				extraLoadingSpinnerIndex = 0;
+			switch (extraLoadingSpinnerIndex)
+			{
+				case 0:
+					extraLoadingSpinner = "-";
+				case 1:
+					extraLoadingSpinner = "\\";
+				case 2:
+					extraLoadingSpinner = "|";
+				case 3:
+					extraLoadingSpinner = "/";
+			}
+			if(extraLoadingType == ExtraLoadingType.GOING || extraLoadingType == ExtraLoadingType.VAGUE)
+				extraLoadingSpinnerIndex++;
+			switch (extraLoadingType)
+			{
+				case ExtraLoadingType.NONE:
+					extraLoadingBar = "[            ]";
+				case ExtraLoadingType.VAGUE:
+					// extraLoadingBar = "[" + String.fromCharCode(0x2588) + "           ]";
+					extraLoadingBar = "[SH";
+					for (i in 0...Std.int(_vague_space_left / 10))
+					{
+						extraLoadingBar += "o";
+					}
+					extraLoadingBar += "O";
+					if (_vague_goToLeft)
+					{
+						_vague_space_left -= 1;
+						_vague_space_right += 1;
+						if (_vague_space_left <= 0)
+						{
+							_vague_goToLeft = false;
+						}
+					}
+					else
+					{
+						_vague_space_left += 1;
+						_vague_space_right -= 1;
+						if (_vague_space_right <= 0)
+						{
+							_vague_goToLeft = true;
+						}
+					}
+					for (i in 0...Std.int(_vague_space_right / 10))
+					{
+						extraLoadingBar += "o";
+					}
+					extraLoadingBar += "M]";
+				case ExtraLoadingType.GOING:
+					extraLoadingBar = "[SH";
+					var leftHowMuch:Int = 10;
+					for (i in 0...Std.int(extraLoadingPercentage / 10))
+					{
+						extraLoadingBar += "O";
+						leftHowMuch--;
+					}
+					for (i in 0...leftHowMuch)
+					{
+						extraLoadingBar += "_";
+					}
+					extraLoadingBar += "M]";
+				case ExtraLoadingType.DONE:
+					extraLoadingBar = "[COOL & GOOD!]";
+				default:
+			}
+			extraInfo += extraLoadingText + "\n" + extraLoadingSpinner + " " + extraLoadingBar + "\n";
+		}
+		else
+		{
+			extraInfo += "";
+		}
+
 		if (MusicBeatState.initSave)
 			if (FlxG.save.data.fpsRain)
 			{
@@ -126,8 +253,8 @@ class KadeEngineFPS extends TextField
 			// JOELwindows7: Kade, STOP! this kind of comparison is cringe! why not do it like this:
 			text = (FlxG.save.data.fps ? "FPS: " + currentFPS + "\n" : "")
 				+ (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "")
-				+ (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer +
-					"\n" : ""); // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
+				+ (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "")
+				+ extraInfo; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
 			// remember to have \n at the beginning of the line at available if case.
 			// No, at the end of line at available if case. + "\n" one.
 

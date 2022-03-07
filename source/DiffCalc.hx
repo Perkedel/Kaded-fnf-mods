@@ -21,7 +21,8 @@ class DiffCalc
 	public static var lastDiffHandOne:Array<Float> = [];
 	public static var lastDiffHandTwo:Array<Float> = [];
 
-	public static function CalculateDiff(song:SongData, ?accuracy:Float = .93)
+	// JOELwindows7: there is counted by rate!
+	public static function CalculateDiff(song:SongData, ?accuracy:Float = .93, ?disregardRate:Bool = false)
 	{
 		// cleaned notes
 		var cleanedNotes:Array<SmallNote> = [];
@@ -39,10 +40,11 @@ class DiffCalc
 			{
 				var gottaHitNote:Bool = i.mustHitSection;
 
+				// JOELwindows7: here counted by rate you should keep in mind!
 				if (ii[1] >= 3 && gottaHitNote)
-					cleanedNotes.push(new SmallNote(ii[0] / FreeplayState.rate, Math.floor(Math.abs(ii[1]))));
+					cleanedNotes.push(new SmallNote(ii[0] / (!disregardRate ? FreeplayState.rate : 1.0), Math.floor(Math.abs(ii[1]))));
 				if (ii[1] <= 4 && !gottaHitNote)
-					cleanedNotes.push(new SmallNote(ii[0] / FreeplayState.rate, Math.floor(Math.abs(ii[1]))));
+					cleanedNotes.push(new SmallNote(ii[0] / (!disregardRate ? FreeplayState.rate : 1.0), Math.floor(Math.abs(ii[1]))));
 			}
 		}
 

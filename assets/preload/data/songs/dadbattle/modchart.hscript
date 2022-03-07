@@ -1,0 +1,147 @@
+//JOELwindows7: steal example from BulbyVR
+// https://github.com/FunkinModdingPlus/ModdingPlus/blob/master/assets/data/milf/modchart.hscript
+// It should work the same like Kade Engine Lua Modchart, just this time, in Haxe Language
+// Lua Modchart Documentation at: https://kadedev.github.io/Kade-Engine/modchart .
+// https://github.com/KadeDev/Kade-Engine/wiki
+// But remember, this is Haxe Script. convert your syntax format to it here.
+// templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
+
+//Dad Battle whohwohow
+
+function loaded(song)
+{
+
+}
+
+function start(song) 
+{
+
+}
+
+function songStart()
+{
+
+}
+
+function songEng()
+{
+
+}
+
+function update(elapsed)
+{
+
+}
+
+function beatHit(beat)
+{
+    if(beat == 0
+    || beat == 16
+    || beat == 224
+    || beat == 232
+    || beat == 240) 
+    {
+        randomizeColoring();
+        vibrate(0, 400);
+    }
+
+    if(flashing)
+    {
+        if(beat >= 144 && beat <= 156)
+        {
+            randomizeColoring();
+            vibrate(0, 200);
+        }
+    }
+
+    if(distractions)
+    {
+        if(beat >= 144 && beat <= 156)
+        {
+            camZoomNow(0.015, 0.03, 1.35);
+            vibrate(0, 100);
+        }
+    }
+
+
+    if(beat == 32 || beat == 160)
+        hideColoring(false, 0);
+}
+
+function stepHit(step)
+{
+    if(flashing)
+    {
+        if(step >= 623 && step <= 639)
+        {
+            randomizeColoring();
+            vibrate(0, 70);
+        }
+    }
+}
+
+function keyPressed(key)
+{
+
+}
+
+function keyReleased(key)
+{
+    
+}
+
+function playerTwoTurn()
+{
+
+}
+
+function playerTwoMiss(note, position)
+{
+
+}
+
+function playerTwoSing(note, position)
+{
+
+}
+
+function playerOneTurn()
+{
+    
+}
+
+function playerOneMiss(note, position)
+{
+
+}
+
+function playerOneSing(note, position)
+{
+
+}
+
+function colorizeColorablebyKey(note, justOne, toWhichBg)
+{
+    if (note == 'left')
+    {
+        trace("set color magenta (hscript)");
+        chooseColoringColor("magenta", justOne, toWhichBg);
+    }
+    else if (note == 'down')
+    {
+        trace("set color cyan (hscript)");
+        chooseColoringColor("cyan", justOne, toWhichBg);
+    }
+    else if (note == 'up')
+    {
+        trace("set color lime (hscript)");
+        chooseColoringColor("lime", justOne, toWhichBg);
+    }
+    else if (note == 'right')
+    {
+        trace("set color red (hscript)");
+        chooseColoringColor("red", justOne, toWhichBg);
+    }
+}
+
+trace("finish loading hscript <3 yay cool and good.");

@@ -21,6 +21,41 @@ function songStart()
 
 }
 
+function songEnd()
+{
+
+}
+
+function introCutscene()
+{
+
+}
+
+function outroCutscene()
+{
+
+}
+
+function dialogueStart()
+{
+
+}
+
+function dialogueEnd()
+{
+
+}
+
+function dialogueSkip()
+{
+    //dialogueEnd() // do you want to do the same anyway?
+}
+
+function dialogueNext(index)
+{
+    //`index` is where dialogue line number you were at
+}
+
 function update(elapsed)
 {
 
@@ -80,22 +115,22 @@ function colorizeColorablebyKey(note, justOne, toWhichBg)
 {
     if (note == 'left')
     {
-        trace("set color magenta (hscript)");
+        //trace("set color magenta (hscript)");
         chooseColoringColor("magenta", justOne, toWhichBg);
     }
     else if (note == 'down')
     {
-        trace("set color cyan (hscript)");
+        //trace("set color cyan (hscript)");
         chooseColoringColor("cyan", justOne, toWhichBg);
     }
     else if (note == 'up')
     {
-        trace("set color lime (hscript)");
+        //trace("set color lime (hscript)");
         chooseColoringColor("lime", justOne, toWhichBg);
     }
     else if (note == 'right')
     {
-        trace("set color red (hscript)");
+        //trace("set color red (hscript)");
         chooseColoringColor("red", justOne, toWhichBg);
     }
 }

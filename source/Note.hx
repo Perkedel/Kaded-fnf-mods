@@ -36,6 +36,7 @@ class Note extends FlxSprite
 	public var wasGoodHit:Bool = false;
 	public var prevNote:Note;
 	public var modifiedByLua:Bool = false;
+	public var totalOverride:Bool = false; // JOELwindows7: enable to disable special parametering & leave its original parametering.
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 	public var originColor:Int = 0; // The sustain note's original note's color
@@ -60,6 +61,13 @@ class Note extends FlxSprite
 	public static var BLUE_NOTE:Int = 1;
 	public static var RED_NOTE:Int = 3;
 
+	// JOELwindows7: Psyched Lua shit
+	public var noteSplashDisabled:Bool = false;
+	public var noteSplashTexture:String = null;
+	public var noteSplashHue:Float = 0;
+	public var noteSplashSat:Float = 0;
+	public var noteSplashBrt:Float = 0;
+
 	public var rating:String = "shit";
 
 	public var modAngle:Float = 0; // The angle set by modcharts
@@ -80,6 +88,13 @@ class Note extends FlxSprite
 	public var inCharter:Bool = false; // JOELwindows7: globalize inCharter for all charting state detection
 	public var noteTypeCheck:String; // JOELwindows7: globalize noteTypeCheck for all noteSkin detection
 
+	public var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound audio file to play when hit & hitsound option enabled.
+	public var vowelType:Int = 0; // JOELwindows7: vowel type. radpas12131's mod. a i u e o.
+
+	// IDEA: JOELwindows7: you can have more variables about string or whatever too! like
+	// sylables or phoneme for VOCALOID
+	// noteNumber MIDI note number for everything
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
 			?bet:Float = 0, ?noteType:Int = 0) // JOELwindows7: edge long noteType
 	{
@@ -95,6 +110,7 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		this.inCharter = inCharter;
 		isSustainNote = sustainNote;
+		// hitsoundPath = hitsoundId; // yeah the note hitsound
 
 		x += 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
@@ -147,11 +163,19 @@ class Note extends FlxSprite
 			switch (noteType)
 			{
 				case 2:
-					frames = Paths.getSparrowAtlas('NOTE_assets_special');
+					Debug.logTrace("Whoah dude they adds mine?");
+					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+						noteType);
+					// frames = PlayState.noteskinSpriteMine;
+					Debug.logTrace("Mine graphic loaded");
+				// TODO: other note types! special 1, important 3, never 4, etc.
 				default:
-					frames = PlayState.noteskinSprite;
+					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+						noteType);
+					// frames = PlayState.noteskinSprite;
 			}
 			// frames = PlayState.noteskinSprite;
+			// frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, noteType);
 
 			for (i in 0...4)
 			{
@@ -163,28 +187,41 @@ class Note extends FlxSprite
 			setGraphicSize(Std.int(width * 0.7));
 			updateHitbox();
 			antialiasing = FlxG.save.data.antialiasing;
+			// Debug.logTrace("Charter note yau");
 		}
 		else
 		{
-			if (PlayState.SONG.noteStyle == null)
+			if (PlayState.SONG != null)
 			{
-				switch (PlayState.storyWeek)
+				if (PlayState.SONG.noteStyle == null)
 				{
-					case 6:
-						noteTypeCheck = 'pixel';
+					switch (PlayState.storyWeek)
+					{
+						case 6:
+							noteTypeCheck = 'pixel';
+					}
+				}
+				else
+				{
+					noteTypeCheck = PlayState.SONG.noteStyle;
 				}
 			}
 			else
 			{
-				noteTypeCheck = PlayState.SONG.noteStyle;
+				noteTypeCheck = 'normal';
 			}
 
 			switch (noteTypeCheck)
 			{
 				case 'pixel':
-					loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
+					// JOELwindows7: resafety check I guess.
+					loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+						false, noteType),
+						true, 17, 17);
 					if (isSustainNote)
-						loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+						loadGraphic(PlayState.noteskinPixelSpriteEnds != null ? PlayState.noteskinPixelSpriteEnds : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+							true, noteType),
+							true, 7, 6);
 
 					for (i in 0...4)
 					{
@@ -195,36 +232,36 @@ class Note extends FlxSprite
 
 					setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
 					updateHitbox();
-				case 'saubo':
-					// JOELwindows7: sussy frames for special noteType
-					// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
-					// for(amogus in fuckingSussy.frames)
-					// {
-					// 	this.frames.pushFrame(amogus);
-					// }
+				// case 'saubo':
+				// 	// JOELwindows7: sussy frames for special noteType
+				// 	// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+				// 	// for(amogus in fuckingSussy.frames)
+				// 	// {
+				// 	// 	this.frames.pushFrame(amogus);
+				// 	// }
 
-					// JOELwindows7: LFM original noteskin
-					frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-					// JOELwindows7: noteType speziale
-					switch (noteType)
-					{
-						case 2:
-							frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
-						default:
-							frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-					}
-					// frames = PlayState.noteskinSprite;
+				// 	// JOELwindows7: LFM original noteskin
+				// 	// frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+				// 	// JOELwindows7: noteType speziale
+				// 	switch (noteType)
+				// 	{
+				// 		case 2:
+				// 			frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+				// 		default:
+				// 			frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+				// 	}
+				// 	// frames = PlayState.noteskinSprite;
 
-					for (i in 0...4)
-					{
-						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
-						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
-						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
-					}
+				// 	for (i in 0...4)
+				// 	{
+				// 		animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+				// 		animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+				// 		animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+				// 	}
 
-					setGraphicSize(Std.int(width * 0.7));
-					updateHitbox();
-					antialiasing = FlxG.save.data.antialiasing;
+				// 	setGraphicSize(Std.int(width * 0.7));
+				// 	updateHitbox();
+				// 	antialiasing = FlxG.save.data.antialiasing;
 				default:
 					// JOELwindows7: sussy frames for special noteType
 					// var fuckingSussy = Paths.getSparrowAtlas('NOTE_assets_special');
@@ -241,7 +278,23 @@ class Note extends FlxSprite
 					// 	default:
 					// 		frames = Paths.getSparrowAtlas('NOTE_assets');
 					// }
-					frames = PlayState.noteskinSprite;
+					// JOELwindows7: okay fine, let's put here, how about that?
+					// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle) : PlayState.noteskinSprite;
+					// JOELwindows7: okay let's be advanced
+					switch (noteType)
+					{
+						case 2:
+							// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(NoteSkinHelpers.giveMeNoteSkinPath(noteType) +
+							// 	'-mine') : PlayState.noteskinSpriteMine;
+							// frames = PlayState.SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(PlayState.SONG.noteStyle, noteType,
+							// 	PlayState.SONG.loadNoteStyleOtherWayAround) : PlayState.noteskinSpriteMine;
+							frames = PlayState.noteskinSpriteMine; // JOELwindows7: smaller memory footprint
+						default:
+							// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(NoteSkinHelpers.giveMeNoteSkinPath(noteType)) : PlayState.noteskinSprite;
+							// frames = PlayState.SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(PlayState.SONG.noteStyle, noteType,
+							// 	PlayState.SONG.loadNoteStyleOtherWayAround) : PlayState.noteskinSprite;
+							frames = PlayState.noteskinSprite; // JOELwindows7: smaller memory footprint
+					}
 
 					for (i in 0...4)
 					{
@@ -261,7 +314,17 @@ class Note extends FlxSprite
 		animation.play(dataColor[noteData] + 'Scroll');
 		originColor = noteData; // The note's origin color will be checked by its sustain notes
 
-		if (FlxG.save.data.stepMania && !isSustainNote && !PlayState.instance.executeModchart)
+		// JOELwindows7: whoa, the PlayState.instance can be null! make sure be careful
+		// JOELwindows7: okay we still have to quantize color.
+		if (FlxG.save.data.stepMania
+			&& !isSustainNote
+			&& ((FlxG.save.data.forceStepmania) ? true : ((PlayState.instance != null) ? (!PlayState.instance.executeModchart
+				&& !PlayState.instance.executeModHscript) : true)))
+			// JOELwindows7: huh! turns out Kade decided to not quantize note if any modchart is running.
+			// perhaps for authenticity in retransform craze, due to to this quantization only select other arrow,
+			// and rotates it which dislodge the supposed original angle. idk just saying.
+			// Okay, now I have installed force option. idk this still not recommended because again, pre-rotate messes up your rotation
+			// craze calculations!
 		{
 			var col:Int = 0;
 
@@ -334,21 +397,27 @@ class Note extends FlxSprite
 					prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
 			}
 		}
+
+		// Debug.logTrace("NOte newed enojy");
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (!modifiedByLua)
-			angle = modAngle + localAngle;
-		else
-			angle = modAngle;
+		if (!totalOverride)
+		{ // JOELwindows7: here total override, if on forget special parameter!
+			if (!modifiedByLua)
+				angle = modAngle + localAngle;
+			else
+				angle = modAngle;
 
-		if (!modifiedByLua)
-		{
-			if (!sustainActive)
+			// JOELwindows7: sneaky little punk! you can't get away from this!
+			if (!modifiedByLua)
 			{
-				alpha = 0.3;
+				if (!sustainActive)
+				{
+					alpha = 0.3;
+				}
 			}
 		}
 
@@ -396,9 +465,12 @@ class Note extends FlxSprite
 			switch (noteType)
 			{
 				case 2:
-					frames = Paths.getSparrowAtlas('NOTE_assets_special');
+					// frames = Paths.getSparrowAtlas('NOTE_assets_special');
+					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+						2);
 				default:
-					frames = PlayState.noteskinSprite;
+					// frames = PlayState.noteskinSprite;
+					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
 			}
 			// frames = PlayState.noteskinSprite;
 
@@ -431,9 +503,15 @@ class Note extends FlxSprite
 			switch (noteTypeCheck)
 			{
 				case 'pixel':
-					loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
+					// JOELwindows7: resafety check I guess.
+					// loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
+					loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin),
+						true, 17, 17);
 					if (isSustainNote)
-						loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+						// loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+						loadGraphic(PlayState.noteskinPixelSpriteEnds != null ? PlayState.noteskinPixelSpriteEnds : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+							true),
+							true, 7, 6);
 
 					for (i in 0...4)
 					{
@@ -444,36 +522,36 @@ class Note extends FlxSprite
 
 					setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
 					updateHitbox();
-				case 'saubo':
-					// JOELwindows7: sussy frames for special noteType
-					// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
-					// for(amogus in fuckingSussy.frames)
-					// {
-					// 	this.frames.pushFrame(amogus);
-					// }
+				// case 'saubo':
+				// 	// JOELwindows7: sussy frames for special noteType
+				// 	// var fuckingSussy = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+				// 	// for(amogus in fuckingSussy.frames)
+				// 	// {
+				// 	// 	this.frames.pushFrame(amogus);
+				// 	// }
 
-					// JOELwindows7: LFM original noteskin
-					frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-					// JOELwindows7: noteType speziale
-					switch (noteType)
-					{
-						case 2:
-							frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
-						default:
-							frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
-					}
-					// frames = PlayState.noteskinSprite;
+				// 	// JOELwindows7: LFM original noteskin
+				// 	frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+				// 	// JOELwindows7: noteType speziale
+				// 	switch (noteType)
+				// 	{
+				// 		case 2:
+				// 			frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets_special');
+				// 		default:
+				// 			frames = Paths.getSparrowAtlas('noteskins/saubo/NOTE_assets');
+				// 	}
+				// 	// frames = PlayState.noteskinSprite;
 
-					for (i in 0...4)
-					{
-						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
-						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
-						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
-					}
+				// 	for (i in 0...4)
+				// 	{
+				// 		animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+				// 		animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+				// 		animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+				// 	}
 
-					setGraphicSize(Std.int(width * 0.7));
-					updateHitbox();
-					antialiasing = FlxG.save.data.antialiasing;
+				// 	setGraphicSize(Std.int(width * 0.7));
+				// 	updateHitbox();
+				// 	antialiasing = FlxG.save.data.antialiasing;
 				default:
 					// JOELwindows7: sussy frames for special noteType
 					// var fuckingSussy = Paths.getSparrowAtlas('NOTE_assets_special');
@@ -490,7 +568,21 @@ class Note extends FlxSprite
 					// 	default:
 					// 		frames = Paths.getSparrowAtlas('NOTE_assets');
 					// }
-					frames = PlayState.noteskinSprite;
+					// frames = PlayState.noteskinSprite;
+					// JOELwindows7: okay fine, let's put here, how about that?
+					// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle) : PlayState.noteskinSprite;
+					// JOELwindows7: okay let's be advanced
+					switch (noteType)
+					{
+						case 2:
+							frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle +
+								'-mine') : PlayState.noteskinSpriteMine;
+						// frames = PlayState.noteskinSpriteMine;
+						default:
+							frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' +
+								PlayState.SONG.noteStyle) : PlayState.noteskinSprite;
+							// frames = PlayState.noteskinSprite;
+					}
 
 					for (i in 0...4)
 					{

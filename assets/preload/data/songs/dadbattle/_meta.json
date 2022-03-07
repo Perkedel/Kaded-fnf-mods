@@ -1,5 +1,6 @@
 {
     "name": "Dad Battle",
     "offset": 0,
-    "artist": "Kawai Sprite"
+    "artist": "Kawai Sprite",
+    "forceHscriptModchart": true
 }

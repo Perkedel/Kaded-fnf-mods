@@ -1,6 +1,12 @@
 # Big shoutout yay
 thancc for all these resources! without them, everything is impossible.
 
+# Visit website!
+- GitHub https://github.com/Perkedel/Kaded-fnf-mods
+- Odysee https://odysee.com/@JOELwindows7:a/last-funkin-moments:b
+- GameBanana https://gamebanana.com/mods/293257
+- GameJolt https://gamejolt.com/games/last-funkin-moments/634559
+
 # About the License
 Hey, am I allowed to relicense? I was meant to just license part of my mods that's it, your original code is still yours.
 
@@ -329,6 +335,11 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference REGEX references
 - https://github.com/HaxeFlixel/flixel-demos/blob/master/UserInterface/FlxTypeText/source/MenuState.hx prefix of FlxTypeText lol
 - https://github.com/HaxeFlixel/flixel-demos/blob/master/Effects/FlxTween/source/PlayState.hx more tween like Tween color
+- https://fridaynightfunking.fandom.com/wiki/Carol info about bbpanzu's Carol yess.
+- https://ninjamuffin99.newgrounds.com/news/post/1091199 tips & trick of html5 build
+- https://ashes999.github.io/learnhaxe/animated-gifs-in-haxeflixel.html loading GIF in Flixel
+- https://twitter.com/radpas12131/status/1500159332377559040?s=20&t=5MiBaghroIAKZTWklFv4fQ radpas13121 the voweltype. select mouth type for the lip sync yey! btw, he's Indonesian wow!
+- https://twitter.com/fyre_bright/status/1500253535044354051?s=20&t=KMnR9Pkzf6sqBkFR9KXSSg BrightFyre week resume!
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -436,6 +447,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://gamebanana.com/mods/298149 inspiration for using copyrighted ideas which in this case, Disney Pixar, Luca. yep. that's it.
 - https://odysee.com/@JOELwindows7:a/OldMacDonald-Had-a-bin-cannon:2?r=72GvXbostV9AxDEqgXmRx9Sp1hBw7qqx OldMcdonal had a bin cannot lol Bill Wurtz. full credit in end of video & that description.
 - https://github.com/kem0x/openfl-haxeflixel-video-code/tree/main/source/ndll webm helper to count frames right wawa instead of manually `ffprobe`.
+- https://github.com/ItIsIWeeg/WeegModPublic/tree/9a0bb36819d7b7129bc3ee1c5347d1ff1575b977/source/ndll ItIsIWeeg. backed up the source code above of that kem0x frame counter that now privated
 - http://songsindonesia.didiharyadi.com/midi/index.html (WARNING: except Indonesia Raya and some: For Personal & Education Purpose only) Didi Haryadi MIDIs. take Indonesia Raya MIDI cover.
 - https://api.haxeflixel.com/flixel/system/FlxPreloader.html polgon Preloadering
 - https://gamebanana.com/blogs/19216 BonkMayker's meme of Old web. Check this project's README.md to see in action. you can implement yourself too in comments and post anywhere that complies with the HTML syntaxes.
@@ -454,12 +466,26 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.youtube.com/watch?v=iiQfjYcpJfQ https://pastebin.com/eLy6Mxte . add mine note type
 - https://github.com/TentaRJ/GameJolt-FNF-Integration https://github.com/TentaRJ/tentools TentaRJ. Stuffs like GameJolt Achievements and perhaps other things later.
 - https://design.ubuntu.com/font/ Canonical. Ubuntu font set yeay!
-- https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Conso ah this tool right here to get hex color. 
+- https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Consortium. ah this tool right here to get hex color. 
 - https://github.com/marketplace/actions/butler-push push to itch and
 - https://github.com/marketplace/actions/setup-haxe-environment setup da haxe CI now
 - https://gamebanana.com/mods/336567 https://twitter.com/RedstyP/status/1460982660751257601?s=20 (WARNING: CC4.0-BY-NC-ND, but can reuse if you credit all these 3 on credit sidebar) Redsty Phoenix (everything this thing, Co-Animator, Artis), P (16th letter), & IronB (banner). The Playable Standalone GF yess! 
 - https://github.com/EnigmaEngine/EnigmaEngine Master Eric. Kade FNF fork with Quality of Life feature & pioneer of Polymod ModCore system. taking inspiration & perhaps yoink some of their stuff back in here. Obviously needs to be edited to fit Kade-LFM specification, No replacement is allowed, week must be added by this Kade-LFM format & rereverse engineered (if the mod ports from somebody's mod). The Enigma repository did alot of drastic changes that seems have broken compatibilities with Kade's current structure. While it's good to sort it out, but then it will / could be difficult to pull the new upstream commits back to there.
 - https://github.com/polybiusproxy/PolyEngine/ Polybius proxy. this where BrightFyre maybe contributed or taken MP4 support to/from. Yeah basically this is mod that pioneers mp4 support. Oh yeah infact this is original MP4 support, BrightFyre yanked this for us all to implement. No, I do not shame BrightFyre, it's cool and good! we finally have easy to implement VLC, pecking finally!
+- https://musical-artifacts.com/artifacts/1600 Pedmanxd999. Here SF2 Soundfont consisting vocals of FNF including mods too aswell. That's right, that includes also deleted & privated ones!
+- https://youtu.be/7GPmOYlUVLc BahnDaten (WARNING: COPYRIGHTED SONG, NO CLEAR CHART LICENSE). Simple Dimple FNF with modchart whoahow!!!
+- https://gamebanana.com/mods/327730 theworsttrash:v@ (WARNING: NO BETADCIU ALLOWED i think). Jaiden colored GF.
+- https://gamebanana.com/mods/342500 Popstarbird25 . Bf with beanie
+- https://github.com/kem0x/Nexus-Engine kem0x. Here his fusion of Kade Engine 1.8 ish + Psych Engine yeah. some new stuffs like shadered things like background, effects, etc.!!!!
+- https://github.com/KadeDev/Hex-The-Weekend-Update https://gamejolt.com/games/hex/644168 YinYang48 (WARNING: has ND & NC). Stuff to be yoinked here. Kade never leaves his friends away. However, how about everyone of us? Well, fine. Just yoink the code!!!
+- https://gamebanana.com/tools/7714 Punkinator7. Top Psych Notes & Events here. Has Banbuds mine, Kolsan HD important, etc. etc.
+- https://gamebanana.com/tools/7923 Catt47. Cool Notes for Free yey!
+- https://www.dafont.com/a-atmospheric.font https://www.fontspace.com/a-atmospheric-font-f46808 wepfont (Uhh: Freeware). just a cool sci-fi atmospheric font.
+- https://github.com/kem0x/FNF-ModShaders kem0x. proper modshader thingy yey. [Fireable](https://github.com/ItzFireable ) did lua implementation wow! [SqirraRNG](https://github.com/gedehari ) workaroundeh runtime.
+- https://github.com/GrowtopiaFli/openfl-haxeflixel-gif-code GWebDev / GrowtopiaFli. WHOAHOW!!! finally GIF loader. not complete yet, no frame select yet, but that should help recoup those who are not from SparrowAtlas XML days.
+- https://github.com/marketplace/actions/cache GitHub. cache build cache stuffs for faster CI building.
+- https://github.com/marketplace/actions/upload-a-build-artifact GitHub. upload build results
+- https://github.com/marketplace?type=actions&query=mingw+ GitHub. wait, what is this for? we don't use mingw right now. that's for Zumi's new factory in his palace.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

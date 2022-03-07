@@ -1,0 +1,235 @@
+//JOELwindows7: steal example from BulbyVR
+// https://github.com/FunkinModdingPlus/ModdingPlus/blob/master/assets/data/milf/modchart.hscript
+// It should work the same like Kade Engine Lua Modchart, just this time, in Haxe Language
+// Lua Modchart Documentation at: https://kadedev.github.io/Kade-Engine/modchart .
+// https://github.com/KadeDev/Kade-Engine/wiki
+// But remember, this is Haxe Script. convert your syntax format to it here.
+// templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
+
+var camZoomAllBeat = false;
+
+function loaded(song)
+{
+
+}
+
+function start(song) 
+{
+
+}
+
+function songStart()
+{
+
+}
+
+function songEng()
+{
+
+}
+
+function update(elapsed)
+{
+    /*
+    if (distractions){
+        if (curBeat == 66.500
+        || curBeat == 70.500)
+        {
+            camShake(.1, .5);
+        }
+    }
+    */
+}
+
+function beatHit(beat)
+{
+    if(distractions){
+        if (camZoomAllBeat)
+        {
+            camZoomNow(0.1, 0.03, 1.35);
+        }
+
+        if(beat == 64
+        || beat == 68
+        || beat == 72
+        || beat == 76
+        || beat == 80
+        || beat == 84
+        || beat == 88
+        || beat == 92
+        || beat == 96
+        || beat == 160
+        || beat == 164
+        || beat == 168
+        || beat == 172
+        || beat == 176
+        || beat == 180
+        || beat == 184
+        || beat == 188
+        || beat == 224
+        || beat == 228
+        || beat == 232
+        || beat == 236
+        || beat == 240
+        || beat == 244
+        || beat == 248
+        || beat == 252)
+        {
+            camShake(.01, .5);
+            vibrate(0,500);
+        }
+
+        if(beat == 192
+        || beat == 196
+        || beat == 200
+        || beat == 204
+        || beat == 208
+        || beat == 212
+        || beat == 216)
+        {
+            camShake(.01, 2);
+            vibrate(0,2000);
+            camZoomNow(1.5, 0.5, 3);
+        }
+
+        if(beat == 208){
+            camZoomAllBeat = true;
+        }
+        if(beat == 220){
+            camZoomAllBeat = false;
+        }
+
+        if(beat == 268)
+        {
+            tweenCameraZoom(0, 5);
+        }
+    }
+}
+
+function stepHit(step)
+{
+    if(distractions){
+        if( step == 282 || step == 266
+        || step == 298
+        || step == 313
+        || step == 329
+        || step == 346
+        || step == 361
+        || step == 377
+        || step == 649
+        || step == 665
+        || step == 681
+        || step == 697
+        || step == 713
+        || step == 729
+        || step == 746
+        || step == 762
+        || step == 904
+        || step == 905
+        || step == 920
+        || step == 922
+        || step == 936
+        || step == 937
+        || step == 952
+        || step == 953
+        || step == 965
+        || step == 981
+        || step == 997
+        || step == 1013)
+        {
+            camShake(.02, .5);
+            vibrate(0,500);
+        }
+
+        if( step == 63 || step == 66 
+        || step == 79 || step == 82
+        || step == 448 || step == 450
+        || step == 111 || step == 114
+        || step == 447 || step == 450
+        || step == 463 || step == 466
+        || step == 495 || step == 497
+        || step == 1065 || step == 1069)
+        {
+            camZoomNow(0.1, 0.03, 1.35);
+        }
+
+        if(step == 71 || step == 74
+        || step == 87 || step == 90
+        || step == 103 || step == 106
+        || step == 120 || step == 122
+        || step == 455 || step == 458
+        || step == 472 || step == 474
+        || step == 487 || step == 490
+        || step == 503 || step == 506
+        || step == 1067)
+        {
+            camZoomNow(-0.1, 0.03, 1.35);
+        }
+    }
+}
+
+function keyPressed(key)
+{
+
+}
+
+function keyReleased(key)
+{
+    
+}
+
+function playerTwoTurn()
+{
+
+}
+
+function playerTwoMiss(note, position)
+{
+
+}
+
+function playerTwoSing(note, position)
+{
+
+}
+
+function playerOneTurn()
+{
+    
+}
+
+function playerOneMiss(note, position)
+{
+
+}
+
+function playerOneSing(note, position)
+{
+
+}
+
+function colorizeColorablebyKey(note, justOne, toWhichBg)
+{
+    if (note == 'left')
+    {
+        //trace("set color magenta (hscript)");
+        chooseColoringColor("magenta", justOne, toWhichBg);
+    }
+    else if (note == 'down')
+    {
+        //trace("set color cyan (hscript)");
+        chooseColoringColor("cyan", justOne, toWhichBg);
+    }
+    else if (note == 'up')
+    {
+        //trace("set color lime (hscript)");
+        chooseColoringColor("lime", justOne, toWhichBg);
+    }
+    else if (note == 'right')
+    {
+        //trace("set color red (hscript)");
+        chooseColoringColor("red", justOne, toWhichBg);
+    }
+}
+
+trace("finish loading hscript <3 yay cool and good.");

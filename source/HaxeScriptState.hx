@@ -1,4 +1,6 @@
-// package;
+package;
+
+import flixel.util.FlxAxes;
 import utils.Asset2File;
 import flixel.util.FlxDestroyUtil;
 import flixel.*;
@@ -60,7 +62,11 @@ import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
+#if FEATURE_GIF
+import flixel.FlxGifSprite;
+#end
 import openfl.filters.ShaderFilter;
+import openfl.filters.BitmapFilter;
 import openfl.display.DisplayObject;
 import openfl.display.Stage;
 import openfl.display.Sprite;
@@ -117,6 +123,12 @@ class HaxeScriptState
 	public static var hscriptSprite:Map<String, FlxSprite> = [];
 
 	public var haxeWiggles:Map<String, WiggleEffect> = new Map<String, WiggleEffect>();
+
+	// JOELwindows7: kem0x mod shader
+	#if EXPERIMENTAL_KEM0X_SHADERS
+	public var luaShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
+	#end
+	public var camTarget:FlxCamera;
 
 	/**
 	 * Instance HaxeScriptState.
@@ -179,6 +191,18 @@ class HaxeScriptState
 				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
 			case 10:
 				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
+			case 11:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
+			case 12:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
+			case 13:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
+			case 14:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
+			case 15:
+				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13],
+					args[14]);
+				// JOELwindows7: Okay that's enough & inefficient. wtf?!?! there's no way to procedurally do this?!?!?
 		}
 	}
 
@@ -353,6 +377,9 @@ class HaxeScriptState
 		setVar("strumLineY", PlayState.instance.strumLine.y);
 		trace("Camera target & Strumline height setVar");
 
+		// JOELwindows7: Statusoid
+		setVar("inGameOver", false); // psychedly
+
 		// JOELwindows7: mirror the variables here!
 		// Colored bg
 		setVar("originalColor", PlayState.Stage.originalColor);
@@ -361,6 +388,8 @@ class HaxeScriptState
 
 		// init just in case
 		setVar("songLength", 0);
+		setVar('variables', PlayState.SONG.variables);
+		setVar('diffVariables', PlayState.SONG.diffVariables);
 
 		// callbacks
 
@@ -375,9 +404,11 @@ class HaxeScriptState
 		setVar("playerStrums", PlayState.playerStrums);
 		setVar("enemyStrums", PlayState.cpuStrums);
 		setVar("hscriptPath", path);
-		setVar("boyfriend", PlayState.boyfriend);
-		setVar("gf", PlayState.gf);
-		setVar("dad", PlayState.dad);
+		@:privateAccess { // JOELwindows7: Oh yeah, I suggest that uh... idk. maybe keep those characters private? no idk.
+			setVar("boyfriend", PlayState.boyfriend);
+			setVar("gf", PlayState.gf);
+			setVar("dad", PlayState.dad);
+		}
 		setVar("vocals", PlayState.instance.vocals);
 		setVar("gfSpeed", PlayState.instance.gfSpeed);
 		setVar("tweenCamIn", PlayState.instance.tweenCamIn);
@@ -417,6 +448,10 @@ class HaxeScriptState
 			if (position & BEHIND_BF != 0)
 				PlayState.instance.add(PlayState.boyfriend);
 		});
+		// JOELwindows7: & even more!!!
+		setVar("thisStage", PlayState.Stage); // JOELwindows7: Stage class is already FlxG.stage I think..
+		setVar("Paths", Paths);
+
 		trace("setVar BulbyVR stuffs");
 
 		// You must init the function callbacks first before even considered existed.
@@ -434,6 +469,10 @@ class HaxeScriptState
 		});
 		addCallback("songStart", function(elapsed)
 		{
+		});
+		addCallback("songEnd", function(elapsed)
+		{
+			// JOELwindows7: call when song end before unloading this thing.
 		});
 		addCallback("stepHit", function(step)
 		{
@@ -462,13 +501,33 @@ class HaxeScriptState
 		addCallback("keyPressed", function(key)
 		{
 		});
+		addCallback("introCutscene", function()
+		{
+		});
+		addCallback("outroCutscene", function()
+		{
+		});
+		addCallback("dialogueStart", function()
+		{
+		});
+		addCallback("dialogueSkip", function()
+		{
+		});
+		addCallback("dialogueFinish", function()
+		{
+		});
+		addCallback("dialogueNext", function()
+		{
+		});
 		trace("Inited setVars");
 
 		// Callbacks heres, Kade Engine like
 		// Sprites
 		addCallback("makeSprite", makeHscriptSprite);
+		addCallback("makeGifSprite", makeHscriptGifSprite); // JOELwindows7: the Gif Sprite GWebdev
 		addCallback("changeDadCharacter", changeDadCharacter);
 		addCallback("changeBoyfriendCharacter", changeBoyfriendCharacter);
+		addCallback("changeGirlfriendCharacter", changeGirlfriendCharacter); // JOELwindows7: change GF
 		addCallback("getProperty", getPropertyByName);
 
 		addCallback("setNoteWiggle", function(wiggleId)
@@ -527,17 +586,36 @@ class HaxeScriptState
 		});
 		addCallback("pauseVideo", function()
 		{
-			if (!GlobalVideo.get().paused)
+			if (PlayState.instance.useVLC)
+			{
+				#if FEATURE_VLC
+				PlayState.instance.vlcHandler.pause();
+				#end
+			}
+			else if (!GlobalVideo.get().paused)
 				GlobalVideo.get().pause();
 		});
 		addCallback("resumeVideo", function()
 		{
-			if (GlobalVideo.get().paused)
+			if (PlayState.instance.useVLC)
+			{
+				#if FEATURE_VLC
+				PlayState.instance.vlcHandler.resume();
+				#end
+			}
+			else if (GlobalVideo.get().paused)
 				GlobalVideo.get().pause();
 		});
 		addCallback("restartVideo", function()
 		{
-			GlobalVideo.get().restart();
+			if (PlayState.instance.useVLC)
+			{
+				#if FEATURE_VLC
+				// PlayState.instance.vlcHandler.restart();
+				#end
+			}
+			else
+				GlobalVideo.get().restart();
 		});
 		addCallback("getVideoSpriteX", function()
 		{
@@ -602,6 +680,27 @@ class HaxeScriptState
 		addCallback("setHudZoom", function(zoomAmount:Float)
 		{
 			PlayState.instance.camHUD.zoom = zoomAmount;
+		});
+		addCallback("camShake", function(intensity:Float = .05, duration:Float = .5, force:Bool = true, axes:Int = 0, onComplete:String)
+		{
+			// JOELwindows7: decide which axes this shakes at. yoink from HaxeFlixel snippet of camera shake.
+			// https://snippets.haxeflixel.com/camera/shake/
+			var shakeAxes:FlxAxes = switch (axes)
+			{
+				case 0: FlxAxes.XY;
+				case 1: FlxAxes.X;
+				case 2: FlxAxes.Y;
+				case _: FlxAxes.XY;
+			}
+
+			// JOELwindows7: "I'm, not, that, OLD!!!" lol vs. oswald damn forgor user author.
+			FlxG.camera.shake(intensity, duration, function()
+			{
+				if (onComplete != '' && onComplete != null)
+				{
+					callHscript(onComplete, ["camera"]);
+				}
+			}, force, shakeAxes);
 		});
 
 		// Strumline
@@ -792,6 +891,12 @@ class HaxeScriptState
 			getActorByName(id).flipY = flip;
 		});
 
+		// JOELwindows7: moar
+		addCallback("setActorScrollFactor", function(x:Float, y:Float, id:String)
+		{
+			getActorByName(id).scrollFactor.set(x, y);
+		});
+
 		addCallback("getActorWidth", function(id:String)
 		{
 			return getActorByName(id).width;
@@ -820,6 +925,27 @@ class HaxeScriptState
 		addCallback("getActorY", function(id:String)
 		{
 			return getActorByName(id).y;
+		});
+
+		// JOELwindows7: moar get
+		addCallback("getActorScrollFactorX", function(id:String)
+		{
+			return getActorByName(id).scrollFactor.x;
+		});
+
+		addCallback("getActorScrollFactorY", function(id:String)
+		{
+			return getActorByName(id).scrollFactor.y;
+		});
+
+		addCallback("getActorVelocityX", function(id:String)
+		{
+			return getActorByName(id).velocity.x;
+		});
+
+		addCallback("getActorVelocityY", function(id:String)
+		{
+			return getActorByName(id).velocity.y;
 		});
 
 		addCallback("setWindowPos", function(x:Int, y:Int)
@@ -1336,6 +1462,71 @@ class HaxeScriptState
 				FlxG.camera.setFilters([new ShaderFilter(shaders[shaderIndex])]);
 		});*/
 
+		// JOELwindows7: kem0x mod shader
+		addCallback("createShaders", function(shaderName, ?optimize:Bool = false)
+		{
+			#if EXPERIMENTAL_KEM0X_SHADERS
+			var shader = new DynamicShaderHandler(shaderName, optimize);
+
+			return shaderName;
+			#end
+		});
+
+		addCallback("modifyShaderProperty", function(shaderName, propertyName, value)
+		{
+			#if EXPERIMENTAL_KEM0X_SHADERS
+			var handler = luaShaders[shaderName];
+			handler.modifyShaderProperty(propertyName, value);
+			#end
+		});
+
+		// shader set
+
+		addCallback("setShadersToCamera", function(shaderName:Array<String>, cameraName)
+		{
+			switch (cameraName)
+			{
+				case 'hud':
+					camTarget = PlayState.instance.camHUD;
+				case 'notes':
+					camTarget = PlayState.instance.camNotes;
+				case 'sustains':
+					camTarget = PlayState.instance.camSustains;
+				case 'game':
+					camTarget = FlxG.camera;
+			}
+
+			#if EXPERIMENTAL_KEM0X_SHADERS
+			var shaderArray = new Array<BitmapFilter>();
+
+			for (i in shaderName)
+			{
+				shaderArray.push(new ShaderFilter(luaShaders[i].shader));
+			}
+
+			camTarget.setFilters(shaderArray);
+			#end
+		});
+
+		// shader clear
+
+		addCallback("clearShadersFromCamera", function(cameraName)
+		{
+			switch (cameraName)
+			{
+				case 'hud':
+					camTarget = PlayState.instance.camHUD;
+				case 'notes':
+					camTarget = PlayState.instance.camNotes;
+				case 'sustains':
+					camTarget = PlayState.instance.camSustains;
+				case 'game':
+					camTarget = FlxG.camera;
+			}
+			camTarget.setFilters([]);
+		});
+		// end kem0x mod shader
+
 		// Special JOELwindows7
 		addCallback("cheerNow",
 			function(ooutOfBeatFractioning:Int = 4, doItOn:Int = 0, randomizeColor:Bool = false, justOne:Bool = false, toWhichBg:Int = 0, forceIt:Bool = false)
@@ -1357,6 +1548,22 @@ class HaxeScriptState
 		addCallback("justHey", function(forceIt:Bool = false)
 		{
 			PlayState.instance.justHey(forceIt);
+		});
+
+		addCallback("appearBlackbar", function(forHowLong:Float = 1, useStageLevel:Bool = false)
+		{
+			if (useStageLevel)
+				PlayState.Stage.appearBlackBar(forHowLong)
+			else
+				PlayState.instance.appearRealBlackBar(forHowLong);
+		});
+
+		addCallback("disappearBlackbar", function(forHowLong:Float = 1, useStageLevel:Bool = false)
+		{
+			if (useStageLevel)
+				PlayState.Stage.disappearBlackBar(forHowLong)
+			else
+				PlayState.instance.disappearRealBlackBar(forHowLong);
 		});
 
 		addCallback("prepareColorableBg",
@@ -1447,6 +1654,24 @@ class HaxeScriptState
 			// JOELwindows7: gamejolt toast
 			Main.gjToastManager.createToast(iconPath, title, description, sound);
 		});
+
+		// Cutscene calls
+		addCallback("introSceneIsDone", function()
+		{
+			@:privateAccess {
+				if (!PlayState.instance.introDoneCalled)
+					PlayState.instance.recallIntroSceneDone();
+			}
+		});
+
+		addCallback("outroSceneIsDone", function()
+		{
+			@:privateAccess {
+				if (!PlayState.instance.outroDoneCalled)
+					PlayState.instance.recallOutroSceneDone();
+			}
+		});
+
 		// end more special functions
 		// So you don't have to hard code your cool effects.
 
@@ -1472,7 +1697,7 @@ class HaxeScriptState
 			hscriptState.set(useHaxe, interp);
 		interp.execute(prog);
 		// call loaded once the file just loaded
-		executeState("loaded", [PlayState.SONG.song], useHaxe);
+		executeState("loaded", [PlayState.SONG.songId], useHaxe);
 
 		// interp.addModule(script);
 		// instancering:HaxeModBase = interp.createScriptClassInstance(className);
@@ -1546,22 +1771,24 @@ class HaxeScriptState
 		return Reflect.field(PlayState.instance, id);
 	}
 
-	function makeHscriptSprite(spritePath:String, toBeCalled:String, drawBehind:Bool)
+	function makeHscriptSprite(spritePath:String, toBeCalled:String, drawBehind:Bool, imageFolder:Bool = false, ?library:String = '')
 	{
 		// pre lowercasing the song name (makeLuaSprite)
-		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
-		switch (songLowercase)
-		{
-			case 'dad-battle':
-				songLowercase = 'dadbattle';
-			case 'philly-nice':
-				songLowercase = 'philly';
-		}
-
-		var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// }
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + songLowercase);
+		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
 
 		#if sys
-		if (PlayState.isSM)
+		if (PlayState.isSM && !imageFolder)
 			path = PlayState.pathToSm;
 		#end
 		trace(path);
@@ -1612,19 +1839,93 @@ class HaxeScriptState
 		return toBeCalled;
 	}
 
-	function makeAnimatedHscriptSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String)
+	// JOELwindows7: here gif sprite
+	function makeHscriptGifSprite(spritePath:String, toBeCalled:String, drawBehind:Bool, imageFolder:Bool = false, ?library:String = '')
+	{
+		// pre lowercasing the song name (makeLuaSprite)
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// }
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs/" + songLowercase);
+		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
+
+		#if sys
+		if (PlayState.isSM && !imageFolder)
+			path = PlayState.pathToSm;
+		#end
+		trace(path);
+
+		// var data:BitmapData = BitmapData.fromFile(#if !mobile path + "/" + spritePath + ".png" #else Asset2File.getPath(path + "/" + spritePath + ".png") #end
+		// );
+		// trace("bitmap data " + Std.string(data));
+		#if FEATURE_GIF
+		var sprite:FlxGifSprite = new FlxGifSprite(path, 0, 0);
+		// var imgWidth:Float = FlxG.width / data.width;
+		// var imgHeight:Float = FlxG.height / data.height;
+		// var scale:Float = imgWidth <= imgHeight ? imgWidth : imgHeight;
+		// var sprite:FlxGifSprite = new FlxGifSprite(spritePath, 0, 0, Std.int(imgWidth), Std.int(imgHeight));
+
+		// Cap the scale at x1
+		// if (scale > 1)
+		// 	scale = 1;
+
+		// sprite.makeGraphic(Std.int(data.width * scale), Std.int(data.width * scale), FlxColor.TRANSPARENT);
+
+		// var data2:BitmapData = sprite.pixels.clone();
+		// var matrix:Matrix = new Matrix();
+		// matrix.identity();
+		// matrix.scale(scale, scale);
+		// data2.fillRect(data2.rect, FlxColor.TRANSPARENT);
+		// data2.draw(data, matrix, null, null, null, true);
+		// sprite.pixels = data2;
+
+		hscriptSprite.set(toBeCalled, sprite);
+		trace("new " + toBeCalled + " GIF Sprite added \n" + Std.string(hscriptSprite.get(toBeCalled)));
+		// and I quote:
+		// shitty layering but it works!
+		@:privateAccess
+		{
+			if (drawBehind)
+			{
+				PlayState.instance.removeObject(PlayState.gf);
+				PlayState.instance.removeObject(PlayState.boyfriend);
+				PlayState.instance.removeObject(PlayState.dad);
+			}
+			PlayState.instance.addObject(sprite);
+			if (drawBehind)
+			{
+				PlayState.instance.addObject(PlayState.gf);
+				PlayState.instance.addObject(PlayState.boyfriend);
+				PlayState.instance.addObject(PlayState.dad);
+			}
+		}
+		#end
+		return toBeCalled;
+	}
+
+	function makeAnimatedHscriptSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String, imageFolder:Bool = false,
+			?library:String = '')
 	{
 		// pre lowercasing the song name (makeAnimatedLuaSprite)
-		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
-		switch (songLowercase)
-		{
-			case 'dad-battle':
-				songLowercase = 'dadbattle';
-			case 'philly-nice':
-				songLowercase = 'philly';
-		}
-
-		var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// }
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs" + songLowercase);
+		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
 
 		#if sys
 		if (PlayState.isSM)
@@ -1716,6 +2017,16 @@ class HaxeScriptState
 		PlayState.boyfriend = new Boyfriend(oldboyfriendx, oldboyfriendy, id);
 		PlayState.instance.addObject(PlayState.boyfriend);
 		PlayState.instance.iconP2.animation.play(id);
+	}
+
+	// JOELwindows7: also change girlfriend yess
+	function changeGirlfriendCharacter(id:String)
+	{
+		var oldgfx = PlayState.gf.x;
+		var oldgfy = PlayState.gf.y;
+		PlayState.instance.removeObject(PlayState.gf);
+		PlayState.gf = new Character(oldgfx, oldgfy, id);
+		PlayState.instance.addObject(PlayState.gf);
 	}
 
 	public static function createModchartState(rawMode:Bool = false, path:String = "", useHaxe:String = "modchart", useRetail:Bool = false):HaxeScriptState

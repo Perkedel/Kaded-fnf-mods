@@ -4,6 +4,7 @@ import Section.SwagSection;
 import haxe.Json;
 import haxe.format.JsonParser;
 import openfl.utils.Assets as OpenFlAssets;
+import tjson.TJSON;
 
 using StringTools;
 
@@ -12,13 +13,18 @@ class Event
 	public var name:String;
 	public var position:Float;
 	public var value:Float;
+	public var value2:Float; // JOELwindows7: another one
+	public var value3:Float; // JOELwindows7: aanother one
 	public var type:String;
 
-	public function new(name:String, pos:Float, value:Float, type:String)
+	// JOELwindows7: extra
+	public function new(name:String, pos:Float, value:Float, type:String, value2:Float, value3:Float)
 	{
 		this.name = name;
 		this.position = pos;
 		this.value = value;
+		this.value2 = value2; // JOELwindows7: extra
+		this.value3 = value3; // JOELwindows7: extra
 		this.type = type;
 	}
 }
@@ -44,6 +50,7 @@ typedef SongData =
 	 */
 	var artist:String; // JOELwindows7: the artist of it
 
+	var ?charter:String; // JOELwindows7: who charted the song.
 	var chartVersion:String;
 	var notes:Array<SwagSection>;
 	var eventObjects:Array<Event>;
@@ -59,20 +66,28 @@ typedef SongData =
 	var ?videoPath:String; // JOELwindows7: the video file path
 	var ?hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
 	var ?epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
+	var ?hasTankmanVideo:Bool; // JOELwindows7: same as hasVideo but this is for when entered PlayState like week7.
+	var ?tankmanVideoPath:String; // JOELwindows7: same as videoPath but this is for when entered PlayState like week7.
+	var ?hasEpilogueTankmanVideo:Bool; // JOELwindows7: same as hasEpilogueVideo but this is for when entered PlayState like week7.
+	var ?epilogueTankmanVideoPath:String; // JOELwindows7: same as epilogueVideoPath but this is for when entered PlayState like week7.
 	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
 	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
-	var useCustomStage:Bool; // JOELwindows7: should use custom stage?
+	var ?introCutSceneDoneManually:Bool; // JOELwindows7: mark whether intro done manually with modchart
+	var ?outroCutSceneDoneManually:Bool; // JOELwindows7: mark whether outro done manually with modchart
+	var ?useCustomStage:Bool; // JOELwindows7: should use custom stage?
 	// be allowed at certain moments in time
-	var forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
-	var forceHscriptModchart:Bool; // JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
+	var ?forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	var ?forceLuaModchartLegacy:Bool; // JOELwindows7: force to support legacy Lua modchart system as in <1.7 I guess
+	var ?forceHscriptModchart:Bool; // JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 	// JOELwindows7: Countdown funny configs
-	var reversedCountdown:Bool;
-	var invisibleCountdown:Bool;
-	var silentCountdown:Bool;
-	var skipCountdown:Bool;
+	var ?reversedCountdown:Bool;
+	var ?invisibleCountdown:Bool;
+	var ?silentCountdown:Bool;
+	var ?skipCountdown:Bool;
 	// JOELwindows7: more configs
-	var useCustomNoteStyle:Bool; // enable to custom noteskin
+	var ?loadNoteStyleOtherWayAround:Bool; // use foldered noteskin
+	var ?useCustomNoteStyle:Bool; // enable to custom noteskin
 	// JOELwindows7: Delays
 	var ?delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
 	var ?delayAfterFinish:Float; // Delay after song finish before load next song. for cutscene before epilogue video
@@ -80,27 +95,57 @@ typedef SongData =
 	var ?creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
 	var ?validScore:Bool;
 	var ?offset:Int;
+	var ?variables:Dynamic; // JOELwindows7: Variables for all difficulty to be accessed by elements of the gameplay. Stage, song, modchart, whatever.
+	var ?diffVariables:Dynamic; // JOELwindows7: like `variables`, but only to be filled by each song difficulty, not meta.
+	var ?strumCounts:Int; // JOELwindows7: how many strum collumns? 4 keys, 6 keys, or 9 keys? (Unused)
+	var ?strumProfile:String; // JOELwindows7: what strum profile to use? Dance Dance Revolution? 6 keys? 9 keys?
+	var ?difficulty:Int; // JOELwindows7: the difficulty of the song. New way of defining rather than by name (unused, current system exist using name)
+	var ?difficultyId:String; // JOELwindows7: what's the difficulty ID? easy, medium, hard, or any other?
+	var ?difficultyStrength:Float; // JOELwindows7: how much number is the difficulty? just like Stepmania diff number.
 }
 
 typedef SongMeta =
 {
 	var ?artist:String;
+
+	var ?charter:String; // JOELwindows7: who charted the song.
 	var ?offset:Int;
 	var ?name:String;
-
 	var ?hasVideo:Bool; // JOELwindows7: mark that this has video
 	var ?videoPath:String; // JOELwindows7: the video file path
 	var ?hasEpilogueVideo:Bool; // JOELwindows7: mark that this has Epilogue video
 	var ?epilogueVideoPath:String; // JOELwindows7: the epilogue video file path;
+	var ?hasTankmanVideo:Bool; // JOELwindows7: same as hasVideo but this is for when entered PlayState like week7.
+	var ?tankmanVideoPath:String; // JOELwindows7: same as videoPath but this is for when entered PlayState like week7.
+	var ?hasEpilogueTankmanVideo:Bool; // JOELwindows7: same as hasEpilogueVideo but this is for when entered PlayState like week7.
+	var ?epilogueTankmanVideoPath:String; // JOELwindows7: same as epilogueVideoPath but this is for when entered PlayState like week7.
 	var ?hasDialogueChat:Bool; // JOELwindows7: mark that this has Dialogue chat
 	var ?hasEpilogueChat:Bool; // JOELwindows7: mark that this has Epologue chat
-
+	var ?forceLuaModchart:Bool; // JOELwindows7: force Lua to load anyway. Will crash if modchart don't exist
+	var ?forceLuaModchartLegacy:Bool; // JOELwindows7: force to support legacy Lua modchart system as in <1.7 I guess
+	var ?forceHscriptModchart:Bool; // JOELwindows7: force Hscript to load anyway. Will crash if modchart don't exist'
 	var ?delayBeforeStart:Float; // Delay before the song start. for cutscene after dia video
 	var ?delayAfterFinish:Float; // Delay after song finish before load next song. for cutscene before epilogue video
+	var ?introCutSceneDoneManually:Bool; // JOELwindows7: mark whether intro done manually with modchart
+	var ?outroCutSceneDoneManually:Bool; // JOELwindows7: mark whether outro done manually with modchart
 	var ?isCreditRoll:Bool; // JOELwindows7: is this credit roll? if yes then roll credit.
 	var ?creditRunsOnce:Bool; // JOELwindows7: is this credit runs once?
-
 	var ?allowedToHeadbang:Bool; // JOELwindows7: mark whether heys, color change, etc.
+	// JOELwindows7: more configs
+	var ?loadNoteStyleOtherWayAround:Bool; // use foldered noteskin
+	var ?useCustomNoteStyle:Bool; // enable to custom noteskin
+	// JOELwindows7: fallbackers
+	var ?player1:String;
+	var ?player2:String;
+	var ?gfVersion:String;
+	var ?eventObjects:Array<Event>; // JOELwindows7: make event objects possible to be song wide rather than just 1 diff
+	var ?variables:Dynamic; // JOELwindows7: Variables for all difficulty to be accessed by elements of the gameplay. Stage, song, modchart, whatever.
+	var ?diffVariables:Dynamic; // JOELwindows7: like `variables`, but only to be filled by each song difficulty, not meta.
+	var ?strumCounts:Int; // JOELwindows7: how many strum collumns? 4 keys, 6 keys, or 9 keys? (Unused)
+	var ?strumProfile:String; // JOELwindows7: what strum profile to use? Dance Dance Revolution? 6 keys? 9 keys?
+	var ?difficulty:Int; // JOELwindows7: the difficulty of the song. New way of defining rather than by name (unused, current system exist using name)
+	var ?difficultyId:String; // JOELwindows7: what's the difficulty ID? easy, medium, hard, or any other?
+	var ?difficultyStrength:Float; // JOELwindows7: how much number is the difficulty? just like Stepmania diff number.
 }
 
 class Song
@@ -114,7 +159,8 @@ class Song
 			rawJson = rawJson.substr(0, rawJson.length - 1);
 			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
-		var jsonData = Json.parse(rawJson);
+		// var jsonData = Json.parse(rawJson);
+		var jsonData = TJSON.parse(rawJson); // JOELwindows7: use TJSON instead of regular Haxe Json, let's see..
 
 		return parseJSONshit("rawsong", jsonData, ["name" => jsonData.name]);
 	}
@@ -141,7 +187,7 @@ class Song
 		var convertedStuff:Array<Song.Event> = [];
 
 		if (song.eventObjects == null)
-			song.eventObjects = [new Song.Event("Init BPM", 0, song.bpm, "BPM Change")];
+			song.eventObjects = [new Song.Event("Init BPM", 0, song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: oh banana
 
 		for (i in song.eventObjects)
 		{
@@ -149,8 +195,10 @@ class Song
 			var type = Reflect.field(i, "type");
 			var pos = Reflect.field(i, "position");
 			var value = Reflect.field(i, "value");
+			var value2 = Reflect.field(i, "value2");
+			var value3 = Reflect.field(i, "value3");
 
-			convertedStuff.push(new Song.Event(name, pos, value, type));
+			convertedStuff.push(new Song.Event(name, pos, value, type, value2, value3)); // JOELwindows7: super idol
 		}
 
 		song.eventObjects = convertedStuff;
@@ -206,7 +254,7 @@ class Song
 			{
 				Debug.logTrace("converting changebpm for section " + index);
 				ba = i.bpm;
-				song.eventObjects.push(new Song.Event("FNF BPM Change " + index, beat, i.bpm, "BPM Change"));
+				song.eventObjects.push(new Song.Event("FNF BPM Change " + index, beat, i.bpm, "BPM Change", 0, 0)); // JOELwindows7: bep
 			}
 
 			for (ii in i.sectionNotes)
@@ -252,102 +300,126 @@ class Song
 		}
 
 		// JOELwindows7: the artist too
-		songData.artist = songMetaData.artist != null ? 
-			songMetaData.artist :
-			songData.artist != null ? songData.artist : "Unknown";
+		songData.artist = songMetaData.artist != null ? songMetaData.artist : songData.artist != null ? songData.artist : "Unknown";
 
-		//JOELwindows7: more too
-		songData.isCreditRoll = songMetaData.isCreditRoll != null ? 
-			songMetaData.isCreditRoll : 
-			songData.isCreditRoll != null? songData.isCreditRoll : false;
+		// JOELwindows7: more too
+		songData.isCreditRoll = songMetaData.isCreditRoll != null ? songMetaData.isCreditRoll : songData.isCreditRoll != null ? songData.isCreditRoll : false;
 
-		//JOELwindows7: yut
-		if (songMetaData.creditRunsOnce != null)
-		{
-			songData.creditRunsOnce = songMetaData.creditRunsOnce;
-		}
-		else
-		{
-		}
+		// JOELwindows7: yut
+		if (songData.creditRunsOnce == null)
+			songData.creditRunsOnce = songMetaData.creditRunsOnce != null ? songMetaData.creditRunsOnce : false;
 
-		//JOELwindows7: dude, is there a procedural way to fill these all up?
-		if (songMetaData.hasVideo != null)
-		{
-			songData.hasVideo = songMetaData.hasVideo;
-		}
-		else
-		{
-		}
+		// JOELwindows7: dude, is there a procedural way to fill these all up?
+		if (songData.hasVideo == null)
+			songData.hasVideo = songMetaData.hasVideo != null ? songMetaData.hasVideo : false;
 
-		//JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
-		if (songMetaData.videoPath != null)
-		{
-			songData.videoPath = songMetaData.videoPath;
-		}
-		else
-		{
-		}
+		// JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
+		if (songData.videoPath == null)
+			songData.videoPath = songMetaData.videoPath != null ? songMetaData.videoPath : "";
 
-		//JOELwindows7: haaaaaaaaaaaaaaaa!!!!
-		if(songMetaData.hasEpilogueVideo != null)
-		{
-			songData.hasEpilogueVideo = songMetaData.hasEpilogueVideo;
-		}
-		else
-		{
-		}
+		// JOELwindows7: haaaaaaaaaaaaaaaa!!!!
+		if (songData.hasEpilogueVideo == null)
+			songData.hasEpilogueVideo = songMetaData.hasEpilogueVideo != null ? songMetaData.hasEpilogueVideo : false;
 
-		//JOELwindows7: boooooooof
-		if(songMetaData.epilogueVideoPath != null)
-		{
-			songData.epilogueVideoPath = songMetaData.epilogueVideoPath;
-		}
-		else
-		{
-		}
+		// JOELwindows7: boooooooof
+		if (songData.epilogueVideoPath == null)
+			songData.epilogueVideoPath = songMetaData.epilogueVideoPath != null ? songMetaData.epilogueVideoPath : "";
 
-		//JOELwindows7: yay GitHub Copilot yey
-		if(songMetaData.hasDialogueChat != null)
-		{
-			songData.hasDialogueChat = songMetaData.hasDialogueChat;
-		}
-		else
-		{
-		}
+		// JOELwindows7: yay GitHub Copilot yey
+		if (songData.hasDialogueChat == null)
+			songData.hasDialogueChat = songMetaData.hasDialogueChat != null ? songMetaData.hasDialogueChat : false;
 
-		//JOELwindows7: yay GitHub Copilot yeyu
-		if(songMetaData.hasEpilogueChat != null)
-		{
-			songData.hasEpilogueChat = songMetaData.hasEpilogueChat;
-		}
-		else
-		{
-		}
+		// JOELwindows7: yay GitHub Copilot yeyu
+		if (songData.hasEpilogueChat == null)
+			songData.hasEpilogueChat = songMetaData.hasEpilogueChat != null ? songMetaData.hasEpilogueChat : false;
 
-		//JOELwindows7: try casting, but no. that's aggressive and destroys per difficulty basis.
-		if(songMetaData.delayBeforeStart != null)
+		// JOELwindows7: try casting, but no. that's aggressive and destroys per difficulty basis.
+		if (songData.delayBeforeStart == null)
+			songData.delayBeforeStart = songMetaData.delayBeforeStart != null ? songMetaData.delayBeforeStart : 0;
+
+		if (songData.delayAfterFinish == null)
+			songData.delayAfterFinish = songData.delayAfterFinish != null ? songMetaData.delayAfterFinish : 0;
+
+		// JOELwindows7: right, these are all we have.
+		if (songData.allowedToHeadbang == null)
+			songData.allowedToHeadbang = songMetaData.allowedToHeadbang != null ? songMetaData.allowedToHeadbang : false;
+
+		// JOELwindows7: lua & haxescript stuffs
+		if (songData.forceLuaModchartLegacy == null)
+			songData.forceLuaModchartLegacy = songMetaData.forceLuaModchartLegacy != null ? songMetaData.forceLuaModchartLegacy : false;
+
+		if (songData.forceLuaModchart == null)
+			songData.forceLuaModchart = songMetaData.forceLuaModchart != null ? songMetaData.forceLuaModchart : false;
+
+		if (songData.forceHscriptModchart == null)
+			songData.forceHscriptModchart = songMetaData.forceHscriptModchart != null ? songMetaData.forceHscriptModchart : false;
+
+		// JOELwindows7: fallbackers of the stuffs. the metadata should only overwrite if the variable is empty or null
+		if (songData.player1 == null || songData.player1 == "")
+			songData.player1 = songMetaData.player1 != null ? songMetaData.player1 : "bf";
+
+		if (songData.player2 == null || songData.player2 == "")
+			songData.player2 = songMetaData.player2 != null ? songMetaData.player2 : "dad";
+
+		if (songData.gfVersion == null || songData.gfVersion == "")
+			songData.gfVersion = songMetaData.gfVersion != null ? songMetaData.gfVersion : "gf";
+
+		if (songData.hasTankmanVideo == null)
+			songData.hasTankmanVideo = songMetaData.hasTankmanVideo != null ? songMetaData.hasTankmanVideo : false;
+
+		if (songData.hasEpilogueTankmanVideo == null)
+			songData.hasEpilogueTankmanVideo = songMetaData.hasEpilogueTankmanVideo != null ? songMetaData.hasEpilogueTankmanVideo : false;
+
+		if (songData.tankmanVideoPath == null || songData.tankmanVideoPath == "")
+			songData.tankmanVideoPath = songMetaData.tankmanVideoPath != null ? songMetaData.tankmanVideoPath : "null";
+
+		if (songData.epilogueTankmanVideoPath == null || songData.epilogueTankmanVideoPath == "")
+			songData.epilogueTankmanVideoPath = songMetaData.epilogueTankmanVideoPath != null ? songMetaData.epilogueTankmanVideoPath : "null";
+
+		if (songMetaData.eventObjects != null && songMetaData.eventObjects != [] && songMetaData.eventObjects.length > 1)
 		{
-			songData.delayBeforeStart = songMetaData.delayBeforeStart;
-		}
-		else
-		{
-		}
-		if(songMetaData.delayAfterFinish != null)
-		{
-			songData.delayAfterFinish = songMetaData.delayAfterFinish;
-		}
-		else
-		{
+			if (songData.eventObjects == null || songData.eventObjects == [] || songData.eventObjects.length <= 1)
+			{
+				songData.eventObjects = songMetaData.eventObjects;
+			}
 		}
 
-		//JOELwindows7: right, these are all we have.
-		if(songMetaData.allowedToHeadbang != null)
-		{
-			songData.allowedToHeadbang = songMetaData.allowedToHeadbang;
-		}
-		else
-		{
-		}
+		if (songData.loadNoteStyleOtherWayAround == null)
+			songData.loadNoteStyleOtherWayAround = songMetaData.loadNoteStyleOtherWayAround != null ? songMetaData.loadNoteStyleOtherWayAround : false;
+
+		if (songData.useCustomNoteStyle == null)
+			songData.useCustomNoteStyle = songMetaData.useCustomNoteStyle != null ? songMetaData.useCustomNoteStyle : false;
+
+		if (songData.introCutSceneDoneManually == null)
+			songData.introCutSceneDoneManually = songMetaData.introCutSceneDoneManually != null ? songMetaData.introCutSceneDoneManually : false;
+
+		if (songData.outroCutSceneDoneManually == null)
+			songData.outroCutSceneDoneManually = songMetaData.outroCutSceneDoneManually != null ? songMetaData.outroCutSceneDoneManually : false;
+
+		// if (songData.variables == null)
+		// 	songData.variables = songMetaData.variables != null ? songMetaData.variables : {};
+
+		songData.variables = songMetaData.variables != null ? songMetaData.variables : {};
+		// always overwrite from meta.
+
+		if (songData.diffVariables == null)
+			songData.diffVariables = songMetaData.diffVariables != null ? songMetaData.diffVariables : {};
+		// in case meta defines it instead, which is why would you.
+
+		if (songData.difficulty == null)
+			songData.difficulty = songMetaData.difficulty != null ? songMetaData.difficulty : 0;
+
+		if (songData.difficultyId == null)
+			songData.difficultyId = songMetaData.difficultyId != null ? songMetaData.difficultyId : "";
+
+		if (songData.difficultyStrength == null)
+			songData.difficultyStrength = songMetaData.difficultyStrength != null ? songMetaData.difficultyStrength : 1;
+
+		if (songData.strumCounts == null)
+			songData.strumCounts = songMetaData.strumCounts != null && songMetaData.strumCounts > 0 ? songMetaData.strumCounts : 4;
+
+		if (songData.strumProfile == null)
+			songData.strumProfile = songMetaData.strumProfile != null ? songMetaData.strumProfile : "Dance-Single";
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!
 

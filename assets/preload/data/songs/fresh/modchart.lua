@@ -31,7 +31,7 @@ function playerTwoTurn()
 end
 
 function playerOneSing(note, position, beatOf, stepOf)
-    print("P1 sing " .. note .. " at " .. position)
+    -- print("P1 sing " .. note .. " at " .. position)
     if(-executeModHscript or executeModHscript == false) then
         if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
             if(flashing) then
@@ -41,12 +41,12 @@ function playerOneSing(note, position, beatOf, stepOf)
             hideColoring(false, 0)
         end
     else
-        print("already hscript")
+        -- print("already hscript")
     end
 end
 
 function playerTwoSing(note, position, beatOf, stepOf)
-    print("P2 sing " .. note .. " at " .. position)
+    -- print("P2 sing " .. note .. " at " .. position)
     if(-executeModHscript or executeModHscript == false) then -- `!` is not supported. use `-` or `not` to negate.
         if (curBeat >= 0 and curBeat < 16) or (curBeat >= 144) then
             if(flashing) then
@@ -60,7 +60,7 @@ function playerTwoSing(note, position, beatOf, stepOf)
             hideColoring(false, 0)
         end
     else
-        print("already hscript")
+        -- print("already hscript")
     end
 end
 
@@ -74,16 +74,16 @@ end
 
 function colorizeColorablebyKey(note, justOne, toWhichBg)
     if note == "left" or note == 0 then
-        print("set color magenta")
+        -- print("set color magenta")
         chooseColoringColor("magenta", justOne, toWhichBg)
     elseif note == "down" or note == 1 then
-        print("set color cyan")
+        -- print("set color cyan")
         chooseColoringColor("cyan", justOne, toWhichBg)
     elseif note == "up" or note == 2 then
-        print("set color lime")
+        -- print("set color lime")
         chooseColoringColor("lime", justOne, toWhichBg)
     elseif note == "right" or note == 3 then
-        print("set color red")
+        -- print("set color red")
         chooseColoringColor("red", justOne, toWhichBg)
     end
 end

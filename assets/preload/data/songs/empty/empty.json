@@ -1,6 +1,7 @@
 {
     "ProgramUsed": "Visual Studio Code",
     "generatedBy": "manually",
+    "charter": "YOUR_NAME",
     "song": {
         "player2": "dad",
         "player1": "bf",
@@ -26,6 +27,7 @@
         "sections": 0,
         "validScore": true,
         "noteStyle": "normal",
+        "loadNoteStyleOtherWayAround": false,
         "useCustomNoteStyle": false,
         "hasVideo": false,
         "videoPath": "",
@@ -49,6 +51,9 @@
         "delayBeforeStart": 0.0,
         "delayAfterFinish": 0.0,
         "isCreditRoll": false,
-        "creditRunsOnce": false
+        "creditRunsOnce": false,
+        "introCutSceneDoneManually": false,
+        "outroCutSceneDoneManually": false,
+        "diffVariables": {}
     }
 }

@@ -1,4 +1,5 @@
-![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2021.11-thumb.png )
+![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.02-thumb.png )
+<!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2021.11-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-toxic-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-merdeka-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.png ) -->
@@ -8,6 +9,17 @@
 # Last Funkin Moments
 
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
+
+also a **Friday Night Funkin modding engine** yey!!!
+
+## Kontraktua Majoris
+
+`☁️Saubo ⏳` [`💣Copiar ✅`](https://gamebanana.com/mods/354884 ) `⛪Alfaheur 💥`
+
+> *by wearing the following Protoglin Amexamlef, you are agree to abide by the rules to always keep & make sure that following Majoris*
+> *are safe & sound, away from any disaster particularly made by a group of terrorist in the world of cyber.*
+> *You will also will be given pledge card in form of this game itself in which hereby you are certified members of*
+> *the Last Funkin Moment campaign, for you will do the activism, telling worlds about what is happening around us.*
 
 ## Download NOW
 - Odysee
@@ -20,10 +32,18 @@ collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 - GameBanana https://gamebanana.com/mods/293257
 - NexusMods https://www.nexusmods.com/fridaynightfunkin/mods/247 
 - Itch.io https://joelwindows7.itch.io/last-funkin-moments
+- GameJolt https://gamejolt.com/games/last-funkin-moments/634559
 
 If your antivirus went **sus**, they're dumb! None of these file are impostor, the antivirus is. vote that!  
 I mean, if the antivirus thought that file is `malicious`, it's false positive. Ignore that, it's safe.  
 if you don't trust it, check around the source code and its libraries referred.
+
+## To share mods made for this LFM. IMPORTANT!!!
+Please just upload publish the Polymod LFM, **NOT** the executable. Please, have respect with the disk space! storage is luxury.
+
+It is also ***PRO GAMER MOVE*** if you completely rely only towards Polymod LFM rather than modifying the source code, and then upload the executable which is **PECKING HUGE**. NA ah! Please utilize Polymod LFM! if you believe there are serveral feature missing in e.g. the modchart capabilities, Please submit [`ISSUE`](https://github.com/Perkedel/Kaded-fnf-mods/issues) with `FEATURE_REQUEST` as the template. We will happily discuss and consider as best as we can to grant your wish.
+
+see folder `/example_mods/`, `/Admiral_Zumi/`, `/separate_mods/` for examples of Polymod LFM sub-mods.
 
 ## Using API
 - GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (**Private, do not share** if filled with your keys). Here's the code:
@@ -36,8 +56,19 @@ class GJKeys
 }
 ```
 
+Unfortunately folks, we still not witness JUCE integrator to Haxe, OpenFl, HaxeFlixel, or whatever around here. 😭😭😭😭😭😭😭😭😭😭😭😭😭😭
+
 ## Status
 ## Build
+### GitHub Action
+- Linux [![Linux Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/linux.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/linux.yml)
+- Windows [![Windows Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/windows.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/windows.yml)
+- Android [![Windows Droid Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/winDroid.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/winDroid.yml)
+- HTML5 [![HTML5 Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/html5.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/html5.yml)
+- macOS [![macOS Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/big-makku.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/big-makku.yml)
+- Auto Close Compile Issues [![Autocloser](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/closeCompileIssues.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/closeCompileIssues.yml)
+- Close stale issues [![Close inactive issues](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/staleIssue.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/staleIssue.yml)
+### Appveyor (Brogen)
 - Linux [![Build status Linux](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)  
 - Linux ~~32 Bit~~Raspberry Pi [![Build status](https://ci.appveyor.com/api/projects/status/ou9xo42n9cwce9bt?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux32)
 - Windows [![Build status Windows](https://ci.appveyor.com/api/projects/status/6m6urhdk0hx9esci?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windows)
@@ -134,6 +165,9 @@ as always, credits to all stuff involved will be on [`CREDIT.md`](https://github
 ...
 
 # Misc
+## Legacy Majoris
+- https://gamebanana.com/mods/44214
+
 ## [For the badge](https://forthebadge.com/ )
 [![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)

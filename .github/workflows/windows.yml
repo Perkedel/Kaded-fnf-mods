@@ -24,6 +24,16 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+
+      - name: first, begin caching stuffs
+        uses: actions/cache@v2.1.7
+        id: cache-stuff
+        with:
+          path: |
+            D:\a\Kaded-fnf-mods\Kaded-fnf-mods\export\
+            C:\hostedtoolcache\haxe\
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+
       - uses: krdlab/setup-haxe@v1.1.6
         with:
           haxe-version: 4.2.4
@@ -32,11 +42,15 @@ jobs:
       - name: Schlob Chocolatey
         run: |
           choco install vcredist140
+          cinst make -y
+          cinst cmake -y
           cinst wget -y # downloader
           cinst butler -y # upload to itch io
           cinst android-sdk -y
           cinst android-ndk --version=16.2 -y
           cinst adb -y
+          cinst haxe -y
+          RefreshEnv
 
       - name: first, lemme download android stuff
         run: |
@@ -49,12 +63,11 @@ jobs:
           unzip -q .\android_cmd.zip -d "%ANDROID_SDK_LOC%"
           unzip -q -n .\android_build-tools.zip -d %ANDROID_SDK_LOC%\build-tools
           unzip -q .\android_platforms.zip -d "%ANDROID_SDK_LOC%"
-          unzip -q -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%" 
+          unzip -q -n .\android_platform-tools.zip -d "%ANDROID_SDK_LOC%"  
 
       - name: script run line haha
+        # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
-          cinst haxe -y
-          RefreshEnv
           haxelib install lime
           RefreshEnv
           haxelib install openfl
@@ -67,7 +80,7 @@ jobs:
           haxelib install hscript
           haxelib install flixel-addons
           haxelib git faxe https://github.com/uhrobots/faxe
-          haxelib git polymod https://github.com/MasterEric/polymod.git
+          haxelib install polymod
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
           haxelib run lime rebuild extension-webm windows
@@ -91,13 +104,33 @@ jobs:
           haxelib git tentools https://github.com/TentaRJ/tentools.git
           haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools windows
+          haxelib install haxe-strings
+          haxelib install firetongue
           haxelib install hxp
           haxelib install svg
           haxelib install format
           haxelib install lime-tools
+          haxelib install haxeui
+          haxelib install haxeui-core
+          haxelib install haxeui-openfl
+          haxelib install haxeui-flixel
+          haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
+          haxelib install yagp
           haxelib list
           dir
           pwd
+      
+      - name: if there is cache still then just update everything
+        if: steps.cache-stuff.outputs.cache-hit == 'true'
+        run: |
+          haxe -version
+          haxelib update --always
+          haxelib run lime setup flixel -y
+          haxelib run lime setup -y
+          haxelib run lime rebuild extension-webm linux
+          haxelib run lime rebuild systools linux
+          haxelib run lime rebuild yagp linux
+          haxelib list
       
       - name: TEMP patch FlxAction.hx workaround
         run: |
@@ -112,7 +145,7 @@ jobs:
           wget "https://gist.github.com/JOELwindows7/118b3a40a76d60e701399a61fb5e1c2d/raw/fef2b6649a4b51d76f912459ef3f107b4bd25905/FlxAction.hx"
           dir
           pwd
-          mv ".\FlxAction.hx" "C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\flixel\4,10,0\flixel\input\actions\FlxAction.hx" -Force
+          mv ".\FlxAction.hx" "C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\flixel\4,11,0\flixel\input\actions\FlxAction.hx" -Force
       
       - name: Setup Android support
         run: |
@@ -141,7 +174,7 @@ jobs:
       
       - name: build Windows now!
         run: |
-          haxelib run lime build windows
+          haxelib run lime build windows -final
           
       - name: Artifact Windows now
         uses: actions/upload-artifact@v2.2.4

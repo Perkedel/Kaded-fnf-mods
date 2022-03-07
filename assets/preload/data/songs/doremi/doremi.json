@@ -25806,7 +25806,7 @@
         "useCustomStage": true,
         "speed": 1.5,
         "artist": "JOELwindows7",
-        "useCustomNoteStyle": false,
+        "useCustomNoteStyle": true,
         "hasEpilogueChat": true,
         "sectionLengths": [],
         "forceLuaModchart": false,
@@ -25836,7 +25836,7 @@
         "silentCountdown": false,
         "needsVoices": true,
         "stage": "view-of-the-world",
-        "noteStyle": "saubo",
+        "noteStyle": "Saubo",
         "bpm": 120
     }
 }

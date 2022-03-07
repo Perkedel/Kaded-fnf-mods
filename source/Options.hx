@@ -1,5 +1,6 @@
 package;
 
+import ui.GameJoltGateway;
 import GalleryAchievements;
 #if gamejolt
 import GameJolt;
@@ -11,6 +12,7 @@ import experiments.LimeAudioBufferTester;
 import experiments.*;
 import openfl.net.FileFilter;
 import haxe.Json;
+import tjson.TJSON;
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
@@ -21,6 +23,7 @@ import Controls.KeyboardScheme;
 import flixel.FlxG;
 import openfl.display.FPS;
 import openfl.Lib;
+import const.Perkedel;
 
 using StringTools;
 
@@ -29,6 +32,9 @@ class Option
 	public function new()
 	{
 		display = updateDisplay();
+		// JOELwindows7: install the value to those variables yea
+		// this.cannotInPause = cantInPause;
+		// this.requiresRestartSong = needsRestartSong;
 	}
 
 	private var description:String = "";
@@ -38,6 +44,10 @@ class Option
 	public var acceptType:Bool = false;
 
 	public var waitingType:Bool = false;
+
+	// JOELwindows7: special marker
+	public var cannotInPause:Bool = false; // mark this option inaccessible in pause menu
+	public var requiresRestartSong:Bool = false; // mark this option, changing will require you to restart song to apply.
 
 	public final function getDisplay():String
 	{
@@ -66,6 +76,8 @@ class Option
 	// Returns whether the label is to be updated.
 	public function press():Bool
 	{
+		if (requiresRestartSong)
+			OptionsMenu.markRestartSong();
 		return true;
 	}
 
@@ -76,11 +88,15 @@ class Option
 
 	public function left():Bool
 	{
+		if (requiresRestartSong)
+			OptionsMenu.markRestartSong();
 		return false;
 	}
 
 	public function right():Bool
 	{
+		if (requiresRestartSong)
+			OptionsMenu.markRestartSong();
 		return false;
 	}
 }
@@ -658,7 +674,8 @@ class DownscrollOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -717,7 +734,8 @@ class AccuracyOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -749,7 +767,8 @@ class SongPositionOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -781,7 +800,8 @@ class DistractionsAndEffectsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -813,7 +833,8 @@ class Colour extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -845,7 +866,8 @@ class StepManiaOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -919,7 +941,8 @@ class FlashingLightsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -951,7 +974,8 @@ class AntialiasingOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -983,7 +1007,8 @@ class MissSoundsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1042,7 +1067,8 @@ class Judgement extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 		acceptValues = true;
@@ -1133,10 +1159,10 @@ class FPSCapOption extends Option
 
 	override function right():Bool
 	{
-		if (FlxG.save.data.fpsCap >= 290)
+		if (FlxG.save.data.fpsCap >= Perkedel.MAX_FPS_CAP) // JOELwindows7: was 290
 		{
-			FlxG.save.data.fpsCap = 290;
-			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
+			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; // JOELwindows7: yeah.
+			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Perkedel.MAX_FPS_CAP); // JOELwindows7: crazy fps go brrrrr
 		}
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap + 10;
@@ -1147,8 +1173,8 @@ class FPSCapOption extends Option
 
 	override function left():Bool
 	{
-		if (FlxG.save.data.fpsCap > 290)
-			FlxG.save.data.fpsCap = 290;
+		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) // JOELwindows7: was 290
+			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; // JOELwindows7: yeye
 		else if (FlxG.save.data.fpsCap < 60)
 			FlxG.save.data.fpsCap = Application.current.window.displayMode.refreshRate;
 		else
@@ -1278,7 +1304,7 @@ class ReplayOption extends Option
 	public override function press():Bool
 	{
 		trace("switch");
-		OptionsMenu.switchState(new LoadReplayState()); // JOELwindows7: hey, check if you are in game before hand!
+		OptionsMenu.goToState(new LoadReplayState()); // JOELwindows7: hey, check if you are in game before hand!
 		return false;
 	}
 
@@ -1294,7 +1320,8 @@ class AccuracyDOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1326,17 +1353,19 @@ class CustomizeGameplay extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
 
 	public override function press():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		trace("switch");
-		FlxG.switchState(new GameplayCustomizeState());
+		// FlxG.switchState(new GameplayCustomizeState());
+		OptionsMenu.goToState(new GameplayCustomizeState()); // JOELwindows7: hey, check if you are in game before hand!
 		return false;
 	}
 
@@ -1352,7 +1381,8 @@ class WatermarkOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1397,7 +1427,8 @@ class OffsetMenu extends Option
 		PlayState.storyWeek = 0;
 		PlayState.offsetTesting = true;
 		trace('CUR WEEK' + PlayState.storyWeek);
-		LoadingState.loadAndSwitchState(new PlayState());
+		// LoadingState.loadAndSwitchState(new PlayState());
+		OptionsMenu.goToState(new PlayState()); // JOELwindows7: hey, check if you are in game before hand!
 		return false;
 	}
 
@@ -1413,7 +1444,8 @@ class OffsetThing extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1479,7 +1511,8 @@ class CamZoomOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1511,7 +1544,8 @@ class JudgementCounter extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1543,7 +1577,8 @@ class MiddleScrollOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1574,31 +1609,43 @@ class NoteskinOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+		// if (OptionsMenu.isInPause)
+		// 	description = "This option cannot be toggled in the pause menu.";
+		// else
+		// 	description = desc;
+		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
+
+		// JOELwindows7: c'mon let them change it. this noteskin index save data loads only on create.
+		if (requiresRestartSong)
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc;
 		else
 			description = desc;
+
+		// JOELwindows7: I got it. you want to apply noteskin right now no restart. It's heavy. you need to tell n number of notes +
+		// strum notes + hold bar to change image. BUT, maybe later. why not, I guess.
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.noteskin--;
 		if (FlxG.save.data.noteskin < 0)
 			FlxG.save.data.noteskin = NoteskinHelpers.getNoteskins().length - 1;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
 	}
 
 	public override function right():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.noteskin++;
 		if (FlxG.save.data.noteskin > NoteskinHelpers.getNoteskins().length - 1)
 			FlxG.save.data.noteskin = 0;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
 	}
 
@@ -1614,7 +1661,8 @@ class HealthBarOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1645,11 +1693,19 @@ class LaneUnderlayOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+		// if (OptionsMenu.isInPause)
+		// 	description = "This option cannot be toggled in the pause menu.";
+		// else
+		// 	description = desc;
+		acceptValues = true;
+
+		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
+
+		// JOELwindows7: c'mon let them change it. this noteskin index save data loads only on create.
+		if (requiresRestartSong)
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc;
 		else
 			description = desc;
-		acceptValues = true;
 	}
 
 	private override function updateDisplay():String
@@ -1659,24 +1715,25 @@ class LaneUnderlayOption extends Option
 
 	override function right():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.laneTransparency += 0.1;
 
 		if (FlxG.save.data.laneTransparency > 1)
 			FlxG.save.data.laneTransparency = 1;
+		OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
 	}
 
 	override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.laneTransparency -= 0.1;
 
 		if (FlxG.save.data.laneTransparency < 0)
 			FlxG.save.data.laneTransparency = 0;
-
+		OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
 	}
 }
@@ -1685,13 +1742,19 @@ class DebugMode extends Option
 {
 	public function new(desc:String)
 	{
-		description = desc;
+		// description = desc;
+		// JOELwindows7: cannot access to there during gameplay pause.
+		if (OptionsMenu.isInPause)
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc;
+		else
+			description = desc;
 		super();
 	}
 
 	public override function press():Bool
 	{
-		FlxG.switchState(new AnimationDebug());
+		// JOELwindows7: whoa easy baby! we're in gameplay!
+		OptionsMenu.goToState(new AnimationDebug());
 		return false;
 	}
 
@@ -1709,7 +1772,8 @@ class LockWeeksOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1746,7 +1810,8 @@ class ResetScoreOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -1791,7 +1856,8 @@ class ResetSettings extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2005,7 +2071,8 @@ class ImportSaveFromJSON extends Option
 		if (_file.browse([new FileFilter("JSON file", "json")]))
 		{
 			_file.load();
-			data = Json.parse(cast _file.data);
+			// data = Json.parse(cast _file.data);
+			data = TJSON.parse(cast _file.data); // JOELwindows7: use the new TJSON library
 
 			// FlxG.save.data = data;
 		}
@@ -2079,7 +2146,7 @@ class FullScreenOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Screen mode " + (FlxG.fullscreen ? "Fullscreen" : "Windowed");
+		return "Screen mode < " + (FlxG.fullscreen ? "Fullscreen" : "Windowed") + " >";
 	}
 }
 
@@ -2473,6 +2540,43 @@ class AdjustVolumeOption extends Option
 	}
 }
 
+// JOELwindows7: option to disable / enable accident volume keys assignation
+class AccidentVolumeKeysOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.accidentVolumeKeys = !FlxG.save.data.accidentVolumeKeys;
+		display = updateDisplay();
+
+		// apply immediately! copy from Kade's title state vol key assigner.
+		Main.instance.checkAccidentVolKeys();
+		return true;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Accident volume keys < " + (FlxG.save.data.accidentVolumeKeys ? "Enabled" : "Disabled") + " >";
+	}
+}
+
 // JOELwindows7: attempt the surround sound test using Lime audio source.
 class SurroundTestOption extends Option
 {
@@ -2480,7 +2584,8 @@ class SurroundTestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2489,7 +2594,7 @@ class SurroundTestOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new LimeAudioBufferTester());
+		OptionsMenu.goToState(new LimeAudioBufferTester());
 		return true;
 	}
 
@@ -2506,7 +2611,8 @@ class AnVideoCutscenerTestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2515,7 +2621,7 @@ class AnVideoCutscenerTestOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new AnWebmer());
+		OptionsMenu.goToState(new AnWebmer());
 		return true;
 	}
 
@@ -2532,7 +2638,8 @@ class AnStarfieldTestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2541,7 +2648,7 @@ class AnStarfieldTestOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new AnStarfielde());
+		OptionsMenu.goToState(new AnStarfielde());
 		return true;
 	}
 
@@ -2558,7 +2665,8 @@ class AnDefaultBekgronTestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2567,7 +2675,7 @@ class AnDefaultBekgronTestOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new AnDefaultBekgronde());
+		OptionsMenu.goToState(new AnDefaultBekgronde());
 		return true;
 	}
 
@@ -2584,7 +2692,8 @@ class AnMIDITestOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2603,6 +2712,33 @@ class AnMIDITestOption extends Option
 	}
 }
 
+// JOELwindows7: quick way testing music play
+class AnLoneBopeeboOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		OptionsMenu.goToState(new AnLoneBopeebo()); // open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		// FlxG.switchState(new AnMIDIyeay());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Test Bopeebo";
+	}
+}
+
 // JOELwindows7: quick way testing change channel
 class AnChangeChannelOption extends Option
 {
@@ -2610,7 +2746,8 @@ class AnChangeChannelOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2619,13 +2756,66 @@ class AnChangeChannelOption extends Option
 	{
 		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
 		// FlxG.switchState(new LoadReplayState()); //or open new state.
-		OptionsMenu.switchState(new AnChangeChannel());
+		OptionsMenu.goToState(new AnChangeChannel());
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
 		return "Change Channel Test";
+	}
+}
+
+class AnMiniWindowOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.goToState(new AnWindowTest());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Mini Window Test";
+	}
+}
+
+// JOELwindows7: kem0x test
+class AnKem0xTestStateOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.goToState(new AnKem0xTestState());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Kem0x Test";
 	}
 }
 
@@ -2774,6 +2964,40 @@ class PrintSongChartContentOption extends Option
 	}
 }
 
+// JOELwindows7: Print annoying Debug Warn message that often happens. (Warn & Error pops debugger up)
+class PrintAnnoyingDebugWarnOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.annoyingWarns = !FlxG.save.data.annoyingWarns;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Debug Warns < " + (FlxG.save.data.annoyingWarns ? "Printed" : "SSSSHHHH") + " >";
+	}
+}
+
 // JOELwindows7: GameJolt login TentaRJ
 class LogGameJoltIn extends Option
 {
@@ -2781,7 +3005,8 @@ class LogGameJoltIn extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
@@ -2789,10 +3014,13 @@ class LogGameJoltIn extends Option
 	public override function press():Bool
 	{
 		#if gamejolt
-		OptionsMenu.switchState(new GameJoltLogin());
+		// OptionsMenu.goToState(new GameJoltLogin());
+		GameJoltGateway.getOut = false;
+		OptionsMenu.goToState(new GameJoltGateway(new MainMenuState()));
+		// OptionsMenu.instance.openSubState(GameJoltLogin()); // wait, it's now substate?!?!??!?!?
 		return true;
 		#else
-		Main.gjToastManager.createToast(null, "GameJolt not supported", "Sorry, your platform does not support GameJolt.");
+		// Main.gjToastManager.createToast(null, "GameJolt not supported", "Sorry, your platform does not support GameJolt.");
 		return false;
 		#end
 	}
@@ -2810,5 +3038,440 @@ class LogGameJoltIn extends Option
 	{
 		// return "GameJolt is: " + (GameJoltAPI.getStatus() ? GameJoltAPI.getUserInfo(true) : "[logged out]");
 		return updateDisplay();
+	}
+}
+
+// JOELwindows7: Legacy Lua Modchart enable option
+class LuaLegacyModchartOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		requiresRestartSong = true;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		OptionsMenu.markRestartSong(); // JOELwindows7: what if without calling super() this doesn't called then?
+		FlxG.save.data.legacyLuaScript = !FlxG.save.data.legacyLuaScript;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Legacy Lua Modchart Compatibility < " + (FlxG.save.data.legacyLuaScript ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: autoclick checkbox in option menu for convenience
+class AutoClickEnabledOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.autoClick = !FlxG.save.data.autoClick;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Dialogue AutoClick < " + (FlxG.save.data.autoClick ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: autoclick delay stepper in option menu for convenience
+class AutoClickDelayOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.autoClickDelay -= .05;
+		if (FlxG.save.data.autoClickDelay < 1.0)
+			FlxG.save.data.autoClickDelay = 1.0;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		FlxG.save.data.autoClickDelay += .05;
+		if (FlxG.save.data.autoClickDelay > 5.0)
+			FlxG.save.data.autoClickDelay = 5.0;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function press():Bool
+	{
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Dialogue AutoClick Delay < " + Std.string(FlxG.save.data.autoClickDelay) + " > seconds";
+	}
+}
+
+// JOELwindows7: toggle freeplay threaded loading
+class FreeplayThreadedOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.freeplayThreadedLoading = !FlxG.save.data.freeplayThreadedLoading;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Freeplay Threaded Loading < " + (FlxG.save.data.freeplayThreadedLoading ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: whether or not end song early or wait until music complete
+class EndSongEarlyOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.endSongEarly = !FlxG.save.data.endSongEarly;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "End Song Early < " + (FlxG.save.data.endSongEarly ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: toggle whether to enable or disable scoreTxtZoom
+class ScoreTxtZoomOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.scoreTxtZoom = !FlxG.save.data.scoreTxtZoom;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Score Text Zoom < " + (FlxG.save.data.scoreTxtZoom ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: enable/disable note splash
+class NoteSplashOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.noteSplashes = !FlxG.save.data.noteSplashes;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Note Splash < " + (FlxG.save.data.noteSplashes ? "MOIST ON" : "DRIED OFF") + " >";
+	}
+}
+
+// JOELwindows7: force stepmania quantization no matter what. did you know, it's OFF when there is modchart? yeah!
+class ForceStepmaniaOption extends Option
+{
+	// this is maybe because in case of rerotation craze of arrow idk.
+	// toggle `forceStepmania` ON or OFF
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.forceStepmania = !FlxG.save.data.forceStepmania;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Force Quantization < " + (FlxG.save.data.forceStepmania ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: unpause preparation countdown. toggle to have countdown preparation after unpause.
+class UnpausePreparationOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.unpausePreparation--;
+		if (FlxG.save.data.unpausePreparation < 0)
+			FlxG.save.data.unpausePreparation = 2;
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.unpausePreparation++;
+		if (FlxG.save.data.unpausePreparation > 2)
+			FlxG.save.data.unpausePreparation = 0;
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		// FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
+		right();
+		// display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Unpause Preparation < " + (switch (Std.int(FlxG.save.data.unpausePreparation))
+		{
+			case 0:
+				"OFF";
+			case 1:
+				"Always";
+			case 2:
+				"Manual Only"; // this only allow unpause prep if not botplay or replay
+			case _:
+				"???";
+		}) + " >";
+	}
+}
+
+// JOELwindows7: Toggle hitsound in gameplay ON / OFF
+class HitsoundOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.hitsound = !FlxG.save.data.hitsound;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Hitsound < " + (FlxG.save.data.hitsound ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: CPU notesplash! inspire from flash CPU strum, and this enable / disable `cpuSplash`. requires `noteSplash` to be ON.
+class CpuSplashOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.cpuSplash = !FlxG.save.data.cpuSplash;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "CPU Splash < " + (FlxG.save.data.cpuSplash ? "MOIST ON" : "DRIED OFF") + " >";
+	}
+}
+
+// JOELwindows7: Whether or not the blueball carries in total a week or just each song
+class BlueballWeekOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.blueballWeek = !FlxG.save.data.blueballWeek;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Blueball count carries for < " + (FlxG.save.data.blueballWeek ? "Week Total" : "Per song only") + " >";
 	}
 }

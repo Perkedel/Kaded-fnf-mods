@@ -8,12 +8,13 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import haxe.Json;
+import tjson.TJSON;
 
 using StringTools;
 
 class Paths
 {
-	//JOELwindows7: not my code. but hey uh, is it has to be it, the web cannot ogg?
+	// JOELwindows7: not my code. but hey uh, is it has to be it, the web cannot ogg?
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
 	static var currentLevel:String;
@@ -90,12 +91,13 @@ class Paths
 		try
 		{
 			// Attempt to parse and return the JSON data.
-			return Json.parse(rawJson);
+			// return Json.parse(rawJson);
+			return TJSON.parse(rawJson); // JOELwindows7: let's use TJSON rather than regular Haxe JSON instead.
 		}
 		catch (e)
 		{
 			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-			Debug.logError(e.message);
+			Debug.logError(e + ": " + e.message); // JOELwindows7: error title & description
 
 			// Return null.
 			return null;
@@ -133,12 +135,12 @@ class Paths
 	 * @param key 
 	 * @param library 
 	 */
-	inline static public function hscript(key:String,?library:String)
+	inline static public function hscript(key:String, ?library:String)
 	{
 		return getPath('data/$key.hscript', TEXT, library);
 	}
 
-	inline static public function creditFlashBlink(key:String,?library:String)
+	inline static public function creditFlashBlink(key:String, ?library:String)
 	{
 		return getPath('data/creditRolls/flashBlink/$key.txt', TEXT, library);
 	}
@@ -178,7 +180,7 @@ class Paths
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
-	//JOELwindows7: MIDI file in music folder, menu music MIDI
+	// JOELwindows7: MIDI file in music folder, menu music MIDI
 	inline static public function midiMeta(key:String, ?library:String)
 	{
 		return getPath('music/$key.mid', BINARY, library);
@@ -216,7 +218,7 @@ class Paths
 		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
 	}
 
-	//JOELwindows7: copy inst but for MIDI
+	// JOELwindows7: copy inst but for MIDI
 	inline static public function midiInst(song:String)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
@@ -279,6 +281,12 @@ class Paths
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
+	// JOELwindows7: xml SparrowAtlas path
+	inline static public function sparrowXml(key:String, ?library:String)
+	{
+		return getPath('images/$key.xml', TEXT, library);
+	}
+
 	inline static public function font(key:String)
 	{
 		return 'assets/fonts/$key';
@@ -305,20 +313,27 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
 	}
 
-	//JOELwindows7: add pathers for GrowtopiaFli video cutsceners
+	// JOELwindows7: add pathers for GrowtopiaFli video cutsceners
 	inline static public function video(key:String, ?library:String)
 	{
 		return getPath('videos/$key.webm', TEXT, library);
 	}
+
 	inline static public function videoSound(key:String, ?library:String)
 	{
 		return getPath('videos/$key.ogg', SOUND, library);
 	}
 
-	//JOELwindows7: apparently BrightFyre's MP4 support video Cutscener
+	// JOELwindows7: apparently BrightFyre's MP4 support video Cutscener
 	inline static public function videoVlc(key:String, ?library:String)
 	{
 		trace('assets/videos/$key.mp4');
 		return getPath('videos/$key.mp4', BINARY, library);
+	}
+
+	// JOELwindows7: kem0x shader fragment path https://github.com/kem0x/FNF-ModShaders
+	inline static public function shaderFragment(key:String, ?library:String)
+	{
+		return getPath('shaders/$key.frag', TEXT, library);
 	}
 }

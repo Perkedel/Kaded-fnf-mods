@@ -5,6 +5,7 @@ typedef SwagSection =
 	var startTime:Float;
 	var endTime:Float;
 	var sectionNotes:Array<Array<Dynamic>>;
+	var ?betterSectionNotes:Array<NoteInSection>; // JOELwindows7: Hi! this is dictionary notes in section like above but better.
 	var lengthInSteps:Int;
 	var typeOfSection:Int;
 	var mustHitSection:Bool;
@@ -36,4 +37,19 @@ class Section
 	{
 		this.lengthInSteps = lengthInSteps;
 	}
+}
+
+// JOELwindows7: psst hey! also note in the section. YES!!! make it JSONed dictionary instead of Array<Dynamic> ugh confusing!
+typedef NoteInSection =
+{
+	// inspire this from how note info array works in charting state and more.
+	var strumTime:Float;
+	var noteData:Int;
+	var sustainLength:Int;
+	var isAlt:Bool;
+	var beat:Float;
+	var noteType:Int; // IDEA: make noteType string. becomes ID such as `default`, `powerUp`, `mine`, etc.
+	var noteTypeId:String; // okay fine let's just do it now.
+	var hitsoundPath:String;
+	var ?vowelType:Int; // radpas1231's a i u e o vowel classification. this choses mouth type in the animation for lip-sync effect.
 }

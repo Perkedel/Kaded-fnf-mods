@@ -518,6 +518,7 @@
         "sectionLengths": [],
         "speed": 3,
         "useCustomNoteStyle": true,
+        "loadNoteStyleOtherWayAround": true,
         "noteStyle": "stepmania"
     }
 }

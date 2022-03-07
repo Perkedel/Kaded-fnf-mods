@@ -34072,7 +34072,7 @@
         "forceHscriptModchart": false,
         "cutsceneType": "none",
         "useCustomStage": true,
-        "useCustomNoteStyle": false,
+        "useCustomNoteStyle": true,
         "artist": "TheFatRat",
         "speed": 1,
         "hasEpilogueChat": true,
@@ -34105,7 +34105,7 @@
         "stage": "view-of-the-world",
         "needsVoices": false,
         "bpm": 75,
-        "noteStyle": "saubo",
+        "noteStyle": "Saubo",
         "isCreditRoll": true,
         "delayAfterFinish": 10.0
     }

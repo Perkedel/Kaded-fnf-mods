@@ -8,9 +8,11 @@ The following are documents of permission proves for those who requires such.
 - BulbyVR (just in case)(Approved). https://itch.io/t/1511015/hey-can-i-uh . Although FNFM+ source code itself is MPL-2.0, which according to this wikipedia [here](https://en.wikipedia.org/wiki/License_compatibility#GPL_compatibility ), it is GPL compatible, that is the code can be combined here, I think. ![](https://raw.githubusercontent.com/Perkedel/After-Church/master/RAW%20files/Skrensut/BulbyVR%20lets%20us.png )
 
 # Open Source Licenses
-- https://github.com/ninjamuffin99/Funkin ninja_muffin99. [`if u make mods, open source them, lol!`](https://github.com/ninjamuffin99/Funkin/blob/master/LICENSE ), formerly Apache-2.0, before 16 May 2021.
+- https://github.com/ninjamuffin99/Funkin ninja_muffin99. [`if u make mods, open source them, lol!`](https://github.com/ninjamuffin99/Funkin/blob/master/LICENSE ), formerly Apache-2.0, before 16 May 2021. Okey it's back to Apache-2.0 again.
 - https://github.com/KadeDev/Kade-Engine KadeDev. [Apache-2.0](https://github.com/KadeDev/Kade-Engine/blob/stable/LICENSE ).
 - https://github.com/Perkedel/HexagonEngine Perkedel Technologies. [GNU GPL v3](https://github.com/Perkedel/HexagonEngine/blob/master/LICENSE ).
+- https://github.com/EnigmaEngine/EnigmaEngine MasterEric. [Apache-2.0](https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/LICENSE )
+- https://github.com/ShadowMario/FNF-PsychEngine Shadow Mario. [Apache-2.0](https://github.com/ShadowMario/FNF-PsychEngine/blob/main/LICENSE)
 
 # Status of Permission Recipience. Is Perkedel accepting exclusive permission grant right now? 
 ## Active
@@ -46,12 +48,13 @@ I also understand the consequences that will be received from the requester in e
 - Be blacklisted from being featured in any media the requester going to make in the future
 - Be prevented from being promoted, endorsed, or even sponsored by the requester
 - Be forgotten eventually
+- as well as become ignored in case a favour be needed ~both regular and emergency~
 
 However, I can revoke the permission rejection and be free from all consequences above at anytime, in case I changed my mind.
 
 Signature
 
-(NAME of COMPANY)
+(NAME of COMPANY or INDIVIDUAL)
 ```
 pardon us, looks like karen are we. But, idk. we just... hate proprietarism.  
 look at those musician with Big records. they're the big offenders!

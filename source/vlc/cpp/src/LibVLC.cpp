@@ -1,7 +1,8 @@
 #include <mutex>
 #include <iostream>
 #include <string>
-#include <StdInt.h>
+// #include <StdInt.h>
+#include <stdint.h> //JOELwindows7: case sensitive issue on Unix
 #include <windows.h> 
 
 using std::string;

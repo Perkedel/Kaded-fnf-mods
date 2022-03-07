@@ -1,0 +1,6 @@
+make.exe --dry-run --keep-going --print-directory
+make: Entering directory 'c:/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods'
+make: Leaving directory 'c:/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+ 

@@ -6,98 +6,92 @@ import flixel.FlxState;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import openfl.events.Event;
-import openfl.media.Video; //Oh this exist?! https://github.com/polybiusproxy/PolyEngine/blob/master/source/VideoHandler.hx
-#if (FEATURE_VLC) // JOELwindows7: no mac or linux support yet unfortunately
-import vlc.VlcBitmap;
-#end
+import flixel.FlxG;
+import openfl.media.Video; // Oh this exist?! https://github.com/polybiusproxy/PolyEngine/blob/master/source/VideoHandler.hx
 
-// THIS IS FOR TESTING
-// DONT STEAL MY CODE >:(
-class MP4Handler
+#if FEATURE_VLC
+/**
+ * Play a video using cpp.
+ * Use bitmap to connect to a graphic or use `MP4Sprite`.
+ */
+class MP4Handler extends vlc.VlcBitmap
 {
-
+	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
-	public var stateCallback:FlxState;
 
-	#if (FEATURE_VLC) // JOELwindows7: no mac or linux support yet unfortunately
-	public var bitmap:VlcBitmap;
-	#end
+	var pauseMusic:Bool;
 
-	public var sprite:FlxSprite;
+	// JOELwindows7: statuses
+	public var playing:Bool = false;
 
-	public function new()
+	public function new(width:Float = 320, height:Float = 240, autoScale:Bool = true)
 	{
-		// FlxG.autoPause = false;
+		super(width, height, autoScale);
 
-		// if (FlxG.sound.music != null)
-		// {
-		// 	FlxG.sound.music.stop();
-		// }
-	}
+		onVideoReady = onVLCVideoReady;
+		onComplete = finishVideo;
+		onError = onVLCError;
 
-	#if (FEATURE_VLC) // JOELwindows7: no mac or linux support yet unfortunately
-	public function playMP4(path:String, ?repeat:Bool = false, ?outputTo:FlxSprite = null, ?isWindow:Bool = false, ?isFullscreen:Bool = false,
-			?midSong:Bool = false):Void
-	{
-		if (!midSong)
-		{
-			// if (FlxG.sound.music != null)
-			// {
-			// 	FlxG.sound.music.stop();
-			// }
-		}
-
-		bitmap = new VlcBitmap();
-
-		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
-		{
-			bitmap.set_width(FlxG.stage.stageHeight * (16 / 9));
-			bitmap.set_height(FlxG.stage.stageHeight);
-		}
-		else
-		{
-			bitmap.set_width(FlxG.stage.stageWidth);
-			bitmap.set_height(FlxG.stage.stageWidth / (16 / 9));
-		}
-
-		bitmap.onVideoReady = onVLCVideoReady;
-		bitmap.onComplete = onVLCComplete;
-		bitmap.onError = onVLCError;
+		FlxG.addChildBelowMouse(this);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
-		if (repeat)
-			bitmap.repeat = -1;
-		else
-			bitmap.repeat = 0;
-
-		bitmap.inWindow = isWindow;
-		bitmap.fullscreen = isFullscreen;
-
-		FlxG.addChildBelowMouse(bitmap);
-		bitmap.play(checkFile(path));
-
-		if (outputTo != null)
+		FlxG.signals.focusGained.add(function()
 		{
-			// lol this is bad kek
-			bitmap.alpha = 0;
-
-			sprite = outputTo;
-		}
+			resume();
+		});
+		FlxG.signals.focusLost.add(function()
+		{
+			pause();
+		});
 	}
 
-	// JOELwindows7: pause
-	public function pause()
+	// JOELwindows7: play
+	// public function play()
+	// {
+	// 	bitmap.play();
+	// 	playing = bitmap.isPlaying;
+	// }
+
+	// // JOELwindows7: pause
+	// public function pause()
+	// {
+	// 	bitmap.pause();
+	// 	playing = bitmap.isPlaying;
+	// }
+
+	// // JOELwindows7: resume
+	// public function resume()
+	// {
+	// 	bitmap.resume();
+	// 	playing = bitmap.isPlaying;
+	// }
+
+	// // JOELwindows7: restart
+	// public function restart()
+	// {
+	// 	// bitmap.restart();
+	// 	// bitmap.stop();
+	// 	// bitmap.play();
+	// 	// maybe you should seek to 0 instead???
+	// 	bitmap.pause();
+	// 	bitmap.seek(0);
+	// 	bitmap.play();
+	// 	playing = bitmap.isPlaying;
+	// }
+
+	function update(e:Event)
 	{
-		bitmap.pause();
+		if ((FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) && isPlaying)
+			finishVideo();
+
+		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+			volume = 0;
+		else
+			volume = FlxG.sound.volume + 0.4;
 	}
 
-	// JOELwindows7: resume
-	public function resume()
-	{
-		bitmap.resume();
-	}
-
+	#if sys
 	function checkFile(fileName:String):String
 	{
 		var pDir = "";
@@ -110,86 +104,60 @@ class MP4Handler
 
 		return pDir + fileName;
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
+	#end
 
 	function onVLCVideoReady()
 	{
-		trace("video loaded!");
+		trace("Video loaded!");
 
-		if (sprite != null)
-			sprite.loadGraphic(bitmap.bitmapData);
-	}
-
-	public function onVLCComplete()
-	{
-		bitmap.stop();
-
-		// Clean player, just in case! Actually no.
-
-		FlxG.camera.fade(FlxColor.BLACK, 0, false);
-
-		trace("Big, Big Chungus, Big Chungus!");
-
-		new FlxTimer().start(0.3, function(tmr:FlxTimer)
-		{
-			if (finishCallback != null)
-			{
-				finishCallback();
-			}
-			else if (stateCallback != null)
-			{
-				LoadingState.loadAndSwitchState(stateCallback);
-			}
-
-			bitmap.dispose();
-
-			if (FlxG.game.contains(bitmap))
-			{
-				FlxG.game.removeChild(bitmap);
-			}
-		});
-	}
-
-	public function kill()
-	{
-		bitmap.stop();
-
-		if (finishCallback != null)
-		{
-			finishCallback();
-		}
-
-		bitmap.visible = false;
+		if (readyCallback != null)
+			readyCallback();
 	}
 
 	function onVLCError()
 	{
-		if (finishCallback != null)
-		{
-			finishCallback();
-		}
-		else if (stateCallback != null)
-		{
-			LoadingState.loadAndSwitchState(stateCallback);
-		}
+		// TODO: Catch the error
+		throw "VLC caught an error!";
 	}
 
-	function update(e:Event)
+	public function finishVideo()
 	{
-		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
+		if (FlxG.sound.music != null && pauseMusic)
+			FlxG.sound.music.resume();
+
+		FlxG.stage.removeEventListener(Event.ENTER_FRAME, update);
+
+		dispose();
+
+		if (FlxG.game.contains(this))
 		{
-			if (bitmap.isPlaying)
-			{
-				onVLCComplete();
-			}
+			FlxG.game.removeChild(this);
+
+			if (finishCallback != null)
+				finishCallback();
 		}
-
-		bitmap.volume = FlxG.sound.volume + 0.3; // shitty volume fix. then make it louder.
-
-		if (FlxG.sound.volume <= 0.1)
-			bitmap.volume = 0;
 	}
-	#else
-	#end
+
+	/**
+	 * Native video support for Flixel & OpenFL
+	 * @param path Example: `your/video/here.mp4`
+	 * @param repeat Repeat the video.
+	 * @param pauseMusic Pause music until done video.
+	 */
+	public function playVideo(path:String, ?repeat:Bool = false, pauseMusic:Bool = false)
+	{
+		this.pauseMusic = pauseMusic;
+
+		if (FlxG.sound.music != null && pauseMusic)
+			FlxG.sound.music.pause();
+
+		#if sys
+		play(checkFile(path));
+
+		this.repeat = repeat ? -1 : 0;
+		#else
+		throw "Doesn't support sys";
+		#end
+	}
 }
+#end

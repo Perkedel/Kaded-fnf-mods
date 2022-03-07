@@ -15,8 +15,25 @@
     "allowedToHeadbang": false,
     "forceLuaModchart": false,
     "forceHscriptModchart": false,
+    "forceLuaModchartLegacy": false,
     "reversedCountdown": false,
     "invisibleCountdown": false,
     "silentCountdown": false,
-    "noteStyle": "normal"
+    "useCustomNoteStyle": false,
+    "loadNoteStyleOtherWayAround": false,
+    "noteStyle": "normal",
+    "player1": "bf",
+    "player2": "dad",
+    "gfVersion": "gf",
+    "introCutSceneDoneManually": false,
+    "outroCutSceneDoneManually": false,
+    "eventObjects": [{
+        "name": "Init BPM",
+        "position": 0,
+        "value": 100,
+        "type": "BPM Change"
+    }],
+    "variables": {},
+    "strumCounts": 4,
+    "strumProfiles": "Dance-Single"
 }

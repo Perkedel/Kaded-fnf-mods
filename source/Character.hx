@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -18,6 +19,7 @@ class Character extends FlxSprite
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
 	public var barColor:FlxColor;
+	public var colorTween:FlxTween; //JOELwindows7: Psyched color tween lol! what a big surpise.
 
 	public var holdTimer:Float = 0;
 

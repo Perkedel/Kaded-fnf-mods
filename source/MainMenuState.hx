@@ -1,5 +1,7 @@
 package;
 
+import const.Perkedel;
+import CoreState;
 import GalleryAchievements;
 import flixel.ui.FlxSpriteButton;
 import flixel.ui.FlxButton;
@@ -44,11 +46,11 @@ class MainMenuState extends MusicBeatState
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
-	public static var larutMalam:String = ""; // JOELwindows7: Last Funkin Nightly mark
+	public static var larutMalam:String = Perkedel.ENGINE_NIGHTLY; // JOELwindows7: Last Funkin Nightly mark
 
 	public static var kadeEngineVer:String = "1.8" + nightly;
 	public static var gameVer:String = "0.2.7.1";
-	public static var lastFunkinMomentVer:String = "2021.12.180" + larutMalam; // JOELwindows7: last funkin moments version
+	public static var lastFunkinMomentVer:String = Perkedel.ENGINE_VERSION + larutMalam; // JOELwindows7: last funkin moments version
 	public static var yourModVer:String = "0.0.0.0"; // JOELwindows7: your own mod version
 
 	var magenta:FlxSprite;
@@ -248,7 +250,8 @@ class MainMenuState extends MusicBeatState
 
 			if (controls.BACK || haveBacked)
 			{
-				FlxG.switchState(new TitleState());
+				// FlxG.switchState(new TitleState());
+				switchState(new TitleState()); // JOELwindows7: use this Kade + YinYang48 Hex version
 
 				haveBacked = false;
 			}
@@ -257,12 +260,19 @@ class MainMenuState extends MusicBeatState
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
+					Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
 					FlxG.sound.play(Paths.sound('confirmMenu')); // JOELwindows7: hey, pls don't forget the confirm sound for Kickstarter go to one also!
-					fancyOpenURL("https://ninja-muffin24.itch.io/funkin");
+					// fancyOpenURL("https://ninja-muffin24.itch.io/funkin");
+					fancyOpenURL(Perkedel.DONATE_BUTTON_URL); // JOELwindows7: hey, open all links there is to it.
 					AchievementUnlocked.whichIs("acknowledgement");
 				}
 				else
 				{
+					// FlxG.gamepads.lastActive.vibrate(0.1); //JOELwindows7: wtf bro, no vibration????
+					Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
+					_loadingBar.popNow();
+					_loadingBar.setInfoText("Selected " + optionShit[curSelected]);
+					_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
 					FlxG.mouse.visible = false;
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -288,6 +298,7 @@ class MainMenuState extends MusicBeatState
 							{
 								FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
 								{
+									_loadingBar.unPopNow();
 									goToState();
 								});
 							}
@@ -295,6 +306,7 @@ class MainMenuState extends MusicBeatState
 							{
 								new FlxTimer().start(1, function(tmr:FlxTimer)
 								{
+									_loadingBar.unPopNow();
 									goToState();
 								});
 							}
@@ -360,16 +372,20 @@ class MainMenuState extends MusicBeatState
 
 		switch (daChoice)
 		{
+			// JOELwindows7: you must use this new stuff versionao on it!
 			case 'story mode':
-				FlxG.switchState(new StoryMenuState());
+				// FlxG.switchState(new StoryMenuState());
+				switchState(new StoryMenuState());
 				trace("Story Menu Selected");
 			case 'freeplay':
-				FlxG.switchState(new FreeplayState());
+				// FlxG.switchState(new FreeplayState());
+				switchState(new FreeplayState());
 
 				trace("Freeplay Menu Selected");
 
 			case 'options':
-				FlxG.switchState(new OptionsDirect());
+				// FlxG.switchState(new OptionsDirect());
+				switchState(new OptionsDirect());
 		}
 	}
 

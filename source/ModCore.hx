@@ -1,3 +1,4 @@
+import flixel.FlxG;
 #if FEATURE_MODCORE
 import polymod.backends.OpenFLBackend;
 import polymod.backends.PolymodAssets.PolymodAssetType;
@@ -8,6 +9,8 @@ import polymod.Polymod;
 
 /**
  * Okay now this is epic.
+ * JOELwindows7: also steal stuff from the Enigma engine itself! lol!
+ * https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/behavior/mods/ModCore.hx
  */
 class ModCore
 {
@@ -21,7 +24,7 @@ class ModCore
 
 	static final MOD_DIRECTORY = "mods";
 
-	public static function initialize()
+	public static function initialize() // JOELwindows7: enigma is loadAllMods()
 	{
 		#if FEATURE_MODCORE
 		Debug.logInfo("Initializing ModCore...");
@@ -29,6 +32,55 @@ class ModCore
 		#else
 		Debug.logInfo("ModCore not initialized; not supported on this platform.");
 		#end
+	}
+
+	// JOELwindows7: enigma, here to load only some mods.
+	public static function loadConfiguredMods()
+	{
+		#if FEATURE_MODCORE
+		Debug.logInfo("Initializing ModCore (using user config)...");
+		Debug.logTrace('  User mod config: ${FlxG.save.data.modConfig}');
+		var userModConfig = getConfiguredMods();
+		loadModsById(userModConfig);
+		#else
+		Debug.logInfo("ModCore not initialized; not supported on this platform.");
+		#end
+	}
+
+	// JOELwindows7: here the more enigma.
+
+	/**
+	 * If the user has configured an order of mods to load, returns the list of mod IDs in order.
+	 * Otherwise, returns a list of ALL installed mods in alphabetical order.
+	 * @return The mod order to load.
+	 */
+	public static function getConfiguredMods():Array<String>
+	{
+		var rawSaveData = FlxG.save.data.modConfig;
+
+		if (rawSaveData != null)
+		{
+			var modEntries = rawSaveData.split('~');
+			return modEntries;
+		}
+		else
+		{
+			// Mod list not in save!
+			return null;
+		}
+	}
+
+	public static function saveModList(loadedMods:Array<String>)
+	{
+		Debug.logInfo('Saving mod configuration...');
+		var rawSaveData = loadedMods.join('~');
+		Debug.logTrace(rawSaveData);
+		FlxG.save.data.modConfig = rawSaveData;
+		var result = FlxG.save.flush();
+		if (result)
+			Debug.logInfo('Mod configuration saved successfully.');
+		else
+			Debug.logWarn('Failed to save mod configuration.');
 	}
 
 	#if FEATURE_MODCORE
@@ -95,9 +147,15 @@ class ModCore
 		for (item in fileList)
 			Debug.logTrace('  * $item');
 
-		//JOELwindows7: and fonts. maybe there's more
+		// JOELwindows7: and fonts. maybe there's more
 		fileList = Polymod.listModFiles("FONT");
 		Debug.logInfo('Installed mods have replaced ${fileList.length} font files.');
+		for (item in fileList)
+			Debug.logTrace('  * $item');
+
+		// JOELwindows7: okay unknown file types what do you want?!
+		fileList = Polymod.listModFiles("UNKNOWN");
+		Debug.logInfo('Installed mods have replaced ${fileList.length} unknown files.');
 		for (item in fileList)
 			Debug.logTrace('  * $item');
 	}
@@ -111,11 +169,46 @@ class ModCore
 		return modIds;
 	}
 
+	// JOELwindows7: more yoinks too yey! enigma
+
+	/**
+	 * Returns true if there are mods to load in the mod folder,
+	 * and false if there aren't (or mods aren't supported).
+	 * @return A boolean value.
+	 */
+	public static function hasMods():Bool
+	{
+		#if FEATURE_MODCORE
+		return getAllMods().length > 0;
+		#else
+		return false;
+		#end
+	}
+
+	public static function getAllMods():Array<ModMetadata>
+	{
+		Debug.logInfo('Scanning the mods folder...');
+		var modMetadata = Polymod.scan(MOD_DIRECTORY);
+		Debug.logInfo('Found ${modMetadata.length} mods when scanning.');
+		return modMetadata;
+	}
+
+	public static function getAllModIds():Array<String>
+	{
+		var modIds = [for (i in getAllMods()) i.id];
+		return modIds;
+	}
+
 	static function buildParseRules():polymod.format.ParseRules
 	{
 		var output = polymod.format.ParseRules.getDefault();
 		// Ensure TXT files have merge support.
 		output.addType("txt", TextFileFormat.LINES);
+
+		// JOELwindows7: pls help idk how to add lua & stuffs!!!
+		output.addType("lua", TextFileFormat.PLAINTEXT);
+		// output.addType("hx", TextFileFormat.PLAINTEXT);
+		output.addType("hscript", TextFileFormat.PLAINTEXT); // Ohups! here enigma hscript too!!!
 
 		// You can specify the format of a specific file, with file extension.
 		// output.addFile("data/introText.txt", TextFileFormat.LINES)
@@ -142,15 +235,15 @@ class ModCore
 					PS C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods> 
 				```
 			 */
-			// JOELwindows7: Just what the peck?!
+			// JOELwindows7: Just what the peck?! also add Enigma yoinkeh stuffs
 			assetLibraryPaths: [
 				"default" => "./preload", // ./preload
 				"sm" => "./sm", "songs" => "./songs", "shared" => "./", "tutorial" => "./tutorial",
-				"week1" => "./week1", "week2" => "./week2", "week3" => "./week3", "week4" => "./week4", "week5" => "./week5", "week6" => "./week6",
-				"week7" => "./week7", "week8" => "./week8", "week9" => "./week9", "week10" => "./week10", "week11" => "./week11", "week12" => "./week12",
-				"week13" => "./week13", "week14" => "./week14", "week15" => "./week15", "weeks" => "./weeks", "thief" => "./thief", "videos" => "./videos",
-				"preload_odysee" => "./preload_odysee", "preload_thief" => "./preload_thief", "fonts" => "./fonts", "bonusWeek" => "./bonusWeek",
-				"week-1" => "./week-1", "exclude" => "./exclude", "week5720NG" => "./week5720NG",
+				"scripts" => "./scripts", "week1" => "./week1", "week2" => "./week2", "week3" => "./week3", "week4" => "./week4", "week5" => "./week5",
+				"week6" => "./week6", "week7" => "./week7", "week8" => "./week8", "week9" => "./week9", "week10" => "./week10", "week11" => "./week11",
+				"week12" => "./week12", "week13" => "./week13", "week14" => "./week14", "week15" => "./week15", "weeks" => "./weeks", "thief" => "./thief",
+				"videos" => "./videos", "preload_odysee" => "./preload_odysee", "preload_thief" => "./preload_thief", "fonts" => "./fonts",
+				"bonusWeek" => "./bonusWeek", "week-1" => "./week-1", "exclude" => "./exclude", "week5720NG" => "./week5720NG",
 			]
 		}
 	}
@@ -160,6 +253,14 @@ class ModCore
 		// Perform an action based on the error code.
 		switch (error.code)
 		{
+			// JOELwindows7: more werror messages! & Advanced readout
+			case MOD_LOAD_PREPARE:
+				Debug.logInfo('PREPARE when ${error.origin}: ${error.message}', null);
+			case MOD_LOAD_DONE:
+				Debug.logInfo('DONE when ${error.origin}: ${error.message}', null);
+			// case MOD_LOAD_FAILED:
+			case MISSING_ICON:
+				Debug.logWarn('When ${error.origin}, a mod is missing an icon, will load anyways but please add one : ${error.message}', null);
 			// case "parse_mod_version":
 			// case "parse_api_version":
 			// case "parse_mod_api_version":
@@ -180,12 +281,13 @@ class ModCore
 				// Log the message based on its severity.
 				switch (error.severity)
 				{
+					// JOELwindows7: advanced readout now yey
 					case NOTICE:
-						Debug.logInfo(error.message, null);
+						Debug.logInfo('NOTICE ${error.code} when ${error.origin}: ${error.message}', null);
 					case WARNING:
-						Debug.logWarn(error.message, null);
+						Debug.logWarn('WARNING ${error.code} when ${error.origin}: ${error.message}', null);
 					case ERROR:
-						Debug.logError(error.message, null);
+						Debug.logError('WERROR ${error.code} when ${error.origin}: ${error.message}', null);
 				}
 		}
 	}
