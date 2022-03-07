@@ -340,6 +340,10 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://ashes999.github.io/learnhaxe/animated-gifs-in-haxeflixel.html loading GIF in Flixel
 - https://twitter.com/radpas12131/status/1500159332377559040?s=20&t=5MiBaghroIAKZTWklFv4fQ radpas13121 the voweltype. select mouth type for the lip sync yey! btw, he's Indonesian wow!
 - https://twitter.com/fyre_bright/status/1500253535044354051?s=20&t=KMnR9Pkzf6sqBkFR9KXSSg BrightFyre week resume!
+- https://stackoverflow.com/questions/1862423/how-to-tell-which-commit-a-tag-points-to-in-git pls help me
+- https://stackoverflow.com/questions/3745135/push-git-commits-tags-simultaneously how to tag
+- https://stackoverflow.com/questions/29830544/how-do-i-add-a-tag-to-a-github-commit commit with GUI GitHub!??!?!?!
+- https://stackoverflow.com/questions/18216991/create-a-tag-in-a-github-repository still no GUI interface way to do that easily??!! no wonder kids these days hate being programmer because we are forced to stick with terminal type here and there, not obvious if this works, and what does it do!
 
 # in event of git merge conflict
 use VScode and Github desktop!
