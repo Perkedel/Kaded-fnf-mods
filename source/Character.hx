@@ -1,5 +1,6 @@
 package;
 
+import DokiDoki;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxG;
@@ -36,6 +37,11 @@ class Character extends FlxSprite
 	public var camPos:Array<Int>;
 	public var camFollow:Array<Int>;
 
+	public var heartOrgans:Array<SwagHeart>; // JOELwindows7: for the 🫀 hearts. yep, Shinon51788 Doki Doki dance thingy. turns out either:
+
+	// - more than one characters at once in this class instance, which of course has 1 heart each.
+	// - more than one hearts at once in this class instance, which yess they do exists.
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
@@ -47,6 +53,7 @@ class Character extends FlxSprite
 		animDanced = new Map<String, Bool>();
 		curCharacter = character;
 		this.isPlayer = isPlayer;
+		this.jantungInstances = new Array<JantungOrgan>(); // JOELwindows7: first, initialize the thorax cavity/ies.
 
 		// JOELwindows7: bruh you forgot to lowercase curCharacter case name. that's why it crash if I capital one of the letter.
 		// please toLowerCase, should I do that?
@@ -141,6 +148,18 @@ class Character extends FlxSprite
 		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
 		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
 		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
+		this.heartOrgans = data.heartOrgans == null ? [
+			{
+				character: "null",
+				initHR: 70,
+				maxHR: 220,
+				minHR: 70,
+				heartTierBoundaries: [90, 120, 150, 200],
+				successionAdrenalAdd: [4, 3, 2, 1],
+				fearShockAdd: [10, 8, 7, 5],
+				relaxMinusPerBeat: [1, 2, 4, 7],
+			}
+		] : data.heartOrgans; // JOELwindows7: yess, the hearts & each specification!
 
 		flipX = data.flipX == null ? false : data.flipX;
 
@@ -155,6 +174,13 @@ class Character extends FlxSprite
 		barColor = FlxColor.fromString(data.barColor);
 
 		playAnim(data.startingAnim);
+
+		// JOELwindows7: fill out heart organs!
+		for (thisSpec in heartOrgans)
+		{
+			var aHeart = new JantungOrgan(thisSpec);
+			jantungInstances.push(aHeart);
+		}
 	}
 
 	override function update(elapsed:Float)
@@ -188,9 +214,18 @@ class Character extends FlxSprite
 		}
 
 		super.update(elapsed);
+
+		// JOELwindows7: update heart organs!
+		if (jantungInstances != null)
+			for (each in jantungInstances)
+			{
+				if (each != null)
+					each.update(elapsed);
+			}
 	}
 
 	private var danced:Bool = false;
+	private var jantungInstances:Array<JantungOrgan>; // JOELwindows7: bunch of 🫀 heart organs object instances.
 
 	/**
 	 * FOR GF DANCING SHIT
@@ -280,6 +315,24 @@ class Character extends FlxSprite
 	{
 		animOffsets[name] = [x, y];
 	}
+
+	// JOELwindows7: heart functions!
+	public function stimulateHeart(whichOne:Int = -1, typeOfStimulate:HeartStimulateType, givenValue:Float = 0)
+	{
+		if (whichOne < 0)
+		{
+			// all of them
+			for (each in jantungInstances)
+			{
+				each.stimulate(typeOfStimulate, givenValue);
+			}
+		}
+		else
+		{
+			// one of selected
+			jantungInstances[whichOne].stimulate(typeOfStimulate, givenValue);
+		}
+	}
 }
 
 typedef CharacterData =
@@ -293,6 +346,7 @@ typedef CharacterData =
 	var ?camPos:Array<Int>;
 	var ?camFollow:Array<Int>;
 	var ?holdLength:Float;
+	var ?heartOrgans:Array<SwagHeart>; // JOELwindows7: Array of heart organs inside this Character.
 
 	/**
 	 * The color of this character's health bar.

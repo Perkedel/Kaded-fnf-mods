@@ -4,6 +4,16 @@
     "asset": "characters/monsterChristmas",
     "barColor": "#F3FF6E",
     "startingAnim": "idle",
+    "heartOrgans": [{
+        "character": "monster",
+        "initHR": 60,
+        "maxHR": 190,
+        "minHR": 60,
+        "heartTierBoundaries": [70, 90, 130, 180],
+        "successionAdrenalAdd": [3, 2, 2, 1],
+        "fearShockAdd": [8, 6, 5, 4],
+        "relaxMinusPerBeat": [2, 2, 8, 9]
+    }],
     "animations": [{
             "name": "idle",
             "prefix": "monster idle",

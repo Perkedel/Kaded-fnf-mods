@@ -8,6 +8,16 @@
     "startingAnim": "danceRight",
     "isDancing": true,
     "replacesGF": true,
+    "heartOrgans": [{
+        "character": "gf",
+        "initHR": 80,
+        "maxHR": 400,
+        "minHR": 80,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
     "animations": [{
             "name": "danceLeft",
             "prefix": "GF IDLE",

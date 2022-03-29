@@ -6,6 +6,25 @@
     "startingAnim": "danceRight",
     "isDancing": true,
     "holdLength": 4.1,
+    "heartOrgan": [{
+        "character": "skid",
+        "initHR": 80,
+        "maxHR": 260,
+        "minHR": 75,
+        "heartTierBoundaries": [100, 150, 170, 220],
+        "successionAdrenalAdd": [4, 3, 2, 1],
+        "fearShockAdd": [9, 6, 5, 2],
+        "relaxMinusPerBeat": [2, 4, 5, 9]
+    }, {
+        "character": "pump",
+        "initHR": 80,
+        "maxHR": 260,
+        "minHR": 75,
+        "heartTierBoundaries": [100, 150, 170, 220],
+        "successionAdrenalAdd": [4, 3, 2, 1],
+        "fearShockAdd": [9, 6, 5, 2],
+        "relaxMinusPerBeat": [2, 4, 5, 9]
+    }],
     "animations": [{
             "name": "danceLeft",
             "prefix": "spooky dance idle",

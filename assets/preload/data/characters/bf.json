@@ -14,6 +14,16 @@
         "fearShockAdd": [10, 8, 7, 5],
         "relaxMinusPerBeat": [1, 2, 4, 7]
     },
+    "heartOrgans": [{
+        "character": "bf",
+        "initHR": 70,
+        "maxHR": 220,
+        "minHR": 70,
+        "heartTierBoundaries": [90, 120, 150, 200],
+        "successionAdrenalAdd": [4, 3, 2, 1],
+        "fearShockAdd": [10, 8, 7, 5],
+        "relaxMinusPerBeat": [1, 2, 4, 7]
+    }],
     "animations": [{
             "name": "idle",
             "prefix": "BF idle dance",

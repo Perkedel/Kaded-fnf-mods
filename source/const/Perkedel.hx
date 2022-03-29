@@ -21,6 +21,8 @@
  */
 package const;
 
+import DokiDoki;
+
 class Perkedel
 {
 	public static final OPTION_SAY_NEED_RESTART_SONG:String = "(Restart Song Required) ";
@@ -36,4 +38,15 @@ class Perkedel
 	public static final DONATE_BUTTON_URL:String = 'https://odysee.com/@JOELwindows7:a/LFM-links:a'; // here URL of donate button
 	public static final ENABLE_MODS:Bool = true;
 	public static final ENABLE_VERSION_CHECK:Bool = true;
+
+	public static final NULL_HEART_ORGAN:SwagHeart = {
+		character: "null",
+		initHR: 70,
+		maxHR: 220,
+		minHR: 70,
+		heartTierBoundaries: [90, 120, 150, 200],
+		successionAdrenalAdd: [4, 3, 2, 1],
+		fearShockAdd: [10, 8, 7, 5],
+		relaxMinusPerBeat: [1, 2, 4, 7],
+	};
 }

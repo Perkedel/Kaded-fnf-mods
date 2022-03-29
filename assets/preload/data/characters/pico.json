@@ -6,6 +6,16 @@
     "flipX": true,
     "startingAnim": "idle",
     "camPos": [600, 0],
+    "heartOrgan": [{
+        "character": "pico",
+        "initHR": 80,
+        "maxHR": 240,
+        "minHR": 80,
+        "heartTierBoundaries": [80, 100, 125, 180],
+        "successionAdrenalAdd": [2, 2, 1, 1],
+        "fearShockAdd": [50, 20, 10, 5],
+        "relaxMinusPerBeat": [1, 2, 2, 2]
+    }],
     "animations": [{
             "name": "idle",
             "prefix": "Pico Idle Dance",

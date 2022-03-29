@@ -6814,18 +6814,20 @@ class PlayState extends MusicBeatState
 		switch (whichOne)
 		{
 			case 0:
-			// boyfriend.playAnim('hit', true);
-			// break;
-			// notesplash no needed because previous good note hit handler had it. only splash if SICK (PERFECT) and beyond.
+				// boyfriend.playAnim('hit', true);
+				// break;
+				// notesplash no needed because previous good note hit handler had it. only splash if SICK (PERFECT) and beyond.
+				boyfriend.stimulateHeart(-1, HeartStimulateType.ADRENAL);
 			case 1:
 				// dad.playAnim('hit', true);
 				// break;
 				spawnNoteSplashOnNote(handoverNote, handoverNote.noteType, whichOne); // yay Psyched note splash on player 2 as well!
-
+				dad.stimulateHeart(-1, HeartStimulateType.ADRENAL);
 			case 2:
-			// girlfriend.playAnim('hit', true);
-			// break;
-			// okay I know, Copilot.
+				// girlfriend.playAnim('hit', true);
+				// break;
+				// okay I know, Copilot.
+				gf.stimulate(-1, HeartStimulateType.ADRENAL);
 			default:
 		}
 
