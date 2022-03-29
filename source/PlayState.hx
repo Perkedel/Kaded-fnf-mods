@@ -2328,7 +2328,7 @@ class PlayState extends MusicBeatState
 		// Updating Discord Rich Presence (with Time Left)
 		DiscordClient.changePresence(detailsText
 			+ " "
-			+ SONG.song
+			+ SONG.songName
 			+ " ("
 			+ storyDifficultyText
 			+ ") "
@@ -2806,7 +2806,7 @@ class PlayState extends MusicBeatState
 
 			#if FEATURE_DISCORD
 			DiscordClient.changePresence("PAUSED on "
-				+ SONG.song
+				+ SONG.songName
 				+ " ("
 				+ storyDifficultyText
 				+ ") "
@@ -2883,7 +2883,7 @@ class PlayState extends MusicBeatState
 			{
 				DiscordClient.changePresence(detailsText
 					+ " "
-					+ SONG.song
+					+ SONG.songName
 					+ " ("
 					+ storyDifficultyText
 					+ ") "
@@ -2946,7 +2946,7 @@ class PlayState extends MusicBeatState
 		#if FEATURE_DISCORD
 		DiscordClient.changePresence(detailsText
 			+ " "
-			+ SONG.song
+			+ SONG.songName
 			+ " ("
 			+ storyDifficultyText
 			+ ") "
@@ -3597,10 +3597,8 @@ class PlayState extends MusicBeatState
 			{
 				GlobalVideo.get().stop();
 				// JOELwindows7: VLC stop!
-				#if FEATURE_VLC
-				if (vlcHandler != null)
-					vlcHandler.kill();
-				#end // JOELwindows7: FEAR_VLC?!??! wtf, Copilot?!?!?
+				#if FEATURE_VLC if (vlcHandler != null)
+					vlcHandler.kill(); #end // JOELwindows7: FEAR_VLC?!??! wtf, Copilot?!?!?
 				remove(videoSprite);
 				removedVideo = true;
 			}
@@ -4235,7 +4233,7 @@ class PlayState extends MusicBeatState
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here
 				DiscordClient.changePresence("GAME OVER -- "
-					+ SONG.song
+					+ SONG.songName
 					+ " ("
 					+ storyDifficultyText
 					+ ") "
@@ -4307,7 +4305,7 @@ class PlayState extends MusicBeatState
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here
 				DiscordClient.changePresence("GAME OVER -- "
-					+ SONG.song
+					+ SONG.songName
 					+ " ("
 					+ storyDifficultyText
 					+ ") "
@@ -4939,6 +4937,7 @@ class PlayState extends MusicBeatState
 
 					// JOELwindows7: delay time before go to next song
 					// var delayFirstBeforeThat:Float = SONG.delayAfterFinish;
+					var delayFirstBeforeThat:Float = 0; // no more delay
 					// for that eggnog light shut off thingy e.g.
 
 					FlxG.sound.music.stop();
