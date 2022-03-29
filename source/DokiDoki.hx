@@ -282,7 +282,7 @@ class JantungOrgan
 		onBeatHitCallback();
 
 		// auto slowdown
-		if (curBeat % relaxEveryBeatOf == 0)
+		if (curBeat % relaxHeartEveryBeatOf == 0)
 		{
 			if (!slowedAlready)
 			{
