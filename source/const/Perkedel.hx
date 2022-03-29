@@ -26,6 +26,8 @@ class Perkedel
 	public static final OPTION_SAY_NEED_RESTART_SONG:String = "(Restart Song Required) ";
 	public static final OPTION_SAY_CANNOT_ACCESS_IN_PAUSE:String = "(Can't access / toggle! in pause rn) "; // In kade it was "This option cannot be toggled in the pause menu."
 	public static final MAX_FPS_CAP:Int = 3000; // JOELwindows7: usually 290
+	public static final MIN_FPS_CAP:Int = 60; // JOELwindows7: usually 60
+	public static final OPTION_CATEGORY_LENGTH:Int = 6; // How many categories on option menu? was 4, now we got 6. no wait that's DFJK.
 	public static final ENGINE_NAME:String = "Last Funkin Moments"; // oh yeah LFM baby!
 	public static final ENGINE_VERSION:String = "2022.03.180"; // current version number yeah!
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
