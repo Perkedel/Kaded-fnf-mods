@@ -131,7 +131,7 @@ class OptionsMenu extends CoreSubState
 		options = [
 			new OptionCata(50, 40, "Gameplay", [
 				new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
-				new OffsetThing("Change the note audio offset (how many milliseconds a note is offset in a chart)"),
+				new OffsetThing("Change the note visual offset (how many milliseconds a note looks like it is offset in a chart)"),
 				new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
 				new GhostTapOption("Toggle counting pressing a directional input when no arrow is there as a miss."),
 				new DownscrollOption("Toggle making the notes scroll down rather than up."),
@@ -153,7 +153,9 @@ class OptionsMenu extends CoreSubState
 				new UnpausePreparationOption("(RECOMMENDED Always / Manual Only) Initiate quick preparation countdown after unpausing"),
 			]),
 			new OptionCata(345, 40, "Appearance", [
-				new NoteskinOption("Change your current noteskin"), new NoteSplashOption("Have your note press splash"),
+				new NoteskinOption("Change your current noteskin"),
+				new NoteSplashOption("Have your note press splash"),
+				new RotateSpritesOption("Should the game rotate the sprites to do color quantization (turn off for bar skins)"),
 				new EditorRes("Not showing the editor grid will greatly increase editor performance"),
 				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
 				new MiddleScrollOption("Put your lane in the center or on the right."), new HealthBarOption("Toggles health bar visibility"),
@@ -162,10 +164,12 @@ class OptionsMenu extends CoreSubState
 				new StepManiaOption("Sets the colors of the arrows depending on quantization instead of direction."),
 				new ForceStepmaniaOption("Force that quantization even when any modcharts are loaded."), // JOELwindows7: yeha! sneaky sneaky!
 				new AccuracyOption("Display accuracy information on the info bar."),
+				new RoundAccuracy("Round your accuracy to the nearest whole number for the score text (cosmetic only)."),
 				new SongPositionOption("Show the song's current position as a scrolling bar."),
 				new Colour("The color behind icons now fit with their theme. (e.g. Pico = green)"),
 				new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
 				new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
+				new BorderFps("Draw a border around the FPS Text (Consumes a lot of CPU Resources)"),
 				new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
 				new CpuSplashOption("Toggle the CPU's note splash when it hits a note (REQUIRES: Note Splash to be ON)"),
 			]),

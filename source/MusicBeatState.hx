@@ -215,6 +215,8 @@ class MusicBeatState extends CoreState
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 		TimingStruct.clearTimings();
 
+		KeyBinds.keyCheck();
+
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
@@ -312,8 +314,6 @@ class MusicBeatState extends CoreState
 				Conductor.crochet = ((60 / Conductor.bpm) * 1000);
 			}
 		}
-
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 
 		super.update(elapsed);
 	}

@@ -590,6 +590,34 @@ class ShitMsOption extends Option
 	}
 }
 
+class RoundAccuracy extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.roundAccuracy = !FlxG.save.data.roundAccuracy;
+
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Round Accuracy: < " + (FlxG.save.data.roundAccuracy ? "on" : "off") + " >";
+	}
+}
+
 class CpuStrums extends Option
 {
 	public function new(desc:String)
@@ -1175,7 +1203,7 @@ class FPSCapOption extends Option
 	{
 		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) // JOELwindows7: was 290
 			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; // JOELwindows7: yeye
-		else if (FlxG.save.data.fpsCap < 60)
+		else if (FlxG.save.data.fpsCap < Perkedel.MIN_FPS_CAP) // JOELwindows7: was 60
 			FlxG.save.data.fpsCap = Application.current.window.displayMode.refreshRate;
 		else
 			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap - 10;
@@ -1304,6 +1332,7 @@ class ReplayOption extends Option
 	public override function press():Bool
 	{
 		trace("switch");
+		// FlxG.switchState(new LoadReplayState());
 		OptionsMenu.goToState(new LoadReplayState()); // JOELwindows7: hey, check if you are in game before hand!
 		return false;
 	}
@@ -1438,6 +1467,60 @@ class OffsetMenu extends Option
 	}
 }
 
+class BorderFps extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.fpsBorder = !FlxG.save.data.fpsBorder;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "FPS Border: < " + (!FlxG.save.data.fpsBorder ? "off" : "on") + " >";
+	}
+}
+
+class DisplayMemory extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.memoryDisplay = !FlxG.save.data.memoryDisplay;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Memory Display: < " + (!FlxG.save.data.memoryDisplay ? "off" : "on") + " >";
+	}
+}
+
 class OffsetThing extends Option
 {
 	public function new(desc:String)
@@ -1470,12 +1553,13 @@ class OffsetThing extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Note offset: < " + HelperFunctions.truncateFloat(FlxG.save.data.offset, 0) + " >";
+		// was Note offset
+		return "Visual offset: < " + HelperFunctions.truncateFloat(FlxG.save.data.offset, 0) + " >";
 	}
 
 	public override function getValue():String
 	{
-		return "Note offset: < " + HelperFunctions.truncateFloat(FlxG.save.data.offset, 0) + " >";
+		return "Visual offset: < " + HelperFunctions.truncateFloat(FlxG.save.data.offset, 0) + " >";
 	}
 }
 
@@ -1604,6 +1688,38 @@ class MiddleScrollOption extends Option
 	}
 }
 
+class RotateSpritesOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		FlxG.save.data.rotateSprites = !FlxG.save.data.rotateSprites;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Rotate Sprites: < " + (FlxG.save.data.rotateSprites ? "Enabled" : "Disabled") + " >";
+	}
+}
+
 class NoteskinOption extends Option
 {
 	public function new(desc:String)
@@ -1706,6 +1822,7 @@ class LaneUnderlayOption extends Option
 			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc;
 		else
 			description = desc;
+		acceptValues = true;
 	}
 
 	private override function updateDisplay():String
@@ -1743,18 +1860,19 @@ class DebugMode extends Option
 	public function new(desc:String)
 	{
 		// description = desc;
-		// JOELwindows7: cannot access to there during gameplay pause.
-		if (OptionsMenu.isInPause)
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc;
-		else
+		//JOELwindows7: cannot access to there during gameplay pause.
+		// if (OptionsMenu.isInPause)
+		// 	description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc;
+		// else
 			description = desc;
 		super();
 	}
 
 	public override function press():Bool
 	{
+		FlxG.switchState(new AnimationDebug()); //JOELwindows7: now you can. idk.
 		// JOELwindows7: whoa easy baby! we're in gameplay!
-		OptionsMenu.goToState(new AnimationDebug());
+		// OptionsMenu.goToState(new AnimationDebug());
 		return false;
 	}
 
@@ -1897,6 +2015,7 @@ class ResetSettings extends Option
 		FlxG.save.data.flashing = null;
 		FlxG.save.data.resetButton = null;
 		FlxG.save.data.botplay = null;
+		FlxG.save.data.roundAccuracy = null;
 		FlxG.save.data.cpuStrums = null;
 		FlxG.save.data.strumline = null;
 		FlxG.save.data.customStrumLine = null;

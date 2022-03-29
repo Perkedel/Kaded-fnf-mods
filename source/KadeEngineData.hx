@@ -38,6 +38,12 @@ class KadeEngineData
 		if (FlxG.save.data.fps == null)
 			FlxG.save.data.fps = false;
 
+		if (FlxG.save.data.fpsBorder == null)
+			FlxG.save.data.fpsBorder = false;
+
+		if (FlxG.save.data.rotateSprites == null)
+			FlxG.save.data.rotateSprites = true;
+
 		if (FlxG.save.data.changedHit == null)
 		{
 			FlxG.save.data.changedHitX = -1;
@@ -55,6 +61,9 @@ class KadeEngineData
 
 		if (FlxG.save.data.fpsRain == null)
 			FlxG.save.data.fpsRain = false;
+
+		if (FlxG.save.data.memoryDisplay == null)
+			FlxG.save.data.memoryDisplay = false;
 
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 120;
@@ -309,6 +318,8 @@ class KadeEngineData
 		{
 			FlxG.save.data.blueballWeek = false;
 		}
+		if (FlxG.save.data.roundAccuracy == null)
+			FlxG.save.data.roundAccuracy = false;
 
 		FlxG.save.data.cacheImages = false;
 

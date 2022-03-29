@@ -84,11 +84,14 @@ class Debug
 	 */
 	public static function logTrace(input:Dynamic, ?pos:haxe.PosInfos):Void
 	{
+		#if debug
 		if (input == null)
 			return;
 		var output = formatOutput(input, pos);
-		writeToFlxGLog(output, LOG_STYLE_TRACE);
-		writeToLogFile(output, 'TRACE'); // JOELwindows7: I add icon.
+
+		// writeToFlxGLog(output, LOG_STYLE_TRACE);
+		writeToLogFile(output, 'TRACE'); // JOELwindows7: I add icon. faile
+		#end
 	}
 
 	/**

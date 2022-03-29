@@ -206,6 +206,7 @@ class Stage extends MusicBeatState
 					{
 						var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('philly/sky', 'week3'));
 						bg.scrollFactor.set(0.1, 0.1);
+						bg.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['bg'] = bg;
 						toAdd.push(bg);
 
@@ -213,6 +214,7 @@ class Stage extends MusicBeatState
 						city.scrollFactor.set(0.3, 0.3);
 						city.setGraphicSize(Std.int(city.width * 0.85));
 						city.updateHitbox();
+						city.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['city'] = city;
 						toAdd.push(city);
 
@@ -237,10 +239,12 @@ class Stage extends MusicBeatState
 						}
 
 						var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.loadImage('philly/behindTrain', 'week3'));
+						streetBehind.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['streetBehind'] = streetBehind;
 						toAdd.push(streetBehind);
 
 						var phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.loadImage('philly/train', 'week3'));
+						phillyTrain.antialiasing = FlxG.save.data.antialiasing;
 						if (FlxG.save.data.distractions)
 						{
 							swagBacks['phillyTrain'] = phillyTrain;
@@ -263,6 +267,7 @@ class Stage extends MusicBeatState
 						addThe(blammedLightsBlack, 'blammedLightsBlack');
 
 						var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street', 'week3'));
+						street.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['street'] = street;
 						toAdd.push(street);
 					}

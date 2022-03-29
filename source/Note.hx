@@ -139,9 +139,6 @@ class Note extends FlxSprite
 		if (this.strumTime < 0)
 			this.strumTime = 0;
 
-		if (!inCharter)
-			y += FlxG.save.data.offset + PlayState.songOffset;
-
 		this.noteData = noteData;
 
 		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.Optimize) ? PlayState.Stage.curStage : 'stage');
@@ -316,15 +313,18 @@ class Note extends FlxSprite
 
 		// JOELwindows7: whoa, the PlayState.instance can be null! make sure be careful
 		// JOELwindows7: okay we still have to quantize color.
+		// if (FlxG.save.data.stepMania
+		// 	&& !isSustainNote
+		// 	&& ((FlxG.save.data.forceStepmania) ? true : ((PlayState.instance != null) ? !(PlayState.instance.executeModchart
+		// 		|| PlayState.instance.executeModHscript) : true)))
+		// JOELwindows7: huh! turns out Kade decided to not quantize note if any modchart is running.
+		// perhaps for authenticity in retransform craze, due to to this quantization only select other arrow,
+		// and rotates it which dislodge the supposed original angle. idk just saying.
+		// Okay, now I have installed force option. idk this still not recommended because again, pre-rotate messes up your rotation
+		// craze calculations!
 		if (FlxG.save.data.stepMania
 			&& !isSustainNote
-			&& ((FlxG.save.data.forceStepmania) ? true : ((PlayState.instance != null) ? (!PlayState.instance.executeModchart
-				&& !PlayState.instance.executeModHscript) : true)))
-			// JOELwindows7: huh! turns out Kade decided to not quantize note if any modchart is running.
-			// perhaps for authenticity in retransform craze, due to to this quantization only select other arrow,
-			// and rotates it which dislodge the supposed original angle. idk just saying.
-			// Okay, now I have installed force option. idk this still not recommended because again, pre-rotate messes up your rotation
-			// craze calculations!
+			&& !(PlayState.instance != null ? (PlayState.instance.executeModchart || PlayState.instance.executeModHscrip) : false))
 		{
 			var col:Int = 0;
 
@@ -346,9 +346,12 @@ class Note extends FlxSprite
 				col = quantityColor[4];
 
 			animation.play(dataColor[col] + 'Scroll');
-			localAngle -= arrowAngles[col];
-			localAngle += arrowAngles[noteData];
-			originAngle = localAngle;
+			if (FlxG.save.data.rotateSprites)
+			{
+				localAngle -= arrowAngles[col];
+				localAngle += arrowAngles[noteData];
+				originAngle = localAngle;
+			}
 			originColor = col;
 		}
 
@@ -365,7 +368,7 @@ class Note extends FlxSprite
 
 		if (isSustainNote && prevNote != null)
 		{
-			noteYOff = Math.round(-stepHeight + swagWidth * 0.5);
+			noteYOff = Math.round(-stepHeight + swagWidth * 0.5) + FlxG.save.data.offset + PlayState.songOffset;
 
 			noteScore * 0.2;
 			alpha = 0.6;
