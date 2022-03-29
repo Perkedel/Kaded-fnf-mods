@@ -6827,7 +6827,7 @@ class PlayState extends MusicBeatState
 				// girlfriend.playAnim('hit', true);
 				// break;
 				// okay I know, Copilot.
-				gf.stimulate(-1, HeartStimulateType.ADRENAL);
+				gf.stimulateHeart(-1, HeartStimulateType.ADRENAL);
 			default:
 		}
 

@@ -152,6 +152,7 @@ class JantungOrgan
 	var successionAdrenalAdd:Array<Int> = [20, 15, 10, 5];
 	var fearShockAdd:Array<Int> = [22, 20, 10, 5];
 	var relaxMinusPerBeat:Array<Int> = [1, 5, 10, 15];
+	var relaxHeartEveryBeatOf:Int = 4;
 
 	var curHR:Float = 70;
 	var crochet:Float = ((60 / 70) * 1000); // beats in milisecond.
@@ -165,6 +166,7 @@ class JantungOrgan
 	var startStep:Int = 0;
 	var lifePosition:Float = 0;
 	var tierDaRightNow:Int = 0;
+	var slowedAlready:Bool = false;
 
 	public var onStepHitCallback:Void->Void;
 	public var onBeatHitCallback:Void->Void;
@@ -278,6 +280,20 @@ class JantungOrgan
 	function beatHit()
 	{
 		onBeatHitCallback();
+
+		// auto slowdown
+		if (curBeat % relaxEveryBeatOf == 0)
+		{
+			if (!slowedAlready)
+			{
+				stimulate(HeartStimulateType.RELAX);
+				slowedAlready = true;
+			}
+		}
+		else
+		{
+			slowedAlready = false;
+		}
 	}
 
 	/**
@@ -290,16 +306,35 @@ class JantungOrgan
 		switch (typeOfStimulate)
 		{
 			case HeartStimulateType.ADRENAL:
-				curHR += successionAdrenalAdd[tierDaRightNow];
+				// curHR += successionAdrenalAdd[tierDaRightNow];
+				increaseHR(successionAdrenalAdd[tierDaRightNow]);
 
 			case HeartStimulateType.FEAR:
-				curHR += fearShockAdd[tierDaRightNow];
-
+				// curHR += fearShockAdd[tierDaRightNow];
+				increaseHR(fearShockAdd[tierDaRightNow]);
 			case HeartStimulateType.RELAX:
-				curHR -= relaxMinusPerBeat[tierDaRightNow];
+				// curHR -= relaxMinusPerBeat[tierDaRightNow];
+				increaseHR(-relaxMinusPerBeat[tierDaRightNow]);
 			default:
 		}
 
+		checkWhichHeartTierWent(curHR);
+	}
+
+	public function increaseHR(forHowMuch:Float = 0)
+	{
+		curHR += forHowMuch;
+
+		if (curHR > maxHR)
+		{
+			curHR = maxHR;
+		}
+		if (curHR < minHR)
+		{
+			curHR = minHR;
+		}
+
+		// update the tier status
 		checkWhichHeartTierWent(curHR);
 	}
 
