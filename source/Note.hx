@@ -324,7 +324,7 @@ class Note extends FlxSprite
 		// craze calculations!
 		if (FlxG.save.data.stepMania
 			&& !isSustainNote
-			&& !(PlayState.instance != null ? (PlayState.instance.executeModchart || PlayState.instance.executeModHscrip) : false))
+			&& !(PlayState.instance != null ? (PlayState.instance.executeModchart || PlayState.instance.executeModHscript) : false))
 		{
 			var col:Int = 0;
 

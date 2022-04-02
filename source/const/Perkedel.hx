@@ -31,7 +31,7 @@ class Perkedel
 	public static final MIN_FPS_CAP:Int = 60; // JOELwindows7: usually 60
 	public static final OPTION_CATEGORY_LENGTH:Int = 6; // How many categories on option menu? was 4, now we got 6. no wait that's DFJK.
 	public static final ENGINE_NAME:String = "Last Funkin Moments"; // oh yeah LFM baby!
-	public static final ENGINE_VERSION:String = "2022.03.180"; // current version number yeah!
+	public static final ENGINE_VERSION:String = "2022.04.0"; // current version number yeah!
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
 	public static final ENGINE_VERSION_URL:String = 'https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe'; // here URL check
 	public static final ENGINE_CHANGELOG_PREFIX_URL:String = 'https://odysee.com/@JOELwindows7/LFM-changelog-'; // here URL of change log prefix, appened by what version needed there.
@@ -39,7 +39,7 @@ class Perkedel
 	public static final ENABLE_MODS:Bool = true;
 	public static final ENABLE_VERSION_CHECK:Bool = true;
 
-	public static final NULL_HEART_ORGAN:SwagHeart = {
+	public static final NULL_HEART_SPEC:SwagHeart = {
 		character: "null",
 		initHR: 70,
 		maxHR: 220,
@@ -48,5 +48,11 @@ class Perkedel
 		successionAdrenalAdd: [4, 3, 2, 1],
 		fearShockAdd: [10, 8, 7, 5],
 		relaxMinusPerBeat: [1, 2, 4, 7],
+		diastoleInTimeOf: [.5, .4, .3, .2, .1],
+		relaxHeartEveryBeatOf: 4,
+		requiredCPRCompression: 20,
+		giveCPRTokenEachBlow: 5,
+		postArrestRestoreRate: 50,
+		tendencyToFibrilationAt: -1,
 	};
 }

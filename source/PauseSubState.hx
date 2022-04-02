@@ -314,6 +314,9 @@ class PauseSubState extends MusicBeatSubstate
 							case _:
 								true;
 						};
+
+						// JOELwindows7: play this sound effect
+						playSoundEffect("PauseClose");
 					}
 					else
 						FlxG.mouse.visible = true; // JOELwindows7: sigh, do not invisiblize mouse in charter!

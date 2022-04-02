@@ -305,7 +305,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	function endBullshit():Void
 	{
-		var daStage = PlayState.curStage;
+		var daStage = PlayState.Stage.curStage; // JOELwindows7: oh, here's in Stage already.
 		var daBf:String = '';
 		var daSong:String = PlayState.SONG.songId;
 

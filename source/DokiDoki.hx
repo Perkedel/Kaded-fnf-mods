@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.util.FlxTimer;
 import Conductor;
 import Section.SwagSection;
 import haxe.Json;
@@ -32,13 +33,22 @@ using StringTools;
 typedef SwagHeart =
 {
 	var character:String;
-	var initHR:Int;
-	var minHR:Int;
-	var maxHR:Int;
-	var heartTierBoundaries:Array<Int>;
-	var successionAdrenalAdd:Array<Int>;
-	var fearShockAdd:Array<Int>;
-	var relaxMinusPerBeat:Array<Int>;
+	var ?initHR:Float;
+	var ?minHR:Float;
+	var ?maxHR:Float;
+	var ?baseRateScale:Float; // depending on the being or whatever, what base rate the time scale should be.
+	var ?systoleSoundPath:String; // lub sound path
+	var ?diastoleSoundPath:String; // dub sound path
+	var ?heartTierBoundaries:Array<Float>;
+	var ?successionAdrenalAdd:Array<Float>;
+	var ?diastoleInTimeOf:Array<Float>;
+	var ?fearShockAdd:Array<Float>;
+	var ?relaxMinusPerBeat:Array<Float>;
+	var ?relaxHeartEveryBeatOf:Int;
+	var ?tendencyToFibrilationAt:Float; // in what rate the heart will likely went Fibrilation, heart goes insane!
+	var ?requiredCPRCompression:Int; // how many CPR compression needed in order to restore cardiac arrest
+	var ?giveCPRTokenEachBlow:Int; // each blow into mouth during CPR, gives this how many token.
+	var ?postArrestRestoreRate:Float; // when CPR successful, restore HR into this rate.
 }
 
 typedef HeartList =
@@ -61,13 +71,13 @@ class DokiDoki
 	var heartSpecs:Array<SwagHeart>;
 
 	var character:String;
-	var initHR:Int = 70;
-	var minHR:Int = 70;
-	var maxHR:Int = 220;
-	var heartTierBoundaries:Array<Int> = [90, 120, 150, 200];
-	var successionAdrenalAdd:Array<Int> = [20, 15, 10, 5];
-	var fearShockAdd:Array<Int> = [22, 20, 10, 5];
-	var relaxMinusPerBeat:Array<Int> = [1, 5, 10, 15];
+	var initHR:Float = 70;
+	var minHR:Float = 70;
+	var maxHR:Float = 220;
+	var heartTierBoundaries:Array<Float> = [90, 120, 150, 200];
+	var successionAdrenalAdd:Array<Float> = [20, 15, 10, 5];
+	var fearShockAdd:Array<Float> = [22, 20, 10, 5];
+	var relaxMinusPerBeat:Array<Float> = [1, 5, 10, 15];
 
 	public static var hearts:Map<String, SwagHeart>;
 
@@ -144,16 +154,26 @@ class DokiDoki
  */
 class JantungOrgan
 {
+	// Parameters
 	var character:String;
-	var initHR:Int = 70;
-	var minHR:Int = 70;
-	var maxHR:Int = 220;
-	var heartTierBoundaries:Array<Int> = [90, 120, 150, 200];
-	var successionAdrenalAdd:Array<Int> = [20, 15, 10, 5];
-	var fearShockAdd:Array<Int> = [22, 20, 10, 5];
-	var relaxMinusPerBeat:Array<Int> = [1, 5, 10, 15];
+	var initHR:Float = 70;
+	var minHR:Float = 70;
+	var maxHR:Float = 220;
+	var baseRateScale:Float = 70;
+	var systoleSoundPath:String = ""; // lub sound
+	var diastoleSoundPath:String = ""; // dub sound
+	var heartTierBoundaries:Array<Float> = [90, 120, 150, 200];
+	var successionAdrenalAdd:Array<Float> = [20, 15, 10, 5];
+	var fearShockAdd:Array<Float> = [22, 20, 10, 5];
+	var relaxMinusPerBeat:Array<Float> = [1, 5, 10, 15];
+	var diastoleInTimeOf:Array<Float> = [.5, .4, .3, .2, .1]; // heart will diastole in time of.
 	var relaxHeartEveryBeatOf:Int = 4;
+	var requiredCPRCompression:Int = 20; // how many CPR compression needed in order to restore cardiac arrest
+	var giveCPRTokenEachBlow:Int = 5; // each blow into mouth during CPR, gives this how many token.
+	var postArrestRestoreRate:Float = 50; // when CPR successful, restore HR into this rate.
+	var tendencyToFibrilationAt:Float = -1; // in what rate the heart will likely went Fibrilation, heart goes insane! e.g. 200 like who her name . -1 to disable fibrilation.
 
+	// Statuses
 	var curHR:Float = 70;
 	var crochet:Float = ((60 / 70) * 1000); // beats in milisecond.
 	var stepCrochet:Float = ((60 / 70) * 1000) / 4; // steps in milisecond.
@@ -167,32 +187,53 @@ class JantungOrgan
 	var lifePosition:Float = 0;
 	var tierDaRightNow:Int = 0;
 	var slowedAlready:Bool = false;
+	var beingAntiSlow:Bool = false; // enable to prevent auto slowdown.
+	var beingAntiFast:Bool = false; // enable to prevent auto fast.
+	var beingUpped:Bool = false; // enable to have heart keeps going up.
+	var beingDowned:Bool = false; // enable to have heart keeps going down, even bellow minHR. POISON.
+	var barrierMin:Float = 70; // temporary new minHR, e.g. during 69420 operation, the arousal keeps the heart beats faster & faster as progression goes.
+	var barrierMax:Float = 220; // temporary new maxHR, e.g. hear rate inhibitor something idk.
+	var skipTheBeat:Bool = false; // heart skips beat.
+	var arrest:Bool = false; // heart stopped beating.
+	var breathCPRToken:Int = 0; // reserved oxygen or whatver for CPR. each compression uses 1. can be refilled by blow into mouth.
+	var currCompression:Int = 0; // how many compressions have been done. reach required compression number to restore arrest.
 
+	// Callbacks
 	public var onStepHitCallback:Void->Void;
 	public var onBeatHitCallback:Void->Void;
+	public var onDiastoleHitCallback:Void->Void;
+
+	// Components
+	var diastoleTimer:FlxTimer;
 
 	public function new(handoverSpec:SwagHeart)
 	{
-		this.character = handoverSpec.character;
-		// var chooseIndex:Int = 0;
-		// switch (character)
-		// {
-		// 	case 'bf':
-		// 		chooseIndex = 0;
-		// 	case 'gf':
-		// 		chooseIndex = 1;
-		// 	default:
-		// 		chooseIndex = 0;
-		// }
+		diastoleTimer = new FlxTimer();
+		_parseData(handoverSpec);
+		checkWhichHeartTierWent(curHR);
+	}
 
-		this.minHR = handoverSpec.minHR;
-		this.maxHR = handoverSpec.maxHR;
-		this.heartTierBoundaries = handoverSpec.heartTierBoundaries;
-		this.successionAdrenalAdd = handoverSpec.successionAdrenalAdd;
-		this.fearShockAdd = handoverSpec.fearShockAdd;
-		this.relaxMinusPerBeat = handoverSpec.relaxMinusPerBeat;
-
-		curHR = initHR;
+	private function _parseData(handoverSpec:SwagHeart)
+	{
+		// copy the null check technic from Character class, instance method
+		this.character = handoverSpec.character == null ? "null" : handoverSpec.character;
+		this.minHR = this.barrierMin = handoverSpec.minHR == null ? 70 : handoverSpec.minHR;
+		this.maxHR = this.barrierMax = handoverSpec.maxHR == null ? 220 : handoverSpec.maxHR;
+		this.baseRateScale = handoverSpec.baseRateScale == null ? 70 : handoverSpec.baseRateScale;
+		this.heartTierBoundaries = handoverSpec.heartTierBoundaries == null ? [90, 120, 150, 200] : handoverSpec.heartTierBoundaries;
+		this.successionAdrenalAdd = handoverSpec.successionAdrenalAdd == null ? [20, 15, 10, 5] : handoverSpec.successionAdrenalAdd;
+		this.fearShockAdd = handoverSpec.fearShockAdd == null ? [22, 20, 10, 5] : handoverSpec.fearShockAdd;
+		this.relaxMinusPerBeat = handoverSpec.relaxMinusPerBeat == null ? [1, 5, 10, 15] : handoverSpec.relaxMinusPerBeat;
+		this.diastoleInTimeOf = handoverSpec.diastoleInTimeOf == null ? [.5, .4, .3, .2, .1] : handoverSpec.diastoleInTimeOf;
+		this.relaxHeartEveryBeatOf = handoverSpec.relaxHeartEveryBeatOf == null ? 4 : handoverSpec.relaxHeartEveryBeatOf;
+		this.requiredCPRCompression = handoverSpec.requiredCPRCompression == null ? 20 : handoverSpec.requiredCPRCompression;
+		this.giveCPRTokenEachBlow = handoverSpec.giveCPRTokenEachBlow == null ? 5 : handoverSpec.giveCPRTokenEachBlow;
+		this.postArrestRestoreRate = handoverSpec.postArrestRestoreRate == null ? 50 : handoverSpec.postArrestRestoreRate;
+		this.tendencyToFibrilationAt = handoverSpec.tendencyToFibrilationAt == null ? -1 : handoverSpec.tendencyToFibrilationAt;
+		// this.curHR = this.initHR = this.minHR; // No, Copilot. the initHR is its own!
+		this.curHR = this.initHR = handoverSpec.initHR == null ? 70 : handoverSpec.initHR;
+		this.systoleSoundPath = handoverSpec.systoleSoundPath == null ? "" : handoverSpec.systoleSoundPath;
+		this.diastoleSoundPath = handoverSpec.diastoleSoundPath == null ? "" : handoverSpec.diastoleSoundPath;
 	}
 
 	/**
@@ -294,6 +335,17 @@ class JantungOrgan
 		{
 			slowedAlready = false;
 		}
+
+		// TODO: time scales with current rate in this heartbeat pattern graph.
+		diastoleTimer.start(diastoleInTimeOf[tierDaRightNow] * (baseRateScale / curHR), function(tmr:FlxTimer)
+		{
+			diastoleHit();
+		});
+	}
+
+	function diastoleHit()
+	{
+		onDiastoleHitCallback();
 	}
 
 	/**
@@ -315,23 +367,34 @@ class JantungOrgan
 			case HeartStimulateType.RELAX:
 				// curHR -= relaxMinusPerBeat[tierDaRightNow];
 				increaseHR(-relaxMinusPerBeat[tierDaRightNow]);
+			case HeartStimulateType.SHOCK:
+				// curHR += fearShockAdd[tierDaRightNow];
+				increaseHR(fearShockAdd[tierDaRightNow]);
+				arrest = false;
 			default:
 		}
 
-		checkWhichHeartTierWent(curHR);
+		// checkWhichHeartTierWent(curHR); //already checked
 	}
 
-	public function increaseHR(forHowMuch:Float = 0)
+	public function increaseHR(forHowMuch:Float = 0, forceUnevaluate:Bool = false)
 	{
 		curHR += forHowMuch;
 
-		if (curHR > maxHR)
+		if (!forceUnevaluate)
 		{
-			curHR = maxHR;
+			if (curHR > maxHR)
+			{
+				curHR = maxHR;
+			}
+			if (curHR < minHR)
+			{
+				curHR = minHR;
+			}
 		}
-		if (curHR < minHR)
+		if (curHR < 0)
 		{
-			curHR = minHR;
+			curHR = 0;
 		}
 
 		// update the tier status
@@ -341,17 +404,49 @@ class JantungOrgan
 	function checkWhichHeartTierWent(giveHB:Float)
 	{
 		// Hard code bcause logic brainstorm is haarde
-		if (giveHB < heartTierBoundaries[0])
-			tierDaRightNow = 0;
-		else if (giveHB >= heartTierBoundaries[0] && giveHB < heartTierBoundaries[1])
-			tierDaRightNow = 1;
-		else if (giveHB >= heartTierBoundaries[1] && giveHB < heartTierBoundaries[2])
-			tierDaRightNow = 2;
-		else if (giveHB >= heartTierBoundaries[2] && giveHB < heartTierBoundaries[3])
-			tierDaRightNow = 3;
-		else if (giveHB >= heartTierBoundaries[3])
+		if (giveHB > minHR)
 		{
-			// uhhh, idk..
+			if (giveHB < heartTierBoundaries[0])
+				tierDaRightNow = 0;
+			else if (giveHB >= heartTierBoundaries[0] && giveHB < heartTierBoundaries[1])
+				tierDaRightNow = 1;
+			else if (giveHB >= heartTierBoundaries[1] && giveHB < heartTierBoundaries[2])
+				tierDaRightNow = 2;
+			else if (giveHB >= heartTierBoundaries[2] && giveHB < heartTierBoundaries[3])
+				tierDaRightNow = 3;
+			else if (giveHB >= heartTierBoundaries[3])
+			{
+				// uhhh, idk..
+			}
 		}
+		else if (giveHB > 0 && giveHB < minHR)
+		{
+			tierDaRightNow = -1; // bradycardia
+		}
+		else if (giveHB <= 0)
+		{
+			tierDaRightNow = -2; // death
+			arrest = true; // this always turns on. do CPR to untrue this!
+		}
+	}
+
+	public function blowMouth()
+	{
+		breathCPRToken += giveCPRTokenEachBlow;
+	}
+
+	public function getHeartRate():Float
+	{
+		return curHR;
+	}
+
+	public function getHeartTier():Int
+	{
+		return tierDaRightNow;
+	}
+
+	public function getHeartTierBoundary(whichBoundary:Int):Float
+	{
+		return heartTierBoundaries[whichBoundary];
 	}
 }

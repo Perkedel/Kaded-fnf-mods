@@ -344,7 +344,7 @@ class FreeplayState extends MusicBeatState
 		// LOAD CHARACTERS
 
 		// var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('menuBGBlue'));
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat')); // JOELwindows7: here global
+		bg = new FlxSprite().loadGraphic(Paths.image('MenuBGDesatAlt')); // JOELwindows7: here global. was menuDesat
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 

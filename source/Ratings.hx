@@ -94,11 +94,15 @@ class Ratings
 
 	public static var timingWindows:Array<Float> = []; // JOELwindows7: hey, you forgot to type!
 
-	public static function judgeHeartBeat(heartBeat:Int, heartTier:Int)
+	public static function judgeHeartBeat(heartBeat:Float, heartTier:Int)
 	{
 		var classify:String = "Nrml";
 		switch (heartTier)
 		{
+			case -2:
+				classify = "Dead";
+			case -1:
+				classify = "Brady";
 			case 0:
 				classify = "Nrml";
 			case 1:
@@ -107,9 +111,11 @@ class Ratings
 				classify = "Rcing";
 			case 3:
 				classify = "Poundn";
+			case 4:
+				classify = "Tachy";
 		}
 
-		return Std.string(heartBeat) + " BPM (" + classify + ")";
+		return Std.string(HelperFunctions.truncateFloat(heartBeat, 2)) + " BPM (" + classify + ")";
 	}
 
 	public static function judgeNote(noteDiff:Float)
@@ -187,7 +193,7 @@ class Ratings
 		return 2;
 	}
 
-	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float, hR:Int, hTier:Int):String
+	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float, hR:Float, hTier:Int):String
 	{
 		return (FlxG.save.data.npsDisplay ? // NPS Toggle
 			"NPS: "

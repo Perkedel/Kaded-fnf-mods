@@ -1860,17 +1860,17 @@ class DebugMode extends Option
 	public function new(desc:String)
 	{
 		// description = desc;
-		//JOELwindows7: cannot access to there during gameplay pause.
+		// JOELwindows7: cannot access to there during gameplay pause.
 		// if (OptionsMenu.isInPause)
 		// 	description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc;
 		// else
-			description = desc;
+		description = desc;
 		super();
 	}
 
 	public override function press():Bool
 	{
-		FlxG.switchState(new AnimationDebug()); //JOELwindows7: now you can. idk.
+		FlxG.switchState(new AnimationDebug()); // JOELwindows7: now you can. idk.
 		// JOELwindows7: whoa easy baby! we're in gameplay!
 		// OptionsMenu.goToState(new AnimationDebug());
 		return false;
@@ -2026,6 +2026,40 @@ class ResetSettings extends Option
 		FlxG.save.data.cacheImages = null;
 		FlxG.save.data.editor = null;
 		FlxG.save.data.laneTransparency = 0;
+		//JOELwindows7: oh man! don't forget my new setting data!
+		FlxG.save.data.accidentVolumeKeys = null;
+		FlxG.save.data.fullscreen = false;
+		FlxG.save.data.odyseeMark = null;
+		FlxG.save.data.perkedelMark = null;
+		FlxG.save.data.naughtiness = null;
+		FlxG.save.data.cardiophile = null;
+		FlxG.save.data.useTouchScreenButtons = null;
+		FlxG.save.data.selectTouchScreenButtons = null;
+		FlxG.save.data.vibration = null;
+		FlxG.save.data.preUnlocked = null;
+		FlxG.save.data.vibrationOffset = 0.18;
+		FlxG.save.data.outOfSegsWarning = null;
+		FlxG.save.data.traceSongChart = null;
+		FlxG.save.data.annoyingWarns = null;
+		FlxG.save.data.legacyLuaScript = null;
+		FlxG.save.data.modData = new Map<String,Dynamic>();
+		FlxG.save.data.autoClick = null;
+		FlxG.save.data.autoClickDelay = 2;
+		FlxG.save.data.freeplayThreadedLoading = null;
+		FlxG.save.data.endSongEarly = null;
+		FlxG.save.data.scoreTxtZoom = null;
+		FlxG.save.data.noteSplashes = null;
+		FlxG.save.data.cpuSplash = null;
+		FlxG.save.data.forceStepmania = null;
+		FlxG.save.data.unpausePreparation = 1;
+		FlxG.save.data.hitsound = null;
+		// FlxG.save.data.leftAWeek = null;
+		// FlxG.save.data.leftStoryWeek = 0;
+		// FlxG.save.data.leftWeekSongAt = '';
+		// FlxG.save.data.leftFullPlaylistCurrently = [];
+		// FlxG.save.data.leftCampaignScore = 0;
+		// FlxG.save.data.leftCampaignMisses = 0;
+		FlxG.save.data.blueballWeek = null;
 
 		KadeEngineData.initSave();
 		confirm = false;

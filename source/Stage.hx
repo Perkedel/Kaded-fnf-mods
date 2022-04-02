@@ -21,6 +21,7 @@ import hx.files.*;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import DokiDoki;
 
 using StringTools;
 
@@ -1044,8 +1045,11 @@ class Stage extends MusicBeatState
 		}
 
 		// JOELwindows7: shock fear Heartbeat jumps
-		PlayState.instance.increaseHR(PlayState.instance.fearShockAdd[0][PlayState.instance.heartTierIsRightNow[0]], 0);
-		PlayState.instance.increaseHR(PlayState.instance.fearShockAdd[2][PlayState.instance.heartTierIsRightNow[2]], 2);
+		// PlayState.instance.increaseHR(PlayState.instance.fearShockAdd[0][PlayState.instance.heartTierIsRightNow[0]], 0);
+		// PlayState.instance.increaseHR(PlayState.instance.fearShockAdd[2][PlayState.instance.heartTierIsRightNow[2]], 2);
+		// PlayState.boyfriend
+		PlayState.boyfriend.stimulateHeart(-1, HeartStimulateType.FEAR);
+		PlayState.gf.stimulateHeart(-1, HeartStimulateType.FEAR);
 
 		// JOELwindows7: vibrate controllers
 		Controls.vibrate(0, 100);
@@ -1326,6 +1330,7 @@ class Stage extends MusicBeatState
 	public var customStage:SwagStage;
 
 	var useStageScript:Bool = false; // JOELwindows7: flag to start try the stage Lua script
+
 	public var attemptStageScript:Bool = false; // JOELwindows7: flag to start prepare stage script after all stuffs loaded
 
 	function loadStageFile(path:String)

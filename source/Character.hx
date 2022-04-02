@@ -148,18 +148,7 @@ class Character extends FlxSprite
 		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
 		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
 		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
-		this.heartOrgans = data.heartOrgans == null ? [
-			{
-				character: "null",
-				initHR: 70,
-				maxHR: 220,
-				minHR: 70,
-				heartTierBoundaries: [90, 120, 150, 200],
-				successionAdrenalAdd: [4, 3, 2, 1],
-				fearShockAdd: [10, 8, 7, 5],
-				relaxMinusPerBeat: [1, 2, 4, 7],
-			}
-		] : data.heartOrgans; // JOELwindows7: yess, the hearts & each specification!
+		this.heartOrgans = data.heartOrgans == null ? [Perkedel.NULL_HEART_SPEC] : data.heartOrgans; // JOELwindows7: yess, the hearts & each specification!
 
 		flipX = data.flipX == null ? false : data.flipX;
 
@@ -332,6 +321,36 @@ class Character extends FlxSprite
 			// one of selected
 			jantungInstances[whichOne].stimulate(typeOfStimulate, givenValue);
 		}
+	}
+
+	public function getHeartRate(which:Int = -1):Float
+	{
+		if (which < 0)
+		{
+			// JOELwindows7: GitHub copilot coded this! average heart rate of all heart organs inside! lmao!
+			var total:Float = 0;
+			for (each in jantungInstances)
+			{
+				total += each.getHeartRate();
+			}
+			return total / jantungInstances.length;
+		}
+		return jantungInstances[which].getHeartRate();
+	}
+
+	public function getHeartTier(which:Int = 0):Int
+	{
+		if (which < 0)
+		{
+			// JOELwindows7: GitHub copilot coded this! average heart tier of all heart organs inside! lmao!
+			var total:Int = 0;
+			for (each in jantungInstances)
+			{
+				total += each.getHeartTier();
+			}
+			return Std.int(total / jantungInstances.length);
+		}
+		return jantungInstances[which].getHeartTier();
 	}
 }
 

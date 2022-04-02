@@ -592,6 +592,17 @@ class CoreState extends FlxUIState
 		Main.gjToastManager.createToast(iconPath, title, description, sound);
 	}
 
+	/**
+	 * Play a sound effect choosen in sounds folder. 
+	 * it will play sound in-place through FlxG instead of instancing a variable.
+	 * Copied from ChartingState emit SFX
+	 * @param path 
+	 */
+	function playSoundEffect(path:String)
+	{
+		FlxG.sound.play(Paths.sound(path));
+	}
+
 	function manageMouse():Void
 	{
 		// JOELwindows7: nothing. use this special update to manage mouse
@@ -864,6 +875,17 @@ class CoreSubState extends FlxUISubState
 	public function createToast(iconPath:String, title:String, description:String, sound:Bool = false)
 	{
 		Main.gjToastManager.createToast(iconPath, title, description, sound);
+	}
+
+	/**
+	 * Play a sound effect choosen in sounds folder. 
+	 * it will play sound in-place through FlxG instead of instancing a variable.
+	 * Copied from ChartingState emit SFX
+	 * @param path 
+	 */
+	function playSoundEffect(path:String)
+	{
+		FlxG.sound.play(Paths.sound(path));
 	}
 
 	function manageMouse():Void

@@ -173,16 +173,16 @@ class PlayState extends MusicBeatState
 
 	// last resort is to have links shared in video, hard coded, hard embedded.
 	// hopefully the "thiefs" got displeased lmao!
-	// JOELwindows7: Doki doki dance thingie
+	// JOELwindows7: Doki doki dance thingie heartbeat
 	// bf, dad, gf
-	public var heartRate:Array<Int> = [70, 60, 80];
-	public var minHR:Array<Int> = [70, 60, 80];
-	public var maxHR:Array<Int> = [220, 210, 290];
+	public var heartRate:Array<Float> = [70, 60, 80];
+	public var minHR:Array<Float> = [70, 60, 80];
+	public var maxHR:Array<Float> = [220, 210, 290];
 	public var heartTierIsRightNow:Array<Int> = [0, 0, 0];
-	public var heartTierBoundaries:Array<Array<Int>> = [[90, 120, 150, 200], [90, 120, 150, 200], [90, 120, 150, 200],]; // tier when bellow each number
-	public var successionAdrenalAdd:Array<Array<Int>> = [[4, 3, 2, 1], [4, 3, 2, 1], [4, 3, 2, 1],];
-	public var fearShockAdd:Array<Array<Int>> = [[10, 8, 7, 5], [10, 8, 7, 5], [10, 8, 7, 5],];
-	public var relaxMinusPerBeat:Array<Array<Int>> = [[1, 2, 4, 7], [1, 2, 4, 7], [1, 2, 4, 7],];
+	public var heartTierBoundaries:Array<Array<Float>> = [[90, 120, 150, 200], [90, 120, 150, 200], [90, 120, 150, 200],]; // tier when bellow each number
+	public var successionAdrenalAdd:Array<Array<Float>> = [[4, 3, 2, 1], [4, 3, 2, 1], [4, 3, 2, 1],];
+	public var fearShockAdd:Array<Array<Float>> = [[10, 8, 7, 5], [10, 8, 7, 5], [10, 8, 7, 5],];
+	public var relaxMinusPerBeat:Array<Array<Float>> = [[1, 2, 4, 7], [1, 2, 4, 7], [1, 2, 4, 7],];
 
 	var slowedAlready:Array<Bool> = [false, false, false];
 
@@ -541,7 +541,7 @@ class PlayState extends MusicBeatState
 		numOfMissNoteSfx = Std.parseInt(initMissSfx[0]);
 
 		// JOELwindows7: init the heartbeat system
-		startHeartBeat();
+		// startHeartBeat();
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -1310,8 +1310,8 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.text = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS,
-			(FlxG.save.data.roundAccuracy ? FlxMath.roundDecimal(accuracy, 0) : accuracy), heartRate[0],
-			heartTierIsRightNow[0] // JOELwindows7: this is just recently popped up.
+			(FlxG.save.data.roundAccuracy ? FlxMath.roundDecimal(accuracy, 0) : accuracy), boyfriend.getHeartRate(0),
+			boyfriend.getHeartTier(0) // JOELwindows7: this is just recently popped up.
 		);
 		if (!FlxG.save.data.healthBar)
 			scoreTxt.y = healthBarBG.y;
@@ -2831,6 +2831,10 @@ class PlayState extends MusicBeatState
 			// 	onScreenGameplayButtons.visible = false;
 			// }
 			hideOnScreenGameplayButtons();
+
+			// JOELwindows7: finally, play the Pause we've generated with SFB games Chiptone.
+			playSoundEffect("PauseOpen");
+			// inspired from A Hat in Time, because, I like AHiT yess.
 		}
 
 		super.openSubState(SubState);
@@ -3437,7 +3441,7 @@ class PlayState extends MusicBeatState
 			iconP1.swapOldIcon();
 
 		// JOELwindows7: update heartbeat moments
-		updateHeartbeat();
+		// updateHeartbeat();
 
 		if (curBeat > 8)
 		{
@@ -6051,7 +6055,7 @@ class PlayState extends MusicBeatState
 
 		// JOELwindows7: here's where we moved. the bottom score text
 		scoreTxt.text = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS,
-			(FlxG.save.data.roundAccuracy ? FlxMath.roundDecimal(accuracy, 0) : accuracy), heartRate[0], heartTierIsRightNow[0]);
+			(FlxG.save.data.roundAccuracy ? FlxMath.roundDecimal(accuracy, 0) : accuracy), boyfriend.getHeartRate(0), boyfriend.getHeartTier(0));
 		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words. here this too!
 		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
 		judgementCounter.text = '${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
@@ -6706,6 +6710,10 @@ class PlayState extends MusicBeatState
 	}
 
 	// JOELwindows7: manage heartbeat moments
+
+	/**
+	 * @deprecated a newer heartbeat fetish system has been moved to inside Character
+	 */
 	function startHeartBeat()
 	{
 		DokiDoki.buildHeartsList();
@@ -6775,6 +6783,9 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	/**
+	 * @deprecated a newer heartbeat fetish system has already moved to inside Character class.
+	 */
 	function updateHeartbeat()
 	{
 		// update the tier status
@@ -6834,7 +6845,7 @@ class PlayState extends MusicBeatState
 		increaseHR(successionAdrenalAdd[whichOne][heartTierIsRightNow[whichOne]], whichOne);
 	}
 
-	function checkWhichHeartTierWent(giveHB:Int, whichOne:Int = 0)
+	function checkWhichHeartTierWent(giveHB:Float, whichOne:Int = 0)
 	{
 		// if(giveHB > heartTierBoundaries[whichOne][heartTierIsRightNow[whichOne]] && giveHB < heartTierBoundaries[whichOne][heartTierIsRightNow[whichOne]+1]){
 		// 	heartTierIsRightNow++;
@@ -6857,7 +6868,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public function increaseHR(forHowMuch:Int = 0, whichOne:Int = 0)
+	public function increaseHR(forHowMuch:Float = 0, whichOne:Int = 0)
 	{
 		heartRate[whichOne] += forHowMuch;
 

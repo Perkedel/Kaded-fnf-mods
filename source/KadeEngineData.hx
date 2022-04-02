@@ -99,6 +99,7 @@ class KadeEngineData
 		if (FlxG.save.data.naughtiness == null)
 			FlxG.save.data.naughtiness = true;
 
+		// JOELwindows7: heartbeat fetish option
 		if (FlxG.save.data.cardiophile == null)
 			FlxG.save.data.cardiophile = true;
 
@@ -152,7 +153,7 @@ class KadeEngineData
 			FlxG.save.data.useTouchScreenButtons = false;
 
 		if (FlxG.save.data.selectTouchScreenButtons == null)
-			FlxG.save.data.useTouchScreenButtons == 0;
+			FlxG.save.data.selectTouchScreenButtons == 0;
 
 		// JOELwindows7: Vibrations
 		if (FlxG.save.data.vibration == null)
