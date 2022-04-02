@@ -491,6 +491,8 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://github.com/marketplace/actions/upload-a-build-artifact GitHub. upload build results
 - https://github.com/marketplace?type=actions&query=mingw+ GitHub. wait, what is this for? we don't use mingw right now. that's for Zumi's new factory in his palace.
 - https://sfbgames.itch.io/chiptone (Warning: Proprietary, but it's gratis. also all sound made are public domain able) SFB Games. Generate sound effect!! sfxr thingy!!!
+- https://www.fontspace.com/azonix-font-f30718 ???. Azonix cool techy font!
+- https://www.fontspace.com/category/tech Fontspace. lots of more techy fonts! A-atmosphere too! pls where link!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
