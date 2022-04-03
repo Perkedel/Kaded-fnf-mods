@@ -86,6 +86,12 @@ class PauseSubState extends MusicBeatSubstate
 				#end
 			}
 
+		// JOELwindows7: play the pause sound
+		if (!(inCharter || goConfirmation || inStoryMenu))
+		{
+			playSoundEffect("PauseOpen");
+		}
+
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
 

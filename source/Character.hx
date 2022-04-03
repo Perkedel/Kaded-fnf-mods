@@ -319,7 +319,44 @@ class Character extends FlxSprite
 		else
 		{
 			// one of selected
-			jantungInstances[whichOne].stimulate(typeOfStimulate, givenValue);
+			try
+			{
+				jantungInstances[whichOne].stimulate(typeOfStimulate, givenValue);
+			}
+			catch (e)
+			{
+				Debug.logError("WERROR! Heart organ No. "
+					+ Std.string(whichOne)
+					+ " not found while attempting to: Stimulate!\n"
+					+ e
+					+ ": "
+					+ e.message);
+			}
+		}
+	}
+
+	public function successfullyStep(whichOne:Int = -1, rewards:Int = 1)
+	{
+		if (whichOne < 0)
+		{
+			// all of them
+			for (each in jantungInstances)
+			{
+				each.successfullyStep(rewards);
+			}
+		}
+		else
+		{
+			// one of selected
+			try
+			{
+				jantungInstances[whichOne].successfullyStep(rewards);
+			}
+			catch (e)
+			{
+				Debug.logError("WERROR 404! Heart organ No. " + Std.string(whichOne) + " not found while attempting to: Succesfully Step!\n" + e + ": "
+					+ e.message);
+			}
 		}
 	}
 
@@ -335,7 +372,20 @@ class Character extends FlxSprite
 			}
 			return total / jantungInstances.length;
 		}
-		return jantungInstances[which].getHeartRate();
+		try
+		{
+			return jantungInstances[which].getHeartRate();
+		}
+		catch (e)
+		{
+			Debug.logError("WERROR 404! Heart organ No. "
+				+ Std.string(which)
+				+ " not found while attempting to: Get heart rate!\n"
+				+ e
+				+ ": "
+				+ e.message);
+		}
+		return -1;
 	}
 
 	public function getHeartTier(which:Int = 0):Int
@@ -350,7 +400,20 @@ class Character extends FlxSprite
 			}
 			return Std.int(total / jantungInstances.length);
 		}
-		return jantungInstances[which].getHeartTier();
+		try
+		{
+			return jantungInstances[which].getHeartTier();
+		}
+		catch (e)
+		{
+			Debug.logError("WERROR 404! Heart organ No. "
+				+ Std.string(which)
+				+ " not found while attempting to: Get heart tier!\n"
+				+ e
+				+ ": "
+				+ e.message);
+		}
+		return -3;
 	}
 }
 

@@ -287,7 +287,7 @@ class DialogueBox extends FlxSpriteGroup
 
 		box.screenCenter(X);
 		portraitLeft.screenCenter(X);
-		skipText = new FlxText(10, 10, Std.int(FlxG.width * 0.6), "", 16);
+		skipText = new FlxText(10, 18, Std.int(FlxG.width * 0.6), "", 16); // JOELwindows7: due to watermark, push Y down. was Y = 10
 		skipText.font = 'Pixel Arial 11 Bold';
 		skipText.color = 0x000000;
 		skipText.text = 'press back to skip';
@@ -318,7 +318,8 @@ class DialogueBox extends FlxSpriteGroup
 		// JOELwindows7: now the touchscreen buttons!
 		// Skip dialogue
 		// FlxG.width * 0.9
-		skipButton = new FlxUIButton(10, 45, "Skip", function()
+		// was Y 45.
+		skipButton = new FlxUIButton(10, 50, "Skip", function()
 		{
 			haveSkippedDialogue = true;
 		});

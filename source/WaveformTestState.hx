@@ -1,5 +1,6 @@
 package;
 
+import experiments.AbstractTestMenu;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -11,7 +12,7 @@ import lime.media.vorbis.VorbisFile;
 import openfl.geom.Rectangle;
 import openfl.media.Sound;
 
-class WaveformTestState extends FlxState
+class WaveformTestState extends AbstractTestMenu // JOELwindows7: okay folks, have all these essential things first!
 {
 	var waveform:Waveform;
 
@@ -35,6 +36,13 @@ class WaveformTestState extends FlxState
 		}
 		waveform.drawWaveform();
 		add(waveform);
+
+		// JOELwindows7: now add info text
+		addInfoText("WASD = Move Camera\n");
+
+		// JOELwindows7: change go back to playstate somehow
+		wouldGoBackToStateOf = new PlayState();
+		needsSpeciallyLoad = true;
 	}
 
 	override public function update(elapsed:Float)

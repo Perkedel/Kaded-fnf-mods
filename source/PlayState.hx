@@ -1321,7 +1321,7 @@ class PlayState extends MusicBeatState
 		judgementCounter = new FlxText(20, 0, 0, "", 20);
 		// JOELwindows7: I think this should be placed on right as where your player strum is at.
 		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		judgementCounter.alpha = .07; // JOELwindows7: also bit opaque pls!
+		judgementCounter.alpha = .5; // JOELwindows7: also bit opaque pls!
 		judgementCounter.borderSize = 2;
 		judgementCounter.borderQuality = 2;
 		judgementCounter.scrollFactor.set();
@@ -2061,7 +2061,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					if (!silent) // JOELwindows7: quiet!
-						FlxG.sound.play(Paths.sound('introGo' + altSuffix), 0.6);
+						FlxG.sound.play(Paths.sound('introGo' + altSuffix + midiSuffix), 0.6);
 
 					// JOELwindows7: now visiblize the touchscreen buttons
 					// trace("visiblize touchscreen button now");
@@ -2833,8 +2833,18 @@ class PlayState extends MusicBeatState
 			hideOnScreenGameplayButtons();
 
 			// JOELwindows7: finally, play the Pause we've generated with SFB games Chiptone.
-			playSoundEffect("PauseOpen");
+			// playSoundEffect("PauseOpen"); // ah damn, it overlaps in unpause because this still paused due to `paused` still here!
 			// inspired from A Hat in Time, because, I like AHiT yess.
+		}
+
+		// JOELwindows7: here check if the open substate is just pause or counting down. and whatever idk.
+		if (!(waitLemmePrepareUnpauseFirst || PauseSubState.goToOptions))
+		{
+			// should be play pause open sfx here.
+			// but again, it got cut off.
+		}
+		else
+		{
 		}
 
 		super.openSubState(SubState);
@@ -4800,8 +4810,10 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		if (!loadRep)
-			rep.SaveReplay(saveNotes, saveJudge, replayAna);
+		if (!loadRep){
+			if (!PlayStateChangeables.botPlay) // JOELwindows7: and don't save replay if botplay yess. waste of disk space! Terrabyte is premium!
+				rep.SaveReplay(saveNotes, saveJudge, replayAna);
+		}
 		else
 		{
 			PlayStateChangeables.botPlay = false;
@@ -5665,7 +5677,7 @@ class PlayState extends MusicBeatState
 				var possibleNotes:Array<Note> = []; // notes that can be hit
 				var directionList:Array<Int> = []; // directions that can be hit
 				var dumbNotes:Array<Note> = []; // notes to kill later
-				var directionsAccounted:Array<Bool> = [false, false, false, false]; // we don't want to do judgments for more than one presses
+				var directionsAccounted:Array<Bool> = [false, false, false, false]; // we don't want to do judgements for more than one presses
 
 				notes.forEachAlive(function(daNote:Note)
 				{
@@ -6828,17 +6840,20 @@ class PlayState extends MusicBeatState
 				// boyfriend.playAnim('hit', true);
 				// break;
 				// notesplash no needed because previous good note hit handler had it. only splash if SICK (PERFECT) and beyond.
-				boyfriend.stimulateHeart(-1, HeartStimulateType.ADRENAL);
+				// boyfriend.stimulateHeart(-1, HeartStimulateType.ADRENAL);
+				boyfriend.successfullyStep(-1, 1);
 			case 1:
 				// dad.playAnim('hit', true);
 				// break;
 				spawnNoteSplashOnNote(handoverNote, handoverNote.noteType, whichOne); // yay Psyched note splash on player 2 as well!
-				dad.stimulateHeart(-1, HeartStimulateType.ADRENAL);
+				// dad.stimulateHeart(-1, HeartStimulateType.ADRENAL);
+				dad.successfullyStep(-1, 1);
 			case 2:
 				// girlfriend.playAnim('hit', true);
 				// break;
 				// okay I know, Copilot.
-				gf.stimulateHeart(-1, HeartStimulateType.ADRENAL);
+				// gf.stimulateHeart(-1, HeartStimulateType.ADRENAL);
+				dad.successfullyStep(-1, 1);
 			default:
 		}
 

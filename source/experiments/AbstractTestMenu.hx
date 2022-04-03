@@ -18,6 +18,7 @@
 
 package experiments;
 
+import flixel.FlxState;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.addons.display.FlxStarField;
 import flixel.FlxSprite;
@@ -29,6 +30,8 @@ import flixel.text.FlxText;
 class AbstractTestMenu extends MusicBeatState
 {
 	public var infoText:FlxText;
+	public var wouldGoBackToStateOf:FlxState = new MainMenuState();
+	public var needsSpeciallyLoad:Bool = false;
 
 	override function create()
 	{
@@ -60,7 +63,8 @@ class AbstractTestMenu extends MusicBeatState
 
 		if (FlxG.keys.justPressed.ESCAPE || haveBacked)
 		{
-			FlxG.switchState(new MainMenuState());
+			// FlxG.switchState(wouldGoBackToStateOf);
+			switchState(wouldGoBackToStateOf, needsSpeciallyLoad, needsSpeciallyLoad, needsSpeciallyLoad);
 			haveBacked = false;
 		}
 		if (FlxG.keys.justPressed.ENTER || haveClicked)

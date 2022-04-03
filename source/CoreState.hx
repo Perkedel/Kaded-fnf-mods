@@ -598,9 +598,9 @@ class CoreState extends FlxUIState
 	 * Copied from ChartingState emit SFX
 	 * @param path 
 	 */
-	function playSoundEffect(path:String)
+	function playSoundEffect(path:String, volume:Float = 1)
 	{
-		FlxG.sound.play(Paths.sound(path));
+		FlxG.sound.play(Paths.sound(path), volume);
 	}
 
 	function manageMouse():Void
@@ -883,9 +883,9 @@ class CoreSubState extends FlxUISubState
 	 * Copied from ChartingState emit SFX
 	 * @param path 
 	 */
-	function playSoundEffect(path:String)
+	function playSoundEffect(path:String, volume:Float = 1)
 	{
-		FlxG.sound.play(Paths.sound(path));
+		FlxG.sound.play(Paths.sound(path), volume);
 	}
 
 	function manageMouse():Void

@@ -49,6 +49,7 @@ typedef SwagHeart =
 	var ?requiredCPRCompression:Int; // how many CPR compression needed in order to restore cardiac arrest
 	var ?giveCPRTokenEachBlow:Int; // each blow into mouth during CPR, gives this how many token.
 	var ?postArrestRestoreRate:Float; // when CPR successful, restore HR into this rate.
+	var ?stimulateInYayDidOf:Int;
 }
 
 typedef HeartList =
@@ -172,6 +173,7 @@ class JantungOrgan
 	var giveCPRTokenEachBlow:Int = 5; // each blow into mouth during CPR, gives this how many token.
 	var postArrestRestoreRate:Float = 50; // when CPR successful, restore HR into this rate.
 	var tendencyToFibrilationAt:Float = -1; // in what rate the heart will likely went Fibrilation, heart goes insane! e.g. 200 like who her name . -1 to disable fibrilation.
+	var stimulateInYayDidOf:Int = 5; // in what successful note press the stimulate adrenal will engage?
 
 	// Statuses
 	var curHR:Float = 70;
@@ -197,6 +199,7 @@ class JantungOrgan
 	var arrest:Bool = false; // heart stopped beating.
 	var breathCPRToken:Int = 0; // reserved oxygen or whatver for CPR. each compression uses 1. can be refilled by blow into mouth.
 	var currCompression:Int = 0; // how many compressions have been done. reach required compression number to restore arrest.
+	var yayDids:Int = 0; // how many successed step.
 
 	// Callbacks
 	public var onStepHitCallback:Void->Void;
@@ -230,10 +233,12 @@ class JantungOrgan
 		this.giveCPRTokenEachBlow = handoverSpec.giveCPRTokenEachBlow == null ? 5 : handoverSpec.giveCPRTokenEachBlow;
 		this.postArrestRestoreRate = handoverSpec.postArrestRestoreRate == null ? 50 : handoverSpec.postArrestRestoreRate;
 		this.tendencyToFibrilationAt = handoverSpec.tendencyToFibrilationAt == null ? -1 : handoverSpec.tendencyToFibrilationAt;
+		this.stimulateInYayDidOf = handoverSpec.stimulateInYayDidOf == null ? 5 : handoverSpec.stimulateInYayDidOf;
 		// this.curHR = this.initHR = this.minHR; // No, Copilot. the initHR is its own!
 		this.curHR = this.initHR = handoverSpec.initHR == null ? 70 : handoverSpec.initHR;
 		this.systoleSoundPath = handoverSpec.systoleSoundPath == null ? "" : handoverSpec.systoleSoundPath;
 		this.diastoleSoundPath = handoverSpec.diastoleSoundPath == null ? "" : handoverSpec.diastoleSoundPath;
+		yayDids = 0;
 	}
 
 	/**
@@ -243,12 +248,12 @@ class JantungOrgan
 	 * Like beatHit, but for the heart of its own. yeah another rhythm to simulate heartbeat
 	 * just like Shinon51788's doki-doki dance but kinda advanced, idk.
 	 * keep in mind, due to nature of programming design, the using class instance must call this in its own update function.
-	 * @param	elapsed update elapsed handover
+	 * @param elapsed update elapsed handover
 	 * @return
 	 */
 	public function update(elapsed:Float)
 	{
-		lifePosition = elapsed;
+		lifePosition += elapsed;
 
 		// copy from MusicBeatState! try to use existing infrastructures, idk.
 		if (TimingStruct.AllTimings.length > 1)
@@ -315,12 +320,14 @@ class JantungOrgan
 		if (curStep % 4 == 0)
 			beatHit();
 
-		onStepHitCallback();
+		if(onStepHitCallback != null)
+			onStepHitCallback();
 	}
 
 	function beatHit()
 	{
-		onBeatHitCallback();
+		if(onBeatHitCallback != null)
+			onBeatHitCallback();
 
 		// auto slowdown
 		if (curBeat % relaxHeartEveryBeatOf == 0)
@@ -345,8 +352,11 @@ class JantungOrgan
 
 	function diastoleHit()
 	{
-		onDiastoleHitCallback();
+		if(onDiastoleHitCallback != null)
+			onDiastoleHitCallback();
 	}
+
+	// essential functions
 
 	/**
 	 * Stimulate the heart organ to change its rate. 
@@ -430,6 +440,24 @@ class JantungOrgan
 		}
 	}
 
+	// Moar functions
+	public function successfullyStep(rewards:Int = 1)
+	{
+		yayDids += rewards;
+
+		// auto trades
+		if (yayDids >= stimulateInYayDidOf)
+		{
+			stimulate(HeartStimulateType.ADRENAL);
+			yayDids -= stimulateInYayDidOf;
+		}
+
+		// remove debt
+		if (yayDids < 0)
+			yayDids = 0;
+	}
+
+	// CPR fetish functions
 	public function blowMouth()
 	{
 		breathCPRToken += giveCPRTokenEachBlow;

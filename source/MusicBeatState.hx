@@ -384,8 +384,12 @@ class MusicBeatState extends CoreState
 				PlayState.instance.persistentDraw = true;
 				PlayState.instance.paused = true;
 
-				PlayState.instance.vocals.stop();
-				FlxG.sound.music.stop();
+				// PlayState.instance.vocals.stop();
+				// FlxG.sound.music.stop();
+
+				// JOELwindows7: that ain't gonna work I think. let's pause instead! like in PlayState really.
+				PlayState.instance.vocals.pause();
+				FlxG.sound.music.pause();
 			}
 		}
 	}

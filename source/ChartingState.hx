@@ -4383,45 +4383,7 @@ class ChartingState extends MusicBeatState
 		if (alreadySavedBefore)
 		{
 			// JOELwindows7: copy above, but this time only save without dialog box
-			// var difficultyArray:Array<String> = ["-easy", "", "-hard"];
-
-			// var toRemove = [];
-
-			// for (i in _song.notes)
-			// {
-			// 	if (i.startTime > FlxG.sound.music.length)
-			// 		toRemove.push(i);
-			// }
-
-			// for (i in toRemove)
-			// 	_song.notes.remove(i);
-
-			// toRemove = []; // clear memory
-
-			// // JOELwindows7: some modificates first
-			// _modificatesBeforeSave();
-
-			// var json = {
-			// 	"ProgramUsed": 'Last Funkin Moments',
-			// 	"generatedBy": 'charting',
-			// 	"charter": _song.charter,
-			// 	"song": _song,
-			// };
-
-			// // JOELwindows7: make save JSON pretty
-			// // https://haxe.org/manual/std-Json-encoding.html
-			// // var data:String = Json.stringify(json, "\t");
-			// var data:String = Json.stringify(json, null, " ");
-
-			// if ((data != null) && (data.length > 0))
-			// {
-			// 	_file = new FileReference();
-			// 	_file.addEventListener(Event.COMPLETE, onSaveComplete);
-			// 	_file.addEventListener(Event.CANCEL, onSaveCancel);
-			// 	_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			// 	// JOELwindows7: DAMN!!! how the peck I supposed to just pecking save?!?!?!? no dialog!!!!!
-			// 	_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
-			// }
+			// PAIN IS TEMPORARY, GLORY IS FOREVER. LOL WINTERGATAN
 
 			// TEMPORARY!!! pls help me write file instead of dialog box
 			saveLevel();

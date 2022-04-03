@@ -99,6 +99,8 @@ class Ratings
 		var classify:String = "Nrml";
 		switch (heartTier)
 		{
+			case -3:
+				classify = "Disconnected";
 			case -2:
 				classify = "Dead";
 			case -1:
@@ -113,6 +115,8 @@ class Ratings
 				classify = "Poundn";
 			case 4:
 				classify = "Tachy";
+			default:
+				classify = "???";
 		}
 
 		return Std.string(HelperFunctions.truncateFloat(heartBeat, 2)) + " BPM (" + classify + ")";
