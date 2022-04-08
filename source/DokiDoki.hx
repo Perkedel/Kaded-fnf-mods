@@ -33,6 +33,7 @@ using StringTools;
 typedef SwagHeart =
 {
 	var character:String;
+	var isEmulator:Bool;
 	var ?initHR:Float;
 	var ?minHR:Float;
 	var ?maxHR:Float;
@@ -157,6 +158,7 @@ class JantungOrgan
 {
 	// Parameters
 	var character:String;
+	var isEmulator:Bool; // set true if the heart is digital software, not anything mechanical.
 	var initHR:Float = 70;
 	var minHR:Float = 70;
 	var maxHR:Float = 220;
@@ -167,7 +169,7 @@ class JantungOrgan
 	var successionAdrenalAdd:Array<Float> = [20, 15, 10, 5];
 	var fearShockAdd:Array<Float> = [22, 20, 10, 5];
 	var relaxMinusPerBeat:Array<Float> = [1, 5, 10, 15];
-	var diastoleInTimeOf:Array<Float> = [.5, .4, .3, .2, .1]; // heart will diastole in time of.
+	var diastoleInTimeOf:Array<Float> = [.1, .08, .06, .04, .02]; // heart will diastole in time of.
 	var relaxHeartEveryBeatOf:Int = 4;
 	var requiredCPRCompression:Int = 20; // how many CPR compression needed in order to restore cardiac arrest
 	var giveCPRTokenEachBlow:Int = 5; // each blow into mouth during CPR, gives this how many token.
@@ -186,7 +188,7 @@ class JantungOrgan
 	var curDecimalBeat:Float = 0;
 	var startBeat:Int = 0;
 	var startStep:Int = 0;
-	var lifePosition:Float = 0;
+	var lifePosition:Float = 0; // song position but it's heartbeat
 	var tierDaRightNow:Int = 0;
 	var slowedAlready:Bool = false;
 	var beingAntiSlow:Bool = false; // enable to prevent auto slowdown.
@@ -200,6 +202,7 @@ class JantungOrgan
 	var breathCPRToken:Int = 0; // reserved oxygen or whatver for CPR. each compression uses 1. can be refilled by blow into mouth.
 	var currCompression:Int = 0; // how many compressions have been done. reach required compression number to restore arrest.
 	var yayDids:Int = 0; // how many successed step.
+	var _debugPrinted:Bool = false; // (DEBUG) printed heartbeat
 
 	// Callbacks
 	public var onStepHitCallback:Void->Void;
@@ -219,25 +222,26 @@ class JantungOrgan
 	private function _parseData(handoverSpec:SwagHeart)
 	{
 		// copy the null check technic from Character class, instance method
-		this.character = handoverSpec.character == null ? "null" : handoverSpec.character;
-		this.minHR = this.barrierMin = handoverSpec.minHR == null ? 70 : handoverSpec.minHR;
-		this.maxHR = this.barrierMax = handoverSpec.maxHR == null ? 220 : handoverSpec.maxHR;
-		this.baseRateScale = handoverSpec.baseRateScale == null ? 70 : handoverSpec.baseRateScale;
-		this.heartTierBoundaries = handoverSpec.heartTierBoundaries == null ? [90, 120, 150, 200] : handoverSpec.heartTierBoundaries;
-		this.successionAdrenalAdd = handoverSpec.successionAdrenalAdd == null ? [20, 15, 10, 5] : handoverSpec.successionAdrenalAdd;
-		this.fearShockAdd = handoverSpec.fearShockAdd == null ? [22, 20, 10, 5] : handoverSpec.fearShockAdd;
-		this.relaxMinusPerBeat = handoverSpec.relaxMinusPerBeat == null ? [1, 5, 10, 15] : handoverSpec.relaxMinusPerBeat;
-		this.diastoleInTimeOf = handoverSpec.diastoleInTimeOf == null ? [.5, .4, .3, .2, .1] : handoverSpec.diastoleInTimeOf;
-		this.relaxHeartEveryBeatOf = handoverSpec.relaxHeartEveryBeatOf == null ? 4 : handoverSpec.relaxHeartEveryBeatOf;
-		this.requiredCPRCompression = handoverSpec.requiredCPRCompression == null ? 20 : handoverSpec.requiredCPRCompression;
-		this.giveCPRTokenEachBlow = handoverSpec.giveCPRTokenEachBlow == null ? 5 : handoverSpec.giveCPRTokenEachBlow;
-		this.postArrestRestoreRate = handoverSpec.postArrestRestoreRate == null ? 50 : handoverSpec.postArrestRestoreRate;
-		this.tendencyToFibrilationAt = handoverSpec.tendencyToFibrilationAt == null ? -1 : handoverSpec.tendencyToFibrilationAt;
-		this.stimulateInYayDidOf = handoverSpec.stimulateInYayDidOf == null ? 5 : handoverSpec.stimulateInYayDidOf;
+		this.character = handoverSpec.character == null ? Perkedel.NULL_HEART_SPEC.character : handoverSpec.character;
+		this.isEmulator = handoverSpec.isEmulator == null ? Perkedel.NULL_HEART_SPEC.isEmulator : handoverSpec.isEmulator;
+		this.minHR = this.barrierMin = handoverSpec.minHR == null ? Perkedel.NULL_HEART_SPEC.minHR : handoverSpec.minHR;
+		this.maxHR = this.barrierMax = handoverSpec.maxHR == null ? Perkedel.NULL_HEART_SPEC.maxHR : handoverSpec.maxHR;
+		this.baseRateScale = handoverSpec.baseRateScale == null ? Perkedel.NULL_HEART_SPEC.baseRateScale : handoverSpec.baseRateScale;
+		this.heartTierBoundaries = handoverSpec.heartTierBoundaries == null ? Perkedel.NULL_HEART_SPEC.heartTierBoundaries : handoverSpec.heartTierBoundaries;
+		this.successionAdrenalAdd = handoverSpec.successionAdrenalAdd == null ? Perkedel.NULL_HEART_SPEC.successionAdrenalAdd : handoverSpec.successionAdrenalAdd;
+		this.fearShockAdd = handoverSpec.fearShockAdd == null ? Perkedel.NULL_HEART_SPEC.fearShockAdd : handoverSpec.fearShockAdd;
+		this.relaxMinusPerBeat = handoverSpec.relaxMinusPerBeat == null ? Perkedel.NULL_HEART_SPEC.relaxMinusPerBeat : handoverSpec.relaxMinusPerBeat;
+		this.diastoleInTimeOf = handoverSpec.diastoleInTimeOf == null ? Perkedel.NULL_HEART_SPEC.diastoleInTimeOf : handoverSpec.diastoleInTimeOf;
+		this.relaxHeartEveryBeatOf = handoverSpec.relaxHeartEveryBeatOf == null ? Perkedel.NULL_HEART_SPEC.relaxHeartEveryBeatOf : handoverSpec.relaxHeartEveryBeatOf;
+		this.requiredCPRCompression = handoverSpec.requiredCPRCompression == null ? Perkedel.NULL_HEART_SPEC.requiredCPRCompression : handoverSpec.requiredCPRCompression;
+		this.giveCPRTokenEachBlow = handoverSpec.giveCPRTokenEachBlow == null ? Perkedel.NULL_HEART_SPEC.giveCPRTokenEachBlow : handoverSpec.giveCPRTokenEachBlow;
+		this.postArrestRestoreRate = handoverSpec.postArrestRestoreRate == null ? Perkedel.NULL_HEART_SPEC.postArrestRestoreRate : handoverSpec.postArrestRestoreRate;
+		this.tendencyToFibrilationAt = handoverSpec.tendencyToFibrilationAt == null ? Perkedel.NULL_HEART_SPEC.tendencyToFibrilationAt : handoverSpec.tendencyToFibrilationAt;
+		this.stimulateInYayDidOf = handoverSpec.stimulateInYayDidOf == null ? Perkedel.NULL_HEART_SPEC.stimulateInYayDidOf : handoverSpec.stimulateInYayDidOf;
 		// this.curHR = this.initHR = this.minHR; // No, Copilot. the initHR is its own!
-		this.curHR = this.initHR = handoverSpec.initHR == null ? 70 : handoverSpec.initHR;
-		this.systoleSoundPath = handoverSpec.systoleSoundPath == null ? "" : handoverSpec.systoleSoundPath;
-		this.diastoleSoundPath = handoverSpec.diastoleSoundPath == null ? "" : handoverSpec.diastoleSoundPath;
+		this.curHR = this.initHR = handoverSpec.initHR == null ? Perkedel.NULL_HEART_SPEC.initHR : handoverSpec.initHR;
+		this.systoleSoundPath = handoverSpec.systoleSoundPath == null ? Perkedel.NULL_HEART_SPEC.systoleSoundPath : handoverSpec.systoleSoundPath;
+		this.diastoleSoundPath = handoverSpec.diastoleSoundPath == null ? Perkedel.NULL_HEART_SPEC.diastoleSoundPath : handoverSpec.diastoleSoundPath;
 		yayDids = 0;
 	}
 
@@ -253,7 +257,8 @@ class JantungOrgan
 	 */
 	public function update(elapsed:Float)
 	{
-		lifePosition += elapsed;
+		lifePosition += elapsed * 1000; // according to PlayState, it times 1000.
+		Debug.quickWatch(lifePosition, "Heart-" + character);
 
 		// copy from MusicBeatState! try to use existing infrastructures, idk.
 		if (TimingStruct.AllTimings.length > 1)
@@ -320,13 +325,13 @@ class JantungOrgan
 		if (curStep % 4 == 0)
 			beatHit();
 
-		if(onStepHitCallback != null)
+		if (onStepHitCallback != null)
 			onStepHitCallback();
 	}
 
 	function beatHit()
 	{
-		if(onBeatHitCallback != null)
+		if (onBeatHitCallback != null)
 			onBeatHitCallback();
 
 		// auto slowdown
@@ -343,6 +348,11 @@ class JantungOrgan
 			slowedAlready = false;
 		}
 
+		if (_debugPrinted)
+		{
+			Debug.logInfo("Heart " + character + " LUB" + "; Life Position " + Std.string(lifePosition));
+		}
+
 		// TODO: time scales with current rate in this heartbeat pattern graph.
 		diastoleTimer.start(diastoleInTimeOf[tierDaRightNow] * (baseRateScale / curHR), function(tmr:FlxTimer)
 		{
@@ -352,11 +362,30 @@ class JantungOrgan
 
 	function diastoleHit()
 	{
-		if(onDiastoleHitCallback != null)
+		if (onDiastoleHitCallback != null)
 			onDiastoleHitCallback();
+
+		if (_debugPrinted)
+		{
+			Debug.logInfo("Heart " + character + " DUB" + "; Life Position " + Std.string(lifePosition));
+		}
 	}
 
 	// essential functions
+
+	/**
+	 * change heart BPM & then recalculate everything
+	 * @param into 
+	 * @param recalculateLength 
+	 */
+	function changeBPM(into:Float = 70, ?recalculateLength:Bool = true)
+	{
+		curHR = into;
+
+		// crochet = ((60 / curHR) * 1000);
+		// stepCrochet = crochet / 4;
+		checkWhichHeartTierWent(curHR);
+	}
 
 	/**
 	 * Stimulate the heart organ to change its rate. 
@@ -438,6 +467,9 @@ class JantungOrgan
 			tierDaRightNow = -2; // death
 			arrest = true; // this always turns on. do CPR to untrue this!
 		}
+
+		crochet = ((60 / curHR) * 1000);
+		stepCrochet = crochet / 4;
 	}
 
 	// Moar functions
@@ -476,5 +508,17 @@ class JantungOrgan
 	public function getHeartTierBoundary(whichBoundary:Int):Float
 	{
 		return heartTierBoundaries[whichBoundary];
+	}
+
+	public function _setDebugPrint(into:Bool = false)
+	{
+		_debugPrinted = into;
+		Debug.logInfo("Heart "
+			+ character
+			+ " will "
+			+ (_debugPrinted ? "print" : "not print")
+			+ " LUB DUB"
+			+ "; Life Position "
+			+ Std.string(lifePosition));
 	}
 }

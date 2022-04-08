@@ -41,6 +41,7 @@ class Character extends FlxSprite
 
 	// - more than one characters at once in this class instance, which of course has 1 heart each.
 	// - more than one hearts at once in this class instance, which yess they do exists.
+	public var externalBeating:Bool = false;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -204,13 +205,42 @@ class Character extends FlxSprite
 
 		super.update(elapsed);
 
+		if (!externalBeating)
+			updateHeartbeats(elapsed); // JOELwindows7: DOESN'T UPDATE! ATTACH TO STATE'S UPDATE INSTEAD!! nvm. it works.
+		// okay don't I notice faster the song, faster character, faster heart.
+		// slower song, slower character, slower heart.
+		// no no no! that's not how heart organ works!
+	}
+
+	/**
+	 * Turns out, the `update` function above doesn't work. 
+	 * try manually attach this update method into state's update method we are right now instead.
+	 * wait, I guess I've fixed it lol!
+	 * ever mind! the character speed affects! go attach it!
+	 * @author JOELwindows7
+	 * @param elapsed handover elapsed
+	 */
+	function updateHeartbeats(elapsed:Float)
+	{
 		// JOELwindows7: update heart organs!
 		if (jantungInstances != null)
 			for (each in jantungInstances)
 			{
-				if (each != null)
-					each.update(elapsed);
+				// if (each != null)
+				each.update(elapsed);
 			}
+	}
+
+	/**
+	 * By accessing this function, you enable external clock.
+	 * this will disable self heartbeat management.
+	 * to disable external clock & let heart management does itself again, set `reself` to true.
+	 * @param elapsed handover elapsed
+	 */
+	public function doHeartbeats(elapsed:Float, reself:Bool = false)
+	{
+		externalBeating = !reself;
+		updateHeartbeats(elapsed);
 	}
 
 	private var danced:Bool = false;
@@ -414,6 +444,30 @@ class Character extends FlxSprite
 				+ e.message);
 		}
 		return -3;
+	}
+
+	// JOELwindows7: enable print the lub dub for debugging purpose
+	public function _setDebugPrintHeart(which:Int = -1, into:Bool = false)
+	{
+		if (which < 0)
+		{
+			for (each in jantungInstances)
+			{
+				each._setDebugPrint(into);
+			}
+		}
+		else
+		{
+			try
+			{
+				jantungInstances[which]._setDebugPrint(into);
+			}
+			catch (e)
+			{
+				Debug.logError("WERROR 404! Heart organ No. " + Std.string(which) + " not found while attempting to: set debug print!\n" + e + ": " +
+					e.message);
+			}
+		}
 	}
 }
 

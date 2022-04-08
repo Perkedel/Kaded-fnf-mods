@@ -39,20 +39,41 @@ class Perkedel
 	public static final ENABLE_MODS:Bool = true;
 	public static final ENABLE_VERSION_CHECK:Bool = true;
 
+	public static final DISCLAIMER_SAY:String = "Disclaimer";
+	public static final GOING_TO_OBSOLETE:String = "ALERT!"
+		+ "\nThis mod is going to obsolete in favour of Friday Night Funkin Moment: Full Ass "
+		+ "\nwhen modding support & Workshop becomes available"
+		+ "\nPlease buy the sofware right now by pressing ENTER to go to the Steam store."
+		+ "\nIf the new software is not yet available, still press ENTER & then please wishlist da right now."
+		+ "\nRemember to buy the software legit when it's available now.";
+	public static final HAS_BEEN_OBSOLETE:String = "ATTENTION!"
+		+ "\nThis mod has been OBSOLETE! (Though, you can still ESC to use this mod anyway)"
+		+ "\nThe new software is available for purchase by pressing ENTER"
+		+ "\nwhich is this Friday Night Funkin: Full Ass. Please use this instead"
+		+ "\nAll mods are available in the Workshop, thancc."
+		+ "\nRemember, buy it legit! yeah.";
+
 	public static final NULL_HEART_SPEC:SwagHeart = {
 		character: "null",
+		isEmulator: false,
 		initHR: 70,
 		maxHR: 220,
 		minHR: 70,
+		baseRateScale: 70,
 		heartTierBoundaries: [90, 120, 150, 200],
 		successionAdrenalAdd: [4, 3, 2, 1],
 		fearShockAdd: [10, 8, 7, 5],
 		relaxMinusPerBeat: [1, 2, 4, 7],
-		diastoleInTimeOf: [.5, .4, .3, .2, .1],
+		diastoleInTimeOf: [.1, .08, .06, .04, .02],
 		relaxHeartEveryBeatOf: 4,
 		requiredCPRCompression: 20,
 		giveCPRTokenEachBlow: 5,
 		postArrestRestoreRate: 50,
 		tendencyToFibrilationAt: -1,
+		stimulateInYayDidOf: 5,
+		systoleSoundPath: "",
+		diastoleSoundPath: "",
 	};
+	public static final NULL_DIALOGUE_CHAT:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
+	public static final NULL_EPILOGUE_CHAT:Array<String> = ['dad:oh no I lose', 'bf: beep boop baaa hey!'];
 }

@@ -24,6 +24,9 @@
         "fearShockAdd": [10, 8, 7, 5],
         "relaxMinusPerBeat": [1, 2, 4, 7]
     }],
+    "phobia": {
+        "lightningStorm": true
+    },
     "animations": [{
             "name": "idle",
             "prefix": "BF idle dance",

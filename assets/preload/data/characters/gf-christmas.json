@@ -17,6 +17,9 @@
         "fearShockAdd": [50, 30, 20, 15],
         "relaxMinusPerBeat": [1, 2, 2, 3]
     }],
+    "phobia": {
+        "lightningStorm": true
+    },
     "animations": [{
             "name": "singLEFT",
             "prefix": "GF left note",

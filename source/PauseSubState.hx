@@ -25,6 +25,7 @@ class PauseSubState extends MusicBeatSubstate
 	public static var goToOptions:Bool = false;
 	public static var goBack:Bool = false;
 	public static var goConfirmation:Bool = false; // JOELwindows7: here confirmation mode.
+	public static var silencePauseBeep:Bool = false; // JOELwindows7: set this single trigger tripwire to true to silence pause beep.
 
 	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
 	// JOELwindows7: Oh we got more here!
@@ -87,9 +88,15 @@ class PauseSubState extends MusicBeatSubstate
 			}
 
 		// JOELwindows7: play the pause sound
-		if (!(inCharter || goConfirmation || inStoryMenu))
+		if (!(inCharter || goConfirmation || inStoryMenu || silencePauseBeep))
 		{
 			playSoundEffect("PauseOpen");
+		}
+		else
+		{
+			// the silence is on! no play pause sound & just do bellow
+			silencePauseBeep = false; // false it again so next time you pause, it play pause sound again.
+			// haha cool single trigger tripwire flag toggle!
 		}
 
 		if (FlxG.sound.music.playing)

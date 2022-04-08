@@ -297,8 +297,8 @@ class PlayState extends MusicBeatState
 	public var doof:DialogueBox;
 	public var eoof:DialogueBox;
 
-	public var dialogue:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
-	public var epilogue:Array<String> = ['dad:oh no I lose', 'bf: beep boop baaa hey!']; // JOELwindows7: same dialoguer but for after song done
+	public var dialogue:Array<String> = Perkedel.NULL_DIALOGUE_CHAT; // JOELwindows7: now have moved these dummy variables to constants class.
+	public var epilogue:Array<String> = Perkedel.NULL_EPILOGUE_CHAT; // JOELwindows7: same dialoguer but for after song done. this too moved.
 
 	var useStageScript:Bool = false; // JOELwindows7: flag to start try the stage Lua script
 	var attemptStageScript:Bool = false; // JOELwindows7: flag to start prepare stage script after all stuffs loaded.
@@ -719,6 +719,9 @@ class PlayState extends MusicBeatState
 				#end
 				boyfriend = new Boyfriend(770, 450, 'bf');
 			}
+
+			// JOELwindows7: temp debug heartbeating print status
+			// boyfriend._setDebugPrintHeart(-1, true);
 
 			dad = new Character(100, 100, SONG.player2);
 
@@ -1352,7 +1355,8 @@ class PlayState extends MusicBeatState
 		// Literally copy-paste of the above, fu
 		botPlayState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
 			"BOTPLAY", 20);
-		botPlayState.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botPlayState.setPosition((FlxG.width / 2) - 75, 130); // JOELwindows7: oh wait, Psych this up pls!
+		botPlayState.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // JOELwindows7: was size 42
 		botPlayState.scrollFactor.set();
 		botPlayState.borderSize = 2; // JOELwindows7: was 4
 		botPlayState.borderQuality = 2;
@@ -1475,6 +1479,8 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
+					// JOELwindows7: vibrate device as it this angery
+					Controls.vibrate(0, 1000);
 					schoolIntro(doof);
 				case 'roses-midi': // JOELwindows7: for midi version
 					FlxG.sound.play(Paths.sound('ANGRY-midi'));
@@ -2860,6 +2866,7 @@ class PlayState extends MusicBeatState
 				Debug.logTrace("pause thingyt");
 				PauseSubState.goToOptions = false;
 				PauseSubState.goBack = false;
+				PauseSubState.silencePauseBeep = true;
 				openSubState(new PauseSubState());
 			}
 			else
@@ -3452,6 +3459,7 @@ class PlayState extends MusicBeatState
 
 		// JOELwindows7: update heartbeat moments
 		// updateHeartbeat();
+		manageHeartbeats(elapsed);
 
 		if (curBeat > 8)
 		{
@@ -3794,7 +3802,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			// Conductor.songPosition = FlxG.sound.music.time;
-			Conductor.songPosition += FlxG.elapsed * 1000;
+			Conductor.songPosition += FlxG.elapsed * 1000; // JOELwindows7: pinpoint! times 1000 for accumulating songPosition.
 			Conductor.rawPosition = FlxG.sound.music.time;
 
 			// sync
@@ -4156,7 +4164,7 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("stepShit", curStep);
 
 		// JOELwindows7: add more watches too
-		FlxG.watch.addQuick("shinzouRateShit", heartRate);
+		FlxG.watch.addQuick("shinzouRateShit", [dad.getHeartRate(-1), gf.getHeartRate(-1), boyfriend.getHeartRate(-1)]);
 		FlxG.watch.addQuick("songPositionShit", Conductor.songPosition);
 		FlxG.watch.addQuick("Ending Song", endingSong);
 		FlxG.watch.addQuick("Cam Follow", [camFollow.x, camFollow.y]);
@@ -4723,6 +4731,9 @@ class PlayState extends MusicBeatState
 		#end
 
 		super.update(elapsed);
+
+		// JOELwindows7: MOAR FUNCTION OF UPDATE. use wisely!
+		// manageHeartbeats(elapsed); // no, it's already up there. NVM no need.
 	}
 
 	// JOELwindows7: check if the song should display epilogue chat once the song has finished.
@@ -4810,7 +4821,8 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		if (!loadRep){
+		if (!loadRep)
+		{
 			if (!PlayStateChangeables.botPlay) // JOELwindows7: and don't save replay if botplay yess. waste of disk space! Terrabyte is premium!
 				rep.SaveReplay(saveNotes, saveJudge, replayAna);
 		}
@@ -7802,6 +7814,25 @@ class PlayState extends MusicBeatState
 	public function pushP()
 	{
 		// TODO: jump all characters in the game. the fun begins if the character skin has yea you know.
+	}
+
+	// JOELwindows7: here manually update heartbeat organs!
+	function manageHeartbeats(elapsed:Float)
+	{
+		@:privateAccess {
+			if (boyfriend != null)
+			{
+				boyfriend.doHeartbeats(elapsed);
+			}
+			if (gf != null)
+			{
+				gf.doHeartbeats(elapsed);
+			}
+			if (dad != null)
+			{
+				dad.doHeartbeats(elapsed);
+			}
+		}
 	}
 }
 // u looked :O -ides
