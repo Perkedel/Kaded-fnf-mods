@@ -56,6 +56,7 @@ typedef SongData =
 	var eventObjects:Array<Event>;
 	var bpm:Float;
 	var needsVoices:Bool;
+	var ?needsVoices2:Bool; // JOELwindows7: player 2 voices
 	var speed:Float;
 	var player1:String;
 	var player2:String;

@@ -344,6 +344,8 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://stackoverflow.com/questions/3745135/push-git-commits-tags-simultaneously how to tag
 - https://stackoverflow.com/questions/29830544/how-do-i-add-a-tag-to-a-github-commit commit with GUI GitHub!??!?!?!
 - https://stackoverflow.com/questions/18216991/create-a-tag-in-a-github-repository still no GUI interface way to do that easily??!! no wonder kids these days hate being programmer because we are forced to stick with terminal type here and there, not obvious if this works, and what does it do!
+- https://gamebanana.com/mods/44555?post=9958187 SKY IS BACK!!!! FNALLY!! I THOUGHT WE WILL LEAVE FNF FANDOM UNDER DEADLY DEPRESSIONS!!!
+- https://gamebanana.com/threads/221466 YESS!!! IT'S PECKING CONFIRMED!!!
 
 # in event of git merge conflict
 use VScode and Github desktop!

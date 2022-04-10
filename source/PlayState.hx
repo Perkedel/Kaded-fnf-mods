@@ -196,6 +196,7 @@ class PlayState extends MusicBeatState
 
 	public var vocals:FlxSound; // JOELwindows7: make public for Moddchart. oh wait. Kade already done that.
 	public var vocals2:FlxSound; // JOELwindows7: second vocal set, for player2 if available.
+	public var audiotracks:Array<FlxSound>; // JOELwindows7: screw this! let's have more of them!
 
 	public static var isSM:Bool = false;
 	#if FEATURE_STEPMANIA
@@ -888,6 +889,7 @@ class PlayState extends MusicBeatState
 		// Optional unless your character is not default bf
 
 		Stage.update(0);
+		manageHeartbeats(0); // JOELwindows7: initially update heartbeats first!
 
 		// JOELwindows7: reposition per stage was here. now we must reposition for custom stage.
 		if (SONG.useCustomStage)
@@ -1865,10 +1867,13 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
+		if (vocals2 != null)
+			vocals2.volume = 0; // JOELwindows7: ye
 
 		// Stop the music and vocal too
 		// FlxG.sound.music.stop();
 		// vocals.stop();
+		// vocals2.stop(); //JOELwindows7: ye
 
 		// Pay attention for the pre-dialogue effect show like in Rose, senpai got mad thingy
 		switch (SONG.songId.toLowerCase())
@@ -1944,6 +1949,8 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.stop();
+		if (vocals != null)
+			vocals.stop();
 		if (vocals != null)
 			vocals.stop();
 
@@ -2287,6 +2294,8 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.music.play();
 		vocals.play();
+		if (vocals2 != null)
+			vocals2.play(); // JOELwindows7: ye
 
 		// have them all dance when the song starts
 		if (allowedToHeadbang)
@@ -2350,6 +2359,8 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.time = startTime;
 		if (vocals != null)
 			vocals.time = startTime;
+		if (vocals2 != null)
+			vocals2.time = startTime; // JOELwindows7: ye
 		Conductor.songPosition = startTime;
 		startTime = 0;
 
@@ -2382,6 +2393,8 @@ class PlayState extends MusicBeatState
 			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
 			if (vocals.playing)
 				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			if (vocals2.playing) // JOELwindows7: oh yea
+				lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
 		}
 		trace("pitched inst and vocals to " + songMultiplier);
 		#end
@@ -2418,19 +2431,43 @@ class PlayState extends MusicBeatState
 
 		#if FEATURE_STEPMANIA
 		if (SONG.needsVoices && !isSM)
+		{
 			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId));
+		}
 		else
+		{
 			vocals = new FlxSound();
+		}
+		// JOELwindows7: ye
+		if (SONG.needsVoices2 && !isSM)
+		{
+			vocals2 = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId, 2));
+		}
+		else
+		{
+			vocals2 = new FlxSound(); // JOELwindows7: ye
+		}
 		#else
 		if (SONG.needsVoices)
 			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId));
 		else
+		{
 			vocals = new FlxSound();
+			vocals2 = new FlxSound(); // JOELwindows7: ye
+		}
+		// JOELwindows7: ye
+		if (SONG.needsVoices2)
+			vocals2 = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId, 2));
+		else
+		{
+			vocals2 = new FlxSound(); // JOELwindows7: ye
+		}
 		#end
 
 		trace('loaded vocals');
 
 		FlxG.sound.list.add(vocals);
+		FlxG.sound.list.add(vocals2);
 
 		if (!paused)
 		{
@@ -2808,6 +2845,10 @@ class PlayState extends MusicBeatState
 				if (vocals != null)
 					if (vocals.playing)
 						vocals.pause();
+				// JOELwindows7: ye
+				if (vocals2 != null)
+					if (vocals2.playing)
+						vocals2.pause();
 			}
 
 			#if FEATURE_DISCORD
@@ -2944,12 +2985,15 @@ class PlayState extends MusicBeatState
 		if (endingSong)
 			return;
 		vocals.stop();
+		vocals2.stop(); // JOELwindows7: ye
 		FlxG.sound.music.stop();
 
 		FlxG.sound.music.play();
 		vocals.play();
+		vocals2.play(); // JOELwindows7: ye
 		FlxG.sound.music.time = Conductor.songPosition * songMultiplier;
 		vocals.time = FlxG.sound.music.time;
+		vocals2.time = FlxG.sound.music.time; // JOELwindows7 ye
 
 		@:privateAccess
 		{
@@ -2959,6 +3003,8 @@ class PlayState extends MusicBeatState
 			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
 			if (vocals.playing)
 				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			if (vocals2.playing) // JOELwindows7: ye
+				lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
 			#end
 		}
 
@@ -3110,6 +3156,9 @@ class PlayState extends MusicBeatState
 			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
 			if (vocals.playing)
 				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			// JOELwindows7: ye
+			if (vocals2.playing)
+				lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
 		}
 		#end
 
@@ -3735,6 +3784,7 @@ class PlayState extends MusicBeatState
 				usedTimeTravel = true;
 				FlxG.sound.music.pause();
 				vocals.pause();
+				vocals2.pause(); // JOELwindows7: ye
 				Conductor.songPosition += 10000;
 				notes.forEachAlive(function(daNote:Note)
 				{
@@ -3754,6 +3804,9 @@ class PlayState extends MusicBeatState
 
 				vocals.time = Conductor.songPosition;
 				vocals.play();
+				// JOELwindows7: ye
+				vocals2.time = Conductor.songPosition;
+				vocals2.play();
 				new FlxTimer().start(0.5, function(tmr:FlxTimer)
 				{
 					usedTimeTravel = false;
@@ -3772,6 +3825,7 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.sound.music.pause();
 			vocals.pause();
+			vocals2.pause(); // JOELwindows7: ye
 			Conductor.songPosition = skipTo;
 			Conductor.rawPosition = skipTo;
 
@@ -3780,6 +3834,9 @@ class PlayState extends MusicBeatState
 
 			vocals.time = Conductor.songPosition;
 			vocals.play();
+			// JOELwindows7: ye
+			vocals2.time = Conductor.songPosition;
+			vocals2.play();
 			FlxTween.tween(skipText, {alpha: 0}, 0.2, {
 				onComplete: function(tw)
 				{
@@ -4215,6 +4272,7 @@ class PlayState extends MusicBeatState
 				paused = true;
 
 				vocals.stop();
+				vocals2.stop(); // JOELwindows7: ye
 				FlxG.sound.music.stop();
 
 				if (FlxG.save.data.InstantRespawn)
@@ -4250,6 +4308,7 @@ class PlayState extends MusicBeatState
 
 				// JOELwindows7: whyn't stop
 				vocals.stop();
+				vocals2.stop(); // JOELwindows7: ye
 				FlxG.sound.music.stop();
 
 				#if FEATURE_DISCORD
@@ -4287,6 +4346,7 @@ class PlayState extends MusicBeatState
 				paused = true;
 
 				vocals.stop();
+				vocals2.stop(); // JOELwindows7: ye
 				FlxG.sound.music.stop();
 
 				if (FlxG.save.data.InstantRespawn)
@@ -4322,6 +4382,7 @@ class PlayState extends MusicBeatState
 
 				// JOELwindows7: whyn't stop
 				vocals.stop();
+				vocals2.stop(); // JOELwindows7: ye
 				FlxG.sound.music.stop();
 
 				#if FEATURE_DISCORD
@@ -4479,6 +4540,8 @@ class PlayState extends MusicBeatState
 
 							if (SONG.needsVoices)
 								vocals.volume = 1;
+							if (SONG.needsVoices2)
+								vocals2.volume = 1; // JOELwindows7: ye
 						}
 					}
 					else
@@ -4519,6 +4582,8 @@ class PlayState extends MusicBeatState
 
 						if (SONG.needsVoices)
 							vocals.volume = 1;
+						if (SONG.needsVoices2)
+							vocals2.volume = 1; // JOELwindows7 : ye
 					}
 					daNote.active = false;
 
@@ -4604,6 +4669,7 @@ class PlayState extends MusicBeatState
 								else
 								{
 									vocals.volume = 0;
+									// JOELwindows7: vocals2 not need vol 0
 									if (theFunne && !daNote.isSustainNote)
 									{
 										noteMiss(daNote.noteData, daNote);
@@ -4651,6 +4717,7 @@ class PlayState extends MusicBeatState
 							else
 							{
 								vocals.volume = 0;
+								// JOELwindows7: vocals2 no need vol 0
 								if (theFunne && !daNote.isSustainNote)
 								{
 									if (PlayStateChangeables.botPlay)
@@ -4899,9 +4966,11 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
+		vocals2.volume = 0; // JOELwindows7: ye
 		FlxG.sound.music.stop();
 		// FlxG.sound.music.stop(); // JOELwindows7: Woha do not stop music because there is delay defined in the song!
 		vocals.stop(); // JOELwindows7: Woha do not stop vocal because there is delay defined in the song! nvm
+		vocals2.stop(); // JOELwindows7: Woha do not stop vocal because there is delay defined in the song! nvm ye
 		if (SONG.validScore)
 		{
 			#if !switch
@@ -4970,6 +5039,7 @@ class PlayState extends MusicBeatState
 
 					FlxG.sound.music.stop();
 					vocals.stop();
+					vocals2.stop(); // JOELwindows7: ye
 					// JOELwindows7: here timer guys
 					outroScene(lastSonginPlaylist, false, delayFirstBeforeThat, SONG.hasEpilogueVideo, SONG.epilogueVideoPath, SONG.hasEpilogueTankmanVideo,
 						SONG.epilogueTankmanVideoPath);
@@ -5082,6 +5152,7 @@ class PlayState extends MusicBeatState
 					// JOELwindows7: conform the story mode oid based on dash is space like StoryMenuState.hx
 					FlxG.sound.music.stop();
 					vocals.stop();
+					vocals2.stop(); // JOELwindows7: ye
 
 					// JOELwindows7: log this one in will ya?
 					Debug.logTrace("Here's path for this outro " + epilogueVideoPath + "\n and next song intro " + SONG.videoPath);
@@ -5117,6 +5188,7 @@ class PlayState extends MusicBeatState
 
 					FlxG.sound.music.stop();
 					vocals.stop();
+					vocals2.stop(); // JOELwindows7: ye
 
 					// JOELwindows7: don't forget clean modchart if haven't already
 					scronchLuaScript();
@@ -5184,6 +5256,7 @@ class PlayState extends MusicBeatState
 		var wife:Float = EtternaFunctions.wife3(-noteDiff, Conductor.timeScale);
 		// boyfriend.playAnim('hey');
 		vocals.volume = 1;
+		vocals2.volume = 1; // JOELwindows7: ye
 		var placement:String = Std.string(combo);
 
 		var coolText:FlxText = new FlxText(0, 0, 0, placement, 32);
@@ -6523,11 +6596,24 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.soundRandom('GF_', 1, 4, 'shared'), 0.3);
 				}
 				// JOELwindows7: hey, you got gf sadd hik hiks too?! whoahow! based, giant w, pogger!
+
+				if (vocals2.volume != 0)
+				{
+					// JOELwindows7: just in case you need this too. idk.
+				}
+				else
+				{
+				}
 			}
 
 			if (PlayStateChangeables.Optimize)
+			{
 				if (vocals.volume == 0 && !currentSection.mustHitSection)
 					vocals.volume = 1;
+				// JOELwindows7: ye
+				if (vocals2.volume == 0 && !currentSection.mustHitSection)
+					vocals2.volume = 1;
+			}
 
 			// JOELwindows7: above is not my code. but idea!
 			// for Gravis Ultrasound demo, RAIN.MID. you can manually lightning strike as the beat almost drop.

@@ -52,6 +52,10 @@ class Perkedel
 		+ "\nwhich is this Friday Night Funkin: Full Ass. Please use this instead"
 		+ "\nAll mods are available in the Workshop, thancc."
 		+ "\nRemember, buy it legit! yeah.";
+	public static final STAY_LONGER_VOUCHER:String = "Stay Longer voucher applied "
+		+ "\n(1 Staylong @ untrash/unprivate; Bonus 15 Staylong for all 3 comebacks):"
+		+ "\n-Sky"
+		+ "\n-Whitty";
 
 	public static final NULL_HEART_SPEC:SwagHeart = {
 		character: "null",

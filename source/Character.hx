@@ -232,10 +232,14 @@ class Character extends FlxSprite
 	}
 
 	/**
+	 * Send heart update frame & elapsed to here.
+	 * Please call this method in your state's `update` method 
+	 * complete with `elapsed` argument variable to this `elapsed` argument.
 	 * By accessing this function, you enable external clock.
 	 * this will disable self heartbeat management.
 	 * to disable external clock & let heart management does itself again, set `reself` to true.
 	 * @param elapsed handover elapsed
+	 * @param reself whether to reenable own heart management system again
 	 */
 	public function doHeartbeats(elapsed:Float, reself:Bool = false)
 	{
@@ -474,14 +478,22 @@ class Character extends FlxSprite
 typedef CharacterData =
 {
 	var name:String;
+
+	/**
+	 * Name of the character that'll be displayed on screen such as Dialogue chat
+	 */
 	var ?displayName:String; // JOELwindows7: If they have special name, reregular name, or whatever it should be displayed as.
+
 	var asset:String;
 	var startingAnim:String;
-
 	var ?charPos:Array<Int>;
 	var ?camPos:Array<Int>;
 	var ?camFollow:Array<Int>;
 	var ?holdLength:Float;
+
+	/**
+	 * Heart organs specification inside this character. can have more than 1 heart specification.
+	 */
 	var ?heartOrgans:Array<SwagHeart>; // JOELwindows7: Array of heart organs inside this Character.
 
 	/**

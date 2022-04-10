@@ -14,10 +14,10 @@ also a **Friday Night Funkin modding engine** yey!!!
 
 ## Kontraktua Majoris
 
-`☁️Saubo ⏳` [`💣Copiar ✅`](https://gamebanana.com/mods/354884 ) `⛪Alfaheur 💥`
+[`☁️Saubo ✅`](https://gamebanana.com/mods/44555 ) [`💣Copiar ✅`](https://gamebanana.com/mods/354884 ) `⛪Alfaheur 💥`
 
 > *by wearing the following Protoglin Amexamlef, you are agree to abide by the rules to always keep & make sure that following Majoris*
-> *are safe & sound, away from any disaster particularly made by a group of terrorist in the world of cyber.*
+> *are safe & sound, away from any disaster particularly made by a group of bad actors in the world of cyber.*
 > *You will also will be given pledge card in form of this game itself in which hereby you are certified members of*
 > *the Last Funkin Moment campaign, for you will do the activism, telling worlds about what is happening around us.*
 

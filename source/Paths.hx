@@ -186,7 +186,7 @@ class Paths
 		return getPath('music/$key.mid', BINARY, library);
 	}
 
-	inline static public function voices(song:String)
+	inline static public function voices(song:String, count:Int = 0)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 		switch (songLowercase)
@@ -198,7 +198,29 @@ class Paths
 			case 'm.i.l.f':
 				songLowercase = 'milf';
 		}
-		var result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
+		// var result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
+		// JOELwindows7 : hey, use multi voice now!
+		var result = 'songs:assets/songs/${songLowercase}/Voices${count > 0 ? Std.string(count) : ""}.$SOUND_EXT';
+		// Return null if the file does not exist.
+		return doesSoundAssetExist(result) ? result : null;
+	}
+
+	// JOELwindows7: okay, other audio tracks what should it be.
+	inline static public function multiTracks(song:String, count:Int = 0)
+	{
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		switch (songLowercase)
+		{
+			case 'dad-battle':
+				songLowercase = 'dadbattle';
+			case 'philly-nice':
+				songLowercase = 'philly';
+			case 'm.i.l.f':
+				songLowercase = 'milf';
+		}
+		// var result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
+		// JOELwindows7 : hey, use multi voice now!
+		var result = 'songs:assets/songs/${songLowercase}/MultiTracks${Std.string(count)}.$SOUND_EXT';
 		// Return null if the file does not exist.
 		return doesSoundAssetExist(result) ? result : null;
 	}
