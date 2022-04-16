@@ -29,5 +29,7 @@
         "position": 0,
         "value": 72,
         "type": "BPM Change"
-    }]
+    }],
+    "introCutSceneDoneManually": true,
+    "outroCutSceneDoneManually": false
 }

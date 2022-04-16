@@ -6390,6 +6390,7 @@ class PlayState extends MusicBeatState
 				if (i.position == HelperFunctions.truncateFloat(curDecimalBeat, 3)
 					|| Std.int(i.position) == curBeat) // JOELwindows7: can we do it like this instead? because the evaluation for these are essentially be the same.
 				{
+					// JOELwindows7: base this on theseEvents!
 					switch (i.type)
 					{
 						// JOELwindows7: moar effeks. do not forget check position with curDecimalBeat (precise) / curBeat (exact) first!
@@ -7337,24 +7338,6 @@ class PlayState extends MusicBeatState
 		switch (curSong)
 		{
 			default:
-				#if FEATURE_LUAMODCHART
-				if (luaModchart != null)
-				{
-					luaModchart.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
-				}
-				if (stageScript != null)
-				{
-					stageScript.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
-				}
-				#end
-				if (hscriptModchart != null)
-				{
-					hscriptModchart.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
-				}
-				if (stageHscript != null)
-				{
-					stageHscript.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
-				}
 				// No cutscene intro
 				decideIntroSceneDone(SONG.introCutSceneDoneManually);
 		}
@@ -7366,6 +7349,24 @@ class PlayState extends MusicBeatState
 		if (isItManually)
 		{
 			// JOELwindows7: then modchart must trigger it.
+			#if FEATURE_LUAMODCHART
+			if (luaModchart != null)
+			{
+				luaModchart.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
+			}
+			if (stageScript != null)
+			{
+				stageScript.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
+			}
+			#end
+			if (hscriptModchart != null)
+			{
+				hscriptModchart.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
+			}
+			if (stageHscript != null)
+			{
+				stageHscript.executeState("introCutscene", []); // JOELwindows7: here intro cutscene yey!
+			}
 		}
 		else
 		{

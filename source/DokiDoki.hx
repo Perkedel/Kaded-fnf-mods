@@ -223,7 +223,12 @@ class JantungOrgan
 	{
 		// copy the null check technic from Character class, instance method
 		this.character = handoverSpec.character == null ? Perkedel.NULL_HEART_SPEC.character : handoverSpec.character;
-		this.isEmulator = handoverSpec.isEmulator == null ? Perkedel.NULL_HEART_SPEC.isEmulator : handoverSpec.isEmulator;
+		// this.isEmulator = handoverSpec.isEmulator == null ? Perkedel.NULL_HEART_SPEC.isEmulator : handoverSpec.isEmulator;
+		// On static platforms, null can't be used as basic type Bool
+		this.isEmulator = handoverSpec.isEmulator;
+		// if (this.isEmulator == null)
+		// 	this.isEmulator = Perkedel.NULL_HEART_SPEC.isEmulator;
+		// argh you crazy motherpecker!! those still not allowed too?!
 		this.minHR = this.barrierMin = handoverSpec.minHR == null ? Perkedel.NULL_HEART_SPEC.minHR : handoverSpec.minHR;
 		this.maxHR = this.barrierMax = handoverSpec.maxHR == null ? Perkedel.NULL_HEART_SPEC.maxHR : handoverSpec.maxHR;
 		this.baseRateScale = handoverSpec.baseRateScale == null ? Perkedel.NULL_HEART_SPEC.baseRateScale : handoverSpec.baseRateScale;
@@ -247,7 +252,7 @@ class JantungOrgan
 
 	/**
 	 * This is the heart beat function. idk, the heart beats itself, it has electric system.
-	 * the brain, controls its rate.
+	 * the brain, controls its rate. idk..
 	 * This gets called in time of heart beat. 
 	 * Like beatHit, but for the heart of its own. yeah another rhythm to simulate heartbeat
 	 * just like Shinon51788's doki-doki dance but kinda advanced, idk.

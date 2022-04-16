@@ -38,9 +38,12 @@ class Perkedel
 	public static final DONATE_BUTTON_URL:String = 'https://odysee.com/@JOELwindows7:a/LFM-links:a'; // here URL of donate button
 	public static final ENABLE_MODS:Bool = true;
 	public static final ENABLE_VERSION_CHECK:Bool = true;
-
+	public static final CHART_EVENTS:Array<String> = [
+		"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
+		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights", "Appear Blackbar", "Disappear Blackbar"
+	];
 	public static final DISCLAIMER_SAY:String = "Disclaimer";
-	public static final GOING_TO_OBSOLETE:String = "ALERT!"
+	public static final GOING_TO_OBSOLETE:String = "ALERT!\n"
 		+ "\nThis mod is going to obsolete in favour of Friday Night Funkin Moment: Full Ass "
 		+ "\nwhen modding support & Workshop becomes available"
 		+ "\nPlease buy the sofware right now by pressing ENTER to go to the Steam store."

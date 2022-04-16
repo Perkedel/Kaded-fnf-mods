@@ -160,10 +160,7 @@ class ChartingState extends MusicBeatState
 	public var metronomeSound:FlxSound; // JOELwindows7: bring metronome sound to one memory rather than new again I guess
 	public var metronomeDingSound:FlxSound; // JOELwindows7: bring metronome ding sound to one memory rather than new again I guess
 
-	var theseEvents:Array<String> = [
-		"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
-		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights", "Appear Blackbar", "Disappear Blackbar"
-	]; // JOELwindows7: these events of it.
+	var theseEvents:Array<String> = Perkedel.CHART_EVENTS; // JOELwindows7: these events of it.
 
 	public function new(reloadOnInit:Bool = false)
 	{
@@ -4317,15 +4314,15 @@ class ChartingState extends MusicBeatState
 				var stringedNoteType:String = switch (i.sectionNotes[j][5])
 				{
 					case 0:
-						'default';
+						'default'; // regular note
 					case 1:
-						'special';
+						'special'; // powerup
 					case 2:
-						'mine';
+						'mine'; // decrease HP
 					case 3:
-						'important';
+						'important'; // critical do not miss or die
 					case 4:
-						'never';
+						'never'; // critical do not step or die
 					case _:
 						'default';
 				};
@@ -4402,6 +4399,10 @@ class ChartingState extends MusicBeatState
 		_song.difficultyStrength = DiffCalc.CalculateDiff(_song, .93, true);
 	}
 
+	/**
+	 * Called when the save is successful
+	 * @param _ 
+	 */
 	function onSaveComplete(_):Void
 	{
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
@@ -4476,7 +4477,7 @@ class ChartingState extends MusicBeatState
 			Debug.logTrace("pause thingyt");
 			if (PauseSubState.goBack)
 			{
-				Debug.logTrace("pause thingyt");
+				Debug.logTrace("pause thingyt back zuruck");
 				PauseSubState.goToOptions = false;
 				PauseSubState.goBack = false;
 				openSubState(new PauseSubState());
