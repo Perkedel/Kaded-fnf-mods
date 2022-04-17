@@ -1435,6 +1435,7 @@ class ChartingState extends MusicBeatState
 		// JOELwindows7: put the charter / author input text field here somewhere
 		var UI_charter = new FlxUIInputText(10, 50, 70, _song.charter, 8);
 		typingShit2 = UI_charter;
+		var stepperAuthorLabel = new FlxText(80, 50, 'Chart Author');
 
 		var saveButton:FlxUIButton = new FlxUIButton(110, 8, "Save", function()
 		{
@@ -1579,6 +1580,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(reloadSong);
 		tab_group_song.add(reloadSongJson);
 		tab_group_song.add(loadAutosaveBtn);
+		tab_group_song.add(stepperAuthorLabel);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperBPMLabel);
 		tab_group_song.add(stepperSpeed);
@@ -3283,7 +3285,7 @@ class ChartingState extends MusicBeatState
 					}
 				}
 
-				if (!typingShit.hasFocus && !typingShit2.hasFocus) // JOELwindows7: woo yeah baby
+				if (!(typingShit.hasFocus || typingShit2.hasFocus)) // JOELwindows7: woo yeah baby
 				{
 					var shiftThing:Int = 1;
 					if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: oh yeah baby
@@ -4305,6 +4307,7 @@ class ChartingState extends MusicBeatState
 		for (i in _song.notes)
 		{
 			// JOELwindows7: for safety, init that betterSectionNotes array
+			// type is `Array<NoteInSection>` from `Section.hx`
 			i.betterSectionNotes = []; // yeah basically this is auto-conversion output anyway.
 			// btw, this type of section notes should've been built like so.
 			// ah well, let this by my own sTILE note section.

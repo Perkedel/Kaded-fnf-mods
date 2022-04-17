@@ -346,6 +346,12 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://stackoverflow.com/questions/18216991/create-a-tag-in-a-github-repository still no GUI interface way to do that easily??!! no wonder kids these days hate being programmer because we are forced to stick with terminal type here and there, not obvious if this works, and what does it do!
 - https://gamebanana.com/mods/44555?post=9958187 SKY IS BACK!!!! FNALLY!! I THOUGHT WE WILL LEAVE FNF FANDOM UNDER DEADLY DEPRESSIONS!!!
 - https://gamebanana.com/threads/221466 YESS!!! IT'S PECKING CONFIRMED!!!
+- https://www.datree.io/resources/git-push-force
+- https://www.geeksforgeeks.org/how-to-undo-a-commit-in-git/
+- https://stackoverflow.com/questions/12704568/undo-a-git-commit
+- https://git-annex.branchable.com/git-annex/
+- https://odysee.com/@DistroTube:2/git-annex-is-the-coolest-program-you've:8
+- https://odysee.com/@DistroTube:2/git-annex-is-the-coolest-program-you%27ve:8?r=5QVnh7Qi8KKQzh7G7pWw9nkfaEGprCzM
 
 # in event of git merge conflict
 use VScode and Github desktop!

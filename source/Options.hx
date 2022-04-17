@@ -37,8 +37,28 @@ class Option
 		// this.requiresRestartSong = needsRestartSong;
 	}
 
-	private var description:String = "";
+	// JOELwindows7: incoming! Master Eric Enigma!
+	// yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/behavior/options/Options.hx
+
+	/**
+	 * The name of this option in the options menu.
+	 */
+	public var name(default, null):String = "";
+
+	/**
+	 * The long-form description of this option, shown at the bottom of the screen.
+	 */
+	public var description(default, null):String = "";
+
+	/**
+	 * Reset all user preferences to their default values.
+	 */
+	// public static function resetPreferences()
+	// {
+	// 	FlxG.save.data.preferences = getDefaultPreferences();
+	// }
 	private var display:String;
+
 	private var acceptValues:Bool = false;
 
 	public var acceptType:Bool = false;
@@ -68,6 +88,8 @@ class Option
 	{
 		return updateDisplay();
 	};
+
+	// JOELwindows7: get & set is not overriden?!
 
 	public function onType(text:String)
 	{
@@ -998,6 +1020,16 @@ class FlashingLightsOption extends Option
 
 class AntialiasingOption extends Option
 {
+	// JOELwindows7: here's Master Eric enigma thingy!
+	public static final DEFAULT:Bool = true;
+
+	public static inline function get():Null<Bool>
+	{
+		if (FlxG.save.data == null)
+			return DEFAULT;
+		return FlxG.save.data.antialiasing;
+	}
+
 	public function new(desc:String)
 	{
 		super();
@@ -2026,7 +2058,7 @@ class ResetSettings extends Option
 		FlxG.save.data.cacheImages = null;
 		FlxG.save.data.editor = null;
 		FlxG.save.data.laneTransparency = 0;
-		//JOELwindows7: oh man! don't forget my new setting data!
+		// JOELwindows7: oh man! don't forget my new setting data!
 		FlxG.save.data.accidentVolumeKeys = null;
 		FlxG.save.data.fullscreen = false;
 		FlxG.save.data.odyseeMark = null;
@@ -2042,7 +2074,7 @@ class ResetSettings extends Option
 		FlxG.save.data.traceSongChart = null;
 		FlxG.save.data.annoyingWarns = null;
 		FlxG.save.data.legacyLuaScript = null;
-		FlxG.save.data.modData = new Map<String,Dynamic>();
+		FlxG.save.data.modData = new Map<String, Dynamic>();
 		FlxG.save.data.autoClick = null;
 		FlxG.save.data.autoClickDelay = 2;
 		FlxG.save.data.freeplayThreadedLoading = null;

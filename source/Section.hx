@@ -21,6 +21,7 @@ class Section
 	public var startTime:Float = 0;
 	public var endTime:Float = 0;
 	public var sectionNotes:Array<Array<Dynamic>> = [];
+	public var betterSectionNotes:Array<NoteInSection> = []; // JOELwindows7: also joins here just in case
 	public var changeBPM:Bool = false;
 	public var bpm:Float = 0;
 

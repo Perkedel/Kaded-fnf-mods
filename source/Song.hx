@@ -62,6 +62,7 @@ typedef SongData =
 	var player2:String;
 	var gfVersion:String;
 	var noteStyle:String;
+	var ?arrowSkin:String; // JOELwindows7: psyched noteskin
 	var stage:String;
 	var ?hasVideo:Bool; // JOELwindows7: mark that this has video
 	var ?videoPath:String; // JOELwindows7: the video file path
@@ -202,10 +203,51 @@ class Song
 			convertedStuff.push(new Song.Event(name, pos, value, type, value2, value3)); // JOELwindows7: super idol
 		}
 
+		// JOELwindows7: also stringify stuffs like note type
+		for (i in song.notes)
+		{
+			if (i.betterSectionNotes == null || i.betterSectionNotes.length <= 0 || i.betterSectionNotes.length < i.sectionNotes.length)
+			{
+				i.betterSectionNotes = [];
+				for (j in 0...i.sectionNotes.length)
+				{
+					var stringedNoteType:String = switch (i.sectionNotes[j][5])
+					{
+						case 0:
+							'default'; // regular note
+						case 1:
+							'special'; // powerup
+						case 2:
+							'mine'; // decrease HP
+						case 3:
+							'important'; // critical do not miss or die
+						case 4:
+							'never'; // critical do not step or die
+						case _:
+							'default';
+					};
+
+					// i.betterSectionNotes
+					i.betterSectionNotes[j] = {
+						strumTime: i.sectionNotes[j][0],
+						noteData: i.sectionNotes[j][1],
+						sustainLength: i.sectionNotes[j][2],
+						isAlt: i.sectionNotes[j][3],
+						beat: i.sectionNotes[j][4],
+						noteType: i.sectionNotes[j][5],
+						noteTypeId: stringedNoteType,
+						hitsoundPath: i.sectionNotes[j][6],
+						vowelType: i.sectionNotes[j][7],
+					}
+				}
+			}
+		}
+
 		song.eventObjects = convertedStuff;
 
 		if (song.noteStyle == null)
-			song.noteStyle = "normal";
+			// JOELwindows7: then check maybe it's defined psychedly I guess..
+			song.noteStyle = song.arrowSkin != null ? song.arrowSkin : "normal";
 
 		if (song.gfVersion == null)
 			song.gfVersion = "gf";
