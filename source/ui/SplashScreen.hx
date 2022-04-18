@@ -165,8 +165,8 @@ class SplashScreen extends MusicBeatState
 		_aModOfText.y += 150;
 		add(_aModOfText);
 
-		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 200), 0, Perkedel.BIOS_BUTTON_SAY, 24);
-		_aPressEscapeToBiosText.setFormat(Paths.font("UbuntuMono-R.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 170), 0, Perkedel.BIOS_BUTTON_SAY, 18);
+		_aPressEscapeToBiosText.setFormat(Paths.font("UbuntuMono-R.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		_aPressEscapeToBiosText.scrollFactor.set();
 		_aPressEscapeToBiosText.screenCenter(XY);
 		_aPressEscapeToBiosText.y += 170;
@@ -204,7 +204,8 @@ class SplashScreen extends MusicBeatState
 				+ ")";
 			if (FlxG.keys.justPressed.ESCAPE || (joypadLastActive != null ? joypadLastActive.justPressed.BACK : false))
 			{
-				FlxG.sound.play(Paths.sound('cancelMenu'));
+				// FlxG.sound.play(Paths.sound('cancelMenu'));
+				playSoundEffect('cancelMenu');
 				// FlxG.switchState(new BiosSettingsState());
 				cancelEverything();
 				_aPressEscapeToBiosText.visible = false;
