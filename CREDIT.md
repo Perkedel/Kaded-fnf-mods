@@ -352,6 +352,18 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://git-annex.branchable.com/git-annex/
 - https://odysee.com/@DistroTube:2/git-annex-is-the-coolest-program-you've:8
 - https://odysee.com/@DistroTube:2/git-annex-is-the-coolest-program-you%27ve:8?r=5QVnh7Qi8KKQzh7G7pWw9nkfaEGprCzM
+- dump
+- https://www.freenom.com/en/index.html
+- https://fitsmallbusiness.com/free-domain-name/
+- https://makeawebsitehub.com/free-domains/
+- https://stackoverflow.com/questions/59709283/haxe-error-you-cannot-access-the-cpp-package-while-targeting-cross-for-cpp-lib
+- https://github.com/HeapsIO/heaps/issues/368
+- https://www.flashdevelop.org/community/viewtopic.php?f=6&t=11478&sid=17c7e19da07ffc09259d9d905cfbe45e&start=15
+- https://gamebanana.com/questions/13619
+- https://community.haxe.org/t/debug-you-cannot-access-the-js-package-while-in-a-macro-error/1976/2
+- https://stackoverflow.com/questions/21391833/macro-include-is-recursively-including-packages-not-appropriate-for-build-targ
+- https://developer.android.com/topic/google-play-instant/instant-play-games-checklist
+- dump end
 
 # in event of git merge conflict
 use VScode and Github desktop!

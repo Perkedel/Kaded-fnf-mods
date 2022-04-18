@@ -185,6 +185,10 @@ class CoreState extends FlxUIState
 
 		initCamControl(); // JOELwindows7: init the cam control now!
 		// dedicated touchscreen button container
+
+		// JOELwindows7: manage Stuffs first
+		manageMouse();
+		manageJoypad();
 	}
 
 	override function update(elapsed:Float)
@@ -773,12 +777,17 @@ class CoreSubState extends FlxUISubState
 	override function create()
 	{
 		super.create();
+
+		// JOELwindows7: manage Stuffs first
+		manageMouse();
+		manageJoypad();
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
+		// JOELwindows7: manage Stuffs
 		manageMouse();
 		manageJoypad();
 	}
@@ -1000,8 +1009,9 @@ class CoreSubState extends FlxUISubState
 	}
 }
 
-//NOW! NEW!!! CoreXML UI State yey! inspire from Master Eric Enimga XMLLayoutState
-class CoreXMLState extends CoreState{
+// NOW! NEW!!! CoreXML UI State yey! inspire from Master Eric Enimga XMLLayoutState
+class CoreXMLState extends CoreState
+{
 	public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
 	{
 		var element:Xml = cast data;
@@ -1015,7 +1025,8 @@ class CoreXMLState extends CoreState{
 }
 
 // ALSO CORE XML SUBSTATE
-class CoreXMLSubState extends CoreSubState{
+class CoreXMLSubState extends CoreSubState
+{
 	public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
 	{
 		var element:Xml = cast data;

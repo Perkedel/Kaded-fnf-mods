@@ -18,7 +18,7 @@
 
 package ui;
 
-import ui.states.modding.ModMenuState;
+// import ui.states.modding.ModMenuState;
 import flixel.text.FlxText;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.transition.FlxTransitionSprite;
@@ -169,12 +169,13 @@ class SplashScreen extends MusicBeatState
 		_aPressEscapeToBiosText.setFormat(Paths.font("UbuntuMono-R.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		_aPressEscapeToBiosText.scrollFactor.set();
 		_aPressEscapeToBiosText.screenCenter(XY);
-		_aPressEscapeToBiosText.y += 200;
+		_aPressEscapeToBiosText.y += 170;
 		add(_aPressEscapeToBiosText);
 		_aPressEscapeToBiosText.visible = !CarryAround.modAlreadyLoaded(); // only visiblize if not already loaded
 
 		_productLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("LFMLogoSplash"));
 		_productLogo.setPosition((FlxG.width / 2) - (_productLogo.width / 2), (FlxG.height / 2) - (_productLogo.height / 2));
+		_productLogo.screenCenter(XY);
 		_productLogo.scrollFactor.set();
 		add(_productLogo);
 
@@ -201,7 +202,7 @@ class SplashScreen extends MusicBeatState
 				+ " ("
 				+ (_beginSplashTimer != null ? Std.string(HelperFunctions.truncateFloat(_beginSplashTimer.timeLeft, 1)) : "")
 				+ ")";
-			if (FlxG.keys.justPressed.ESCAPE || joypadLastActive.justPressed.BACK)
+			if (FlxG.keys.justPressed.ESCAPE || (joypadLastActive != null ? joypadLastActive.justPressed.BACK : false))
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				// FlxG.switchState(new BiosSettingsState());
