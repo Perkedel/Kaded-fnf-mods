@@ -30,7 +30,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.4
+          haxe-version: 4.2.5
       # Runs a set of commands using the runners shell
       
       - name: Linuxly set things up first!
@@ -111,8 +111,8 @@ jobs:
       - name: Obtain stuffs of Linux
         run: |
           wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
-          sudo mkdir -p /opt/hostedtoolcache/haxe/4.2.4/x64/lib/linc_luajit/lib/lua/lib/Linux64
-          sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.2.4/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
+          sudo mkdir -p /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64
+          sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
 
       - name: Obtain GameJolt empty file
         run: |

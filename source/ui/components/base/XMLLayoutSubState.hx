@@ -36,6 +36,8 @@ import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.ui.FlxUITypedButton;
 
+using hx.strings.Strings;
+
 class XMLLayoutSubState extends CoreXMLSubState // extends CoreSubState // JOELwindows7: make sure core state. no, CORE XML STATE YESS!!
 {
 	private var clickEventHandlers:Map<String, ClickEventHandlerFn> = new Map();

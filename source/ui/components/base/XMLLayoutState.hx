@@ -36,7 +36,7 @@ using hx.strings.Strings;
 
 typedef ClickEventHandlerFn = Void->Void;
 
-class XMLLayoutState /*extends CoreXMLState*/ extends CoreState // JOELwindows7: make sure core state. no, CORE XML STATE YESS!!
+class XMLLayoutState extends CoreXMLState //extends CoreState // JOELwindows7: make sure core state. no, CORE XML STATE YESS!!
 {
 	private var clickEventHandlers:Map<String, ClickEventHandlerFn> = new Map();
 
@@ -145,7 +145,7 @@ class XMLLayoutState /*extends CoreXMLState*/ extends CoreState // JOELwindows7:
 	 * @param tag The XML tag of the element.
 	 * @return The new UI element to render.
 	 */
-	/*override*/ public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
+	override public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
 	{
 		var element:Xml = cast data;
 		switch (tag)

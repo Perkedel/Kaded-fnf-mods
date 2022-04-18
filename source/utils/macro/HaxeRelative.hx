@@ -21,6 +21,10 @@
  */
 package utils.macro;
 
+using haxe.macro.ExprTools;
+using haxe.macro.TypeTools;
+using Lambda;
+
 class HaxeRelative
 {
 	public static macro function build():Array<Field>

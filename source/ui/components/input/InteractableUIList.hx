@@ -21,12 +21,12 @@
  */
 package ui.components.input;
 
-import ui.components.base.IRelative;
+// import ui.components.base.IRelative; // macro seems have caused trouble in my setup here.
 import flixel.addons.ui.FlxUIList;
 import flixel.math.FlxPoint;
 import utils.input.GestureUtil.SwipeDirection;
 
-class InteractableUIList extends FlxUIList implements IInteractable implements IRelative
+class InteractableUIList extends FlxUIList implements IInteractable // implements IRelative
 {
 	public function onJustPressed(pos:FlxPoint)
 	{

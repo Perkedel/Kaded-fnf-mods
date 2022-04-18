@@ -216,6 +216,11 @@
 		NOT USING A DIRECT THING TO THE ASSET!!!
 	-->
 	<assets path="assets/fonts" embed='true'/>
+
+	<!-- first, call macro allow this -->
+	<haxeflag name="--macro" value="allowPackage('flash')" />
+	<!-- https://stackoverflow.com/a/21422639/9079640 -->
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
@@ -451,7 +456,8 @@
 	<!-- https://stackoverflow.com/a/21422639/9079640 -->
 	<!-- <haxeflag name="macro" value="allowPackage('flash')" /> -->
 	<!-- dash dash macro -->
-	<haxeflag name="--macro allowPackage('flash')" />
+	<!-- <haxeflag name="macro allowPackage('flash')" /> -->
+	<!-- called on very top -->
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
 	<!-- <haxedef name="NG_LOGIN" if="newgrounds" /> -->

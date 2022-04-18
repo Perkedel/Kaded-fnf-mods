@@ -15,7 +15,7 @@
  */
 
 // JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/ui/component/base/IRelative.hx
-
+// unfortunately my config of haxe compile lime seems broken with macro being involved. warm and bad!!
 /*
  * IRelative.hx
  * Adding this interface to an FlxObject (yes, merely adding the interface),

@@ -24,6 +24,10 @@
  */
 package utils.macro;
 
+using haxe.macro.ExprTools;
+using haxe.macro.TypeTools;
+using Lambda;
+
 class HaxeCommit
 {
 	public static macro function getGitCommitHash():haxe.macro.Expr.ExprOf<String>

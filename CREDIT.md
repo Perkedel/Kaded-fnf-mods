@@ -364,6 +364,16 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://stackoverflow.com/questions/21391833/macro-include-is-recursively-including-packages-not-appropriate-for-build-targ
 - https://developer.android.com/topic/google-play-instant/instant-play-games-checklist
 - dump end
+- https://blog.hamaluik.ca/posts/getting-started-with-haxe-macros/
+- https://haxe.org/manual/macro.html
+- https://github.com/HaxeFoundation/haxe/releases/tag/4.2.5
+- https://haxe.org/download/
+- https://api.haxeflixel.com/flixel/addons/ui/FlxUIList.html
+- https://stackoverflow.com/a/21422639/9079640
+- https://code.haxe.org/category/macros/
+- https://code.haxe.org/category/macros/get-compiler-define-value.html
+- https://kinocreates.io/tutorials/haxe-build-macro-basics/
+- https://blog.hamaluik.ca/posts/getting-started-with-haxe-macros/#buildmacros
 
 # in event of git merge conflict
 use VScode and Github desktop!
