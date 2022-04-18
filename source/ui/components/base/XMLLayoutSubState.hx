@@ -1,23 +1,26 @@
 /*
- * Apache License, Version 2.0
+ * GNU General Public License, Version 3.0
  *
- * Copyright (c) 2021 MasterEric
+ * Copyright (c) 2022 Perkedel
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at:
- *     http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/ui/component/base/XMLLayoutState.hx
+// JOELwindows7: inspire / maybe copy from Master Eric Enigma XMLLayoutState! this if for Substate!
 /*
- * XMLLayoutState.hx
+ * XMLLayoutSubState.hx
  * Provides convenience functions for creating UIs with layouts powered by XML.
+ * This is as same as `XMLLayoutState` but for the FlxUIState.
  */
 package ui.components.base;
 
@@ -27,16 +30,13 @@ import flixel.addons.ui.FlxUIButton;
 import flixel.FlxSprite;
 // import funkin.util.Util;
 // import funkin.util.assets.Paths;
+import ui.components.base.XMLLayoutState;
 import flixel.text.FlxText;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.ui.FlxUITypedButton;
 
-using hx.strings.Strings;
-
-typedef ClickEventHandlerFn = Void->Void;
-
-class XMLLayoutState /*extends CoreXMLState*/ extends CoreState // JOELwindows7: make sure core state. no, CORE XML STATE YESS!!
+class XMLLayoutSubState extends CoreXMLSubState // extends CoreSubState // JOELwindows7: make sure core state. no, CORE XML STATE YESS!!
 {
 	private var clickEventHandlers:Map<String, ClickEventHandlerFn> = new Map();
 
@@ -145,7 +145,7 @@ class XMLLayoutState /*extends CoreXMLState*/ extends CoreState // JOELwindows7:
 	 * @param tag The XML tag of the element.
 	 * @return The new UI element to render.
 	 */
-	/*override*/ public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
+	override public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
 	{
 		var element:Xml = cast data;
 		switch (tag)

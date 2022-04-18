@@ -217,7 +217,7 @@ class Main extends Sprite
 		trace("inited program");
 
 		// Gotta run this before any assets get loaded.
-		ModCore.initialize();
+		// ModCore.initialize();
 
 		trace("init FPS counter");
 		#if FEATURE_DISPLAY_FPS_CHANGE

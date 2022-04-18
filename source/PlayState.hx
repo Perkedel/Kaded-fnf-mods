@@ -106,7 +106,7 @@ import Discord.DiscordClient;
 // Adds candy I/O (read/write/append) extension methods onto File
 // using filesystem.FileTools;
 // JOELwindows7: okay how about vegardit's filesystemer?
-import hx.files.*;
+// import hx.files.*;
 
 using StringTools;
 using flixel.util.FlxSpriteUtil;
@@ -461,10 +461,12 @@ class PlayState extends MusicBeatState
 
 		#if FEATURE_LUAMODCHART
 		// TODO: Refactor this to use OpenFlAssets.
-		executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'))
+		// executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'))
+		executeModchart = Paths.doesTextAssetExist(Paths.lua('songs/${PlayState.SONG.songId}/modchart'))
 			|| SONG.forceLuaModchart; // JOELwindows7: don't forgot force it.
 		if (isSM)
-			executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
+			// executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
+			executeModchart = Paths.doesTextAssetExist(pathToSm + "/modchart.lua");
 		if (executeModchart)
 			PlayStateChangeables.Optimize = false;
 		#end

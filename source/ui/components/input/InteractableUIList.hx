@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
- // JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/ui/component/input/
-
+// JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/ui/component/input/
 /*
  * InteractableUIList.hx
  * An FlxUIList which has additional handlers for gestures and interaction.

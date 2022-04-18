@@ -281,7 +281,7 @@
 	<!-- not updated anymore, I guess, it's error here. Unknown identifier : getModificationDate -->
 
 	<!-- JOELwindows7: vegardid filesystemer -->
-	<haxelib name="haxe-files"/>
+	<!-- <haxelib name="haxe-files"/> -->
 
 	<!-- JOELwindows7: used by BulbyVR with Modding+ for modchart instead of Lua. -->
 	<!-- <haxelib name="hscript"/> -->
@@ -431,6 +431,27 @@
 	<!-- Never disable debug message, especially on Mobile -->
 	<haxeflag name="--no-traces" unless="debug || mobile" />
 	<haxeflag name="--dce full" if="release" />
+
+	<!-- wtf -->
+	<!-- 
+		```
+		C:/HaxeToolkit/haxe/lib/haxe-files/3,0,0/src/hx/files/internal/Macros.hx:38: [INFO] Setting compiler define 'filesystem_support'.
+		C:/HaxeToolkit/haxe/lib/haxe-concurrent/3,0,2/src/hx/concurrent/internal/Macros.hx:35: [INFO] Setting compiler define 'threads'.
+		C:/HaxeToolkit/haxe/lib/flixel/4,11,0/flixel/FlxG.hx:3: characters 8-17 : You cannot access the flash package while in a macro (for flash.Lib)
+		C:/HaxeToolkit/haxe/lib/flixel/4,11,0/flixel/util/FlxTimer.hx:3: characters 8-19 : ... referenced here
+		source/DokiDoki.hx:21: characters 8-28 : ... referenced here
+		source/const/Perkedel.hx:24: characters 8-16 : ... referenced here
+		C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\source\import.hx:6: characters 8-22 : ... referenced here
+		C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\source\import.hx:5: characters 8-25 : ... referenced here
+		C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\source\import.hx:3: characters 8-17 : ... referenced here
+		C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\source\import.hx:1: characters 8-13 : ... referenced here
+		source/ui/components/input/InteractableUIList.hx:29: character 1 : ... referenced here
+		```
+	 -->
+	<!-- https://stackoverflow.com/a/21422639/9079640 -->
+	<!-- <haxeflag name="macro" value="allowPackage('flash')" /> -->
+	<!-- dash dash macro -->
+	<haxeflag name="--macro allowPackage('flash')" />
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
 	<!-- <haxedef name="NG_LOGIN" if="newgrounds" /> -->

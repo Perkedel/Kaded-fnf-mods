@@ -33,6 +33,7 @@ class CarryAround
 	 * JOELwindows7: fillout vars for Outro
 	 */
 	public static var __isNextSong:Bool;
+
 	public static var __handoverName:String;
 	public static var __handoverDelayFirst:Float;
 	public static var __handoverHasEpilogueVid:Bool;
@@ -40,4 +41,15 @@ class CarryAround
 	public static var __handoverHasTankmanEpilogueVid:Bool;
 	public static var __handoverTankmanEpilogueVidPath:String;
 
+	static var _modAlreadyLoaded:Bool = false;
+
+	public static function modAlreadyLoaded():Bool
+	{
+		return _modAlreadyLoaded;
+	}
+
+	public static function raiseModAlreadyLoaded():Void
+	{
+		_modAlreadyLoaded = true;
+	}
 }

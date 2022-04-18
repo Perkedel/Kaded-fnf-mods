@@ -15,6 +15,7 @@
  */
 
 //  JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/ui/state/modding/ModMenuState.hx
+// get the XML at https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/assets/preload/ui/mod_menu.xml
 /*
  * ModMenuState.hx
  * Provides a menu for configuring installed mods.

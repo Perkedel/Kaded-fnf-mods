@@ -29,6 +29,7 @@ class ModCore
 		#if FEATURE_MODCORE
 		Debug.logInfo("Initializing ModCore...");
 		loadModsById(getModIds());
+		CarryAround.raiseModAlreadyLoaded();
 		#else
 		Debug.logInfo("ModCore not initialized; not supported on this platform.");
 		#end
@@ -42,9 +43,11 @@ class ModCore
 		Debug.logTrace('  User mod config: ${FlxG.save.data.modConfig}');
 		var userModConfig = getConfiguredMods();
 		loadModsById(userModConfig);
+		CarryAround.raiseModAlreadyLoaded();
 		#else
 		Debug.logInfo("ModCore not initialized; not supported on this platform.");
 		#end
+
 	}
 
 	// JOELwindows7: here the more enigma.
@@ -238,12 +241,36 @@ class ModCore
 			// JOELwindows7: Just what the peck?! also add Enigma yoinkeh stuffs
 			assetLibraryPaths: [
 				"default" => "./preload", // ./preload
-				"sm" => "./sm", "songs" => "./songs", "shared" => "./", "tutorial" => "./tutorial",
-				"scripts" => "./scripts", "week1" => "./week1", "week2" => "./week2", "week3" => "./week3", "week4" => "./week4", "week5" => "./week5",
-				"week6" => "./week6", "week7" => "./week7", "week8" => "./week8", "week9" => "./week9", "week10" => "./week10", "week11" => "./week11",
-				"week12" => "./week12", "week13" => "./week13", "week14" => "./week14", "week15" => "./week15", "weeks" => "./weeks", "thief" => "./thief",
-				"videos" => "./videos", "preload_odysee" => "./preload_odysee", "preload_thief" => "./preload_thief", "fonts" => "./fonts",
-				"bonusWeek" => "./bonusWeek", "week-1" => "./week-1", "exclude" => "./exclude", "week5720NG" => "./week5720NG",
+				"sm" => "./sm",
+				"songs" => "./songs",
+				"shared" => "./",
+				"tutorial" => "./tutorial",
+				"scripts" => "./scripts",
+				"week1" => "./week1",
+				"week2" => "./week2",
+				"week3" => "./week3",
+				"week4" => "./week4",
+				"week5" => "./week5",
+				"week6" => "./week6",
+				"week7" => "./week7",
+				"week8" => "./week8",
+				"week9" => "./week9",
+				"week10" => "./week10",
+				"week11" => "./week11",
+				"week12" => "./week12",
+				"week13" => "./week13",
+				"week14" => "./week14",
+				"week15" => "./week15",
+				"weeks" => "./weeks",
+				"thief" => "./thief",
+				"videos" => "./videos",
+				"preload_odysee" => "./preload_odysee",
+				"preload_thief" => "./preload_thief",
+				"fonts" => "./fonts",
+				"bonusWeek" => "./bonusWeek",
+				"week-1" => "./week-1",
+				"exclude" => "./exclude",
+				"week5720NG" => "./week5720NG",
 			]
 		}
 	}

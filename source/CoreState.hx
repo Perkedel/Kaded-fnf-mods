@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.input.gamepad.FlxGamepad;
 import flixel.addons.ui.FlxUISubState;
 import flixel.ui.FlxButton;
 import ui.FlxVirtualPad;
@@ -164,6 +165,13 @@ class CoreState extends FlxUIState
 	// JOELwindows7: steal control var in order to make it work
 	private var controls(get, never):Controls;
 
+	// JOELwindows7: FlxGamepad gamepad joypad variable yess
+	public var joypadLastActive:FlxGamepad; // last active gamepad
+	public var joypadFirstActive:FlxGamepad; // last active gamepad
+	public var joypadAllActive:Array<FlxGamepad>; // last active gamepad
+	public var joypadNumActives:Int; // numbers of active gamepads
+	public var joypadGlobalDeadzone:Null<Float>; // global deadzone
+
 	// JOELwindows7: stuff OpenFl
 	private var _loadingBar = Main.loadingBar;
 
@@ -183,16 +191,9 @@ class CoreState extends FlxUIState
 	{
 		super.update(elapsed);
 
-		// JOELwindows7: manage Xbox Controller
-		#if EXPERIMENTAL_OPENFL_XINPUT
-		for (i in 0...Main.xboxControllerNum)
-		{
-			Main.xboxControllers[i].poll();
-		}
-		#end
-
 		// JOELwindows7: manage Stuffs
 		manageMouse();
+		manageJoypad();
 	}
 
 	// JOELwindows7: week loader
@@ -617,7 +618,77 @@ class CoreState extends FlxUIState
 			rawMouseHeld = false;
 		}
 	}
+
+	function manageJoypad():Void
+	{
+		// JOELwindows7: nothing. use this to manage joypad
+		joypadFirstActive = FlxG.gamepads.firstActive;
+		joypadLastActive = FlxG.gamepads.lastActive;
+		joypadAllActive = FlxG.gamepads.getActiveGamepads();
+		joypadNumActives = FlxG.gamepads.numActiveGamepads;
+
+		// JOELwindows7: manage Xbox Controller
+		#if EXPERIMENTAL_OPENFL_XINPUT
+		for (i in 0...Main.xboxControllerNum)
+		{
+			Main.xboxControllers[i].poll();
+		}
+		#end
+	}
 }
+
+// SEPARATOR BECAUSE i GOT CONFUSED WHICH ONE IS CoreState FlxUIState & WHICH ONE IS CoreSubState FlxUISubstate
+/**
+ * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ * A
+ * A
+ * A
+ * A		Sky drives Hyundai IONIQ 5.
+ * A		Unfortunately, it's still considered "prototype"
+ * A		because huge amount of lacks of features
+ * A		that causes us having to modify alot for this car
+ * A		to fill out lost features.
+ * A		So much lackluster this thing is,
+ * A		unlike version found on other parts of Earth
+ * A		We got this car imported from Indonesia, Earth
+ * A		Much cheaper because that version is locally manufactured
+ * A		And the UK version is rather expensive!
+ * A		also not as sophisticated as Korean the OG version
+ * A		Why not import from Korea? because its steering is on left side
+ * A		Dasandim drives with steering on right! 
+ * A		Just like Indonesia, UK, Japan, Malaysia, Singapore, Australia, etc.
+ * A		This makes our life difficult!
+ * A		I wish Hyundai have bespoke order, than any bespoke before.
+ * A		I want Ultimate! Signature Long Range with AWD + everything
+ * A		Digital side view mirror like in Korean OG
+ * A		Dashcam because Tesla already had it
+ * A		DVB-T2+S2 because even cars in Korea has DMB ($0 Digital TV of Korea),
+ * A		Not just Samsung phones, that means, DMB is on every devices in Korea!!
+ * A		What else here? Basically it.
+ * A		oh also, um HDMI IN + DataCar USB-C (Android Auto but it's Linux Auto & it's GNU GPL v3 too). 
+ * A		We have Linux advancement features,
+ * A		That is optimized heavily for Dasandimians. Internal Android in that infotainment
+ * A		nor Android Auto or Apple Car Play does not fit at all! Proprietary, Expensive, and Partial possibly.
+ * A		Uh Partial I mean... it only able to run special version of Android Auto app I guess..
+ * A		And guess what? the infotainment for Hyundai / Kia is Android, unfortunately not Automotive with Google Play.
+ * A		I wish they were like Hummer, Polestar, etc.
+ * A		But still anyway, despite of all these.. We found that Sky & Latsufir fell in love.
+ * A		Not only we glad that this car has local manufacturing in Indonesia,
+ * A		It recuperates against what's wrong with Tesla, idk what else wrong other than Paid subscription FSD but yeah.
+ * A		Okay hear me out, the car has no FSD, only drive assist (mistakenly refered as auto pilot).
+ * A		And also, BMW (paid subscription heater seat). Hyundai still has Heater & Cooler seat absolutely $0.
+ * A		Now. let's see how things will go with Umnaga family using IONIQ 5.
+ * A		btw, for other members, we have had uh..
+ * A		Gyouter chose Tesla Model X plaid..
+ * A		and uh...
+ * A		King Dasan & Queen Andim still use own made EV prototype, to this day still improving it. yeah,
+ * A		We haven't yet finished the car yet, still lots to think, too heavy to manufacture
+ * A		So we resort to 3rd party cars.
+ * A
+ * A
+ * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ */
+// END SEPARATORO
 
 /**Now for the FlxSubstate with my spice yeah!
  * 
@@ -681,6 +752,13 @@ class CoreSubState extends FlxUISubState
 	// JOELwindows7: steal control in order to make it work
 	private var controls(get, never):Controls;
 
+	// JOELwindows7: FlxGamepad gamepad joypad variable yess
+	public var joypadLastActive:FlxGamepad; // last active gamepad
+	public var joypadFirstActive:FlxGamepad; // last active gamepad
+	public var joypadAllActive:Array<FlxGamepad>; // last active gamepad
+	public var joypadNumActives:Int; // numbers of active gamepads
+	public var joypadGlobalDeadzone:Null<Float>; // global deadzone
+
 	// JOELwindows7: stuff OpenFl
 	private var _loadingBar = Main.loadingBar;
 
@@ -702,6 +780,7 @@ class CoreSubState extends FlxUISubState
 		super.update(elapsed);
 
 		manageMouse();
+		manageJoypad();
 	}
 
 	override function destroy()
@@ -900,6 +979,51 @@ class CoreSubState extends FlxUISubState
 		if (FlxG.mouse.justReleased)
 		{
 			rawMouseHeld = false;
+		}
+	}
+
+	function manageJoypad():Void
+	{
+		// JOELwindows7: nothing. use this to manage joypad
+		joypadFirstActive = FlxG.gamepads.firstActive;
+		joypadLastActive = FlxG.gamepads.lastActive;
+		joypadAllActive = FlxG.gamepads.getActiveGamepads();
+		joypadNumActives = FlxG.gamepads.numActiveGamepads;
+
+		// JOELwindows7: manage Xbox Controller
+		#if EXPERIMENTAL_OPENFL_XINPUT
+		for (i in 0...Main.xboxControllerNum)
+		{
+			Main.xboxControllers[i].poll();
+		}
+		#end
+	}
+}
+
+//NOW! NEW!!! CoreXML UI State yey! inspire from Master Eric Enimga XMLLayoutState
+class CoreXMLState extends CoreState{
+	public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
+	{
+		var element:Xml = cast data;
+		switch (tag)
+		{
+			default:
+				Debug.logWarn('CoreXMLState: Could not build component $tag');
+				return null;
+		}
+	}
+}
+
+// ALSO CORE XML SUBSTATE
+class CoreXMLSubState extends CoreSubState{
+	public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
+	{
+		var element:Xml = cast data;
+		switch (tag)
+		{
+			default:
+				Debug.logWarn('CoreXMLSubState: Could not build component $tag');
+				return null;
 		}
 	}
 }
