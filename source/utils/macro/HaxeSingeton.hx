@@ -30,6 +30,7 @@ using haxe.macro.TypeTools;
 using Lambda;
 class HaxeSingleton
 {
+	#if macro
 	public static macro function build():Array<Field>
 	{
 		var cls:haxe.macro.Type.ClassType = Context.getLocalClass().get();
@@ -76,5 +77,11 @@ class HaxeSingleton
 
 		return fields;
 	}
+
+	public static macro function aThing(){
+		// JOELwindows7: dummy test
+		trace("aThing yess");
+	}
+	#end
 }
 

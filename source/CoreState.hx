@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.system.FlxSound;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.addons.ui.FlxUISubState;
 import flixel.ui.FlxButton;
@@ -39,6 +40,7 @@ import lime.utils.Assets;
 import flixel.FlxState;
 import flixel.FlxSubState;
 import flixel.addons.ui.FlxUIState;
+import plugins.sprites.LoadingBar;
 
 using StringTools;
 
@@ -84,7 +86,7 @@ enum ExtraLoadingType
  * GNU GPL v3
  * @author JOELwindows7
  */
-class CoreState extends FlxUIState
+class CoreState extends FlxUIState implements ICoreStating
 {
 	// JOELwindows7: copy screen size
 	private var screenWidth:Int = FlxG.width;
@@ -372,16 +374,17 @@ class CoreState extends FlxUIState
 	}
 
 	// JOELwindows7: here shift button touchscreen mouse
-	private function addShiftButton(x:Int = 300, y:Int = 680)
+	private function addShiftButton(x:Int = 300, y:Int = 680):FlxButton
 	{
 		shiftButtonReal = new FlxButton(x, y, 'Shift');
 		shiftButtonReal.loadGraphic(Paths.loadImage('shiftButtonSmall'), false);
 		shiftButtonReal.onDown.callback = shiftButtonHeldCallback;
 		shiftButtonReal.onUp.callback = shiftButtonUnheldCallback;
 		add(shiftButtonReal);
+		return shiftButtonReal;
 	}
 
-	private function installBusyHourglassScreenSaver()
+	private function installBusyHourglassScreenSaver():FlxSprite
 	{
 		hourGlass = new DVDScreenSaver(null, 100, 100);
 		hourGlass.frames = Paths.getSparrowAtlas('Gravity-HourGlass');
@@ -392,7 +395,7 @@ class CoreState extends FlxUIState
 		return hourGlass;
 	}
 
-	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false)
+	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false):OnScreenGameplayButtons
 	{
 		/*
 			touchscreenButtons = new TouchScreenControls(howManyButtons, initVisible);
@@ -452,18 +455,27 @@ class CoreState extends FlxUIState
 		onScreenGameplayButtons.visible = initVisible;
 
 		add(onScreenGameplayButtons);
+		return onScreenGameplayButtons;
 	}
 
-	public function showOnScreenGameplayButtons()
+	public function showOnScreenGameplayButtons():OnScreenGameplayButtons
 	{
 		if (onScreenGameplayButtons != null)
+		{
 			onScreenGameplayButtons.visible = true;
+			return onScreenGameplayButtons;
+		}
+		return null;
 	}
 
-	public function hideOnScreenGameplayButtons()
+	public function hideOnScreenGameplayButtons():OnScreenGameplayButtons
 	{
 		if (onScreenGameplayButtons != null)
+		{
 			onScreenGameplayButtons.visible = false;
+			return onScreenGameplayButtons;
+		}
+		return null;
 	}
 
 	public function removeTouchScreenButtons()
@@ -560,13 +572,14 @@ class CoreState extends FlxUIState
 		}
 	}
 
-	function installDefaultBekgron()
+	function installDefaultBekgron():FlxBackdrop
 	{
 		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
 		// defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
 		defaultBekgron.velocity.x = -100;
 		defaultBekgron.updateHitbox();
 		add(defaultBekgron);
+		return defaultBekgron;
 	}
 
 	function justInitDefaultBekgron():FlxBackdrop
@@ -577,11 +590,12 @@ class CoreState extends FlxUIState
 		return theBekgron;
 	}
 
-	function installSophisticatedDefaultBekgron()
+	function installSophisticatedDefaultBekgron():QmovephBackground
 	{
 		qmovephBekgron = new QmovephBackground();
 		add(qmovephBekgron);
 		qmovephBekgron.startDoing();
+		return qmovephBekgron;
 	}
 
 	/**
@@ -603,9 +617,9 @@ class CoreState extends FlxUIState
 	 * Copied from ChartingState emit SFX
 	 * @param path 
 	 */
-	function playSoundEffect(path:String, volume:Float = 1)
+	public function playSoundEffect(path:String, volume:Float = 1):FlxSound
 	{
-		FlxG.sound.play(Paths.sound(path), volume);
+		return FlxG.sound.play(Paths.sound(path), volume);
 	}
 
 	function manageMouse():Void
@@ -698,8 +712,30 @@ class CoreState extends FlxUIState
  * 
  * @author JOELwindows7
  */
-class CoreSubState extends FlxUISubState
+class CoreSubState extends FlxUISubState implements ICoreStating
 {
+	// JOELwindows7: copy screen size
+	var screenWidth:Int;
+
+	var screenHeight:Int;
+
+	var starfield2D:FlxStarField2D;
+
+	var starfield3D:FlxStarField3D;
+
+	var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
+
+	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
+
+	var hourGlass:FlxSprite;
+
+	var defaultBekgron:FlxBackdrop;
+
+	var qmovephBekgron:QmovephBackground;
+
+	var _virtualpad:FlxVirtualPad;
+
+	var trackedinputs:Array<FlxActionInput>;
 	// JOELwindows7: mouse support flags
 	private var haveClicked:Bool = false;
 	private var haveBacked:Bool = false;
@@ -753,6 +789,10 @@ class CoreSubState extends FlxUISubState
 	// JOELwindows7: raw button situations
 	var rawMouseHeld:Bool = false;
 
+	public var onScreenGameplayButtons:OnScreenGameplayButtons; // JOELwindows7: the touchscreen buttons here
+
+	public static var dueAdded:Bool = false;
+
 	// JOELwindows7: steal control in order to make it work
 	private var controls(get, never):Controls;
 
@@ -798,7 +838,7 @@ class CoreSubState extends FlxUISubState
 	}
 
 	// JOELwindows7: init dedicated touchscreen buttons camera
-	function initCamControl()
+	private function initCamControl()
 	{
 		trace("setting dedicated touchscreen buttons camera");
 		camControl = new FlxCamera();
@@ -943,13 +983,228 @@ class CoreSubState extends FlxUISubState
 	}
 
 	// JOELwindows7: here shift button touchscreen mouse
-	private function addShiftButton(x:Int = 300, y:Int = 680)
+	private function addShiftButton(x:Int = 300, y:Int = 680):FlxButton
 	{
 		shiftButtonReal = new FlxButton(x, y, 'Shift');
 		shiftButtonReal.loadGraphic(Paths.loadImage('shiftButtonSmall'), false);
 		shiftButtonReal.onDown.callback = shiftButtonHeldCallback;
 		shiftButtonReal.onUp.callback = shiftButtonUnheldCallback;
 		add(shiftButtonReal);
+		return shiftButtonReal;
+	}
+
+	private function installBusyHourglassScreenSaver():FlxSprite
+	{
+		hourGlass = new DVDScreenSaver(null, 100, 100);
+		hourGlass.frames = Paths.getSparrowAtlas('Gravity-HourGlass');
+		hourGlass.animation.addByPrefix('working', 'Gravity-HourGlass idle', 24);
+		hourGlass.animation.play('working');
+		hourGlass.updateHitbox();
+		add(hourGlass);
+		return hourGlass;
+	}
+
+	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false):OnScreenGameplayButtons
+	{
+		/*
+			touchscreenButtons = new TouchScreenControls(howManyButtons, initVisible);
+			touchscreenButtons.initDoseButtons();
+			add(touchscreenButtons);
+		 */
+		var _alreadyAdded:Array<Bool> = [false, false, false, false];
+		trace("init the touchscreen buttons");
+		if (onScreenGameplayButtons == null)
+		{
+			onScreenGameplayButtons = new OnScreenGameplayButtons(howManyButtons, initVisible);
+			// _alreadyAdded = onScreenGameplayButtons._alreadyAdded;
+		}
+		if (true)
+			switch (Std.int(FlxG.save.data.selectTouchScreenButtons))
+			{
+				case 0:
+					trace("No touch screen button to init at all.");
+				case 1:
+					trace("hitbox the touchscreen buttons");
+					if (_alreadyAdded[1] == false)
+						controls.installTouchScreenGameplays(onScreenGameplayButtons._hitbox, howManyButtons);
+				case 2:
+					trace("Left side touchscreen buttons only");
+					if (_alreadyAdded[2] == false)
+						controls.setVirtualPad(onScreenGameplayButtons._virtualPad, FULL, NONE, true);
+				case 3:
+					trace("Right side touchscreen buttons only");
+					if (_alreadyAdded[3] == false)
+						controls.setVirtualPad(onScreenGameplayButtons._virtualPad, NONE, A_B_X_Y, true);
+				case 4:
+					trace("Full gamepad touchscreen");
+					if (_alreadyAdded[4] == false)
+						controls.setVirtualPad(onScreenGameplayButtons._virtualPad, FULL, A_B_X_Y, true);
+				default:
+					trace("huh? what do you mean? we don't know this touch buttons type\nUgh fine I guess you are my little pogchamp, come here.");
+					// lmao! gothmei reference & PEAR animated it this
+			}
+		else
+			trace("due has already added bruh");
+		dueAdded = true;
+		_alreadyAdded[Std.int(FlxG.save.data.selectTouchScreenButtons)] = true;
+		trackedinputs = controls.trackedinputs;
+		// if(onScreenGameplayButtons != null)
+		// 	onScreenGameplayButtons.initialize(howManyButtons, initVisible);
+		controls.trackedinputs = [];
+		if (camControl == null)
+		{
+			initCamControl();
+			onScreenGameplayButtons.cameras = [camControl];
+		}
+		else
+		{
+			camControl.bgColor.alpha = 0;
+			onScreenGameplayButtons.cameras = [camControl];
+		}
+		onScreenGameplayButtons.visible = initVisible;
+
+		add(onScreenGameplayButtons);
+		return onScreenGameplayButtons;
+	}
+
+	public function showOnScreenGameplayButtons():OnScreenGameplayButtons
+	{
+		if (onScreenGameplayButtons != null)
+		{
+			onScreenGameplayButtons.visible = true;
+			return onScreenGameplayButtons;
+		}
+		return null;
+	}
+
+	public function hideOnScreenGameplayButtons():OnScreenGameplayButtons
+	{
+		if (onScreenGameplayButtons != null)
+		{
+			onScreenGameplayButtons.visible = false;
+			return onScreenGameplayButtons;
+		}
+		return null;
+	}
+
+	public function removeTouchScreenButtons()
+	{
+		if (onScreenGameplayButtons != null)
+		{
+			trace("uninstall touchscreen buttonings");
+			controls.trackedinputs = trackedinputs;
+			switch (Std.int(FlxG.save.data.selectTouchScreenButtons))
+			{
+				case 0:
+					trace("No touch screen button to init at all.");
+				case 1:
+					trace("hitbox the touchscreen buttons");
+					controls.uninstallTouchScreenGameplays(onScreenGameplayButtons._hitbox);
+				case 2:
+					trace("Left side touchscreen buttons only");
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, FULL, NONE, true);
+				case 3:
+					trace("Right side touchscreen buttons only");
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, NONE, A_B_X_Y, true);
+				case 4:
+					trace("Full gamepad touchscreen");
+					controls.unsetVirtualPad(onScreenGameplayButtons._virtualPad, FULL, A_B_X_Y, true);
+				default:
+					trace("huh? what do you mean? we don't know this touch buttons type\nUgh fine I guess you are my little pogchamp, come here.");
+					// lmao! gothmei reference & PEAR animated it this
+			}
+			/*
+				for(i in 0..trackedinputs.length){
+					controls.deleteActionButtonings(action, trackedinputs[i]);
+				}
+			 */
+			/*
+				FlxTween.tween(onScreenGameplayButtons,{alpha:0}, 1, {ease:FlxEase.circInOut, onComplete: function(tween:FlxTween){
+					onScreenGameplayButtons.visible = false;
+					trackedinputs = [];
+					onScreenGameplayButtons.destroy();
+				}});
+			 */
+			/*
+				FlxTween.num(onScreenGameplayButtons.alpha,0,1,
+					{ease:FlxEase.circInOut, 
+						onComplete: function(tween:FlxTween){
+							onScreenGameplayButtons.visible = false;
+							//trackedinputs = [];
+							//onScreenGameplayButtons.destroy();
+						}
+					}, 
+					function (a:Float) { 
+						onScreenGameplayButtons.alpha = a; 
+				});
+			 */
+			onScreenGameplayButtons.visible = false;
+		}
+	}
+
+	// JOELwindows7: install starfield
+	function installStarfield2D(x:Int = 0, y:Int = 0, width:Int = 0, height:Int = 0, starAmount:Int = 300, inArray:Bool = false):FlxStarField2D
+	{
+		if (inArray)
+		{
+			var starfielding = new FlxStarField2D(x, y, width, height, starAmount);
+			var id:Int = multiStarfield2D.length;
+			starfielding.ID = id;
+			multiStarfield2D.add(starfielding);
+			add(starfielding);
+			return starfielding;
+		}
+		else
+		{
+			starfield2D = new FlxStarField2D(x, y, width, height, starAmount);
+			add(starfield2D);
+			return starfield2D;
+		}
+	}
+
+	function installStarfield3D(x:Int = 0, y:Int = 0, width:Int = 0, height:Int = 0, starAmount:Int = 300, inArray:Bool = false):FlxStarField3D
+	{
+		if (inArray)
+		{
+			var starfielding = new FlxStarField3D(x, y, width, height, starAmount);
+			var id:Int = multiStarfield2D.length;
+			starfielding.ID = id;
+			multiStarfield3D.add(starfielding);
+			add(starfielding);
+			return starfielding;
+		}
+		else
+		{
+			starfield3D = new FlxStarField3D(x, y, width, height, starAmount);
+			add(starfield3D);
+			return starfield3D;
+		}
+	}
+
+	function installDefaultBekgron():FlxBackdrop
+	{
+		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		// defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
+		defaultBekgron.velocity.x = -100;
+		defaultBekgron.updateHitbox();
+		add(defaultBekgron);
+		return defaultBekgron;
+	}
+
+	function justInitDefaultBekgron():FlxBackdrop
+	{
+		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		theBekgron.velocity.x = -100;
+		theBekgron.updateHitbox();
+		return theBekgron;
+	}
+
+	function installSophisticatedDefaultBekgron():QmovephBackground
+	{
+		qmovephBekgron = new QmovephBackground();
+		add(qmovephBekgron);
+		qmovephBekgron.startDoing();
+		return qmovephBekgron;
 	}
 
 	/**
@@ -971,9 +1226,9 @@ class CoreSubState extends FlxUISubState
 	 * Copied from ChartingState emit SFX
 	 * @param path 
 	 */
-	function playSoundEffect(path:String, volume:Float = 1)
+	public function playSoundEffect(path:String, volume:Float = 1):FlxSound
 	{
-		FlxG.sound.play(Paths.sound(path), volume);
+		return FlxG.sound.play(Paths.sound(path), volume);
 	}
 
 	function manageMouse():Void
@@ -1037,4 +1292,198 @@ class CoreXMLSubState extends CoreSubState
 				return null;
 		}
 	}
+}
+
+// separato Interface
+// da Interface importantly
+/**
+ * HEY YE
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 			boum
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+// end separatoro
+
+/**
+ * ICoreStating
+ * Unified additional structure information for extended FlxState & FlxSubState experience
+ * @author JOELwindows7
+ */
+interface ICoreStating
+{
+	// JOELwindows7: copy screen size
+	private var screenWidth:Int;
+	private var screenHeight:Int;
+
+	// JOELwindows7: mouse support flags
+	private var haveClicked:Bool;
+	private var haveBacked:Bool;
+	private var haveLefted:Bool;
+	private var haveUpped:Bool;
+	private var haveDowned:Bool;
+	private var haveRighted:Bool;
+	private var havePausened:Bool;
+	private var haveRetryed:Bool;
+	private var haveViewReplayed:Bool;
+	private var haveDebugSevened:Bool;
+	private var haveShifted:Bool;
+
+	// JOELwindows7: held mouse flags
+	private var haveClickedHeld:Bool;
+	private var haveBackedHeld:Bool;
+	private var haveLeftedHeld:Bool;
+	private var haveUppedHeld:Bool;
+	private var haveDownedHeld:Bool;
+	private var haveRightedHeld:Bool;
+	private var havePausenedHeld:Bool;
+	private var haveRetryedHeld:Bool;
+	private var haveViewReplayedHeld:Bool;
+	private var haveDebugSevenedHeld:Bool;
+	private var haveShiftedHeld:Bool;
+
+	// JOELwindows7: default is public. explicitly private it!
+	private var backButton:FlxSprite; // JOELwindows7: the back button here
+	private var leftButton:FlxSprite; // JOELwindows7: the left button here
+	private var rightButton:FlxSprite; // JOELwindows7: the right button here
+	private var upButton:FlxSprite; // JOELwindows7: the up button here
+	private var downButton:FlxSprite; // JOELwindows7: the down button here
+	private var pauseButton:FlxSprite; // JOELwindows7: the pause button here
+	private var acceptButton:FlxSprite; // JOELwindows7: the accept button here
+	private var retryButton:FlxSprite; // JOELwindows7: the retry button here
+	private var viewReplayButton:FlxSprite; // JOELwindows7: the view replay button here
+	// JOELwindows7: starfields here.
+	private var starfield2D:FlxStarField2D;
+	private var starfield3D:FlxStarField3D;
+	private var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
+	private var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
+	// var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
+	private var hourGlass:FlxSprite; // JOELwindows7: animated gravity hourglass Piskel
+
+	// JOELwindows7: okay, let's be real button instead.
+	private var backButtonReal:FlxButton;
+	private var leftButtonReal:FlxButton;
+	private var rightButtonReal:FlxButton;
+	private var upButtonReal:FlxButton;
+	private var downButtonReal:FlxButton;
+	private var pauseButtonReal:FlxButton;
+	private var acceptButtonReal:FlxButton;
+	private var retryButtonReal:FlxButton;
+	private var viewReplayButtonReal:FlxButton;
+	private var shiftButtonReal:FlxButton;
+
+	// JOELwindows7: raw button situations
+	private var rawMouseHeld:Bool;
+
+	public var onScreenGameplayButtons:OnScreenGameplayButtons; // JOELwindows7: the touchscreen buttons here
+
+	// public static var dueAdded:Bool; // requires extern interface, but that's for external interface file.
+	private var defaultBekgron:FlxBackdrop;
+	private var qmovephBekgron:QmovephBackground;
+
+	// JOELwindows7: touchscreen button stuffs
+	// https://github.com/luckydog7/Funkin-android/blob/master/source/MusicBeatState.hx
+	private var _virtualpad:FlxVirtualPad;
+	private var trackedinputs:Array<FlxActionInput>;
+
+	public var camControl:FlxCamera;
+
+	// JOELwindows7: steal control var in order to make it work
+	private var controls(get, never):Controls;
+
+	// JOELwindows7: FlxGamepad gamepad joypad variable yess
+	public var joypadLastActive:FlxGamepad; // last active gamepad
+	public var joypadFirstActive:FlxGamepad; // last active gamepad
+	public var joypadAllActive:Array<FlxGamepad>; // last active gamepad
+	public var joypadNumActives:Int; // numbers of active gamepads
+	public var joypadGlobalDeadzone:Null<Float>; // global deadzone
+
+	// JOELwindows7: stuff OpenFl
+	private var _loadingBar:LoadingBar;
+
+	// JOELwindows7: and the control getter
+	private function get_controls():Controls;
+
+	// JOELwindows7: init dedicated touchscreen buttons camera
+	private function initCamControl():Void;
+
+	// JOELwindows7: buttons
+	private function addBackButton(x:Int = 720 - 200, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
+
+	private function addLeftButton(x:Int = 100, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
+
+	private function addRightButton(x:Int = 525, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
+	private function addUpButton(x:Int = 240, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
+
+	private function addDownButton(x:Int = 450, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
+
+	private function addPauseButton(x:Int = 640, y:Int = 10, scale:Float = .5):FlxSprite;
+
+	private function addAcceptButton(x:Int = 1280, y:Int = 360, scale:Float = .5):FlxSprite;
+
+	private function addRetryButton(x:Int = 500, y:Int = 500, scale:Float = .5):FlxSprite;
+
+	private function addViewReplayButton(x:Int = 500, y:Int = 500, scale:Float = .5):FlxSprite;
+
+	private function shiftButtonCallback():Void;
+
+	private function shiftButtonHeldCallback():Void;
+
+	private function shiftButtonUnheldCallback():Void;
+
+	// JOELwindows7: here shift button touchscreen mouse
+	private function addShiftButton(x:Int = 300, y:Int = 680):FlxButton;
+
+	private function installBusyHourglassScreenSaver():FlxSprite;
+
+	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false):OnScreenGameplayButtons;
+
+	public function showOnScreenGameplayButtons():OnScreenGameplayButtons;
+	public function hideOnScreenGameplayButtons():OnScreenGameplayButtons;
+
+	public function removeTouchScreenButtons():Void;
+
+	// JOELwindows7: install starfield
+	private function installStarfield2D(x:Int = 0, y:Int = 0, width:Int = 0, height:Int = 0, starAmount:Int = 300, inArray:Bool = false):FlxStarField2D;
+
+	private function installDefaultBekgron():FlxBackdrop;
+
+	private function justInitDefaultBekgron():FlxBackdrop;
+
+	private function installSophisticatedDefaultBekgron():QmovephBackground;
+
+	/**
+	 * Create Toast message using TentaRJ x Firubii technology
+	 * @author JOELwindows7
+	 * @param iconPath the path to the icon image file
+	 * @param title title of the toast message
+	 * @param description description of the toast message
+	 * @param sound whether to play a sound or not
+	 */
+	public function createToast(iconPath:String, title:String, description:String, sound:Bool = false):Void;
+
+	/**
+	 * Play a sound effect choosen in sounds folder. 
+	 * it will play sound in-place through FlxG instead of instancing a variable.
+	 * Copied from ChartingState emit SFX
+	 * @param path 
+	 */
+	public function playSoundEffect(path:String, volume:Float = 1):FlxSound;
+
+	private function manageMouse():Void;
+
+	private function manageJoypad():Void;
 }
