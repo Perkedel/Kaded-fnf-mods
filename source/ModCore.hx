@@ -271,6 +271,7 @@ class ModCore
 				"week-1" => "./week-1",
 				"exclude" => "./exclude",
 				"week5720NG" => "./week5720NG",
+				'core' => './_core', // Don't override these files.
 			]
 		}
 	}

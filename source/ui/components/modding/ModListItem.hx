@@ -15,7 +15,6 @@
  */
 
 // JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/ui/component/modding/ModListItem.hx
-
 /*
  * ModListItem.hx
  * A component which displays a singular mod, based on its metadata.
@@ -132,14 +131,20 @@ class ModListItem extends InteractableUIGroup
 		this.uiBackground = new FlxUI9SliceSprite(BG_X, BG_Y, FlxUIAssets.IMG_CHROME, new Rectangle(BG_X, BG_Y, BG_W, BG_H));
 		this.uiTitle = new RelativeText(TITLE_X, TITLE_Y, this, TEXT_WIDTH, this.modMetadata.title, TITLE_SCALE);
 		this.uiDescription = new RelativeText(DESC_X, DESC_Y, this, TEXT_WIDTH, this.modMetadata.description, DESC_SCALE);
+
+		// JOELwindows7: position does not work! try again!
+		this.uiBackground.setPosition(BG_X, BG_Y);
+		this.uiTitle.setPosition(TITLE_X, TITLE_Y);
+		this.uiDescription.setPosition(DESC_X, DESC_Y);
+
 		this.uiDescription.wordWrap = true;
 		add(this.uiBackground);
 		add(this.uiTitle);
 		add(this.uiDescription);
 
-		buildButtons();
-
 		loadIcon(modMetadata.icon);
+
+		buildButtons(); // JOELwindows7: button supposedly placed after all text & icon placed!
 
 		this.scrollFactor.set(1, 1);
 	}
@@ -161,6 +166,12 @@ class ModListItem extends InteractableUIGroup
 
 		this.uiButtonDown = new FlxUIButton(BUTTON_X_LEFT, BUTTON_BOTTOM_OFFSET, null, onUserReorderMod.bind(1));
 		this.uiButtonDown.loadGraphicsUpOverDown(FlxUIAssets.IMG_BUTTON_ARROW_DOWN);
+
+		// JOELwindows7: in case button position is not working
+		this.uiButtonUp.setPosition(BUTTON_X_LEFT, BUTTON_Y);
+		this.uiButtonLeft.setPosition(BUTTON_X_LEFT, BUTTON_MIDDLE_OFFSET);
+		this.uiButtonRight.setPosition(BUTTON_X_RIGHT, BUTTON_MIDDLE_OFFSET);
+		this.uiButtonDown.setPosition(BUTTON_X_LEFT, BUTTON_BOTTOM_OFFSET);
 
 		add(this.uiButtonUp);
 		add(this.uiButtonLeft);
@@ -212,6 +223,7 @@ class ModListItem extends InteractableUIGroup
 			var bitmapData = openfl.display.BitmapData.fromBytes(openFlBytes);
 			// Tie the bitmap data to a sprite.
 			uiIcon = new RelativeSprite(ICON_X, ICON_Y, null, this).loadGraphic(bitmapData);
+			uiIcon.setPosition(ICON_X, ICON_Y); // JOELwindows7: in case doesn't work too
 			uiIcon.setGraphicSize(ICON_SCALE, ICON_SCALE);
 			uiIcon.scrollFactor.set();
 			uiIcon.antialiasing = true;
@@ -223,7 +235,16 @@ class ModListItem extends InteractableUIGroup
 		future.onError(function(error)
 		{
 			trace(error);
+
+			//JOELwindows7: then just pecking load the placeholder icon anyway..
+			uiIcon = new RelativeSprite(ICON_X, ICON_Y, null, this).loadGraphic(Paths.loadImage('uhOh','core'));
+			uiIcon.setPosition(ICON_X, ICON_Y); // JOELwindows7: in case doesn't work too
+			uiIcon.setGraphicSize(ICON_SCALE, ICON_SCALE);
+			uiIcon.scrollFactor.set();
+			uiIcon.antialiasing = true;
+			uiIcon.updateHitbox();
+			uiIcon.scrollFactor.set();
+			add(uiIcon);
 		});
 	}
 }
-

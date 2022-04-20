@@ -615,7 +615,8 @@ class CoreState extends FlxUIState implements ICoreStating
 	 * Play a sound effect choosen in sounds folder. 
 	 * it will play sound in-place through FlxG instead of instancing a variable.
 	 * Copied from ChartingState emit SFX
-	 * @param path 
+	 * @param path filename of sound without extension
+	 * @param volume how loud you would like
 	 */
 	public function playSoundEffect(path:String, volume:Float = 1):FlxSound
 	{
@@ -1224,7 +1225,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	 * Play a sound effect choosen in sounds folder. 
 	 * it will play sound in-place through FlxG instead of instancing a variable.
 	 * Copied from ChartingState emit SFX
-	 * @param path 
+	 * @param path filename of sound without extension
+	 * @param volume how loud you would like
 	 */
 	public function playSoundEffect(path:String, volume:Float = 1):FlxSound
 	{
@@ -1264,7 +1266,17 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	}
 }
 
+// separate XML states
+/**
+ * 
+ */
+// end separatoro
+
 // NOW! NEW!!! CoreXML UI State yey! inspire from Master Eric Enimga XMLLayoutState
+/**
+ * CoreState but designed for XML with MasterEric Enigma's XMLLayoutState
+ * @author JOELwindows7
+ */
 class CoreXMLState extends CoreState
 {
 	public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
@@ -1280,6 +1292,10 @@ class CoreXMLState extends CoreState
 }
 
 // ALSO CORE XML SUBSTATE
+/**
+ * CoreSubState but designed for XML with MasterEric Enigma's XMLLayoutState
+ * @author JOELwindows7
+ */
 class CoreXMLSubState extends CoreSubState
 {
 	public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
@@ -1294,30 +1310,71 @@ class CoreXMLSubState extends CoreSubState
 	}
 }
 
-// separato Interface
-// da Interface importantly
+// separato Interface because that also confuses everyone too!
 /**
  * HEY YE
- * 
- * 
- * 
- * 
- * 
- * 
  * 
  * 			boum
  * 
  * 
+ * 			So, let's discuss about Sky x Latsufir marriage.
  * 
+ * 			Here we have Sky, which is half demon, & Latsufir which is half angel.
  * 
+ * 			Sky = aaDd
+ * 			Latsufir = Aadd
+ * 			
+ * 			Now, let's have a look possibilities of genotype of children they would have
+ * 			- Latsufir angelic (a) + Latsufir zero demon (d) + Sky zero angel (a) + Sky demonic (D) = AaDd. mix angel & demon both recessive
+ * 			- a + d + a + d = aadd. regular human. ouch!
+ * 			- duplicate mix
+ * 			- duplicate ouch
  * 
+ * 			That's 1st gen, they have about 50 50 either mix angel demon, OR regular human.
  * 
+ * 			Anyway, I recommend these have more than 1 children like usual. maybe 4 or 5, idk..
  * 
+ * 			Not sure if I would have those two does have such specification because I defined them
+ * 			as such, where Latsufir is half angel (mom is angel, dad is human), Sky is half demon (mom is demon, dad is human)
+ * 			stuff like that.
+ * 			idk If I should make it dominant (full deity).. okay no. 1 Recessive is half, I guess.. idk.. 
  * 
+ * 			Maybe maybe maybe, what if God says that demon & angel has nothing to do with Mendel DNA system?
+ * 			Who knows.. I just, thought of this logic here, because I think, it got DNA of a something..
+ * 			damn, idk if astral does use DNAing system like tangible beings does..
+ * 			Also it's because we've mixed astral with tangible at basically. You know, half deity stuff like that?
+ * 			yeah. idk.. um maybe deity can be disregarded away from Mendelian DNA system? like..
+ * 			it's given by um.. Holy Spirit, just like the case of Jesus from Nazareth things like that.
+ * 			the birth for that one is given, not by human made, unlike the rest of half deity (including Latsufir x Sky).
+ * 			
+ * 			And then the story goes, 2nd gen will have 4x4 table of possible outcomes here and there.. just like that.
+ * 			can be half angel, full demon, OR full angel, full demon, bla bla bla.. like that.
+ * 
+ * 			well, just saying. 😉
+ * 
+ * 			Alright hear me out. Before you blabbermouth all over my family again,
+ * 			You gotta remember. We us have Skyverse, just like Spiderman did.
+ * 			Everyone has their own Sky. not limited to KitsuneSkulls.
+ * 			So every Sky defined by these communities will have whatever defintion & declarations.
+ * 
+ * 			Oum okay fine. FINe. I am this phobic. You got it. 
+ * 			I disagree with KitsuneSkulls version of Sky, particularly some of the specifications, yeah you see that.
+ * 			But remember, despite of that, I am not actively banishing & bashing everyone 
+ * 			& their OCs just because either or both have such specifications. NO! Why would I do that?
+ * 			Do their activity, and advocacy in basic hurts me & others?
+ * 			Of course not, as long it is again, not done in a way terrorist would do.
+ * 			They're... `human` I mean, `considered people` like us. any beings.
+ * 			Basically, you keep your disgust yourself like I do. don't comment like hate speech,
+ * 			Pretend 2x tap here and there, and look you got friend.
+ * 			Of course, keep your influence receive at appropriate ammount! because influence will change your life ways
+ * 			and you gotta be careful *who you hang and be influenced with* idk..
+ * 			oh also, no hate. KitsuneSkulls' Sky is also Sky thing. cool and good.
+ * 			I'm sorry, I being like this. I just saw so many.. forget about it.
  * 
  */
 // end separatoro
 
+// da Interface importantly
 /**
  * ICoreStating
  * Unified additional structure information for extended FlxState & FlxSubState experience
@@ -1479,7 +1536,8 @@ interface ICoreStating
 	 * Play a sound effect choosen in sounds folder. 
 	 * it will play sound in-place through FlxG instead of instancing a variable.
 	 * Copied from ChartingState emit SFX
-	 * @param path 
+	 * @param path filename of sound without extension
+	 * @param volume how loud you would like
 	 */
 	public function playSoundEffect(path:String, volume:Float = 1):FlxSound;
 

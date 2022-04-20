@@ -18,7 +18,8 @@
 
 package ui;
 
-// import ui.states.modding.ModMenuState;
+import flixel.addons.ui.FlxUIButton;
+import ui.states.modding.ModMenuState;
 import flixel.text.FlxText;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.transition.FlxTransitionSprite;
@@ -70,11 +71,13 @@ class SplashScreen extends MusicBeatState
 	var modsToLoad = [];
 
 	// static var modAlreadyLoaded = false; // raise this flag if mod already loaded.
+	// Haxe logo
 	var _sprite:Sprite;
 	var _gfx:Graphics;
 	var _text:TextField;
 	var _poweredByText:TextField;
 
+	// other things
 	var _times:Array<Float>;
 	var _colors:Array<Int>;
 	var _functions:Array<Void->Void>;
@@ -85,6 +88,7 @@ class SplashScreen extends MusicBeatState
 
 	var _aModOfText:FlxUIText;
 	var _aPressEscapeToBiosText:FlxUIText;
+	var _aPressEscapeToBiosButton:FlxUIButton;
 	var _productLogo:FlxSprite;
 	var _companyLogo:FlxSprite;
 
@@ -165,13 +169,24 @@ class SplashScreen extends MusicBeatState
 		_aModOfText.y += 150;
 		add(_aModOfText);
 
-		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 170), 0, Perkedel.BIOS_BUTTON_SAY, 18);
+		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, Perkedel.BIOS_BUTTON_SAY, 18);
 		_aPressEscapeToBiosText.setFormat(Paths.font("UbuntuMono-R.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		_aPressEscapeToBiosText.scrollFactor.set();
 		_aPressEscapeToBiosText.screenCenter(XY);
-		_aPressEscapeToBiosText.y += 170;
+		_aPressEscapeToBiosText.y += 180;
 		add(_aPressEscapeToBiosText);
 		_aPressEscapeToBiosText.visible = !CarryAround.modAlreadyLoaded(); // only visiblize if not already loaded
+
+		_aPressEscapeToBiosButton = new FlxUIButton(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 230), "BIOS Setting", onBiosButtonClick);
+		_aPressEscapeToBiosButton.setSize(90, 50);
+		_aPressEscapeToBiosButton.setGraphicSize(90, 50);
+		_aPressEscapeToBiosButton.updateHitbox();
+		_aPressEscapeToBiosButton.setLabelFormat(Paths.font("UbuntuMono-R.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		_aPressEscapeToBiosButton.scrollFactor.set();
+		_aPressEscapeToBiosButton.screenCenter(XY);
+		_aPressEscapeToBiosButton.y += 230;
+		add(_aPressEscapeToBiosButton);
+		_aPressEscapeToBiosButton.visible = !CarryAround.modAlreadyLoaded(); // only visiblize if not already loaded
 
 		_productLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("LFMLogoSplash"));
 		_productLogo.setPosition((FlxG.width / 2) - (_productLogo.width / 2), (FlxG.height / 2) - (_productLogo.height / 2));
@@ -204,12 +219,7 @@ class SplashScreen extends MusicBeatState
 				+ ")";
 			if (FlxG.keys.justPressed.ESCAPE || (joypadLastActive != null ? joypadLastActive.justPressed.BACK : false))
 			{
-				// FlxG.sound.play(Paths.sound('cancelMenu'));
-				playSoundEffect('cancelMenu');
-				// FlxG.switchState(new BiosSettingsState());
-				cancelEverything();
-				_aPressEscapeToBiosText.visible = false;
-				// switchState(new ModMenuState()); // temporary. pls make proper BIOS setting menu!
+				onBiosButtonClick();
 			}
 		}
 
@@ -243,7 +253,8 @@ class SplashScreen extends MusicBeatState
 
 	function intoStateNow()
 	{
-		_aPressEscapeToBiosText.visible = false; // immediately invisible bios button
+		_aPressEscapeToBiosText.visible = false; // immediately invisible bios text
+		_aPressEscapeToBiosButton.visible = false; // immediately invisible bios button
 
 		// check mods!
 		if (!CarryAround.modAlreadyLoaded())
@@ -459,6 +470,23 @@ class SplashScreen extends MusicBeatState
 		{
 			_intoStateTimer.cancel();
 			// _intoStateTimer = null;
+		}
+		FlxG.stage.removeChild(_sprite);
+		FlxG.stage.removeChild(_text);
+		FlxG.stage.removeChild(_poweredByText);
+	}
+
+	function onBiosButtonClick()
+	{
+		if (_aPressEscapeToBiosText.visible)
+		{
+			// FlxG.sound.play(Paths.sound('cancelMenu'));
+			playSoundEffect('cancelMenu');
+			// FlxG.switchState(new BiosSettingsState());
+			cancelEverything();
+			_aPressEscapeToBiosText.visible = false;
+			_aPressEscapeToBiosButton.visible = false;
+			switchState(new ModMenuState()); // temporary. pls make proper BIOS setting menu!
 		}
 	}
 }

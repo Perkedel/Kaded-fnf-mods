@@ -80,10 +80,18 @@
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web || neko || hl" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
+
+	<!-- JOELwindows7: always embed core & script, says MasterEric -->
+	<!-- https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/project.xml -->
+	<library name="scripts" preload="true" />
+	<library name="core"
+					 preload="true"
+					 embed="true" />
 	
 	<section if="PRELOAD_ALL">
 		<library name="songs"    preload="true" />
 		<library name="shared"   preload="true" />
+		<library name="core"   preload="true" />
 		<library name="week-1"    preload="true" />
 		<library name="tutorial" preload="true" />
 		<library name="week1"    preload="true" />
@@ -108,6 +116,7 @@
 	<section if="NO_PRELOAD_ALL">
 		<library name="songs"    preload="false" />
 		<library name="shared"   preload="false" />
+		<library name="core"   preload="false" />
 		<library name="week-1"    preload="false" />
 		<library name="tutorial" preload="false" />
 		<library name="week1"    preload="false" />
@@ -133,6 +142,10 @@
 	<assets path="assets/songs"    library="songs"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/shared"   library="shared"   exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"   library="shared"   exclude="*.mp3" unless="web"/>
+	<assets path="assets/core"   library="core"   exclude="*.ogg" if="web"/>
+	<assets path="assets/core"   library="core"   exclude="*.mp3" unless="web"/>
+	<assets path="assets/scripts"   library="scripts"   exclude="*.ogg" if="web"/>
+	<assets path="assets/scripts"   library="scripts"   exclude="*.mp3" unless="web"/>
 	<assets path="assets/week-1"    library="week-1"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week-1"    library="week-1"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/tutorial" library="tutorial" exclude="*.ogg" if="web"/>

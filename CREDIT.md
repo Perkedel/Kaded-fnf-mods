@@ -374,6 +374,9 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://code.haxe.org/category/macros/get-compiler-define-value.html
 - https://kinocreates.io/tutorials/haxe-build-macro-basics/
 - https://blog.hamaluik.ca/posts/getting-started-with-haxe-macros/#buildmacros
+- https://git-annex.branchable.com/special_remotes/bup/
+- https://git-annex.branchable.com/related_software/
+- https://git-annex.branchable.com/not/
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -382,11 +385,12 @@ use VScode and Github desktop!
 - commit and push new commit to your GitHub now.
 - go to conflict solving branch. pull the last commit from main to here.
 - pull from upstream while you're at conflict solving branch
-- see GitHub Desktop. the commit window will popup. open all conflict files in VScode.
+- see GitHub Desktop. the conflict window will popup. open all conflict files in VScode.
 - wait.
 - after blue and green field appear, open comparison to map your changes and the upstream.
 - review, and bring your changed (the green field) to upstream pull (blue field)
-- after you've carefully brought all of them, `accept incoming change`
+- or anything that leaves current work there while adding new things.
+- after you've carefully brought all of them, `accept incoming change` or anything that bake all current & new things together.
 - repeat for the rest of the part and files
 - after all conflict solved, `Commit Merge` in GitHub desktop.
 - go back to main branch again.

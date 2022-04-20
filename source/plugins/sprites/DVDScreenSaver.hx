@@ -36,6 +36,7 @@ class DVDScreenSaver extends FlxSprite{
         super();
         if(theGraphic == null){
             loadGraphic(new GraphicLogo(64,64));
+            // loadGraphic(FlxAssets.)
         }
         x = FlxG.random.float(0,FlxG.width-width-100);
         y = FlxG.random.float(0,FlxG.height-height-100);

@@ -147,6 +147,7 @@ class XMLLayoutState extends CoreXMLState //extends CoreState // JOELwindows7: m
 	 */
 	override public function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
 	{
+		trace('Okay, building a component for ${tag}');
 		var element:Xml = cast data;
 		switch (tag)
 		{
@@ -158,9 +159,11 @@ class XMLLayoutState extends CoreXMLState //extends CoreState // JOELwindows7: m
 				var src = element.get('src');
 				var core = element.get('core') == 'true';
 				var color = element.get('color');
+				trace('[background] x: $x, y: $y, w: $w, h: $h, src: $src, core: $core, color: $color');
 
 				var result = new FlxUISprite(x, y);
 				result.loadGraphic(Paths.image(src, core ? 'core' : null), false, w, h);
+				trace('[background] result: $result');
 
 				if (color != null && color != '')
 					result.color = FlxColor.fromString(color);

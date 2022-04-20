@@ -58,28 +58,32 @@ class RelativeSprite extends FlxSprite implements IRelative
 
 	public function set_parent(value:FlxObject):FlxObject
 	{
-		throw new haxe.exceptions.NotImplementedException();
+		// throw new haxe.exceptions.NotImplementedException();
+		return this.parent = value;
 	}
 
 	public var relativeX(default, set):Float;
 
 	public function set_relativeX(value:Float):Float
 	{
-		throw new haxe.exceptions.NotImplementedException();
+		// throw new haxe.exceptions.NotImplementedException();
+		return this.relativeX = value;
 	}
 
 	public var relativeY(default, set):Float;
 
 	public function set_relativeY(value:Float):Float
 	{
-		throw new haxe.exceptions.NotImplementedException();
+		// throw new haxe.exceptions.NotImplementedException();
+		return this.relativeY = value;
 	}
 
 	public var relativeAngle(default, set):Float;
 
 	public function set_relativeAngle(value:Float):Float
 	{
-		throw new haxe.exceptions.NotImplementedException();
+		// throw new haxe.exceptions.NotImplementedException();
+		return this.relativeAngle = value;
 	}
 
 	function updatePosition()

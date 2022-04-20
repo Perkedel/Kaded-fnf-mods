@@ -65,6 +65,7 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 	{
 		super.create();
 		trace('Initialized ModMenuState.');
+		FlxG.mouse.visible = true; // JOELwindows7: visibleize mouse first!
 
 		this.addClickEventHandler('btn_loadall', onClickLoadAll.bind());
 		this.addClickEventHandler('btn_unloadall', onClickUnloadAll.bind());
@@ -168,6 +169,7 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 
 	function loadMainGame()
 	{
+		FlxG.mouse.visible = false; // JOELwindows7: hide mouse first!
 		// Gotta load any configured mods.
 		ModCore.loadConfiguredMods();
 		// #if FEATURE_FILESYSTEM
