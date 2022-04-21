@@ -159,6 +159,10 @@ class Note extends FlxSprite
 			// JOELwindows7: noteType speziale
 			switch (noteType)
 			{
+				// case 0:
+				// normal. use default!
+				// case 1:
+				// powerup
 				case 2:
 					Debug.logTrace("Whoah dude they adds mine?");
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
@@ -166,6 +170,9 @@ class Note extends FlxSprite
 					// frames = PlayState.noteskinSpriteMine;
 					Debug.logTrace("Mine graphic loaded");
 				// TODO: other note types! special 1, important 3, never 4, etc.
+				// case 3: // important
+				// case 4: // never
+				// case 5: // reserved unknown etc.
 				default:
 					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
 						noteType);

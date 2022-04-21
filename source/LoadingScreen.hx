@@ -82,8 +82,9 @@ class LoadingScreen extends MusicBeatState
 				loadMutex.acquire();
 				Debug.logTrace("reset da assets");
 				MasterObjectLoader.resetAssets();
-				target.load();
-				target.loadedCompletely = true;
+				// JOELwindows7: look! they did modified internal class, didn't they?
+				// target.load();
+				// target.loadedCompletely = true;
 				Debug.logTrace("we done lets gtfo " + target);
 				switchState(target, false, true);
 				loadMutex.release();
@@ -92,8 +93,8 @@ class LoadingScreen extends MusicBeatState
 			Debug.logInfo("\n\n\n\nWAIT, there is no sys?!??!?!\n\nbruh! why no sys lol!?\n\n\n\n");
 			Debug.logTrace("reset da assets");
 			MasterObjectLoader.resetAssets();
-			target.load();
-			target.loadedCompletely = true;
+			// target.load();
+			// target.loadedCompletely = true;
 			Debug.logTrace("we done lets gtfo " + target);
 			switchState(target, false, true);
 			#end

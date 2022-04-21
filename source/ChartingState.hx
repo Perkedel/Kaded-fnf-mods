@@ -4275,14 +4275,23 @@ class ChartingState extends MusicBeatState
 	function autosaveSong():Void
 	{
 		// JOELwindows7: whoaho here more data
-		FlxG.save.data.autosave = Json.stringify({
+		// FlxG.save.data.autosave = Json.stringify({
+		// 	"song": _song,
+		// 	"songMeta": {
+		// 		"name": _song.songName,
+		// 		"artist": _song.artist,
+		// 		"offset": 0,
+		// 	}
+		// });
+		// JOELwindows7: okay uh,, TJSON pls
+		FlxG.save.data.autosave = TJSON.encode({
 			"song": _song,
 			"songMeta": {
 				"name": _song.songName,
 				"artist": _song.artist,
 				"offset": 0,
 			}
-		});
+		},"fancy");
 		FlxG.save.flush();
 	}
 

@@ -1,5 +1,6 @@
 package;
 
+import ui.states.modding.ModMenuState;
 import ui.GameJoltGateway;
 import GalleryAchievements;
 #if gamejolt
@@ -3658,5 +3659,39 @@ class BlueballWeekOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Blueball count carries for < " + (FlxG.save.data.blueballWeek ? "Week Total" : "Per song only") + " >";
+	}
+}
+
+class ModConfigurationsOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		// FlxG.state = new ModConfigurationsState();
+		ModMenuState.fromOptionMenu = !OptionsMenu.isInPause;
+		OptionsMenu.goToState(new ModMenuState());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Mod Configurations";
 	}
 }

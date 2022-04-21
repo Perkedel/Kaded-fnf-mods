@@ -311,11 +311,11 @@ class ModCore
 				{
 					// JOELwindows7: advanced readout now yey
 					case NOTICE:
-						Debug.logInfo('NOTICE ${error.code} when ${error.origin}: ${error.message}', null);
+						Debug.logInfo('[NOTICE] ${error.code} when ${error.origin}: ${error.message}', null);
 					case WARNING:
-						Debug.logWarn('WARNING ${error.code} when ${error.origin}: ${error.message}', null);
+						Debug.logWarn('[WARNING] ${error.code} when ${error.origin}: ${error.message}', null);
 					case ERROR:
-						Debug.logError('WERROR ${error.code} when ${error.origin}: ${error.message}', null);
+						Debug.logError('[WERROR] ${error.code} when ${error.origin}: ${error.message}', null);
 				}
 		}
 	}

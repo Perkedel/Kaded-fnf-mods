@@ -158,7 +158,8 @@ class OptionsMenu extends CoreSubState
 				new RotateSpritesOption("Should the game rotate the sprites to do color quantization (turn off for bar skins)"),
 				new EditorRes("Not showing the editor grid will greatly increase editor performance"),
 				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
-				new MiddleScrollOption("Put your lane in the center or on the right."), new HealthBarOption("Toggles health bar visibility"),
+				new MiddleScrollOption("Put your lane in the center or on the right."),
+				new HealthBarOption("Toggles health bar visibility"),
 				new JudgementCounter("Show your judgements that you've gotten in the song"),
 				new LaneUnderlayOption("How transparent your lane is, higher = more visible."),
 				new StepManiaOption("Sets the colors of the arrows depending on quantization instead of direction."),
@@ -218,6 +219,7 @@ class OptionsMenu extends CoreSubState
 				new FreeplayThreadedOption("BETA! Enable Freeplay Threading, may cause system instabilities"),
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
 				new PrintAnnoyingDebugWarnOption("Toggle whether should frequent warns appears (is annoying)"),
+				new ModConfigurationsOption("Configure which Polymod Kade-LFM mods to be loaded"),
 			]),
 			// JOELwindows7: was 935, 40
 			new OptionCata(1100, 40, "Saves", [
@@ -229,11 +231,17 @@ class OptionsMenu extends CoreSubState
 			]),
 			// TODO: JOELwindows7: Category about for credits a& acknowledgements
 			new OptionCata(-1, 125, "Editing Keybinds", [
-				new LeftKeybind("The left note's keybind"), new DownKeybind("The down note's keybind"), new UpKeybind("The up note's keybind"),
-				new RightKeybind("The right note's keybind"), new PauseKeybind("The keybind used to pause the game"),
-				new ResetBind("The keybind used to die instantly"), new MuteBind("The keybind used to mute game audio"),
-				new VolUpBind("The keybind used to turn the volume up"), new VolDownBind("The keybind used to turn the volume down"),
-				new FullscreenBind("The keybind used to fullscreen the game")], true),
+				new LeftKeybind("The left note's keybind"),
+				new DownKeybind("The down note's keybind"),
+				new UpKeybind("The up note's keybind"),
+				new RightKeybind("The right note's keybind"),
+				new PauseKeybind("The keybind used to pause the game"),
+				new ResetBind("The keybind used to die instantly"),
+				new MuteBind("The keybind used to mute game audio"),
+				new VolUpBind("The keybind used to turn the volume up"),
+				new VolDownBind("The keybind used to turn the volume down"),
+				new FullscreenBind("The keybind used to fullscreen the game")
+			], true),
 			new OptionCata(-1, 125, "Editing Judgements", [
 				new SickMSOption("How many milliseconds are in the SICK hit window"),
 				new GoodMsOption("How many milliseconds are in the GOOD hit window"),
@@ -783,6 +791,8 @@ class OptionsMenu extends CoreSubState
 					}
 				}
 			}
+			haveBacked = false; // JOELwindows7: okeh.
+			escape = false; // JOELwindows7: pls.
 		}
 		catch (e)
 		{
@@ -800,6 +810,8 @@ class OptionsMenu extends CoreSubState
 				selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
 				isInCat = true;
 			}
+			haveBacked = false; // JOELwindows7: okeh.
+			escape = false; // JOELwindows7: pls.
 		}
 
 		// JOELwindows7: wtf, FlxSubstate? not MusicBeatSubstate?!
@@ -861,7 +873,9 @@ class OptionsMenu extends CoreSubState
 		if (isInPause)
 		{
 			// JOELwindows7: it's static method, you cannot access any instance method of this class.
-			Main.gjToastManager.createToast(null, "Cannot access option", "Please leave the gameplay before accessing this option.");
+			// playSoundEffect("cancelMenu",.4);
+			FlxG.sound.play(Paths.sound("cancelMenu"), 0.4);
+			Main.gjToastManager.createToast(Paths.image("uhOh", "core"), "Cannot access option", "Please leave the gameplay before accessing this option.");
 			return;
 		}
 		// FlxG.switchState(ofHere);

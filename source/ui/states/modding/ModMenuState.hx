@@ -56,6 +56,9 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 	var unloadedModsUI:ModList;
 	var loadedModsUI:ModList;
 
+	// JOELwindows7: other check where from
+	public static var fromOptionMenu:Bool = false;
+
 	override function getXMLId()
 	{
 		return 'assets/ui/mod_menu';
@@ -67,6 +70,7 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		trace('Initialized ModMenuState.');
 		FlxG.mouse.visible = true; // JOELwindows7: visibleize mouse first!
 
+		// this.addClickEventHandler('btn_refresh', onRefresh.bind());
 		this.addClickEventHandler('btn_loadall', onClickLoadAll.bind());
 		this.addClickEventHandler('btn_unloadall', onClickUnloadAll.bind());
 		this.addClickEventHandler('btn_revert', onClickRevert.bind());
@@ -169,7 +173,7 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 
 	function loadMainGame()
 	{
-		FlxG.mouse.visible = false; // JOELwindows7: hide mouse first!
+		FlxG.mouse.visible = !fromOptionMenu; // JOELwindows7: hide mouse first! only when from splash screen
 		// Gotta load any configured mods.
 		ModCore.loadConfiguredMods();
 		// #if FEATURE_FILESYSTEM
@@ -179,7 +183,14 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		// #end
 
 		// JOELwindows7: use this instead
-		FlxG.switchState(new SplashScreen());
+		FlxG.switchState(fromOptionMenu ? new OptionsMenu() : new SplashScreen());
+		fromOptionMenu = false;
+	}
+
+	function onClickRefresh()
+	{
+		// JOELwindows7: well this pretty much the same as revert apparently
+		onClickRevert();
 	}
 
 	function onClickLoadAll()

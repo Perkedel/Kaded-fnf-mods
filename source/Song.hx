@@ -339,7 +339,9 @@ class Song
 		}
 		else
 		{
-			songData.songName = songId.split('-').join(' ');
+			// songData.songName = songId.split('-').join(' ');
+			// JOELwindows7: extend classification.
+			songData.songName = songData.songName == null || songData.songName == '' ? songId.split('-').join(' ') : songData.songName;
 		}
 
 		// JOELwindows7: the artist too

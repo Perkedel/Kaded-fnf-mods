@@ -618,9 +618,9 @@ class CoreState extends FlxUIState implements ICoreStating
 	 * @param path filename of sound without extension
 	 * @param volume how loud you would like
 	 */
-	public function playSoundEffect(path:String, volume:Float = 1):FlxSound
+	public function playSoundEffect(path:String, volume:Float = 1, ?library:String):FlxSound
 	{
-		return FlxG.sound.play(Paths.sound(path), volume);
+		return FlxG.sound.play(Paths.sound(path, library), volume);
 	}
 
 	function manageMouse():Void
@@ -1228,9 +1228,9 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	 * @param path filename of sound without extension
 	 * @param volume how loud you would like
 	 */
-	public function playSoundEffect(path:String, volume:Float = 1):FlxSound
+	public function playSoundEffect(path:String, volume:Float = 1, ?library:String = ""):FlxSound
 	{
-		return FlxG.sound.play(Paths.sound(path), volume);
+		return FlxG.sound.play(Paths.sound(path, library), volume);
 	}
 
 	function manageMouse():Void
@@ -1271,8 +1271,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating
  * 
  */
 // end separatoro
-
 // NOW! NEW!!! CoreXML UI State yey! inspire from Master Eric Enimga XMLLayoutState
+
 /**
  * CoreState but designed for XML with MasterEric Enigma's XMLLayoutState
  * @author JOELwindows7
@@ -1292,6 +1292,7 @@ class CoreXMLState extends CoreState
 }
 
 // ALSO CORE XML SUBSTATE
+
 /**
  * CoreSubState but designed for XML with MasterEric Enigma's XMLLayoutState
  * @author JOELwindows7
@@ -1373,8 +1374,8 @@ class CoreXMLSubState extends CoreSubState
  * 
  */
 // end separatoro
-
 // da Interface importantly
+
 /**
  * ICoreStating
  * Unified additional structure information for extended FlxState & FlxSubState experience
@@ -1539,7 +1540,7 @@ interface ICoreStating
 	 * @param path filename of sound without extension
 	 * @param volume how loud you would like
 	 */
-	public function playSoundEffect(path:String, volume:Float = 1):FlxSound;
+	public function playSoundEffect(path:String, volume:Float = 1, ?library:String = ""):FlxSound;
 
 	private function manageMouse():Void;
 

@@ -101,13 +101,13 @@ import openfl.filters.ShaderFilter;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+
 // JOELwindows7: use ki's filesystemer?
 // import filesystem.File;
 // Adds candy I/O (read/write/append) extension methods onto File
 // using filesystem.FileTools;
 // JOELwindows7: okay how about vegardit's filesystemer?
 // import hx.files.*;
-
 using StringTools;
 using flixel.util.FlxSpriteUtil;
 
@@ -2481,7 +2481,8 @@ class PlayState extends MusicBeatState
 				var bytes = File.getBytes(pathToSm + "/" + sm.header.MUSIC);
 				var sound = new Sound();
 				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
-				FlxG.sound.playMusic(sound);
+				FlxG.sound.playMusic(sound, 1, false); // JOELwindows7: DO NOT PECKING FORGET TO DESTROY THE LOOP
+				// Otherwise the end of the song is spasm since the end music signal does not trigger with loop ON.
 			}
 			else
 				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
@@ -4501,10 +4502,54 @@ class PlayState extends MusicBeatState
 						trace("YOO WTF THIS IS AN ALT NOTE????");
 					}
 
-					// Accessing the animation name directly to play it
-					if (!daNote.isParent && daNote.parent != null)
-					{
-						if (daNote.spotInLine != daNote.parent.children.length - 1)
+					if (daNote.noteType != 2)
+					{ // JOELwindows7: do not step mine! player2
+						// Accessing the animation name directly to play it
+						if (!daNote.isParent && daNote.parent != null)
+						{
+							if (daNote.spotInLine != daNote.parent.children.length - 1)
+							{
+								var singData:Int = Std.int(Math.abs(daNote.noteData));
+								dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+
+								if (FlxG.save.data.cpuStrums)
+								{
+									cpuStrums.forEach(function(spr:StaticArrow)
+									{
+										pressArrow(spr, spr.ID, daNote);
+										/*
+											if (spr.animation.curAnim.name == 'confirm' && SONG.noteStyle != 'pixel')
+											{
+												spr.centerOffsets();
+												spr.offset.x -= 13;
+												spr.offset.y -= 13;
+											}
+											else
+												spr.centerOffsets();
+										 */
+									});
+								}
+
+								#if FEATURE_LUAMODCHART
+								if (luaModchart != null)
+									luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+								if (stageScript != null)
+									stageScript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+								#end
+								if (hscriptModchart != null)
+									hscriptModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+								if (stageHscript != null)
+									stageHscript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+
+								dad.holdTimer = 0;
+
+								if (SONG.needsVoices)
+									vocals.volume = 1;
+								if (SONG.needsVoices2)
+									vocals2.volume = 1; // JOELwindows7: ye
+							}
+						}
+						else
 						{
 							var singData:Int = Std.int(Math.abs(daNote.noteData));
 							dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
@@ -4543,54 +4588,19 @@ class PlayState extends MusicBeatState
 							if (SONG.needsVoices)
 								vocals.volume = 1;
 							if (SONG.needsVoices2)
-								vocals2.volume = 1; // JOELwindows7: ye
+								vocals2.volume = 1; // JOELwindows7 : ye
+						}
+						daNote.active = false;
+
+						if (!daNote.isSustainNote)
+						{
+							successfullyStep(1, daNote); // JOELwindows7:successfully step for p2
 						}
 					}
 					else
 					{
-						var singData:Int = Std.int(Math.abs(daNote.noteData));
-						dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
-
-						if (FlxG.save.data.cpuStrums)
-						{
-							cpuStrums.forEach(function(spr:StaticArrow)
-							{
-								pressArrow(spr, spr.ID, daNote);
-								/*
-									if (spr.animation.curAnim.name == 'confirm' && SONG.noteStyle != 'pixel')
-									{
-										spr.centerOffsets();
-										spr.offset.x -= 13;
-										spr.offset.y -= 13;
-									}
-									else
-										spr.centerOffsets();
-								 */
-							});
-						}
-
-						#if FEATURE_LUAMODCHART
-						if (luaModchart != null)
-							luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
-						if (stageScript != null)
-							stageScript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
-						#end
-						if (hscriptModchart != null)
-							hscriptModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
-						if (stageHscript != null)
-							stageHscript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
-
-						dad.holdTimer = 0;
-
-						if (SONG.needsVoices)
-							vocals.volume = 1;
-						if (SONG.needsVoices2)
-							vocals2.volume = 1; // JOELwindows7 : ye
+						daNote.active = false;
 					}
-					daNote.active = false;
-
-					if (!daNote.isSustainNote)
-						successfullyStep(1, daNote); // JOELwindows7:successfully step for p2
 
 					daNote.kill();
 					notes.remove(daNote, true);
@@ -6930,8 +6940,19 @@ class PlayState extends MusicBeatState
 		{
 			// allow custom hitsound just like in osu! and also testables in charting state right away.
 			if (handoverNote != null)
-				FlxG.sound.play(Paths.sound((handoverNote.hitsoundPath != null && handoverNote.hitsoundPath != "") ? handoverNote.hitsoundPath : 'SNAP',
-					'shared'));
+			{
+				// FlxG.sound.play(Paths.sound((handoverNote.hitsoundPath != null && handoverNote.hitsoundPath != "") ? handoverNote.hitsoundPath : 'SNAP',
+				// 	'shared'));
+				try
+				{
+					playSoundEffect(((handoverNote.hitsoundPath != null && handoverNote.hitsoundPath != "") ? handoverNote.hitsoundPath : 'SNAP'), 1,
+						'shared');
+				}
+				catch (e)
+				{
+					// null object reference
+				}
+			}
 		}
 
 		// option only for specific player

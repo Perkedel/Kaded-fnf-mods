@@ -18,23 +18,25 @@
 
 package utils;
 
+import openfl.utils.Future;
 #if FEATURE_MULTITHREADING
 import sys.thread.Mutex;
 #end
 
 /**
  * Threading stuffs. Run functions in another threads instead of main thread.
+ * @author JOELwindows7
  */
 class Threading
 {
 	/**
 	 * Create & run a function in other thread
-	 * @param thisThing function to run in another thread (Only accepts no/optional argument & no return)
+	 * @param thisThing function to run in another thread (Only accepts no/optional argument & no return, use bind() to pass arguments)
 	 * @param withMutex whether to use included Mutual Execution
 	 * @return -> Void, withMutex:Bool = false)
 	 *
 	 */
-	public static function run(thisThing:() -> Void, withMutex:Bool = false)
+	public static function run(thisThing:() -> Void, withMutex:Bool = false):Void
 	{
 		#if FEATURE_MULTITHREADING
 		if (withMutex)
@@ -50,12 +52,28 @@ class Threading
 		else
 		{
 			// sys.thread.Thread.create(thisThing);
-			sys.thread.Thread.create(function(){
+			sys.thread.Thread.create(function()
+			{
 				thisThing();
 			});
 		}
 		#else
 		thisThing();
 		#end
+	}
+
+	/**
+	 * Create Future variable that will its value will appear later at some time, idk
+	 * @param ofThis the variable instance
+	 * @param completedCallback function to call when the value is ready
+	 * @param errorCallback function to call when there is error
+	 * @return Future<Dynamic>
+	 */
+	public static function createFuture(ofThis:Future<Dynamic>, completedCallback:Dynamic->Void, errorCallback:Dynamic->Void):Future<Dynamic>
+	{
+		// copy from mod item list loading icons
+		ofThis.onComplete(completedCallback);
+		ofThis.onError(errorCallback);
+		return ofThis;
 	}
 }

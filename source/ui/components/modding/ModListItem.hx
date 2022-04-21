@@ -236,8 +236,8 @@ class ModListItem extends InteractableUIGroup
 		{
 			trace(error);
 
-			//JOELwindows7: then just pecking load the placeholder icon anyway..
-			uiIcon = new RelativeSprite(ICON_X, ICON_Y, null, this).loadGraphic(Paths.loadImage('uhOh','core'));
+			// JOELwindows7: then just pecking load the placeholder icon anyway..
+			uiIcon = new RelativeSprite(ICON_X, ICON_Y, null, this).loadGraphic(Paths.loadImage('uhOh', 'core'));
 			uiIcon.setPosition(ICON_X, ICON_Y); // JOELwindows7: in case doesn't work too
 			uiIcon.setGraphicSize(ICON_SCALE, ICON_SCALE);
 			uiIcon.scrollFactor.set();
@@ -245,6 +245,11 @@ class ModListItem extends InteractableUIGroup
 			uiIcon.updateHitbox();
 			uiIcon.scrollFactor.set();
 			add(uiIcon);
+		});
+		// JOELwindows7: watempt progresse
+		future.onProgress(function(progress:Int, total:Int)
+		{
+			// trace('Loading icon bytes for mod ${modId}...');
 		});
 	}
 }
