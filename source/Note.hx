@@ -414,19 +414,46 @@ class Note extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		// JOELwindows7: mine rotate pls
 		if (!totalOverride)
 		{ // JOELwindows7: here total override, if on forget special parameter!
-			if (!modifiedByLua)
-				angle = modAngle + localAngle;
-			else
-				angle = modAngle;
-
-			// JOELwindows7: sneaky little punk! you can't get away from this!
-			if (!modifiedByLua)
+			if (noteType != 2)
 			{
-				if (!sustainActive)
+				if (!modifiedByLua)
+					angle = modAngle + localAngle;
+				else
+					angle = modAngle;
+
+				// JOELwindows7: sneaky little punk! you can't get away from this!
+				if (!modifiedByLua)
 				{
-					alpha = 0.3;
+					if (!sustainActive)
+					{
+						alpha = 0.3;
+					}
+				}
+			}
+			else
+			{
+				// JOELwindows7: spin mine!!!
+				angularVelocity = 360;
+
+				if (!modifiedByLua)
+				{
+					// angle += (modAngle + localAngle);
+				}
+				else
+				{
+					// angle += modAngle;
+				}
+
+				// JOELwindows7: sneaky little punk! you can't get away from this!
+				if (!modifiedByLua)
+				{
+					if (!sustainActive)
+					{
+						alpha = 1;
+					}
 				}
 			}
 		}

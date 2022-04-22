@@ -5,7 +5,7 @@
         "bpm": 150.0,
         "needsVoices": true,
         "player1": "bf-covid",
-        "player2": "hookx",
+        "player2": "hookx-legacy",
         "noteStyle": "Saubo",
         "gfVersion": "gf-covid",
         "speed": 1.6,

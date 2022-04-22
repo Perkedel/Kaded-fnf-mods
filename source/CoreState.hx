@@ -617,10 +617,11 @@ class CoreState extends FlxUIState implements ICoreStating
 	 * Copied from ChartingState emit SFX
 	 * @param path filename of sound without extension
 	 * @param volume how loud you would like
+	 * @param library folder where the sound is located
 	 */
 	public function playSoundEffect(path:String, volume:Float = 1, ?library:String):FlxSound
 	{
-		return FlxG.sound.play(Paths.sound(path, library), volume);
+		return FlxG.sound.play(Paths.sound(path, library != ''?library: null), volume);
 	}
 
 	function manageMouse():Void
@@ -1227,10 +1228,11 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	 * Copied from ChartingState emit SFX
 	 * @param path filename of sound without extension
 	 * @param volume how loud you would like
+	 * @param library folder where the sound is located
 	 */
-	public function playSoundEffect(path:String, volume:Float = 1, ?library:String = ""):FlxSound
+	public function playSoundEffect(path:String, volume:Float = 1, ?library:String):FlxSound
 	{
-		return FlxG.sound.play(Paths.sound(path, library), volume);
+		return FlxG.sound.play(Paths.sound(path, library != '' ? library : null), volume);
 	}
 
 	function manageMouse():Void
@@ -1539,8 +1541,9 @@ interface ICoreStating
 	 * Copied from ChartingState emit SFX
 	 * @param path filename of sound without extension
 	 * @param volume how loud you would like
+	 * @param library folder where the sound is located
 	 */
-	public function playSoundEffect(path:String, volume:Float = 1, ?library:String = ""):FlxSound;
+	public function playSoundEffect(path:String, volume:Float = 1, ?library:String):FlxSound;
 
 	private function manageMouse():Void;
 

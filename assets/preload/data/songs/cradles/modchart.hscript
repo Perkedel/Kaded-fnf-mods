@@ -7,15 +7,16 @@
 // templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
 
 var camZoomAllBeat = false;
+var workaroundDeserve = false; // working around for stepHit null object reference crash
 
 function loaded(song)
 {
-
+    workaroundDeserve = false;
 }
 
 function start(song) 
 {
-
+    workaroundDeserve = false;
 }
 
 function songStart()
@@ -44,6 +45,7 @@ function update(elapsed)
 function beatHit(beat)
 {
     if(distractions){
+        
         if (camZoomAllBeat)
         {
             camZoomNow(0.1, 0.03, 1.35);
@@ -77,6 +79,7 @@ function beatHit(beat)
         {
             camShake(.01, .5);
             vibrate(0,500);
+            workaroundDeserve = true;
         }
 
         if(beat == 192
@@ -108,64 +111,68 @@ function beatHit(beat)
 
 function stepHit(step)
 {
-    if(distractions){
-        if( step == 282 || step == 266
-        || step == 298
-        || step == 313
-        || step == 329
-        || step == 346
-        || step == 361
-        || step == 377
-        || step == 649
-        || step == 665
-        || step == 681
-        || step == 697
-        || step == 713
-        || step == 729
-        || step == 746
-        || step == 762
-        || step == 904
-        || step == 905
-        || step == 920
-        || step == 922
-        || step == 936
-        || step == 937
-        || step == 952
-        || step == 953
-        || step == 965
-        || step == 981
-        || step == 997
-        || step == 1013)
-        {
-            camShake(.02, .5);
-            vibrate(0,500);
-        }
+    //if(workaroundDeserve){ // ah peck! just any if!!! crash!!!??? weird!
+        // looks like parse with checking distractions in stepHit null object reference now. 22 April 2022.
+        //if(distractions && workaroundDeserve){
+            if( step == 282 
+            || step == 266
+            || step == 298
+            || step == 313
+            || step == 329
+            || step == 346
+            || step == 361
+            || step == 377
+            || step == 649
+            || step == 665
+            || step == 681
+            || step == 697
+            || step == 713
+            || step == 729
+            || step == 746
+            || step == 762
+            || step == 904
+            || step == 905
+            || step == 920
+            || step == 922
+            || step == 936
+            || step == 937
+            || step == 952
+            || step == 953
+            || step == 965
+            || step == 981
+            || step == 997
+            || step == 1013)
+            {
+                camShake(.02, .5);
+                vibrate(0,500);
+            }
 
-        if( step == 63 || step == 66 
-        || step == 79 || step == 82
-        || step == 448 || step == 450
-        || step == 111 || step == 114
-        || step == 447 || step == 450
-        || step == 463 || step == 466
-        || step == 495 || step == 497
-        || step == 1065 || step == 1069)
-        {
-            camZoomNow(0.1, 0.03, 1.35);
-        }
+            if( step == 63 || step == 66 
+            || step == 79 || step == 82
+            || step == 448 || step == 450
+            || step == 111 || step == 114
+            || step == 447 || step == 450
+            || step == 463 || step == 466
+            || step == 495 || step == 497
+            || step == 1065 || step == 1069)
+            {
+                camZoomNow(0.1, 0.03, 1.35);
+            }
 
-        if(step == 71 || step == 74
-        || step == 87 || step == 90
-        || step == 103 || step == 106
-        || step == 120 || step == 122
-        || step == 455 || step == 458
-        || step == 472 || step == 474
-        || step == 487 || step == 490
-        || step == 503 || step == 506
-        || step == 1067)
-        {
-            camZoomNow(-0.1, 0.03, 1.35);
-        }
-    }
+            if(step == 71 || step == 74
+            || step == 87 || step == 90
+            || step == 103 || step == 106
+            || step == 120 || step == 122
+            || step == 455 || step == 458
+            || step == 472 || step == 474
+            || step == 487 || step == 490
+            || step == 503 || step == 506
+            || step == 1067)
+            {
+                camZoomNow(-0.1, 0.03, 1.35);
+            }
+        //}
+    //}
 }
 
 function keyPressed(key)
@@ -208,6 +215,7 @@ function playerOneSing(note, position)
 
 }
 
+/*
 function colorizeColorablebyKey(note, justOne, toWhichBg)
 {
     if (note == 'left')
@@ -231,5 +239,6 @@ function colorizeColorablebyKey(note, justOne, toWhichBg)
         chooseColoringColor("red", justOne, toWhichBg);
     }
 }
+*/
 
 trace("finish loading hscript <3 yay cool and good.");

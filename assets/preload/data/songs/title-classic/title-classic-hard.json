@@ -2,7 +2,7 @@
     "song": {
         "player1": "bf-covid",
         "videoPath": "",
-        "player2": "hookx",
+        "player2": "hookx-legacy",
         "notes": [{
                 "endTime": 1714.28571428571,
                 "altAnim": false,

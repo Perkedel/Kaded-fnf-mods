@@ -42,6 +42,9 @@ class Perkedel
 		"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
 		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights", "Appear Blackbar", "Disappear Blackbar"
 	];
+	public static final LFM_ICON_PATH_DOC:String = "art/LFMicon128";
+	public static final STARTUP_TOAST_TITLE:String = "Cool and good";
+	public static final STARTUP_TOAST_DESCRIPTION:String = "Welcome to Last Funkin Moments\n Today's Kontraktua Majoris (2 of 3):\nSky, Whitty";
 	public static final DISCLAIMER_SAY:String = "Disclaimer";
 	public static final GOING_TO_OBSOLETE:String = "ALERT!\n"
 		+ "\nThis mod is going to obsolete in favour of Friday Night Funkin Moment: Full Ass "
@@ -58,7 +61,8 @@ class Perkedel
 	public static final STAY_LONGER_VOUCHER:String = "Stay Longer voucher applied "
 		+ "\n(1 Staylong @ untrash/unprivate; Bonus 15 Staylong for all 3 comebacks):"
 		+ "\n-Sky"
-		+ "\n-Whitty";
+		+ "\n-Whitty"
+		+ "\nKeep in mind, new mods will still be on Full Ass instead of here, sorry.";
 
 	public static final NULL_HEART_SPEC:SwagHeart = {
 		character: "null",

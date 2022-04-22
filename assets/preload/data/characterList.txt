@@ -19,4 +19,5 @@ senpai
 senpai-angry
 spirit
 hookx
+hookx-legacy
 placeholder

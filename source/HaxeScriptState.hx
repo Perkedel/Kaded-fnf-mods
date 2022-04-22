@@ -290,7 +290,8 @@ class HaxeScriptState
 		#end
 
 		script = Assets.getText(rawMode ? Paths.hscript(path) : patho).trim();
-		trace(script);
+		// trace(script);
+		trace('got the script! let\'s parse it!');
 		prog = parser.parseString(script);
 		trace("parsened");
 	}

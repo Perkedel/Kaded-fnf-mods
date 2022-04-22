@@ -253,8 +253,8 @@ class Main extends Sprite
 		});
 		#end
 		// JOELwindows7: finally, have a GameJolt toast
-		addChild(gjToastManager); // Needs to be added after the game. that's how stack workss
-		gjToastManager.createToast(Paths.image("art/LFMicon128"), "Cool and good", "Welcome to Last Funkin Moments", false);
+		addChild(gjToastManager); // Needs to be added after the game. that's how layout stack workss
+		gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION, false);
 
 		// JOELwindows7: Oh don't forget! the loading bar
 		loadingBar = new LoadingBar(0, 0, 0xFFFFFF);

@@ -5294,6 +5294,7 @@ class PlayState extends MusicBeatState
 				if (daNote.noteType == 2) // hit mine duar
 				{
 					health -= 1;
+					playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -5310,6 +5311,7 @@ class PlayState extends MusicBeatState
 				if (daNote.noteType == 2)
 				{
 					health -= 1;
+					playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -5325,6 +5327,7 @@ class PlayState extends MusicBeatState
 				if (daNote.noteType == 2)
 				{
 					health -= 1;
+					playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -5339,6 +5342,7 @@ class PlayState extends MusicBeatState
 				if (daNote.noteType == 2)
 				{
 					health -= 1;
+					playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -5369,7 +5373,7 @@ class PlayState extends MusicBeatState
 		// trace('Wife accuracy loss: ' + wife + ' | Rating: ' + daRating + ' | Score: ' + score + ' | Weight: ' + (1 - wife));
 
 		if ((daRating != 'shit' || daRating != 'bad')
-			&& daNote.noteType != 2) // JOELwindows7: do not count if note type is mine or powerup i guess.
+			&& !(daNote.noteType == 2)) // JOELwindows7: do not count if note type is mine or powerup i guess.
 		{
 			songScore += Math.round(score);
 
@@ -6945,8 +6949,8 @@ class PlayState extends MusicBeatState
 				// 	'shared'));
 				try
 				{
-					playSoundEffect(((handoverNote.hitsoundPath != null && handoverNote.hitsoundPath != "") ? handoverNote.hitsoundPath : 'SNAP'), 1,
-						'shared');
+					playSoundEffect(((handoverNote.hitsoundPath != null && handoverNote.hitsoundPath != "" && handoverNote.hitsoundPath != '0') ? handoverNote.hitsoundPath : 'SNAP'),
+						1, 'shared');
 				}
 				catch (e)
 				{

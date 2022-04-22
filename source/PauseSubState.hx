@@ -88,7 +88,7 @@ class PauseSubState extends MusicBeatSubstate
 			}
 
 		// JOELwindows7: play the pause sound
-		if (!(inCharter || goConfirmation || inStoryMenu || silencePauseBeep))
+		if (!(silencePauseBeep))
 		{
 			playSoundEffect("PauseOpen");
 		}

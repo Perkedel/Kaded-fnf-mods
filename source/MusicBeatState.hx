@@ -389,6 +389,7 @@ class MusicBeatState extends CoreState
 
 				// JOELwindows7: that ain't gonna work I think. let's pause instead! like in PlayState really.
 				PlayState.instance.vocals.pause();
+				PlayState.instance.vocals2.pause();
 				FlxG.sound.music.pause();
 			}
 		}

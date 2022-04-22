@@ -26,7 +26,8 @@ class Paths
 
 	static function getPath(file:String, type:AssetType, library:Null<String>)
 	{
-		if (library != null)
+		// JOELwindows7: hey, you gotta also ignore if it's literally empty string!
+		if (library != null && library != '')
 			return getLibraryPath(file, library);
 
 		if (currentLevel != null)

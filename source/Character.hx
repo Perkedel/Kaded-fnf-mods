@@ -257,6 +257,10 @@ class Character extends FlxSprite
 	{
 		if (!debugMode)
 		{
+			// JOELwindows7: looks like interupt is defaultly true looks like!
+			// crash if animation frame reference in the name is missing
+			// Debug.logTrace('${animation.curAnim.name} here,');
+			// Debug.logTrace('${animation.curAnim.name} can interupt? ${animInterrupt.get(animation.curAnim.name)}');
 			var canInterrupt = animInterrupt.get(animation.curAnim.name);
 
 			if (canInterrupt)

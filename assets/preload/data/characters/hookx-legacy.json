@@ -1,7 +1,7 @@
 {
-    "name": "Hookx",
+    "name": "Hookx (when Sky was gone)",
     "displayName": "Hookx",
-    "asset": "characters/Hookx",
+    "asset": "characters/Hookx-legacy",
     "barColor": "#5000E6",
     "flipX": false,
     "startingAnim": "idle",
@@ -24,27 +24,31 @@
             "name": "idle",
             "prefix": "Hookx idle dance",
             "offsets": [0, -90],
-            "looped": false
+            "looped": true
         },
         {
             "name": "singUP",
             "prefix": "Hookx Sing Note UP",
-            "offsets": [0, -90]
+            "offsets": [0, -90],
+            "looped": true
         },
         {
             "name": "singLEFT",
             "prefix": "Hookx Sing Note LEFT",
-            "offsets": [0, -90]
+            "offsets": [0, -90],
+            "looped": true
         },
         {
             "name": "singRIGHT",
             "prefix": "Hookx Sing Note RIGHT",
-            "offsets": [0, -90]
+            "offsets": [0, -90],
+            "looped": true
         },
         {
             "name": "singDOWN",
             "prefix": "Hookx Sing Note DOWN",
-            "offsets": [0, -90]
+            "offsets": [0, -90],
+            "looped": true
         }
     ]
 }

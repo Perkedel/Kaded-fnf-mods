@@ -22,7 +22,7 @@
     },
     "animations": [{
             "name": "idle",
-            "prefix": "Placeholder idle dance",
+            "prefix": "Placeholder idle",
             "offsets": [30, -75]
         },
         {
@@ -43,6 +43,26 @@
         {
             "name": "singDOWN",
             "prefix": "Placeholder Sing Note DOWN",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singUP-alt",
+            "prefix": "Placeholder Sing Note alt UP",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singLEFT-alt",
+            "prefix": "Placeholder Sing Note alt LEFT",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singRIGHT-alt",
+            "prefix": "Placeholder Sing Note alt RIGHT",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singDOWN-alt",
+            "prefix": "Placeholder Sing Note alt DOWN",
             "offsets": [30, -75]
         },
         {
@@ -82,7 +102,7 @@
         },
         {
             "name": "deathConfirm",
-            "prefix": "Placeholder Dead Confirm",
+            "prefix": "Placeholder Death Confirm",
             "offsets": [30, -75]
         },
         {
@@ -93,24 +113,24 @@
         },
         {
             "name": "danceLeft",
-            "prefix": "Placeholder Dancing LEFT",
-            "offsets": [0, -9]
+            "prefix": "Placeholder Dance LEFT",
+            "offsets": [30, -75]
         },
         {
             "name": "danceRight",
-            "prefix": "Placeholder Dancing RIGHT",
-            "offsets": [0, -9]
+            "prefix": "Placeholder Dance RIGHT",
+            "offsets": [30, -75]
         },
         {
             "name": "cheer",
             "prefix": "Placeholder Hey alt",
-            "offsets": [0, 0]
+            "offsets": [30, -75]
         },
         {
             "name": "hairBlow",
             "prefix": "Placeholder Hair Blowing",
             "interrupt": false,
-            "offsets": [45, -8],
+            "offsets": [30, -75],
             "frameIndices": [0, 1, 2, 3],
             "looped": true
         },
@@ -120,13 +140,13 @@
             "nextAnim": "danceRight",
             "interrupt": false,
             "isDanced": true,
-            "offsets": [0, -9],
+            "offsets": [30, -75],
             "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         },
         {
             "name": "sad",
             "prefix": "Placeholder Sad",
-            "offsets": [-2, -21],
+            "offsets": [30, -75],
             "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         }
     ]
