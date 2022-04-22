@@ -328,8 +328,9 @@ class HaxeScriptState
 		// var f = p.toFile();
 		// script = p.exists()? f.readAsString(): "";
 
-		fillInScripts(rawMode, path);
-		trace("Filled Script");
+		// JOELwindows7: maybe don't fill script before all setvar & callback filled first?
+		// fillInScripts(rawMode, path);
+		// trace("Filled Script");
 
 		// Syndicate all vars here boys!
 		// Peck this. let's just yoink BulbyVR's modchart inits and stuffs
@@ -1691,6 +1692,10 @@ class HaxeScriptState
 			setVar("defaultStrum" + i + "Angle", Math.floor(member.angle));
 			trace("Adding strum" + i);
 		}
+
+		// JOELwindows7: okay, now here
+		fillInScripts(rawMode, path);
+		trace("Filled Script");
 
 		// set hscriptState
 		hscriptState = new Map<String, InterpEx>();

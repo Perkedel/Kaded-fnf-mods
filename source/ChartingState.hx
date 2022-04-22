@@ -1857,7 +1857,7 @@ class ChartingState extends MusicBeatState
 
 		var stepperVowelTypeLabel = new FlxText(74, 100, 'Vowel Type'); // JOELwindows7: vowel type label
 
-		var applyLength:FlxUIButton = new FlxUIButton(10, 100, 'Apply Data');
+		var applyLength:FlxUIButton = new FlxUIButton(10, 130, 'Apply Data'); // JOELwindows7: push this down because 100 is already vowel type.
 
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(stepperSusLengthLabel);
@@ -4291,7 +4291,7 @@ class ChartingState extends MusicBeatState
 				"artist": _song.artist,
 				"offset": 0,
 			}
-		},"fancy");
+		}, "fancy");
 		FlxG.save.flush();
 	}
 

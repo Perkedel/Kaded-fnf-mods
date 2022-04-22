@@ -28,6 +28,10 @@ import flixel.group.FlxGroup;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 
+/**
+ * The infamous default background of Perkedel Technologies. Now animated here yeya!
+ * @author JOELwindows7
+ */
 class QmovephBackground extends FlxGroup{
     var bg:FlxSprite;
     var stars:FlxTypedGroup<QmovephFlying>;
@@ -86,6 +90,10 @@ class QmovephBackground extends FlxGroup{
     }
 }
 
+/**
+ * The flying objects in this Qmoveph background. can be circle or star
+ * @author JOELwindows7
+ */
 class QmovephFlying extends FlxSprite{
     public var aStar:Bool = true;
     public function new()
@@ -112,7 +120,7 @@ class QmovephFlying extends FlxSprite{
             ;
         loadGraphic(Paths.image(aStar? "QmovephStar" : "QmovephBubble"));
         velocity.x = -(FlxG.random.float(200,750));
-        angularVelocity = FlxG.random.float(-100,100);
+        angularVelocity = FlxG.random.float(-720,720);
         color = FlxG.random.color(FlxColor.fromRGB(10,10,10),FlxColor.WHITE);
         updateHitbox();
         super.revive();
@@ -143,7 +151,7 @@ class QmovephBubble extends FlxSprite{
             ;
         loadGraphic(Paths.image("QmovephBubble"));
         velocity.x = -(FlxG.random.float(500,1000));
-        angularVelocity = FlxG.random.float(-100,100);
+        angularVelocity = FlxG.random.float(-720,720);
         color = FlxG.random.color(FlxColor.fromRGB(10,10,10),FlxColor.WHITE);
         updateHitbox();
         super.revive();

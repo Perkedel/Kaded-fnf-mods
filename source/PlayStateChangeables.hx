@@ -7,4 +7,5 @@ class PlayStateChangeables
 	public static var Optimize:Bool;
 	public static var zoom:Float;
 	public static var legacyLuaModchartSupport:Bool;
+	public static var stupidityChances:Array<Float> = [0, 0]; // JOELwindows7: chance for each player hit mines. 0 to 100%
 }

@@ -201,6 +201,11 @@ class Character extends FlxSprite
 				if (isDancing && forceDanced != null)
 					danced = forceDanced;
 			}
+			else {
+				// if (isDancing || animation.curAnim.finished)
+				// 	dance();
+				// animation.curAnim
+			}
 		}
 
 		super.update(elapsed);
@@ -257,11 +262,16 @@ class Character extends FlxSprite
 	{
 		if (!debugMode)
 		{
+			// trace('${curCharacter} Dancening force ${forced}, alt ${altAnim}');
 			// JOELwindows7: looks like interupt is defaultly true looks like!
 			// crash if animation frame reference in the name is missing
 			// Debug.logTrace('${animation.curAnim.name} here,');
 			// Debug.logTrace('${animation.curAnim.name} can interupt? ${animInterrupt.get(animation.curAnim.name)}');
 			var canInterrupt = animInterrupt.get(animation.curAnim.name);
+			if (canInterrupt == null)
+			{
+				canInterrupt = true;
+			} // JOELwindows7: prevent gf goes dead silent after train hair fall.
 
 			if (canInterrupt)
 			{

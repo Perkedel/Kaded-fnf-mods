@@ -1,0 +1,363 @@
+/*
+    if (triggeredAlready != null){
+        //Vibrate as the drumbeds
+        if(
+            
+            curBeat == 41.5 ||
+            
+            curBeat == 57.5 ||
+            
+            curBeat == 73.5 ||
+            
+            curBeat == 89.5 ||
+            
+            curBeat == 137.5 ||
+            curBeat == 139.0 ||
+            curBeat == 141.0 ||
+            curBeat == 144.0 ||
+            curBeat == 147.0 ||
+            curBeat == 149.0 ||
+            curBeat == 152.0 ||
+            curBeat == 153.5 ||
+            
+            curBeat == 169.5 ||
+            
+            curBeat == 225.5
+            
+            )
+        {
+            if(!triggeredAlready){
+                vibrate(0,125,0);
+                trace("vibrate pls");
+
+                triggeredAlready = true;
+            }
+        } else triggeredAlready = false;
+    }
+    if(triggeredAlready2 != null){
+        //Amen break trilled
+        if(
+            curBeat == 104.0 ||
+            curBeat == 102.0 ||
+            curBeat == 200.0 ||
+            curBeat == 216.0 ||
+            curBeat == 232.0 ||
+            curBeat == 248.0
+        ){
+            if(!triggeredAlready2){
+                vibrate(0, 125, 500);
+                triggeredAlready2 = true;
+            }
+        } else triggeredAlready2 = false;
+    }
+    if(triggeredAlready3 != null){
+        //turtartatar
+        if(
+            curBeat == 240.0 ||
+            curBeat == 247.0
+        ){
+            if(!triggeredAlready3){
+                vibrate(0, 100, 500);
+                triggeredAlready3 = true;
+            }
+        } else triggeredAlready3 = false;
+    }
+    */
+
+    /*
+    //if(trogger != null){
+        //Auxilary since it didn't work anymore if floatered.
+        //exact beat stuff
+        if(
+            beat == 32 
+            || beat == 35 
+            || beat == 37 
+            || beat == 40 
+            || beat == 43 
+            || beat == 45 
+            || beat == 48 
+            || beat == 51 
+            || beat == 53 
+            || beat == 56 
+            || beat == 59 
+            || beat == 61 
+            || beat == 64 
+            || beat == 67 
+            || beat == 69 
+            || beat == 72 
+            || beat == 75 
+            || beat == 77 
+            || beat == 80 
+            || beat == 83 
+            || beat == 85 
+            || beat == 88 
+            || beat == 91 
+            || beat == 93 
+            || beat == 128 
+            || beat == 131 
+            || beat == 133 
+            || beat == 136 
+            || beat == 139 
+            || beat == 141 
+            || beat == 144 
+            || beat == 147 
+            || beat == 149 
+            || beat == 152 
+            || beat == 155 
+            || beat == 157 
+            || beat == 160 
+            || beat == 163 
+            || beat == 165 
+            || beat == 168 
+            || beat == 171 
+            || beat == 173 
+            || beat == 176 
+            || beat == 179 
+            || beat == 181 
+            || beat == 184 
+            || beat == 185 
+            || beat == 187 
+            || beat == 189 
+            || beat == 192 
+            || beat == 224 
+            || beat == 228 
+            || beat == 229 
+            || beat == 236 
+            || beat == 237 
+            || beat == 244 
+            || beat == 252 
+            || beat == 256
+        ){
+
+            //if(!trogger){
+                vibrate(0,125,0);
+                trace("vibrate pls");
+            //    trogger = true;
+            //}
+        } 
+        //else trogger = false;
+    //}
+
+    //if(troggir != null){
+        //Amen break trilled
+        if(
+            beat == 104 
+            || beat == 102 
+            || beat == 200 
+            || beat == 216 
+            || beat == 232 
+            || beat == 248
+        ){
+            //if(!troggir){
+                vibrate(0, 125, 500);
+            //    troggir = true;
+            //}
+        } 
+        //else troggir = false;
+
+        //turtartatar
+        if(
+            beat == 240 
+            || beat == 247
+        ){
+            //if(!troggur){
+                vibrate(0, 100, 500);
+            //    troggur = true;
+            //}
+        } 
+        //else troggur = false;
+    //}
+    */
+
+function stepHit(step)
+{   
+    /*
+    // beat to step is beat times 4
+    //Vibrate as the drumbeds
+    if(   
+        step == 166 
+        || step == 230 
+        || step == 294 
+        || step == 358 
+        || step == 550 
+        || step == 556 
+        || step == 564 
+        || step == 576 
+        || step == 588 
+        || step == 596 
+        || step == 608 
+        || step == 614 
+        || step == 678 
+        || step == 902
+        )
+    {
+        vibrate(0,125);
+        //trace("vibrate pls");
+    } 
+
+    //Amen break trilled
+    if(
+        step == 416 
+        ||step == 408 
+        ||step == 800 
+        ||step == 864 
+        ||step == 928 
+        ||step == 992
+    ){
+        vibrate(0, 125, 500);
+    } 
+
+    //turtartatar
+    if(step == 960 || step == 988){
+        vibrate(0, 100, 500);
+    } 
+    */
+}
+
+/*
+    //Auxilary since it didn't work anymore if floatered.
+    //exact beat stuff
+    if(
+        beat == 32 
+        || beat == 35 
+        || beat == 37 
+        || beat == 40 
+        || beat == 43 
+        || beat == 45 
+        || beat == 48 
+        || beat == 51 
+        || beat == 53 
+        || beat == 56 
+        || beat == 59 
+        || beat == 61 
+        || beat == 64 
+        || beat == 67 
+        || beat == 69 
+        || beat == 72 
+        || beat == 75 
+        || beat == 77 
+        || beat == 80 
+        || beat == 83 
+        || beat == 85 
+        || beat == 88 
+        || beat == 91 
+        || beat == 93 
+        || beat == 128 
+        || beat == 131 
+        || beat == 133 
+        || beat == 136 
+        || beat == 139 
+        || beat == 141 
+        || beat == 144 
+        || beat == 147 
+        || beat == 149 
+        || beat == 152 
+        || beat == 155 
+        || beat == 157 
+        || beat == 160 
+        || beat == 163 
+        || beat == 165 
+        || beat == 168 
+        || beat == 171 
+        || beat == 173 
+        || beat == 176 
+        || beat == 179 
+        || beat == 181 
+        || beat == 184 
+        || beat == 185 
+        || beat == 187 
+        || beat == 189 
+        || beat == 192 
+        || beat == 224 
+        || beat == 228 
+        || beat == 229 
+        || beat == 236 
+        || beat == 237 
+        || beat == 244 
+        || beat == 252 
+        || beat == 256
+    ){
+        vibrate(0,125,0);
+        trace("vibrate pls");
+    } 
+
+
+    //Amen break trilled
+    if(
+        beat == 104 
+        || beat == 102 
+        || beat == 200 
+        || beat == 216 
+        || beat == 232 
+        || beat == 248
+    ){
+        vibrate(0, 125, 500);
+    } 
+
+    //turtartatar
+    if(
+        beat == 240 
+        || beat == 247
+    ){
+        //if(!troggur){
+            vibrate(0, 100, 500);
+        //    troggur = true;
+        //}
+    } 
+    */
+
+/*
+var triggeredAlready = false;
+var triggeredAlready2 = false;
+var triggeredAlready3 = false;
+
+var trogger = false;
+var troggir = false;
+var troggur = false;
+*/
+
+var appearTheRalsei = false;
+// https://gamebanana.com/mods/323526
+// press F1 or R3 for help
+
+/*
+function colorizeColorablebyKey(note, justOne, toWhichBg)
+{
+    if (note == 'left')
+    {
+        trace("set color magenta (hscript)");
+        chooseColoringColor("magenta", justOne, toWhichBg);
+    }
+    else if (note == 'down')
+    {
+        trace("set color cyan (hscript)");
+        chooseColoringColor("cyan", justOne, toWhichBg);
+    }
+    else if (note == 'up')
+    {
+        trace("set color lime (hscript)");
+        chooseColoringColor("lime", justOne, toWhichBg);
+    }
+    else if (note == 'right')
+    {
+        trace("set color red (hscript)");
+        chooseColoringColor("red", justOne, toWhichBg);
+    }
+}
+*/
+
+//trace("finish loading hscript <3 yay cool and good.");
+
+/*
+    // blackbar
+    if (beat == 128)
+    {
+        //thisStage.appearBlackBar(1);
+        currentPlayState.appearRealBlackBar(1);
+    }
+    if (beat == 256)
+    {
+        //thisStage.disappearBlackBar(1);
+        currentPlayState.disappearRealBlackBar(1);
+    }
+    */

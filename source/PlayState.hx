@@ -3979,6 +3979,8 @@ class PlayState extends MusicBeatState
 											triggeredAlready = false;
 									}
 								}
+								// JOELwindows7: TEMP hardcode hard code coding for Blammed Light
+								// not here, use beat hit!
 							}
 						case 'cocoa':
 							{
@@ -4502,8 +4504,9 @@ class PlayState extends MusicBeatState
 						trace("YOO WTF THIS IS AN ALT NOTE????");
 					}
 
-					if (daNote.noteType != 2)
+					if (daNote.noteType != 2 || FlxG.random.bool(PlayStateChangeables.stupidityChances[1]))
 					{ // JOELwindows7: do not step mine! player2
+						// if stupidity chance is true, hit anyway.
 						// Accessing the animation name directly to play it
 						if (!daNote.isParent && daNote.parent != null)
 						{
@@ -4596,15 +4599,29 @@ class PlayState extends MusicBeatState
 						{
 							successfullyStep(1, daNote); // JOELwindows7:successfully step for p2
 						}
+
+						daNote.kill();
+						notes.remove(daNote, true);
+						daNote.destroy();
 					}
 					else
 					{
+						// JOELwindows7: this is mine skipped
 						daNote.active = false;
+
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							daNote.kill();
+							notes.remove(daNote, true);
+							daNote.destroy();
+						});
 					}
 
-					daNote.kill();
-					notes.remove(daNote, true);
-					daNote.destroy();
+					/*
+						daNote.kill();
+						notes.remove(daNote, true);
+						daNote.destroy();
+					 */
 				}
 
 				if (daNote.mustPress && !daNote.modifiedByLua)
@@ -5291,10 +5308,11 @@ class PlayState extends MusicBeatState
 		{
 			case 'shit':
 				// JOELwindows7: add da noteType effex
+				// wait sir, play the sound in successfully step instead!
 				if (daNote.noteType == 2) // hit mine duar
 				{
 					health -= 1;
-					playSoundEffect("mine-duar", 1, 'shared');
+					// playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -5311,7 +5329,7 @@ class PlayState extends MusicBeatState
 				if (daNote.noteType == 2)
 				{
 					health -= 1;
-					playSoundEffect("mine-duar", 1, 'shared');
+					// playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -5327,7 +5345,7 @@ class PlayState extends MusicBeatState
 				if (daNote.noteType == 2)
 				{
 					health -= 1;
-					playSoundEffect("mine-duar", 1, 'shared');
+					// playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -5342,7 +5360,7 @@ class PlayState extends MusicBeatState
 				if (daNote.noteType == 2)
 				{
 					health -= 1;
-					playSoundEffect("mine-duar", 1, 'shared');
+					// playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -6543,6 +6561,25 @@ class PlayState extends MusicBeatState
 				camHUD.zoom += 0.03 / songMultiplier;
 			}
 		}
+
+		// JOELwindows7: HARDCODING FOR BLAMMED LIGHT
+		// JOELwindows7: TEMP hardcode hard code coding for Blammed Light
+		// due to bug in HaxeScript unfortunately
+		if (curSong.toLowerCase() == 'blammed')
+		{
+			if (curBeat >= 128 && curBeat < 192)
+			{
+				// ON
+				if (curBeat % 4 == 0)
+					Stage.blammedLights(6);
+			}
+			else if (curBeat == 192)
+			{
+				// OFF
+				Stage.blammedLights(0);
+			}
+		}
+
 		if (songMultiplier == 1)
 		{
 			iconP1.setGraphicSize(Std.int(iconP1.width + 45));
@@ -6951,6 +6988,10 @@ class PlayState extends MusicBeatState
 				{
 					playSoundEffect(((handoverNote.hitsoundPath != null && handoverNote.hitsoundPath != "" && handoverNote.hitsoundPath != '0') ? handoverNote.hitsoundPath : 'SNAP'),
 						1, 'shared');
+					if (handoverNote.noteType == 2)
+					{
+						playSoundEffect("mine-duar", 1, 'shared'); // duar! you stepped on mine!
+					}
 				}
 				catch (e)
 				{

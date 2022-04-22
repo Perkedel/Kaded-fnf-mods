@@ -417,7 +417,7 @@ class Note extends FlxSprite
 		// JOELwindows7: mine rotate pls
 		if (!totalOverride)
 		{ // JOELwindows7: here total override, if on forget special parameter!
-			if (noteType != 2)
+			if (noteType == 0)
 			{
 				if (!modifiedByLua)
 					angle = modAngle + localAngle;
@@ -435,8 +435,20 @@ class Note extends FlxSprite
 			}
 			else
 			{
-				// JOELwindows7: spin mine!!!
-				angularVelocity = 360;
+				// JOELwindows7: spin mine!!! and other deadly notes
+				angularVelocity = switch (noteType)
+				{
+					case 1: // powerup
+						0;
+					case 2: // mine
+						360;
+					case 3: // important
+						0;
+					case 4: // never
+						720;
+					default:
+						360;
+				};
 
 				if (!modifiedByLua)
 				{

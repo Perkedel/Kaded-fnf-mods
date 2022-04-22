@@ -766,13 +766,15 @@ class FreeplayState extends MusicBeatState
 
 		// JOELwindows7: prevent go if shift is being held
 		if (!FlxG.keys.pressed.SHIFT)
+		{
 			if (upP)
 			{
 				changeSelection(-1);
 			}
-		if (downP)
-		{
-			changeSelection(1);
+			if (downP)
+			{
+				changeSelection(1);
+			}
 		}
 
 		// if (FlxG.keys.justPressed.SPACE && !openedPreview)

@@ -387,7 +387,7 @@ class Song
 
 		// JOELwindows7: right, these are all we have.
 		if (songData.allowedToHeadbang == null)
-			songData.allowedToHeadbang = songMetaData.allowedToHeadbang != null ? songMetaData.allowedToHeadbang : false;
+			songData.allowedToHeadbang = songMetaData.allowedToHeadbang != null ? songMetaData.allowedToHeadbang : true;
 
 		// JOELwindows7: lua & haxescript stuffs
 		if (songData.forceLuaModchartLegacy == null)

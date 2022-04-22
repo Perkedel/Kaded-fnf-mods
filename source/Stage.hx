@@ -1120,6 +1120,7 @@ class Stage extends MusicBeatState
 		{
 			if (lightId > 0 && curLightEvent != lightId)
 			{
+				Debug.logTrace('Blammed light ON Light ID ${lightId}');
 				if (lightId > 5)
 					lightId = FlxG.random.int(1, 5, [curLightEvent]);
 
@@ -1279,9 +1280,25 @@ class Stage extends MusicBeatState
 		if (FlxG.save.data.distractions)
 		{
 			if (PlayState.gf != null)
+			{
 				PlayState.gf.playAnim('hairFall');
+				// JOELwindows7: gf goes dead silent afterward. work around pls
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					PlayState.gf.playAnim('danceRight');
+					PlayState.gf.dance();
+				});
+			}
 			else
+			{
 				GameplayCustomizeState.gf.playAnim('hairFall');
+				// JOELwindows7: gf goes dead silent afterward. work around pls
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					GameplayCustomizeState.gf.playAnim('danceRight');
+					GameplayCustomizeState.gf.dance();
+				});
+			}
 
 			swagBacks['phillyTrain'].x = FlxG.width + 200;
 			trainMoving = false;
