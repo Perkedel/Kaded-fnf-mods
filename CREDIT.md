@@ -377,6 +377,8 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://git-annex.branchable.com/special_remotes/bup/
 - https://git-annex.branchable.com/related_software/
 - https://git-annex.branchable.com/not/
+- https://github.com/ianharrigan/hscript-ex
+- https://github.com/HaxeFlixel/flixel-ui#xml-layout-basics
 
 # in event of git merge conflict
 use VScode and Github desktop!

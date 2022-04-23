@@ -37,6 +37,7 @@ function update(elapsed)
 
 function beatHit(beat)
 {
+    /*
     //Auxilary since it didn't work anymore if floatered.
     //exact beat stuff
     if(
@@ -102,7 +103,12 @@ function beatHit(beat)
         vibrate(0,125,0);
         //trace("vibrate pls");
     } 
-
+    */
+    if((beat >= 32 && beat < 96) || (beat >= 128 && beat < 192)){
+        if(beat % 8 == 0){
+            vibrate(0,125,0);
+        }
+    }
 
     //Amen break trilled
     if(
@@ -124,6 +130,12 @@ function beatHit(beat)
         vibrate(0, 100, 500);
     } 
 
+    // TUSCSSCH
+    if (beat == 1023){
+        vibrate(0, 1500, 0);
+    }
+    
+
     // blackbar
     if (beat == 128)
     {
@@ -138,22 +150,23 @@ function beatHit(beat)
     }
     
     //Psyched Blammed Light
-    /*
+    
     if(beat >= 128 && beat < 192){
         // ON
-        currentPlayState.Stage.blammedLights(6);
+        if(beat % 4 == 0)
+            currentPlayState.blammedLights(6);
     }
-    
+    /*
     if(beat == 128){
         // ON
-        currentPlayState.Stage.blammedLights(6);
-    }
-    
-    if(beat == 192){
-        // OFF
-        currentPlayState.Stage.blammedLights(0);
+        currentPlayState.blammedLights(6);
     }
     */
+    if(beat == 192){
+        // OFF
+        currentPlayState.blammedLights(0);
+    }
+    
 }
 
 function stepHit(step)

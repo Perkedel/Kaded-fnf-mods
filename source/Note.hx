@@ -56,6 +56,7 @@ class Note extends FlxSprite
 	public var beat:Float = 0;
 
 	public static var swagWidth:Float = 160 * 0.7;
+	public static var swagHeight:Float = 160 * 0.7; // JOELwindows7: make it square.
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
 	public static var BLUE_NOTE:Int = 1;
@@ -89,6 +90,7 @@ class Note extends FlxSprite
 	public var noteTypeCheck:String; // JOELwindows7: globalize noteTypeCheck for all noteSkin detection
 
 	public var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound audio file to play when hit & hitsound option enabled.
+	public var hitlinePath:String = "HitLineParticle"; // JOELwindows7: hitline particle to emit when hit & hitline option enabled. idk this always on?
 	public var vowelType:Int = 0; // JOELwindows7: vowel type. radpas12131's mod. a i u e o.
 
 	// IDEA: JOELwindows7: you can have more variables about string or whatever too! like

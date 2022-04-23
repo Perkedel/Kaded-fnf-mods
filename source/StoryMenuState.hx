@@ -1,5 +1,7 @@
 package;
 
+import ui.states.IBGColorTweening;
+import flixel.tweens.misc.ColorTween;
 import Options.LockWeeksOption;
 import CoreState;
 import GalleryAchievements;
@@ -28,7 +30,7 @@ import Discord.DiscordClient;
 
 using StringTools;
 
-class StoryMenuState extends MusicBeatState
+class StoryMenuState extends MusicBeatState implements IBGColorTweening
 {
 	var scoreText:FlxText;
 
@@ -112,6 +114,7 @@ class StoryMenuState extends MusicBeatState
 
 	var yellowBG:FlxSprite; // JOELwindows7: globalize this bg so we can colorize it.
 	var underlayBG:FlxSprite; // JOELwindows7: for Underlay. the image appear between character & yellowBG.
+	var bgColorTween:ColorTween; // JOELwindows7: to manage week display color change tween
 
 	function unlockWeeks():Array<Bool>
 	{
@@ -727,6 +730,13 @@ class StoryMenuState extends MusicBeatState
 
 		txtTracklist.text += "\n";
 
+		if (bgColorTween != null)
+		{
+			// JOELwindows7: first, cancel running tween to prevent color
+			// tweetch after running through colored item selections.
+			bgColorTween.cancel();
+			// then to bellow, reinitiate new change color tween.
+		}
 		// JOELwindows7: change yellowBG color pls
 		var colores:FlxColor = FlxColor.fromString("0xFFF9CF51");
 		// yellowBG.color = FlxColor.fromString(weekColor[curWeek]);
@@ -746,7 +756,7 @@ class StoryMenuState extends MusicBeatState
 		// 	greenFloat: colores.greenFloat,
 		// 	blueFloat: colores.blueFloat
 		// }}, 0.5, {ease: FlxEase.linear});
-		FlxTween.color(yellowBG, .5, yellowBG.color, colores, {ease: FlxEase.linear}); // JOELwindows7: FINALLY!!!
+		bgColorTween = FlxTween.color(yellowBG, .5, yellowBG.color, colores, {ease: FlxEase.linear}); // JOELwindows7: FINALLY!!!
 
 		#if !switch
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);

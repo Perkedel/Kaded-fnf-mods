@@ -238,6 +238,7 @@ class PlayState extends MusicBeatState
 	public static var playerStrums:FlxTypedGroup<StaticArrow> = null;
 	public static var cpuStrums:FlxTypedGroup<StaticArrow> = null;
 	public static var grpNoteSplashes:FlxTypedGroup<NoteSplash>; // JOELwindows7: Psyched note splash
+	public static var grpNoteHitlineParticles:FlxTypedGroup<FlxSprite>; // JOELwindows7: same as note splash but simpler, to see perfect, late early you hit.
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -560,6 +561,7 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(camSustains);
 		FlxG.cameras.add(camNotes);
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>(); // JOELwindows7: okey why ShadowMario or whoever
+		grpNoteHitlineParticles = new FlxTypedGroup<FlxSprite>(); // JOELwindows7: okey here note hitlines. inspired from that notesplash & viking timpani game called 'Ragnarock'. Steam.
 		// in the blame init that notesplash group here? Psyched
 		// maybe because it's after add all those cameras?
 
@@ -1017,11 +1019,17 @@ class PlayState extends MusicBeatState
 		strumLineNotes = new FlxTypedGroup<StaticArrow>();
 		add(strumLineNotes);
 		add(grpNoteSplashes); // JOELwindows7: Psyched! now here add the group of Notesplash here this state.
+		add(grpNoteHitlineParticles); // JOELwindows7: and here the group of Notehitlineparticles.
 
 		// JOELwindows7: Psyched notesplash. Have atleast 1 splash first so that it can be recycled, idk.
 		var splash:NoteSplash = new NoteSplash(100, 100, 0);
 		grpNoteSplashes.add(splash);
 		splash.alpha = 0.0;
+
+		// JOELwindows7: as well as the hitline. 1 atleast.
+		var hitline:FlxSprite = new FlxSprite(100, 100);
+		grpNoteHitlineParticles.add(hitline);
+		hitline.alpha = 0.0;
 
 		playerStrums = new FlxTypedGroup<StaticArrow>();
 		cpuStrums = new FlxTypedGroup<StaticArrow>();
@@ -1405,6 +1413,7 @@ class PlayState extends MusicBeatState
 
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD]; // JOELwindows7: notesplash group put in camHUD! Psychedly
+		grpNoteHitlineParticles.cameras = [camHUD]; // JOELwindows7: also the hitlines
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
@@ -5154,13 +5163,14 @@ class PlayState extends MusicBeatState
 					// if (StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase() == 'eggnog')
 					if (lastSonginPlaylist == 'eggnog') // Now this should fix it I guess. Not elegant but it works.
 					{
-						var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
-							-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
-						blackShit.scrollFactor.set();
-						add(blackShit);
-						camHUD.visible = false;
+						// var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
+						// 	-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+						// blackShit.scrollFactor.set();
+						// add(blackShit);
+						// camHUD.visible = false;
 
-						FlxG.sound.play(Paths.sound('Lights_Shut_off'));
+						// FlxG.sound.play(Paths.sound('Lights_Shut_off'));
+						// JOELwindows7: moved!
 					}
 					// outroScene(lastSonginPlaylist);
 					// JOELwindows7: Psychedly Successfully fixed the light shut off scene!
@@ -5381,8 +5391,9 @@ class PlayState extends MusicBeatState
 		// if (daRating == 'sick' && !daNote.noteSplashDisabled)
 		if (daRatingInt >= 3 && !daNote.noteSplashDisabled)
 		{
-			spawnNoteSplashOnNote(daNote, daNote.noteType);
+			spawnNoteSplashOnNote(daNote, daNote.noteType, 0, daRatingInt);
 		}
+		spawnNoteHitlineOnNote(daNote, daNote.noteType, 0, daRatingInt);
 		// C'mon, Cam (ninjamuffin)!!! finish embargo rn!!! do not finish plot twistly as a demo for the full ass!!! that's rude!
 
 		if (songMultiplier >= 1.05)
@@ -6565,20 +6576,22 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: HARDCODING FOR BLAMMED LIGHT
 		// JOELwindows7: TEMP hardcode hard code coding for Blammed Light
 		// due to bug in HaxeScript unfortunately
-		if (curSong.toLowerCase() == 'blammed')
-		{
-			if (curBeat >= 128 && curBeat < 192)
+		/*
+			if (curSong.toLowerCase() == 'blammed')
 			{
-				// ON
-				if (curBeat % 4 == 0)
-					Stage.blammedLights(6);
+				if (curBeat >= 128 && curBeat < 192)
+				{
+					// ON
+					if (curBeat % 4 == 0)
+						Stage.blammedLights(6);
+				}
+				else if (curBeat == 192)
+				{
+					// OFF
+					Stage.blammedLights(0);
+				}
 			}
-			else if (curBeat == 192)
-			{
-				// OFF
-				Stage.blammedLights(0);
-			}
-		}
+		 */
 
 		if (songMultiplier == 1)
 		{
@@ -7012,7 +7025,9 @@ class PlayState extends MusicBeatState
 			case 1:
 				// dad.playAnim('hit', true);
 				// break;
-				spawnNoteSplashOnNote(handoverNote, handoverNote.noteType, whichOne); // yay Psyched note splash on player 2 as well!
+				spawnNoteSplashOnNote(handoverNote, handoverNote.noteType, whichOne,
+					Perkedel.MAX_AVAILABLE_JUDGEMENT_RATING); // yay Psyched note splash on player 2 as well!
+				spawnNoteHitlineOnNote(handoverNote, handoverNote.noteType, whichOne, Perkedel.MAX_AVAILABLE_JUDGEMENT_RATING);
 				// dad.stimulateHeart(-1, HeartStimulateType.ADRENAL);
 				dad.successfullyStep(-1, 1);
 			case 2:
@@ -7024,7 +7039,7 @@ class PlayState extends MusicBeatState
 			default:
 		}
 
-		increaseHR(successionAdrenalAdd[whichOne][heartTierIsRightNow[whichOne]], whichOne);
+		// increaseHR(successionAdrenalAdd[whichOne][heartTierIsRightNow[whichOne]], whichOne);
 	}
 
 	function checkWhichHeartTierWent(giveHB:Float, whichOne:Int = 0)
@@ -7496,6 +7511,22 @@ class PlayState extends MusicBeatState
 					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 				});
+			case 'eggnog':
+				// JOELwindows7: right, we've migrated those here yey. add more things if necessary.
+				var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
+					-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+				blackShit.scrollFactor.set();
+				add(blackShit);
+				camHUD.visible = false;
+
+				FlxG.sound.play(Paths.sound('Lights_Shut_off'));
+				Controls.vibrate(0, 100);
+
+				new FlxTimer().start(3, function(tmr:FlxTimer)
+				{
+					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+				});
 			default:
 				#if FEATURE_LUAMODCHART
 				if (luaModchart != null)
@@ -7832,7 +7863,7 @@ class PlayState extends MusicBeatState
 	}
 
 	// JOELwindows7: Psyched splash note yeahow
-	function spawnNoteSplashOnNote(note:Note, noteType:Int = 0, whichPlayer:Int = 0)
+	function spawnNoteSplashOnNote(note:Note, noteType:Int = 0, whichPlayer:Int = 0, rating:Int = 0)
 	{
 		if (FlxG.save.data.noteSplashes && note != null)
 		{
@@ -7847,13 +7878,33 @@ class PlayState extends MusicBeatState
 			}
 			if (strum != null)
 			{
-				spawnNoteSplash(strum.x, strum.y, note.noteData, note, noteType);
+				spawnNoteSplash(strum.x, strum.y, note.noteData, note, noteType, rating);
+			}
+		}
+	}
+
+	function spawnNoteHitlineOnNote(note:Note, noteType:Int = 0, whichPlayer:Int = 0, rating:Int = 0)
+	{
+		if (FlxG.save.data.noteSplashes && note != null)
+		{
+			var strum:StaticArrow = playerStrums.members[note.noteData];
+			// JOELwindows7: handle which player properly. we have strum variable to get where position for each
+			// strum receptors.
+			switch (whichPlayer)
+			{
+				case 1:
+					strum = cpuStrums.members[note.noteData];
+				default:
+			}
+			if (strum != null)
+			{
+				spawnHitlineParticle(strum.x, note.y, note.noteData, note, noteType, rating);
 			}
 		}
 	}
 
 	// JOELwindows7: spawn note splash core Pyschedly
-	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0)
+	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0, rating:Int = 0)
 	{
 		var skin:String = 'Arrow-splash'; // TODO: JOELwindows7: use `-duar` for mines (note type 2)
 		if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0 && PlayState.SONG.useCustomNoteStyle)
@@ -7875,14 +7926,56 @@ class PlayState extends MusicBeatState
 		grpNoteSplashes.add(splash);
 	}
 
+	// JOELwindows7: spawn hitline particle like splash but it's line to determine how late, early, or perfect you hit it.
+	public function spawnHitlineParticle(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0, rating:Int = 0)
+	{
+		var hitline:FlxSprite = grpNoteHitlineParticles.recycle(FlxSprite);
+		hitline.loadGraphic(Paths.loadImage((note != null ? note.hitlinePath : "HitLineParticle"), 'shared'));
+		// hitline.setGraphicSize(Std.int(.5)); // why integer, HaxeFlixel?!
+		hitline.scale.x = .6;
+		hitline.scale.y = .6;
+		hitline.updateHitbox();
+		// hitline.setPosition(x-Note.swagWidth * .95,y-Note.swagHeight *.95);
+		hitline.setPosition(x, y);
+		// hitline.offset.set(10,10);
+		hitline.alpha = 1;
+		hitline.color = switch (rating)
+		{
+			case 0: // shit
+				FlxColor.RED;
+			case 1: // bad
+				FlxColor.PURPLE;
+			case 2: // good
+				FlxColor.LIME;
+			case 3: // sick
+				FlxColor.YELLOW;
+			case 4: // dank (Flawless)
+				FlxColor.CYAN;
+			case 5: // MVP (Ludicrous)
+				FlxColor.BLUE; // Blue
+			default:
+				FlxColor.WHITE;
+		};
+		grpNoteHitlineParticles.add(hitline);
+		FlxTween.tween(hitline, {alpha: 0}, 1, {
+			ease: FlxEase.linear,
+			onComplete: function(twn:FlxTween)
+			{
+				hitline.kill();
+			}
+		});
+	}
+
 	// JOELwindows7: Psyched blackbar stuff
 	function buildRealBlackBars()
 	{
 		realBlackbarsTop = new FlxSprite(0, 0);
 		realBlackbarsTop.makeGraphic(FlxG.width, realBlackbarHeight, 0xFF000000);
+		realBlackbarsTop.alpha = 0;
 		realBlackbarsTop.scrollFactor.set();
 		realBlackbarsBottom = new FlxSprite(0, FlxG.height - realBlackbarHeight);
 		realBlackbarsBottom.makeGraphic(FlxG.width, realBlackbarHeight, 0xFF000000);
+		realBlackbarsBottom.alpha = 0;
 		realBlackbarsBottom.scrollFactor.set();
 		add(realBlackbarsTop);
 		add(realBlackbarsBottom);
@@ -7905,8 +7998,8 @@ class PlayState extends MusicBeatState
 		// realBlackbarsBottom.x = FlxG.height;
 		FlxTween.color(realBlackbarsTop, forHowLong, realBlackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
 		FlxTween.color(realBlackbarsBottom, forHowLong, realBlackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
-		FlxTween.tween(realBlackbarsTop, {y: 0, alpha: 1}, forHowLong, {ease: FlxEase.linear});
-		FlxTween.tween(realBlackbarsBottom, {y: FlxG.height - realBlackbarHeight, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(realBlackbarsTop, {y: 0, alpha: .8}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(realBlackbarsBottom, {y: FlxG.height - realBlackbarHeight, alpha: .8}, forHowLong, {ease: FlxEase.linear});
 	}
 
 	// JOELwindows7: Psyched disappear blackbar
@@ -7916,14 +8009,14 @@ class PlayState extends MusicBeatState
 			return;
 		// realBlackbarsTop.x = 0;
 		// realBlackbarsBottom.x = FlxG.height - blackbarHeight;
-		FlxTween.tween(realBlackbarsTop, {y: -realBlackbarHeight}, forHowLong, {
+		FlxTween.tween(realBlackbarsTop, {y: -realBlackbarHeight, alpha: 0}, forHowLong, {
 			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{
 				realBlackbarsTop.visible = false;
 			}
 		});
-		FlxTween.tween(realBlackbarsBottom, {y: FlxG.height}, forHowLong, {
+		FlxTween.tween(realBlackbarsBottom, {y: FlxG.height, alpha: 0}, forHowLong, {
 			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{
@@ -7934,11 +8027,34 @@ class PlayState extends MusicBeatState
 		FlxTween.color(realBlackbarsBottom, forHowLong, realBlackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
 	}
 
+	// JOELwindows7: I guess we have to syndicate that too instead.
+
+	/**
+	 * Psyched Blammed Lights. Initiate turn off the lights & turn on the rave lights.
+	 * With this on, the background & objects darkens then followed with fade to discotic color lamps,
+	 * all characters color will change to based on chosen color.
+	 * Used for songs like Blammed (Psyched Engine), Stadium Rave Spongebob, 
+	 * Carameldansen, finger crazy move TikTok meme, etc.
+	 * @param lightsId select color of the rave lamp from 1 to 5. 0 is off & go back to normal, & 6 is random color
+	 */
+	public function blammedLights(lightsId:Int = 6)
+	{
+		if (Stage != null)
+		{
+			Stage.blammedLights(lightsId);
+		}
+	}
+
 	// JOELwindows7: and the flag for bellow cartoon corner dot
 	var hasAppearedDot:Bool = false;
 
 	// JOELwindows7: appear this infamous dot on top right corner, found on classic pipehose cartoon.
 	// It appears at the end of the episode marking ending of film strip. so to prepare End card next.
+
+	/**
+	 * Draw purple dot on top right screen. used to mark all finished notes like pipehose classic cartoon
+	 * when the end of film strip is approaching.
+	 */
 	public function cartoonCornerDot()
 	{
 		// Copy from cheat sheet, section Drawing Shapes

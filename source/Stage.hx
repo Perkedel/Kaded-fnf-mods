@@ -181,6 +181,8 @@ class Stage extends MusicBeatState
 		blammedLightsBlack = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5);
 		blammedLightsBlack.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 		blammedLightsBlack.alpha = 0;
+		phillyCityLights = new FlxTypedGroup<FlxSprite>();
+		phillyCityLightsEvent = new FlxTypedGroup<BGSprite>();
 
 		if (PlayState.SONG != null && PlayState.SONG.useCustomStage)
 		{
@@ -265,7 +267,7 @@ class Stage extends MusicBeatState
 
 						// JOELwindows7: first, install blammed lights. Psyched blammed lights yey
 						// https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
-						addThe(blammedLightsBlack, 'blammedLightsBlack');
+						//addThe(blammedLightsBlack, 'blammedLightsBlack');
 
 						var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street', 'week3'));
 						street.antialiasing = FlxG.save.data.antialiasing;
@@ -1201,8 +1203,12 @@ class Stage extends MusicBeatState
 						{
 							spr.visible = false;
 						});
-						phillyCityLightsEvent.members[lightId - 1].visible = true;
-						phillyCityLightsEvent.members[lightId - 1].alpha = 1;
+						if (phillyCityLightsEvent.members[lightId - 1] != null)
+						{
+							// JOELwindows7: Yo, this crashes here! Null object reference
+							phillyCityLightsEvent.members[lightId - 1].visible = true;
+							phillyCityLightsEvent.members[lightId - 1].alpha = 1;
+						}
 					}
 				}
 			}
@@ -1225,16 +1231,26 @@ class Stage extends MusicBeatState
 
 				if (curStage == 'philly')
 				{
-					phillyCityLights.forEach(function(spr:FlxSprite) // JOELwindows7: this gotta be changed
+					// JOELwindows7: pls don't forget safety!
+					if (phillyCityLights != null)
 					{
-						spr.visible = false;
-					});
-					phillyCityLightsEvent.forEach(function(spr:BGSprite)
+						phillyCityLights.forEach(function(spr:FlxSprite) // JOELwindows7: this gotta be changed
+						{
+							spr.visible = false;
+						});
+					}
+					if (phillyCityLightsEvent != null)
 					{
-						spr.visible = false;
-					});
+						phillyCityLightsEvent.forEach(function(spr:BGSprite)
+						{
+							spr.visible = false;
+						});
+					}
 
-					var memb:FlxSprite = phillyCityLightsEvent.members[curLightEvent - 1];
+					var memb:FlxSprite = new FlxSprite();
+					// JOELwindows7: I believe this also Null object reference too.
+					if (phillyCityLightsEvent.members[curLightEvent - 1] != null)
+						memb = phillyCityLightsEvent.members[curLightEvent - 1];
 					if (memb != null)
 					{
 						memb.visible = true;
@@ -1701,14 +1717,26 @@ class Stage extends MusicBeatState
 	var additionalSubCamera:FlxCamera;
 
 	// JOELwindows7: additional system wide FlxSprites
+	/**
+	 * Psyched Blammed Lights. Initiate turn off the lights & turn on the rave lights.
+	 * With this on, the background & objects darkens then followed with fade to discotic color lamps,
+	 * all characters color will change to based on chosen color.
+	 * Used for songs like Blammed (Psyched Engine), Stadium Rave Spongebob, 
+	 * Carameldansen, finger crazy move TikTok meme, etc.
+	 * @param lightsId select color of the rave lamp from 1 to 5. 0 is off & go back to normal, & 6 is random color
+	 */
 	function additionalCreateFlxSprites()
 	{
+		// Blammed Light block bekgron background
+		addThe(blammedLightsBlack, 'blammedLightsBlack');
 		// Psyched Blackbars
 		blackbarsTop = new FlxSprite(0, 0);
 		blackbarsTop.makeGraphic(FlxG.width, blackbarHeight, 0xFF000000);
+		blackbarsTop.alpha = 0;
 		blackbarsTop.scrollFactor.set();
 		blackbarsBottom = new FlxSprite(0, FlxG.height - blackbarHeight);
 		blackbarsBottom.makeGraphic(FlxG.width, blackbarHeight, 0xFF000000);
+		blackbarsBottom.alpha = 0;
 		blackbarsBottom.scrollFactor.set();
 		addThe(blackbarsTop, 'blackbarsTop');
 		addThe(blackbarsBottom, 'blackbarsBottom');
@@ -1731,8 +1759,8 @@ class Stage extends MusicBeatState
 		// blackbarsBottom.x = FlxG.height;
 		FlxTween.color(blackbarsTop, forHowLong, blackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
 		FlxTween.color(blackbarsBottom, forHowLong, blackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
-		FlxTween.tween(blackbarsTop, {y: 0, alpha: 1}, forHowLong, {ease: FlxEase.linear});
-		FlxTween.tween(blackbarsBottom, {y: FlxG.height - blackbarHeight, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(blackbarsTop, {y: 0, alpha: .8}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(blackbarsBottom, {y: FlxG.height - blackbarHeight, alpha: .8}, forHowLong, {ease: FlxEase.linear});
 	}
 
 	// JOELwindows7: Psyched disappear blackbar
@@ -1742,14 +1770,14 @@ class Stage extends MusicBeatState
 			return;
 		// blackbarsTop.x = 0;
 		// blackbarsBottom.x = FlxG.height - blackbarHeight;
-		FlxTween.tween(blackbarsTop, {y: -blackbarHeight}, forHowLong, {
+		FlxTween.tween(blackbarsTop, {y: -blackbarHeight, alpha: 0}, forHowLong, {
 			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{
 				blackbarsTop.visible = false;
 			}
 		});
-		FlxTween.tween(blackbarsBottom, {y: FlxG.height}, forHowLong, {
+		FlxTween.tween(blackbarsBottom, {y: FlxG.height, alpha: 0}, forHowLong, {
 			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{

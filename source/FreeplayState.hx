@@ -1,5 +1,7 @@
 package;
 
+import ui.states.IBGColorTweening;
+import flixel.tweens.misc.ColorTween;
 import flixel.addons.util.FlxAsyncLoop;
 import CoreState;
 import MusicBeatState;
@@ -34,7 +36,7 @@ import Discord.DiscordClient;
 
 using StringTools;
 
-class FreeplayState extends MusicBeatState
+class FreeplayState extends MusicBeatState implements IBGColorTweening
 {
 	public static var instance:FreeplayState; // JOELwindows7: AAAAA why no detect class!!
 
@@ -67,6 +69,9 @@ class FreeplayState extends MusicBeatState
 
 	// JOELwindows7: globalize bg variable to be refered for color change
 	var bg:FlxSprite;
+
+	// JOELwindows7: aesthetic
+	var bgColorTween:ColorTween; // FlxTween change bg color.
 
 	// JOELwindows7: week data here
 	var weekInfo:SwagWeeks;
@@ -1206,6 +1211,13 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 
+		if (bgColorTween != null)
+		{
+			// JOELwindows7: first, cancel running tween to prevent color
+			// tweetch after running through colored item selections.
+			bgColorTween.cancel();
+			// then to bellow, reinitiate new change color tween.
+		}
 		// FlxTween.tween(bg.color, {redFloat: colores.redFloat, greenFloat: colores.greenFloat, blueFloat: colores.blueFloat}, 1, {ease: FlxEase.elasticInOut});
 		// FlxTween.tween(bg.color, {redFloat: colores.redFloat}, 1, {ease: FlxEase.elasticInOut});
 		// FlxTween.tween(bg.color, {greenFloat: colores.greenFloat}, 1, {ease: FlxEase.elasticInOut});
@@ -1217,7 +1229,7 @@ class FreeplayState extends MusicBeatState
 		// 	blueFloat: colores.blueFloat
 		// 	}
 		// }, 1, {ease: FlxEase.elasticInOut});
-		FlxTween.color(bg, 1, bg.color, colores, {ease: FlxEase.linear}); // JOELwindows7: FINALLY!!!
+		bgColorTween = FlxTween.color(bg, 1, bg.color, colores, {ease: FlxEase.linear}); // JOELwindows7: FINALLY!!!
 		// bg.color = colores;
 	}
 
