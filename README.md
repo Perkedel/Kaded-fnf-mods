@@ -77,6 +77,11 @@ Unfortunately folks, we still not witness JUCE integrator to Haxe, OpenFl, HaxeF
 - HTML5 (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/ngwvliwkacsu0nly?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-winhtml5)
 - macOS [![Build status macOS](https://ci.appveyor.com/api/projects/status/61pl7ba9rgu375pn?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-macos)
 
+## Mods comeback status (Protoglin Amexamlef)
+- Sky ✅. https://gamebanana.com/mods/44555 . More: [NuSky + SkyVerse](https://gamebanana.com/mods/369981 ), [ReManifested](https://gamebanana.com/mods/370008 )
+- Whitty ✅. https://gamebanana.com/mods/44214 . More: [Definitive Psyched](https://gamebanana.com/mods/354884 )
+- Mid Fight Masses ❌.
+
 ## Stuff
 - WakaTime Total [![wakatime](https://wakatime.com/badge/user/dbc5f9fc-c736-48c6-83db-e5a221526daa.svg)](https://wakatime.com/@dbc5f9fc-c736-48c6-83db-e5a221526daa)
 

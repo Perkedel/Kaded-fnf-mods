@@ -379,6 +379,8 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://git-annex.branchable.com/not/
 - https://github.com/ianharrigan/hscript-ex
 - https://github.com/HaxeFlixel/flixel-ui#xml-layout-basics
+- https://gamebanana.com/mods/370355
+- https://gamebanana.com/mods/316530
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -529,6 +531,8 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://sfbgames.itch.io/chiptone (Warning: Proprietary, but it's gratis. also all sound made are public domain able) SFB Games. Generate sound effect!! sfxr thingy!!!
 - https://www.fontspace.com/azonix-font-f30718 ???. Azonix cool techy font!
 - https://www.fontspace.com/category/tech Fontspace. lots of more techy fonts! A-atmosphere too! pls where link!
+- https://gamebanana.com/tools/7923 catt47. cool notes for fnf mods, for free. Psyched more notes!
+- https://gamebanana.com/mods/372232 Cherry Kai (vCherry.kAI.16) (*Can use, just credit*). Cherry Noteskin yeah!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
