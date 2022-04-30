@@ -20,4 +20,4 @@ This really took this long to document. Why?
 
 Okay, uh, if you want to contribute here, make sure your part of contribution is Free as in Freedom (yes, software coding must be GNU GPL v3 or whatever compatible, and asset is CC4.0-BY-SA or whatever that allows derivative, allows commercial use, enforces credit because people must know download link sauce), not just being Open Source, and uh go to `sammer-woost` branch yess. Be careful about assets that are royaltiful or No Commercial, as those asset may or will be censored in Arcade machine manufacturing.
 
-But if you just want make mod, use `stable`.
+But if you just want make mod, use `stable`. **REMEMBER!!!** always use Polymod!! not executable separately. Please acknowledge that disk space is luxury & UX elegance (ease of installing mods) is essential.
