@@ -164,7 +164,7 @@ class Note extends FlxSprite
 				// case 0:
 				// normal. use default!
 				// case 1:
-				// powerup
+				// powerup special
 				case 2:
 					Debug.logTrace("Whoah dude they adds mine?");
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
