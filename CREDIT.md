@@ -426,6 +426,7 @@ use VScode and Github desktop!
 # other mods that wins the inclusion (without permission if has CC or uh whatever bruh, otherwise unlikely). Congratulations!
 Note: in Game Banana, mods that did not have license written will set to CC4.0-BY-NC-ND by default (marked by `Warning: presumably no license so default`). We believe that with ND circle legally prevents anyone to yoink such mods without asking permission. However, such statement is vague, due to the gray area like e.g. SF2. in any case, review the details and yoink with caution.
 
+- https://twitter.com/PhantomArcade3K/status/1521540912421257218?s=20&t=O7JJ0hkHEBFfyiFsu63GzA Phantom Arcade. Week 7 Assets finally released & its restriction has been leasened. See `PERMISSIONS.md`.
 - https://github.com/ninjamuffin99/Funkin ninja_muffin99. Original vanilla. uh, license formerly was Apache 2.0, but have canceled to `Mods must be open source` since commit on 16 May 2021 [here](https://github.com/ninjamuffin99/Funkin/commit/8bd9126acd48a0c23124b897561b5fca1e161a8c ) because of allowing modders to not Open Source the fork while also avoiding license that Nintendo hates.
 - https://github.com/KadeDev/Kade-Engine KadeDev. Engine we freshly forked from. hey, it's still Apache-2.0 License.
 - https://gamebanana.com/mods/43569 (you can edit mod but pls credit author) FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
