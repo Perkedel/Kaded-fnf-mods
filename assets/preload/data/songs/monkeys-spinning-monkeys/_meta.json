@@ -30,7 +30,7 @@
     "eventObjects": [{
         "name": "Init BPM",
         "position": 0,
-        "value": 100,
+        "value": 144,
         "type": "BPM Change"
     }]
 }

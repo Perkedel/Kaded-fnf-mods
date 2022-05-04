@@ -21,10 +21,10 @@
         "eventObjects": [{
             "name": "Init BPM",
             "position": 0,
-            "value": 100,
+            "value": 144,
             "type": "BPM Change"
         }],
-        "bpm": 100,
+        "bpm": 144,
         "sections": 0,
         "validScore": true,
         "noteStyle": "normal",
