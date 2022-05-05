@@ -19,7 +19,7 @@ class NoteSplash extends FlxSprite
 
 		var skin:String = 'Arrow-splash';
 		if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0 && PlayState.SONG.useCustomNoteStyle)
-			skin = PlayState.SONG.noteStyle + "-splash";
+			skin = PlayState.SONG.noteStyle + (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "") + "-splash";
 
 		loadAnims(skin);
 
@@ -41,8 +41,41 @@ class NoteSplash extends FlxSprite
 		{
 			texture = 'Arrow-splash';
 			if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0)
-				texture = PlayState.SONG.noteStyle + "-splash" + (noteTypeIs == 2 ? "-duar" : "");
+				texture = PlayState.SONG.noteStyle
+					+ (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "")
+					+ "-splash"
+					+ (noteTypeIs == 2 ? "-duar" : "");
 		}
+
+		antialiasing = FlxG.save.data.antialiasing && !texture.contains("pixel"); // JOELwindows7: decide antialiasing!
+
+		if (textureLoaded != texture)
+		{
+			loadAnims(texture);
+		}
+		// colorSwap.hue = hueColor;
+		// colorSwap.saturation = satColor;
+		// colorSwap.brightness = brtColor;
+		offset.set(10, 10);
+
+		var animNum:Int = FlxG.random.int(1, 2);
+		animation.play('note' + note + '-' + animNum, true);
+		if (animation.curAnim != null)
+			animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
+	}
+
+	public function bruteForceSetupNoteSplash(x:Float, y:Float, note:Int = 0, texture:String = null, hueColor:Float = 0, satColor:Float = 0,
+			brtColor:Float = 0)
+	{
+		setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
+		alpha = 0.6;
+
+		if (texture == null)
+		{
+			texture = 'Arrow-splash';
+		}
+
+		antialiasing = FlxG.save.data.antialiasing && !texture.contains("pixel"); // JOELwindows7: decide antialiasing!
 
 		if (textureLoaded != texture)
 		{

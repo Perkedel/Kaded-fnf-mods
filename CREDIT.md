@@ -534,6 +534,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.fontspace.com/category/tech Fontspace. lots of more techy fonts! A-atmosphere too! pls where link!
 - https://gamebanana.com/tools/7923 catt47. cool notes for fnf mods, for free. Psyched more notes!
 - https://gamebanana.com/mods/372232 Cherry Kai (vCherry.kAI.16) (*Can use, just credit*). Cherry Noteskin yeah!
+- https://gamebanana.com/mods/360401 Epoli (Pls credit). The Note splash for pixel yey!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

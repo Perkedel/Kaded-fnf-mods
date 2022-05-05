@@ -533,8 +533,11 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 			meta.diffs = diffsThatExist;
 
-			if (diffsThatExist.length != 3)
+			if (diffsThatExist.length < 3) // JOELwindows7: was `!= 3`. yess.
+			{
 				trace("I ONLY FOUND " + diffsThatExist);
+				Debug.displayAlert(meta.songName + " Chart missing diff", "I ONLY FOUND " + diffsThatExist);
+			}
 
 			FreeplayState.songData.set(songId, diffs);
 			trace('loaded diffs for ' + songId);
@@ -1128,11 +1131,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 	// JOELwindows7: copy from above but this time it set selection number
 	function goToSelection(change:Int = 0)
 	{
-		#if newgrounds
-		// NGio.logEvent('Fresh');
-		#end
-
-		// NGio.logEvent('Fresh');
+		// JOELwindows7: PAIN IS TEMPORARY, GLORY IS FOREVER! lol wintergatan
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		// JOELwindows7: only proceed if loaded
@@ -1146,16 +1145,84 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
+		if (songs[curSelected].diffs.length != 3)
+		{
+			switch (songs[curSelected].diffs[0])
+			{
+				case "Easy":
+					curDifficulty = 0;
+				case "Normal":
+					curDifficulty = 1;
+				case "Hard":
+					curDifficulty = 2;
+			}
+		}
+
 		// selector.y = (70 * curSelected) + 30;
+
+		// adjusting the highscore song name to be compatible (changeSelection)
+		// would read original scores if we didn't change packages
+		var songHighscore = StringTools.replace(songs[curSelected].songName, " ", "-");
+		switch (songHighscore)
+		{
+			case 'Dad-Battle':
+				songHighscore = 'Dadbattle';
+			case 'Philly-Nice':
+				songHighscore = 'Philly';
+			case 'M.I.L.F':
+				songHighscore = 'Milf';
+		}
 
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		combo = Highscore.getCombo(songHighscore, curDifficulty);
 		// lerpScore = 0;
 		#end
 
+		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+		diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+
 		#if PRELOAD_ALL
-		FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+		if (songs[curSelected].songCharacter == "sm")
+		{
+			#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
+			var data = songs[curSelected];
+			trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
+			var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+			var sound = new Sound();
+			sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+			FlxG.sound.playMusic(sound);
+			#end
+		}
+		else
+			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
 		#end
+
+		var hmm;
+		try
+		{
+			hmm = songData.get(songs[curSelected].songName)[curDifficulty];
+			if (hmm != null)
+			{
+				Conductor.changeBPM(hmm.bpm);
+				GameplayCustomizeState.freeplayBf = hmm.player1;
+				GameplayCustomizeState.freeplayDad = hmm.player2;
+				GameplayCustomizeState.freeplayGf = hmm.gfVersion;
+				GameplayCustomizeState.freeplayNoteStyle = hmm.noteStyle;
+				GameplayCustomizeState.freeplayStage = hmm.stage;
+				GameplayCustomizeState.freeplaySong = hmm.songId;
+				GameplayCustomizeState.freeplayWeek = songs[curSelected].week;
+			}
+		}
+		catch (ex)
+		{
+		}
+
+		if (openedPreview)
+		{
+			closeSubState();
+			openSubState(new DiffOverview());
+		}
 
 		var bullShit:Int = 0;
 
