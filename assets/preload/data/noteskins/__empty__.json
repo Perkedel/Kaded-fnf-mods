@@ -1,12 +1,12 @@
 {
     "name": "empty",
     "displayName": "Template Noteskins JSON",
-    "noteskinPath": "",
-    "noteskinMinePath": "",
+    "noteskinPath": "Arrows",
+    "noteskinMinePath": "Arrows-mine",
     "noteskinImportantPath": "",
     "noteskinNeverPath": "",
     "noteskinSpecialPath": "",
-    "splashPath": "",
-    "splashMinePath": "",
+    "splashPath": "'Arrows-splash",
+    "splashMinePath": "Arrows-splash-duar",
     "isPixel": false
 }

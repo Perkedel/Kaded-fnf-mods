@@ -17,7 +17,7 @@ class NoteSplash extends FlxSprite
 	{
 		super(x, y);
 
-		var skin:String = 'Arrow-splash';
+		var skin:String = 'Arrows-splash';
 		if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0 && PlayState.SONG.useCustomNoteStyle)
 			skin = PlayState.SONG.noteStyle + (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "") + "-splash";
 
@@ -39,7 +39,7 @@ class NoteSplash extends FlxSprite
 
 		if (texture == null)
 		{
-			texture = 'Arrow-splash';
+			texture = 'Arrows-splash';
 			if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0)
 				texture = PlayState.SONG.noteStyle
 					+ (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "")
@@ -94,8 +94,10 @@ class NoteSplash extends FlxSprite
 
 	function loadAnims(skin:String)
 	{
+		// JOELwindows7: now with pixel!
 		frames = Paths.doesTextAssetExist(Paths.sparrowXml("noteskins/" + skin,
-			"shared")) ? Paths.getSparrowAtlas("noteskins/" + skin) : Paths.getSparrowAtlas("noteskins/" + ("Arrow-splash" + (noteTypeIs == 2 ? "-duar" : "")));
+			"shared")) ? Paths.getSparrowAtlas("noteskins/" + skin) : Paths.getSparrowAtlas("noteskins/"
+				+ ("Arrows" + (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "") + "-splash" + (noteTypeIs == 2 ? "-duar" : "")));
 		for (i in 1...3)
 		{
 			animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);

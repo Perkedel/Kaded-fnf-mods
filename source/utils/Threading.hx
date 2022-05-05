@@ -65,8 +65,8 @@ class Threading
 	/**
 	 * Create Future variable that will its value will appear later at some time, idk
 	 * @param ofThis the variable instance
-	 * @param completedCallback function to call when the value is ready
-	 * @param errorCallback function to call when there is error
+	 * @param completedCallback to be registered function to call when the value is ready
+	 * @param errorCallback to be registered function to call when there is error
 	 * @return Future<Dynamic>
 	 */
 	public static function createFuture(ofThis:Future<Dynamic>, completedCallback:Dynamic->Void, errorCallback:Dynamic->Void):Future<Dynamic>

@@ -371,6 +371,13 @@ class KadeEngineData
 		if (FlxG.save.data.overrideNoteskins == null)
 			FlxG.save.data.overrideNoteskins = false;
 
+		// JOELwindows7: Toby-Fox tale character name. not to be confused with your own / player name
+		if (FlxG.save.data.radiationName == null)
+			FlxG.save.data.radiationName = "Ioniq";
+		// Toby "Radiation" Fox. since we went on "Sorento" with Deltarune && Sorento happens to be Kia Sorento,
+		// Then eh whatever why not call this character for Rhythm Tale / Rune "Ioniq" idk.. because
+		// We made our own Sky, drives Hyundai IONIQ 5 lmao!
+
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
 		KeyBinds.gamepad = gamepad != null;

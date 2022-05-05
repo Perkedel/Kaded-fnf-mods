@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="Arrows-pixel-splash.png">
+<TextureAtlas imagePath="Arrows-pixel-splash-duar.png">
 	<!-- Created with Adobe Animate version 21.0.9.42677 -->
 	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="note splash blue 10000" x="4" y="4" width="220" height="212" frameX="-45" frameY="-48" frameWidth="334" frameHeight="329"/>
