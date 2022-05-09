@@ -69,11 +69,13 @@ class Threading
 	 * @param errorCallback to be registered function to call when there is error
 	 * @return Future<Dynamic>
 	 */
-	public static function createFuture(ofThis:Future<Dynamic>, completedCallback:Dynamic->Void, errorCallback:Dynamic->Void):Future<Dynamic>
+	public static function createFuture(ofThis:Future<Dynamic>, completedCallback:Dynamic->Void, errorCallback:Dynamic->Void,
+			progressCallback:(Int,Int)->Void):Future<Dynamic>
 	{
 		// copy from mod item list loading icons
 		ofThis.onComplete(completedCallback);
 		ofThis.onError(errorCallback);
+		ofThis.onProgress(progressCallback);
 		return ofThis;
 	}
 }

@@ -3,1430 +3,1431 @@
     ,"charter" : "JOELwindows7"
     ,"generatedBy" : "charting"
     ,"song" : {
-         "strumProfile" : "Dance-Single"
-        ,"isCreditRoll" : false
-        ,"delayBeforeStart" : 0
+         "songName" : "Monkeys Spinning Monkeys"
         ,"videoPath" : ""
-        ,"songName" : "Monkeys Spinning Monkeys"
-        ,"hasVideo" : false
+        ,"delayBeforeStart" : 0
+        ,"isCreditRoll" : false
+        ,"strumProfile" : "Dance-Single"
         ,"notes" : [
              {
-                 "betterSectionNotes" : [
+                 "endTime" : 1666.66666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 0
-                ,"changeBPM" : false
-                ,"endTime" : 1666.66666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 3333.33333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 1666.66666666667
-                ,"changeBPM" : false
-                ,"endTime" : 3333.33333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 5000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 3333.33333333333
-                ,"changeBPM" : false
-                ,"endTime" : 5000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 6666.66666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 5000
-                ,"changeBPM" : false
-                ,"endTime" : 6666.66666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 8333.33333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 6666.66666666667
-                ,"changeBPM" : false
-                ,"endTime" : 8333.33333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 10000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 8333.33333333333
-                ,"changeBPM" : false
-                ,"endTime" : 10000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 11666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 10000
-                ,"changeBPM" : false
-                ,"endTime" : 11666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 13333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 11666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 13333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 15000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 13333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 15000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 16666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 15000
-                ,"changeBPM" : false
-                ,"endTime" : 16666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 18333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 16666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 18333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 20000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 18333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 20000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 21666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 20000
-                ,"changeBPM" : false
-                ,"endTime" : 21666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 23333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 21666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 23333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 25000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 23333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 25000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 26666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 25000
-                ,"changeBPM" : false
-                ,"endTime" : 26666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 28333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 26666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 28333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 30000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 28333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 30000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 31666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 30000
-                ,"changeBPM" : false
-                ,"endTime" : 31666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 33333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 31666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 33333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 35000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 33333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 35000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 36666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 35000
-                ,"changeBPM" : false
-                ,"endTime" : 36666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 38333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 36666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 38333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 40000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 38333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 40000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 41666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 40000
-                ,"changeBPM" : false
-                ,"endTime" : 41666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 43333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 41666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 43333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 45000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 43333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 45000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 46666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 45000
-                ,"changeBPM" : false
-                ,"endTime" : 46666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 48333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 46666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 48333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 50000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 48333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 50000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 51666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 50000
-                ,"changeBPM" : false
-                ,"endTime" : 51666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 53333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 51666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 53333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 55000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 53333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 55000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 56666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 55000
-                ,"changeBPM" : false
-                ,"endTime" : 56666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 58333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 56666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 58333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 60000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 58333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 60000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 61666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 60000
-                ,"changeBPM" : false
-                ,"endTime" : 61666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 63333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 61666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 63333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 65000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 63333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 65000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 66666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 65000
-                ,"changeBPM" : false
-                ,"endTime" : 66666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 68333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 66666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 68333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 70000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 68333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 70000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 71666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 70000
-                ,"changeBPM" : false
-                ,"endTime" : 71666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 73333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 71666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 73333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 75000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 73333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 75000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 76666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 75000
-                ,"changeBPM" : false
-                ,"endTime" : 76666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 78333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 76666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 78333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 80000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 78333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 80000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 81666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 80000
-                ,"changeBPM" : false
-                ,"endTime" : 81666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 83333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 81666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 83333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 85000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 83333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 85000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 86666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 85000
-                ,"changeBPM" : false
-                ,"endTime" : 86666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 88333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 86666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 88333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 90000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 88333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 90000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 91666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 90000
-                ,"changeBPM" : false
-                ,"endTime" : 91666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 93333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 91666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 93333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 95000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 93333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 95000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 96666.6666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 95000
-                ,"changeBPM" : false
-                ,"endTime" : 96666.6666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 98333.3333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 96666.6666666667
-                ,"changeBPM" : false
-                ,"endTime" : 98333.3333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 100000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 98333.3333333333
-                ,"changeBPM" : false
-                ,"endTime" : 100000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 101666.666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 100000
-                ,"changeBPM" : false
-                ,"endTime" : 101666.666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 103333.333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 101666.666666667
-                ,"changeBPM" : false
-                ,"endTime" : 103333.333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 105000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 103333.333333333
-                ,"changeBPM" : false
-                ,"endTime" : 105000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 106666.666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 105000
-                ,"changeBPM" : false
-                ,"endTime" : 106666.666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 108333.333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 106666.666666667
-                ,"changeBPM" : false
-                ,"endTime" : 108333.333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 110000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 108333.333333333
-                ,"changeBPM" : false
-                ,"endTime" : 110000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 111666.666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 110000
-                ,"changeBPM" : false
-                ,"endTime" : 111666.666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 113333.333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 111666.666666667
-                ,"changeBPM" : false
-                ,"endTime" : 113333.333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 115000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 113333.333333333
-                ,"changeBPM" : false
-                ,"endTime" : 115000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 116666.666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 115000
-                ,"changeBPM" : false
-                ,"endTime" : 116666.666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 118333.333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 116666.666666667
-                ,"changeBPM" : false
-                ,"endTime" : 118333.333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 120000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 118333.333333333
-                ,"changeBPM" : false
-                ,"endTime" : 120000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 121666.666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 120000
-                ,"changeBPM" : false
-                ,"endTime" : 121666.666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 123333.333333333
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 121666.666666667
-                ,"changeBPM" : false
-                ,"endTime" : 123333.333333333
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 125000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 123333.333333333
-                ,"changeBPM" : false
-                ,"endTime" : 125000
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
             ,{
-                 "betterSectionNotes" : [
+                 "endTime" : 126666.666666667
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"altAnim" : false
-                ,"CPUAltAnim" : false
                 ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
+                ,"changeBPM" : false
                 ,"bpm" : 144
                 ,"startTime" : 125000
-                ,"changeBPM" : false
-                ,"endTime" : 126666.666666667
-                ,"playerAltAnim" : false
-                ,"mustHitSection" : true
             }
         ]
+        ,"hasVideo" : false
         ,"creditRunsOnce" : false
         ,"isCheer" : false
-        ,"invisibleCountdown" : false
-        ,"forceHscriptModchart" : false
         ,"cutsceneType" : "none"
-        ,"hasTankmanVideo" : false
+        ,"forceHscriptModchart" : false
+        ,"invisibleCountdown" : false
         ,"loadNoteStyleOtherWayAround" : false
-        ,"epilogueTankmanVideoPath" : "null"
+        ,"hasTankmanVideo" : false
         ,"useCustomStage" : false
-        ,"useCustomNoteStyle" : false
-        ,"artist" : "Kevin Macleod"
+        ,"epilogueTankmanVideoPath" : "null"
         ,"speed" : 1
-        ,"hasEpilogueChat" : false
+        ,"artist" : "Kevin Macleod"
+        ,"useCustomNoteStyle" : false
         ,"sectionLengths" : [
 
         ]
+        ,"hasEpilogueChat" : false
         ,"forceLuaModchart" : false
-        ,"outroCutSceneDoneManually" : false
-        ,"hasDialogueChat" : false
         ,"epilogueVideoPath" : ""
-        ,"introCutSceneDoneManually" : false
-        ,"preferredNoteAmount" : 4
-        ,"hasEpilogueVideo" : false
+        ,"hasDialogueChat" : false
+        ,"outroCutSceneDoneManually" : false
         ,"charter" : "JOELwindows7"
+        ,"hasEpilogueVideo" : false
+        ,"preferredNoteAmount" : 4
+        ,"introCutSceneDoneManually" : false
         ,"delayAfterFinish" : 0
         ,"strumCounts" : 4
-        ,"uiType" : "normal"
         ,"sections" : 0
+        ,"uiType" : "normal"
         ,"reversedCountdown" : false
-        ,"tankmanVideoPath" : "null"
-        ,"player1" : "bf-covid"
         ,"songId" : "monkeys-spinning-monkeys"
+        ,"player1" : "bf-covid"
+        ,"tankmanVideoPath" : "null"
         ,"player2" : "hookx"
-        ,"forceLuaModchartLegacy" : false
+        ,"isHey" : false
         ,"diffVariables" : {
 
         }
-        ,"isHey" : false
+        ,"forceLuaModchartLegacy" : false
         ,"offset" : 0
-        ,"song" : "monkeys-spinning-monkeys"
         ,"isSpooky" : false
-        ,"difficultyId" : "normal"
+        ,"song" : "monkeys-spinning-monkeys"
         ,"validScore" : true
+        ,"difficultyId" : "normal"
         ,"variables" : {
 
         }
         ,"isMoody" : false
         ,"gfVersion" : "gf-covid"
+        ,"chartVersion" : "KE1"
         ,"eventObjects" : [
              {
                  "_hxcls" : "Event"
@@ -1438,15 +1439,14 @@
                 ,"type" : "BPM Change"
             }
         ]
-        ,"chartVersion" : "KE1"
-        ,"difficulty" : 0
-        ,"hasEpilogueTankmanVideo" : false
         ,"allowedToHeadbang" : true
-        ,"difficultyStrength" : 9e+16
+        ,"hasEpilogueTankmanVideo" : false
+        ,"difficulty" : 0
         ,"silentCountdown" : false
-        ,"stage" : "stage"
+        ,"difficultyStrength" : 9e+16
         ,"needsVoices" : false
-        ,"bpm" : 144
+        ,"stage" : "stage"
         ,"noteStyle" : "normal"
+        ,"bpm" : 144
     }
 }
