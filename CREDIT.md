@@ -537,7 +537,9 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/mods/360401 Epoli (Pls credit). The Note splash for pixel yey!
 - https://www.uuidgenerator.net/version4 generate UUID online now!
 - http://guid.one/ generate GUID too
-- 
+- app.sketchup.com/app?3dwid=b46ef9dd-2f75-4d0b-9415-9a993f59b286 Ghost. Hyundai IONIQ 5 the only $0 model we can get
+- ddg.gg & search `qr 6ac4ea02-0194-45e4-a1cf-a636af63ab98` to generate QR code. the license plate id of this car
+- https://youtu.be/EwB3HWcUdEk Plaster material for the rough salt ground
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

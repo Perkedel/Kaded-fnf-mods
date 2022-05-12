@@ -65,12 +65,13 @@ class Threading
 	/**
 	 * Create Future variable that will its value will appear later at some time, idk
 	 * @param ofThis the variable instance
-	 * @param completedCallback to be registered function to call when the value is ready
-	 * @param errorCallback to be registered function to call when there is error
+	 * @param completedCallback registere the function to be called when the value is ready
+	 * @param errorCallback registered the function to be called when there is error
+	 * @param progressCallback registered the function to be called when progressing the future
 	 * @return Future<Dynamic>
 	 */
 	public static function createFuture(ofThis:Future<Dynamic>, completedCallback:Dynamic->Void, errorCallback:Dynamic->Void,
-			progressCallback:(Int,Int)->Void):Future<Dynamic>
+			progressCallback:(Int, Int) -> Void):Future<Dynamic>
 	{
 		// copy from mod item list loading icons
 		ofThis.onComplete(completedCallback);

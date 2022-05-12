@@ -34,11 +34,15 @@ class LoadingState extends MusicBeatState
 	// var loadingBar:ProgressBar;
 	var loadBar:FlxSprite; // JOELwindows7: luckydog7's version
 
+	var selectImageNumber:Int = 0; // JOELwindows7: choose loading images
+
 	function new(target:FlxState, stopMusic:Bool)
 	{
 		super();
 		this.target = target;
 		this.stopMusic = stopMusic;
+		// JOELwindows7: choose loading images randomly out of available we have
+		this.selectImageNumber = FlxG.random.int(0, Perkedel.MAX_NUMBER_OF_LOADING_IMAGES);
 	}
 
 	override function create()
@@ -48,7 +52,8 @@ class LoadingState extends MusicBeatState
 		// the luckydog7's reverse engineer week7 loading bg
 		bg = new FlxSprite();
 		// bg.loadGraphic(Paths.image('funkay'));
-		bg.loadGraphic(Paths.image('loading/loading_screen', 'shared')); // JOELwindows7: the week7 loading screen LFM edition
+		// JOELwindows7: yoink image above from https://github.com/luckydog7/Funkin-android/blob/master/assets/preload/images/funkay.png
+		bg.loadGraphic(Paths.image('loading/loading_screen' + Std.string(selectImageNumber), 'shared')); // JOELwindows7: the week7 loading screen LFM edition
 		bg.setGraphicSize(FlxG.width);
 		bg.updateHitbox();
 		bg.antialiasing = FlxG.save.data.antialiasing; // JOELwindows7: must set antialiasing based on setting right now!

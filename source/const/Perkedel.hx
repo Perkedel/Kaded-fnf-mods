@@ -46,6 +46,7 @@ class Perkedel
 	public static final STARTUP_TOAST_TITLE:String = "Cool and good";
 	public static final STARTUP_TOAST_DESCRIPTION:String = "Welcome to Last Funkin Moments\n Today's Kontraktua Majoris\n (2 of 3): Sky, Whitty";
 	public static final MAX_AVAILABLE_JUDGEMENT_RATING:Int = 3; // only up to sick we have.
+	public static final MAX_NUMBER_OF_LOADING_IMAGES:Int = 3; // how many loading backdrops do we have here?
 	public static final DISCLAIMER_SAY:String = "Disclaimer";
 	public static final GOING_TO_OBSOLETE:String = "ALERT!\n"
 		+ "\nThis mod is going to obsolete in favour of Friday Night Funkin Moment: Full Ass "
