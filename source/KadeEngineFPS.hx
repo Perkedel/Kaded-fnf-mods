@@ -46,6 +46,7 @@ class KadeEngineFPS extends TextField
 	public static var showLoadingText:Bool; // JOELwindows7: visibility of loading text
 
 	public var memoryUsage:Float;
+	public var imInDanger:Bool = false; // JOELwindows7: flag whether memory is low or FPS too low
 
 	public var bitmap:Bitmap;
 
@@ -224,6 +225,22 @@ class KadeEngineFPS extends TextField
 				if (skippedFrames > (FlxG.save.data.fpsCap / 3))
 					skippedFrames = 0;
 			}
+			else
+			{
+				// JOELwindows7: the color signifies danger Psychedly then.
+				if (imInDanger)
+				{
+					// textColor = FlxColor.fromRGB(255, 0, 0);
+					// textColor = FlxColor.RED;
+					(cast(Lib.current.getChildAt(0), Main)).changeFPSColor(FlxColor.RED);
+				}
+				else
+				{
+					// textColor = FlxColor.fromRGB(255, 255, 255);
+					// textColor = FlxColor.WHITE;
+					(cast(Lib.current.getChildAt(0), Main)).changeFPSColor(FlxColor.WHITE);
+				}
+			}
 
 		currentTime += deltaTime;
 		times.push(currentTime);
@@ -238,6 +255,10 @@ class KadeEngineFPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
+			// JOELwindows7: here comes the Psyched memory RAM megas!
+			// https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/openfl/display/FPS.hx
+			// var memoryMegas:Float = 0; // already globalized!
+
 			/*
 				text = (FlxG.save.data.fps ? "FPS: "
 					+ currentFPS
@@ -251,12 +272,27 @@ class KadeEngineFPS extends TextField
 					);
 			 */
 			// JOELwindows7: Kade, STOP! this kind of comparison is cringe! why not do it like this:
-			text = (FlxG.save.data.fps ? "FPS: " + currentFPS + "\n" : "")
-				+ (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "")
-				+ (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "")
-				+ extraInfo; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
+			text = (FlxG.save.data.fps ? "FPS: " + currentFPS + "\n" : "");
+			#if openfl
+			// JOELwindows7: get RAM usage Psychedly.
+			memoryUsage = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
+			text += "\nMemory: " + memoryUsage + " MB";
+			#end
+			text += (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "");
+			text += (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "");
+			text += extraInfo; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
 			// remember to have \n at the beginning of the line at available if case.
 			// No, at the end of line at available if case. + "\n" one.
+
+			// JOELwindows7: psyched check danger status
+			if (memoryUsage > 3000 || currentFPS <= FlxG.save.data.fpsCap / 2)
+			{
+				imInDanger = true;
+			}
+			else
+			{
+				imInDanger = false;
+			}
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();
@@ -264,6 +300,8 @@ class KadeEngineFPS extends TextField
 			text += "\nstageDC: " + Context3DStats.contextDrawCalls(DrawCallContext.STAGE);
 			text += "\nstage3DDC: " + Context3DStats.contextDrawCalls(DrawCallContext.STAGE3D);
 			#end
+			// JOELwindows7: make sure there's a newline at the end of the line due to bug last line ommited here.
+			text += "\n";
 		}
 
 		if (FlxG.save.data.fpsBorder)
