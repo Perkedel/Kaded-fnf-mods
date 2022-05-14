@@ -77,6 +77,7 @@ jobs:
           haxelib install haxeui-flixel
           haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
           haxelib install yagp
+          haxelib git crashdumper http://github.com/larsiusprime/crashdumper
           haxelib run lime rebuild yagp mac
           haxelib list
           ls

@@ -1,0 +1,119 @@
+{
+    "name": "Sky (mad)",
+    "displayName": "Sky",
+    "asset": "characters/sky_mad_assets",
+    "barColor": "#000000",
+    "flipX": false,
+    "startingAnim": "danceRight",
+    "info": [
+        "get info from here:",
+        "https://github.com/Perkedel/bb-fnf-mods/blob/GitHackeh/source_sky/Character.hx",
+        "and asset from:",
+        "https://github.com/Perkedel/bb-fnf-mods/tree/GitHackeh/assetsSKY/shared/images/sky"
+    ],
+    "heartOrgans": [{
+        "character": "sky",
+        "isEmulator": true,
+        "initHR": 70,
+        "maxHR": 400,
+        "minHR": 70,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "phobia": {
+        "lightningStorm": false,
+        "cancelCulture": true
+    },
+    "animations": [{
+            "name": "danceLeft",
+            "prefix": "sky mad idle",
+            "offsets": [0, 0],
+            "frameIndices": [8, 9, 10, 11, 12, 13, 14, 15]
+        },
+        {
+            "name": "danceRight",
+            "prefix": "sky mad idle",
+            "offsets": [0, 0],
+            "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
+        },
+        {
+            "name": "singUP",
+            "prefix": "sky mad up",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "sky mad left",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "sky mad right",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "sky mad down",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "ohh",
+            "prefix": "sky mad oh",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "grr",
+            "prefix": "sky mad grr",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "huh",
+            "prefix": "sky mad huh",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "ugh",
+            "prefix": "sky mad ugh",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "manifest",
+            "prefix": "sky mad manifest",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "danceLeft-alt",
+            "prefix": "sky mad alt idle",
+            "offsets": [0, 0],
+            "frameIndices": [8, 9, 10, 11, 12, 13, 14, 15]
+        },
+        {
+            "name": "danceRight-alt",
+            "prefix": "sky mad alt idle",
+            "offsets": [0, 0],
+            "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
+        },
+        {
+            "name": "singUP-alt",
+            "prefix": "sky mad alt up",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singLEFT-alt",
+            "prefix": "sky mad alt left",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singRIGHT-alt",
+            "prefix": "sky mad alt right",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singDOWN-alt",
+            "prefix": "sky mad alt down",
+            "offsets": [0, 0]
+        }
+    ]
+}

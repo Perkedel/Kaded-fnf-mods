@@ -77,6 +77,7 @@ import flixel.addons.effects.FlxTrailArea;
 import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxWaveEffect;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.ui.FlxUIText;
 import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -168,8 +169,8 @@ class PlayState extends MusicBeatState
 	var numOfMissNoteSfx:Int = 3;
 
 	var songLength:Float = 0;
-	var kadeEngineWatermark:FlxText;
-	var reuploadWatermark:FlxText; // JOELwindows7: reupload & no credit protection.
+	var kadeEngineWatermark:FlxUIText;
+	var reuploadWatermark:FlxUIText; // JOELwindows7: reupload & no credit protection.
 
 	// last resort is to have links shared in video, hard coded, hard embedded.
 	// hopefully the "thiefs" got displeased lmao!
@@ -1091,14 +1092,14 @@ class PlayState extends MusicBeatState
 		if (executeModchart)
 		{
 			luaModchart = ModchartState.createModchartState(isStoryMode);
-			luaModchart.executeState('start', [PlayState.SONG.songId]);
+			// luaModchart.executeState('start', [PlayState.SONG.songId]);
 			luaModchart.setVar('songLength', songLength);
 			luaModchart.setVar('variables', SONG.variables);
 			luaModchart.setVar('diffVariables', SONG.diffVariables);
 		}
 		if (executeStageScript && stageScript != null)
 		{
-			stageScript.executeState('start', [PlayState.SONG.songId]);
+			// stageScript.executeState('start', [PlayState.SONG.songId]);
 			stageScript.setVar('songLength', songLength);
 			stageScript.setVar('variables', SONG.variables);
 			stageScript.setVar('diffVariables', SONG.diffVariables);
@@ -1108,31 +1109,43 @@ class PlayState extends MusicBeatState
 		if (executeModHscript)
 		{
 			hscriptModchart = HaxeScriptState.createModchartState();
-			hscriptModchart.executeState('start', [PlayState.SONG.songId]);
 			hscriptModchart.setVar('executeModchart', executeModchart);
 			hscriptModchart.setVar('executeModHscript', executeModHscript);
+			hscriptModchart.setVar('executeStageHscript', executeStageHscript);
+			hscriptModchart.setVar('executeStageScript', executeStageScript);
 			hscriptModchart.setVar('songLength', songLength);
 			hscriptModchart.setVar('variables', SONG.variables);
 			hscriptModchart.setVar('diffVariables', SONG.diffVariables);
+			// hscriptModchart.executeState('start', [PlayState.SONG.songId]);
 		}
 		if (executeStageHscript && stageHscript != null)
 		{
-			stageHscript.executeState('start', [PlayState.SONG.songId]);
+			stageHscript.setVar('executeModchart', executeModchart);
+			stageHscript.setVar('executeModHscript', executeModHscript);
+			stageHscript.setVar('executeStageHscript', executeStageHscript);
+			stageHscript.setVar('executeStageScript', executeStageScript);
 			stageHscript.setVar('songLength', songLength);
 			stageHscript.setVar('variables', SONG.variables);
 			stageHscript.setVar('diffVariables', SONG.diffVariables);
+			// stageHscript.executeState('start', [PlayState.SONG.songId]);
 		}
+		// JOELwindows7: end of hscript init
+
 		// JOELwindows7: tell Lua script whether hscript is running too
 		#if FEATURE_LUAMODCHART
 		if (executeModchart)
 		{
 			luaModchart.setVar('executeModchart', executeModchart);
 			luaModchart.setVar('executeModHscript', executeModHscript);
+			luaModchart.setVar('executeStageHscript', executeStageHscript);
+			luaModchart.setVar('executeStageScript', executeStageScript);
 		}
 		if (executeStageScript && stageScript != null)
 		{
 			stageScript.setVar('executeModchart', executeModchart);
 			stageScript.setVar('executeModHscript', executeModHscript);
+			stageScript.setVar('executeStageHscript', executeStageHscript);
+			stageScript.setVar('executeStageScript', executeStageScript);
 		}
 		#end
 
@@ -1149,6 +1162,9 @@ class PlayState extends MusicBeatState
 			new LuaCharacter(boyfriend, "boyfriend").Register(ModchartState.lua);
 		}
 		#end
+
+		// JOELwindows7: ultimately, call start to all modcharts
+		executeModchartState("start", [PlayState.SONG.songId]);
 
 		var index = 0;
 
@@ -1273,7 +1289,7 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: add reupload watermark
 		// usually, YouTube mod showcase only shows gameplay
 		// and there are some naughty youtubers who did not credit link in description neither comment.
-		reuploadWatermark = new FlxText((FlxG.width / 2)
+		reuploadWatermark = new FlxUIText((FlxG.width / 2)
 			- 100, (FlxG.height / 2)
 			+ 50, 0,
 			"Download Last Funkin Moments ($0) https://github.com/Perkedel/kaded-fnf-mods,\n"
@@ -1298,11 +1314,11 @@ class PlayState extends MusicBeatState
 		add(reuploadWatermark);
 		reuploadWatermark.visible = false;
 		// follow this example, you must be protected too from those credit-less YouTubers the bastards!
-		// We anchored the watermark dead center, just 50 px down abit.
+		// We anchored the watermark dead center, just 50 px down abit. idk.. we centered it.
 
 		// JOELwindows7: I add watermark Perkedel Mod
 		// Add Kade Engine watermark
-		kadeEngineWatermark = new FlxText(4, healthBarBG.y
+		kadeEngineWatermark = new FlxUIText(4, healthBarBG.y
 			+ 50, 0, // SONG.songName
 			SONG.songId // JOELwindows7: damn, you should've used Song ID instead. the top bar already covered the name for us!
 			+ (FlxMath.roundDecimal(songMultiplier, 2) != 1.00 ? " (" + FlxMath.roundDecimal(songMultiplier, 2) + "x)" : "")
@@ -2338,17 +2354,19 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		#if FEATURE_LUAMODCHART
-		if (executeModchart)
-			luaModchart.executeState("songStart", [null]);
-		// JOELwindows7: here on the other side too song started
-		if (executeStageScript)
-			stageScript.executeState("songStart", [null]);
-		#end
-		if (executeModHscript)
-			hscriptModchart.executeState('songStart', [null]);
-		if (executeStageHscript)
-			stageHscript.executeState('songStart', [null]);
+		// #if FEATURE_LUAMODCHART
+		// if (executeModchart)
+		// 	luaModchart.executeState("songStart", [null]);
+		// // JOELwindows7: here on the other side too song started
+		// if (executeStageScript)
+		// 	stageScript.executeState("songStart", [null]);
+		// #end
+		// if (executeModHscript)
+		// 	hscriptModchart.executeState('songStart', [null]);
+		// if (executeStageHscript)
+		// 	stageHscript.executeState('songStart', [null]);
+		// JOELwindows7: better unified function!
+		executeModchartState('songStart',[null]);
 
 		#if FEATURE_DISCORD
 		// Updating Discord Rich Presence (with Time Left)
@@ -6195,6 +6213,26 @@ class PlayState extends MusicBeatState
 		accuracy = Math.max(0, totalNotesHit / totalPlayed * 100);
 		accuracyDefault = Math.max(0, totalNotesHitDefault / totalPlayed * 100);
 
+		// JOELwindows7: set var of those modcharts!
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.setVar('accuracy', accuracy);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.setVar('accuracy', accuracy);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.setVar('accuracy', accuracy);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.setVar('accuracy', accuracy);
+		}
+
 		// JOELwindows7: here's where we moved. the bottom score text
 		scoreTxt.text = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS,
 			(FlxG.save.data.roundAccuracy ? FlxMath.roundDecimal(accuracy, 0) : accuracy), boyfriend.getHeartRate(0), boyfriend.getHeartTier(0));
@@ -8085,6 +8123,61 @@ class PlayState extends MusicBeatState
 	public function pushP()
 	{
 		// TODO: jump all characters in the game. the fun begins if the character skin has yea you know.
+	}
+
+	// JOELwindows7: execute function for each of the modchart available
+	function executeModchartState(name:String, args:Array<Dynamic>)
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.executeState(name, args);
+			// luaModchart.executeState('methodExecutes', [name, args]);
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.executeState(name, args);
+			// stageScript.executeState('methodExecutes', [name, args]);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.executeState(name, args);
+			// hscriptModchart.executeState('methodExecutes', [name, args]);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.executeState(name, args);
+			// stageHscript.executeState('methodExecutes', [name, args]);
+		}
+	}
+
+	// JOELwindows7: set one variable for each of the modchart available
+	function setModchartVar(name:String, value:Dynamic)
+	{
+		#if FEATURE_LUAMODCHART
+		if (executeModchart && luaModchart != null)
+		{
+			luaModchart.setVar(name, value);
+			// luaModchart.executeState('variableChange', [name, value]); // already internalized
+		}
+		if (executeStageScript && stageScript != null)
+		{
+			stageScript.setVar(name, value);
+			// stageScript.executeState('variableChange', [name, value]);
+		}
+		#end
+		if (executeModHscript && hscriptModchart != null)
+		{
+			hscriptModchart.setVar(name, value);
+			// hscriptModchart.executeState('variableChange', [name, value]);
+		}
+		if (executeStageHscript && stageHscript != null)
+		{
+			stageHscript.setVar(name, value);
+			// stageHscript.executeState('variableChange', [name, value]);
+		}
+		// executeModchartState('variableChange',[name,value]); // don't! it can cause recursion, do it manually instead!
 	}
 
 	// JOELwindows7: here manually update heartbeat organs!

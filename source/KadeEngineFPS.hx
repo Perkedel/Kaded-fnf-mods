@@ -1,5 +1,7 @@
 import CoreState;
+#if openfl
 import openfl.system.System;
+#end
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import openfl.Lib;
@@ -276,7 +278,7 @@ class KadeEngineFPS extends TextField
 			#if openfl
 			// JOELwindows7: get RAM usage Psychedly.
 			memoryUsage = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
-			text += "\nMemory: " + memoryUsage + " MB";
+			text += "Memory: " + memoryUsage + " MB\n";
 			#end
 			text += (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "");
 			text += (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "");

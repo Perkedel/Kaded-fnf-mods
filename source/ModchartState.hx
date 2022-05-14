@@ -236,6 +236,9 @@ class ModchartState
 
 		Lua.pushnumber(lua, object);
 		Lua.setglobal(lua, var_name);
+
+		// JOELwindows7: extra tell variable change!
+		executeState("variableChange", [var_name, object]);
 	}
 
 	public function getVar(var_name:String, type:String):Dynamic
@@ -442,7 +445,7 @@ class ModchartState
 				PlayState.instance.addObject(PlayState.dad);
 			}
 		}
-		
+
 		new LuaSprite(sprite, toBeCalled).Register(lua);
 		#end // JOELwindows7: do not register if there is no sprite! null object reference
 
@@ -515,7 +518,7 @@ class ModchartState
 				PlayState.instance.addObject(PlayState.dad);
 			}
 		}
-		
+
 		new LuaGifSprite(sprite, toBeCalled).Register(lua);
 		#end // JOELwindows7: do not register if there is no sprite! null object reference
 
@@ -614,8 +617,8 @@ class ModchartState
 
 		setVar("strumLineY", PlayState.instance.strumLine.y);
 
-		//JOELwindows7: Statusoid
-		setVar("inGameOver", false); //psychedly
+		// JOELwindows7: Statusoid
+		setVar("inGameOver", false); // psychedly
 
 		// JOELwindows7: mirror the variables here!
 		// Colored bg
@@ -652,8 +655,10 @@ class ModchartState
 		setVar("window", Lib.application.window);
 		// end mirror variables
 
+		// JOELwindows7:
 		// init just in case
 		setVar("songLength", 0);
+		setVar("accuracy", PlayState.instance.accuracy);
 
 		// callbacks
 
@@ -703,7 +708,7 @@ class ModchartState
 			Lua_helper.add_callback(lua, "changeDadCharacter", changeDadCharacter);
 
 			Lua_helper.add_callback(lua, "changeBoyfriendCharacter", changeBoyfriendCharacter);
-			
+
 			Lua_helper.add_callback(lua, "changeGirlfriendCharacter", changeGirlfriendCharacter);
 
 			Lua_helper.add_callback(lua, "getProperty", getPropertyByName);
@@ -1973,7 +1978,12 @@ class ModchartState
 	 */
 	public function executeState(name, args:Array<Dynamic>)
 	{
-		return Lua.tostring(lua, callLua(name, args));
+		// JOELwindows7: extra when function called
+		// was immediate return like
+		// return Lua.tostring(lua, callLua(name, args));
+		var result = Lua.tostring(lua, callLua(name, args));
+		callLua("methodExecutes", [name, args]);
+		return result;
 	}
 
 	// JOELwindows7: raw mode pls!

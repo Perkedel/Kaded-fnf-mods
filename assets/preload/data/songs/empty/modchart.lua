@@ -90,6 +90,14 @@ function playerTwoMiss(note, position)
 
 end
 
+function variableChange(name,value)
+
+end
+
+function methodExecutes(name,args)
+
+end
+
 function colorizeColorablebyKey(note, justOne, toWhichBg)
     if note == "left" or note == 0 then
         -- print("set color magenta")

@@ -1,5 +1,12 @@
 package;
 
+import ui.states.debug.WerrorCrashState;
+import openfl.system.System;
+import utils.Initializations;
+#if crashdumper
+import crashdumper.CrashDumper;
+import crashdumper.SessionData;
+#end
 import ui.SplashScreen;
 import plugins.sprites.LoadingBar;
 import GameJolt;
@@ -75,6 +82,11 @@ class Main extends Sprite
 		// public static var midiOut:MidiOut; //JOELwindows7: Grig MIDI out
 	 */
 	// You can pretty much ignore everything from here on - your code should go in your states.
+	// JOELwindows7: Larsius prime crashdumper
+	#if crashdumper
+	public static var crashDumper:CrashDumper;
+	#end
+
 	public static function main():Void
 	{
 		// quick checks
@@ -95,6 +107,9 @@ class Main extends Sprite
 		instance = this;
 
 		super();
+
+		// JOELwindows7: install crashdumper
+		setupCrashDumper();
 
 		// JOELwindows7: Grig midi pls
 		// trace("MIDI out APIs:\n" + MidiOut.getApis());
@@ -357,6 +372,56 @@ class Main extends Sprite
 	}
 
 	// JOELwindows7: mini platform scanner
+	// JOELwindows7: crash trace larsiusprime
+	function setupCrashDumper()
+	{
+		#if crashdumper
+		// https://github.com/larsiusprime/crashdumper/
+		// sample: https://github.com/larsiusprime/crashdumper/blob/master/Example/Source/Main.hx
+		// specific interest: https://github.com/larsiusprime/crashdumper/blob/master/crashdumper/hooks/openfl/HookOpenFL.hx#L100
+		// class: https://github.com/larsiusprime/crashdumper/blob/master/crashdumper/CrashDumper.hx
+		var unique_id:String = SessionData.generateID('${Perkedel.ENGINE_ID}_');
+		// generates unique id: "fooApp_YYYY-MM-DD_HH'MM'SS_CRASH"
+
+		#if flash
+		crashDumper = new CrashDumper(unique_id, null, "http://localhost:8080/result", false, false, werrorCrashPre, werrorCrash, stage);
+		#else
+		crashDumper = new CrashDumper(unique_id, null, "http://localhost:8080/result", false, false, werrorCrashPre, werrorCrash);
+		#end
+		// starts the crashDumper
+		#end
+	}
+
+	#if crashdumper
+	// JOELwindows7: and function to be called on crash yess.
+	function werrorCrash(crashDumpener:CrashDumper)
+	{
+	}
+
+	// JOELwindows7: maybe also add pre-werror dump too?
+	function werrorCrashPre(crashDumpener:CrashDumper)
+	{
+		@:privateAccess {
+			
+			#if flash
+			Debug.displayAlert('WERROR ${crashDumpener.theError}', 'Oh no! Werror:\n${crashDumpener.errorMessageStr()}');
+			#else
+			Debug.displayAlert('WERROR ${crashDumpener.theError.error}', 'Oh no! Werror:\n${crashDumpener.errorMessageStr()}');
+			#end
+			
+		}
+
+		if (!Initializations.isInitialized())
+		{
+			// Application.current.; // where is exit?!?!?!
+			System.exit(1);
+			return;
+		}
+		#if crashdumper
+		FlxG.switchState(new WerrorCrashState(crashDumpener));
+		#end
+	}
+	#end
 }
 // JOELwindows7: Oh my God. extremely complicated since 1.7 changes here yeauw.
 /**

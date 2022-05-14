@@ -31,7 +31,9 @@ class Perkedel
 	public static final MIN_FPS_CAP:Int = 60; // JOELwindows7: usually 60
 	public static final OPTION_CATEGORY_LENGTH:Int = 6; // How many categories on option menu? was 4, now we got 6. no wait that's DFJK.
 	public static final ENGINE_NAME:String = "Last Funkin Moments"; // oh yeah LFM baby!
-	public static final ENGINE_VERSION:String = "2022.04.0"; // current version number yeah!
+	public static final ENGINE_ID:String = "Last-Funkin-Moments"; // oh yeah LFM baby!
+	public static final ENGINE_ABBREVIATE:String = "LFM"; // oh yeah LFM baby!
+	public static final ENGINE_VERSION:String = "2022.05.0"; // current version number yeah!
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
 	public static final ENGINE_VERSION_URL:String = 'https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe'; // here URL check
 	public static final ENGINE_CHANGELOG_PREFIX_URL:String = 'https://odysee.com/@JOELwindows7/LFM-changelog-'; // here URL of change log prefix, appened by what version needed there.
@@ -60,6 +62,11 @@ class Perkedel
 		+ "\nwhich is this Friday Night Funkin: Full Ass. Please use this instead"
 		+ "\nAll mods are available in the Workshop, thancc."
 		+ "\nRemember, buy it legit! yeah.";
+	public static final OBSOLESENCE_MODE:Int = 0; // Raise this to declare obsolete. only do this when Full Ass with modding support available.
+	// Obsolesence stages:
+	// 0: not obsolete. no full ass available yet
+	// 1: going to be. full ass but no modding yet
+	// 2: already obsolete. full ass with modding available.
 	public static final STAY_LONGER_VOUCHER:String = "Stay Longer voucher applied "
 		+ "\n(1 Staylong @ untrash/unprivate; Bonus 15 Staylong for all 3 comebacks):"
 		+ "\n-Sky"

@@ -100,6 +100,66 @@
         "kind": "build",
         "isDefault": true
       }
-    }
+    },
+    {
+      "label": "Test Windows (Debug)",
+      "type": "lime",
+      "targetConfiguration": "Test Windows (Debug)",
+      "command": "test",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Test Windows (Release)",
+      "type": "lime",
+      "targetConfiguration": "Test Windows (Release)",
+      "command": "test",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Test Linux (Debug)",
+      "type": "lime",
+      "targetConfiguration": "Test Linux (Debug)",
+      "command": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Test Linux (Release)",
+      "type": "lime",
+      "targetConfiguration": "Test Linux (Release)",
+      "command": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Test HTML5 (Debug)",
+      "type": "lime",
+      "targetConfiguration": "Test HTML5 (Debug)",
+      "command": "test",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Test HTML5 (Release)",
+      "type": "lime",
+      "targetConfiguration": "Test HTML5 (Release)",
+      "command": "test",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
 	]
 }

@@ -21,6 +21,7 @@ package;
 import flixel.system.FlxSound;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.addons.ui.FlxUISubState;
+import flixel.addons.ui.FlxUIText;
 import flixel.ui.FlxButton;
 import ui.FlxVirtualPad;
 import flixel.input.actions.FlxActionInput;
@@ -176,6 +177,10 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	// JOELwindows7: stuff OpenFl
 	private var _loadingBar = Main.loadingBar;
+
+	// JOELwindows7: metro Fluent section
+	var sectionTitleText:FlxUIText;
+	var contentText:FlxUIText;
 
 	// JOELwindows7: and the control getter
 	inline function get_controls():Controls
@@ -621,7 +626,63 @@ class CoreState extends FlxUIState implements ICoreStating
 	 */
 	public function playSoundEffect(path:String, volume:Float = 1, ?library:String):FlxSound
 	{
-		return FlxG.sound.play(Paths.sound(path, library != ''?library: null), volume);
+		return FlxG.sound.play(Paths.sound(path, library != '' ? library : null), volume);
+	}
+
+	/**
+	 * Set the app section / state to say the title & then appear it.
+	 * @param toSay title of the section
+	 */
+	function setSectionTitle(toSay:String = "Last Funkin Moments"):FlxUIText
+	{
+		try
+		{
+			if (sectionTitleText == null)
+			{
+				sectionTitleText = new FlxUIText(10, 10, 0, toSay, 50);
+				sectionTitleText.scrollFactor.set();
+				add(sectionTitleText);
+			}
+			else
+			{
+				sectionTitleText.text = toSay;
+				sectionTitleText.visible = true;
+			}
+			return sectionTitleText;
+		}
+		catch (e)
+		{
+			throw('WERROR ${e}:${e.message}');
+			return null;
+		}
+	}
+
+	/**
+	 * Set the premade text content to certain say & then appear it.
+	 * @param toSay content of the say
+	 */
+	function setContentText(toSay:String = "Hello Universe"):FlxUIText
+	{
+		try
+		{
+			if (contentText == null)
+			{
+				contentText = new FlxUIText(20, 55, 0, toSay, 14);
+				contentText.scrollFactor.set();
+				add(contentText);
+			}
+			else
+			{
+				contentText.text = toSay;
+				contentText.visible = true;
+			}
+			return contentText;
+		}
+		catch (e)
+		{
+			throw('WERROR ${e}:${e.message}');
+			return null;
+		}
 	}
 
 	function manageMouse():Void
@@ -807,6 +868,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	// JOELwindows7: stuff OpenFl
 	private var _loadingBar = Main.loadingBar;
+
+	// JOELwindows7: metro Fluent section
+	var sectionTitleText:FlxUIText;
+	var contentText:FlxUIText;
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
@@ -1235,6 +1300,62 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 		return FlxG.sound.play(Paths.sound(path, library != '' ? library : null), volume);
 	}
 
+	/**
+	 * Set the app section / state to say the title & then appear it.
+	 * @param toSay title of the section
+	 */
+	function setSectionTitle(toSay:String = "Last Funkin Moments"):FlxUIText
+	{
+		try
+		{
+			if (sectionTitleText == null)
+			{
+				sectionTitleText = new FlxUIText(10, 10, 0, toSay, 50);
+				sectionTitleText.scrollFactor.set();
+				add(sectionTitleText);
+			}
+			else
+			{
+				sectionTitleText.text = toSay;
+				sectionTitleText.visible = true;
+			}
+			return sectionTitleText;
+		}
+		catch (e)
+		{
+			throw('WERROR ${e}:${e.message}');
+			return null;
+		}
+	}
+
+	/**
+	 * Set the premade text content to certain say & then appear it.
+	 * @param toSay content of the say
+	 */
+	function setContentText(toSay:String = "Hello Universe"):FlxUIText
+	{
+		try
+		{
+			if (contentText == null)
+			{
+				contentText = new FlxUIText(20, 55, 0, toSay, 14);
+				contentText.scrollFactor.set();
+				add(contentText);
+			}
+			else
+			{
+				contentText.text = toSay;
+				contentText.visible = true;
+			}
+			return contentText;
+		}
+		catch (e)
+		{
+			throw('WERROR ${e}:${e.message}');
+			return null;
+		}
+	}
+
 	function manageMouse():Void
 	{
 		// JOELwindows7: nothing. use this to manage mouse
@@ -1474,6 +1595,10 @@ interface ICoreStating
 	// JOELwindows7: stuff OpenFl
 	private var _loadingBar:LoadingBar;
 
+	// JOELwindows7: metro Fluent section
+	private var sectionTitleText:FlxUIText;
+	private var contentText:FlxUIText;
+
 	// JOELwindows7: and the control getter
 	private function get_controls():Controls;
 
@@ -1544,6 +1669,18 @@ interface ICoreStating
 	 * @param library folder where the sound is located
 	 */
 	public function playSoundEffect(path:String, volume:Float = 1, ?library:String):FlxSound;
+
+	/**
+	 * Set the app section / state to say the title & then appear it.
+	 * @param toSay title of the section
+	 */
+	private function setSectionTitle(toSay:String = "Last Funkin Moments"):FlxUIText;
+
+	/**
+	 * Set the premade text content to certain say & then appear it.
+	 * @param toSay content of the say
+	 */
+	private function setContentText(toSay:String = "Hello Universe"):FlxUIText;
 
 	private function manageMouse():Void;
 

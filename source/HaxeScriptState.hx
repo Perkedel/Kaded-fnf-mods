@@ -142,7 +142,7 @@ class HaxeScriptState
 		initHaxeScriptState(rawMode, path, useHaxe, className, useRetail);
 	}
 
-	function callHscript(func_name:String, args:Array<Dynamic>, useHaxe:String = "modchart")
+	function callHscript(func_name:String, args:Array<Dynamic>, useHaxe:String = "modchart"):Dynamic
 	{
 		if (retailIsReady)
 		{
@@ -150,7 +150,7 @@ class HaxeScriptState
 			if (!hscriptState.get(useHaxe).variables.exists(func_name))
 			{
 				trace(func_name + " Function in Retail doesn't exist, silently skipping...");
-				return;
+				return null;
 			}
 		}
 		else
@@ -159,7 +159,7 @@ class HaxeScriptState
 			if (!interp.variables.exists(func_name))
 			{
 				trace(func_name + " Function in Interp doesn't exist, silently skipping...");
-				return;
+				return null;
 			}
 		}
 		var method;
@@ -170,40 +170,42 @@ class HaxeScriptState
 		switch (args.length)
 		{
 			case 0:
-				method();
+				return method();
 			case 1:
-				method(args[0]);
+				return method(args[0]);
 			case 2:
-				method(args[0], args[1]);
+				return method(args[0], args[1]);
 			case 3:
-				method(args[0], args[1], args[2]);
+				return method(args[0], args[1], args[2]);
 			case 4:
-				method(args[0], args[1], args[2], args[3]);
+				return method(args[0], args[1], args[2], args[3]);
 			case 5:
-				method(args[0], args[1], args[2], args[3], args[4]);
+				return method(args[0], args[1], args[2], args[3], args[4]);
 			case 6:
-				method(args[0], args[1], args[2], args[3], args[4], args[5]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5]);
 			case 7:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
 			case 8:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
 			case 9:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
 			case 10:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
 			case 11:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
 			case 12:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
 			case 13:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
 			case 14:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12],
+					args[13]);
 			case 15:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13],
-					args[14]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12],
+					args[13], args[14]);
 				// JOELwindows7: Okay that's enough & inefficient. wtf?!?! there's no way to procedurally do this?!?!?
 		}
+		return null;
 	}
 
 	function callAllHScript(func_name:String, args:Array<Dynamic>)
@@ -222,13 +224,15 @@ class HaxeScriptState
 	 */
 	public function setVar(name:String, value:Dynamic, useHaxe:String = "modchart")
 	{
-		if (interp != null)
+		if (interp != null){
 			if (retailIsReady)
 			{
 				hscriptState.get(useHaxe).variables.set(name, value);
 			}
 			else
 				interp.variables.set(name, value);
+			callHscript('variableChange', [name, value], useHaxe);
+		}
 		else
 		{
 			interp = createInterp();
@@ -254,9 +258,12 @@ class HaxeScriptState
 		setVar(var_name, object);
 	}
 
-	public function executeState(name:String, args:Array<Dynamic>, useHaxe:String = "modchart")
+	public function executeState(name:String, args:Array<Dynamic>, useHaxe:String = "modchart"):Dynamic
 	{
-		callHscript(name, args, useHaxe);
+		// return callHscript(name, args, useHaxe);
+		var result = callHscript(name, args, useHaxe);
+		callHscript('methodExecutes', [name, args], useHaxe);
+		return result;
 	}
 
 	function resetHaxeScriptState(soft:Bool = false)
@@ -392,6 +399,7 @@ class HaxeScriptState
 		setVar("songLength", 0);
 		setVar('variables', PlayState.SONG.variables);
 		setVar('diffVariables', PlayState.SONG.diffVariables);
+		setVar("accuracy", PlayState.instance.accuracy);
 
 		// callbacks
 
@@ -519,6 +527,12 @@ class HaxeScriptState
 		{
 		});
 		addCallback("dialogueNext", function()
+		{
+		});
+		addCallback("variableChange", function(name:String, value:Dynamic)
+		{
+		});
+		addCallback("methodExecutes", function(name:String, args:Array<Dynamic>)
 		{
 		});
 		trace("Inited setVars");

@@ -111,6 +111,16 @@ function playerOneSing(note, position)
 
 }
 
+function variableChange(name,value)
+{
+
+}
+
+function methodExecutes(name,args)
+{
+    
+}
+
 function colorizeColorablebyKey(note, justOne, toWhichBg)
 {
     if (note == 'left')

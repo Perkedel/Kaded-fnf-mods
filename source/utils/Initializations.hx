@@ -26,6 +26,7 @@ import sys.thread.Mutex;
 
 class Initializations
 {
+	static public var initialized = false; // JOELwindows7: to wait initializations
 	/**
 	 * Initialize save datas & stuffs
 	 */
@@ -76,5 +77,11 @@ class Initializations
 		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
 		MusicBeatState.initSave = true;
+		initialized = true;
+	}
+
+	public static function isInitialized():Bool
+	{
+		return initialized;
 	}
 }

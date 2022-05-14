@@ -386,6 +386,12 @@
 	Error: Process completed with exit code 1.
 	```
 	 -->
+
+	<!-- JOELwindows7: The Crashdumper. larsius prime (bit of trolling / general infinity if not wrong) -->
+	<!-- https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create -->
+	<!-- https://github.com/larsiusprime/crashdumper/ -->
+	<haxelib name="crashdumper"/>
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
@@ -533,8 +539,6 @@
 	<!-- oh, also MasterEric's way of defining -->
 	<haxedef name="FEATURE_GAMEJOLT" if="gamejolt"/>
 
-	
-
 	<!-- JOELwindows7: here force defines to know. -->
 	<!-- Write override defines for development special features -->
 
@@ -580,5 +584,8 @@
 	<!-- kem0x Shaderer -->
 	<!-- <haxedef name="EXPERIMENTAL_KEM0X_SHADERS" unless="debug"/> -->
 
+	<!-- JOELwindows7: make the larsiusprime crashdumper complete -->
+	<haxedef name="HXCPP_STACK_LINE" />  <!--if you want line numbers-->
+	<haxedef name="HXCPP_STACK_TRACE"/>  <!--if you want stack traces-->
 
 </project>

@@ -381,6 +381,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://github.com/HaxeFlixel/flixel-ui#xml-layout-basics
 - https://gamebanana.com/mods/370355
 - https://gamebanana.com/mods/316530
+- https://migmoog.newgrounds.com/news/post/1207508 how to stop being `lime test html5` tediously. have live server, go live, build html5. explore html5 file to open that index html.
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -540,6 +541,9 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - app.sketchup.com/app?3dwid=b46ef9dd-2f75-4d0b-9415-9a993f59b286 Ghost. Hyundai IONIQ 5 the only $0 model we can get
 - ddg.gg & search `qr 6ac4ea02-0194-45e4-a1cf-a636af63ab98` to generate QR code. the license plate id of this car
 - https://youtu.be/EwB3HWcUdEk Plaster material for the rough salt ground
+- https://gamebanana.com/mods/43037 AjTheFunky (WARNING: NO Pibby allowed; [permission thread](https://gamebanana.com/mods/43037?post=10023453 )). Heartbreak Girlfriend. Nah, don't worry, we don't pibby right now. Not too interested apparently idk..
+- https://gamebanana.com/mods/352532 https://github.com/YoshiCrafter29/YoshiCrafterEngine YoshiCrafter29. Yoshi Engine. let's yoink features for down the road.
+- https://github.com/larsiusprime/crashdumper/ larsiusprime. Crash dumper tool for HaxeFlixel & OpenFl based stuffs! see stackoverflow [here](https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create )
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

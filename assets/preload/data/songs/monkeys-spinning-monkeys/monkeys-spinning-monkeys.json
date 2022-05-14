@@ -3,11 +3,12 @@
     ,"charter" : "JOELwindows7"
     ,"generatedBy" : "charting"
     ,"song" : {
-         "songName" : "Monkeys Spinning Monkeys"
-        ,"videoPath" : ""
-        ,"delayBeforeStart" : 0
+         "strumProfile" : "Dance-Single"
         ,"isCreditRoll" : false
-        ,"strumProfile" : "Dance-Single"
+        ,"delayBeforeStart" : 0
+        ,"videoPath" : ""
+        ,"songName" : "Monkeys Spinning Monkeys"
+        ,"hasVideo" : false
         ,"notes" : [
              {
                  "endTime" : 1666.66666666667
@@ -15,17 +16,120 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+                     [
+                         0
+                        ,0
+                        ,0
+                        ,false
+                        ,0
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         416.666666666667
+                        ,2
+                        ,0
+                        ,false
+                        ,1
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         625
+                        ,3
+                        ,0
+                        ,false
+                        ,1.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         1041.66666666667
+                        ,1
+                        ,0
+                        ,false
+                        ,2.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         1458.33333333333
+                        ,0
+                        ,0
+                        ,false
+                        ,3.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                ]
                 ,"betterSectionNotes" : [
-
+                     {
+                         "isAlt" : false
+                        ,"strumTime" : 0
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 0
+                        ,"noteData" : 0
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 416.666666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 1
+                        ,"noteData" : 2
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 625
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 1.5
+                        ,"noteData" : 3
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 1041.66666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 2.5
+                        ,"noteData" : 1
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 1458.33333333333
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 3.5
+                        ,"noteData" : 0
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 0
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 3333.33333333333
@@ -33,17 +137,78 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+                     [
+                         1666.66666666667
+                        ,2
+                        ,0
+                        ,false
+                        ,4
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         2083.33333333333
+                        ,3
+                        ,0
+                        ,false
+                        ,5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         2291.66666666667
+                        ,1
+                        ,0
+                        ,false
+                        ,5.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                ]
                 ,"betterSectionNotes" : [
-
+                     {
+                         "isAlt" : false
+                        ,"strumTime" : 1666.66666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 4
+                        ,"noteData" : 2
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 2083.33333333333
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 5
+                        ,"noteData" : 3
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 2291.66666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 5.5
+                        ,"noteData" : 1
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 1666.66666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 5000
@@ -51,17 +216,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 3333.33333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 6666.66666666667
@@ -69,17 +234,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 5000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 8333.33333333333
@@ -87,17 +252,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 6666.66666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 10000
@@ -105,17 +270,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 8333.33333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 11666.6666666667
@@ -123,17 +288,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 10000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 13333.3333333333
@@ -141,17 +306,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 11666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 15000
@@ -159,17 +324,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 13333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 16666.6666666667
@@ -177,17 +342,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 15000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 18333.3333333333
@@ -195,17 +360,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 16666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 20000
@@ -213,17 +378,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 18333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 21666.6666666667
@@ -231,17 +396,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 20000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 23333.3333333333
@@ -249,17 +414,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 21666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 25000
@@ -267,17 +432,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 23333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 26666.6666666667
@@ -285,17 +450,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 25000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 28333.3333333333
@@ -303,17 +468,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 26666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 30000
@@ -321,17 +486,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 28333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 31666.6666666667
@@ -339,17 +504,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 30000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 33333.3333333333
@@ -357,17 +522,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 31666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 35000
@@ -375,17 +540,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 33333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 36666.6666666667
@@ -393,17 +558,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 35000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 38333.3333333333
@@ -411,17 +576,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 36666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 40000
@@ -429,17 +594,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 38333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 41666.6666666667
@@ -447,17 +612,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 40000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 43333.3333333333
@@ -465,17 +630,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 41666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 45000
@@ -483,17 +648,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 43333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 46666.6666666667
@@ -501,17 +666,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 45000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 48333.3333333333
@@ -519,17 +684,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 46666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 50000
@@ -537,17 +702,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 48333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 51666.6666666667
@@ -555,17 +720,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 50000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 53333.3333333333
@@ -573,17 +738,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 51666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 55000
@@ -591,17 +756,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 53333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 56666.6666666667
@@ -609,17 +774,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 55000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 58333.3333333333
@@ -627,17 +792,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 56666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 60000
@@ -645,17 +810,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 58333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 61666.6666666667
@@ -663,17 +828,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 60000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 63333.3333333333
@@ -681,17 +846,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 61666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 65000
@@ -699,17 +864,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 63333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 66666.6666666667
@@ -717,17 +882,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 65000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 68333.3333333333
@@ -735,17 +900,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 66666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 70000
@@ -753,17 +918,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 68333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 71666.6666666667
@@ -771,17 +936,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 70000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 73333.3333333333
@@ -789,17 +954,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 71666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 75000
@@ -807,17 +972,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 73333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 76666.6666666667
@@ -825,17 +990,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 75000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 78333.3333333333
@@ -843,17 +1008,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 76666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 80000
@@ -861,17 +1026,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 78333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 81666.6666666667
@@ -879,17 +1044,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 80000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 83333.3333333333
@@ -897,17 +1062,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 81666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 85000
@@ -915,17 +1080,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 83333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 86666.6666666667
@@ -933,17 +1098,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 85000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 88333.3333333333
@@ -951,17 +1116,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 86666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 90000
@@ -969,17 +1134,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 88333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 91666.6666666667
@@ -987,17 +1152,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 90000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 93333.3333333333
@@ -1005,17 +1170,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 91666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 95000
@@ -1023,17 +1188,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 93333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 96666.6666666667
@@ -1041,17 +1206,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 95000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 98333.3333333333
@@ -1059,17 +1224,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 96666.6666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 100000
@@ -1077,17 +1242,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 98333.3333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 101666.666666667
@@ -1095,17 +1260,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 100000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 103333.333333333
@@ -1113,17 +1278,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 101666.666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 105000
@@ -1131,17 +1296,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 103333.333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 106666.666666667
@@ -1149,17 +1314,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 105000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 108333.333333333
@@ -1167,17 +1332,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 106666.666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 110000
@@ -1185,17 +1350,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 108333.333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 111666.666666667
@@ -1203,17 +1368,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 110000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 113333.333333333
@@ -1221,17 +1386,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 111666.666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 115000
@@ -1239,17 +1404,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 113333.333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 116666.666666667
@@ -1257,17 +1422,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 115000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 118333.333333333
@@ -1275,17 +1440,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 116666.666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 120000
@@ -1293,17 +1458,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 118333.333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 121666.666666667
@@ -1311,17 +1476,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 120000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 123333.333333333
@@ -1329,17 +1494,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 121666.666666667
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 125000
@@ -1347,17 +1512,17 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 123333.333333333
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
             ,{
                  "endTime" : 126666.666666667
@@ -1365,69 +1530,67 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"sectionNotes" : [
+
+                ]
                 ,"betterSectionNotes" : [
 
                 ]
                 ,"lengthInSteps" : 16
                 ,"typeOfSection" : 0
-                ,"sectionNotes" : [
-
-                ]
-                ,"changeBPM" : false
-                ,"bpm" : 144
                 ,"startTime" : 125000
+                ,"bpm" : 144
+                ,"changeBPM" : false
             }
         ]
-        ,"hasVideo" : false
         ,"creditRunsOnce" : false
         ,"isCheer" : false
-        ,"cutsceneType" : "none"
-        ,"forceHscriptModchart" : false
         ,"invisibleCountdown" : false
-        ,"loadNoteStyleOtherWayAround" : false
+        ,"forceHscriptModchart" : false
+        ,"cutsceneType" : "none"
         ,"hasTankmanVideo" : false
-        ,"useCustomStage" : false
+        ,"loadNoteStyleOtherWayAround" : false
         ,"epilogueTankmanVideoPath" : "null"
-        ,"speed" : 1
-        ,"artist" : "Kevin Macleod"
+        ,"useCustomStage" : false
         ,"useCustomNoteStyle" : false
+        ,"artist" : "Kevin Macleod"
+        ,"speed" : 1
+        ,"hasEpilogueChat" : false
         ,"sectionLengths" : [
 
         ]
-        ,"hasEpilogueChat" : false
         ,"forceLuaModchart" : false
-        ,"epilogueVideoPath" : ""
-        ,"hasDialogueChat" : false
         ,"outroCutSceneDoneManually" : false
-        ,"charter" : "JOELwindows7"
-        ,"hasEpilogueVideo" : false
-        ,"preferredNoteAmount" : 4
+        ,"hasDialogueChat" : false
+        ,"epilogueVideoPath" : ""
         ,"introCutSceneDoneManually" : false
+        ,"preferredNoteAmount" : 4
+        ,"hasEpilogueVideo" : false
+        ,"charter" : "JOELwindows7"
         ,"delayAfterFinish" : 0
         ,"strumCounts" : 4
-        ,"sections" : 0
         ,"uiType" : "normal"
+        ,"sections" : 0
         ,"reversedCountdown" : false
-        ,"songId" : "monkeys-spinning-monkeys"
-        ,"player1" : "bf-covid"
         ,"tankmanVideoPath" : "null"
+        ,"player1" : "bf-covid"
+        ,"songId" : "monkeys-spinning-monkeys"
         ,"player2" : "hookx"
-        ,"isHey" : false
+        ,"forceLuaModchartLegacy" : false
         ,"diffVariables" : {
 
         }
-        ,"forceLuaModchartLegacy" : false
+        ,"isHey" : false
         ,"offset" : 0
-        ,"isSpooky" : false
         ,"song" : "monkeys-spinning-monkeys"
-        ,"validScore" : true
+        ,"isSpooky" : false
         ,"difficultyId" : "normal"
+        ,"validScore" : true
         ,"variables" : {
 
         }
         ,"isMoody" : false
         ,"gfVersion" : "gf-covid"
-        ,"chartVersion" : "KE1"
         ,"eventObjects" : [
              {
                  "_hxcls" : "Event"
@@ -1439,14 +1602,15 @@
                 ,"type" : "BPM Change"
             }
         ]
-        ,"allowedToHeadbang" : true
-        ,"hasEpilogueTankmanVideo" : false
+        ,"chartVersion" : "KE1"
         ,"difficulty" : 0
+        ,"hasEpilogueTankmanVideo" : false
+        ,"allowedToHeadbang" : true
+        ,"difficultyStrength" : 1.17
         ,"silentCountdown" : false
-        ,"difficultyStrength" : 9e+16
-        ,"needsVoices" : false
         ,"stage" : "stage"
-        ,"noteStyle" : "normal"
+        ,"needsVoices" : false
         ,"bpm" : 144
+        ,"noteStyle" : "normal"
     }
 }
