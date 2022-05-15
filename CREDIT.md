@@ -513,7 +513,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Consortium. ah this tool right here to get hex color. 
 - https://github.com/marketplace/actions/butler-push push to itch and
 - https://github.com/marketplace/actions/setup-haxe-environment setup da haxe CI now
-- https://gamebanana.com/mods/336567 https://twitter.com/RedstyP/status/1460982660751257601?s=20 (WARNING: CC4.0-BY-NC-ND, but can reuse if you credit all these 3 on credit sidebar) Redsty Phoenix (everything this thing, Co-Animator, Artis), P (16th letter), & IronB (banner). The Playable Standalone GF yess! 
+- https://gamebanana.com/mods/336567 https://gamebanana.com/mods/363954 https://twitter.com/RedstyP/status/1460982660751257601?s=20 (WARNING: CC4.0-BY-NC-ND, but can reuse if you credit all these 3 on credit sidebar) Redsty Phoenix (everything this thing, Co-Animator, Artis), P (16th letter) (a.k.a. [Voideyedpanda](https://www.youtube.com/channel/UCtsc-4fC0f_aaDHzDn7LaIQ )???), & IronB (banner), also [Trake](https://www.youtube.com/channel/UC8BvxhAwwx7lz4h_WIb--gA ) (the enthusiast) for v2. The Playable Standalone GF yess! Hey, use v2. but we also added legacy ones.
 - https://github.com/EnigmaEngine/EnigmaEngine Master Eric. Kade FNF fork with Quality of Life feature & pioneer of Polymod ModCore system. taking inspiration & perhaps yoink some of their stuff back in here. Obviously needs to be edited to fit Kade-LFM specification, No replacement is allowed, week must be added by this Kade-LFM format & rereverse engineered (if the mod ports from somebody's mod). The Enigma repository did alot of drastic changes that seems have broken compatibilities with Kade's current structure. While it's good to sort it out, but then it will / could be difficult to pull the new upstream commits back to there.
 - https://github.com/polybiusproxy/PolyEngine/ Polybius proxy. this where BrightFyre maybe contributed or taken MP4 support to/from. Yeah basically this is mod that pioneers mp4 support. Oh yeah infact this is original MP4 support, BrightFyre yanked this for us all to implement. No, I do not shame BrightFyre, it's cool and good! we finally have easy to implement VLC, pecking finally!
 - https://musical-artifacts.com/artifacts/1600 Pedmanxd999. Here SF2 Soundfont consisting vocals of FNF including mods too aswell. That's right, that includes also deleted & privated ones!
@@ -539,9 +539,9 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.uuidgenerator.net/version4 generate UUID online now!
 - http://guid.one/ generate GUID too
 - app.sketchup.com/app?3dwid=b46ef9dd-2f75-4d0b-9415-9a993f59b286 Ghost. Hyundai IONIQ 5 the only $0 model we can get
-- ddg.gg & search `qr 6ac4ea02-0194-45e4-a1cf-a636af63ab98` to generate QR code. the license plate id of this car
+- ddg.gg & search `qr 6ac4ea02-0194-45e4-a1cf-a636af63ab98` to generate QR code. the license plate id of this car, Sky's Hyundai IONIQ 5. etc too.
 - https://youtu.be/EwB3HWcUdEk Plaster material for the rough salt ground
-- https://gamebanana.com/mods/43037 AjTheFunky (WARNING: NO Pibby allowed; [permission thread](https://gamebanana.com/mods/43037?post=10023453 )). Heartbreak Girlfriend. Nah, don't worry, we don't pibby right now. Not too interested apparently idk..
+- https://gamebanana.com/mods/43037 AjTheFunky (WARNING: NO Pibby allowed; [permission thread](https://gamebanana.com/mods/43037?post=10023453 )). Heartbreak Girlfriend. Nah, don't worry, we don't pibby right now. Not too interested apparently idk.. Right?? aah..
 - https://gamebanana.com/mods/352532 https://github.com/YoshiCrafter29/YoshiCrafterEngine YoshiCrafter29. Yoshi Engine. let's yoink features for down the road.
 - https://github.com/larsiusprime/crashdumper/ larsiusprime. Crash dumper tool for HaxeFlixel & OpenFl based stuffs! see stackoverflow [here](https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create )
 

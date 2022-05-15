@@ -1,0 +1,106 @@
+{
+    "name": "Girlfriend (Standalone Legacy)",
+    "displayName": "Girlfriend",
+    "asset": "characters/GF_Player",
+    "barColor": "#A5004D",
+    "startingAnim": "idle",
+    "isDancing": true,
+    "holdLength": 4.1,
+    "replacesGF": false,
+    "heartOrgans": [{
+        "character": "gf",
+        "initHR": 80,
+        "maxHR": 400,
+        "minHR": 80,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "phobia": {
+        "lightningStorm": true
+    },
+    "animations": [{
+            "name": "idle",
+            "prefix": "GF idle dance",
+            "offsets": [-7, 0]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "GF NOTE LEFT0",
+            "offsets": [-5, 10]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "GF NOTE RIGHT0",
+            "offsets": [-41, -2]
+        },
+        {
+            "name": "singUP",
+            "prefix": "GF NOTE UP0",
+            "offsets": [-30, 7]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "GF NOTE DOWN0",
+            "offsets": [-31, 1]
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "GF NOTE UP MISS",
+            "offsets": [-23, 12]
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "GF NOTE LEFT MISS",
+            "offsets": [-5, 18]
+        },
+        {
+            "name": "singRIGHTmiss",
+            "prefix": "GF NOTE RIGHT MISS",
+            "offsets": [-26, 7]
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "GF NOTE DOWN MISS",
+            "offsets": [-30, 20]
+        },
+        {
+            "name": "cheer",
+            "prefix": "GF HEY",
+            "offsets": [-12, -1]
+        },
+        {
+            "name": "hey",
+            "prefix": "GF HEY",
+            "offsets": [-12, -1]
+        },
+        {
+            "name": "firstDeath",
+            "prefix": "GF dies",
+            "offsets": [-3, 24]
+        },
+        {
+            "name": "deathLoop",
+            "prefix": "GF Dead Loop",
+            "offsets": [-5, 36]
+        },
+        {
+            "name": "deathConfirm",
+            "prefix": "GF Dead confirm",
+            "offsets": [-7, 32]
+        },
+        {
+            "name": "scared",
+            "prefix": "GF idle shaking",
+            "offsets": [-14, 4],
+            "looped": true
+        },
+        {
+            "looped": false,
+            "offsets": [-92, -23],
+            "name": "dodgeUP",
+            "prefix": "GF Dodge"
+        }
+    ]
+}

@@ -26,7 +26,6 @@ package ui.states.modding;
 import HelperFunctions;
 import ui.components.base.XMLLayoutState;
 import flixel.addons.ui.FlxUIButton;
-import ModCore;
 import ui.components.modding.ModList;
 import flixel.addons.ui.interfaces.IFlxUIWidget;
 // import ui.state.title.CachingState;
@@ -41,7 +40,10 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import ModCore;
+// #if FEATURE_MODCORE
 import polymod.Polymod.ModMetadata;
+// #end
 
 class ModMenuState extends XMLLayoutState // extends MusicBeatState
 {
@@ -107,6 +109,7 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 
 	function initModLists()
 	{
+		#if FEATURE_MODCORE
 		// Unify mod lists.
 		unloadedModsUI.cbAddToOtherList = loadedModsUI.addMod.bind();
 		loadedModsUI.cbAddToOtherList = unloadedModsUI.addMod.bind();
@@ -149,6 +152,7 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		{
 			unloadedModsUI.addMod(i);
 		}
+		#end
 	}
 
 	override function update(elapsed:Float)
@@ -246,3 +250,4 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		loadMainGame();
 	}
 }
+

@@ -25,7 +25,7 @@ import crashdumper.SessionData;
 
 class WerrorCrashState extends CoreState
 {
-    #if crashdumper
+	#if crashdumper
 	var crashDumper:CrashDumper;
 
 	public function new(crashDumpering:CrashDumper)
@@ -47,7 +47,19 @@ class WerrorCrashState extends CoreState
 		}
 		setContentText('Oh No! WERROR!:\n${crashDumper.errorMessageStr()}');
 	}
-    #end
+	#else
+	public function new(crashDumpering:Dynamic)
+	{
+		super();
+	}
+
+	override function create()
+	{
+		super.create();
+		setSectionTitle('Force Majeur');
+		setContentText('Oh No! WERROR!:\n${'crash dumper unavailable. Did you disabled it in Project.xml?!'}');
+	}
+	#end
 
 	override function update(elapsed:Float)
 	{

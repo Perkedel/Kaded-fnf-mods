@@ -15,7 +15,6 @@
  */
 
 // JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/ui/component/modding/ModList.hx
-
 /*
  * ModList.hx
  * A component which displays a list of one or more mods, based on their Metadata.
@@ -24,7 +23,10 @@ package ui.components.modding;
 
 import flixel.addons.ui.FlxUIList;
 import ui.components.input.InteractableUIList;
+// #if FEATURE_MODCORE
 import polymod.Polymod.ModMetadata;
+
+// #end
 
 /**
  * This function is called when the user clicks the load or unload buttons, on either side.
@@ -167,4 +169,3 @@ class ModList extends InteractableUIList
 		return currentModList;
 	}
 }
-

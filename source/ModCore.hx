@@ -47,7 +47,6 @@ class ModCore
 		#else
 		Debug.logInfo("ModCore not initialized; not supported on this platform.");
 		#end
-
 	}
 
 	// JOELwindows7: here the more enigma.
@@ -318,6 +317,12 @@ class ModCore
 						Debug.logError('[WERROR] ${error.code} when ${error.origin}: ${error.message}', null);
 				}
 		}
+	}
+	#else
+	public static function getAllMods():Array<Dynamic>
+	{
+		Debug.logInfo('cannot get all mod, mod support unavailable');
+		return null;
 	}
 	#end
 }

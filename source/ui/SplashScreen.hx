@@ -259,6 +259,7 @@ class SplashScreen extends MusicBeatState
 		// check mods!
 		if (!CarryAround.modAlreadyLoaded())
 		{
+			// #if FEATURE_MODCORE
 			if (configFound)
 			{
 				Debug.logTrace("Load configured mods");
@@ -269,6 +270,9 @@ class SplashScreen extends MusicBeatState
 				Debug.logTrace("Load all mods");
 				ModCore.initialize();
 			}
+			// #else
+			// Debug.logTrace("Mod support unavailable");
+			// #end
 		}
 		else
 		{

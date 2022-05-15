@@ -42,7 +42,7 @@ class LoadingState extends MusicBeatState
 		this.target = target;
 		this.stopMusic = stopMusic;
 		// JOELwindows7: choose loading images randomly out of available we have
-		this.selectImageNumber = FlxG.random.int(0, Perkedel.MAX_NUMBER_OF_LOADING_IMAGES);
+		this.selectImageNumber = FlxG.random.int(0, Perkedel.MAX_NUMBER_OF_LOADING_IMAGES - 1);
 	}
 
 	override function create()

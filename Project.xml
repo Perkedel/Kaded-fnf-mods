@@ -221,7 +221,7 @@
 	<!-- JOELwindows7: Prevent FileDaddy 1 click being appeared since -->
 	<!-- This mod wasn't meant to be asset addition or replacement at all -->
 	<!-- Yeah this mod is the full Executable standalone -->
-	<assets path='.disable_gb1click_filedaddy'/>
+	<assets path='.disable_gb1click_filedaddy' unless="html5"/>
 
 	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY 
 		TO FIX ONE OF THEM, I CONVERTED IT TO OTF. DUNNO IF YOU NEED TO
@@ -390,7 +390,7 @@
 	<!-- JOELwindows7: The Crashdumper. larsius prime (bit of trolling / general infinity if not wrong) -->
 	<!-- https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create -->
 	<!-- https://github.com/larsiusprime/crashdumper/ -->
-	<haxelib name="crashdumper"/>
+	<!-- <haxelib name="crashdumper"/> -->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -585,7 +585,9 @@
 	<!-- <haxedef name="EXPERIMENTAL_KEM0X_SHADERS" unless="debug"/> -->
 
 	<!-- JOELwindows7: make the larsiusprime crashdumper complete -->
-	<haxedef name="HXCPP_STACK_LINE" />  <!--if you want line numbers-->
-	<haxedef name="HXCPP_STACK_TRACE"/>  <!--if you want stack traces-->
+	<!--if you want line numbers-->
+	<!-- <haxedef name="HXCPP_STACK_LINE" if="crashdumper"/>   -->
+	<!--if you want stack traces-->
+	<!-- <haxedef name="HXCPP_STACK_TRACE" if="crashdumper"/>   -->
 
 </project>

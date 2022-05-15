@@ -24,7 +24,7 @@
     }],
     "phobia": {
         "lightningStorm": false,
-        "cancelCulture": false
+        "cancelCulture": true
     },
     "animations": [{
             "name": "danceLeft",

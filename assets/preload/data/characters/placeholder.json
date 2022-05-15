@@ -5,6 +5,11 @@
     "barColor": "#0D0D0D",
     "flipX": true,
     "startingAnim": "idle",
+    "info": [
+        "Your info here",
+        "This is new line",
+        "This is another line"
+    ],
     "heartOrgans": [{
         "character": "placeholder",
         "isEmulator": true,
