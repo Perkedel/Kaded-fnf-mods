@@ -1,0 +1,75 @@
+{
+    "name": "Tankman",
+    "displayName": "Captain Tankman",
+    "asset": "tankman/tankmanCaptain",
+    "barColor": "#000000",
+    "startingAnim": "idle",
+    "holdLength": 6.1,
+    "flipX": true,
+    "heartOrgans": [{
+        "character": "tankman",
+        "initHR": 70,
+        "maxHR": 250,
+        "minHR": 50,
+        "heartTierBoundaries": [80, 100, 125, 180],
+        "successionAdrenalAdd": [2, 2, 1, 1],
+        "fearShockAdd": [10, 10, 8, 5],
+        "relaxMinusPerBeat": [2, 8, 10, 15]
+    }],
+    "animations": [{
+            "name": "idle",
+            "prefix": "Tankman Idle Dance",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singUP",
+            "prefix": "Tankman UP note ",
+            "offsets": [24, 56]
+        },
+        {
+            "name": "oldSingUP",
+            "prefix": "Tankman UP note ",
+            "offsets": [24, 56]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "Tankman Right Note ",
+            "offsets": [100, -14]
+        },
+        {
+            "name": "oldSingLEFT",
+            "prefix": "Tankman Right Note ",
+            "offsets": [100, -14]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "Tankman Note Left ",
+            "offsets": [-1, -7]
+        },
+        {
+            "name": "oldSingRIGHT",
+            "prefix": "Tankman Note Left ",
+            "offsets": [-1, -7]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "Tankman DOWN note ",
+            "offsets": [98, -90]
+        },
+        {
+            "name": "oldSingDOWN",
+            "prefix": "Tankman DOWN note ",
+            "offsets": [98, -90]
+        },
+        {
+            "name": "ughAnim",
+            "prefix": "TANKMAN UGH",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "prettyGoodAnim",
+            "prefix": "PRETTY GOOD",
+            "offsets": [45, 20]
+        }
+    ]
+}

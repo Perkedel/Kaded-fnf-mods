@@ -35,6 +35,12 @@ class HealthIcon extends FlxSprite
 		(isOldIcon = !isOldIcon) ? changeIcon("bf-old") : changeIcon(char);
 	}
 
+	// JOELwindows7: this inspires me to have swap icon into another icons we have.
+	public function resetIcon()
+	{
+		changeIcon(char);
+	}
+
 	public function changeIcon(char:String)
 	{
 		if (char != 'bf-pixel' && char != 'bf-old')

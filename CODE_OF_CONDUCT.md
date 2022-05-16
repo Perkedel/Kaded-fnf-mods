@@ -1,5 +1,7 @@
 # Perkedel Technologies Code of Conduct
-read full base of conduct here, ODYSEE_URL
+read full base of conduct & community chat rules here, ODYSEE_URL
+
+also the community chat rules here, https://odysee.com/@JOELwindows7:a/Community-rule:8
 
 # Code of Conduct extension for: Last Funkin Moments
 - credit where you get it from! at least you must place URL sauce.

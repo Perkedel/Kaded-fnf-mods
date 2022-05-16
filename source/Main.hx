@@ -1,5 +1,6 @@
 package;
 
+import openfl.events.UncaughtErrorEvent;
 import ui.states.debug.WerrorCrashState;
 import openfl.system.System;
 import utils.Initializations;
@@ -389,26 +390,24 @@ class Main extends Sprite
 		crashDumper = new CrashDumper(unique_id, null, "http://localhost:8080/result", false, false, werrorCrashPre, werrorCrash);
 		#end
 		// starts the crashDumper
+		#else
+		// Manually override crash
+		// https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, werrorCrash);
 		#end
+		Debug.logInfo("Installed crash dumper");
 	}
 
 	#if crashdumper
 	// JOELwindows7: and function to be called on crash yess.
 	function werrorCrash(crashDumpener:CrashDumper)
 	{
-	}
-
-	// JOELwindows7: maybe also add pre-werror dump too?
-	function werrorCrashPre(crashDumpener:CrashDumper)
-	{
 		@:privateAccess {
-			
 			#if flash
 			Debug.displayAlert('WERROR ${crashDumpener.theError}', 'Oh no! Werror:\n${crashDumpener.errorMessageStr()}');
 			#else
 			Debug.displayAlert('WERROR ${crashDumpener.theError.error}', 'Oh no! Werror:\n${crashDumpener.errorMessageStr()}');
 			#end
-			
 		}
 
 		if (!Initializations.isInitialized())
@@ -420,6 +419,29 @@ class Main extends Sprite
 		#if crashdumper
 		FlxG.switchState(new WerrorCrashState(crashDumpener));
 		#end
+	}
+
+	// JOELwindows7: maybe also add pre-werror dump too?
+	function werrorCrashPre(crashDumpener:CrashDumper)
+	{
+	}
+	#else
+	// JOELwindows7: and function to be called on crash yess.
+	function werrorCrash(crashDumpener:Dynamic)
+	{
+		Debug.displayAlert('WERROR ${crashDumpener.error}', 'Oh no! Werror:\n${crashDumpener.text}\n\nRAW:\n${crashDumpener}');
+		if (!Initializations.isInitialized())
+		{
+			// Application.current.; // where is exit?!?!?!
+			System.exit(1);
+			return;
+		}
+		FlxG.switchState(new WerrorCrashState(crashDumpener));
+	}
+
+	// JOELwindows7: maybe also add pre-werror dump too?
+	function werrorCrashPre(crashDumpener:Dynamic)
+	{
 	}
 	#end
 }

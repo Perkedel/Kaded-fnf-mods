@@ -390,6 +390,10 @@ class PlayState extends MusicBeatState
 	public static var judgementWords:Array<String> = ["Misses", "Shits", "Bads", "Goods", "Sicks", "Danks", "MVPs"];
 
 	// API stuff
+	// JOELwindows7: week 7 stuff yoinked from luckydog7 android port that yoinked it
+	// for test song cuz it sucks. 4 bfs :)
+	private var boyfriend2:Boyfriend;
+	private var pixel2:Character;
 
 	public function addObject(object:FlxBasic)
 	{
@@ -673,7 +677,10 @@ class PlayState extends MusicBeatState
 					{
 						stageCheck = 'school';
 					}
-					// i should check if its stage (but this is when none is found in chart anyway)
+				// i should check if its stage (but this is when none is found in chart anyway)
+				// JOELwindows7: moar!! yoink week 7!
+				case 7:
+					stageCheck = 'tanksStage' + (SONG.songId == 'ugh' || SONG.songId == 'guns' ? "" : "2");
 			}
 		}
 		else
@@ -710,9 +717,11 @@ class PlayState extends MusicBeatState
 
 			if (gf.frames == null)
 			{
-				#if debug
-				FlxG.log.warn(["Couldn't load gf: " + gfCheck + ". Loading default gf"]);
-				#end
+				// #if debug
+				// FlxG.log.warn(["Couldn't load gf: " + gfCheck + ". Loading default gf"]);
+				// #end
+				// JOELwindows7: pls use new way!
+				Debug.logWarn("Couldn't load gf: " + gfCheck + ". Loading default gf");
 				gf = new Character(400, 130, 'gf');
 			}
 
@@ -720,9 +729,11 @@ class PlayState extends MusicBeatState
 
 			if (boyfriend.frames == null)
 			{
-				#if debug
-				FlxG.log.warn(["Couldn't load boyfriend: " + SONG.player1 + ". Loading default boyfriend"]);
-				#end
+				// #if debug
+				// FlxG.log.warn(["Couldn't load boyfriend: " + SONG.player1 + ". Loading default boyfriend"]);
+				// #end
+				// JOELwindows7: pls use new way!
+				Debug.logWarn("Couldn't load boyfriend: " + SONG.player1 + ". Loading default boyfriend");
 				boyfriend = new Boyfriend(770, 450, 'bf');
 			}
 
@@ -733,9 +744,11 @@ class PlayState extends MusicBeatState
 
 			if (dad.frames == null)
 			{
-				#if debug
-				FlxG.log.warn(["Couldn't load opponent: " + SONG.player2 + ". Loading default opponent"]);
-				#end
+				// #if debug
+				// FlxG.log.warn(["Couldn't load opponent: " + SONG.player2 + ". Loading default opponent"]);
+				// #end
+				// JOELwindows7: pls use new way!
+				Debug.logWarn("Couldn't load opponent: " + SONG.player2 + ". Loading default opponent");
 				dad = new Character(100, 100, 'dad');
 			}
 		}
@@ -764,7 +777,18 @@ class PlayState extends MusicBeatState
 			for (person in [boyfriend, gf, dad])
 			{
 				var nullWord:String = 'NULL-';
-				nullWord += counte == 0 ? 'bf' : counte == 1 ? 'gf' : 'dad';
+				// nullWord += counte == 0 ? 'bf' : counte == 1 ? 'gf' : 'dad';
+				nullWord += (switch (counte)
+				{
+					case 0:
+						'bf';
+					case 1:
+						'gf';
+					case 2:
+						'dad';
+					default:
+						'dad';
+				});
 				if (positions.exists(nullWord) && !positionFound[counte])
 					person.setPosition(positions[nullWord][0], positions[nullWord][1]);
 				counte++;
@@ -1479,6 +1503,8 @@ class PlayState extends MusicBeatState
 					add(blackScreen);
 					blackScreen.scrollFactor.set();
 					camHUD.visible = false;
+					// JOELwindows7: hide the lemon guy character icon!
+					iconP2.changeIcon('placeholder');
 
 					new FlxTimer().start(0.1, function(tmr:FlxTimer)
 					{
@@ -2366,7 +2392,7 @@ class PlayState extends MusicBeatState
 		// if (executeStageHscript)
 		// 	stageHscript.executeState('songStart', [null]);
 		// JOELwindows7: better unified function!
-		executeModchartState('songStart',[null]);
+		executeModchartState('songStart', [null]);
 
 		#if FEATURE_DISCORD
 		// Updating Discord Rich Presence (with Time Left)
@@ -3228,7 +3254,7 @@ class PlayState extends MusicBeatState
 						// Oh my God, confusing complexity! my brain could not build obfuscated if else at the moment.
 					}
 
-					if (FlxG.save.data.endSongEarly ? FlxG.sound.music.time / songMultiplier > (songLength - 0) : musicCompleted)
+					if (FlxG.save.data.endSongEarly ? ((FlxG.sound.music.time / songMultiplier) > (songLength - 0)) : musicCompleted)
 						// JOELwindows7: was:
 						// if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 100))
 					{
@@ -3563,6 +3589,13 @@ class PlayState extends MusicBeatState
 			&& canPause
 			&& !cannotDie)
 		{
+			// JOELwindows7: only pause also if note not yet complete. skip song if all note played
+			if (getAllNotePlayed())
+			{
+				musicCompleted = true;
+				havePausened = false;
+				return;
+			}
 			persistentUpdate = false;
 			persistentDraw = true;
 			paused = true;
@@ -4849,6 +4882,7 @@ class PlayState extends MusicBeatState
 			keyShit();
 
 		#if debug
+		// skip song
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
 		#end
@@ -6441,6 +6475,132 @@ class PlayState extends MusicBeatState
 		{
 			resyncVocals();
 		}
+
+		// JOELwindows7: incoming, week 7 yoink yey! luckydog7
+		// picoSpeaker and running tankmen
+
+		if (SONG.songId.toLowerCase() == 'stress')
+		{
+			// RIGHT
+			for (i in 0...Stage.picoStep.right.length)
+			{
+				if (curStep == Stage.picoStep.right[i])
+				{
+					gf.playAnim('shoot' + FlxG.random.int(1, 2), true);
+					// var tankmanRunner:TankmenBG = new TankmenBG();
+				}
+			}
+			// LEFT
+			for (i in 0...Stage.picoStep.left.length)
+			{
+				if (curStep == Stage.picoStep.left[i])
+				{
+					gf.playAnim('shoot' + FlxG.random.int(3, 4), true);
+				}
+			}
+			// Left tankspawn
+			for (i in 0...Stage.tankStep.left.length)
+			{
+				if (curStep == Stage.tankStep.left[i])
+				{
+					var tankmanRunner:TankmenBG = new TankmenBG();
+					tankmanRunner.resetShit(FlxG.random.int(630, 730) * -1, 255, true, 1, 1.5);
+
+					Stage.tankmanRun.add(tankmanRunner);
+				}
+			}
+
+			// Right spawn
+			for (i in 0...Stage.tankStep.right.length)
+			{
+				if (curStep == Stage.tankStep.right[i])
+				{
+					var tankmanRunner:TankmenBG = new TankmenBG();
+					tankmanRunner.resetShit(FlxG.random.int(1500, 1700) * 1, 275, false, 1, 1.5);
+					Stage.tankmanRun.add(tankmanRunner);
+				}
+			}
+		}
+
+		if (dad.curCharacter == 'tankman' && SONG.songId == 'stress')
+		{
+			if (curStep == 735)
+			{
+				dad.addOffset("singDOWN", 45, 20);
+				dad.animation.getByName('singDOWN').frames = dad.animation.getByName('prettyGoodAnim').frames;
+				dad.playAnim('prettyGoodAnim', true);
+			}
+
+			if (curStep == 736 || curStep == 737)
+			{
+				dad.playAnim('prettyGoodAnim', true);
+			}
+
+			if (curStep == 767)
+			{
+				dad.addOffset("singDOWN", 98, -90);
+				dad.animation.getByName('singDOWN').frames = dad.animation.getByName('oldSingDOWN').frames;
+			}
+		}
+
+		if (dad.curCharacter == 'tankman' && SONG.songId == 'ugh')
+		{
+			if (curStep == 59 || curStep == 443 || curStep == 523 || curStep == 827)
+			{
+				dad.addOffset("singUP", 45, 0);
+
+				dad.animation.getByName('singUP').frames = dad.animation.getByName('ughAnim').frames;
+			}
+			if (curStep == 64 || curStep == 448 || curStep == 528 || curStep == 832)
+			{
+				dad.addOffset("singUP", 24, 56);
+				dad.animation.getByName('singUP').frames = dad.animation.getByName('oldSingUP').frames;
+			}
+		}
+		// if (SONG.songId == 'test')
+		// {
+		// 	if (boyfriend.animation.curAnim.name == 'singRIGHT')
+		// 	{
+		// 		boyfriend2.playAnim('singLEFT', false);
+		// 	}
+		// 	if (boyfriend.animation.curAnim.name == 'singUP')
+		// 	{
+		// 		boyfriend2.playAnim('singDOWN', false);
+		// 	}
+		// 	if (boyfriend.animation.curAnim.name == 'singLEFT')
+		// 	{
+		// 		boyfriend2.playAnim('singRIGHT', false);
+		// 	}
+		// 	if (boyfriend.animation.curAnim.name == 'singDOWN')
+		// 	{
+		// 		boyfriend2.playAnim('singUP', false);
+		// 	}
+		// 	if (boyfriend.animation.curAnim.name == 'idle')
+		// 	{
+		// 		boyfriend2.playAnim('idle');
+		// 	}
+		// 	if (dad.animation.curAnim.name == 'idle')
+		// 	{
+		// 		pixel2.playAnim('idle');
+		// 	}
+		// 	if (dad.animation.curAnim.name == 'singDOWN')
+		// 	{
+		// 		pixel2.playAnim('singUP', false);
+		// 	}
+		// 	if (dad.animation.curAnim.name == 'singLEFT')
+		// 	{
+		// 		pixel2.playAnim('singRIGHT', false);
+		// 	}
+		// 	if (dad.animation.curAnim.name == 'singRIGHT')
+		// 	{
+		// 		pixel2.playAnim('singLEFT', false);
+		// 	}
+		// 	if (dad.animation.curAnim.name == 'singUP')
+		// 	{
+		// 		pixel2.playAnim('singDOWN', false);
+		// 	}
+		// }
+		// end yoink week 7
 
 		#if FEATURE_LUAMODCHART
 		if (executeModchart && luaModchart != null)
@@ -8180,6 +8340,15 @@ class PlayState extends MusicBeatState
 		// executeModchartState('variableChange',[name,value]); // don't! it can cause recursion, do it manually instead!
 	}
 
+	/**
+	 * Returns true if all notes have been played.
+	 * @return Bool true if all notes have been played.
+	 */
+	public function getAllNotePlayed():Bool
+	{
+		return unspawnNotes.length == 0 && notes.length == 0;
+	}
+
 	// JOELwindows7: here manually update heartbeat organs!
 	function manageHeartbeats(elapsed:Float)
 	{
@@ -8199,4 +8368,19 @@ class PlayState extends MusicBeatState
 		}
 	}
 }
+
 // u looked :O -ides
+// JOELwindows7: Ahei, luckydog7 with Android port, on week 7 yoink, there are these at the end:
+// picoshoot
+typedef Ps =
+{
+	var right:Array<Int>;
+	var left:Array<Int>;
+}
+
+// tank spawns
+typedef Ts =
+{
+	var right:Array<Int>;
+	var left:Array<Int>;
+}

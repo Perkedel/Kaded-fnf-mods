@@ -1,0 +1,78 @@
+{
+    "name": "Boyfriend Holding Girlfriend",
+    "displayName": "Boyfriend & Girlfriend",
+    "asset": "tankman/bfAndGF",
+    "barColor": "#5000E6",
+    "flipX": false,
+    "startingAnim": "idle",
+    "heartOrgans": [{
+        "character": "bf",
+        "initHR": 70,
+        "maxHR": 220,
+        "minHR": 70,
+        "heartTierBoundaries": [90, 120, 150, 200],
+        "successionAdrenalAdd": [4, 3, 2, 1],
+        "fearShockAdd": [10, 8, 7, 5],
+        "relaxMinusPerBeat": [1, 2, 4, 7]
+    }, {
+        "character": "gf",
+        "initHR": 80,
+        "maxHR": 400,
+        "minHR": 80,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "containsHeartOrgans": ["bf", "gf"],
+    "phobia": {
+        "lightningStorm": true,
+        "cancelCulture": false
+    },
+    "animations": [{
+            "name": "idle",
+            "prefix": "BF idle dance w gf0",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singUP",
+            "prefix": "BF NOTE UP0",
+            "offsets": [-29, 10]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "BF NOTE LEFT0",
+            "offsets": [12, 7]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "BF NOTE RIGHT0",
+            "offsets": [-41, 23]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "BF NOTE DOWN0",
+            "offsets": [-10, -10]
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "BF NOTE UP MISS",
+            "offsets": [-29, 10]
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "BF NOTE LEFT MISS",
+            "offsets": [12, 7]
+        },
+        {
+            "name": "singRIGHTmiss",
+            "prefix": "BF NOTE RIGHT MISS",
+            "offsets": [-41, 23]
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "BF NOTE DOWN MISS",
+            "offsets": [-10, -10]
+        }
+    ]
+}

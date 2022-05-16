@@ -30,6 +30,12 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	static var blueBallCounter:Int = 0; // JOELwindows7: and now! for the moment of truth, blueball counter!!!
 
+	// JOELwindows7: globalize these variables which previously local.
+	var daStage:String = "";
+	var daBf:String = '';
+	var daDad:String = '';
+	var daSong:String = '';
+
 	public function new(x:Float, y:Float, ?handoverUnspawnNotes:Array<Note>, ?handoverStaticArrow:Array<StaticArrow>)
 	{
 		// JOELwindows7: add blueball
@@ -45,9 +51,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.sound.music.stop();
 
 		// JOELwindows7: install the handover arrows too as well for cool osu! arrows collapsing.
-		var daStage = PlayState.Stage.curStage;
-		var daBf:String = '';
-		var daSong:String = PlayState.SONG.songId; // damn, I couldn't access that. I change the publicity to public man! JOELwindows7: use Song ID.
+		daStage = PlayState.Stage.curStage;
+		daBf = '';
+		daSong = PlayState.SONG.songId; // damn, I couldn't access that. I change the publicity to public man! JOELwindows7: use Song ID.
 		switch (PlayState.boyfriend.curCharacter)
 		{
 			case 'bf-pixel':
@@ -60,9 +66,14 @@ class GameOverSubstate extends MusicBeatSubstate
 				daBf = 'hookx';
 			case 'placeholder':
 				daBf = 'placeholder';
+			// JOELwindows7: & finally week 7.
+			case 'bf-holding-gf':
+				daBf = 'bf-holding-gf-dead';
 			default:
-				daBf = 'bf';
+				// daBf = 'bf';
+				daBf = PlayState.boyfriend.curCharacter; // JOELwindows7: or maybe we should specify?
 		}
+		daDad = PlayState.dad.curCharacter; // JOELwindows7: here the player 2
 
 		// JOELwindows7: check if the song is midi version
 		if (StringTools.endsWith(PlayState.SONG.songId, midiSuffix))
@@ -255,6 +266,12 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
 			startVibin = true;
 			FlxTween.tween(backButton, {y: FlxG.height - 100, alpha: 1}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+			// JOELwindows7: also week 7 gameover pls. luckydog7 yeah
+			// if (daStage == 'tankStage' || daStage == 'tankStage2') // wrong! it should be who's player 2!!
+			if (daDad == 'tankman')
+			{
+				FlxG.sound.play(Paths.sound('jeffGameover-' + FlxG.random.int(1, 25), 'shared'));
+			}
 		}
 		else
 		{

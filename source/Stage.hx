@@ -1,5 +1,8 @@
 package;
 
+import tjson.TJSON;
+import haxe.Json;
+import PlayState;
 import flixel.FlxCamera;
 import flixel.util.typeLimit.OneOfTwo;
 import flixel.util.typeLimit.OneOfFour;
@@ -125,6 +128,29 @@ class Stage extends MusicBeatState
 			'NULL-gf' => [580, 430],
 			'NULL-dad' => [-50, 200]
 		],
+		'tankStage' => [
+			// JOELwindows7: the week 7 interpreto.
+			'bf' => [1100, 450],
+			'gf-tankman' => [345, -70],
+			'tankman' => [20, 160],
+			'NULL-bf' => [1100, 450],
+			'NULL-gf' => [345, -70],
+			'NULL-dad' => [20, 160],
+		],
+		'tankStage2' => [
+			// JOELwindows7: the week 7 interpreto.
+			'bf-holding-gf' => [1100, 450],
+			'picoSpeaker' => [245, 40],
+			'tankman' => [20, 160],
+			'NULL-bf' => [1020, 450],
+			'NULL-gf' => [245, 40],
+			'NULL-dad' => [20, 160],
+		],
+		'pizza' => [
+			// JOELwindows7: copilot lol!
+			'bf-pizza' => [1030, 230],
+			'NULL-bf' => [1030, 230]
+		],
 		'jakartaFair' => [
 			'hookx' => [-95, 100],
 			'gf-ht' => [290, 80],
@@ -154,6 +180,22 @@ class Stage extends MusicBeatState
 		'blood' => ['NULL-bf' => [1270, 450], 'NULL-gf' => [400, 30], 'NULL-dad' => [100, 100]],
 		'NULL' => ['NULL-bf' => [770, 450], 'NULL-gf' => [400, 130], 'NULL-dad' => [100, 100]] // JOELwindows7: default fallback, don't change!
 	];
+
+	// JOELwindows7: moar yoink from luckydog7 with the week7 yoink
+	public var tankWatchtower:FlxSprite;
+	public var tankRolling:FlxSprite;
+	public var tankmanRun:FlxTypedGroup<TankmenBG>;
+	// tankbop shit
+	public var tankBop1:FlxSprite;
+	public var tankBop2:FlxSprite;
+	public var tankBop3:FlxSprite;
+	public var tankBop4:FlxSprite;
+	public var tankBop5:FlxSprite;
+	public var tankBop6:FlxSprite;
+
+	// end of tankbop
+	public var picoStep:Ps;
+	public var tankStep:Ts;
 
 	public function addThe(object:Dynamic, mapName:String, layFront:Bool = false, whichLayerFront:Int = 0)
 	{
@@ -267,7 +309,7 @@ class Stage extends MusicBeatState
 
 						// JOELwindows7: first, install blammed lights. Psyched blammed lights yey
 						// https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
-						//addThe(blammedLightsBlack, 'blammedLightsBlack');
+						// addThe(blammedLightsBlack, 'blammedLightsBlack');
 
 						var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street', 'week3'));
 						street.antialiasing = FlxG.save.data.antialiasing;
@@ -564,6 +606,266 @@ class Stage extends MusicBeatState
 							add(waveSprite);
 							add(waveSpriteFG);
 						 */
+					}
+				// JOELwindows7: Finally, week 7 yoinkeh. big shout out also to luckydog7 for the help with the Android port yeah!
+				case 'tankstage':
+					{
+						curStage = 'tankStage';
+						camZoom = 0.9;
+						var sky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.image('tankSky'));
+						sky.scrollFactor.set(0, 0);
+						sky.antialiasing = true;
+						sky.setGraphicSize(Std.int(sky.width * 1.5));
+						add(sky);
+
+						var clouds:FlxSprite = new FlxSprite(FlxG.random.int(-700, -100), FlxG.random.int(-20, 20)).loadGraphic(Paths.image('tankClouds'));
+						clouds.scrollFactor.set(0.1, 0.1);
+						clouds.velocity.x = FlxG.random.float(5, 15);
+						clouds.antialiasing = true;
+						clouds.updateHitbox();
+						add(clouds);
+
+						var mountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.image('tankMountains'));
+						mountains.scrollFactor.set(0.2, 0.2);
+						mountains.setGraphicSize(Std.int(1.2 * mountains.width));
+						mountains.updateHitbox();
+						mountains.antialiasing = true;
+						add(mountains);
+
+						var buildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankBuildings'));
+						buildings.scrollFactor.set(0.3, 0.3);
+						buildings.setGraphicSize(Std.int(buildings.width * 1.1));
+						buildings.updateHitbox();
+						buildings.antialiasing = true;
+						add(buildings);
+
+						var ruins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankRuins'));
+						ruins.scrollFactor.set(0.35, 0.35);
+						ruins.setGraphicSize(Std.int(ruins.width * 1.1));
+						ruins.updateHitbox();
+						ruins.antialiasing = true;
+						add(ruins);
+
+						var smokeLeft:FlxSprite = new FlxSprite(-200, -100);
+						smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft');
+						smokeLeft.animation.addByPrefix('idle', 'SmokeBlurLeft ', 24, true);
+						smokeLeft.scrollFactor.set(0.4, 0.4);
+						smokeLeft.antialiasing = true;
+						smokeLeft.animation.play('idle');
+
+						add(smokeLeft);
+
+						var smokeRight:FlxSprite = new FlxSprite(1100, -100);
+						smokeRight.frames = Paths.getSparrowAtlas('smokeRight');
+						smokeRight.animation.addByPrefix('idle', 'SmokeRight ', 24, true);
+						smokeRight.scrollFactor.set(0.4, 0.4);
+						smokeRight.antialiasing = true;
+						smokeRight.animation.play('idle');
+
+						add(smokeRight);
+
+						var tankWatchtower:FlxSprite = new FlxSprite(100, 120);
+						tankWatchtower.frames = Paths.getSparrowAtlas('tankWatchtower');
+						tankWatchtower.animation.addByPrefix('bop', 'watchtower gradient color instance 1', 24, true);
+						tankWatchtower.scrollFactor.set(0.5, 0.5);
+						tankWatchtower.antialiasing = true;
+
+						add(tankWatchtower);
+
+						tankRolling = new FlxSprite(300, 300);
+						tankRolling.frames = Paths.getSparrowAtlas('tankRolling');
+						tankRolling.animation.addByPrefix('idle', 'BG tank w lighting ', 24, true);
+						tankRolling.scrollFactor.set(0.5, 0.5);
+						tankRolling.antialiasing = true;
+						tankRolling.animation.play('idle');
+						add(tankRolling);
+
+						var ground:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.image('tankGround'));
+						ground.scrollFactor.set();
+						ground.antialiasing = true;
+						ground.setGraphicSize(Std.int(ground.width * 1.15));
+						ground.scrollFactor.set(1, 1);
+
+						ground.updateHitbox();
+						add(ground);
+
+						tankBop1 = new FlxSprite(-500, 650);
+						tankBop1.frames = Paths.getSparrowAtlas('tank0');
+						tankBop1.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
+						tankBop1.scrollFactor.set(1.7, 1.5);
+						tankBop1.antialiasing = true;
+
+						tankBop2 = new FlxSprite(-300, 750);
+						tankBop2.frames = Paths.getSparrowAtlas('tank1');
+						tankBop2.animation.addByPrefix('bop', 'fg tankhead 5 instance 1', 24);
+						tankBop2.scrollFactor.set(2.0, 0.2);
+						tankBop2.antialiasing = true;
+
+						tankBop3 = new FlxSprite(450, 940);
+						tankBop3.frames = Paths.getSparrowAtlas('tank2');
+						tankBop3.animation.addByPrefix('bop', 'foreground man 3 instance 1', 24);
+						tankBop3.scrollFactor.set(1.5, 1.5);
+						tankBop3.antialiasing = true;
+
+						tankBop4 = new FlxSprite(1300, 1200);
+						tankBop4.frames = Paths.getSparrowAtlas('tank3');
+						tankBop4.animation.addByPrefix('bop', 'fg tankhead 4 instance 1', 24);
+						tankBop4.scrollFactor.set(3.5, 2.5);
+						tankBop4.antialiasing = true;
+
+						tankBop5 = new FlxSprite(1300, 900);
+						tankBop5.frames = Paths.getSparrowAtlas('tank4');
+						tankBop5.animation.addByPrefix('bop', 'fg tankman bobbin 3 instance 1', 24);
+						tankBop5.scrollFactor.set(1.5, 1.5);
+						tankBop5.antialiasing = true;
+
+						tankBop6 = new FlxSprite(1620, 700);
+						tankBop6.frames = Paths.getSparrowAtlas('tank5');
+						tankBop6.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
+						tankBop6.scrollFactor.set(1.5, 1.5);
+						tankBop6.antialiasing = true;
+
+						tankWatchtower.animation.play('bop');
+						tankBop1.animation.play('bop');
+						tankBop2.animation.play('bop');
+						tankBop3.animation.play('bop');
+						tankBop4.animation.play('bop');
+						tankBop5.animation.play('bop');
+						tankBop6.animation.play('bop');
+					}
+				case 'tankStage2':
+					{
+						curStage = 'tankStage2';
+						camZoom = 0.9;
+
+						// picoStep = Json.parse(openfl.utils.Assets.getText(Paths.json('stress/picospeaker')));
+						// tankStep = Json.parse(openfl.utils.Assets.getText(Paths.json('stress/tankSpawn')));
+						// JOELwindows7: No! use the new TJSONer! idk..
+						picoStep = TJSON.parse(openfl.utils.Assets.getText(Paths.json('songs/stress/picospeaker')));
+						tankStep = TJSON.parse(openfl.utils.Assets.getText(Paths.json('songs/stress/tankSpawn')));
+
+						var sky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.image('tankSky'));
+						sky.scrollFactor.set(0, 0);
+						sky.antialiasing = true;
+						sky.setGraphicSize(Std.int(sky.width * 1.5));
+						add(sky);
+
+						var clouds:FlxSprite = new FlxSprite(FlxG.random.int(-700, -100), FlxG.random.int(-20, 20)).loadGraphic(Paths.image('tankClouds'));
+						clouds.scrollFactor.set(0.1, 0.1);
+						clouds.velocity.x = FlxG.random.float(5, 15);
+						clouds.antialiasing = true;
+						clouds.updateHitbox();
+						add(clouds);
+
+						var mountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.image('tankMountains'));
+						mountains.scrollFactor.set(0.2, 0.2);
+						mountains.setGraphicSize(Std.int(1.2 * mountains.width));
+						mountains.updateHitbox();
+						mountains.antialiasing = true;
+						add(mountains);
+
+						var buildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankBuildings'));
+						buildings.scrollFactor.set(0.3, 0.3);
+						buildings.setGraphicSize(Std.int(buildings.width * 1.1));
+						buildings.updateHitbox();
+						buildings.antialiasing = true;
+						add(buildings);
+
+						var ruins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankRuins'));
+						ruins.scrollFactor.set(0.35, 0.35);
+						ruins.setGraphicSize(Std.int(ruins.width * 1.1));
+						ruins.updateHitbox();
+						ruins.antialiasing = true;
+						add(ruins);
+
+						var smokeLeft:FlxSprite = new FlxSprite(-200, -100);
+						smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft');
+						smokeLeft.animation.addByPrefix('idle', 'SmokeBlurLeft ', 24, true);
+						smokeLeft.scrollFactor.set(0.4, 0.4);
+						smokeLeft.antialiasing = true;
+						smokeLeft.animation.play('idle');
+
+						add(smokeLeft);
+
+						var smokeRight:FlxSprite = new FlxSprite(1100, -100);
+						smokeRight.frames = Paths.getSparrowAtlas('smokeRight');
+						smokeRight.animation.addByPrefix('idle', 'SmokeRight ', 24, true);
+						smokeRight.scrollFactor.set(0.4, 0.4);
+						smokeRight.antialiasing = true;
+						smokeRight.animation.play('idle');
+
+						add(smokeRight);
+
+						var tankWatchtower:FlxSprite = new FlxSprite(100, 120);
+						tankWatchtower.frames = Paths.getSparrowAtlas('tankWatchtower');
+						tankWatchtower.animation.addByPrefix('bop', 'watchtower gradient color instance 1', 24, true);
+						tankWatchtower.scrollFactor.set(0.5, 0.5);
+						tankWatchtower.antialiasing = true;
+
+						add(tankWatchtower);
+
+						tankRolling = new FlxSprite(300, 300);
+						tankRolling.frames = Paths.getSparrowAtlas('tankRolling');
+						tankRolling.animation.addByPrefix('idle', 'BG tank w lighting ', 24, true);
+						tankRolling.scrollFactor.set(0.5, 0.5);
+						tankRolling.antialiasing = true;
+						tankRolling.animation.play('idle');
+						add(tankRolling);
+						tankmanRun = new FlxTypedGroup<TankmenBG>();
+						add(tankmanRun);
+
+						var ground:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.image('tankGround'));
+						ground.scrollFactor.set();
+						ground.antialiasing = true;
+						ground.setGraphicSize(Std.int(ground.width * 1.15));
+						ground.scrollFactor.set(1, 1);
+
+						ground.updateHitbox();
+						add(ground);
+
+						tankBop1 = new FlxSprite(-500, 650);
+						tankBop1.frames = Paths.getSparrowAtlas('tank0');
+						tankBop1.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
+						tankBop1.scrollFactor.set(1.7, 1.5);
+						tankBop1.antialiasing = true;
+
+						tankBop2 = new FlxSprite(-300, 750);
+						tankBop2.frames = Paths.getSparrowAtlas('tank1');
+						tankBop2.animation.addByPrefix('bop', 'fg tankhead 5 instance 1', 24);
+						tankBop2.scrollFactor.set(2.0, 0.2);
+						tankBop2.antialiasing = true;
+
+						tankBop3 = new FlxSprite(450, 940);
+						tankBop3.frames = Paths.getSparrowAtlas('tank2');
+						tankBop3.animation.addByPrefix('bop', 'foreground man 3 instance 1', 24);
+						tankBop3.scrollFactor.set(1.5, 1.5);
+						tankBop3.antialiasing = true;
+
+						tankBop4 = new FlxSprite(1300, 1200);
+						tankBop4.frames = Paths.getSparrowAtlas('tank3');
+						tankBop4.animation.addByPrefix('bop', 'fg tankhead 4 instance 1', 24);
+						tankBop4.scrollFactor.set(3.5, 2.5);
+						tankBop4.antialiasing = true;
+
+						tankBop5 = new FlxSprite(1300, 900);
+						tankBop5.frames = Paths.getSparrowAtlas('tank4');
+						tankBop5.animation.addByPrefix('bop', 'fg tankman bobbin 3 instance 1', 24);
+						tankBop5.scrollFactor.set(1.5, 1.5);
+						tankBop5.antialiasing = true;
+
+						tankBop6 = new FlxSprite(1620, 700);
+						tankBop6.frames = Paths.getSparrowAtlas('tank5');
+						tankBop6.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
+						tankBop6.scrollFactor.set(1.5, 1.5);
+						tankBop6.antialiasing = true;
+
+						tankWatchtower.animation.play('bop');
+						tankBop1.animation.play('bop');
+						tankBop2.animation.play('bop');
+						tankBop3.animation.play('bop');
+						tankBop4.animation.play('bop');
+						tankBop5.animation.play('bop');
+						tankBop6.animation.play('bop');
 					}
 				// JOELwindows7: start init LFM stage
 				case 'jakartaFair':
@@ -935,6 +1237,52 @@ class Stage extends MusicBeatState
 						bg.visible = !bg.visible;
 				}
 			}
+
+			// JOELwindows7: incoming! week7 yoink! yey luckydog7
+			// picoSpeaker and running tankmen
+
+			// if (PlayState.SONG.songId == 'stress')
+			// {
+			// 	// RIGHT
+			// 	for (i in 0...picoStep.right.length)
+			// 	{
+			// 		if (curStep == picoStep.right[i])
+			// 		{
+			// 			PlayState.gf.playAnim('shoot' + FlxG.random.int(1, 2), true);
+			// 			// var tankmanRunner:TankmenBG = new TankmenBG();
+			// 		}
+			// 	}
+			// 	// LEFT
+			// 	for (i in 0...picoStep.left.length)
+			// 	{
+			// 		if (curStep == picoStep.left[i])
+			// 		{
+			// 			PlayState.gf.playAnim('shoot' + FlxG.random.int(3, 4), true);
+			// 		}
+			// 	}
+			// 	// Left tankspawn
+			// 	for (i in 0...tankStep.left.length)
+			// 	{
+			// 		if (curStep == tankStep.left[i])
+			// 		{
+			// 			var tankmanRunner:TankmenBG = new TankmenBG();
+			// 			tankmanRunner.resetShit(FlxG.random.int(630, 730) * -1, 255, true, 1, 1.5);
+
+			// 			tankmanRun.add(tankmanRunner);
+			// 		}
+			// 	}
+
+			// 	// Right spawn
+			// 	for (i in 0...tankStep.right.length)
+			// 	{
+			// 		if (curStep == tankStep.right[i])
+			// 		{
+			// 			var tankmanRunner:TankmenBG = new TankmenBG();
+			// 			tankmanRunner.resetShit(FlxG.random.int(1500, 1700) * 1, 275, false, 1, 1.5);
+			// 			tankmanRun.add(tankmanRunner);
+			// 		}
+			// 	}
+			// }
 		}
 	}
 
@@ -1717,6 +2065,7 @@ class Stage extends MusicBeatState
 	var additionalSubCamera:FlxCamera;
 
 	// JOELwindows7: additional system wide FlxSprites
+
 	/**
 	 * Psyched Blammed Lights. Initiate turn off the lights & turn on the rave lights.
 	 * With this on, the background & objects darkens then followed with fade to discotic color lamps,

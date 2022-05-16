@@ -5,6 +5,9 @@
     "barColor": "#31B0D1",
     "flipX": true,
     "startingAnim": "idle",
+    "isDancing": false,
+    "deathCharacter": "bf",
+    "deathCharacterIsSameAsThis": true,
     "heartSpecs": {
         "initHR": 70,
         "maxHR": 220,
@@ -24,6 +27,7 @@
         "fearShockAdd": [10, 8, 7, 5],
         "relaxMinusPerBeat": [1, 2, 4, 7]
     }],
+    "containsHeartOrgans": ["bf"],
     "phobia": {
         "lightningStorm": true,
         "cancelCulture": false

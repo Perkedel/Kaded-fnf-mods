@@ -382,6 +382,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/mods/370355
 - https://gamebanana.com/mods/316530
 - https://migmoog.newgrounds.com/news/post/1207508 how to stop being `lime test html5` tediously. have live server, go live, build html5. explore html5 file to open that index html.
+- https://stackoverflow.com/questions/55342758/haxe-uncaught-global-exception-handler uncaught error handler
 
 # in event of git merge conflict
 use VScode and Github desktop!

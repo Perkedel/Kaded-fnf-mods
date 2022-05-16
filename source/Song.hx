@@ -339,6 +339,7 @@ class Song
 		}
 		else
 		{
+			// var toCapDrop:String = String.capitalizeFirstLetter(songId.split('-').join(' '));
 			// songData.songName = songId.split('-').join(' ');
 			// JOELwindows7: extend classification.
 			songData.songName = songData.songName == null || songData.songName == '' ? songId.split('-').join(' ') : songData.songName;

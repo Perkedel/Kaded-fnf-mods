@@ -48,16 +48,19 @@ class WerrorCrashState extends CoreState
 		setContentText('Oh No! WERROR!:\n${crashDumper.errorMessageStr()}');
 	}
 	#else
+	var crashDumper:Dynamic;
+
 	public function new(crashDumpering:Dynamic)
 	{
+		this.crashDumper = crashDumpering;
 		super();
 	}
 
 	override function create()
 	{
 		super.create();
-		setSectionTitle('Force Majeur');
-		setContentText('Oh No! WERROR!:\n${'crash dumper unavailable. Did you disabled it in Project.xml?!'}');
+		setSectionTitle('WERROR: ${crashDumper}');
+		setContentText('Oh No! WERROR!:\n${crashDumper.message}');
 	}
 	#end
 

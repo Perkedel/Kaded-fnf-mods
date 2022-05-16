@@ -3,12 +3,11 @@
     ,"charter" : "JOELwindows7"
     ,"generatedBy" : "charting"
     ,"song" : {
-         "strumProfile" : "Dance-Single"
-        ,"isCreditRoll" : false
-        ,"delayBeforeStart" : 0
+         "songName" : "Monkeys Spinning Monkeys"
         ,"videoPath" : ""
-        ,"songName" : "Monkeys Spinning Monkeys"
-        ,"hasVideo" : false
+        ,"delayBeforeStart" : 0
+        ,"isCreditRoll" : false
+        ,"strumProfile" : "Dance-Single"
         ,"notes" : [
              {
                  "endTime" : 1666.66666666667
@@ -16,6 +15,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
                      [
                          0
@@ -126,10 +126,9 @@
                     }
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 0
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 0
             }
             ,{
                  "endTime" : 3333.33333333333
@@ -137,6 +136,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
                      [
                          1666.66666666667
@@ -205,10 +205,9 @@
                     }
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 1666.66666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 1666.66666666667
             }
             ,{
                  "endTime" : 5000
@@ -216,17 +215,120 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
-
+                     [
+                         3333.33333333333
+                        ,0
+                        ,0
+                        ,false
+                        ,8
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         3750
+                        ,2
+                        ,0
+                        ,false
+                        ,9
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         3958.33333333333
+                        ,3
+                        ,0
+                        ,false
+                        ,9.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         4375
+                        ,1
+                        ,0
+                        ,false
+                        ,10.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         4791.66666666667
+                        ,0
+                        ,0
+                        ,false
+                        ,11.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
                 ]
                 ,"betterSectionNotes" : [
-
+                     {
+                         "isAlt" : false
+                        ,"strumTime" : 3333.33333333333
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 8
+                        ,"noteData" : 0
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 3750
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 9
+                        ,"noteData" : 2
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 3958.33333333333
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 9.5
+                        ,"noteData" : 3
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 4375
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 10.5
+                        ,"noteData" : 1
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 4791.66666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 11.5
+                        ,"noteData" : 0
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 3333.33333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 3333.33333333333
             }
             ,{
                  "endTime" : 6666.66666666667
@@ -234,17 +336,78 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
-
+                     [
+                         5000
+                        ,2
+                        ,0
+                        ,false
+                        ,12
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         5416.66666666667
+                        ,3
+                        ,0
+                        ,false
+                        ,13
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         5625
+                        ,1
+                        ,0
+                        ,false
+                        ,13.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
                 ]
                 ,"betterSectionNotes" : [
-
+                     {
+                         "isAlt" : false
+                        ,"strumTime" : 5000
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 12
+                        ,"noteData" : 2
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 5416.66666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 13
+                        ,"noteData" : 3
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 5625
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 13.5
+                        ,"noteData" : 1
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 5000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 5000
             }
             ,{
                  "endTime" : 8333.33333333333
@@ -252,17 +415,120 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
-
+                     [
+                         6666.66666666667
+                        ,0
+                        ,0
+                        ,false
+                        ,16
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         7083.33333333333
+                        ,2
+                        ,0
+                        ,false
+                        ,17
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         7291.66666666667
+                        ,3
+                        ,0
+                        ,false
+                        ,17.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         7708.33333333333
+                        ,1
+                        ,0
+                        ,false
+                        ,18.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         8125
+                        ,0
+                        ,0
+                        ,false
+                        ,19.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
                 ]
                 ,"betterSectionNotes" : [
-
+                     {
+                         "isAlt" : false
+                        ,"strumTime" : 6666.66666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 16
+                        ,"noteData" : 0
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 7083.33333333333
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 17
+                        ,"noteData" : 2
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 7291.66666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 17.5
+                        ,"noteData" : 3
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 7708.33333333333
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 18.5
+                        ,"noteData" : 1
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 8125
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 19.5
+                        ,"noteData" : 0
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 6666.66666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 6666.66666666667
             }
             ,{
                  "endTime" : 10000
@@ -270,17 +536,99 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
-
+                     [
+                         8333.33333333333
+                        ,2
+                        ,0
+                        ,false
+                        ,20
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         8541.66666666667
+                        ,3
+                        ,0
+                        ,false
+                        ,20.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         8750
+                        ,1
+                        ,0
+                        ,false
+                        ,21
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         8958.33333333333
+                        ,0
+                        ,0
+                        ,false
+                        ,21.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
                 ]
                 ,"betterSectionNotes" : [
-
+                     {
+                         "isAlt" : false
+                        ,"strumTime" : 8333.33333333333
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 20
+                        ,"noteData" : 2
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 8541.66666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 20.5
+                        ,"noteData" : 3
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 8750
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 21
+                        ,"noteData" : 1
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 8958.33333333333
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 21.5
+                        ,"noteData" : 0
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 8333.33333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 8333.33333333333
             }
             ,{
                  "endTime" : 11666.6666666667
@@ -288,17 +636,141 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
-
+                     [
+                         10000
+                        ,2
+                        ,0
+                        ,false
+                        ,24
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         10416.6666666667
+                        ,3
+                        ,0
+                        ,false
+                        ,25
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         10625
+                        ,1
+                        ,0
+                        ,false
+                        ,25.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         11041.6666666667
+                        ,0
+                        ,0
+                        ,false
+                        ,26.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         11458.3333333333
+                        ,2
+                        ,0
+                        ,false
+                        ,27.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
+                    ,[
+                         11666.6666666667
+                        ,3
+                        ,0
+                        ,false
+                        ,28
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
                 ]
                 ,"betterSectionNotes" : [
-
+                     {
+                         "isAlt" : false
+                        ,"strumTime" : 10000
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 24
+                        ,"noteData" : 2
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 10416.6666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 25
+                        ,"noteData" : 3
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 10625
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 25.5
+                        ,"noteData" : 1
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 11041.6666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 26.5
+                        ,"noteData" : 0
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 11458.3333333333
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 27.5
+                        ,"noteData" : 2
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
+                    ,{
+                         "isAlt" : false
+                        ,"strumTime" : 11666.6666666667
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 28
+                        ,"noteData" : 3
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 10000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 10000
             }
             ,{
                  "endTime" : 13333.3333333333
@@ -306,17 +778,36 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
-
+                     [
+                         11875
+                        ,1
+                        ,0
+                        ,false
+                        ,28.5
+                        ,0
+                        ,"SNAP"
+                        ,0
+                    ]
                 ]
                 ,"betterSectionNotes" : [
-
+                     {
+                         "isAlt" : false
+                        ,"strumTime" : 11875
+                        ,"noteTypeId" : "default"
+                        ,"hitsoundPath" : "SNAP"
+                        ,"vowelType" : 0
+                        ,"beat" : 28.5
+                        ,"noteData" : 1
+                        ,"noteType" : 0
+                        ,"sustainLength" : 0
+                    }
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 11666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 11666.6666666667
             }
             ,{
                  "endTime" : 15000
@@ -324,6 +815,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -331,10 +823,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 13333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 13333.3333333333
             }
             ,{
                  "endTime" : 16666.6666666667
@@ -342,6 +833,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -349,10 +841,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 15000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 15000
             }
             ,{
                  "endTime" : 18333.3333333333
@@ -360,6 +851,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -367,10 +859,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 16666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 16666.6666666667
             }
             ,{
                  "endTime" : 20000
@@ -378,6 +869,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -385,10 +877,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 18333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 18333.3333333333
             }
             ,{
                  "endTime" : 21666.6666666667
@@ -396,6 +887,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -403,10 +895,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 20000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 20000
             }
             ,{
                  "endTime" : 23333.3333333333
@@ -414,6 +905,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -421,10 +913,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 21666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 21666.6666666667
             }
             ,{
                  "endTime" : 25000
@@ -432,6 +923,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -439,10 +931,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 23333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 23333.3333333333
             }
             ,{
                  "endTime" : 26666.6666666667
@@ -450,6 +941,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -457,10 +949,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 25000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 25000
             }
             ,{
                  "endTime" : 28333.3333333333
@@ -468,6 +959,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -475,10 +967,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 26666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 26666.6666666667
             }
             ,{
                  "endTime" : 30000
@@ -486,6 +977,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -493,10 +985,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 28333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 28333.3333333333
             }
             ,{
                  "endTime" : 31666.6666666667
@@ -504,6 +995,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -511,10 +1003,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 30000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 30000
             }
             ,{
                  "endTime" : 33333.3333333333
@@ -522,6 +1013,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -529,10 +1021,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 31666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 31666.6666666667
             }
             ,{
                  "endTime" : 35000
@@ -540,6 +1031,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -547,10 +1039,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 33333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 33333.3333333333
             }
             ,{
                  "endTime" : 36666.6666666667
@@ -558,6 +1049,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -565,10 +1057,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 35000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 35000
             }
             ,{
                  "endTime" : 38333.3333333333
@@ -576,6 +1067,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -583,10 +1075,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 36666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 36666.6666666667
             }
             ,{
                  "endTime" : 40000
@@ -594,6 +1085,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -601,10 +1093,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 38333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 38333.3333333333
             }
             ,{
                  "endTime" : 41666.6666666667
@@ -612,6 +1103,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -619,10 +1111,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 40000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 40000
             }
             ,{
                  "endTime" : 43333.3333333333
@@ -630,6 +1121,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -637,10 +1129,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 41666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 41666.6666666667
             }
             ,{
                  "endTime" : 45000
@@ -648,6 +1139,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -655,10 +1147,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 43333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 43333.3333333333
             }
             ,{
                  "endTime" : 46666.6666666667
@@ -666,6 +1157,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -673,10 +1165,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 45000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 45000
             }
             ,{
                  "endTime" : 48333.3333333333
@@ -684,6 +1175,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -691,10 +1183,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 46666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 46666.6666666667
             }
             ,{
                  "endTime" : 50000
@@ -702,6 +1193,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -709,10 +1201,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 48333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 48333.3333333333
             }
             ,{
                  "endTime" : 51666.6666666667
@@ -720,6 +1211,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -727,10 +1219,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 50000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 50000
             }
             ,{
                  "endTime" : 53333.3333333333
@@ -738,6 +1229,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -745,10 +1237,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 51666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 51666.6666666667
             }
             ,{
                  "endTime" : 55000
@@ -756,6 +1247,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -763,10 +1255,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 53333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 53333.3333333333
             }
             ,{
                  "endTime" : 56666.6666666667
@@ -774,6 +1265,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -781,10 +1273,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 55000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 55000
             }
             ,{
                  "endTime" : 58333.3333333333
@@ -792,6 +1283,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -799,10 +1291,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 56666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 56666.6666666667
             }
             ,{
                  "endTime" : 60000
@@ -810,6 +1301,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -817,10 +1309,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 58333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 58333.3333333333
             }
             ,{
                  "endTime" : 61666.6666666667
@@ -828,6 +1319,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -835,10 +1327,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 60000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 60000
             }
             ,{
                  "endTime" : 63333.3333333333
@@ -846,6 +1337,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -853,10 +1345,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 61666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 61666.6666666667
             }
             ,{
                  "endTime" : 65000
@@ -864,6 +1355,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -871,10 +1363,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 63333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 63333.3333333333
             }
             ,{
                  "endTime" : 66666.6666666667
@@ -882,6 +1373,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -889,10 +1381,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 65000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 65000
             }
             ,{
                  "endTime" : 68333.3333333333
@@ -900,6 +1391,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -907,10 +1399,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 66666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 66666.6666666667
             }
             ,{
                  "endTime" : 70000
@@ -918,6 +1409,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -925,10 +1417,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 68333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 68333.3333333333
             }
             ,{
                  "endTime" : 71666.6666666667
@@ -936,6 +1427,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -943,10 +1435,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 70000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 70000
             }
             ,{
                  "endTime" : 73333.3333333333
@@ -954,6 +1445,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -961,10 +1453,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 71666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 71666.6666666667
             }
             ,{
                  "endTime" : 75000
@@ -972,6 +1463,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -979,10 +1471,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 73333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 73333.3333333333
             }
             ,{
                  "endTime" : 76666.6666666667
@@ -990,6 +1481,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -997,10 +1489,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 75000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 75000
             }
             ,{
                  "endTime" : 78333.3333333333
@@ -1008,6 +1499,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1015,10 +1507,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 76666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 76666.6666666667
             }
             ,{
                  "endTime" : 80000
@@ -1026,6 +1517,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1033,10 +1525,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 78333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 78333.3333333333
             }
             ,{
                  "endTime" : 81666.6666666667
@@ -1044,6 +1535,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1051,10 +1543,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 80000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 80000
             }
             ,{
                  "endTime" : 83333.3333333333
@@ -1062,6 +1553,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1069,10 +1561,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 81666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 81666.6666666667
             }
             ,{
                  "endTime" : 85000
@@ -1080,6 +1571,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1087,10 +1579,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 83333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 83333.3333333333
             }
             ,{
                  "endTime" : 86666.6666666667
@@ -1098,6 +1589,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1105,10 +1597,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 85000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 85000
             }
             ,{
                  "endTime" : 88333.3333333333
@@ -1116,6 +1607,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1123,10 +1615,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 86666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 86666.6666666667
             }
             ,{
                  "endTime" : 90000
@@ -1134,6 +1625,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1141,10 +1633,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 88333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 88333.3333333333
             }
             ,{
                  "endTime" : 91666.6666666667
@@ -1152,6 +1643,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1159,10 +1651,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 90000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 90000
             }
             ,{
                  "endTime" : 93333.3333333333
@@ -1170,6 +1661,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1177,10 +1669,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 91666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 91666.6666666667
             }
             ,{
                  "endTime" : 95000
@@ -1188,6 +1679,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1195,10 +1687,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 93333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 93333.3333333333
             }
             ,{
                  "endTime" : 96666.6666666667
@@ -1206,6 +1697,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1213,10 +1705,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 95000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 95000
             }
             ,{
                  "endTime" : 98333.3333333333
@@ -1224,6 +1715,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1231,10 +1723,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 96666.6666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 96666.6666666667
             }
             ,{
                  "endTime" : 100000
@@ -1242,6 +1733,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1249,10 +1741,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 98333.3333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 98333.3333333333
             }
             ,{
                  "endTime" : 101666.666666667
@@ -1260,6 +1751,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1267,10 +1759,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 100000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 100000
             }
             ,{
                  "endTime" : 103333.333333333
@@ -1278,6 +1769,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1285,10 +1777,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 101666.666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 101666.666666667
             }
             ,{
                  "endTime" : 105000
@@ -1296,6 +1787,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1303,10 +1795,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 103333.333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 103333.333333333
             }
             ,{
                  "endTime" : 106666.666666667
@@ -1314,6 +1805,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1321,10 +1813,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 105000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 105000
             }
             ,{
                  "endTime" : 108333.333333333
@@ -1332,6 +1823,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1339,10 +1831,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 106666.666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 106666.666666667
             }
             ,{
                  "endTime" : 110000
@@ -1350,6 +1841,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1357,10 +1849,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 108333.333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 108333.333333333
             }
             ,{
                  "endTime" : 111666.666666667
@@ -1368,6 +1859,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1375,10 +1867,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 110000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 110000
             }
             ,{
                  "endTime" : 113333.333333333
@@ -1386,6 +1877,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1393,10 +1885,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 111666.666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 111666.666666667
             }
             ,{
                  "endTime" : 115000
@@ -1404,6 +1895,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1411,10 +1903,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 113333.333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 113333.333333333
             }
             ,{
                  "endTime" : 116666.666666667
@@ -1422,6 +1913,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1429,10 +1921,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 115000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 115000
             }
             ,{
                  "endTime" : 118333.333333333
@@ -1440,6 +1931,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1447,10 +1939,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 116666.666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 116666.666666667
             }
             ,{
                  "endTime" : 120000
@@ -1458,6 +1949,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1465,10 +1957,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 118333.333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 118333.333333333
             }
             ,{
                  "endTime" : 121666.666666667
@@ -1476,6 +1967,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1483,10 +1975,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 120000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 120000
             }
             ,{
                  "endTime" : 123333.333333333
@@ -1494,6 +1985,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1501,10 +1993,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 121666.666666667
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 121666.666666667
             }
             ,{
                  "endTime" : 125000
@@ -1512,6 +2003,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : false
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1519,10 +2011,9 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 123333.333333333
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 123333.333333333
             }
             ,{
                  "endTime" : 126666.666666667
@@ -1530,6 +2021,7 @@
                 ,"altAnim" : false
                 ,"CPUAltAnim" : false
                 ,"mustHitSection" : true
+                ,"typeOfSection" : 0
                 ,"sectionNotes" : [
 
                 ]
@@ -1537,60 +2029,61 @@
 
                 ]
                 ,"lengthInSteps" : 16
-                ,"typeOfSection" : 0
-                ,"startTime" : 125000
-                ,"bpm" : 144
                 ,"changeBPM" : false
+                ,"bpm" : 144
+                ,"startTime" : 125000
             }
         ]
+        ,"hasVideo" : false
         ,"creditRunsOnce" : false
         ,"isCheer" : false
-        ,"invisibleCountdown" : false
-        ,"forceHscriptModchart" : false
         ,"cutsceneType" : "none"
-        ,"hasTankmanVideo" : false
+        ,"forceHscriptModchart" : false
+        ,"invisibleCountdown" : false
         ,"loadNoteStyleOtherWayAround" : false
-        ,"epilogueTankmanVideoPath" : "null"
+        ,"hasTankmanVideo" : false
         ,"useCustomStage" : false
-        ,"useCustomNoteStyle" : false
-        ,"artist" : "Kevin Macleod"
+        ,"epilogueTankmanVideoPath" : "null"
         ,"speed" : 1
-        ,"hasEpilogueChat" : false
+        ,"artist" : "Kevin Macleod"
+        ,"useCustomNoteStyle" : false
         ,"sectionLengths" : [
 
         ]
+        ,"hasEpilogueChat" : false
         ,"forceLuaModchart" : false
-        ,"outroCutSceneDoneManually" : false
-        ,"hasDialogueChat" : false
         ,"epilogueVideoPath" : ""
-        ,"introCutSceneDoneManually" : false
-        ,"preferredNoteAmount" : 4
-        ,"hasEpilogueVideo" : false
+        ,"hasDialogueChat" : false
+        ,"outroCutSceneDoneManually" : false
         ,"charter" : "JOELwindows7"
+        ,"hasEpilogueVideo" : false
+        ,"preferredNoteAmount" : 4
+        ,"introCutSceneDoneManually" : false
         ,"delayAfterFinish" : 0
         ,"strumCounts" : 4
-        ,"uiType" : "normal"
         ,"sections" : 0
+        ,"uiType" : "normal"
         ,"reversedCountdown" : false
-        ,"tankmanVideoPath" : "null"
-        ,"player1" : "bf-covid"
         ,"songId" : "monkeys-spinning-monkeys"
+        ,"player1" : "bf-covid"
+        ,"tankmanVideoPath" : "null"
         ,"player2" : "hookx"
-        ,"forceLuaModchartLegacy" : false
+        ,"isHey" : false
         ,"diffVariables" : {
 
         }
-        ,"isHey" : false
+        ,"forceLuaModchartLegacy" : false
         ,"offset" : 0
-        ,"song" : "monkeys-spinning-monkeys"
         ,"isSpooky" : false
-        ,"difficultyId" : "normal"
+        ,"song" : "monkeys-spinning-monkeys"
         ,"validScore" : true
+        ,"difficultyId" : "normal"
         ,"variables" : {
 
         }
         ,"isMoody" : false
         ,"gfVersion" : "gf-covid"
+        ,"chartVersion" : "KE1"
         ,"eventObjects" : [
              {
                  "_hxcls" : "Event"
@@ -1602,15 +2095,14 @@
                 ,"type" : "BPM Change"
             }
         ]
-        ,"chartVersion" : "KE1"
-        ,"difficulty" : 0
-        ,"hasEpilogueTankmanVideo" : false
         ,"allowedToHeadbang" : true
-        ,"difficultyStrength" : 1.17
+        ,"hasEpilogueTankmanVideo" : false
+        ,"difficulty" : 0
         ,"silentCountdown" : false
-        ,"stage" : "stage"
+        ,"difficultyStrength" : 1.29
         ,"needsVoices" : false
-        ,"bpm" : 144
+        ,"stage" : "stage"
         ,"noteStyle" : "normal"
+        ,"bpm" : 144
     }
 }

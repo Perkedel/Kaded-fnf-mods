@@ -238,7 +238,8 @@ class ModchartState
 		Lua.setglobal(lua, var_name);
 
 		// JOELwindows7: extra tell variable change!
-		executeState("variableChange", [var_name, object]);
+		// executeState("variableChange", [var_name, object]);
+		// callLua("variableChange", [var_name, object]);
 	}
 
 	public function getVar(var_name:String, type:String):Dynamic
@@ -1982,7 +1983,7 @@ class ModchartState
 		// was immediate return like
 		// return Lua.tostring(lua, callLua(name, args));
 		var result = Lua.tostring(lua, callLua(name, args));
-		callLua("methodExecutes", [name, args]);
+		// callLua("methodExecutes", [name, args]);
 		return result;
 	}
 

@@ -65,3 +65,5 @@ itch io page link pls
 hey, he has a commercial games on Nutaku. okay. then it should no longer a big surprise.
 
 let's r34 but still aware of the age of related person first.
+
+no no no, wait, I like R34. I am glad can finally found another dev of culture here. Just... yeah, you know. Paywall, you don't know?! argh. anyway..
