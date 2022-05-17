@@ -31,7 +31,8 @@ class MenuCharacter extends FlxSprite
 		'mom' => new CharacterSetting(-30, 140, 0.85),
 		'parents-christmas' => new CharacterSetting(100, 130, 1.8),
 		'senpai' => new CharacterSetting(-40, -45, 1.4),
-		'hookx' => new  CharacterSetting(0,100,1.2)
+		'tankman' => new CharacterSetting(-100, -30, 1.2),
+		'hookx' => new CharacterSetting(0, 100, 1.2)
 	];
 
 	private var flipped:Bool = false;
@@ -47,7 +48,7 @@ class MenuCharacter extends FlxSprite
 
 		antialiasing = FlxG.save.data.antialiasing;
 
-		//mark chooser
+		// mark chooser
 		frames = Paths.getSparrowAtlas('campaign_menu_UI_characters');
 
 		animation.addByPrefix('bf', "BF idle dance white", 24, false);
@@ -61,7 +62,8 @@ class MenuCharacter extends FlxSprite
 		animation.addByPrefix('mom', "Mom Idle BLACK LINES", 24, false);
 		animation.addByPrefix('parents-christmas', "Parent Christmas Idle", 24, false);
 		animation.addByPrefix('senpai', "SENPAI idle Black Lines", 24, false);
-		animation.addByPrefix('hookx',"Hookx idle dance JERRY RIG",24); //JOELwindows7: Zack Jerry rig loves transparent devices
+		animation.addByPrefix('tankman', "Tankman Menu BLACK", 24); // for template use. JOELwindows7: here tankman from week7, luckydog7 yoink
+		animation.addByPrefix('hookx', "Hookx idle dance JERRY RIG", 24); // JOELwindows7: Zack Jerry rig loves transparent devices
 
 		setGraphicSize(Std.int(width * scale));
 		updateHitbox();
@@ -79,7 +81,7 @@ class MenuCharacter extends FlxSprite
 		}
 		else
 		{
-			//trace("visible char");
+			// trace("visible char");
 			visible = true;
 		}
 

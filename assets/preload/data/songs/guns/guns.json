@@ -3,6 +3,7 @@
         "song": "guns",
         "songName": "Guns",
         "songId": "guns",
+        "stage": "tankStage",
         "bpm": 185.0,
         "needsVoices": true,
         "player1": "bf",

@@ -18,57 +18,77 @@
     }],
     "animations": [{
             "name": "idle",
-            "prefix": "Tankman Idle Dance",
+            "prefix": "Tankman Idle Dance instance ",
             "offsets": [0, 0]
         },
         {
             "name": "singUP",
-            "prefix": "Tankman UP note ",
+            "prefix": "Tankman UP note instance ",
             "offsets": [24, 56]
         },
         {
             "name": "oldSingUP",
-            "prefix": "Tankman UP note ",
+            "prefix": "Tankman UP note instance ",
             "offsets": [24, 56]
         },
         {
             "name": "singLEFT",
-            "prefix": "Tankman Right Note ",
+            "prefix": "Tankman Right Note instance ",
             "offsets": [100, -14]
         },
         {
             "name": "oldSingLEFT",
-            "prefix": "Tankman Right Note ",
+            "prefix": "Tankman Right Note instance ",
             "offsets": [100, -14]
         },
         {
             "name": "singRIGHT",
-            "prefix": "Tankman Note Left ",
+            "prefix": "Tankman Note Left instance ",
             "offsets": [-1, -7]
         },
         {
             "name": "oldSingRIGHT",
-            "prefix": "Tankman Note Left ",
+            "prefix": "Tankman Note Left instance ",
             "offsets": [-1, -7]
         },
         {
             "name": "singDOWN",
-            "prefix": "Tankman DOWN note ",
+            "prefix": "Tankman DOWN note instance ",
             "offsets": [98, -90]
         },
         {
             "name": "oldSingDOWN",
-            "prefix": "Tankman DOWN note ",
+            "prefix": "Tankman DOWN note instance ",
+            "offsets": [98, -90]
+        },
+        {
+            "name": "singUP-alt",
+            "prefix": "Tankman UP note instance ",
+            "offsets": [24, 56]
+        },
+        {
+            "name": "singLEFT-alt",
+            "prefix": "Tankman Right Note instance ",
+            "offsets": [100, -14]
+        },
+        {
+            "name": "singRIGHT-alt",
+            "prefix": "Tankman Note Left instance ",
+            "offsets": [-1, -7]
+        },
+        {
+            "name": "singDOWN-alt",
+            "prefix": "Tankman DOWN note instance ",
             "offsets": [98, -90]
         },
         {
             "name": "ughAnim",
-            "prefix": "TANKMAN UGH",
+            "prefix": "TANKMAN UGH instance ",
             "offsets": [0, 0]
         },
         {
             "name": "prettyGoodAnim",
-            "prefix": "PRETTY GOOD",
+            "prefix": "PRETTY GOOD tankman ",
             "offsets": [45, 20]
         }
     ]

@@ -54,6 +54,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 				['satin-panties', "high", "milf"],
 				['cocoa', 'eggnog', 'winter-horrorland'],
 				['senpai', 'roses', 'thorns'],
+				['ugh', 'guns', 'stress'],
 				['windfall', 'rule-the-world', 'well-meet-again'],
 			];
 		else
@@ -73,6 +74,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		['mom', 'bf', 'gf'],
 		['parents-christmas', 'bf', 'gf'],
 		['senpai', 'bf', 'gf'],
+		['tankman', 'bf', 'gf'],
 		['hookx', 'bf', 'gf'],
 	];
 
@@ -305,6 +307,36 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		grpWeekCharacters.add(new MenuCharacter(0, 100, 0.5, false));
 		grpWeekCharacters.add(new MenuCharacter(450, 25, 0.9, true));
 		grpWeekCharacters.add(new MenuCharacter(850, 100, 0.5, true));
+		// JOELwindows7: hey, try the week 7 way, yoinked by luckdydog7
+		// for (char in 0...3)
+		// {
+		// 	var weekCharacterThing = new MenuCharacter(Std.int((FlxG.width * 0.25) * (1 + char) - 150), 100, 0.5, false);
+		// var weekCharacterThing:MenuCharacter = new MenuCharacter((FlxG.width * 0.25) * (1 + char) - 150, weekCharacters[curWeek][char]);
+		// weekCharacterThing.y += 70;
+		// weekCharacterThing.antialiasing = FlxG.save.data.antialiasing;
+		// switch (weekCharacterThing.character)
+		// {
+		// 	case 'dad':
+		// 		weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
+		// 		weekCharacterThing.updateHitbox();
+
+		// 	case 'bf':
+		// 		weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.9));
+		// 		weekCharacterThing.updateHitbox();
+		// 		weekCharacterThing.x -= 80;
+		// 	case 'gf':
+		// 		weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
+		// 		weekCharacterThing.updateHitbox();
+		// 	case 'pico':
+		// 		weekCharacterThing.flipX = true;
+		// 	case 'parents-christmas':
+		// 		weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.9));
+		// 		weekCharacterThing.updateHitbox();
+		// }
+
+		// grpWeekCharacters.add(weekCharacterThing);
+
+		// }
 
 		difficultySelectors = new FlxGroup();
 		add(difficultySelectors);

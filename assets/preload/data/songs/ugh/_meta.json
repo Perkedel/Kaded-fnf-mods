@@ -1,7 +1,7 @@
 {
     "name": "Ugh",
     "offset": 0,
-    "artist": "none",
+    "artist": "Kawai Sprite",
     "isCreditRoll": false,
     "creditRunsOnce": false,
     "delayBeforeStart": 0.0,
@@ -10,9 +10,13 @@
     "videoPath": "",
     "hasEpilogueVideo": false,
     "epilogueVideoPath": "",
+    "hasTankmanVideo": true,
+    "tankmanVideoPath": "ughcutscene",
+    "hasEpilogueTankmanVideo": false,
+    "epilogueTankmanVideoPath": "",
     "hasDialogueChat": false,
     "hasEpilogueChat": false,
-    "allowedToHeadbang": false,
+    "allowedToHeadbang": true,
     "forceLuaModchart": false,
     "forceHscriptModchart": false,
     "forceLuaModchartLegacy": false,
@@ -30,7 +34,7 @@
     "eventObjects": [{
         "name": "Init BPM",
         "position": 0,
-        "value": 100,
+        "value": 160.0,
         "type": "BPM Change"
     }],
     "variables": {},

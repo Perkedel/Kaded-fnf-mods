@@ -113,8 +113,11 @@ class MainMenuState extends MusicBeatState
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, FlxG.height * 1.6);
 			menuItem.frames = tex;
-			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			// menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+			// menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			// JOELwindows7: let's use menu version we yoinked from week 7 which was yoinked by luckydog7 yeah!
+			menuItem.animation.addByPrefix('idle', optionShit[i] + " idle", 24);
+			menuItem.animation.addByPrefix('selected', optionShit[i] + " selected", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
 			menuItem.screenCenter(X);

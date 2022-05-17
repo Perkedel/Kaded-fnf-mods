@@ -32,7 +32,7 @@
     "animations": [{
             "name": "singUP",
             "prefix": "BF Dies with GF0",
-            "offsets": [-29, 10]
+            "offsets": [37, 14]
         },
         {
             "name": "firstDeath",

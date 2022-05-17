@@ -383,6 +383,8 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://gamebanana.com/mods/316530
 - https://migmoog.newgrounds.com/news/post/1207508 how to stop being `lime test html5` tediously. have live server, go live, build html5. explore html5 file to open that index html.
 - https://stackoverflow.com/questions/55342758/haxe-uncaught-global-exception-handler uncaught error handler
+- https://rustyanimator.com/free-maya-rigs/ Random list of **$0 / Free 3D model** for Autodesk Maya (some includes FBX) & little promo for paywalled models.
+- https://www.cgtrader.com/3d-models?keywords=free+3d+mode cg trader search for `free 3d model` missing `l`.
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -545,6 +547,8 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/mods/43037 AjTheFunky (WARNING: NO Pibby allowed; [permission thread](https://gamebanana.com/mods/43037?post=10023453 )). Heartbreak Girlfriend. Nah, don't worry, we don't pibby right now. Not too interested apparently idk.. Right?? aah..
 - https://gamebanana.com/mods/352532 https://github.com/YoshiCrafter29/YoshiCrafterEngine YoshiCrafter29. Yoshi Engine. let's yoink features for down the road.
 - https://github.com/larsiusprime/crashdumper/ larsiusprime. Crash dumper tool for HaxeFlixel & OpenFl based stuffs! see stackoverflow [here](https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create )
+- https://gamebanana.com/mods/372917 FoxDeveloper (Permissioned: `Free to use`). Reshaded gf-less speaker.
+- https://gamebanana.com/mods/377842 TornPaint, Novikond the idea of this, HentryBATIM; (Credit if used). **THICC 😏🍉🍉 gf**.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

@@ -6479,45 +6479,48 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: incoming, week 7 yoink yey! luckydog7
 		// picoSpeaker and running tankmen
 
-		if (SONG.songId.toLowerCase() == 'stress')
+		if (SONG.songId == 'stress')
 		{
-			// RIGHT
-			for (i in 0...Stage.picoStep.right.length)
-			{
-				if (curStep == Stage.picoStep.right[i])
+			if (Stage.picoStep != null && Stage.tankStep != null)
+			{ // JOELwindows7: make sure null safety. the songId changed before loading next song looks like.
+				// RIGHT
+				for (i in 0...Stage.picoStep.right.length)
 				{
-					gf.playAnim('shoot' + FlxG.random.int(1, 2), true);
-					// var tankmanRunner:TankmenBG = new TankmenBG();
+					if (curStep == Stage.picoStep.right[i])
+					{
+						gf.playAnim('shoot' + FlxG.random.int(1, 2), true);
+						// var tankmanRunner:TankmenBG = new TankmenBG();
+					}
 				}
-			}
-			// LEFT
-			for (i in 0...Stage.picoStep.left.length)
-			{
-				if (curStep == Stage.picoStep.left[i])
+				// LEFT
+				for (i in 0...Stage.picoStep.left.length)
 				{
-					gf.playAnim('shoot' + FlxG.random.int(3, 4), true);
+					if (curStep == Stage.picoStep.left[i])
+					{
+						gf.playAnim('shoot' + FlxG.random.int(3, 4), true);
+					}
 				}
-			}
-			// Left tankspawn
-			for (i in 0...Stage.tankStep.left.length)
-			{
-				if (curStep == Stage.tankStep.left[i])
+				// Left tankspawn
+				for (i in 0...Stage.tankStep.left.length)
 				{
-					var tankmanRunner:TankmenBG = new TankmenBG();
-					tankmanRunner.resetShit(FlxG.random.int(630, 730) * -1, 255, true, 1, 1.5);
+					if (curStep == Stage.tankStep.left[i])
+					{
+						var tankmanRunner:TankmenBG = new TankmenBG();
+						tankmanRunner.resetShit(FlxG.random.int(630, 730) * -1, 255, true, 1, 1.5);
 
-					Stage.tankmanRun.add(tankmanRunner);
+						Stage.tankmanRun.add(tankmanRunner);
+					}
 				}
-			}
 
-			// Right spawn
-			for (i in 0...Stage.tankStep.right.length)
-			{
-				if (curStep == Stage.tankStep.right[i])
+				// Right spawn
+				for (i in 0...Stage.tankStep.right.length)
 				{
-					var tankmanRunner:TankmenBG = new TankmenBG();
-					tankmanRunner.resetShit(FlxG.random.int(1500, 1700) * 1, 275, false, 1, 1.5);
-					Stage.tankmanRun.add(tankmanRunner);
+					if (curStep == Stage.tankStep.right[i])
+					{
+						var tankmanRunner:TankmenBG = new TankmenBG();
+						tankmanRunner.resetShit(FlxG.random.int(1500, 1700) * 1, 275, false, 1, 1.5);
+						Stage.tankmanRun.add(tankmanRunner);
+					}
 				}
 			}
 		}
@@ -6528,6 +6531,7 @@ class PlayState extends MusicBeatState
 			{
 				dad.addOffset("singDOWN", 45, 20);
 				dad.animation.getByName('singDOWN').frames = dad.animation.getByName('prettyGoodAnim').frames;
+				dad.animation.getByName('singDOWN-alt').frames = dad.animation.getByName('prettyGoodAnim').frames; // alright, somebody pls explain.
 				dad.playAnim('prettyGoodAnim', true);
 			}
 
@@ -6540,6 +6544,7 @@ class PlayState extends MusicBeatState
 			{
 				dad.addOffset("singDOWN", 98, -90);
 				dad.animation.getByName('singDOWN').frames = dad.animation.getByName('oldSingDOWN').frames;
+				dad.animation.getByName('singDOWN-alt').frames = dad.animation.getByName('oldSingDOWN').frames;
 			}
 		}
 

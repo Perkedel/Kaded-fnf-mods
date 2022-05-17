@@ -3,6 +3,7 @@
         "songName": "Ugh",
         "songId": "ugh",
         "song": "ugh",
+        "stage": "tankStage",
         "bpm": 160.0,
         "needsVoices": true,
         "player1": "bf",

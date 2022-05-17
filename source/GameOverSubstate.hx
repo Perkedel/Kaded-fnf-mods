@@ -186,6 +186,11 @@ class GameOverSubstate extends MusicBeatSubstate
 					FlxG.sound.play(Paths.sound('paperTear' + Std.string(FlxG.random.int(1, 8))));
 					FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
 				}
+			case 'bf-holding-gf':
+				{
+					FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
+					FlxG.sound.play(Paths.soundRandom('GF_', 1, 4, 'shared'), 0.3);
+				}
 			default:
 				{
 					FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));

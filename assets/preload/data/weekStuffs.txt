@@ -5,7 +5,7 @@ pico:bf:gf:#993399:::confirmMenu
 mom:bf:gf:#ff0066:::confirmMenu
 parents-christmas:bf:gf:#3366ff:::confirmMenu
 senpai:bf:gf:pink:::confirmMenu
-tankman:bf:gf
+tankman:bf:gf:#ffcc00:::confirmMenu
 hookx:bf:gf:#66ccff:::confirmMenu
 senpai:bf:gf:pink:::gameOverEnd-pixel-midi
 hookx:bf:gf:white:::confirmMenu

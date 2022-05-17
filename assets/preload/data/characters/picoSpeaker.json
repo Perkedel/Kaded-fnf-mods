@@ -4,7 +4,7 @@
     "asset": "tankman/picoSpeaker",
     "barColor": "#B7D855",
     "startingAnim": "shoot1",
-    "isDancing": true,
+    "isDancing": false,
     "holdLength": 4.1,
     "replacesGF": true,
     "heartOrgans": [{
@@ -24,7 +24,8 @@
             "name": "idle",
             "prefix": "Pico shoot 1",
             "offsets": [0, 0],
-            "frameIndices": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+            "frameIndices": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+            "looped": true
         },
         {
             "name": "shoot1",
@@ -35,43 +36,43 @@
         {
             "name": "shoot2",
             "prefix": "Pico shoot 2",
-            "offsets": [0, 0],
+            "offsets": [-1, -128],
             "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
         },
         {
             "name": "shoot3",
             "prefix": "Pico shoot 3",
-            "offsets": [0, 0],
+            "offsets": [412, -64],
             "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
         },
         {
             "name": "shoot4",
             "prefix": "Pico shoot 4",
-            "offsets": [0, 0],
+            "offsets": [439, -19],
             "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
         },
         {
             "name": "singLEFT",
             "prefix": "Pico shoot 1",
-            "offsets": [0, -19],
+            "offsets": [0, 0],
             "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
         },
         {
             "name": "singRIGHT",
             "prefix": "Pico shoot 4",
-            "offsets": [0, -20],
+            "offsets": [439, -19],
             "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
         },
         {
             "name": "singUP",
             "prefix": "Pico shoot 3",
-            "offsets": [0, 4],
+            "offsets": [412, -64],
             "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
         },
         {
             "name": "singDOWN",
             "prefix": "Pico shoot 2",
-            "offsets": [0, -20],
+            "offsets": [-1, -128],
             "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
         }
     ]

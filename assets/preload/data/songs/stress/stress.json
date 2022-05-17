@@ -3,6 +3,7 @@
         "song": "stress",
         "songId": "stress",
         "songName": "Stress",
+        "stage": "tankStage2",
         "bpm": 178.0,
         "needsVoices": true,
         "player1": "bf-holding-gf",

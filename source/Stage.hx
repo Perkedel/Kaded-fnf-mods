@@ -1,5 +1,7 @@
 package;
 
+import flixel.math.FlxAngle;
+import flixel.math.FlxMath;
 import tjson.TJSON;
 import haxe.Json;
 import PlayState;
@@ -130,21 +132,21 @@ class Stage extends MusicBeatState
 		],
 		'tankStage' => [
 			// JOELwindows7: the week 7 interpreto.
-			'bf' => [1100, 450],
-			'gf-tankman' => [345, -70],
-			'tankman' => [20, 160],
-			'NULL-bf' => [1100, 450],
-			'NULL-gf' => [345, -70],
-			'NULL-dad' => [20, 160],
+			'bf' => [810, 450],
+			'gf-tankman' => [200, 75],
+			'tankman' => [20, 380],
+			'NULL-bf' => [810, 450],
+			'NULL-gf' => [200, 75],
+			'NULL-dad' => [20, 380],
 		],
 		'tankStage2' => [
 			// JOELwindows7: the week 7 interpreto.
-			'bf-holding-gf' => [1100, 450],
-			'picoSpeaker' => [245, 40],
-			'tankman' => [20, 160],
-			'NULL-bf' => [1020, 450],
-			'NULL-gf' => [245, 40],
-			'NULL-dad' => [20, 160],
+			'bf-holding-gf' => [810, 450],
+			'picoSpeaker' => [310, -25],
+			'tankman' => [20, 380],
+			'NULL-bf' => [810, 450],
+			'NULL-gf' => [310, -25],
+			'NULL-dad' => [20, 380],
 		],
 		'pizza' => [
 			// JOELwindows7: copilot lol!
@@ -608,7 +610,7 @@ class Stage extends MusicBeatState
 						 */
 					}
 				// JOELwindows7: Finally, week 7 yoinkeh. big shout out also to luckydog7 for the help with the Android port yeah!
-				case 'tankstage':
+				case 'tankStage':
 					{
 						curStage = 'tankStage';
 						camZoom = 0.9;
@@ -616,35 +618,40 @@ class Stage extends MusicBeatState
 						sky.scrollFactor.set(0, 0);
 						sky.antialiasing = true;
 						sky.setGraphicSize(Std.int(sky.width * 1.5));
-						add(sky);
+						// add(sky);
+						addThe(sky, 'sky');
 
 						var clouds:FlxSprite = new FlxSprite(FlxG.random.int(-700, -100), FlxG.random.int(-20, 20)).loadGraphic(Paths.image('tankClouds'));
 						clouds.scrollFactor.set(0.1, 0.1);
 						clouds.velocity.x = FlxG.random.float(5, 15);
 						clouds.antialiasing = true;
 						clouds.updateHitbox();
-						add(clouds);
+						// add(clouds);
+						addThe(clouds, 'clouds');
 
 						var mountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.image('tankMountains'));
 						mountains.scrollFactor.set(0.2, 0.2);
 						mountains.setGraphicSize(Std.int(1.2 * mountains.width));
 						mountains.updateHitbox();
 						mountains.antialiasing = true;
-						add(mountains);
+						// add(mountains);
+						addThe(mountains, 'mountains');
 
 						var buildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankBuildings'));
 						buildings.scrollFactor.set(0.3, 0.3);
 						buildings.setGraphicSize(Std.int(buildings.width * 1.1));
 						buildings.updateHitbox();
 						buildings.antialiasing = true;
-						add(buildings);
+						// add(buildings);
+						addThe(buildings, 'buildings');
 
 						var ruins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankRuins'));
 						ruins.scrollFactor.set(0.35, 0.35);
 						ruins.setGraphicSize(Std.int(ruins.width * 1.1));
 						ruins.updateHitbox();
 						ruins.antialiasing = true;
-						add(ruins);
+						// add(ruins);
+						addThe(ruins, 'ruins');
 
 						var smokeLeft:FlxSprite = new FlxSprite(-200, -100);
 						smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft');
@@ -653,7 +660,8 @@ class Stage extends MusicBeatState
 						smokeLeft.antialiasing = true;
 						smokeLeft.animation.play('idle');
 
-						add(smokeLeft);
+						// add(smokeLeft);
+						addThe(smokeLeft, 'smokeLeft');
 
 						var smokeRight:FlxSprite = new FlxSprite(1100, -100);
 						smokeRight.frames = Paths.getSparrowAtlas('smokeRight');
@@ -662,7 +670,8 @@ class Stage extends MusicBeatState
 						smokeRight.antialiasing = true;
 						smokeRight.animation.play('idle');
 
-						add(smokeRight);
+						// add(smokeRight);
+						addThe(smokeRight, 'smokeRight');
 
 						var tankWatchtower:FlxSprite = new FlxSprite(100, 120);
 						tankWatchtower.frames = Paths.getSparrowAtlas('tankWatchtower');
@@ -670,7 +679,8 @@ class Stage extends MusicBeatState
 						tankWatchtower.scrollFactor.set(0.5, 0.5);
 						tankWatchtower.antialiasing = true;
 
-						add(tankWatchtower);
+						// add(tankWatchtower);
+						addThe(tankWatchtower, 'tankWatchtower');
 
 						tankRolling = new FlxSprite(300, 300);
 						tankRolling.frames = Paths.getSparrowAtlas('tankRolling');
@@ -678,7 +688,8 @@ class Stage extends MusicBeatState
 						tankRolling.scrollFactor.set(0.5, 0.5);
 						tankRolling.antialiasing = true;
 						tankRolling.animation.play('idle');
-						add(tankRolling);
+						// add(tankRolling);
+						addThe(tankRolling, 'tankRolling');
 
 						var ground:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.image('tankGround'));
 						ground.scrollFactor.set();
@@ -687,7 +698,8 @@ class Stage extends MusicBeatState
 						ground.scrollFactor.set(1, 1);
 
 						ground.updateHitbox();
-						add(ground);
+						// add(ground);
+						addThe(ground, 'ground');
 
 						tankBop1 = new FlxSprite(-500, 650);
 						tankBop1.frames = Paths.getSparrowAtlas('tank0');
@@ -724,6 +736,14 @@ class Stage extends MusicBeatState
 						tankBop6.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
 						tankBop6.scrollFactor.set(1.5, 1.5);
 						tankBop6.antialiasing = true;
+
+						// JOELwindows7: use layfront!
+						addThe(tankBop1, 'tankBop1', true, 2);
+						addThe(tankBop2, 'tankBop2', true, 2);
+						addThe(tankBop3, 'tankBop3', true, 2);
+						addThe(tankBop4, 'tankBop4', true, 2);
+						addThe(tankBop5, 'tankBop5', true, 2);
+						addThe(tankBop6, 'tankBop6', true, 2);
 
 						tankWatchtower.animation.play('bop');
 						tankBop1.animation.play('bop');
@@ -741,42 +761,47 @@ class Stage extends MusicBeatState
 						// picoStep = Json.parse(openfl.utils.Assets.getText(Paths.json('stress/picospeaker')));
 						// tankStep = Json.parse(openfl.utils.Assets.getText(Paths.json('stress/tankSpawn')));
 						// JOELwindows7: No! use the new TJSONer! idk..
-						picoStep = TJSON.parse(openfl.utils.Assets.getText(Paths.json('songs/stress/picospeaker')));
-						tankStep = TJSON.parse(openfl.utils.Assets.getText(Paths.json('songs/stress/tankSpawn')));
+						picoStep = TJSON.parse(openfl.utils.Assets.getText(Paths.json('songs/${PlayState.SONG.songId}/picospeaker')));
+						tankStep = TJSON.parse(openfl.utils.Assets.getText(Paths.json('songs/${PlayState.SONG.songId}/tankSpawn')));
 
 						var sky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.image('tankSky'));
 						sky.scrollFactor.set(0, 0);
 						sky.antialiasing = true;
 						sky.setGraphicSize(Std.int(sky.width * 1.5));
-						add(sky);
+						// add(sky);
+						addThe(sky, 'sky');
 
 						var clouds:FlxSprite = new FlxSprite(FlxG.random.int(-700, -100), FlxG.random.int(-20, 20)).loadGraphic(Paths.image('tankClouds'));
 						clouds.scrollFactor.set(0.1, 0.1);
 						clouds.velocity.x = FlxG.random.float(5, 15);
 						clouds.antialiasing = true;
 						clouds.updateHitbox();
-						add(clouds);
+						// add(clouds);
+						addThe(clouds, 'clouds');
 
 						var mountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.image('tankMountains'));
 						mountains.scrollFactor.set(0.2, 0.2);
 						mountains.setGraphicSize(Std.int(1.2 * mountains.width));
 						mountains.updateHitbox();
 						mountains.antialiasing = true;
-						add(mountains);
+						// add(mountains);
+						addThe(mountains, 'mountains');
 
 						var buildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankBuildings'));
 						buildings.scrollFactor.set(0.3, 0.3);
 						buildings.setGraphicSize(Std.int(buildings.width * 1.1));
 						buildings.updateHitbox();
 						buildings.antialiasing = true;
-						add(buildings);
+						// add(buildings);
+						addThe(buildings, 'buildings');
 
 						var ruins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankRuins'));
 						ruins.scrollFactor.set(0.35, 0.35);
 						ruins.setGraphicSize(Std.int(ruins.width * 1.1));
 						ruins.updateHitbox();
 						ruins.antialiasing = true;
-						add(ruins);
+						// add(ruins);
+						addThe(ruins, 'ruins');
 
 						var smokeLeft:FlxSprite = new FlxSprite(-200, -100);
 						smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft');
@@ -785,7 +810,8 @@ class Stage extends MusicBeatState
 						smokeLeft.antialiasing = true;
 						smokeLeft.animation.play('idle');
 
-						add(smokeLeft);
+						// add(smokeLeft);
+						addThe(smokeLeft, 'smokeLeft');
 
 						var smokeRight:FlxSprite = new FlxSprite(1100, -100);
 						smokeRight.frames = Paths.getSparrowAtlas('smokeRight');
@@ -794,7 +820,8 @@ class Stage extends MusicBeatState
 						smokeRight.antialiasing = true;
 						smokeRight.animation.play('idle');
 
-						add(smokeRight);
+						// add(smokeRight);
+						addThe(smokeRight, 'smokeRight');
 
 						var tankWatchtower:FlxSprite = new FlxSprite(100, 120);
 						tankWatchtower.frames = Paths.getSparrowAtlas('tankWatchtower');
@@ -802,7 +829,8 @@ class Stage extends MusicBeatState
 						tankWatchtower.scrollFactor.set(0.5, 0.5);
 						tankWatchtower.antialiasing = true;
 
-						add(tankWatchtower);
+						// add(tankWatchtower);
+						addThe(tankWatchtower, 'tankWatchtower');
 
 						tankRolling = new FlxSprite(300, 300);
 						tankRolling.frames = Paths.getSparrowAtlas('tankRolling');
@@ -810,9 +838,11 @@ class Stage extends MusicBeatState
 						tankRolling.scrollFactor.set(0.5, 0.5);
 						tankRolling.antialiasing = true;
 						tankRolling.animation.play('idle');
-						add(tankRolling);
+						// add(tankRolling);
+						addThe(tankRolling, 'tankRolling');
 						tankmanRun = new FlxTypedGroup<TankmenBG>();
-						add(tankmanRun);
+						// add(tankmanRun);
+						addThe(tankmanRun, 'tankRolling');
 
 						var ground:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.image('tankGround'));
 						ground.scrollFactor.set();
@@ -821,7 +851,8 @@ class Stage extends MusicBeatState
 						ground.scrollFactor.set(1, 1);
 
 						ground.updateHitbox();
-						add(ground);
+						// add(ground);
+						addThe(ground, 'ground');
 
 						tankBop1 = new FlxSprite(-500, 650);
 						tankBop1.frames = Paths.getSparrowAtlas('tank0');
@@ -858,6 +889,14 @@ class Stage extends MusicBeatState
 						tankBop6.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
 						tankBop6.scrollFactor.set(1.5, 1.5);
 						tankBop6.antialiasing = true;
+
+						// JOELwindows7: use layfront!
+						addThe(tankBop1, 'tankBop1', true, 2);
+						addThe(tankBop2, 'tankBop2', true, 2);
+						addThe(tankBop3, 'tankBop3', true, 2);
+						addThe(tankBop4, 'tankBop4', true, 2);
+						addThe(tankBop5, 'tankBop5', true, 2);
+						addThe(tankBop6, 'tankBop6', true, 2);
 
 						tankWatchtower.animation.play('bop');
 						tankBop1.animation.play('bop');
@@ -1197,7 +1236,12 @@ class Stage extends MusicBeatState
 							trainFrameTiming = 0;
 						}
 					}
-					// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
+				// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
+				// JOELwindows7: week 7 tank rolling pls
+				case 'tankStage':
+					moveTank();
+				case 'tankStage2':
+					moveTank();
 			}
 		}
 	}
@@ -1707,6 +1751,27 @@ class Stage extends MusicBeatState
 		}
 	}
 
+	// JOELwindows7: week 7 tank rolling
+	var tankX = 400;
+	var tankAngle:Float = FlxG.random.int(-90, 45);
+	var tankSpeed:Float = FlxG.random.float(5, 7);
+
+	function moveTank()
+	{
+		tankAngle += FlxG.elapsed * tankSpeed;
+		tankRolling.angle = tankAngle - 90 + 15;
+		tankRolling.x = tankX + 1500 * FlxMath.fastCos(FlxAngle.asRadians(tankAngle + 180));
+		tankRolling.y = 1300 + 1100 * FlxMath.fastSin(FlxAngle.asRadians(tankAngle + 180));
+	}
+
+	function again()
+	{
+		tankRolling.x = 300;
+		tankRolling.y = 300;
+		moveTank();
+	}
+
+	// JOELwindows7: They see me rolling, they, okeh stop.
 	// JOELwindows7: init stagefile
 	public var customStage:SwagStage;
 

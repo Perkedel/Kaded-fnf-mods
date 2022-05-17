@@ -1,0 +1,46 @@
+{
+    "name": "Girlfriend (Thicc)",
+    "displayName": "Girlfriend",
+    "asset": "characters/gf-thicc",
+    "barColor": "#A5004D",
+    "startingAnim": "danceRight",
+    "isDancing": true,
+    "holdLength": 4.1,
+    "replacesGF": true,
+    "info": [
+        "Is it just me, or she looks kinda",
+        "THICC!!!",
+        "https://gamebanana.com/mods/377842"
+    ],
+    "heartOrgans": [{
+        "character": "gf",
+        "initHR": 80,
+        "maxHR": 400,
+        "minHR": 80,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "phobia": {
+        "lightningStorm": true
+    },
+    "animations": [{
+            "name": "danceLeft",
+            "prefix": "Gfdance",
+            "offsets": [0, 0],
+            "frameIndices": []
+        },
+        {
+            "name": "danceRight",
+            "prefix": "Gfdance",
+            "offsets": [0, 0],
+            "frameIndices": []
+        },
+        {
+            "name": "cheer",
+            "prefix": "Gf Cheer",
+            "offsets": [0, -4]
+        }
+    ]
+}
