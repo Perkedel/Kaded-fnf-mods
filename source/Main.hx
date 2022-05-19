@@ -110,7 +110,7 @@ class Main extends Sprite
 		super();
 
 		// JOELwindows7: install crashdumper
-		setupCrashDumper();
+		// setupCrashDumper();
 
 		// JOELwindows7: Grig midi pls
 		// trace("MIDI out APIs:\n" + MidiOut.getApis());
@@ -156,6 +156,9 @@ class Main extends Sprite
 		}
 
 		setupGame();
+
+		// JOELwindows7: no, install crashdumper after everything.
+		setupCrashDumper();
 	}
 
 	private function setupGame():Void

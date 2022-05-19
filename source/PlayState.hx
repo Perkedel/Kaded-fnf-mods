@@ -276,6 +276,7 @@ class PlayState extends MusicBeatState
 	// even the song has been done.
 	public var iconP1:HealthIcon; // making these public again because i may be stupid
 	public var iconP2:HealthIcon; // what could go wrong?
+	public var iconPlayers:FlxTypedGroup<HealthIcon>; // JOELwindows7: okeh, player icons array for later, idk.
 	public var camHUD:FlxCamera;
 	public var camSustains:FlxCamera;
 	public var camNotes:FlxCamera;
@@ -1420,11 +1421,15 @@ class PlayState extends MusicBeatState
 
 		addedBotplay = PlayStateChangeables.botPlay;
 
-		iconP1 = new HealthIcon(boyfriend.curCharacter, true);
-		iconP1.y = healthBar.y - (iconP1.height / 2);
+		iconPlayers = new FlxTypedGroup<HealthIcon>(); // JOELwindows7: here player icon.
 
-		iconP2 = new HealthIcon(dad.curCharacter, false);
+		iconP1 = new HealthIcon(boyfriend.curCharacter, true, boyfriend.forceIcon);
+		iconP1.y = healthBar.y - (iconP1.height / 2);
+		iconPlayers.add(iconP1);
+
+		iconP2 = new HealthIcon(dad.curCharacter, false, dad.forceIcon);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
+		iconPlayers.add(iconP2);
 
 		if (FlxG.save.data.healthBar)
 		{
@@ -2572,6 +2577,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.save.data.songPosition)
 		{
+			Debug.logInfo("Install Song Position bar!");
 			songPosBG = new FlxSprite(0, 10).loadGraphic(Paths.loadImage('healthBar'));
 			if (PlayStateChangeables.useDownscroll)
 				songPosBG.y = FlxG.height * 0.9 + 35;

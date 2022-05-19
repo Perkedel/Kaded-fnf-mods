@@ -21,6 +21,7 @@ class Character extends FlxSprite
 	public var debugMode:Bool = false;
 
 	public var isPlayer:Bool = false;
+	public var forceIcon:Bool = false; // JOELwindows7: force the health icon to be this exact icon name, skipping filter.
 	public var curCharacter:String = 'bf';
 	public var barColor:FlxColor;
 	public var colorTween:FlxTween; // JOELwindows7: Psyched color tween lol! what a big surpise.
@@ -145,6 +146,7 @@ class Character extends FlxSprite
 		this.replacesGF = data.replacesGF == null ? false : data.replacesGF;
 		this.hasTrail = data.hasTrail == null ? false : data.hasTrail;
 		this.isDancing = data.isDancing == null ? false : data.isDancing;
+		this.forceIcon = data.forceIcon == null ? false : data.forceIcon; // JOELwindows7: force icon to be exact this.
 		this.charPos = data.charPos == null ? [0, 0] : data.charPos;
 		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
 		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
@@ -201,7 +203,8 @@ class Character extends FlxSprite
 				if (isDancing && forceDanced != null)
 					danced = forceDanced;
 			}
-			else {
+			else
+			{
 				// if (isDancing || animation.curAnim.finished)
 				// 	dance();
 				// animation.curAnim
@@ -498,6 +501,12 @@ typedef CharacterData =
 	 */
 	var ?displayName:String; // JOELwindows7: If they have special name, reregular name, or whatever it should be displayed as.
 
+	/**
+	 * Force the health icon to be specific icon regardless of the filter.
+	 */
+	var ?forceIcon:Bool; // JOELwindows7: force the health icon to be specific icon regardless of the filter.
+
+	// var ?forceHealthIconIsThat:Bool; // JOELwindows7: force the health icon to be specific icon regardless of the filter.
 	var asset:String;
 	var startingAnim:String;
 	var ?charPos:Array<Int>;

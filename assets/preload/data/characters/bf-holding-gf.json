@@ -3,6 +3,7 @@
     "displayName": "Boyfriend & Girlfriend",
     "asset": "tankman/bfAndGF",
     "barColor": "#5000E6",
+    "forceIcon": true,
     "flipX": true,
     "startingAnim": "idle",
     "heartOrgans": [{

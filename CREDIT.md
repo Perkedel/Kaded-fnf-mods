@@ -547,8 +547,9 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/mods/43037 AjTheFunky (WARNING: NO Pibby allowed; [permission thread](https://gamebanana.com/mods/43037?post=10023453 )). Heartbreak Girlfriend. Nah, don't worry, we don't pibby right now. Not too interested apparently idk.. Right?? aah..
 - https://gamebanana.com/mods/352532 https://github.com/YoshiCrafter29/YoshiCrafterEngine YoshiCrafter29. Yoshi Engine. let's yoink features for down the road.
 - https://github.com/larsiusprime/crashdumper/ larsiusprime. Crash dumper tool for HaxeFlixel & OpenFl based stuffs! see stackoverflow [here](https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create )
-- https://gamebanana.com/mods/372917 FoxDeveloper (Permissioned: `Free to use`). Reshaded gf-less speaker.
-- https://gamebanana.com/mods/377842 TornPaint, Novikond the idea of this, HentryBATIM; (Credit if used). **THICC 😏🍉🍉 gf**.
+- https://gamebanana.com/mods/372917 FoxDeveloper (Permissioned: `Free to use`). Reshaded gf-less speaker. Only has 3 frames! lightweight!
+- https://gamebanana.com/mods/185805 theoriginalalex (no need credit). gf-less speaker, out of original `GF_assets` & `gfPixel`, the gf is removed. extracted off. has both normal & pixel version.
+- https://gamebanana.com/mods/366075 Borist (free to use, don't forget credit). Gf without speaker, & floating in the air lol! look at her `ASS_SETS` lol pun filename.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
@@ -564,6 +565,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/sounds/51159 (WARNING: has NC, ND) bruh miss note. MrBruh redistributed it this. 10 11 12 miss note
 - https://gamebanana.com/sounds/51838 (WARNING: has NC, ND) BABABOOEY! irdk_anymore. miss note 13 14 15
 - https://gamebanana.com/mods/44306 (Warning: has NC, ND) Placeholder of week 7 temporarily. (Canceled, due to unforseen and fear of bad circumstances against centralized mod hosting, as well as precaution against ND circled Creative Commons license)
+- - https://gamebanana.com/mods/377842 TornPaint, Novikond the idea of this, HentryBATIM; (Credit if used). **THICC 😏🍉🍉 gf**. Uh oh, archive [here](https://web.archive.org/web/20220518230045/https://gamebanana.com/mods/377842 ). Tracened. deleted by admin due to copyright violation. This asset has been removed & moved to Scrap due to fear of copyright strike again since that mod got copyright struck. not because of license of this asset. Ah peck! I didn't have the latest 1.2 version. Archiver bot should've been vigilant. PECK. At least we do have Redsty Phoenix standalone gf, yeah.. idk.
 
 **dislcaimer**: above list are no way meant to insult, defame, or threat authors of the mods listed. Perkedel requires all contributor from all tiers, roles, etc. to be transparent not only what have been yoinked, but also deyoinked assets, as well as the reason behind each deyoinks and removal (also including the foreshadowing which means mods that wish to be yoinked but ND circled license in the way). for those author that got the mod removed, feel free to make change in your licensing in case you disagree with the removal.
 

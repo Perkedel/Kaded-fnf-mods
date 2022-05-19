@@ -11,18 +11,20 @@ class HealthIcon extends FlxSprite
 	public var char:String = 'bf';
 	public var isPlayer:Bool = false;
 	public var isOldIcon:Bool = false;
+	public var forceIcon:Bool = false;
 
 	/**
 	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying
 	 */
 	public var sprTracker:FlxSprite;
 
-	public function new(?char:String = "bf", ?isPlayer:Bool = false)
+	public function new(?char:String = "bf", ?isPlayer:Bool = false, ?forceIcon:Bool = false)
 	{
 		super();
 
 		this.char = char;
 		this.isPlayer = isPlayer;
+		this.forceIcon = forceIcon; // JOELwindows7: icon is forced to be this exact icon, skipping the filtering.
 
 		isPlayer = isOldIcon = false;
 
@@ -43,7 +45,8 @@ class HealthIcon extends FlxSprite
 
 	public function changeIcon(char:String)
 	{
-		if (char != 'bf-pixel' && char != 'bf-old')
+		// JOELwindows7: maybe we should not do this filter anymore? or.. add something?
+		if ((char != 'bf-pixel' && char != 'bf-old' && char != 'bf-holding-gf') && !forceIcon)
 			char = char.split("-")[0];
 
 		if (!OpenFlAssets.exists(Paths.image('icons/icon-' + char)))
