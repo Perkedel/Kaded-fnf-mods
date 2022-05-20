@@ -6511,9 +6511,10 @@ class PlayState extends MusicBeatState
 				{
 					if (curStep == Stage.tankStep.left[i])
 					{
+						//JOELwindows7: hey, there's a better way! use Recycle!
 						var tankmanRunner:TankmenBG = new TankmenBG();
+						// var tankmanRunner:TankmenBG = Stage.tankmanRun.recycle(TankmenBG.new);
 						tankmanRunner.resetShit(FlxG.random.int(630, 730) * -1, 255, true, 1, 1.5);
-
 						Stage.tankmanRun.add(tankmanRunner);
 					}
 				}
@@ -6523,7 +6524,8 @@ class PlayState extends MusicBeatState
 				{
 					if (curStep == Stage.tankStep.right[i])
 					{
-						var tankmanRunner:TankmenBG = new TankmenBG();
+						var tankmanRunner:TankmenBG = new TankmenBG(); // JOELwindows7: hey, you better recycle this. check this out!
+						// var tankmanRunner:TankmenBG = Stage.tankmanRun.recycle(TankmenBG.new);
 						tankmanRunner.resetShit(FlxG.random.int(1500, 1700) * 1, 275, false, 1, 1.5);
 						Stage.tankmanRun.add(tankmanRunner);
 					}

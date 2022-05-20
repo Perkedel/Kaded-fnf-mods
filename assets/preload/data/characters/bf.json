@@ -38,14 +38,7 @@
     "animations": [{
             "name": "idle",
             "prefix": "BF idle dance",
-            "offsets": [-5, 0],
-            "frameRate": 24,
-            "frameIndices": [],
-            "flipX": false,
-            "flipY": true,
-            "looped": false,
-            "interupt": false,
-            "isDanced": false
+            "offsets": [-5, 0]
         },
         {
             "name": "singUP",

@@ -841,8 +841,20 @@ class Stage extends MusicBeatState
 						// add(tankRolling);
 						addThe(tankRolling, 'tankRolling');
 						tankmanRun = new FlxTypedGroup<TankmenBG>();
+						// JOELwindows7: add at least one object instance!
+						// for (i in 0...10)
+						// {
+						var tankmanRunEmpty = new TankmenBG();
+						tankmanRunEmpty.resetShit(FlxG.random.int(630, 730) * -1, 255, true, 1, 1.5);
+						tankmanRunEmpty.kill();
+						var tankmanRunEmpty2 = new TankmenBG();
+						tankmanRunEmpty2.resetShit(FlxG.random.int(1500, 1700) * 1, 275, false, 1, 1.5);
+						tankmanRunEmpty2.kill();
+						tankmanRun.add(tankmanRunEmpty); // so that we can recycle one member.
+						tankmanRun.add(tankmanRunEmpty2); // again just in case.
+						// }
 						// add(tankmanRun);
-						addThe(tankmanRun, 'tankRolling');
+						addThe(tankmanRun, 'tankmanRun');
 
 						var ground:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.image('tankGround'));
 						ground.scrollFactor.set();

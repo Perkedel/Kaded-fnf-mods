@@ -243,6 +243,18 @@ edit: goned the day. we lack more than 1 person after 1 week.
 
 ![](https://github.com/Perkedel/kaded-fnf-mods/raw/stable/LastFunkinMomentsLogo.png)
 
+## scrap
+### extra anim frame info
+```
+"frameRate": 24,
+            "frameIndices": [],
+            "flipX": false,
+            "flipY": false,
+            "looped": false,
+            "interupt": false,
+            "isDanced": false
+```
+
 <!-- Kade Descriptions -->
 # Kade Engine Descriptions
 
