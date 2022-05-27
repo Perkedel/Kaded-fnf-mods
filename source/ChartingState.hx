@@ -594,7 +594,7 @@ class ChartingState extends MusicBeatState
 		// gridBG.scrollFactor.set();
 		// gridBG.x += 358;
 		// gridBG.y += 390;
-		Debug.logTrace("height of " + (Math.floor(lengthInSteps)));
+		Debug.logTrace("height of grid section = " + (Math.floor(lengthInSteps))); // JOELwindows7: detailify
 
 		/*for(i in 0...Math.floor(lengthInSteps))
 			{
@@ -1857,7 +1857,11 @@ class ChartingState extends MusicBeatState
 
 		var stepperVowelTypeLabel = new FlxText(74, 100, 'Vowel Type'); // JOELwindows7: vowel type label
 
-		var applyLength:FlxUIButton = new FlxUIButton(10, 130, 'Apply Data'); // JOELwindows7: push this down because 100 is already vowel type.
+		var applyLength:FlxUIButton = new FlxUIButton(10, 340, 'Apply Data',
+			function()
+			{
+				// JOELwindows7: what to fill?
+			}); // JOELwindows7: push this down because 100 is already vowel type. okay no 130. lowest!
 
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(stepperSusLengthLabel);
@@ -1898,7 +1902,7 @@ class ChartingState extends MusicBeatState
 				{
 					Debug.logTrace("new strum " + strum + " - at section " + section);
 					// alright we're in this section lets paste the note here.
-					var newData = [strum, i[1], i[2], i[3], i[4], i[5], i[6]]; // JOELwindows7: here notetype I hope
+					var newData = [strum, i[1], i[2], i[3], i[4], i[5], i[6], i[7]]; // JOELwindows7: here notetype I hope
 					ii.sectionNotes.push(newData);
 
 					var thing = ii.sectionNotes[ii.sectionNotes.length - 1];
@@ -1907,6 +1911,7 @@ class ChartingState extends MusicBeatState
 					note.rawNoteData = i[1];
 					note.sustainLength = i[2];
 					note.hitsoundPath = i[6]; // JOELwindows7: here hitsound path I hope
+					note.vowelType = i[7];
 					note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 					note.updateHitbox();
 					note.x = Math.floor(i[1] * GRID_SIZE);
@@ -2130,11 +2135,16 @@ class ChartingState extends MusicBeatState
 			switch (wname)
 			{
 				case 'section_length':
+					// JOELwindows7: there is posibility for song that are not 4/4 metronome. was 4. nvm that's 16 default.
 					if (nums.value <= 4)
 						nums.value = 4;
 					getSectionByTime(Conductor.songPosition).lengthInSteps = Std.int(nums.value);
 					updateGrid();
-
+				// case 'default_section_length':
+				// 	// JOELwindows7: also the entire song too. like uhh Ahn Yee Eun songs yess!, it's Waltz 3/4.
+				// 	if (nums.value <= 1)
+				// 		nums.value = 1;
+				// 	updateGrid();
 				case 'song_speed':
 					if (nums.value <= 0)
 						nums.value = 0;
@@ -3869,6 +3879,7 @@ class ChartingState extends MusicBeatState
 			changeBPM: false,
 			mustHitSection: mustHitSection,
 			sectionNotes: [],
+			betterSectionNotes: [], // JOELwindows7: here my better section notes
 			typeOfSection: 0,
 			altAnim: false,
 			CPUAltAnim: CPUAltAnim,

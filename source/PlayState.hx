@@ -121,6 +121,8 @@ class PlayState extends MusicBeatState
 	// public static var customStage:SwagStage;
 	public static var HEART:Array<SwagHeart>; // JOELwindows7: heartbeat spec
 	// public static var HEARTS:HeartList; //JOELwindows7: list of heart specs
+	public static var songPosBarColor:FlxColor = FlxColor.fromRGB(0, 255, 128); // JOELwindows7: to be changed into color of the week.
+	public static var songPosBarColorBg:FlxColor = FlxColor.BLACK; // JOELwindows7: and meter back color.
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
@@ -140,7 +142,9 @@ class PlayState extends MusicBeatState
 
 	public var visibleNotes:Array<Note> = [];
 
-	public static var songPosBar:FlxBar;
+	public static var tempoBar:FlxUIText; // JOELwindows7: the tempo meter like on Yamaha Keyboard
+	public static var songPosBar:FlxBar; // song length bar meter; JOELwindows7: I just labeled it.
+	public static var metronomeBar:FlxUIText; // JOELwindows7: the metronome meter like on Yamaha Keyboard
 
 	public static var noteskinSprite:FlxAtlasFrames;
 	public static var noteskinSpriteMine:FlxAtlasFrames; // JOElwindows7: the mine, don't step on it
@@ -307,7 +311,7 @@ class PlayState extends MusicBeatState
 	var useStageScript:Bool = false; // JOELwindows7: flag to start try the stage Lua script
 	var attemptStageScript:Bool = false; // JOELwindows7: flag to start prepare stage script after all stuffs loaded.
 
-	var songName:FlxText;
+	var songName:FlxUIText; // JOELwindows7: use FlxUIText from now on.
 
 	var altSuffix:String = "";
 
@@ -1714,6 +1718,8 @@ class PlayState extends MusicBeatState
 					{
 						if (FlxG.save.data.songPosition)
 						{
+							FlxTween.tween(tempoBar, {alpha: 0}, 1); // JOELwindows7: here tempo bar
+							FlxTween.tween(metronomeBar, {alpha: 0}, 1); // JOELwindows7: & metronome bar
 							FlxTween.tween(songPosBar, {alpha: 0}, 1);
 							FlxTween.tween(bar, {alpha: 0}, 1);
 							FlxTween.tween(songName, {alpha: 0}, 1);
@@ -2587,7 +2593,8 @@ class PlayState extends MusicBeatState
 			songPosBar = new FlxBar(640 - (Std.int(songPosBG.width - 100) / 2), songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 100),
 				Std.int(songPosBG.height + 6), this, 'songPositionBar', 0, songLength);
 			songPosBar.scrollFactor.set();
-			songPosBar.createFilledBar(FlxColor.BLACK, FlxColor.fromRGB(0, 255, 128));
+			// songPosBar.createFilledBar(FlxColor.BLACK, FlxColor.fromRGB(0, 255, 128));
+			songPosBar.createFilledBar(songPosBarColorBg, songPosBarColor); // JOELwindows7: here with custom color!
 			add(songPosBar);
 
 			bar = new FlxSprite(songPosBar.x, songPosBar.y).makeGraphic(Math.floor(songPosBar.width), Math.floor(songPosBar.height), FlxColor.TRANSPARENT);
@@ -2600,7 +2607,7 @@ class PlayState extends MusicBeatState
 
 			// songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.songName.length * 5), songPosBG.y - 15, 0, SONG.songName, 16);
 			// JOELwindows7: Pls put artist
-			songName = new FlxText(songPosBG.x
+			songName = new FlxUIText(songPosBG.x
 				+ (songPosBG.width / 2)
 				- ((SONG.songName.length + 3 + SONG.artist.length) * 5), songPosBG.y
 				- 15, 0,
@@ -2620,10 +2627,30 @@ class PlayState extends MusicBeatState
 
 			songName.screenCenter(X);
 
+			// JOELwindows7: here tempo bar
+			tempoBar = new FlxUIText(songPosBar.x - 50, songPosBar.y, 0, 'TEMPO: ${SONG.bpm} BPM', 16);
+			tempoBar.setFormat(Paths.font("UbuntuMono-R.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			tempoBar.scrollFactor.set();
+			tempoBar.text = 'TEMPO: ${SONG.bpm} BPM';
+			tempoBar.x = songPosBG.x - tempoBar.width - 2;
+			tempoBar.y = songPosBG.y + (songPosBG.height / 3);
+			add(tempoBar);
+
+			// JOELwindows7: here metronome bar
+			metronomeBar = new FlxUIText(songPosBar.x + songPosBar.width + 10, songPosBar.y, 0, 'MEASURES: Oooo 0/0 | BEAT: ${curBeat} | STEP: ${curStep}',
+				16);
+			metronomeBar.setFormat(Paths.font("UbuntuMono-R.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			metronomeBar.scrollFactor.set();
+			metronomeBar.text = 'MEASURES: ${Ratings.judgeMetronome(curBeat, 4)} ${Std.int(curBeat / 4)}/${SONG.notes.length - 1} | BEAT: ${curBeat} | STEP: ${curStep}';
+			metronomeBar.y = songPosBG.y + (songPosBG.height / 3);
+			add(metronomeBar);
+
 			songPosBG.cameras = [camHUD];
 			bar.cameras = [camHUD];
 			songPosBar.cameras = [camHUD];
 			songName.cameras = [camHUD];
+			tempoBar.cameras = [camHUD]; // JOELwindows7: heff
+			metronomeBar.cameras = [camHUD]; // JOELwindows7: tee
 		}
 
 		notes = new FlxTypedGroup<Note>();
@@ -3965,7 +3992,11 @@ class PlayState extends MusicBeatState
 
 				// JOELwindows7: sneaky sneaky songName thingy
 				if (FlxG.save.data.songPosition)
+				{
 					songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime((songLength - secondsTotal), false) + ')';
+					tempoBar.text = 'TEMPO: ${Conductor.bpm} BPM';
+					metronomeBar.text = 'MEASURES: ${Ratings.judgeMetronome(curBeat, 4)} ${Std.int(curBeat / 4)}/${SONG.notes.length - 1} | BEAT: ${curBeat} | STEP: ${curStep}';
+				}
 			}
 
 			// Conductor.lastSongPos = FlxG.sound.music.time;
@@ -5149,6 +5180,8 @@ class PlayState extends MusicBeatState
 					// 			FlxTween.tween(songPosBar, {alpha: 0}, 1);
 					// 			FlxTween.tween(bar, {alpha: 0}, 1);
 					// 			FlxTween.tween(songName, {alpha: 0}, 1);
+					//			FlxTween.tween(tempoBar, {alpha: 0}, 1); // JOELwindows7: here tempo bar
+					//			FlxTween.tween(metronomeBar, {alpha: 0}, 1); // JOELwindows7: & metronome bar
 					// 		}
 					// 		openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
 					// 		new FlxTimer().start(1, function(tmr:FlxTimer)
@@ -6511,7 +6544,7 @@ class PlayState extends MusicBeatState
 				{
 					if (curStep == Stage.tankStep.left[i])
 					{
-						//JOELwindows7: hey, there's a better way! use Recycle!
+						// JOELwindows7: hey, there's a better way! use Recycle!
 						var tankmanRunner:TankmenBG = new TankmenBG();
 						// var tankmanRunner:TankmenBG = Stage.tankmanRun.recycle(TankmenBG.new);
 						tankmanRunner.resetShit(FlxG.random.int(630, 730) * -1, 255, true, 1, 1.5);
@@ -7839,6 +7872,9 @@ class PlayState extends MusicBeatState
 							FlxTween.tween(songPosBar, {alpha: 0}, 1);
 							FlxTween.tween(bar, {alpha: 0}, 1);
 							FlxTween.tween(songName, {alpha: 0}, 1);
+							// JOELwindows7: also invisiblize / hide these
+							FlxTween.tween(tempoBar, {alpha: 0}, 1);
+							FlxTween.tween(metronomeBar, {alpha: 0}, 1);
 						}
 						openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
 						new FlxTimer().start(1, function(tmr:FlxTimer)

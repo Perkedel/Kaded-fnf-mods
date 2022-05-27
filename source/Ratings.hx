@@ -94,6 +94,7 @@ class Ratings
 
 	public static var timingWindows:Array<Float> = []; // JOELwindows7: hey, you forgot to type!
 
+	// JOELwindows7: here judge heartbeat condition
 	public static function judgeHeartBeat(heartBeat:Float, heartTier:Int)
 	{
 		var classify:String = "Nrml";
@@ -120,6 +121,28 @@ class Ratings
 		}
 
 		return Std.string(HelperFunctions.truncateFloat(heartBeat, 2)) + " BPM (" + classify + ")";
+	}
+
+	// JOELwindows7: here judge metronome
+	public static function judgeMetronome(curBeat:Int = 0, beatsInABar:Int = 4):String
+	{
+		var say:String = '';
+		if (curBeat >= 0)
+		{
+			for (i in 0...beatsInABar)
+			{
+				say += if (curBeat % beatsInABar == i)
+				{
+					(i == 0 ? 'A' : 'a');
+				}
+				else
+				{
+					(i == 0 ? 'O' : 'o');
+				};
+			}
+			return say;
+		}
+		return "....";
 	}
 
 	public static function judgeNote(noteDiff:Float)

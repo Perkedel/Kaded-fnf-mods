@@ -148,6 +148,7 @@ typedef SongMeta =
 	var ?difficulty:Int; // JOELwindows7: the difficulty of the song. New way of defining rather than by name (unused, current system exist using name)
 	var ?difficultyId:String; // JOELwindows7: what's the difficulty ID? easy, medium, hard, or any other?
 	var ?difficultyStrength:Float; // JOELwindows7: how much number is the difficulty? just like Stepmania diff number.
+	var ?selectionColor:String; // JOELwindows7: color when song is selected. overrides total week color. also colors song position bar
 }
 
 class Song

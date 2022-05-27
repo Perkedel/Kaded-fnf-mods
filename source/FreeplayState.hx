@@ -48,6 +48,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 	public static var curSelected:Int = 0;
 	public static var curDifficulty:Int = 1;
+	public static var curColor:FlxColor = FlxColor.YELLOW; // JOELwindows7: here for static access purpose
 
 	var scoreText:FlxText;
 	var comboText:FlxText;
@@ -899,7 +900,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		var character = dad ? PlayState.SONG.player2 : PlayState.SONG.player1;
 
 		// LoadingState.loadAndSwitchState(new AnimationDebug(character));
-		switchState(new AnimationDebug(character),true, true, true, true); // JOELwindows7: hex switch state lol
+		switchState(new AnimationDebug(character), true, true, true, true); // JOELwindows7: hex switch state lol
 	}
 
 	function loadSong(isCharting:Bool = false)
@@ -944,6 +945,19 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		PlayState.isStoryMode = false;
 		PlayState.storyDifficulty = difficulty;
 		PlayState.storyWeek = songs[curSelected].week;
+		// JOELwindows7: here change color of song position bar pls
+		try
+		{
+			// PlayState.songPosBarColor = FlxColor.fromString(FreeplayState.weekInfo.weekColor[songs[curSelected].week]);
+			PlayState.songPosBarColor = curColor;
+			// PlayState.songPosBarColorBg = curColor.getInverted();
+			PlayState.songPosBarColorBg = FlxColor.fromRGBFloat(curColor.brightness, curColor.brightness, curColor.brightness).getInverted();
+		}
+		catch (e)
+		{
+			PlayState.songPosBarColor = FlxColor.fromRGB(0, 255, 128);
+			PlayState.songPosBarColorBg = FlxColor.BLACK;
+		}
 		Debug.logInfo('Loading song ${PlayState.SONG.songName} from week ${PlayState.storyWeek} into Free Play...');
 		#if FEATURE_STEPMANIA
 		if (songs[curSelected].songCharacter == "sm")
@@ -1298,6 +1312,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		// }, 1, {ease: FlxEase.elasticInOut});
 		bgColorTween = FlxTween.color(bg, 1, bg.color, colores, {ease: FlxEase.linear}); // JOELwindows7: FINALLY!!!
 		// bg.color = colores;
+		curColor = colores;
 	}
 
 	override function manageMouse()
