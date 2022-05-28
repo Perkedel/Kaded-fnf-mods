@@ -101,7 +101,8 @@ jobs:
           haxelib install tink_core
           haxelib install grig.audio
           haxelib install grig.midi
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+          # haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+          haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib install actuate 
           haxelib git tentools https://github.com/TentaRJ/tentools.git
@@ -121,6 +122,13 @@ jobs:
           haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
           haxelib install yagp
           haxelib git crashdumper http://github.com/larsiusprime/crashdumper
+          haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
+          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
+          haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
+          haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
+          haxelib install udprotean
+          haxelib install markdown
+          haxelib install openfl-webm
           haxelib list
           dir
           pwd
@@ -137,23 +145,23 @@ jobs:
           haxelib run lime rebuild yagp linux
           haxelib list
       
-      - name: Obtain stuffs of Windows?
-        run: |
-          mkdir -p C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
-          mkdir -p C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
-          mkdir -p C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit-5.1.so
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit.so
-          mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
-          mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit-5.1.so
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit.so
-          mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
-          mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit-5.1.so
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit.so
-          mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
-          mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
+      # - name: Obtain stuffs of Windows?
+      #   run: |
+      #     mkdir -p C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
+      #     mkdir -p C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
+      #     mkdir -p C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit-5.1.so
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit.so
+      #     mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
+      #     mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit-5.1.so
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit.so
+      #     mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
+      #     mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit-5.1.so
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit.so
+      #     mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
+      #     mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
       
       - name: TEMP patch FlxAction.hx workaround
         run: |

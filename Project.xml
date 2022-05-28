@@ -359,7 +359,8 @@
 
 	<!-- JOELwindows7: GIF image support that should've been there since we are not from SparrowAtlas XML days -->
 	<!-- GrowtopiaFli / GwebDev too -->
-	<haxelib name="yagp" unless = "web"/>
+	<!-- <haxelib name="yagp" unless = "web"/> -->
+	<haxelib name="yagp"/>
 	<!-- ah peck, i can't believe not work on web -->
 	<!-- 
 	```
@@ -386,11 +387,24 @@
 	Error: Process completed with exit code 1.
 	```
 	 -->
+	<!-- Hey, try this fix!: https://github.com/Paidyy/haxe-yaml.git -->
+	<!-- oops, that's not yagp. it's yaml interpreter! -->
 
 	<!-- JOELwindows7: The Crashdumper. larsius prime (bit of trolling / general infinity if not wrong) -->
 	<!-- https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create -->
 	<!-- https://github.com/larsiusprime/crashdumper/ -->
 	<!-- <haxelib name="crashdumper"/> -->
+
+	<!-- JOELwindows7: da android things for funkin64 -->
+	<haxelib name="extension-videoview" if="android"/>
+  	<haxelib name="extension-androidtools" if="android"/>
+
+	<!-- JOELwindows7: additional PEngine (not to be confused with Psych Engine) -->
+	<!-- <haxelib name="openfl-webm" if="desktop"/> -->
+	<haxelib name="yaml"/>
+	<haxelib name="udprotean" />
+	<haxelib name="linc_clipboard" />
+	<haxelib name="markdown" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -495,7 +509,12 @@
 	<!-- <android permission="android.permission.WAKE_LOCK"/> -->
 	<android permission="android.permission.VIBRATE"/>
 	<android permission="android.permission.READ_EXTERNAL_STORAGE"/>
-	
+
+	<!-- JOELwindows7: Here funkin64 figured out android permissions -->
+	<!-- https://github.com/whiteninja1/funkin-64-public/blob/main/Project.xml -->
+	<config:android permission="android.permission.READ_EXTERNAL_STORAGE"/>
+  	<config:android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 	<!-- Use defines to ensure compile-time definitions have readable context. -->
 	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
 

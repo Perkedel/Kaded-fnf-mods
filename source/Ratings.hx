@@ -133,11 +133,11 @@ class Ratings
 			{
 				say += if (curBeat % beatsInABar == i)
 				{
-					(i == 0 ? 'A' : 'a');
+					(i == 0 ? Perkedel.METRONOME_FIRST_TICK_ICON : Perkedel.METRONOME_REST_TICK_ICON);
 				}
 				else
 				{
-					(i == 0 ? 'O' : 'o');
+					(i == 0 ? Perkedel.METRONOME_FIRST_OFF_ICON : Perkedel.METRONOME_REST_OFF_ICON);
 				};
 			}
 			return say;

@@ -104,6 +104,7 @@ typedef SongData =
 	var ?difficulty:Int; // JOELwindows7: the difficulty of the song. New way of defining rather than by name (unused, current system exist using name)
 	var ?difficultyId:String; // JOELwindows7: what's the difficulty ID? easy, medium, hard, or any other?
 	var ?difficultyStrength:Float; // JOELwindows7: how much number is the difficulty? just like Stepmania diff number.
+	var ?selectionColor:String; // JOELwindows7: color when song is selected. overrides total week color. also colors song position bar
 }
 
 typedef SongMeta =
@@ -467,6 +468,9 @@ class Song
 
 		if (songData.strumProfile == null)
 			songData.strumProfile = songMetaData.strumProfile != null ? songMetaData.strumProfile : "Dance-Single";
+
+		if (songData.selectionColor == null)
+			songData.selectionColor = songMetaData.selectionColor != null ? songMetaData.selectionColor : "cyan";
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!
 

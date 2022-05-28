@@ -121,8 +121,6 @@ class PlayState extends MusicBeatState
 	// public static var customStage:SwagStage;
 	public static var HEART:Array<SwagHeart>; // JOELwindows7: heartbeat spec
 	// public static var HEARTS:HeartList; //JOELwindows7: list of heart specs
-	public static var songPosBarColor:FlxColor = FlxColor.fromRGB(0, 255, 128); // JOELwindows7: to be changed into color of the week.
-	public static var songPosBarColorBg:FlxColor = FlxColor.BLACK; // JOELwindows7: and meter back color.
 	public static var isStoryMode:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
@@ -2590,11 +2588,25 @@ class PlayState extends MusicBeatState
 			songPosBG.screenCenter(X);
 			songPosBG.scrollFactor.set();
 
+			// JOELwindows7: okay, process colors inline!
+			if (SONG.selectionColor != null)
+			{
+				PlayStateChangeables.songPosBarColor = FlxColor.fromString(SONG.selectionColor);
+				PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.songPosBarColor.brightness,
+					PlayStateChangeables.songPosBarColor.brightness, PlayStateChangeables.songPosBarColor.brightness);
+			}
+			else
+			{
+				PlayStateChangeables.songPosBarColor = PlayStateChangeables.weekColor;
+				PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.weekColor, PlayStateChangeables.weekColor,
+					PlayStateChangeables.weekColor);
+			}
+
 			songPosBar = new FlxBar(640 - (Std.int(songPosBG.width - 100) / 2), songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 100),
 				Std.int(songPosBG.height + 6), this, 'songPositionBar', 0, songLength);
 			songPosBar.scrollFactor.set();
 			// songPosBar.createFilledBar(FlxColor.BLACK, FlxColor.fromRGB(0, 255, 128));
-			songPosBar.createFilledBar(songPosBarColorBg, songPosBarColor); // JOELwindows7: here with custom color!
+			songPosBar.createFilledBar(PlayStateChangeables.songPosBarColorBg, PlayStateChangeables.songPosBarColor); // JOELwindows7: here with custom color!
 			add(songPosBar);
 
 			bar = new FlxSprite(songPosBar.x, songPosBar.y).makeGraphic(Math.floor(songPosBar.width), Math.floor(songPosBar.height), FlxColor.TRANSPARENT);

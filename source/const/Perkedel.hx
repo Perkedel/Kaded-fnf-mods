@@ -98,4 +98,8 @@ class Perkedel
 	public static final NULL_EPILOGUE_CHAT:Array<String> = ['dad:oh no I lose', 'bf: beep boop baaa hey!'];
 	public static final BIOS_BUTTON_DELAY_TIME:Float = 2;
 	public static final BIOS_BUTTON_SAY:String = "Press ESCAPE / Gamepad SELECT to go to BIOS setting";
+	public static final METRONOME_FIRST_OFF_ICON:String = "O";
+	public static final METRONOME_FIRST_TICK_ICON:String = "A";
+	public static final METRONOME_REST_OFF_ICON:String = "o";
+	public static final METRONOME_REST_TICK_ICON:String = "a";
 }

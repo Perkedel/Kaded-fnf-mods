@@ -16,8 +16,12 @@ import flixel.input.keyboard.FlxKey;
 // import grig.midi.MidiOut;
 // import grig.midi.MidiIn;
 import flixel.util.FlxTimer;
-#if !debug
+#if android
+#if (!debug && android6permission)
 import com.player03.android6.Permissions;
+#end
+import android.AndroidTools;
+import android.Hardware;
 #end
 #if FEATURE_WEBM_NATIVE
 import webm.WebmPlayer;
@@ -121,6 +125,7 @@ class Main extends Sprite
 		#if (android && !debug)
 		var askPermNum:Int = 0;
 		var timeoutPermNum:Int = 10;
+		#if android6permission
 		while (!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE)
 			|| !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE))
 		{
@@ -133,6 +138,11 @@ class Main extends Sprite
 			if (askPermNum > timeoutPermNum)
 				break;
 		}
+		#end
+		// JOELwindows7: from https://github.com/jigsaw-4277821/extension-androidtools
+		// #if (extension-androidtools)
+		AndroidTools.requestPermissions([Permissions.READ_EXTERNAL_STORAGE, Permissions.WRITE_EXTERNAL_STORAGE]);
+		// #end
 		#end
 		// wtf, it doesn't work if Debug situation?! I don't get it!
 

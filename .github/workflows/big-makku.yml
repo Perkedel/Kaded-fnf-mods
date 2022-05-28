@@ -44,7 +44,8 @@ jobs:
           haxelib install polymod
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+          # haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+          haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib run lime rebuild linc_luajit mac
           haxelib run lime rebuild extension-webm mac
@@ -79,6 +80,13 @@ jobs:
           haxelib install yagp
           haxelib git crashdumper http://github.com/larsiusprime/crashdumper
           haxelib run lime rebuild yagp mac
+          haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
+          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
+          haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
+          haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
+          haxelib install udprotean
+          haxelib install markdown
+          haxelib install openfl-webm
           haxelib list
           ls
           pwd

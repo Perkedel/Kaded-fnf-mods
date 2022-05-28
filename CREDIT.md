@@ -550,6 +550,11 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/mods/372917 FoxDeveloper (Permissioned: `Free to use`). Reshaded gf-less speaker. Only has 3 frames! lightweight!
 - https://gamebanana.com/mods/185805 theoriginalalex (no need credit). gf-less speaker, out of original `GF_assets` & `gfPixel`, the gf is removed. extracted off. has both normal & pixel version.
 - https://gamebanana.com/mods/366075 Borist (free to use, don't forget credit). Gf without speaker, & floating in the air lol! look at her `ASS_SETS` lol pun filename.
+- https://gamebanana.com/mods/373601 https://github.com/whiteninja1/funkin-64-public the white ninja. Mario64 themed fnf mod. also using bunch of new libraries too! let's refer them! **WHOAHOW!!! HE USED MY TIPS ON DIGITAL INPUT ANDROID FORGOR COMPILE ERROR!!!**
+- https://github.com/Paidyy/Funkin-PEngine Paidyy. PEngine (not Psych Engine). easy mod FNF engine no touch code. Let's install & refer the new libraries used.
+- https://github.com/Paidyy/haxe-yaml Paidyy. YAML interpreter.
+- https://github.com/jigsaw-4277821/extension-androidtools https://github.com/jigsaw-4277821/extension-videoview jigsaw-4277821. Android tools & java native video view for haxe flixel
+- https://github.com/josuigoa/linc_clipboard josuigoa. Clipboard manager. set & get system clipboard!. interacts with OS / Desktop Environment clipboard!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

@@ -59,15 +59,13 @@ jobs:
           haxelib install flixel-addons
           haxelib git faxe https://github.com/uhrobots/faxe
           haxelib install polymod
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
           haxelib run lime rebuild extension-webm linux
-          haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
-          haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
           haxelib install actuate 
           haxelib git faxe https://github.com/uhrobots/faxe
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
+          # haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
+          haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
           haxelib install actuate 
           haxelib install android6permissions
@@ -100,6 +98,13 @@ jobs:
           haxelib install yagp
           haxelib git crashdumper http://github.com/larsiusprime/crashdumper
           haxelib run lime rebuild yagp linux
+          haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
+          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
+          haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
+          haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
+          haxelib install udprotean
+          haxelib install markdown
+          haxelib install openfl-webm
           haxelib list
       
       - name: if there is cache still then just update everything
@@ -114,11 +119,11 @@ jobs:
           haxelib run lime rebuild yagp linux
           haxelib list
       
-      - name: Obtain stuffs of Linux
-        run: |
-          wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
-          sudo mkdir -p /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64
-          sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
+      # - name: Obtain stuffs of Linux
+      #   run: |
+      #     wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
+      #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64
+      #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
 
       - name: Obtain GameJolt empty file
         run: |

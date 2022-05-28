@@ -946,17 +946,20 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		PlayState.storyDifficulty = difficulty;
 		PlayState.storyWeek = songs[curSelected].week;
 		// JOELwindows7: here change color of song position bar pls
+		
 		try
 		{
-			// PlayState.songPosBarColor = FlxColor.fromString(FreeplayState.weekInfo.weekColor[songs[curSelected].week]);
-			PlayState.songPosBarColor = curColor;
-			// PlayState.songPosBarColorBg = curColor.getInverted();
-			PlayState.songPosBarColorBg = FlxColor.fromRGBFloat(curColor.brightness, curColor.brightness, curColor.brightness).getInverted();
+			PlayStateChangeables.weekColor = curColor;
+			// PlayStateChangeables.songPosBarColor = FlxColor.fromString(FreeplayState.weekInfo.weekColor[songs[curSelected].week]);
+			PlayStateChangeables.songPosBarColor = curColor;
+			// PlayStateChangeables.songPosBarColorBg = curColor.getInverted();
+			PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(curColor.brightness, curColor.brightness, curColor.brightness).getInverted();
 		}
 		catch (e)
 		{
-			PlayState.songPosBarColor = FlxColor.fromRGB(0, 255, 128);
-			PlayState.songPosBarColorBg = FlxColor.BLACK;
+			PlayStateChangeables.weekColor = FlxColor.YELLOW;
+			PlayStateChangeables.songPosBarColor = FlxColor.fromRGB(0, 255, 128);
+			PlayStateChangeables.songPosBarColorBg = FlxColor.BLACK;
 		}
 		Debug.logInfo('Loading song ${PlayState.SONG.songName} from week ${PlayState.storyWeek} into Free Play...');
 		#if FEATURE_STEPMANIA
