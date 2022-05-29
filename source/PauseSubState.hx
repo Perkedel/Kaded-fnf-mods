@@ -117,6 +117,8 @@ class PauseSubState extends MusicBeatSubstate
 				pauseMusic.volume = 0;
 				pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 				pauseMusic.ID = 9000;
+				// JOELwindows7: install to Game PEngined extensions
+				Game.pauseMusic = pauseMusic;
 
 				FlxG.sound.list.add(pauseMusic);
 			}

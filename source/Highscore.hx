@@ -67,6 +67,25 @@ class Highscore
 			trace('BotPlay detected. Score saving is disabled.');
 	}
 
+	// JOELwindows7: for future use, with new week name.
+	public static function saveWeekScoreNamed(week:String = '1', score:Int = 0, ?diff:Int = 0):Void
+	{
+		if (!FlxG.save.data.botplay)
+		{
+			var daWeek:String = formatSong('week' + week, diff);
+
+			if (songScores.exists(daWeek))
+			{
+				if (songScores.get(daWeek) < score)
+					setScore(daWeek, score);
+			}
+			else
+				setScore(daWeek, score);
+		}
+		else
+			trace('BotPlay detected. Score saving is disabled.');
+	}
+
 	/**
 	 * YOU SHOULD FORMAT SONG WITH formatSong() BEFORE TOSSING IN SONG VARIABLE
 	 */
@@ -102,15 +121,18 @@ class Highscore
 	{
 		switch (combo)
 		{
-			case 'SDCB':
+			case 'SDCB': // single digit combo break
 				return 1;
-			case 'FC':
+			case 'FC': // full combo
 				return 2;
-			case 'GFC':
+			case 'GFC': // great full combo
 				return 3;
-			case 'MFC':
+			case 'MFC': // marvelous full combo
 				return 4;
-			default:
+			// JOELwindows7: now additional ones!
+			case 'LFC': // ludicrous full combo
+				return 5;
+			default: // no combo worth
 				return 0;
 		}
 	}

@@ -59,6 +59,11 @@ class DialogueBox extends FlxSpriteGroup
 	var prefixBf:String = 'DialogueBox Bf';
 	var prefixGf:String = 'DialogueBox Gf';
 
+	// JOELwindows7: okay, screw this, let's have entire character handed over shall we?
+	var handoverDad:Character;
+	var handoverBf:Boyfriend;
+	var handoverGf:Character;
+
 	// JOELwindows7: own FlxSound because generate song destroyed the intro music
 	public var sound:FlxSound; // make public to let modchart perhaps manipulate it, idk.
 
@@ -80,6 +85,11 @@ class DialogueBox extends FlxSpriteGroup
 			?customCharXML:String = "jakartaFair/Hookx-dialogueAppear", ?customCharFrame:String = "enter", ?customCharPrefix:String = "Hookx Portrait Enter")
 	{
 		super();
+
+		// JOELwindows7: immediately harvest all characters
+		handoverDad = PlayState.dad;
+		handoverBf = PlayState.boyfriend;
+		handoverGf = PlayState.gf;
 
 		// JOELwindows7: not my code. but what the?! refer other class without import?! NO NEED TO POINT THE INSTANCE TOO?!
 		// whoah! in Flutter, I have to import. even when they're next to it! wow! Haxe is great!!!
@@ -589,7 +599,7 @@ class DialogueBox extends FlxSpriteGroup
 					// 	// JOELwindows7: idk what's the name of this TV
 					// 	prefixDad = 'Television';
 					// 	swagDialogue.prefix = prefixDad + ": ";
-					case 'hookx':
+					case 'hookx' | 'hookx-legacy':
 						dropText.font = 'Ubuntu Bold';
 						swagDialogue.font = 'Ubuntu Bold';
 						dropText.color = 0xFF7d00bf;
@@ -600,11 +610,30 @@ class DialogueBox extends FlxSpriteGroup
 							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk3'), 0.6),
 						];
 					default:
-						dropText.font = 'Pixel Arial 11 Bold';
-						swagDialogue.font = 'Pixel Arial 11 Bold';
-						dropText.color = 0xFFD89494;
-						swagDialogue.color = 0xFF3F2021;
-						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+						dropText.font = handoverDad.fontDrop != null
+							&& handoverDad.fontDrop != '' ? handoverDad.fontDrop : 'Pixel Arial 11 Bold';
+						swagDialogue.font = handoverDad.font != null && handoverDad.font != '' ? handoverDad.font : 'Pixel Arial 11 Bold';
+						dropText.color = handoverDad.fontColorDrop != null
+							&& handoverDad.fontColorDrop != '' ? FlxColor.fromString(handoverDad.fontColorDrop) : 0xFFD89494;
+						swagDialogue.color = handoverDad.fontColor != null
+							&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : 0xFF3F2021;
+						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+						swagDialogue.sounds = new Array();
+						if (handoverDad.dialogueChatSoundPaths != null && handoverDad.dialogueChatSoundPaths.length > 0)
+						{
+							for (i in handoverDad.dialogueChatSoundPaths)
+							{
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i),
+									handoverDad.dialogueChatSoundVolume != null ? handoverDad.dialogueChatSoundVolume : 0.6));
+							}
+						}
+
+						// swagDialogue.sounds = handoverDad.dialogueChatSoundPaths != null
+						// 	&& handoverDad.dialogueChatSoundPaths.length > 0 ? (for (i in 0...handoverDad.dialogueChatSoundPaths.length)
+						// 	{
+						// 		FlxG.sound.load(Paths.sound(handoverDad.dialogueChatSoundPaths[i]),
+						// 			handoverDad.dialogueChatSoundVolume != null ? handoverDad.dialogueChatSoundVolume : 0.6);
+						// 	}) : [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 				}
 			case 'bf':
 				// JOELwindows7: YEY the prefix
@@ -644,11 +673,28 @@ class DialogueBox extends FlxSpriteGroup
 							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk3'), 0.6),
 						];
 					default:
-						dropText.font = 'Pixel Arial 11 Bold';
-						swagDialogue.font = 'Pixel Arial 11 Bold';
-						dropText.color = 0xFFD89494;
-						swagDialogue.color = 0xFF3F2021;
-						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+						// dropText.font = 'Pixel Arial 11 Bold';
+						// swagDialogue.font = 'Pixel Arial 11 Bold';
+						// dropText.color = 0xFFD89494;
+						// swagDialogue.color = 0xFF3F2021;
+						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+						dropText.font = handoverBf.fontDrop != null
+							&& handoverBf.fontDrop != '' ? handoverBf.fontDrop : 'Pixel Arial 11 Bold';
+						swagDialogue.font = handoverBf.font != null && handoverBf.font != '' ? handoverBf.font : 'Pixel Arial 11 Bold';
+						dropText.color = handoverBf.fontColorDrop != null
+							&& handoverBf.fontColorDrop != '' ? FlxColor.fromString(handoverBf.fontColorDrop) : 0xFFD89494;
+						swagDialogue.color = handoverBf.fontColor != null
+							&& handoverBf.fontColor != '' ? FlxColor.fromString(handoverBf.fontColor) : 0xFF3F2021;
+						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+						swagDialogue.sounds = new Array();
+						if (handoverBf.dialogueChatSoundPaths != null && handoverBf.dialogueChatSoundPaths.length > 0)
+						{
+							for (i in handoverBf.dialogueChatSoundPaths)
+							{
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i),
+									handoverBf.dialogueChatSoundVolume != null ? handoverBf.dialogueChatSoundVolume : 0.6));
+							}
+						}
 				}
 			case 'gf':
 				// JOELwindows7: YEY prefix
@@ -677,11 +723,28 @@ class DialogueBox extends FlxSpriteGroup
 					// 	prefixGf = 'Television';
 					// 	swagDialogue.prefix = prefixGf + ": ";
 					default:
-						dropText.font = 'Pixel Arial 11 Bold';
-						swagDialogue.font = 'Pixel Arial 11 Bold';
-						dropText.color = 0xFFD89494;
-						swagDialogue.color = 0xFF3F2021;
-						swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+						// dropText.font = 'Pixel Arial 11 Bold';
+						// swagDialogue.font = 'Pixel Arial 11 Bold';
+						// dropText.color = 0xFFD89494;
+						// swagDialogue.color = 0xFF3F2021;
+						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+						dropText.font = handoverGf.fontDrop != null
+							&& handoverGf.fontDrop != '' ? handoverBf.fontDrop : 'Pixel Arial 11 Bold';
+						swagDialogue.font = handoverGf.font != null && handoverGf.font != '' ? handoverGf.font : 'Pixel Arial 11 Bold';
+						dropText.color = handoverGf.fontColorDrop != null
+							&& handoverGf.fontColorDrop != '' ? FlxColor.fromString(handoverGf.fontColorDrop) : 0xFFD89494;
+						swagDialogue.color = handoverGf.fontColor != null
+							&& handoverGf.fontColor != '' ? FlxColor.fromString(handoverGf.fontColor) : 0xFF3F2021;
+						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+						swagDialogue.sounds = new Array();
+						if (handoverGf.dialogueChatSoundPaths != null && handoverGf.dialogueChatSoundPaths.length > 0)
+						{
+							for (i in handoverGf.dialogueChatSoundPaths)
+							{
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i),
+									handoverGf.dialogueChatSoundVolume != null ? handoverGf.dialogueChatSoundVolume : 0.6));
+							}
+						}
 				}
 			default:
 				// JOELwindows7: use character folder image fully instead

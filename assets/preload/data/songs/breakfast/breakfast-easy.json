@@ -1871,6 +1871,7 @@
         "stage": "amfrost",
         "sections": 0,
         "bpm": 160,
-        "noteStyle": "saubo"
+        "noteStyle": "saubo",
+        "useCustomNoteStyle": true
     }
 }

@@ -168,7 +168,7 @@ class Main extends Sprite
 		setupGame();
 
 		// JOELwindows7: no, install crashdumper after everything.
-		setupCrashDumper();
+		// setupCrashDumper();
 	}
 
 	private function setupGame():Void
@@ -263,7 +263,9 @@ class Main extends Sprite
 		// #end
 		// trace("put game");
 
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		// game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		// JOELwindows7: hey, here use PEnginify extensions!
+		game = new Game(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
 
 		// JOELwindows7: now build Xbox controllers

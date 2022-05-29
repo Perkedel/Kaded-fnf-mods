@@ -548,9 +548,11 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			sys.thread.Thread.create(() ->
 			{
 				FlxG.sound.cache(Paths.inst(songId));
+				// FlxG.sound.cache(Paths.voices(songId)); // JOELwindows7: also cache voices too! NO! too much memory usage!
 			});
 			#else
 			FlxG.sound.cache(Paths.inst(songId));
+			FlxG.sound.cache(Paths.voices(songId)); // JOELwindows7: also cache voices too!
 			#end
 		}
 	}
@@ -946,7 +948,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		PlayState.storyDifficulty = difficulty;
 		PlayState.storyWeek = songs[curSelected].week;
 		// JOELwindows7: here change color of song position bar pls
-		
+
 		try
 		{
 			PlayStateChangeables.weekColor = curColor;
@@ -1005,6 +1007,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 		// adjusting the highscore song name to be compatible (changeDiff)
 		var songHighscore = StringTools.replace(songs[curSelected].songName, " ", "-");
+		// JOELwindows7: folks, let's instead use ID to reference high score, from now on.
+		// var songHighscore = StringTools.replace(songs[curSelected].songId, " ", "-");
 		switch (songHighscore)
 		{
 			case 'Dad-Battle':
@@ -1014,6 +1018,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			case 'M.I.L.F':
 				songHighscore = 'Milf';
 		}
+		// nvm, from start it has been refered by songId, it seems.
 
 		#if !switch
 		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
@@ -1021,6 +1026,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		#end
 		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
 		diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+
+		// JOELwindows7: now change bg color based on what week did this on
+		// changeColorByWeekOf(curSelected);
 	}
 
 	function changeSelection(change:Int = 0)
@@ -1282,13 +1290,17 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			{
 				try
 				{
+					// Oh idea! each song has own color overriding week color!
+					// var thisThingy:String = songData.get(songs[which].songName)[curDifficulty].selectionColor;
+					// colores = FlxColor.fromString(thisThingy != null
+					// 	&& thisThingy != '' ? thisThingy : weekInfo.weekColor[songs[which].week]);
 					colores = FlxColor.fromString(weekInfo.weekColor[songs[which].week]);
 					// bg.color = FlxColor.fromString(weekInfo.weekColor[songs[which].week]);
 				}
 				catch (e)
 				{
-					Debug.logError("error Week color selection no. " + Std.string(curSelected) + ". " + e + ": " + e.message);
-					Debug.logInfo("Week datas " + Std.string(weekInfo));
+					Debug.logError('Werror Week color selection no. ${curSelected}. ${e}: ${e.message}');
+					// Debug.logInfo('Week datas ${Std.string(weekInfo)}');
 					// FlxG.log.warn(e);
 					// bg.color = FlxColor.fromString("purple");
 					colores = FlxColor.fromString("purple");

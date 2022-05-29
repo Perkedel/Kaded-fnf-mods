@@ -2589,18 +2589,25 @@ class PlayState extends MusicBeatState
 			songPosBG.scrollFactor.set();
 
 			// JOELwindows7: okay, process colors inline!
-			if (SONG.selectionColor != null)
-			{
-				PlayStateChangeables.songPosBarColor = FlxColor.fromString(SONG.selectionColor);
-				PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.songPosBarColor.brightness,
-					PlayStateChangeables.songPosBarColor.brightness, PlayStateChangeables.songPosBarColor.brightness);
-			}
-			else
-			{
+			// if (SONG.selectionColor != null)
+			// {
+			// 	PlayStateChangeables.songPosBarColor = FlxColor.fromString(SONG.selectionColor);
+			// 	PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.songPosBarColor.brightness,
+			// 		PlayStateChangeables.songPosBarColor.brightness, PlayStateChangeables.songPosBarColor.brightness);
+			// }
+			// else
+			// {
 				PlayStateChangeables.songPosBarColor = PlayStateChangeables.weekColor;
 				PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.weekColor, PlayStateChangeables.weekColor,
 					PlayStateChangeables.weekColor);
-			}
+			// }
+
+			// JOELwindows7: in case the color becomes null
+			// if (PlayStateChangeables.songPosBarColor == null)
+			// {
+			// 	PlayStateChangeables.songPosBarColor == Perkedel.SONG_POS_BAR_COLOR;
+			// 	PlayStateChangeables.songPosBarColorBg == FlxColor.BLACK;
+			// }
 
 			songPosBar = new FlxBar(640 - (Std.int(songPosBG.width - 100) / 2), songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 100),
 				Std.int(songPosBG.height + 6), this, 'songPositionBar', 0, songLength);
@@ -5297,10 +5304,10 @@ class PlayState extends MusicBeatState
 					vocals2.stop(); // JOELwindows7: ye
 
 					// JOELwindows7: log this one in will ya?
-					Debug.logTrace("Here's path for this outro " + epilogueVideoPath + "\n and next song intro " + SONG.videoPath);
-					Debug.logInfo("Here's path for this outro " + epilogueVideoPath + "\n and next song intro " + SONG.videoPath);
-					Debug.logTrace("and outro is enabled " + Std.string(hasEpilogueVideo) + "and next song intro enabled" + SONG.hasVideo);
-					Debug.logInfo("and outro is enabled " + Std.string(hasEpilogueVideo) + "and next song intro enabled" + SONG.hasVideo);
+					// Debug.logTrace('Here\'s path for this outro $epilogueVideoPath\n and next song intro ${SONG.videoPath}');
+					Debug.logInfo('Here\'s path for this outro $epilogueVideoPath\n and next song intro ${SONG.videoPath}');
+					// Debug.logTrace('and outro is enabled ${Std.string(hasEpilogueVideo)} and next song intro enabled ${SONG.hasVideo}');
+					Debug.logInfo('and outro is enabled ${Std.string(hasEpilogueVideo)} and next song intro enabled ${SONG.hasVideo}');
 
 					// JOELwindows7: here timer guys
 					// new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)

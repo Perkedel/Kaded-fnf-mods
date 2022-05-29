@@ -21,6 +21,7 @@
  */
 package const;
 
+import flixel.util.FlxColor;
 import DokiDoki;
 
 class Perkedel
@@ -37,6 +38,7 @@ class Perkedel
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
 	public static final ENGINE_VERSION_URL:String = 'https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe'; // here URL check
 	public static final ENGINE_CHANGELOG_PREFIX_URL:String = 'https://odysee.com/@JOELwindows7/LFM-changelog-'; // here URL of change log prefix, appened by what version needed there.
+	public static final ENGINE_CORE_HANDLE_CRASH:Bool = true; // if true, engine will handle crash and restart. if false, engine will not handle crash and restart.
 	public static final DONATE_BUTTON_URL:String = 'https://odysee.com/@JOELwindows7:a/LFM-links:a'; // here URL of donate button
 	public static final ENABLE_MODS:Bool = true;
 	public static final ENABLE_VERSION_CHECK:Bool = true;
@@ -102,4 +104,5 @@ class Perkedel
 	public static final METRONOME_FIRST_TICK_ICON:String = "A";
 	public static final METRONOME_REST_OFF_ICON:String = "o";
 	public static final METRONOME_REST_TICK_ICON:String = "a";
+	public static final SONG_POS_BAR_COLOR:FlxColor = FlxColor.fromRGB(0, 255, 128); // default color of bar
 }

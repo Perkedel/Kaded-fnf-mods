@@ -1,4 +1,5 @@
 import lime.app.Application;
+import lime.system.System as LimeSys;
 import polymod.Polymod.PolymodError;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -24,8 +25,8 @@ class Debug
 	// JOELwindows7: add icon to these
 	static final LOG_STYLE_ERROR:LogStyle = new LogStyle('[ERROR] ', 'FF8888', 12, true, false, false, 'flixel/sounds/beep', true);
 	static final LOG_STYLE_WARN:LogStyle = new LogStyle('[WARN ] ', 'D9F85C', 12, true, false, false, 'flixel/sounds/beep', true);
-	static final LOG_STYLE_INFO:LogStyle = new LogStyle('[INFO ] ', '5CF878', 12, false);
-	static final LOG_STYLE_TRACE:LogStyle = new LogStyle('[TRACE] ', '5CF878', 12, false);
+	static final LOG_STYLE_INFO:LogStyle = new LogStyle('[INFO ] ', '5CF878', 12, false); // a.k.a. notice?
+	static final LOG_STYLE_TRACE:LogStyle = new LogStyle('[TRACE] ', '5CF878', 12, false); // a.k.a. normal?
 
 	static var logFileWriter:DebugLogWriter = null;
 
@@ -89,7 +90,7 @@ class Debug
 			return;
 		var output = formatOutput(input, pos);
 
-		// writeToFlxGLog(output, LOG_STYLE_TRACE);
+		// writeToFlxGLog(output, LOG_STYLE_TRACE); // JOELwindows7: why did you disable that? I mean, why not? It seems it clutters debugger log
 		writeToLogFile(output, 'TRACE'); // JOELwindows7: I add icon. faile
 		#end
 	}
@@ -217,6 +218,8 @@ class Debug
 
 		#if debug
 		logInfo("This is a DEBUG build.");
+		#elseif final
+		logInfo("This is a FINAL build.");
 		#else
 		logInfo("This is a RELEASE build.");
 		#end
@@ -224,6 +227,8 @@ class Debug
 		logInfo('Friday Night Funkin\' version: ${MainMenuState.gameVer}');
 		logInfo('KadeEngine version: ${MainMenuState.kadeEngineVer}');
 		logInfo('Last Funkin Moments version: ${MainMenuState.lastFunkinMomentVer}'); // JOELwindows7: haha yeah!
+		logInfo('Device: ${LimeSys.deviceVendor}, ${LimeSys.deviceModel}');
+		logInfo('Platform: ${LimeSys.platformLabel}, ${LimeSys.platformName}, ${LimeSys.platformVersion}');
 	}
 
 	/**

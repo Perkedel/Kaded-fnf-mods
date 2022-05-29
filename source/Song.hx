@@ -362,16 +362,17 @@ class Song
 			songData.hasVideo = songMetaData.hasVideo != null ? songMetaData.hasVideo : false;
 
 		// JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
-		if (songData.videoPath == null)
-			songData.videoPath = songMetaData.videoPath != null ? songMetaData.videoPath : "";
+		if (songData.videoPath == null || songData.videoPath == '')
+			songData.videoPath = songMetaData.videoPath != null && songMetaData.videoPath != '' ? songMetaData.videoPath : "";
 
 		// JOELwindows7: haaaaaaaaaaaaaaaa!!!!
 		if (songData.hasEpilogueVideo == null)
 			songData.hasEpilogueVideo = songMetaData.hasEpilogueVideo != null ? songMetaData.hasEpilogueVideo : false;
 
 		// JOELwindows7: boooooooof
-		if (songData.epilogueVideoPath == null)
-			songData.epilogueVideoPath = songMetaData.epilogueVideoPath != null ? songMetaData.epilogueVideoPath : "";
+		if (songData.epilogueVideoPath == null || songData.epilogueVideoPath == '')
+			songData.epilogueVideoPath = songMetaData.epilogueVideoPath != null
+				&& songMetaData.epilogueVideoPath != '' ? songMetaData.epilogueVideoPath : "";
 
 		// JOELwindows7: yay GitHub Copilot yey
 		if (songData.hasDialogueChat == null)
@@ -404,13 +405,13 @@ class Song
 
 		// JOELwindows7: fallbackers of the stuffs. the metadata should only overwrite if the variable is empty or null
 		if (songData.player1 == null || songData.player1 == "")
-			songData.player1 = songMetaData.player1 != null ? songMetaData.player1 : "bf";
+			songData.player1 = songMetaData.player1 != null && songMetaData.player1 != '' ? songMetaData.player1 : "bf";
 
 		if (songData.player2 == null || songData.player2 == "")
-			songData.player2 = songMetaData.player2 != null ? songMetaData.player2 : "dad";
+			songData.player2 = songMetaData.player2 != null && songMetaData.player2 != '' ? songMetaData.player2 : "dad";
 
 		if (songData.gfVersion == null || songData.gfVersion == "")
-			songData.gfVersion = songMetaData.gfVersion != null ? songMetaData.gfVersion : "gf";
+			songData.gfVersion = songMetaData.gfVersion != null && songMetaData.gfVersion != '' ? songMetaData.gfVersion : "gf";
 
 		if (songData.hasTankmanVideo == null)
 			songData.hasTankmanVideo = songMetaData.hasTankmanVideo != null ? songMetaData.hasTankmanVideo : false;
@@ -419,10 +420,12 @@ class Song
 			songData.hasEpilogueTankmanVideo = songMetaData.hasEpilogueTankmanVideo != null ? songMetaData.hasEpilogueTankmanVideo : false;
 
 		if (songData.tankmanVideoPath == null || songData.tankmanVideoPath == "")
-			songData.tankmanVideoPath = songMetaData.tankmanVideoPath != null ? songMetaData.tankmanVideoPath : "null";
+			songData.tankmanVideoPath = songMetaData.tankmanVideoPath != null
+				&& songMetaData.tankmanVideoPath != '' ? songMetaData.tankmanVideoPath : "null";
 
 		if (songData.epilogueTankmanVideoPath == null || songData.epilogueTankmanVideoPath == "")
-			songData.epilogueTankmanVideoPath = songMetaData.epilogueTankmanVideoPath != null ? songMetaData.epilogueTankmanVideoPath : "null";
+			songData.epilogueTankmanVideoPath = songMetaData.epilogueTankmanVideoPath != null
+				&& songMetaData.epilogueTankmanVideoPath != '' ? songMetaData.epilogueTankmanVideoPath : "null";
 
 		if (songMetaData.eventObjects != null && songMetaData.eventObjects != [] && songMetaData.eventObjects.length > 1)
 		{
@@ -469,8 +472,9 @@ class Song
 		if (songData.strumProfile == null)
 			songData.strumProfile = songMetaData.strumProfile != null ? songMetaData.strumProfile : "Dance-Single";
 
-		if (songData.selectionColor == null)
-			songData.selectionColor = songMetaData.selectionColor != null ? songMetaData.selectionColor : "cyan";
+		if (songData.selectionColor == null || songData.selectionColor == '')
+			songData.selectionColor = songMetaData.selectionColor != null
+				&& songMetaData.selectionColor != '' ? songMetaData.selectionColor : "";
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!
 

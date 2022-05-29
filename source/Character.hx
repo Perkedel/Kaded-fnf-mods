@@ -40,6 +40,13 @@ class Character extends FlxSprite
 
 	public var heartOrgans:Array<SwagHeart>; // JOELwindows7: for the 🫀 hearts. yep, Shinon51788 Doki Doki dance thingy. turns out either:
 
+	public var font:String; // JOELwindows7: name of the font for dialoguebox. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
+	public var fontDrop:String; // JOELwindows7: & for the text behind
+	public var fontColor:String; // JOELwindows7: dialog font color
+	public var fontColorDrop:String; // JOELwindows7: and the drop color, for text behind.
+	public var dialogueChatSoundPaths:Array<String>; // JOELwindows7: array of dialogue chat sound paths.
+	public var dialogueChatSoundVolume:Float; // JOELwindows7: volume for all sounds
+
 	// - more than one characters at once in this class instance, which of course has 1 heart each.
 	// - more than one hearts at once in this class instance, which yess they do exists.
 	public var externalBeating:Bool = false;
@@ -152,6 +159,12 @@ class Character extends FlxSprite
 		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
 		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
 		this.heartOrgans = data.heartOrgans == null ? [Perkedel.NULL_HEART_SPEC] : data.heartOrgans; // JOELwindows7: yess, the hearts & each specification!
+		this.font = data.font == null ? "Pixel Arial 11 Bold" : data.font;
+		this.fontDrop = data.fontDrop == null ? "Pixel Arial 11 Bold" : data.fontDrop;
+		this.fontColor = data.fontColor == null ? '0xFF3F2021' : data.fontColor;
+		this.fontColorDrop = data.fontColorDrop == null ? '0xFFD89494' : data.fontColorDrop;
+		this.dialogueChatSoundPaths = data.dialogueChatSoundPaths == null ? [] : data.dialogueChatSoundPaths;
+		this.dialogueChatSoundVolume = data.dialogueChatSoundVolume == null ? .6 : data.dialogueChatSoundVolume;
 
 		flipX = data.flipX == null ? false : data.flipX;
 
@@ -506,6 +519,16 @@ typedef CharacterData =
 	 */
 	var ?forceIcon:Bool; // JOELwindows7: force the health icon to be specific icon regardless of the filter.
 
+	/**
+	 * Font for the dialog. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
+	 */
+	var ?font:String; // JOELwindows7: name of the font for dialoguebox. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
+
+	/**
+	 * Drop Font for the dialog text behind. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
+	 */
+	var ?fontDrop:String; // JOELwindows7: & for the text behind
+
 	// var ?forceHealthIconIsThat:Bool; // JOELwindows7: force the health icon to be specific icon regardless of the filter.
 	var asset:String;
 	var startingAnim:String;
@@ -523,6 +546,26 @@ typedef CharacterData =
 	 * The color of this character's health bar.
 	 */
 	var barColor:String;
+
+	/**
+	 * The color of this character's dialogue font.
+	 */
+	var ?fontColor:String; // JOELwindows7: dialog font color
+
+	/**
+	 * The color of this character's dialogue font for the drop behind text.
+	 */
+	var ?fontColorDrop:String; // JOELwindows7: and the drop color, for text behind.
+
+	/**
+	 * The sound path of this character's dialogue.
+	 */
+	var ?dialogueChatSoundPaths:Array<String>; // JOELwindows7: array of dialogue chat sound paths.
+
+	/**
+	 * The sound volume for all sounds of character dialogue.
+	 */
+	var ?dialogueChatSoundVolume:Float; // JOELwindows7: volume for all sounds
 
 	var animations:Array<AnimationData>;
 
