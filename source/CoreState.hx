@@ -617,6 +617,15 @@ class CoreState extends FlxUIState implements ICoreStating
 	}
 
 	/**
+	 * Collapse all of the toast message
+	 * @author JOELwindows7
+	 */
+	public function collapseToasts():Void
+	{
+		Main.gjToastManager.collapseToasts();
+	}
+
+	/**
 	 * Play a sound effect choosen in sounds folder. 
 	 * it will play sound in-place through FlxG instead of instancing a variable.
 	 * Copied from ChartingState emit SFX
@@ -1288,6 +1297,15 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	}
 
 	/**
+	 * Collapse all of the toast message
+	 * @author JOELwindows7
+	 */
+	public function collapseToasts():Void
+	{
+		Main.gjToastManager.collapseToasts();
+	}
+
+	/**
 	 * Play a sound effect choosen in sounds folder. 
 	 * it will play sound in-place through FlxG instead of instancing a variable.
 	 * Copied from ChartingState emit SFX
@@ -1299,6 +1317,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		return FlxG.sound.play(Paths.sound(path, library != '' ? library : null), volume);
 	}
+
+	// TODO: animated header title come in. from top, & also sideway transition.
 
 	/**
 	 * Set the app section / state to say the title & then appear it.
@@ -1659,6 +1679,12 @@ interface ICoreStating
 	 * @param sound whether to play a sound or not
 	 */
 	public function createToast(iconPath:String, title:String, description:String, sound:Bool = false):Void;
+
+	/**
+	 * Collapse all of the toast message
+	 * @author JOELwindows7
+	 */
+	public function collapseToasts():Void;
 
 	/**
 	 * Play a sound effect choosen in sounds folder. 

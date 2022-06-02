@@ -618,13 +618,14 @@ class DialogueBox extends FlxSpriteGroup
 						swagDialogue.color = handoverDad.fontColor != null
 							&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : 0xFF3F2021;
 						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
-						swagDialogue.sounds = new Array();
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
+						];
 						if (handoverDad.dialogueChatSoundPaths != null && handoverDad.dialogueChatSoundPaths.length > 0)
 						{
 							for (i in handoverDad.dialogueChatSoundPaths)
 							{
-								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i),
-									handoverDad.dialogueChatSoundVolume != null ? handoverDad.dialogueChatSoundVolume : 0.6));
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverDad.dialogueChatSoundVolume));
 							}
 						}
 
@@ -662,7 +663,7 @@ class DialogueBox extends FlxSpriteGroup
 					// 	// JOELwindows7: idk what's the name of this TV
 					// 	prefixBf = 'Television';
 					// 	swagDialogue.prefix = prefixBf + ": ";
-					case 'hookx':
+					case 'hookx' | 'hookx-legacy':
 						dropText.font = 'Ubuntu Bold';
 						swagDialogue.font = 'Ubuntu Bold';
 						dropText.color = 0xFF7d00bf;
@@ -685,14 +686,14 @@ class DialogueBox extends FlxSpriteGroup
 							&& handoverBf.fontColorDrop != '' ? FlxColor.fromString(handoverBf.fontColorDrop) : 0xFFD89494;
 						swagDialogue.color = handoverBf.fontColor != null
 							&& handoverBf.fontColor != '' ? FlxColor.fromString(handoverBf.fontColor) : 0xFF3F2021;
-						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
-						swagDialogue.sounds = new Array();
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
+						];
 						if (handoverBf.dialogueChatSoundPaths != null && handoverBf.dialogueChatSoundPaths.length > 0)
 						{
 							for (i in handoverBf.dialogueChatSoundPaths)
 							{
-								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i),
-									handoverBf.dialogueChatSoundVolume != null ? handoverBf.dialogueChatSoundVolume : 0.6));
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverBf.dialogueChatSoundVolume));
 							}
 						}
 				}
@@ -735,14 +736,14 @@ class DialogueBox extends FlxSpriteGroup
 							&& handoverGf.fontColorDrop != '' ? FlxColor.fromString(handoverGf.fontColorDrop) : 0xFFD89494;
 						swagDialogue.color = handoverGf.fontColor != null
 							&& handoverGf.fontColor != '' ? FlxColor.fromString(handoverGf.fontColor) : 0xFF3F2021;
-						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
-						swagDialogue.sounds = new Array();
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
+						];
 						if (handoverGf.dialogueChatSoundPaths != null && handoverGf.dialogueChatSoundPaths.length > 0)
 						{
 							for (i in handoverGf.dialogueChatSoundPaths)
 							{
-								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i),
-									handoverGf.dialogueChatSoundVolume != null ? handoverGf.dialogueChatSoundVolume : 0.6));
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverGf.dialogueChatSoundVolume));
 							}
 						}
 				}

@@ -5,6 +5,15 @@
     "barColor": "#5000E6",
     "flipX": false,
     "startingAnim": "idle",
+    "font": "Ubuntu Bold",
+    "fontDrop": "Ubuntu Bold",
+    "fontColor": "0xFF055bff",
+    "fontColorDrop": "0xFF7d00bf",
+    "dialogueChatSoundPaths": [
+        "textSpeak/hookx/talk1",
+        "textSpeak/hookx/talk2",
+        "textSpeak/hookx/talk3"
+    ],
     "heartOrgans": [{
         "character": "hookx",
         "isEmulator": true,

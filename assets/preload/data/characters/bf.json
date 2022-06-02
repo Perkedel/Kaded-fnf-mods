@@ -9,6 +9,13 @@
     "forceIcon": false,
     "deathCharacter": "bf",
     "deathCharacterIsSameAsThis": true,
+    "font": "Pixel Arial 11 Bold",
+    "fontDrop": "Pixel Arial 11 Bold",
+    "fontColor": "0xFF3F2021",
+    "fontColorDrop": "0xFFD89494",
+    "dialogueChatSoundPaths": [
+        "pixelText"
+    ],
     "heartSpecs": {
         "initHR": 70,
         "maxHR": 220,

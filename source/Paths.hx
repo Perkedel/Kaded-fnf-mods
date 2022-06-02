@@ -299,6 +299,30 @@ class Paths
 		return OpenFlAssets.exists(path, AssetType.TEXT);
 	}
 
+	// JOELwindows7: also other is exists too pls
+	inline static public function doesImageAssetExist(path:String)
+	{
+		return OpenFlAssets.exists(path, AssetType.IMAGE);
+	}
+
+	// JOELwidows7: as well as anything does exist..
+	inline static public function doesAnythingAssetExist(path:String)
+	{
+		return OpenFlAssets.exists(path, AssetType.SOUND)
+			|| OpenFlAssets.exists(path, AssetType.MUSIC)
+			|| OpenFlAssets.exists(path, AssetType.IMAGE)
+			|| OpenFlAssets.exists(path, AssetType.TEXT)
+			|| OpenFlAssets.exists(path, AssetType.MOVIE_CLIP)
+			|| OpenFlAssets.exists(path, AssetType.FONT)
+			|| OpenFlAssets.exists(path, AssetType.BINARY);
+	}
+
+	// JOELwindows7: too long! make the shorthand.
+	inline static public function exist(path:String)
+	{
+		return doesAnythingAssetExist(path);
+	}
+
 	inline static public function image(key:String, ?library:String)
 	{
 		return getPath('images/$key.png', IMAGE, library);

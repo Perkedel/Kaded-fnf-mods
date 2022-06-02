@@ -224,7 +224,8 @@ class HaxeScriptState
 	 */
 	public function setVar(name:String, value:Dynamic, useHaxe:String = "modchart")
 	{
-		if (interp != null){
+		if (interp != null)
+		{
 			if (retailIsReady)
 			{
 				hscriptState.get(useHaxe).variables.set(name, value);
@@ -329,6 +330,14 @@ class HaxeScriptState
 	{
 		// start by init core stuffs.
 		resetHaxeScriptState();
+
+		// core here
+		addCallback("variableChange", function(name:String, value:Dynamic)
+		{
+		});
+		addCallback("methodExecutes", function(name:String, args:Array<Dynamic>)
+		{
+		});
 
 		// var p = Path.of(Paths.hscript(path));
 		// trace("opening the hscript of " + p.getAbsolutePath() + "\nisExist " + p.exists());
@@ -529,12 +538,13 @@ class HaxeScriptState
 		addCallback("dialogueNext", function()
 		{
 		});
-		addCallback("variableChange", function(name:String, value:Dynamic)
-		{
-		});
-		addCallback("methodExecutes", function(name:String, args:Array<Dynamic>)
-		{
-		});
+		// these has to be on top!
+		// addCallback("variableChange", function(name:String, value:Dynamic)
+		// {
+		// });
+		// addCallback("methodExecutes", function(name:String, args:Array<Dynamic>)
+		// {
+		// });
 		trace("Inited setVars");
 
 		// Callbacks heres, Kade Engine like

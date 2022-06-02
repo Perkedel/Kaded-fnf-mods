@@ -7,6 +7,13 @@
     "scale": 6,
     "antialiasing": false,
     "startingAnim": "firstDeath",
+    "font": "Pixel Arial 11 Bold",
+    "fontDrop": "Pixel Arial 11 Bold",
+    "fontColor": "0xFF3F2021",
+    "fontColorDrop": "0xFFD89494",
+    "dialogueChatSoundPaths": [
+        "pixelText"
+    ],
     "heartSpecs": {
         "initHR": 70,
         "maxHR": 220,

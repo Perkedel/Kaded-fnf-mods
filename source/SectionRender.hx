@@ -9,6 +9,7 @@ class SectionRender extends FlxSprite
 {
 	public var section:SwagSection;
 	public var icon:FlxSprite;
+	public var iconGf:FlxSprite; // JOELwindows7: this one shows / hides depending on gfSection checkbox situation.
 	public var lastUpdated:Bool;
 
 	public function new(x:Float, y:Float, GRID_SIZE:Int, ?Height:Int = 16)

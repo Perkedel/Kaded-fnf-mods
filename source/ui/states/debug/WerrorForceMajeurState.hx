@@ -85,19 +85,35 @@ class WerrorForceMajeurState extends CoreState
 		gf.y = FlxG.height - gf.height;
 
 		setSectionTitle('WERROR: ${exception.toString()}');
+
+		addBackButton(); // JOELwindows7: back button pls.
+		// addLeftButton(Std.int(bottomText.x + bottomText.width + 10), FlxG.height - 100);
+		// addAcceptButton(Std.int(gf.x - 300), FlxG.height - 100);
+		// addAcceptButton(Std.int(leftButton.x + leftButton.width + 100), FlxG.height - 100);
+		// addRightButton(Std.int(acceptButton.x + acceptButton.width + 100), FlxG.height - 100);
+		addRightButton(Std.int(gf.x - 300), FlxG.height - 100);
+		addAcceptButton(Std.int(rightButton.x - 300), FlxG.height - 100);
+		addLeftButton(Std.int(acceptButton.x - 300), FlxG.height - 100);
+		addUpButton();
+		addDownButton();
 	}
 
 	override function update(elapsed)
 	{
-		if (FlxG.keys.justPressed.C)
+		if (FlxG.keys.justPressed.C || haveClicked)
 		{
 			Clipboard.set(exception.details());
+			haveClicked = false; // JOELwindows7: press OK button.
 		}
 
-		if (FlxG.keys.justPressed.ESCAPE)
+		if (controls.BACK || FlxG.keys.justPressed.ESCAPE || haveBacked)
+		{
 			FlxG.switchState(new MainMenuState());
+			Game.resetCrashWire(); // JOELwindows7: restore tripwire.
+			haveBacked = false; // JOELwindows7: pressed back reset wire
+		}
 
-		if (FlxG.mouse.wheel == -1)
+		if (FlxG.mouse.wheel == -1 || haveDowned)
 		{
 			if (FlxG.keys.pressed.CONTROL)
 				FlxG.camera.zoom += 0.02;
@@ -105,8 +121,9 @@ class WerrorForceMajeurState extends CoreState
 				FlxG.camera.scroll.x += 20;
 			if (!FlxG.keys.pressed.SHIFT && !FlxG.keys.pressed.CONTROL)
 				FlxG.camera.scroll.y += 20;
+			haveDowned = false;
 		}
-		if (FlxG.mouse.wheel == 1)
+		if (FlxG.mouse.wheel == 1 || haveUpped)
 		{
 			if (FlxG.keys.pressed.CONTROL)
 				FlxG.camera.zoom -= 0.02;
@@ -119,6 +136,62 @@ class WerrorForceMajeurState extends CoreState
 			{
 				if (FlxG.camera.scroll.y > 0)
 					FlxG.camera.scroll.y -= 20;
+			}
+			haveUpped = false;
+		}
+		// JOELwindows7: more buttonez
+		if (haveLefted)
+		{
+			if (FlxG.camera.scroll.x > 0)
+				FlxG.camera.scroll.x -= 20;
+			haveLefted = false;
+		}
+		if (haveRighted)
+		{
+			FlxG.camera.scroll.x += 20;
+			haveRighted = false;
+		}
+	}
+
+	// JOELwindows7: joypadding
+	override function manageJoypad()
+	{
+		super.manageJoypad();
+		if (joypadLastActive != null)
+		{
+			if (joypadLastActive.justPressed.DPAD_UP)
+			{
+			}
+			if (joypadLastActive.justPressed.DPAD_DOWN)
+			{
+			}
+			if (joypadLastActive.justPressed.DPAD_LEFT)
+			{
+			}
+			if (joypadLastActive.justPressed.DPAD_RIGHT)
+			{
+			}
+			if (joypadLastActive.justPressed.A)
+			{
+				Clipboard.set(exception.details());
+			}
+			if (joypadLastActive.pressed.RIGHT_STICK_DIGITAL_UP)
+			{
+				if (FlxG.camera.scroll.y > 0)
+					FlxG.camera.scroll.y -= 20;
+			}
+			if (joypadLastActive.pressed.RIGHT_STICK_DIGITAL_DOWN)
+			{
+				FlxG.camera.scroll.y += 20;
+			}
+			if (joypadLastActive.pressed.RIGHT_STICK_DIGITAL_LEFT)
+			{
+				if (FlxG.camera.scroll.x > 0)
+					FlxG.camera.scroll.x -= 20;
+			}
+			if (joypadLastActive.pressed.RIGHT_STICK_DIGITAL_RIGHT)
+			{
+				FlxG.camera.scroll.x += 20;
 			}
 		}
 	}

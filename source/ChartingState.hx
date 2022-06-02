@@ -140,6 +140,8 @@ class ChartingState extends MusicBeatState
 
 	public static var rightIcon:HealthIcon;
 
+	public static var middleIcon:HealthIcon; // JOELwindows7: this is for gf.
+
 	private var lastNote:Note;
 
 	public var lines:FlxTypedGroup<FlxSprite>;
@@ -310,6 +312,7 @@ class ChartingState extends MusicBeatState
 
 		leftIcon = new HealthIcon(_song.player1);
 		rightIcon = new HealthIcon(_song.player2);
+		middleIcon = new HealthIcon(_song.gfVersion);
 
 		var index = 0;
 
@@ -414,10 +417,19 @@ class ChartingState extends MusicBeatState
 			sectionicon.y = down - 75;
 			sectionicon.setGraphicSize(0, 45);
 
+			// JOELwindows7: and gf icons
+			var gfSectionIcon = new HealthIcon(_song.gfVersion).clone();
+			gfSectionIcon.x = -97;
+			gfSectionIcon.y = down - 75;
+			gfSectionIcon.setGraphicSize(0, 45);
+			gfSectionIcon.visible = _song.notes[awfgaw].gfSection != null ? _song.notes[awfgaw].gfSection != null : false;
+
 			renderer.icon = sectionicon;
+			renderer.iconGf = gfSectionIcon;
 			renderer.lastUpdated = _song.notes[awfgaw].mustHitSection;
 
 			add(sectionicon);
+			add(gfSectionIcon); // JOELwindows7: add this after the main icons.
 			height = Math.floor(renderer.y);
 		}
 
@@ -430,15 +442,19 @@ class ChartingState extends MusicBeatState
 
 		leftIcon.setGraphicSize(0, 45);
 		rightIcon.setGraphicSize(0, 45);
+		middleIcon.setGraphicSize(0, 45); // JOELwindows7: here
 
 		add(leftIcon);
 		add(rightIcon);
+		add(middleIcon); // JOELwindows7: here
 
 		leftIcon.setPosition(0, -100);
 		rightIcon.setPosition(gridBG.width / 2, -100);
+		middleIcon.setPosition(-3, -100); // JOELwindows7: here
 
 		leftIcon.scrollFactor.set();
 		rightIcon.scrollFactor.set();
+		middleIcon.scrollFactor.set(); // JOELwindows7: here
 
 		bpmTxt = new FlxText(985, 25, 0, "", 16);
 		bpmTxt.scrollFactor.set();
@@ -1622,6 +1638,7 @@ class ChartingState extends MusicBeatState
 
 	var stepperLength:FlxUINumericStepper;
 	var check_mustHitSection:FlxUICheckBox;
+	var check_gfHitSection:FlxUICheckBox; // JOELwindows7: camera points to girlfriend. not deciding turn.
 	var check_changeBPM:FlxUICheckBox;
 	var stepperSectionBPM:FlxUINumericStepper;
 	var check_CPUAltAnim:FlxUICheckBox;
@@ -1679,15 +1696,66 @@ class ChartingState extends MusicBeatState
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
 
+					// JOELwindows7: gf section icon
+					var gfSectionIcon = new HealthIcon(_song.gfVersion).clone();
+					gfSectionIcon.x = -97;
+					gfSectionIcon.y = cachedY;
+					gfSectionIcon.setGraphicSize(0, 45);
+					gfSectionIcon.visible = check_gfHitSection.checked;
+
 					i.icon = sectionicon;
+					i.iconGf = gfSectionIcon;
 					i.lastUpdated = sect.mustHitSection;
 
 					add(sectionicon);
+					add(gfSectionIcon); // JOELwindows7: add this after main icon.
 				}
 			}
 		});
 		check_mustHitSection.checked = true;
 		// _song.needsVoices = check_mustHit.checked;
+
+		// JOELwindows7: & for camera points to gf (note, camera points to player still decides turn)
+		check_gfHitSection = new FlxUICheckBox(50, 30, null, null, "Camera Points to Girlfriend?", 100, null, function()
+		{
+			var sect = lastUpdatedSection;
+
+			Debug.logTrace(sect);
+
+			if (sect == null)
+				return;
+
+			sect.gfSection = check_gfHitSection.checked;
+			updateHeads();
+
+			for (i in sectionRenderes)
+			{
+				if (i.section.startTime == sect.startTime)
+				{
+					var cachedY = i.icon.y;
+					remove(i.icon);
+					var sectionicon = check_mustHitSection.checked ? new HealthIcon(_song.player1).clone() : new HealthIcon(_song.player2).clone();
+					sectionicon.x = -95;
+					sectionicon.y = cachedY;
+					sectionicon.setGraphicSize(0, 45);
+
+					// JOELwindows7: gf section icon
+					var gfSectionIcon = new HealthIcon(_song.gfVersion).clone();
+					gfSectionIcon.x = -97;
+					gfSectionIcon.y = cachedY;
+					gfSectionIcon.setGraphicSize(0, 45);
+					gfSectionIcon.visible = check_gfHitSection.checked;
+
+					i.icon = sectionicon;
+					i.iconGf = gfSectionIcon; // JOELwindows7: here gf icon
+					i.lastUpdated = sect.gfSection;
+
+					add(sectionicon);
+					add(gfSectionIcon); // JOELwindows7: add after main icon.
+				}
+			}
+		});
+		check_gfHitSection.checked = false;
 
 		check_CPUAltAnim = new FlxUICheckBox(10, 340, null, null, "CPU Alternate Animation", 100);
 		check_CPUAltAnim.name = 'check_CPUAltAnim';
@@ -1740,7 +1808,8 @@ class ChartingState extends MusicBeatState
 				_song.notes.remove(i);
 
 			toRemove = []; // clear memory
-			LoadingState.loadAndSwitchState(new PlayState());
+			// LoadingState.loadAndSwitchState(new PlayState());
+			switchState(new PlayState(), true, true, true, true); // JOELwindows7: yea
 		});
 
 		tab_group_section.add(refresh);
@@ -3233,7 +3302,8 @@ class ChartingState extends MusicBeatState
 
 					toRemove = []; // clear memory
 
-					LoadingState.loadAndSwitchState(new PlayState());
+					// LoadingState.loadAndSwitchState(new PlayState());
+					LoadingState.loadAndSwitchState(new PlayState()); // JOELwindows7: yea
 				}
 
 				if (FlxG.keys.justPressed.E)
@@ -3261,8 +3331,15 @@ class ChartingState extends MusicBeatState
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
+					// JOELwindows7: gf section icon
+					var gfSectionIcon = new HealthIcon(_song.gfVersion).clone();
+					gfSectionIcon.x = -97;
+					gfSectionIcon.y = cachedY;
+					gfSectionIcon.setGraphicSize(0, 45);
+					gfSectionIcon.visible = check_gfHitSection.checked;
 
 					i.icon = sectionicon;
+					i.iconGf = gfSectionIcon;
 					i.lastUpdated = sect.mustHitSection;
 
 					add(sectionicon);
@@ -3566,8 +3643,10 @@ class ChartingState extends MusicBeatState
 	function updateHeads():Void
 	{
 		var mustHit = check_mustHitSection.checked;
+		var gfHit = check_gfHitSection.checked;
 		#if FEATURE_FILESYSTEM
 		var head = (mustHit ? _song.player1 : _song.player2);
+		var headGf = _song.gfVersion; // JOELwindows7: ahar
 		var i = sectionRenderes.members[curSection];
 
 		function iconUpdate(failsafe:Bool = false):Void
@@ -3579,16 +3658,28 @@ class ChartingState extends MusicBeatState
 			sectionicon.x = -95;
 			sectionicon.y = cachedY;
 			sectionicon.setGraphicSize(0, 45);
+			// JOELwindows7: gf section icon
+			var gfSectionIcon = new HealthIcon(failsafe ? 'gf' : headGf).clone();
+			gfSectionIcon.x = -97;
+			gfSectionIcon.y = cachedY;
+			gfSectionIcon.setGraphicSize(0, 45);
+			gfSectionIcon.visible = gfHit;
 
 			i.icon = sectionicon;
+			i.iconGf = gfSectionIcon;
 			i.lastUpdated = sect.mustHitSection;
 
 			add(sectionicon);
+			add(gfSectionIcon);
 		}
 
 		// fail-safe
 		// TODO: Refactor this to use OpenFlAssets.
-		if (!FileSystem.exists(Paths.image('icons/icon-' + head.split("-")[0])) && !FileSystem.exists(Paths.image('icons/icon-' + head)))
+		// if (!FileSystem.exists(Paths.image('icons/icon-' + head.split("-")[0])) && !FileSystem.exists(Paths.image('icons/icon-' + head)))
+		// JOELwindows7: there, with new OpenFlAssets yey!
+		if (!Paths.doesImageAssetExist(Paths.image('icons/icon-' + head.split("-")[0]))
+			&& !Paths.doesImageAssetExist(Paths.image('icons/icon-' + head))
+			&& !Paths.doesImageAssetExist(Paths.image('icons/icon-' + headGf))) // JOELwindows7: all 3 must check!
 		{
 			if (i.icon.animation.curAnim == null)
 				iconUpdate(true);
@@ -3607,6 +3698,8 @@ class ChartingState extends MusicBeatState
 		#else
 		leftIcon.animation.play(mustHit ? _song.player1 : _song.player2);
 		rightIcon.animation.play(mustHit ? _song.player2 : _song.player1);
+		middleIcon.animation.play(_song.gfVersion);
+		middleIcon.visible = gfHit;
 		#end
 	}
 

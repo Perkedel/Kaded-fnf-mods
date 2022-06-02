@@ -9,6 +9,7 @@ typedef SwagSection =
 	var lengthInSteps:Int;
 	var typeOfSection:Int;
 	var mustHitSection:Bool;
+	var ?gfSection:Bool; // JOELwindows7: here when GF plays instead. note, must hit section keeps accounted for turn. e.g. if must hit & gf = gf allied, otherwise gf is mad, etc.
 	var bpm:Float;
 	var changeBPM:Bool;
 	var altAnim:Bool;
@@ -28,6 +29,7 @@ class Section
 	public var lengthInSteps:Int = 16;
 	public var typeOfSection:Int = 0;
 	public var mustHitSection:Bool = true;
+	public var gfSection:Bool = false; // JOELwindows7: here gf section.
 
 	/**
 	 *	Copies the first section into the second section!
@@ -41,6 +43,11 @@ class Section
 }
 
 // JOELwindows7: psst hey! also note in the section. YES!!! make it JSONed dictionary instead of Array<Dynamic> ugh confusing!
+
+/**
+ * Notes in the section
+ * @author JOELwindows7
+ */
 typedef NoteInSection =
 {
 	// inspire this from how note info array works in charting state and more.

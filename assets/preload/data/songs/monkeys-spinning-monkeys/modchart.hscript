@@ -1,0 +1,246 @@
+//JOELwindows7: steal example from BulbyVR
+// https://github.com/FunkinModdingPlus/ModdingPlus/blob/master/assets/data/milf/modchart.hscript
+// It should work the same like Kade Engine Lua Modchart, just this time, in Haxe Language
+// Lua Modchart Documentation at: https://kadedev.github.io/Kade-Engine/modchart .
+// https://github.com/KadeDev/Kade-Engine/wiki
+// But remember, this is Haxe Script. convert your syntax format to it here.
+// templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
+
+var titleImage = 'overbuse/kevin_macleod/0_title';
+var imagePath = 'overbuse/kevin_macleod/4_monkey_spinning_monkey';
+
+function loaded(song)
+{
+
+}
+
+function start(song) 
+{
+
+}
+
+function songStart()
+{
+
+}
+
+function songEnd()
+{
+
+}
+
+function introCutscene()
+{
+    makeSprite(titleImage, 'title', false, true, 'shared');
+    makeSprite(imagePath, 'header', false, true, 'shared');
+
+    setActorScrollFactor(0,0,'title');
+    setActorScrollFactor(0,0,'header');
+
+    //setActorAlpha(0, 'header');
+    //setActorAlpha(0, 'title');
+
+    //tweenFadeIn('title', 1, 2, 'nextPartToThis');
+    //tweenFadeIn('header', 1, 2, 'nextPartToThat');
+    justNextPartToThat();
+}
+
+
+
+function nextPartToThis(){
+    new FlxTimer().start(2, function(tmr){
+        tweenFadeOut('title', 0, 2);
+        tweenFadeIn('header', 1, 2, 'nextPartToThat');
+    });
+}
+
+function nextPartToThat(){
+    new FlxTimer().start(2, function(tmr){
+        tweenFadeOut('header', 0, 2, 'introSceneIsDone');
+    });
+}
+
+function justNextPartToThat(){
+    new FlxTimer().start(2, function(tmr){
+        //tweenFadeOut('header', 0, 2, 'introSceneIsDone');
+        justPoofAndDone();
+    });
+}
+
+function justPoofAndDone(){
+    new FlxTimer().start(1, function(tmr){
+        //tweenFadeOut('header', 0, 2, 'introSceneIsDone');
+        setActorAlpha(0, 'title');
+        introSceneIsDone();
+    });
+}
+
+function outroCutscene()
+{
+
+}
+
+// Just for this, because there is flashing here.
+function closeCamera(){
+    FlxG.camera.fade(FlxColor.BLACK, 1);
+}
+
+function openCamera(){
+    FlxG.camera.fade(FlxColor.BLACK, 1, true);
+}
+
+function dialogueStart()
+{
+
+}
+
+function dialogueEnd()
+{
+
+}
+
+function dialogueSkip()
+{
+    //dialogueEnd() // do you want to do the same anyway?
+}
+
+function dialogueNext(index)
+{
+    //`index` is where dialogue line number you were at
+}
+
+function update(elapsed)
+{
+
+}
+
+function beatHit(beat)
+{
+    // Epilepsy alert! censor Hookx flash crazy if Flashing Lights disabled
+    if (!flashing)
+    {
+        if (beat == 152)
+        {
+            closeCamera();
+        }
+
+        if (beat == 192)
+        {
+            openCamera();
+        }
+    }
+}
+
+function stepHit(step)
+{
+
+}
+
+function keyPressed(key)
+{
+
+}
+
+function keyReleased(key)
+{
+    
+}
+
+function playerTwoTurn()
+{
+
+}
+
+function playerTwoMiss(note, position)
+{
+
+}
+
+function playerTwoSing(note, position)
+{
+    //setActorAngle();
+    if (note == 0){
+        // left
+        //setActorAngle(90, 'dad');
+        //currentPlayState.dad.angle = 90;
+        tweenAngle('dad',90,.01);
+    } else if (note == 1) {
+        // down
+        //setActorAngle(270, 'dad');
+        //currentPlayState.dad.angle = 270;
+        tweenAngle('dad',270,.01);
+    } else if (note == 2) {
+        // up
+        //setActorAngle(0, 'dad');
+        //currentPlayState.dad.angle = 0;
+        tweenAngle('dad',0,.01);
+    } else if (note == 3) {
+        // right
+        //setActorAngle(180, 'dad');
+        //currentPlayState.dad.angle = 180;
+        tweenAngle('dad',180,.01);
+    }
+}
+
+function playerOneTurn()
+{
+    
+}
+
+function playerOneMiss(note, position)
+{
+
+}
+
+function playerOneSing(note, position)
+{
+    //setActorAngle();
+    //trace('note bf ${note}');
+    if (note == 0){
+        // left
+        //setActorAngle(90, 'boyfriend');
+        //currentPlayState.boyfriend.angle = 90;
+        tweenAngle('boyfriend',90,.01);
+    } else if (note == 1) {
+        // down
+        //setActorAngle(270, 'boyfriend');
+        //currentPlayState.boyfriend.angle = 270;
+        tweenAngle('boyfriend',270,.01);
+    } else if (note == 2) {
+        // up
+        //setActorAngle(0, 'boyfriend');
+        //currentPlayState.boyfriend.angle = 0;
+        tweenAngle('boyfriend',0,.01);
+    } else if (note == 3) {
+        // right
+        //setActorAngle(180, 'boyfriend');
+        //currentPlayState.boyfriend.angle = 180;
+        tweenAngle('boyfriend',180,.01);
+    }
+}
+
+function colorizeColorablebyKey(note, justOne, toWhichBg)
+{
+    if (note == 'left')
+    {
+        //trace("set color magenta (hscript)");
+        chooseColoringColor("magenta", justOne, toWhichBg);
+    }
+    else if (note == 'down')
+    {
+        //trace("set color cyan (hscript)");
+        chooseColoringColor("cyan", justOne, toWhichBg);
+    }
+    else if (note == 'up')
+    {
+        //trace("set color lime (hscript)");
+        chooseColoringColor("lime", justOne, toWhichBg);
+    }
+    else if (note == 'right')
+    {
+        //trace("set color red (hscript)");
+        chooseColoringColor("red", justOne, toWhichBg);
+    }
+}
+
+trace("finish loading hscript <3 yay cool and good.");

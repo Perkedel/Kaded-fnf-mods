@@ -34,7 +34,7 @@ class Perkedel
 	public static final ENGINE_NAME:String = "Last Funkin Moments"; // oh yeah LFM baby!
 	public static final ENGINE_ID:String = "Last-Funkin-Moments"; // oh yeah LFM baby!
 	public static final ENGINE_ABBREVIATE:String = "LFM"; // oh yeah LFM baby!
-	public static final ENGINE_VERSION:String = "2022.05.0"; // current version number yeah!
+	public static final ENGINE_VERSION:String = "2022.06.0"; // current version number yeah!
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
 	public static final ENGINE_VERSION_URL:String = 'https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe'; // here URL check
 	public static final ENGINE_CHANGELOG_PREFIX_URL:String = 'https://odysee.com/@JOELwindows7/LFM-changelog-'; // here URL of change log prefix, appened by what version needed there.
@@ -98,6 +98,12 @@ class Perkedel
 	};
 	public static final NULL_DIALOGUE_CHAT:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
 	public static final NULL_EPILOGUE_CHAT:Array<String> = ['dad:oh no I lose', 'bf: beep boop baaa hey!'];
+	public static final NULL_DIALOGUE_FONT:String = "Pixel Arial 11 Bold";
+	public static final NULL_DIALOGUE_FONT_DROP:String = "Pixel Arial 11 Bold";
+	public static final NULL_DIALOGUE_FONT_COLOR:String = "0xFF3F2021";
+	public static final NULL_DIALOGUE_FONT_COLOR_DROP:String = "0xFFD89494";
+	public static final NULL_DIALOGUE_SOUND_PATHS:Array<String> = ['pixelText'];
+	public static final NULL_DIALOGUE_SOUND_VOLUME:Float = .6;
 	public static final BIOS_BUTTON_DELAY_TIME:Float = 2;
 	public static final BIOS_BUTTON_SAY:String = "Press ESCAPE / Gamepad SELECT to go to BIOS setting";
 	public static final METRONOME_FIRST_OFF_ICON:String = "O";

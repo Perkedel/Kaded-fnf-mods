@@ -404,7 +404,7 @@ class TitleState extends MusicBeatState
 			for (i in 0...hbdList.length)
 			{
 				// Today, Early & late birthday too
-				if (Date.now().getMonth() == (Std.int(hbdList[i][1])-1))
+				if (Date.now().getMonth() == (Std.int(hbdList[i][1]) - 1))
 				{
 					if (Date.now().getDate() == Std.int(hbdList[i][2]))
 					{
@@ -418,7 +418,8 @@ class TitleState extends MusicBeatState
 					{
 						createToast(null, "Late HBD at " + Date.now().toString(), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
 					}
-					createToast(null, "This month HBD at " + DateTools.format(Date.now(),"%B"), Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
+					createToast(null, "This month HBD at " + DateTools.format(Date.now(), "%B"),
+						Std.string(hbdList[i][0]) + "\nSemoga panjang umur & sehat selalu!!!");
 				}
 			}
 
@@ -461,8 +462,10 @@ class TitleState extends MusicBeatState
 					else
 					{
 						// FlxG.switchState(new MainMenuState());
-						switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
-						clean();
+						// switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+						// clean();
+						// JOELwindows7: hey, now step by step to this one
+						checkLFMUpdate();
 					}
 				}
 
@@ -470,63 +473,28 @@ class TitleState extends MusicBeatState
 				{
 					trace('error: $error');
 					// FlxG.switchState(new MainMenuState()); // fail but we go anyway
-					switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: hex switch state lol
-					clean();
+					// switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: hex switch state lol
+					// clean();
+					// JOELwindows7: hey, now step by step to this one
+					checkLFMUpdate();
 				}
 
 				http.request();
 				#else
 				// see bellow update (LFM update check) check else
 				// it already done go to menu for me.
+				checkLFMUpdate();
 				#end
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 
 			// JOELwindows7: Last Funkin Moments outdated marks
 			// copy from above
-			new FlxTimer().start(2, function(tmr:FlxTimer)
-			{
-				// Get the current version of Last Funkin Moments
+			// new FlxTimer().start(2, function(tmr:FlxTimer)
+			// {
 
-				#if FEATURE_HTTP
-				var http = new haxe.Http(Perkedel.ENGINE_VERSION_URL);
-				var returnedData:Array<String> = [];
-
-				http.onData = function(data:String)
-				{
-					returnedData[0] = data.substring(0, data.indexOf(';'));
-					returnedData[1] = data.substring(data.indexOf('-'), data.length);
-					if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.tinggalkanState)
-					{
-						if (!alreadyDecideOutdated)
-							OutdatedSubState.whichAreaOutdated = 1; // mark that LFM one is outdated
-						alreadyDecideOutdated = true;
-						trace('LFM outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
-						OutdatedSubState.needVerLast = returnedData[0];
-						OutdatedSubState.perubahanApaSaja = returnedData[1];
-						// FlxG.switchState(new OutdatedSubState());
-						switchState(new OutdatedSubState()); // JOELwindows7: get here hex switch state yeah
-					}
-					else
-					{
-						// FlxG.switchState(new MainMenuState());
-						switchState(new MainMenuState()); // JOELwindows7: get here hex switch state yeah
-					}
-				}
-
-				http.onError = function(error)
-				{
-					trace('error: $error');
-					// FlxG.switchState(new MainMenuState()); // fail but we go anyway
-					switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: get here hex switch state yeah
-				}
-
-				http.request();
-				#else
-				// FlxG.switchState(new MainMenuState()); // Just pecking go to menu already!
-				switchState(new MainMenuState()); // Just pecking go to menu already! JOELwindows7: get here hex switch state yeah
-				#end
-			});
+			// });
+			// PAIN IS TEMPORARY, GLORY IS FOREVER
 		}
 
 		if (pressedEnter && !skippedIntro && initialized)
@@ -535,6 +503,57 @@ class TitleState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+	}
+
+	// JOELwindows7: oh race condition! don't start 2 timer at the same time. do it step by step! check update this, and then ours.
+	function checkLFMUpdate()
+	{
+		// TODO: make this proceduralable, like add your URL for update new of your own mod thingy
+		// Get the current version of Last Funkin Moments
+
+		#if FEATURE_HTTP
+		var http = new haxe.Http(Perkedel.ENGINE_VERSION_URL);
+		var returnedData:Array<String> = [];
+
+		http.onData = function(data:String)
+		{
+			returnedData[0] = data.substring(0, data.indexOf(';'));
+			returnedData[1] = data.substring(data.indexOf('-'), data.length);
+			if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.tinggalkanState)
+			{
+				if (!alreadyDecideOutdated)
+					OutdatedSubState.whichAreaOutdated = 1; // mark that LFM one is outdated
+				alreadyDecideOutdated = true;
+				trace('LFM outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
+				OutdatedSubState.needVerLast = returnedData[0];
+				OutdatedSubState.perubahanApaSaja = returnedData[1];
+				// FlxG.switchState(new OutdatedSubState());
+				switchState(new OutdatedSubState()); // JOELwindows7: get here hex switch state yeah
+				clean();
+			}
+			else
+			{
+				// FlxG.switchState(new MainMenuState());
+				switchState(new MainMenuState()); // JOELwindows7: get here hex switch state yeah
+				clean();
+			}
+		}
+
+		http.onError = function(error)
+		{
+			trace('error: $error');
+			// FlxG.switchState(new MainMenuState()); // fail but we go anyway
+			switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: get here hex switch state yeah
+			clean();
+		}
+
+		http.request();
+		#else
+		// FlxG.switchState(new MainMenuState()); // Just pecking go to menu already!
+		switchState(new MainMenuState()); // Just pecking go to menu already! JOELwindows7: get here hex switch state yeah
+		clean();
+		#end
+		collapseToasts(); // JOELwindows7: collapse all toasts!
 	}
 
 	function createCoolText(textArray:Array<String>)
@@ -677,8 +696,9 @@ class TitleState extends MusicBeatState
 			remove(odyseeSpr);
 			remove(perkedelSpr);
 
-			FlxG.camera.flash(FlxColor.WHITE, 4);
+			// JOELwindows7: maybe flip order would help?
 			remove(credGroup);
+			FlxG.camera.flash(FlxColor.WHITE, 4);
 
 			FlxTween.tween(logoBl, {y: -100}, 1.4, {ease: FlxEase.expoInOut});
 

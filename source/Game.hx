@@ -31,13 +31,16 @@ class Game extends FlxGame
 	public static var pauseMusic:FlxSound;
 	public static var pauseMusicTween:VarTween;
 
+	static var hasCrashed:Bool = false;
+
 	override public function update()
 	{
 		if (pauseMusic != null)
 		{
 			if (pauseMusic.playing)
 			{
-				pauseMusicTween.active = true;
+				if (pauseMusicTween != null) // JOELwindows7: don't forget the safety!!!
+					pauseMusicTween.active = true;
 			}
 		}
 
@@ -53,7 +56,12 @@ class Game extends FlxGame
 			}
 			catch (exc)
 			{
-				Debug.displayAlert('Fatal WError: ${exc.message}', 'The game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
+				if (!hasCrashed)
+				{
+					Debug.displayAlert('Fatal WError: ${exc.message}', 'The game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
+					Debug.logError('Fatal Werror: ${exc.message}\n${exc.details()}');
+					hasCrashed = true;
+				}
 				FlxG.switchState(new WerrorForceMajeurState(exc));
 			}
 		}
@@ -80,5 +88,11 @@ class Game extends FlxGame
 		{
 			pauseMusic.stop();
 		}
+	}
+
+	// JOELwindows7: reset tripwire
+	public static function resetCrashWire()
+	{
+		hasCrashed = false;
 	}
 }

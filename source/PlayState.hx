@@ -483,7 +483,7 @@ class PlayState extends MusicBeatState
 		executeModchart = false; // FORCE disable for non cpp targets
 		executeStageScript = false; // JOELwindows7: this too
 		#end
-		Debug.logInfo("forced hscript exist is " + Std.string(SONG.forceLuaModchart));
+		Debug.logInfo("forced luascript exist is " + Std.string(SONG.forceLuaModchart));
 
 		Debug.logInfo('Searching for mod chart? ($executeModchart) at ${Paths.lua('songs/${PlayState.SONG.songId}/modchart')}');
 
@@ -2597,9 +2597,12 @@ class PlayState extends MusicBeatState
 			// }
 			// else
 			// {
-				PlayStateChangeables.songPosBarColor = PlayStateChangeables.weekColor;
-				PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.weekColor, PlayStateChangeables.weekColor,
-					PlayStateChangeables.weekColor);
+			PlayStateChangeables.songPosBarColor = PlayStateChangeables.weekColor;
+			PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.weekColor.brightness,
+				PlayStateChangeables.weekColor.brightness, PlayStateChangeables.weekColor.brightness)
+				.getInverted();
+			// prevent bar color from being alpha < 1. background bar is okay alpha < 1, I guess...
+			PlayStateChangeables.songPosBarColor.alphaFloat = 1;
 			// }
 
 			// JOELwindows7: in case the color becomes null

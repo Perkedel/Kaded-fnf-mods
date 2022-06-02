@@ -29,7 +29,7 @@ class Note extends FlxSprite
 	public var rStrumTime:Float = 0;
 
 	public var mustPress:Bool = false;
-	public var noteData:Int = 0;
+	public var noteData:Int = 0; // Orders for 4K = left, down, up, right.
 	public var rawNoteData:Int = 0;
 	public var canBeHit:Bool = false;
 	public var tooLate:Bool = false;

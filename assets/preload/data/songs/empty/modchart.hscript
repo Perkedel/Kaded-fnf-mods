@@ -108,7 +108,8 @@ function playerOneMiss(note, position)
 
 function playerOneSing(note, position)
 {
-
+    // note:Int => left, down, up, right
+    // position:Float
 }
 
 function variableChange(name,value)

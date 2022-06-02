@@ -159,12 +159,12 @@ class Character extends FlxSprite
 		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
 		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
 		this.heartOrgans = data.heartOrgans == null ? [Perkedel.NULL_HEART_SPEC] : data.heartOrgans; // JOELwindows7: yess, the hearts & each specification!
-		this.font = data.font == null ? "Pixel Arial 11 Bold" : data.font;
-		this.fontDrop = data.fontDrop == null ? "Pixel Arial 11 Bold" : data.fontDrop;
-		this.fontColor = data.fontColor == null ? '0xFF3F2021' : data.fontColor;
-		this.fontColorDrop = data.fontColorDrop == null ? '0xFFD89494' : data.fontColorDrop;
-		this.dialogueChatSoundPaths = data.dialogueChatSoundPaths == null ? [] : data.dialogueChatSoundPaths;
-		this.dialogueChatSoundVolume = data.dialogueChatSoundVolume == null ? .6 : data.dialogueChatSoundVolume;
+		this.font = data.font == null ? Perkedel.NULL_DIALOGUE_FONT : data.font;
+		this.fontDrop = data.fontDrop == null ? Perkedel.NULL_DIALOGUE_FONT_DROP : data.fontDrop;
+		this.fontColor = data.fontColor == null ? Perkedel.NULL_DIALOGUE_FONT_COLOR : data.fontColor;
+		this.fontColorDrop = data.fontColorDrop == null ? Perkedel.NULL_DIALOGUE_FONT_COLOR_DROP : data.fontColorDrop;
+		this.dialogueChatSoundPaths = data.dialogueChatSoundPaths == null ? Perkedel.NULL_DIALOGUE_SOUND_PATHS : data.dialogueChatSoundPaths;
+		this.dialogueChatSoundVolume = data.dialogueChatSoundVolume == null ? Perkedel.NULL_DIALOGUE_SOUND_VOLUME : data.dialogueChatSoundVolume;
 
 		flipX = data.flipX == null ? false : data.flipX;
 
