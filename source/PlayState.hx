@@ -6860,15 +6860,19 @@ class PlayState extends MusicBeatState
 		 */
 
 		// JOELwindows7: HARDCODING FOR BBPANZU SKY, see that PlayState
-		if (Stage.curStage == "theShift") 
+		if (Stage.curStage == "theShift")
 		{
-			if(Stage.shiftbg != null) Stage.shiftbg.animation.play("bop");
+			if (Stage.shiftbg != null)
+				Stage.shiftbg.animation.play("bop");
 		}
-		if (Stage.curStage == "theManifest"){
-			if(Stage.shiftbg != null) Stage.shiftbg.animation.play("bop");
-			if(Stage.floor != null) Stage.floor.animation.play("bop");
+		if (Stage.curStage == "theManifest")
+		{
+			if (Stage.shiftbg != null)
+				Stage.shiftbg.animation.play("bop");
+			if (Stage.floor != null)
+				Stage.floor.animation.play("bop");
 		}
-		//Song orders for vs. Sky: Wife Forever, Sky, Manifest
+		// Song orders for vs. Sky: Wife Forever, Sky, Manifest
 
 		if (songMultiplier == 1)
 		{
@@ -7809,18 +7813,19 @@ class PlayState extends MusicBeatState
 				new FlxTimer().start(1, function(e:FlxTimer)
 				{
 					dad.playAnim('manifest');
-					FlxG.sound.play(Paths.sound("manifest"));
+					FlxG.sound.play(Paths.sound("skyManifest", 'shared'));
 					FlxTween.tween(FlxG.camera, {zoom: 1.2}, 1, {ease: FlxEase.quadInOut});
 
 					new FlxTimer().start(1, function(e:FlxTimer)
 					{
-						if(Stage.shiftbg != null){
-						Stage.shiftbg.scrollFactor.set(1, 1);
-						Stage.shiftbg.animation.play('manifest');
+						if (Stage.shiftbg != null)
+						{
+							Stage.shiftbg.scrollFactor.set(1, 1);
+							Stage.shiftbg.animation.play('manifest');
 						}
 						FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.quadInOut});
 						FlxG.camera.shake(0.05, 5);
-						Controls.vibrate(0,5000);
+						Controls.vibrate(0, 5000);
 					});
 					new FlxTimer().start(2, function(e:FlxTimer)
 					{
@@ -7837,6 +7842,52 @@ class PlayState extends MusicBeatState
 						outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 					});
+				});
+			case 'manifest':
+				// JOELwindows7: bbpanzu's vs. Sky. ending here is based on how accurate you play.
+				// also see ending state
+				// https://github.com/Perkedel/bb-fnf-mods/blob/GitHackeh/source_sky/EndingState.hx
+				FlxG.camera.fade(FlxColor.BLACK, .8);
+
+				// camHUD.alpha = 0;
+				FlxTween.tween(camHUD, {alpha: 0}, .8, {
+					ease: FlxEase.linear,
+					onComplete: function(twn:FlxTween)
+					{
+					}
+				});
+				var whichEndingImage:FlxSprite = new FlxSprite(0, 0);
+				var endingSound:FlxSound;
+				if (accuracy >= 70)
+				{
+					whichEndingImage.loadGraphic(Paths.image("sky/ending0002"));
+					// FlxG.sound.playMusic(Paths.music("skyGoodEnding",'shared'),1,false);
+					endingSound = new FlxSound().loadEmbedded(Paths.music("skyGoodEnding", 'shared'), false);
+				}
+				else
+				{
+					if (FlxG.random.bool(70))
+					{
+						whichEndingImage.loadGraphic(Paths.image("sky/ending0001"));
+						// FlxG.sound.playMusic(Paths.music("skyBadEnding",'shared'),1,false);
+						endingSound = new FlxSound().loadEmbedded(Paths.music("skyBadEnding", 'shared'), false);
+					}
+					else
+					{
+						whichEndingImage.loadGraphic(Paths.image("sky/ending0003"));
+						// FlxG.sound.playMusic(Paths.music("skyPeanutEnding",'shared'), 1, false);
+						endingSound = new FlxSound().loadEmbedded(Paths.music("skyPeanutEnding", 'shared'), false);
+					}
+				}
+				add(whichEndingImage);
+				FlxG.sound.list.add(endingSound);
+				endingSound.play();
+				new FlxTimer().start(8, function(e:FlxTimer)
+				{
+					// FlxG.sound.music.stop();
+					endingSound.stop();
+					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 				});
 			default:
 				#if FEATURE_LUAMODCHART

@@ -136,9 +136,14 @@ class DialogueBox extends FlxSpriteGroup
 					sound.fadeIn(1, 0, 0.8);
 				// JOELwindows7: sounds dialogue for vs. Sky by bbpanzu
 				case 'wife-forever':
-					FlxG.sound.playMusic(Paths.music('shift'), 0);
-					FlxG.sound.music.fadeIn(1, 0, 0.8);
+					// FlxG.sound.playMusic(Paths.music('skyShift', 'shared'), 0);
+					// FlxG.sound.music.fadeIn(1, 0, 0.8);
+					sound = new FlxSound().loadEmbedded(Paths.music('skyShift', 'shared'), true);
+					sound.volume = 0;
+					FlxG.sound.list.add(sound);
+					sound.fadeIn(1, 0, 0.8);
 				case 'manifest':
+					sound = new FlxSound();
 				// end of vs. Sky by bbpanzu
 				default:
 					sound = new FlxSound();
