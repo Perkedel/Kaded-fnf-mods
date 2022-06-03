@@ -52,6 +52,7 @@ class Perkedel
 	public static final MAX_AVAILABLE_JUDGEMENT_RATING:Int = 3; // only up to sick we have.
 	public static final MAX_NUMBER_OF_LOADING_IMAGES:Int = 3; // how many loading backdrops do we have here?
 	public static final DISCLAIMER_SAY:String = "Disclaimer";
+	public static final LOADING_TOO_LONG_TIME_THRESHOLD:Float = 30; // if the loading took more than 30 second
 	public static final GOING_TO_OBSOLETE:String = "ALERT!\n"
 		+ "\nThis mod is going to obsolete in favour of Friday Night Funkin Moment: Full Ass "
 		+ "\nwhen modding support & Workshop becomes available"

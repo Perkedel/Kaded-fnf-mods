@@ -617,8 +617,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			PlayStateChangeables.weekColor = FlxColor.fromString(weekColor[curWeek]); // JOELwindows7: the obvious week color for any references.
 			PlayStateChangeables.songPosBarColor = FlxColor.fromString(weekColor[curWeek]); // JOELwindows7: here change color for song bar pls.
 			PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.songPosBarColor.brightness,
-				PlayStateChangeables.songPosBarColor.brightness,
-				PlayStateChangeables.songPosBarColor.brightness)
+				PlayStateChangeables.songPosBarColor.brightness, PlayStateChangeables.songPosBarColor.brightness)
 				.getInverted();
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
@@ -627,7 +626,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 				// LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
 				// 	true);
 				switchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(), true, true, true,
-					true); // JOELwindows7: switch state hex
+					true, new StoryMenuState()); // JOELwindows7: switch state hex
 				// #else //workaround for Video cutscener not working in Android
 				// LoadingState.loadAndSwitchState(new PlayState(), true);
 				// #end

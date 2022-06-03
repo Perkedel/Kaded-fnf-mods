@@ -96,7 +96,8 @@ class Stage extends MusicBeatState
 	// JOELwindows7: wtf, where's default position????!!!
 	// why do I have to do this every character????
 	// JOELwindows7: add to here pls. here NULL-bf, NULL-gf, NULL-dad for default fallbacks
-	public var positions:Map<String, Map<String, Array<Int>>> = [
+	// OI!! Float pls!!
+	public var positions:Map<String, Map<String, Array<Float>>> = [
 		// Assign your characters positions on stage here!
 		'halloween' => ['spooky' => [100, 300], 'monster' => [100, 200], 'NULL-dad' => [100, 300]],
 		'philly' => ['pico' => [100, 400], 'NULL-dad' => [100, 400]],
@@ -148,6 +149,43 @@ class Stage extends MusicBeatState
 			'NULL-gf' => [310, -25],
 			'NULL-dad' => [20, 380],
 		],
+		'theShift' => [
+			// JOELwindows7: sky bbpanzu
+			// no, I swear, he directly set it to exact position!
+			'bf' => [828.75, 265.65],
+			'gf' => [359.7, -37.95],
+			'gf-crucified' => [359.7, -37.95],
+			'sky' => [30.15, 37.95],
+			'sky-annoyed' => [30.15, 37.95],
+			'NULL-bf' => [828.75, 265.65],
+			'NULL-gf' => [359.7, -37.95],
+			'NULL-dad' => [30.15, 37.95]
+		],
+		'theShift2' => [
+			// JOELwindows7: sky bbpanzu
+			// no, I swear, he directly set it to exact position!
+			'bf' => [828.75, 265.65],
+			'gf' => [359.7, -37.95],
+			'gf-crucified' => [479.3, -56.1],
+			'sky' => [30.15, 37.95],
+			'sky-annoyed' => [30.15, 37.95],
+			'NULL-bf' => [828.75, 265.65],
+			'NULL-gf' => [359.7, -37.95],
+			'NULL-dad' => [30.15, 37.95]
+		],
+		'theManifest' => [
+			// JOELwindows7: sky bbpanzu
+			// no, I swear, he directly set it to exact position!
+			'bf' => [828.75, 265.65],
+			'gf' => [359.7, -37.95],
+			'gf-crucified' => [479.3, -56.1],
+			'sky' => [119.3, 93.9],
+			'sky-annoyed' => [119.3, 93.9],
+			'sky-mad' => [119.3, 93.9],
+			'NULL-bf' => [828.75, 265.65],
+			'NULL-gf' => [479.3, -56.1],
+			'NULL-dad' => [119.3, 93.9]
+		],
 		'pizza' => [
 			// JOELwindows7: copilot lol!
 			'bf-pizza' => [1030, 230],
@@ -198,6 +236,12 @@ class Stage extends MusicBeatState
 	// end of tankbop
 	public var picoStep:Ps;
 	public var tankStep:Ts;
+
+	// JOELwindows7: sky bbpanzu
+	public var shiftbg:FlxSprite;
+	public var floor:FlxSprite;
+
+	// end of sky bbpanzu
 
 	public function addThe(object:Dynamic, mapName:String, layFront:Bool = false, whichLayerFront:Int = 0)
 	{
@@ -917,6 +961,69 @@ class Stage extends MusicBeatState
 						tankBop4.animation.play('bop');
 						tankBop5.animation.play('bop');
 						tankBop6.animation.play('bop');
+					}
+				// JOELwindows7: da bbpanzu sky. sorry, people. KitsuneSkulls turns out to be a bad guy. Not Micheal's fault! We wish Rodrigo had it instead, idk..
+				case 'theShift':
+					{
+						// daPixelZoom = 1;
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'theShift';
+						shiftbg = new FlxSprite(-388.05, -232);
+						shiftbg.frames = Paths.getSparrowAtlas("sky/bg_normal");
+						shiftbg.animation.addByIndices("idle", "bg", [5], "", 24, false);
+						shiftbg.animation.addByPrefix("bop", "bg", 24, false);
+						// shiftbg.animation.addByPrefix("manifest", "bgBOOM", 24, false);
+						shiftbg.animation.play("idle");
+
+						shiftbg.updateHitbox();
+						shiftbg.antialiasing = true;
+						shiftbg.scrollFactor.set(0, 1);
+						addThe(shiftbg, 'shiftbg');
+					}
+				case 'theShift2':
+					{
+						// daPixelZoom = 1;
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'theShift2';
+						shiftbg = new FlxSprite(-388.05, -232);
+						shiftbg.frames = Paths.getSparrowAtlas("sky/bg_annoyed");
+						shiftbg.animation.addByIndices("idle", "bg2", [5], "", 24, false);
+						shiftbg.animation.addByPrefix("bop", "bg2", 24, false);
+						shiftbg.animation.addByPrefix("manifest", "bgBOOM", 24, false);
+						shiftbg.animation.play("idle");
+
+						shiftbg.updateHitbox();
+						shiftbg.antialiasing = true;
+						shiftbg.scrollFactor.set(0, 1);
+						addThe(shiftbg, 'shiftbg');
+					}
+				case 'theManifest':
+					{
+						// daPixelZoom = 1;
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'theManifest';
+						shiftbg = new FlxSprite(-388.05, -232);
+						shiftbg.frames = Paths.getSparrowAtlas("sky/bg_manifest");
+						shiftbg.animation.addByIndices("idle", "bg_manifest", [5], "", 24, false);
+						shiftbg.animation.addByPrefix("bop", "bg_manifest", 24, false);
+						shiftbg.animation.play("idle");
+						shiftbg.updateHitbox();
+						shiftbg.antialiasing = true;
+						shiftbg.scrollFactor.set(0.4, 0.4);
+						addThe(shiftbg, 'shiftbg');
+
+						floor = new FlxSprite(-1053.1, -464.7);
+						floor.frames = Paths.getSparrowAtlas("sky/floorManifest");
+						floor.animation.addByIndices("idle", "floorManifest", [5], "", 24, false);
+						floor.animation.addByPrefix("bop", "floorManifest", 24, false);
+						floor.animation.play("idle");
+						floor.updateHitbox();
+						floor.antialiasing = true;
+						floor.scrollFactor.set(0.9, 0.9);
+						addThe(floor, 'floor');
 					}
 				// JOELwindows7: start init LFM stage
 				case 'jakartaFair':

@@ -8,6 +8,10 @@ class KadeEngineData
 	public static function initSave()
 	{
 		trace("init save data now");
+		// JOELwindows7: the OOBE init!!
+		if (FlxG.save.data.oobeSetuped == null)
+			FlxG.save.data.oobeSetuped = false;
+
 		if (FlxG.save.data.weekUnlocked == null)
 			FlxG.save.data.weekUnlocked = 7;
 

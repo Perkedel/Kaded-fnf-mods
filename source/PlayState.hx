@@ -759,7 +759,7 @@ class PlayState extends MusicBeatState
 		if (!stageTesting)
 			Stage = new Stage(SONG.stage);
 
-		var positions:Map<String, Array<Int>> = Stage.positions[Stage.curStage]; // JOELwindows7: declare type also
+		var positions:Map<String, Array<Float>> = Stage.positions[Stage.curStage]; // JOELwindows7: declare type also
 		if (positions != null && !stageTesting)
 		{
 			var positionFound:Array<Bool> = [false, false, false]; // JOELwindows7: flag of each found position
@@ -6859,6 +6859,17 @@ class PlayState extends MusicBeatState
 			}
 		 */
 
+		// JOELwindows7: HARDCODING FOR BBPANZU SKY, see that PlayState
+		if (Stage.curStage == "theShift") 
+		{
+			if(Stage.shiftbg != null) Stage.shiftbg.animation.play("bop");
+		}
+		if (Stage.curStage == "theManifest"){
+			if(Stage.shiftbg != null) Stage.shiftbg.animation.play("bop");
+			if(Stage.floor != null) Stage.floor.animation.play("bop");
+		}
+		//Song orders for vs. Sky: Wife Forever, Sky, Manifest
+
 		if (songMultiplier == 1)
 		{
 			iconP1.setGraphicSize(Std.int(iconP1.width + 45));
@@ -7792,6 +7803,40 @@ class PlayState extends MusicBeatState
 				{
 					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+				});
+			case 'sky':
+				// da bbpanzu sky `theManifestCutscene`
+				new FlxTimer().start(1, function(e:FlxTimer)
+				{
+					dad.playAnim('manifest');
+					FlxG.sound.play(Paths.sound("manifest"));
+					FlxTween.tween(FlxG.camera, {zoom: 1.2}, 1, {ease: FlxEase.quadInOut});
+
+					new FlxTimer().start(1, function(e:FlxTimer)
+					{
+						if(Stage.shiftbg != null){
+						Stage.shiftbg.scrollFactor.set(1, 1);
+						Stage.shiftbg.animation.play('manifest');
+						}
+						FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.quadInOut});
+						FlxG.camera.shake(0.05, 5);
+						Controls.vibrate(0,5000);
+					});
+					new FlxTimer().start(2, function(e:FlxTimer)
+					{
+						FlxG.camera.fade(FlxColor.WHITE, 2, false);
+						FlxTween.tween(FlxG.camera, {zoom: 1.1}, 2, {ease: FlxEase.quadInOut});
+					});
+					new FlxTimer().start(4.5, function(e:FlxTimer)
+					{
+						FlxG.camera.fade(FlxColor.BLACK, 0.1, false);
+					});
+					new FlxTimer().start(5, function(e:FlxTimer)
+					{
+						// LoadingState.loadAndSwitchState(new PlayState());
+						outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+					});
 				});
 			default:
 				#if FEATURE_LUAMODCHART

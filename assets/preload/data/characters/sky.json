@@ -11,6 +11,13 @@
         "and asset from:",
         "https://github.com/Perkedel/bb-fnf-mods/tree/GitHackeh/assetsSKY/shared/images/sky"
     ],
+    "font": "Pixel Arial 11 Bold",
+    "fontDrop": "Pixel Arial 11 Bold",
+    "fontColor": "cyan",
+    "fontColorDrop": "0x00aaaa",
+    "dialogueChatSoundPaths": [
+        "pixelText"
+    ],
     "heartOrgans": [{
         "character": "sky",
         "isEmulator": true,

@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// yoink from https://github.com/Paidyy/Funkin-PEngine/blob/main/source/Main.hx
+// JOELwindows7: yoink from https://github.com/Paidyy/Funkin-PEngine/blob/main/source/Main.hx
+// WARNING: original license from that fork unchanged, assume parent's: Apache-2.0. only change I made is GNU GPL v3, pls help! I am not legal expert, it's too complicated & too political!!!
+// btw, coding has been oversaturated with politics for the license part of it. license itself is politic, idk.. coz it has view! side a b c d e f g
 package;
 
 import ui.states.debug.WerrorForceMajeurState;
@@ -56,10 +58,12 @@ class Game extends FlxGame
 			}
 			catch (exc)
 			{
+				// JOELwindows7: first, here things to do with crash.
 				if (!hasCrashed)
 				{
 					Debug.displayAlert('Fatal WError: ${exc.message}', 'The game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
 					Debug.logError('Fatal Werror: ${exc.message}\n${exc.details()}');
+					stopPauseMusic();
 					hasCrashed = true;
 				}
 				FlxG.switchState(new WerrorForceMajeurState(exc));

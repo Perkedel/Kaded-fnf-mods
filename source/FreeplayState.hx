@@ -902,7 +902,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		var character = dad ? PlayState.SONG.player2 : PlayState.SONG.player1;
 
 		// LoadingState.loadAndSwitchState(new AnimationDebug(character));
-		switchState(new AnimationDebug(character), true, true, true, true); // JOELwindows7: hex switch state lol
+		switchState(new AnimationDebug(character), true, true, true, true, new FreeplayState()); // JOELwindows7: hex switch state lol
 	}
 
 	function loadSong(isCharting:Bool = false)
@@ -983,10 +983,11 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 		if (isCharting)
 			// LoadingState.loadAndSwitchState(new ChartingState(reloadSong));
-			FreeplayState.instance.switchState(new ChartingState(reloadSong), true, true, true); // JOELwindows7: hex switch state lol
+			FreeplayState.instance.switchState(new ChartingState(reloadSong), true, true, true, true,
+				new FreeplayState()); // JOELwindows7: hex switch state lol
 		else
 			// LoadingState.loadAndSwitchState(new PlayState());
-			FreeplayState.instance.switchState(new PlayState(), true, true, true); // JOELwindows7: hex switch state lol
+			FreeplayState.instance.switchState(new PlayState(), true, true, true, true, new FreeplayState()); // JOELwindows7: hex switch state lol
 	}
 
 	function changeDiff(change:Int = 0)

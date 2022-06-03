@@ -1,5 +1,9 @@
 package;
 
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
+import flixel.text.FlxText;
+import flixel.addons.ui.FlxUIText;
 import flixel.util.FlxAxes;
 import CoreState;
 import lime.app.Promise;
@@ -22,6 +26,7 @@ class LoadingState extends MusicBeatState
 	inline static var MIN_TIME = 1.0;
 
 	var target:FlxState;
+	var previously:FlxState; // JOELwindows7: to store previous state.
 	var stopMusic = false;
 	var callbacks:MultiCallback;
 
@@ -36,13 +41,21 @@ class LoadingState extends MusicBeatState
 
 	var selectImageNumber:Int = 0; // JOELwindows7: choose loading images
 
-	function new(target:FlxState, stopMusic:Bool)
+	var tooLongDidntLoadTimer:FlxTimer; // JOELwindows7: here too long didn't load timer that if runs out appears skip & cancel button.
+	var deservesTooLongDidntLoad:Bool = false; // JOELwindows7: only activates when it is too long!
+
+	function new(target:FlxState, stopMusic:Bool, ?previously:FlxState) // JOELwindows7: here previously
 	{
 		super();
 		this.target = target;
 		this.stopMusic = stopMusic;
+		this.previously = previously != null ? previously : new MainMenuState(); // JOELwindows7: here previous state.
 		// JOELwindows7: choose loading images randomly out of available we have
 		this.selectImageNumber = FlxG.random.int(0, Perkedel.MAX_NUMBER_OF_LOADING_IMAGES - 1);
+
+		// JOELwindows7: appear these buttons if the loading took long time!
+		this.deservesTooLongDidntLoad = false;
+		this.tooLongDidntLoadTimer = new FlxTimer();
 	}
 
 	override function create()
@@ -108,6 +121,9 @@ class LoadingState extends MusicBeatState
 			FlxG.camera.fade(FlxG.camera.bgColor, fadeTime, true);
 			new FlxTimer().start(fadeTime + MIN_TIME, function(_) introComplete());
 		});
+
+		// JOELwindows7: and the too long timer
+		tooLongDidntLoadTimer.start(Perkedel.LOADING_TOO_LONG_TIME_THRESHOLD, onTooLongDidntLoad);
 	}
 
 	function checkLoadSong(path:String)
@@ -173,6 +189,21 @@ class LoadingState extends MusicBeatState
 		if (FlxG.keys.justPressed.SPACE)
 			trace('fired: ' + callbacks.getFired() + " unfired:" + callbacks.getUnfired());
 		#end
+
+		// JOELwindows7: too long didn't load controls
+		if (deservesTooLongDidntLoad)
+		{
+			if (FlxG.keys.justPressed.ENTER || haveClicked)
+			{
+				skip();
+				haveClicked = false;
+			}
+			if (controls.BACK || FlxG.keys.justPressed.ESCAPE || haveBacked)
+			{
+				cancel();
+				haveBacked = false;
+			}
+		}
 	}
 
 	function onLoad()
@@ -184,6 +215,12 @@ class LoadingState extends MusicBeatState
 		_loadingBar.setInfoText("Done Loading!");
 		_loadingBar.setLoadingType(ExtraLoadingType.DONE);
 		_loadingBar.delayedUnPopNow(5);
+		// JOELwindows7: and cancel too long didn't load
+		if (tooLongDidntLoadTimer != null)
+		{
+			tooLongDidntLoadTimer.cancel();
+			tooLongDidntLoadTimer = null;
+		}
 
 		FlxG.switchState(target);
 	}
@@ -198,12 +235,12 @@ class LoadingState extends MusicBeatState
 		return Paths.voices(PlayState.SONG.songId);
 	}
 
-	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false)
+	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false, ?previously:FlxState)
 	{
-		FlxG.switchState(getNextState(target, stopMusic));
+		FlxG.switchState(getNextState(target, stopMusic, previously));
 	}
 
-	static function getNextState(target:FlxState, stopMusic = false):FlxState
+	static function getNextState(target:FlxState, stopMusic = false, ?previously:FlxState):FlxState // JOELwindows7: here previously
 	{
 		Paths.setCurrentLevel("week" + PlayState.storyWeek);
 		// #if NO_PRELOAD_ALL // JOELwindows7: This should be no longer necessary even on cpp right?
@@ -214,7 +251,7 @@ class LoadingState extends MusicBeatState
 				&& isLibraryLoaded("shared");
 
 			if (!loaded)
-				return new LoadingState(target, stopMusic);
+				return new LoadingState(target, stopMusic, previously); // JOELwindows7: here previously
 		}
 		// #end
 		if (stopMusic && FlxG.sound.music != null)
@@ -318,6 +355,66 @@ class LoadingState extends MusicBeatState
 			});
 
 		return promise.future;
+	}
+
+	// JOELwindows7: sometimes there's a bug or accident. like hang, or whatever, you just want to skip or go back.
+	function onTooLongDidntLoad(tmr:FlxTimer)
+	{
+		addBackButton();
+		addAcceptButton();
+		backButton.alpha = 0;
+		acceptButton.alpha = 0;
+		// yoink from werror force majeur state
+		var tooLongText:FlxUIText = new FlxUIText();
+		tooLongText.scrollFactor.set(0, 0);
+		tooLongText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE);
+		tooLongText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 1);
+		tooLongText.text = 'Too long, didn\'t load? [OK]/[ENTER]/(START) Skip, [BACK]/[ESC]/(B) Cancel';
+		tooLongText.screenCenter(X);
+		tooLongText.y = FlxG.height - tooLongText.height - 10;
+		tooLongText.alpha = 0;
+		add(tooLongText);
+
+		FlxTween.tween(tooLongText, {alpha: 1.0}, .5);
+		FlxTween.tween(backButton, {alpha: 1.0}, .5);
+		FlxTween.tween(acceptButton, {alpha: 1.0}, .5);
+
+		deservesTooLongDidntLoad = true;
+	}
+
+	public function skip()
+	{
+		// if (numRemaining == 0)
+		// 	return;
+		// for (id in unfired.keys())
+		// 	fired.push(id);
+		// numRemaining = 0;
+		// callback();
+		FlxG.switchState(target);
+	}
+
+	public function cancel()
+	{
+		// if (numRemaining == 0)
+		// 	return;
+		// numRemaining = 0;
+		// callback();
+		FlxG.switchState(previously);
+	}
+
+	override function manageJoypad()
+	{
+		super.manageJoypad();
+		if (joypadLastActive != null)
+		{
+			if (joypadLastActive.justPressed.START)
+			{
+				skip();
+			}
+			// if (joypadLastActive.justPressed.B){
+			// 	cancel();
+			// }
+		}
 	}
 }
 
