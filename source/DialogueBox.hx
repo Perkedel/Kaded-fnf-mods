@@ -71,7 +71,7 @@ class DialogueBox extends FlxSpriteGroup
 	var handoverGf:Character;
 
 	// JOELwindows7: own FlxSound because generate song destroyed the intro music
-	public var sound:FlxSound; // make public to let modchart perhaps manipulate it, idk.
+	public var sound:FlxSound; // make public to let modchart perhaps manipulate it, idk. Okay this is now bg music for dialogue.
 
 	// JOELwindows7: touchscreen stuffs
 	var skipButton:FlxUIButton;
@@ -550,19 +550,20 @@ class DialogueBox extends FlxSpriteGroup
 			haveSkippedDialogue = false;
 			remove(dialogue);
 			isEnding = true;
-			switch (PlayState.SONG.songId.toLowerCase())
-			{
-				// JOELwindows7: sneaky sneaky!
-				case "senpai" | "thorns" | "senpai-midi" | "thorns-midi":
-					sound.fadeOut(2.2, 0, function(tween:FlxTween)
-					{
-						sound.stop(); // JOELwindows7: make sure it stops for good.
-					});
-				case "roses" | "roses-midi":
-					trace("roses");
-				default:
-					trace("other song");
-			}
+			// switch (PlayState.SONG.songId.toLowerCase())
+			// {
+			// JOELwindows7: sneaky sneaky! also add sky.
+			// case "senpai" | "thorns" | "senpai-midi" | "thorns-midi" | 'sky' | 'wife-forever':
+			if (sound != null) // JOELwindows7: safety first.
+				sound.fadeOut(2.2, 0, function(tween:FlxTween)
+				{
+					sound.stop(); // JOELwindows7: make sure it stops for good.
+				});
+			// case "roses" | "roses-midi":
+			// 	trace("roses");
+			// default:
+			// 	trace("other song");
+			// }
 			if (PlayState.instance != null)
 				PlayState.instance.dialogueSceneClose(); // JOELwindows7: do functions when this close.
 			new FlxTimer().start(0.2, function(tmr:FlxTimer)
@@ -595,15 +596,17 @@ class DialogueBox extends FlxSpriteGroup
 
 			if (dialogueList[1] == null && dialogueList[0] != null)
 			{
+				// JOELwindows7: MARK FOR DIALOG RAN OUT
 				if (!isEnding)
 				{
 					isEnding = true;
 
-					if (PlayState.SONG.songId.toLowerCase() == 'senpai'
-						|| PlayState.SONG.songId.toLowerCase() == 'thorns'
-						|| PlayState.SONG.songId.toLowerCase() == 'senpai-midi'
-						|| PlayState.SONG.songId.toLowerCase() == 'thorns-midi')
-						// JOELwindows7: Fade out & Do this after that music faded out
+					// if (PlayState.SONG.songId.toLowerCase() == 'senpai'
+					// 	|| PlayState.SONG.songId.toLowerCase() == 'thorns'
+					// 	|| PlayState.SONG.songId.toLowerCase() == 'senpai-midi'
+					// 	|| PlayState.SONG.songId.toLowerCase() == 'thorns-midi')
+					// JOELwindows7: Fade out & Do this after that music faded out
+					if (sound != null) // JOELwindows7: safety first.
 						sound.fadeOut(2.2, 0, function(twn:FlxTween)
 						{
 							sound.stop();
@@ -630,6 +633,7 @@ class DialogueBox extends FlxSpriteGroup
 			}
 			else
 			{
+				// JOELwindows7: MARK FOR DIALOG STILL HAS NEXT LINE
 				dialogueList.remove(dialogueList[0]);
 				counterEH++; // JOELwindows7: add count
 				startDialogue();

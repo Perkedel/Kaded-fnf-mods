@@ -1386,8 +1386,8 @@ class PlayState extends MusicBeatState
 		judgementCounter.cameras = [camHUD];
 		judgementCounter.screenCenter(Y);
 		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
-		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words.
-		judgementCounter.text = '${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
+		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words. also other things, idk..
+		judgementCounter.text = 'Combo: ${combo}\nMax Combo: ${highestCombo}\n\n${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
 		judgementCounter.setPosition(FlxG.width - judgementCounter.width - 15, 0); // JOELwindows7: hey! place it actually right side of screen!
 		judgementCounter.screenCenter(Y); // JOELwindows7: do center it again just in case.
 		if (FlxG.save.data.judgementCounter)
@@ -6331,9 +6331,9 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: here's where we moved. the bottom score text
 		scoreTxt.text = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS,
 			(FlxG.save.data.roundAccuracy ? FlxMath.roundDecimal(accuracy, 0) : accuracy), boyfriend.getHeartRate(0), boyfriend.getHeartTier(0));
-		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words. here this too!
+		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words. here this too! also more idk.
 		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
-		judgementCounter.text = '${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
+		judgementCounter.text = 'Combo: ${combo}\nMax Combo: ${highestCombo}\n\n${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
 	}
 
 	function getKeyPresses(note:Note):Int
