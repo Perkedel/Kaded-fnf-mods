@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxTimer;
 import const.Perkedel;
 import tjson.TJSON;
 import haxe.ui.components.DropDown;
@@ -71,6 +72,11 @@ class ChartingState extends MusicBeatState
 
 	#end
 	public var playClaps:Bool = false;
+
+	var delaytonClaps:Bool = false; // JOElwindows7: first, delay the play claps a bit to prevent giant shock after playing from not 0 position.
+	var delaytonClapsTimer:FlxTimer; // JOELwindows7: and timer for it.
+
+	public var playMetronome:Bool = false; // JOELwindows7: here, metronome!
 
 	public var snap:Int = 16;
 
@@ -180,15 +186,17 @@ class ChartingState extends MusicBeatState
 		super.create();
 
 		// JOELwindows7: init the sound
-		snapSound = new FlxSound().loadEmbedded(Paths.sound('SNAP'));
+		snapSound = new FlxSound().loadEmbedded(Paths.sound(Perkedel.NOTE_SNAP_SOUND_PATH), false);
 		snapSound.stop();
 		FlxG.sound.list.add(snapSound);
-		metronomeSound = new FlxSound().loadEmbedded(Paths.sound('CLAP-midi'));
+		metronomeSound = new FlxSound().loadEmbedded(Paths.sound(Perkedel.METRONOME_REST_SOUND_PATH), false);
 		metronomeSound.stop();
 		FlxG.sound.list.add(metronomeSound);
-		metronomeDingSound = new FlxSound().loadEmbedded(Paths.sound('CLAP-midi-ding'));
+		metronomeDingSound = new FlxSound().loadEmbedded(Paths.sound(Perkedel.METRONOME_FIRST_SOUND_PATH), false);
 		metronomeDingSound.stop();
 		FlxG.sound.list.add(metronomeDingSound);
+		// JOELwindows7: init the delaytonClaps for the safety playClaps
+		delaytonClapsTimer = new FlxTimer();
 
 		#if FEATURE_DISCORD
 		DiscordClient.changePresence("Chart Editor", null, null, true);
@@ -1201,6 +1209,13 @@ class ChartingState extends MusicBeatState
 		{
 			playClaps = hitsounds.checked;
 		};
+		// JOELwindows7: and here metronome!
+		var metronomes = new FlxUICheckBox(10, 80, null, null, "Play metronomes", 100);
+		metronomes.checked = false;
+		metronomes.callback = function()
+		{
+			playMetronome = metronomes.checked;
+		};
 
 		check_snap = new FlxUICheckBox(80, 25, null, null, "Snap to grid", 100);
 		check_snap.checked = defaultSnap;
@@ -1214,6 +1229,7 @@ class ChartingState extends MusicBeatState
 		var tab_options = new FlxUI(null, UI_options);
 		tab_options.name = "Options";
 		tab_options.add(hitsounds);
+		tab_options.add(metronomes); // JOELwindows7: metronome checkbox
 		UI_options.addGroup(tab_options);
 	}
 
@@ -1250,12 +1266,16 @@ class ChartingState extends MusicBeatState
 				if (!PlayState.isSM)
 					vocals.pause();
 				claps.splice(0, claps.length);
+				// JOELwindows7: reset delayton
+				engageDelaytonClaps(true);
 			}
 			else
 			{
 				if (!PlayState.isSM)
 					vocals.play();
 				FlxG.sound.music.play();
+				// JOELwindows7: engage delayton
+				engageDelaytonClaps(false);
 			}
 		});
 
@@ -1278,6 +1298,8 @@ class ChartingState extends MusicBeatState
 			FlxG.sound.music.pause();
 			if (!PlayState.isSM)
 				vocals.pause();
+			// JOELwindows7: reset delayton
+			engageDelaytonClaps(true);
 
 			var daTime:Float;
 			// TODO: You should just take scroll wheel's seek instead.
@@ -1341,6 +1363,8 @@ class ChartingState extends MusicBeatState
 			FlxG.sound.music.pause();
 			if (!PlayState.isSM)
 				vocals.pause();
+			// JOELwindows7: reset delayton
+			engageDelaytonClaps(true);
 
 			var daTime:Float;
 			if (FlxG.keys.pressed.SHIFT || haveShiftedHeld) // JOELwindows7: here shift touchscreen button
@@ -1781,6 +1805,7 @@ class ChartingState extends MusicBeatState
 			FlxG.sound.music.stop();
 			if (!PlayState.isSM)
 				vocals.stop();
+			engageDelaytonClaps(true); // JOELwindows7: disengage delayton claps
 			PlayState.startTime = _song.notes[curSection].startTime;
 			while (curRenderedNotes.members.length > 0)
 			{
@@ -2101,6 +2126,7 @@ class ChartingState extends MusicBeatState
 		{
 			FlxG.sound.music.stop();
 			// vocals.stop();
+			// engageDelaytonClaps(true); // JOELwindows7: disengage delayton claps. already covered bellow
 		}
 		if (reloadFromFile)
 		{
@@ -2149,6 +2175,8 @@ class ChartingState extends MusicBeatState
 		FlxG.sound.music.pause();
 		if (!PlayState.isSM)
 			vocals.pause();
+		// JOELwindows7: reset delayton
+		engageDelaytonClaps(true);
 
 		FlxG.sound.music.onComplete = function()
 		{
@@ -2159,6 +2187,8 @@ class ChartingState extends MusicBeatState
 			}
 			FlxG.sound.music.pause();
 			FlxG.sound.music.time = 0;
+			// JOELwindows7: reset delayton
+			engageDelaytonClaps(true);
 		};
 	}
 
@@ -2540,6 +2570,8 @@ class ChartingState extends MusicBeatState
 						vocals.pause();
 						vocals.time = vocals.length - 85;
 					}
+					// JOELwindows7: reset delayton
+					engageDelaytonClaps(true);
 				}
 
 			#if debug
@@ -2645,6 +2677,9 @@ class ChartingState extends MusicBeatState
 					if (!PlayState.isSM)
 						vocals.pause();
 					claps.splice(0, claps.length);
+
+					// JOELwindows7: scrolling mouse wheel pause the music! reset engange delayton
+					engageDelaytonClaps(true);
 
 					if (FlxG.keys.pressed.CONTROL && !waitingForRelease)
 					{
@@ -3111,18 +3146,26 @@ class ChartingState extends MusicBeatState
 				}
 			}
 
-			if (playClaps)
+			if (playClaps) // JOELwindows7: add delaye. nvm
 			{
+				// JOELwindows7: this one is buggy! when you play from certain part, it plays previous claps first, making giant shock!
 				for (note in shownNotes)
 				{
-					if (note.strumTime <= Conductor.songPosition && !claps.contains(note) && FlxG.sound.music.playing)
+					if (note.strumTime <= Conductor.songPosition
+						&& !claps.contains(note)
+						&& FlxG.sound.music.playing) // JOELwindows7: another safety just in case. nvm
 					{
 						claps.push(note);
-						FlxG.sound.play(Paths.sound('SNAP')); // JOELwindows7: nope, not working. let's just spawn sounds instead.
-						// JOELwindows7: Now try to use note's hitsound instead??
-						// if checkbox of use note's hitsound active, play that file name. otherwise play default above instead.
+						if (delaytonClaps)
+						{
+							// JOElwindows7: final safety!
+							// FlxG.sound.play(Paths.sound('SNAP')); // JOELwindows7: nope, not working. let's just spawn sounds instead.
+							playSoundEffect(Perkedel.NOTE_SNAP_SOUND_PATH); // JOELwindows7: here's seamless one idk.
+							// JOELwindows7: Now try to use note's hitsound instead??
+							// if checkbox of use note's hitsound active, play that file name. otherwise play default above instead.
 
-						// snapSound.play(); // JOELwindows7: use this one address instead
+							// snapSound.play(); // JOELwindows7: use this one address instead
+						}
 					}
 				}
 			}
@@ -3258,13 +3301,13 @@ class ChartingState extends MusicBeatState
 			if (doInput)
 			{
 				// JOELwindows7: escape for open file menu
-				if (FlxG.keys.justPressed.ESCAPE /*#if android || FlxG.android.justReleased.BACK #end*/)
+				if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end)
 				{
 					openDaFileMenuNow();
 				}
 
 				// JOELwindows7: press back on Android to exit this chart editor lol. nvm, back Android to open menu.
-				if (FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end)
+				if (FlxG.keys.justPressed.ENTER /*#if android || FlxG.android.justReleased.BACK #end*/)
 				{
 					PauseSubState.inCharter = false; // JOELwindows7: make sure the mode is turned back to normal.
 					lastSection = curSection;
@@ -3273,6 +3316,7 @@ class ChartingState extends MusicBeatState
 					FlxG.sound.music.stop();
 					if (!PlayState.isSM)
 						vocals.stop();
+					engageDelaytonClaps(true); // JOELwindows7: make sure reset first just in case.
 
 					while (curRenderedNotes.members.length > 0)
 					{
@@ -3303,7 +3347,7 @@ class ChartingState extends MusicBeatState
 					toRemove = []; // clear memory
 
 					// LoadingState.loadAndSwitchState(new PlayState());
-					LoadingState.loadAndSwitchState(new PlayState()); // JOELwindows7: yea
+					switchState(new PlayState(), true, true, true, true); // JOELwindows7: yea
 				}
 
 				if (FlxG.keys.justPressed.E)
@@ -3385,12 +3429,14 @@ class ChartingState extends MusicBeatState
 							if (!PlayState.isSM)
 								vocals.pause();
 							claps.splice(0, claps.length);
+							engageDelaytonClaps(true); // JOELwindows7: disengage delayton claps
 						}
 						else
 						{
 							if (!PlayState.isSM)
 								vocals.play();
 							FlxG.sound.music.play();
+							engageDelaytonClaps(false); // JOELwindows7: engage delayton clapse
 						}
 					}
 
@@ -3406,6 +3452,9 @@ class ChartingState extends MusicBeatState
 							if (!PlayState.isSM)
 								vocals.pause();
 							claps.splice(0, claps.length);
+
+							// JOELwindows7: reset delayton
+							engageDelaytonClaps(true);
 
 							var daTime:Float = 700 * FlxG.elapsed;
 
@@ -3427,6 +3476,8 @@ class ChartingState extends MusicBeatState
 							FlxG.sound.music.pause();
 							if (!PlayState.isSM)
 								vocals.pause();
+							// JOELwindows7: reset delayton
+							engageDelaytonClaps(true);
 
 							var daTime:Float = Conductor.stepCrochet * 2;
 
@@ -3462,6 +3513,7 @@ class ChartingState extends MusicBeatState
 		FlxG.sound.music.stop();
 		if (!PlayState.isSM)
 			vocals.stop();
+		engageDelaytonClaps(true); // JOELwindows7: disengage delayton claps
 
 		while (curRenderedNotes.members.length > 0)
 		{
@@ -3553,6 +3605,8 @@ class ChartingState extends MusicBeatState
 		FlxG.sound.music.pause();
 		if (!PlayState.isSM)
 			vocals.pause();
+		// JOELwindows7: reset delayton
+		engageDelaytonClaps(true);
 
 		// Basically old shit from changeSection???
 		FlxG.sound.music.time = 0;
@@ -3581,6 +3635,8 @@ class ChartingState extends MusicBeatState
 				FlxG.sound.music.pause();
 				if (!PlayState.isSM)
 					vocals.pause();
+				// JOELwindows7: reset delayton
+				engageDelaytonClaps(true);
 
 				/*var daNum:Int = 0;
 					var daLength:Float = 0;
@@ -4577,6 +4633,8 @@ class ChartingState extends MusicBeatState
 				if (!PlayState.isSM)
 					vocals.pause();
 				claps.splice(0, claps.length);
+				// JOELwindows7: reset delayton
+				engageDelaytonClaps(true);
 			}
 		}
 		super.openSubState(SubState);
@@ -4607,5 +4665,63 @@ class ChartingState extends MusicBeatState
 			paused = false;
 		}
 		super.closeSubState();
+	}
+
+	/**
+	 * Called when you play or pause the playback
+	 * @author JOELwindows7
+	 * @param cancel set mode to cancel which resets delayton
+	 */
+	function engageDelaytonClaps(cancel:Bool = false)
+	{
+		if (cancel)
+		{
+			// JOELwindows7: reset delayton.
+			if (delaytonClapsTimer != null)
+				delaytonClapsTimer.cancel();
+			delaytonClaps = false;
+		}
+		else
+		{
+			// JOELwindows7: and engange delay play claps!
+			// if (delaytonClapsTimer != null)
+			// {
+			// 	delaytonClapsTimer.cancel();
+			// 	delaytonClapsTimer.reset();
+			// }
+			// else
+			// 	delaytonClapsTimer = new FlxTimer().start(.1, function(tmr:FlxTimer)
+			// 	{
+			// 		delaytonClaps = true;
+			// 	});
+			delaytonClapsTimer = new FlxTimer().start(.1, function(tmr:FlxTimer)
+			{
+				delaytonClaps = true;
+			});
+		}
+	}
+
+	/**
+	 * Now question. why didn't this were here?
+	 * @author JOELwindows7
+	 */
+	override function beatHit()
+	{
+		super.beatHit();
+		if (playMetronome)
+		{
+			if (Ratings.judgeMetronomeDing(curBeat))
+			{
+				// if (metronomeDingSound != null)
+				// 	metronomeDingSound.play();
+				playSoundEffect(Perkedel.METRONOME_FIRST_SOUND_PATH);
+			}
+			else
+			{
+				// if (metronomeSound != null)
+				// 	metronomeSound.play();
+				playSoundEffect(Perkedel.METRONOME_REST_SOUND_PATH);
+			}
+		}
 	}
 }

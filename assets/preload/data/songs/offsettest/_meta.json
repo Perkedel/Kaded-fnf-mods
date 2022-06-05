@@ -1,4 +1,5 @@
 {
-  "name": "Offset Test",
-  "offset": 0
+    "name": "Offset Test",
+    "offset": 0,
+    "artist": "Kawai Sprite"
 }

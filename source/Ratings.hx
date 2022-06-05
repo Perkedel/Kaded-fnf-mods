@@ -145,6 +145,16 @@ class Ratings
 		return "....";
 	}
 
+	// JOELwindows7: and the true false version of metronome. true if first beat in bar
+	public static function judgeMetronomeDing(curBeat:Int = 0, beatsInABar:Int = 4):Bool
+	{
+		if (curBeat >= 0)
+		{
+			return (curBeat % beatsInABar == 0);
+		}
+		return false;
+	}
+
 	public static function judgeNote(noteDiff:Float)
 	{
 		var diff = Math.abs(noteDiff);

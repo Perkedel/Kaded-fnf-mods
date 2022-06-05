@@ -369,7 +369,7 @@ class LoadingState extends MusicBeatState
 		tooLongText.scrollFactor.set(0, 0);
 		tooLongText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE);
 		tooLongText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 1);
-		tooLongText.text = 'Too long, didn\'t load? [OK]/[ENTER]/(START) Skip, [BACK]/[ESC]/(B) Cancel';
+		tooLongText.text = Perkedel.LOADING_TOO_LONG_SAY;
 		tooLongText.screenCenter(X);
 		tooLongText.y = FlxG.height - tooLongText.height - 10;
 		tooLongText.alpha = 0;

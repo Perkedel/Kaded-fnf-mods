@@ -1329,7 +1329,9 @@ class PlayState extends MusicBeatState
 			+ "\n"
 			+ "Song ID: "
 			+ SONG.songId
-			+ "\n",
+			+ "\n"
+			+ 'Difficulty: ${CoolUtil.difficultyFromInt(storyDifficulty)}'
+			,
 			14);
 		reuploadWatermark.setPosition((FlxG.width / 2) - (reuploadWatermark.width / 2), (FlxG.height / 2) - (reuploadWatermark.height / 2) + 50);
 		// Ah damn. the pivot of all Haxe Object is top left!

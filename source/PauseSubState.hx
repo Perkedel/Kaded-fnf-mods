@@ -91,6 +91,7 @@ class PauseSubState extends MusicBeatSubstate
 		if (!(silencePauseBeep))
 		{
 			playSoundEffect("PauseOpen");
+			// this still often cuts of. maybe we should add it just like pause music?
 		}
 		else
 		{
@@ -665,5 +666,10 @@ class PauseSubState extends MusicBeatSubstate
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+	}
+
+	// JOELwindows7: move them here!
+	override function manageMouse(){
+		super.manageMouse();
 	}
 }

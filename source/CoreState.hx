@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.system.FlxSoundGroup;
 import flixel.system.FlxSound;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.addons.ui.FlxUISubState;
@@ -632,10 +633,17 @@ class CoreState extends FlxUIState implements ICoreStating
 	 * @param path filename of sound without extension
 	 * @param volume how loud you would like
 	 * @param library folder where the sound is located
+	 * 
+	 * @param looped whether the sound loops after reaching end
+	 * @param group group to add this instance of sound to
+	 * @param autoDestroy whether to destroy this instance of sound when done
+	 * @param onComplete callback function when done
+	 * @return `FlxSound` object itself
 	 */
-	public function playSoundEffect(path:String, volume:Float = 1, ?library:String):FlxSound
+	public function playSoundEffect(path:String, volume:Float = 1, ?library:String, looped:Bool = false, ?group:FlxSoundGroup, autoDestroy:Bool = true,
+			?onComplete:Void->Void):FlxSound
 	{
-		return FlxG.sound.play(Paths.sound(path, library != '' ? library : null), volume);
+		return FlxG.sound.play(Paths.sound(path, library != '' ? library : null), volume, looped, group, autoDestroy, onComplete);
 	}
 
 	/**
@@ -1312,10 +1320,17 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	 * @param path filename of sound without extension
 	 * @param volume how loud you would like
 	 * @param library folder where the sound is located
+	 * 
+	 * @param looped whether the sound loops after reaching end
+	 * @param group group to add this instance of sound to
+	 * @param autoDestroy whether to destroy this instance of sound when done
+	 * @param onComplete callback function when done
+	 * @return `FlxSound` object itself
 	 */
-	public function playSoundEffect(path:String, volume:Float = 1, ?library:String):FlxSound
+	public function playSoundEffect(path:String, volume:Float = 1, ?library:String, looped:Bool = false, ?group:FlxSoundGroup, autoDestroy:Bool = true,
+			?onComplete:Void->Void):FlxSound
 	{
-		return FlxG.sound.play(Paths.sound(path, library != '' ? library : null), volume);
+		return FlxG.sound.play(Paths.sound(path, library != '' ? library : null), volume, looped, group, autoDestroy, onComplete);
 	}
 
 	// TODO: animated header title come in. from top, & also sideway transition.
@@ -1693,8 +1708,15 @@ interface ICoreStating
 	 * @param path filename of sound without extension
 	 * @param volume how loud you would like
 	 * @param library folder where the sound is located
+	 * 
+	 * @param looped whether the sound loops after reaching end
+	 * @param group group to add this instance of sound to
+	 * @param autoDestroy whether to destroy this instance of sound when done
+	 * @param onComplete callback function when done
+	 * @return `FlxSound` object itself
 	 */
-	public function playSoundEffect(path:String, volume:Float = 1, ?library:String):FlxSound;
+	public function playSoundEffect(path:String, volume:Float = 1, ?library:String, looped:Bool = false, ?group:FlxSoundGroup, autoDestroy:Bool = true,
+		?onComplete:Void->Void):FlxSound;
 
 	/**
 	 * Set the app section / state to say the title & then appear it.

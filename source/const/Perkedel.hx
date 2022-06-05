@@ -53,6 +53,7 @@ class Perkedel
 	public static final MAX_NUMBER_OF_LOADING_IMAGES:Int = 3; // how many loading backdrops do we have here?
 	public static final DISCLAIMER_SAY:String = "Disclaimer";
 	public static final LOADING_TOO_LONG_TIME_THRESHOLD:Float = 30; // if the loading took more than 30 second
+	public static final LOADING_TOO_LONG_SAY:String = 'Too long, didn\'t load? [OK]/[ENTER]/(START) Skip, [BACK]/[ESC]/(B) Cancel';
 	public static final GOING_TO_OBSOLETE:String = "ALERT!\n"
 		+ "\nThis mod is going to obsolete in favour of Friday Night Funkin Moment: Full Ass "
 		+ "\nwhen modding support & Workshop becomes available"
@@ -111,5 +112,8 @@ class Perkedel
 	public static final METRONOME_FIRST_TICK_ICON:String = "A";
 	public static final METRONOME_REST_OFF_ICON:String = "o";
 	public static final METRONOME_REST_TICK_ICON:String = "a";
+	public static final METRONOME_FIRST_SOUND_PATH:String = "CLAP-midi-ding";
+	public static final METRONOME_REST_SOUND_PATH:String = "CLAP-midi";
+	public static final NOTE_SNAP_SOUND_PATH:String = "SNAP";
 	public static final SONG_POS_BAR_COLOR:FlxColor = FlxColor.fromRGB(0, 255, 128); // default color of bar
 }
