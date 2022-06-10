@@ -22,15 +22,19 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
+#if FEATURE_VLC
+import vlc.VideoHandler as MP4Handler; // JOELwindows7: newe
 
+// import vlc.MP4Handler; // wait what?!
+#end
 // import extension.android.*;
 class AnWebmer extends MusicBeatState
 {
 	public var infoText:FlxText;
 	public var ownVidSprite:VideoPlayer;
-    #if FEATURE_VLC
-    public var anVideo:MP4Handler;
-    #end
+	#if FEATURE_VLC
+	public var anVideo:MP4Handler;
+	#end
 
 	override function create()
 	{
@@ -83,7 +87,7 @@ class AnWebmer extends MusicBeatState
 			// theVLC.play(Paths.sound("SurroundSoundTest"));
 			// attempt BrightFyre's MP4 support powered by all working VLC
 			anVideo = new MP4Handler();
-            // add(anVideo);
+			// add(anVideo);
 			// anVideo.playVideo(Paths.videoVlc("Compilateur-justAlsa"), false, true);
 			anVideo.playVideo(Paths.video("OldMacDonaldHadABinCannon"), false, true);
 			// anVideo.stateCallback = new AnWebmer();

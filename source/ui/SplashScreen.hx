@@ -94,6 +94,15 @@ class SplashScreen extends MusicBeatState
 
 	public function new()
 	{
+		// check mod support
+		@:privateAccess {
+			#if FEATURE_MODCORE
+			CarryAround._supportsModding = true;
+			#else
+			CarryAround._supportsModding = false;
+			#end
+		}
+
 		super();
 	}
 
@@ -175,7 +184,7 @@ class SplashScreen extends MusicBeatState
 		_aPressEscapeToBiosText.screenCenter(XY);
 		_aPressEscapeToBiosText.y += 180;
 		add(_aPressEscapeToBiosText);
-		_aPressEscapeToBiosText.visible = !CarryAround.modAlreadyLoaded(); // only visiblize if not already loaded
+		_aPressEscapeToBiosText.visible = !CarryAround.modAlreadyLoaded() && CarryAround.supportsModding(); // only visiblize if not already loaded & supports modding
 
 		_aPressEscapeToBiosButton = new FlxUIButton(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 230), "BIOS Setting", onBiosButtonClick);
 		_aPressEscapeToBiosButton.setSize(90, 50);
@@ -186,7 +195,7 @@ class SplashScreen extends MusicBeatState
 		_aPressEscapeToBiosButton.screenCenter(XY);
 		_aPressEscapeToBiosButton.y += 230;
 		add(_aPressEscapeToBiosButton);
-		_aPressEscapeToBiosButton.visible = !CarryAround.modAlreadyLoaded(); // only visiblize if not already loaded
+		_aPressEscapeToBiosButton.visible = !CarryAround.modAlreadyLoaded() && CarryAround.supportsModding(); // only visiblize if not already loaded & supports modding
 
 		_productLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("LFMLogoSplash"));
 		_productLogo.setPosition((FlxG.width / 2) - (_productLogo.width / 2), (FlxG.height / 2) - (_productLogo.height / 2));
@@ -213,13 +222,16 @@ class SplashScreen extends MusicBeatState
 		// if user press escape, go to BIOS setting
 		if (_aPressEscapeToBiosText.visible)
 		{
-			_aPressEscapeToBiosText.text = Perkedel.BIOS_BUTTON_SAY
-				+ " ("
-				+ (_beginSplashTimer != null ? Std.string(HelperFunctions.truncateFloat(_beginSplashTimer.timeLeft, 1)) : "")
-				+ ")";
-			if (FlxG.keys.justPressed.ESCAPE || (joypadLastActive != null ? joypadLastActive.justPressed.BACK : false))
+			if (CarryAround.supportsModding())
 			{
-				onBiosButtonClick();
+				_aPressEscapeToBiosText.text = Perkedel.BIOS_BUTTON_SAY
+					+ " ("
+					+ (_beginSplashTimer != null ? Std.string(HelperFunctions.truncateFloat(_beginSplashTimer.timeLeft, 1)) : "")
+					+ ")";
+				if (FlxG.keys.justPressed.ESCAPE || (joypadLastActive != null ? joypadLastActive.justPressed.BACK : false))
+				{
+					onBiosButtonClick();
+				}
 			}
 		}
 
@@ -490,7 +502,9 @@ class SplashScreen extends MusicBeatState
 			cancelEverything();
 			_aPressEscapeToBiosText.visible = false;
 			_aPressEscapeToBiosButton.visible = false;
+			#if FEATURE_MODCORE
 			switchState(new ModMenuState()); // temporary. pls make proper BIOS setting menu!
+			#end
 		}
 	}
 }

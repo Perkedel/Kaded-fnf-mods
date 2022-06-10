@@ -102,7 +102,13 @@ import openfl.filters.ShaderFilter;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+#if FEATURE_VLC
+import vlc.VideoHandler as MP4Handler; // JOELwindows7: BrightFyre handed over hxCodec to PolybiusProxy
+import vlc.VideoSprite as MP4Sprite; // yeah.
 
+// import vlc.MP4Handler; // wait what??
+// import vlc.MP4Sprite; // Oh, c'mon!!
+#end
 // JOELwindows7: use ki's filesystemer?
 // import filesystem.File;
 // Adds candy I/O (read/write/append) extension methods onto File
@@ -1330,8 +1336,7 @@ class PlayState extends MusicBeatState
 			+ "Song ID: "
 			+ SONG.songId
 			+ "\n"
-			+ 'Difficulty: ${CoolUtil.difficultyFromInt(storyDifficulty)}'
-			,
+			+ 'Difficulty: ${CoolUtil.difficultyFromInt(storyDifficulty)}',
 			14);
 		reuploadWatermark.setPosition((FlxG.width / 2) - (reuploadWatermark.width / 2), (FlxG.height / 2) - (reuploadWatermark.height / 2) + 50);
 		// Ah damn. the pivot of all Haxe Object is top left!
@@ -1556,7 +1561,8 @@ class PlayState extends MusicBeatState
 				default:
 					if (SONG.hasTankmanVideo)
 					{
-						tankmanIntro(Paths.video(SONG.tankmanVideoPath));
+						// tankmanIntro(Paths.video(SONG.tankmanVideoPath));
+						tankmanIntro(SONG.tankmanVideoPath); // do not path anymore I guess
 					}
 					else
 					{
@@ -1593,6 +1599,8 @@ class PlayState extends MusicBeatState
 
 		if (!loadRep)
 			rep = new Replay("na");
+
+		trace("an KEYES");
 
 		// This allow arrow key to be detected by flixel. See https://github.com/HaxeFlixel/flixel/issues/2190
 		FlxG.keys.preventDefaultKeys = []; // JOELwindows7: wait, put the android back button there!
@@ -1767,6 +1775,7 @@ class PlayState extends MusicBeatState
 		// Coding is at that PlayState.hx . there are 3 week7 intro methods unprocedurally: `ughIntro`, `gunsIntro`, & `stressIntro`.
 
 		#if (FEATURE_VLC)
+		trace("Prep da VLC");
 		// JOELwindows7: inspire that luckydog7's webmer bellow, build the VLC version of function!
 		// inspire from function backgroundVideo if the FEATURE_VLC is available!
 
@@ -1783,14 +1792,16 @@ class PlayState extends MusicBeatState
 
 		video.finishCallback = function()
 		{
+			trace("vid Finish");
 			// videoSpriteFirst.kill();
 			// remove(videoSpriteFirst);
 			// remove(video);
 			tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 				handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 		};
+		trace('time to play that ${Paths.video(source)} video');
 		// video.playMP4(source, null, videoSpriteFirst); // make the transition null so it doesn't take you out of this state
-		video.playVideo(source, false, false); // make the transition null so it doesn't take you out of this state
+		video.playVideo(Paths.video(source), false, true); // make the transition null so it doesn't take you out of this state
 		// videoSpriteFirst.setGraphicSize(Std.int(videoSpriteFirst.width * 1.2));
 		// video.setGraphicSize(Std.int(video.width * 1.2));
 		// videoSpriteFirst.updateHitbox();

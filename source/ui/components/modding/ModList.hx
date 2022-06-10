@@ -23,10 +23,10 @@ package ui.components.modding;
 
 import flixel.addons.ui.FlxUIList;
 import ui.components.input.InteractableUIList;
-// #if FEATURE_MODCORE
+#if FEATURE_MODCORE
 import polymod.Polymod.ModMetadata;
 
-// #end
+//  #end
 
 /**
  * This function is called when the user clicks the load or unload buttons, on either side.
@@ -169,3 +169,4 @@ class ModList extends InteractableUIList
 		return currentModList;
 	}
 }
+#end

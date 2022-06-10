@@ -41,10 +41,10 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import ModCore;
-// #if FEATURE_MODCORE
+#if FEATURE_MODCORE
 import polymod.Polymod.ModMetadata;
-// #end
 
+// #end
 class ModMenuState extends XMLLayoutState // extends MusicBeatState
 {
 	var loadAllButton:FlxUIButton;
@@ -250,4 +250,4 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		loadMainGame();
 	}
 }
-
+#end

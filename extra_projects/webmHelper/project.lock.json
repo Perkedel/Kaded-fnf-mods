@@ -1,0 +1,108 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.0": {
+      "GCCBuildTargets/1.22.77.8": {
+        "type": "package",
+        "build": {
+          "build/GCCBuildTargets.targets": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.0/win": {
+      "GCCBuildTargets/1.22.77.8": {
+        "type": "package",
+        "build": {
+          "build/GCCBuildTargets.targets": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.0/win-x64": {
+      "GCCBuildTargets/1.22.77.8": {
+        "type": "package",
+        "build": {
+          "build/GCCBuildTargets.targets": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.0/win-x86": {
+      "GCCBuildTargets/1.22.77.8": {
+        "type": "package",
+        "build": {
+          "build/GCCBuildTargets.targets": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GCCBuildTargets/1.22.77.8": {
+      "sha512": "BHYEte+G/x71dc2NINOCy9sNpasJ18U8ZzQqYEgnm0nz6BTn19iALxqIi2of1cMPeWB+I4sE8Z9NkEZKJfzmMw==",
+      "type": "package",
+      "path": "gccbuildtargets/1.22.77.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/DebuggerSupport.targets",
+        "build/GCCBuild.CppClean.targets",
+        "build/GCCBuildTargets.targets",
+        "build/Microsoft.Cpp.props",
+        "build/Microsoft.Cpp.targets",
+        "gccbuildtargets.1.22.77.8.nupkg.sha512",
+        "gccbuildtargets.nuspec",
+        "lib/netstandard2.0/GCCBuild.dll",
+        "lib/netstandard2.0/GCCBuild.pdb",
+        "lib/netstandard2.0/Microsoft.Build.Framework.dll",
+        "lib/netstandard2.0/Microsoft.Build.Utilities.Core.dll"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "GCCBuildTargets >= 1.*"
+    ],
+    ".NETFramework,Version=v4.0": []
+  },
+  "packageFolders": {
+    "/home/joelwindows7/.nuget/packages/": {}
+  },
+  "project": {
+    "restore": {
+      "projectUniqueName": "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/webmHelper.vcxproj",
+      "projectName": "webmHelper",
+      "projectPath": "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/webmHelper.vcxproj",
+      "projectJsonPath": "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/project.json",
+      "packagesPath": "/home/joelwindows7/.nuget/packages/",
+      "outputPath": "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/",
+      "projectStyle": "ProjectJson",
+      "validateRuntimeAssets": true,
+      "configFilePaths": [
+        "/home/joelwindows7/.nuget/NuGet/NuGet.Config"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net40": {
+          "projectReferences": {}
+        }
+      }
+    },
+    "dependencies": {
+      "GCCBuildTargets": "[1.*, )"
+    },
+    "frameworks": {
+      "net40": {}
+    },
+    "runtimes": {
+      "win": {
+        "#import": []
+      },
+      "win-x64": {
+        "#import": []
+      },
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}

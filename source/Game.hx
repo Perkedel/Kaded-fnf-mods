@@ -64,9 +64,9 @@ class Game extends FlxGame
 					Debug.displayAlert('Fatal WError: ${exc.message}', 'The game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
 					Debug.logError('Fatal Werror: ${exc.message}\n${exc.details()}');
 					stopPauseMusic();
+					FlxG.switchState(new WerrorForceMajeurState(exc));
 					hasCrashed = true;
 				}
-				FlxG.switchState(new WerrorForceMajeurState(exc));
 			}
 		}
 	}

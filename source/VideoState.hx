@@ -36,7 +36,7 @@ class VideoState extends MusicBeatState
 	public var autoPause:Bool = false;
 	public var musicPaused:Bool = false;
 
-	#if cpp
+	#if FEATURE_FRAME_COUNTER
 	static private var nativeFramecount:String->Int = cpp.Lib.load("webmHelper", "GetFramecount", 1);
 	#end
 
@@ -65,7 +65,7 @@ class VideoState extends MusicBeatState
 	// https://github.com/kem0x/openfl-haxeflixel-video-code/blob/main/source/VideoState.hx
 	public function frameCount():Int
 	{
-		#if cpp
+		#if FEATURE_FRAME_COUNTER
 		return nativeFramecount(leSource);
 		#else
 		return Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));

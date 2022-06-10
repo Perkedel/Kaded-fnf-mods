@@ -3684,10 +3684,14 @@ class ModConfigurationsOption extends Option
 
 	public override function press():Bool
 	{
+		#if FEATURE_MODCORE
 		// FlxG.state = new ModConfigurationsState();
 		ModMenuState.fromOptionMenu = !OptionsMenu.isInPause;
 		OptionsMenu.goToState(new ModMenuState());
 		return true;
+		#else
+		return false;
+		#end
 	}
 
 	private override function updateDisplay():String

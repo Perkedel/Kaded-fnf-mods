@@ -31,6 +31,13 @@ import lime.app.Application;
 import flixel.system.FlxSound;
 import openfl.utils.Assets;
 import openfl.utils.AssetType;
+#if FEATURE_VLC
+// import vlc.MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+// import vlc.MP4Sprite; // yep.
+import vlc.VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+import vlc.VideoSprite as MP4Sprite; // yep.
+
+#end
 
 /**
  * To select which the best Video cutscener system to choose from.

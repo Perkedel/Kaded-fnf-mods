@@ -33,7 +33,13 @@ import lime.utils.Assets;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+#if FEATURE_VLC
+// import vlc.MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+// import vlc.MP4Sprite; // yep.
+import vlc.VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+import vlc.VideoSprite as MP4Sprite; // yep.
 
+#end
 using StringTools;
 
 class FreeplayState extends MusicBeatState implements IBGColorTweening

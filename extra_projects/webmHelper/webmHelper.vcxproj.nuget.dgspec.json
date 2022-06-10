@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "restore": {
+    "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/webmHelper.vcxproj": {}
+  },
+  "projects": {
+    "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/webmHelper.vcxproj": {
+      "restore": {
+        "projectUniqueName": "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/webmHelper.vcxproj",
+        "projectName": "webmHelper",
+        "projectPath": "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/webmHelper.vcxproj",
+        "projectJsonPath": "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/project.json",
+        "packagesPath": "/home/joelwindows7/.nuget/packages/",
+        "outputPath": "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/",
+        "projectStyle": "ProjectJson",
+        "validateRuntimeAssets": true,
+        "configFilePaths": [
+          "/home/joelwindows7/.nuget/NuGet/NuGet.Config"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net40": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "dependencies": {
+        "GCCBuildTargets": "[1.*, )"
+      },
+      "frameworks": {
+        "net40": {}
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

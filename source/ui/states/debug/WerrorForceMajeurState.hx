@@ -21,7 +21,9 @@ package ui.states.debug;
 
 import flixel.util.FlxColor;
 import haxe.Exception;
+#if FEATURE_CLIPBOARD
 import clipboard.Clipboard;
+#end
 import flixel.text.FlxText;
 
 // CrashHandler class
@@ -91,9 +93,9 @@ class WerrorForceMajeurState extends CoreState
 		// addAcceptButton(Std.int(gf.x - 300), FlxG.height - 100);
 		// addAcceptButton(Std.int(leftButton.x + leftButton.width + 100), FlxG.height - 100);
 		// addRightButton(Std.int(acceptButton.x + acceptButton.width + 100), FlxG.height - 100);
-		addRightButton(Std.int(gf.x - 300), FlxG.height - 100);
-		addAcceptButton(Std.int(rightButton.x - 300), FlxG.height - 100);
-		addLeftButton(Std.int(acceptButton.x - 300), FlxG.height - 100);
+		addRightButton(Std.int(gf.x - 150), FlxG.height - 100);
+		addAcceptButton(Std.int(rightButton.x - 150), FlxG.height - 100);
+		addLeftButton(Std.int(acceptButton.x - 150), FlxG.height - 100);
 		addUpButton();
 		addDownButton();
 	}
@@ -102,7 +104,9 @@ class WerrorForceMajeurState extends CoreState
 	{
 		if (FlxG.keys.justPressed.C || haveClicked)
 		{
+			#if FEATURE_CLIPBOARD
 			Clipboard.set(exception.details());
+			#end
 			haveClicked = false; // JOELwindows7: press OK button.
 		}
 
@@ -173,7 +177,9 @@ class WerrorForceMajeurState extends CoreState
 			}
 			if (joypadLastActive.justPressed.A)
 			{
+				#if FEATURE_CLIPBOARD
 				Clipboard.set(exception.details());
+				#end
 			}
 			if (joypadLastActive.pressed.RIGHT_STICK_DIGITAL_UP)
 			{

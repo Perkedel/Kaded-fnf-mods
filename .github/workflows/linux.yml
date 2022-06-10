@@ -105,6 +105,8 @@ jobs:
           haxelib install udprotean
           haxelib install markdown
           haxelib install openfl-webm
+          # haxelib install hxCodec
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib list
       
       - name: if there is cache still then just update everything

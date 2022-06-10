@@ -42,6 +42,7 @@ class CarryAround
 	public static var __handoverTankmanEpilogueVidPath:String;
 
 	static var _modAlreadyLoaded:Bool = false;
+	static var _supportsModding:Bool = false;
 
 	public static function modAlreadyLoaded():Bool
 	{
@@ -51,5 +52,10 @@ class CarryAround
 	public static function raiseModAlreadyLoaded():Void
 	{
 		_modAlreadyLoaded = true;
+	}
+
+	public static function supportsModding():Bool
+	{
+		return _supportsModding;
 	}
 }
