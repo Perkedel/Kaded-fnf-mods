@@ -6152,7 +6152,7 @@
         "hasEpilogueChat": false,
         "forceLuaModchart": false,
         "epilogueVideoPath": "",
-        "hasDialogueChat": false,
+        "hasDialogueChat": true,
         "outroCutSceneDoneManually": false,
         "charter": "JOELwindows7",
         "hasEpilogueVideo": false,

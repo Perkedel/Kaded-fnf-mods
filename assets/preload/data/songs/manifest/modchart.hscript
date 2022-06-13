@@ -1,0 +1,189 @@
+//JOELwindows7: steal example from BulbyVR
+// https://github.com/FunkinModdingPlus/ModdingPlus/blob/master/assets/data/milf/modchart.hscript
+// It should work the same like Kade Engine Lua Modchart, just this time, in Haxe Language
+// Lua Modchart Documentation at: https://kadedev.github.io/Kade-Engine/modchart .
+// https://github.com/KadeDev/Kade-Engine/wiki
+// But remember, this is Haxe Script. convert your syntax format to it here.
+// templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
+
+var goodEndPath = 'sky/ending0002';
+var badEndPath = 'sky/ending0001';
+var peanutEndPath = 'sky/ending0003';
+
+function loaded(song)
+{
+
+}
+
+function start(song) 
+{
+
+}
+
+function songStart()
+{
+
+}
+
+function songEnd()
+{
+
+}
+
+function introCutscene()
+{
+
+}
+
+function outroCutscene()
+{
+    makeSprite(goodEndPath, 'goodEnd', false, true, 'shared');
+    makeSprite(badEndPath, 'badEnd', false, true, 'shared');
+    makeSprite(peanutEndPath, 'peannutEnd', false, true, 'shared');
+
+    setActorAlpha(0,'goodEnd');
+    setActorAlpha(0,'badEnd');
+    setActorAlpha(0,'peanutEnd');
+}
+
+function outroFadeOutFirst(){
+
+}
+
+function showWhichEnding(){
+    if(accuracy >= 70)
+    {
+        // good end
+        sound.play('skyGoodEnding',1,false);
+        tweenFadeIn('goodEnd',1,1,doneOutroNowInCertainSecond);
+    } else {
+        // bad or peanut end
+        if(random.bool(70)){
+            // regular bad end
+            sound.play('skyBadEnding',1,false);
+            tweenFadeIn('badEnd',1,1,doneOutroNowInCertainSecond);
+        } else {
+            // peanut bf end
+            sound.play('skyPeanutEnding',1,false);
+            tweenFadeIn('peanutEnd',1,1,doneOutroNowInCertainSecond);
+        }
+    }
+}
+
+function doneOutroNowInCertainSecond(){
+    new FlxTimer().start(15,function(tmr){
+        outroSceneIsDone();
+    });
+}
+
+function dialogueStart()
+{
+
+}
+
+function dialogueEnd()
+{
+
+}
+
+function dialogueSkip()
+{
+    //dialogueEnd() // do you want to do the same anyway?
+}
+
+function dialogueNext(index)
+{
+    //`index` is where dialogue line number you were at
+}
+
+function update(elapsed)
+{
+
+}
+
+function beatHit(beat)
+{
+    
+}
+
+function stepHit(step)
+{
+
+}
+
+function keyPressed(key)
+{
+
+}
+
+function keyReleased(key)
+{
+    
+}
+
+function playerTwoTurn()
+{
+
+}
+
+function playerTwoMiss(note, position)
+{
+
+}
+
+function playerTwoSing(note, position)
+{
+
+}
+
+function playerOneTurn()
+{
+    
+}
+
+function playerOneMiss(note, position)
+{
+
+}
+
+function playerOneSing(note, position)
+{
+    // note:Int => left, down, up, right
+    // position:Float
+}
+
+function variableChange(name,value)
+{
+
+}
+
+function methodExecutes(name,args)
+{
+    
+}
+
+function colorizeColorablebyKey(note, justOne, toWhichBg)
+{
+    if (note == 'left')
+    {
+        //trace("set color magenta (hscript)");
+        chooseColoringColor("magenta", justOne, toWhichBg);
+    }
+    else if (note == 'down')
+    {
+        //trace("set color cyan (hscript)");
+        chooseColoringColor("cyan", justOne, toWhichBg);
+    }
+    else if (note == 'up')
+    {
+        //trace("set color lime (hscript)");
+        chooseColoringColor("lime", justOne, toWhichBg);
+    }
+    else if (note == 'right')
+    {
+        //trace("set color red (hscript)");
+        chooseColoringColor("red", justOne, toWhichBg);
+    }
+}
+
+trace("finish loading hscript <3 yay cool and good.");

@@ -99,10 +99,18 @@ class Main extends Sprite
 		trace("Last Funkin Moments v" + Perkedel.ENGINE_VERSION); // JOELwindows7: idk why crash on android.
 		// pls don't destroy debug only because you don't have filesystem access!!
 
-		// JOELwindows7: here haxeUI
-		Toolkit.init();
+		// JOELwindows7: totally try catch now!
+		try
+		{
+			// JOELwindows7: here haxeUI
+			Toolkit.init();
 
-		Lib.current.addChild(new Main());
+			Lib.current.addChild(new Main());
+		}
+		catch (e)
+		{
+			throw 'STATIC MAIN UNCAUGHT WERROR!!!: $e:\n${e.message}';
+		}
 	}
 
 	public function new()
@@ -113,46 +121,54 @@ class Main extends Sprite
 
 		super();
 
-		// JOELwindows7: install crashdumper
-		// setupCrashDumper();
-
-		// JOELwindows7: Grig midi pls
-		// trace("MIDI out APIs:\n" + MidiOut.getApis());
-		// midiIn = new MidiIn(grig.midi.Api.Unspecified);
-		// midiOut = new MidiOut(grig.midi.Api.Unspecified);
-
-		// JOELwindows7: pecking ask permission on Android 6 and forth
-		#if (android && !debug)
-		var askPermNum:Int = 0;
-		var timeoutPermNum:Int = 10;
-		#if android6permission
-		while (!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE)
-			|| !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE))
+		// JOELwindows7: you must totally try catch!
+		try
 		{
-			Permissions.requestPermissions([Permissions.WRITE_EXTERNAL_STORAGE, Permissions.READ_EXTERNAL_STORAGE,]);
+			// JOELwindows7: install crashdumper
+			// setupCrashDumper();
 
-			// count how many attempts. if after timeout num still not work, peck this poop
-			// I gave up!
-			trace("Num of Attempt ask permissions: " + Std.string(askPermNum));
-			askPermNum++;
-			if (askPermNum > timeoutPermNum)
-				break;
+			// JOELwindows7: Grig midi pls
+			// trace("MIDI out APIs:\n" + MidiOut.getApis());
+			// midiIn = new MidiIn(grig.midi.Api.Unspecified);
+			// midiOut = new MidiOut(grig.midi.Api.Unspecified);
+
+			// JOELwindows7: pecking ask permission on Android 6 and forth
+			#if (android && !debug)
+			var askPermNum:Int = 0;
+			var timeoutPermNum:Int = 10;
+			#if android6permission
+			while (!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE)
+				|| !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE))
+			{
+				Permissions.requestPermissions([Permissions.WRITE_EXTERNAL_STORAGE, Permissions.READ_EXTERNAL_STORAGE,]);
+
+				// count how many attempts. if after timeout num still not work, peck this poop
+				// I gave up!
+				trace("Num of Attempt ask permissions: " + Std.string(askPermNum));
+				askPermNum++;
+				if (askPermNum > timeoutPermNum)
+					break;
+			}
+			#end
+			// JOELwindows7: from https://github.com/jigsaw-4277821/extension-androidtools
+			// #if (extension-androidtools)
+			AndroidTools.requestPermissions([Permissions.READ_EXTERNAL_STORAGE, Permissions.WRITE_EXTERNAL_STORAGE]);
+			// #end
+			#end
+			// wtf, it doesn't work if Debug situation?! I don't get it!
+
+			if (stage != null)
+			{
+				init();
+			}
+			else
+			{
+				addEventListener(Event.ADDED_TO_STAGE, init);
+			}
 		}
-		#end
-		// JOELwindows7: from https://github.com/jigsaw-4277821/extension-androidtools
-		// #if (extension-androidtools)
-		AndroidTools.requestPermissions([Permissions.READ_EXTERNAL_STORAGE, Permissions.WRITE_EXTERNAL_STORAGE]);
-		// #end
-		#end
-		// wtf, it doesn't work if Debug situation?! I don't get it!
-
-		if (stage != null)
+		catch (e)
 		{
-			init();
-		}
-		else
-		{
-			addEventListener(Event.ADDED_TO_STAGE, init);
+			throw 'NEW INSTANCE UNCAUGHT WERROR!!!: $e:\n${e.message}';
 		}
 	}
 
@@ -160,15 +176,23 @@ class Main extends Sprite
 
 	private function init(?E:Event):Void
 	{
-		if (hasEventListener(Event.ADDED_TO_STAGE))
+		// JOELwindows7: try catch now!
+		try
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
+			if (hasEventListener(Event.ADDED_TO_STAGE))
+			{
+				removeEventListener(Event.ADDED_TO_STAGE, init);
+			}
+
+			setupGame();
+
+			// JOELwindows7: no, install crashdumper after everything.
+			// setupCrashDumper();
 		}
-
-		setupGame();
-
-		// JOELwindows7: no, install crashdumper after everything.
-		// setupCrashDumper();
+		catch (e)
+		{
+			throw 'PRIVATE INIT UNCAUGHT WERROR: $e:\n${e.message}';
+		}
 	}
 
 	private function setupGame():Void

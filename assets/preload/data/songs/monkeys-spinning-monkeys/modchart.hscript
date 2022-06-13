@@ -38,7 +38,7 @@ function introCutscene()
     setActorScrollFactor(0,0,'header');
 
     //setActorAlpha(0, 'header');
-    //setActorAlpha(0, 'title');
+    setActorAlpha(0, 'title');
 
     //tweenFadeIn('title', 1, 2, 'nextPartToThis');
     //tweenFadeIn('header', 1, 2, 'nextPartToThat');
@@ -119,6 +119,7 @@ function beatHit(beat)
     // Epilepsy alert! censor Hookx flash crazy if Flashing Lights disabled
     if (!flashing)
     {
+        /*
         if (beat == 152)
         {
             closeCamera();
@@ -128,6 +129,7 @@ function beatHit(beat)
         {
             openCamera();
         }
+        */
     }
 }
 

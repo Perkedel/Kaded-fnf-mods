@@ -1698,6 +1698,8 @@ class HaxeScriptState
 			}
 		});
 
+		//Sound Pls
+
 		// end more special functions
 		// So you don't have to hard code your cool effects.
 
