@@ -72,6 +72,16 @@ class VideoState extends MusicBeatState
 		#end
 	}
 
+	// JOELwindows7: and now the utility for it
+	public static function frameCountUtil(daSource:String = ''):Int
+	{
+		#if FEATURE_FRAME_COUNTER
+		return nativeFramecount(daSource);
+		#else
+		return Std.parseInt(Assets.getText(daSource.replace(".webm", ".txt")));
+		#end
+	}
+
 	override function create()
 	{
 		super.create();
@@ -81,7 +91,7 @@ class VideoState extends MusicBeatState
 		if (GlobalVideo.isWebm)
 		{
 			// videoFrames = Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));
-			#if cpp
+			#if FEATURE_FRAME_COUNTER
 			videoFrames = frameCount();
 
 			trace("swag dll told us vid has " + videoFrames);
@@ -91,7 +101,7 @@ class VideoState extends MusicBeatState
 			#end
 				videoFrames = Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));
 
-			#if cpp
+			#if FEATURE_FRAME_COUNTER
 			}
 			#end
 		}

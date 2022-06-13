@@ -1763,7 +1763,31 @@ class PlayState extends MusicBeatState
 		{
 			introScene(); // JOELwindows7: start intro cutscene!
 		}
+		_tankmanVideoActive = false;
+		// _tankmanVideoIsOutro = false;
 	}
+
+	// JOELwindows7: flags for tankman Intro Outro
+	var _tankmanVideoActive:Bool = false;
+	var _tankmanVideoIsOutro:Bool = false;
+	var _tankmanVideoSlaguotin:Bool = false;
+	var _tankmanVideoSound:FlxSound;
+	var _tankmanVideoUseSound = true;
+	var _tankmanVideoSoundMultiplier:Float = 1;
+	var _tankmanVideoSoundPrevMultiplier:Float = 1;
+	var _tankmanVideoFrames:Int = 0;
+	var _tankmanVideoDoShit:Bool = false;
+	var _tankmanVideoDictionary:Dynamic = {
+		source: 'null',
+		outro: false,
+		handoverName: '',
+		isNextSong: false,
+		handoverDelayFirst: 0,
+		handoverHasEpilogueVid: false,
+		handoverEpilogueVidPath: '',
+		handoverHasTankmanEpilogueVid: false,
+		handoverTankmanEpilogueVidPath: '',
+	};
 
 	function tankmanIntro(source:String, outro:Bool = false, handoverName:String = "", isNextSong:Bool = false, handoverDelayFirst:Float = 0,
 			handoverHasEpilogueVid:Bool = false, handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false,
@@ -1773,7 +1797,20 @@ class PlayState extends MusicBeatState
 		// Essentially is a dialogue but instead it's a video FlxSprite spawned above the gameplay, replacing the dialogue.
 		// steal this luckydog7's android port, it yoinked the week7 and looks fine on GameBanana even still in embargo somehow.
 		// Coding is at that PlayState.hx . there are 3 week7 intro methods unprocedurally: `ughIntro`, `gunsIntro`, & `stressIntro`.
-
+		_tankmanVideoActive = true;
+		_tankmanVideoSlaguotin = true;
+		_tankmanVideoIsOutro = outro;
+		_tankmanVideoDictionary = {
+			source: source,
+			outro: outro,
+			handoverName: handoverName,
+			isNextSong: isNextSong,
+			handoverDelayFirst: handoverDelayFirst,
+			handoverHasEpilogueVid: handoverHasEpilogueVid,
+			handoverEpilogueVidPath: handoverEpilogueVidPath,
+			handoverHasTankmanEpilogueVid: handoverHasTankmanEpilogueVid,
+			handoverTankmanEpilogueVidPath: handoverTankmanEpilogueVidPath,
+		};
 		#if (FEATURE_VLC)
 		trace("Prep da VLC");
 		// JOELwindows7: inspire that luckydog7's webmer bellow, build the VLC version of function!
@@ -1808,7 +1845,7 @@ class PlayState extends MusicBeatState
 		// video.updateHitbox();
 		// add(videoSpriteFirst);
 		// add(video);
-		#elseif (FEATURE_WEBM && !FEATURE_VLC)
+		#elseif (FEATURE_WEBM_NATIVE && !FEATURE_VLC && !FEATURE_WEBM_JS)
 		var video = new VideoPlayer(source);
 		video.finishCallback = () ->
 		{
@@ -1822,7 +1859,87 @@ class PlayState extends MusicBeatState
 		video.updateHitbox();
 		add(video);
 		video.play();
+		#elseif (FEATURE_WEBM_JS && !FEATURE_WEBM_NATIVE && !FEATURE_VLC)
+		var ourSource:String = "assets/videos/daWeirdVid/dontDelete.webm";
+
+		// WebmPlayer.SKIP_STEP_LIMIT = 90;
+		// var str1:String = "TANKMAN WEBM SHIT";
+		// webmHandler = new WebmHandler();
+		// webmHandler.source(ourSource);
+		// webmHandler.makePlayer();
+		// webmHandler.webm.name = str1;
+
+		if (GlobalVideo.get() != null)
+		{
+			_tankmanVideoDoShit = false;
+			trace("check vidSound exist");
+			if (GlobalVideo.isWebm)
+			{
+				_tankmanVideoFrames = VideoState.frameCountUtil(source);
+
+				// JOELwindows7: i pecking don't understand why it doesn't work at all
+				// in Android
+				if ( // #if !mobile
+					Assets.exists(source.replace(".webm", ".ogg"), MUSIC) || Assets.exists(source.replace(".webm", ".ogg"), SOUND) // #else
+						// true
+						// #end
+				)
+				{
+					_tankmanVideoUseSound = true;
+					_tankmanVideoSound = FlxG.sound.play(source.replace(".webm", ".ogg"));
+				}
+			}
+			trace("checked vidSound exists.");
+
+			// GlobalVideo.setWebm(webmHandler);
+
+			GlobalVideo.get().source(source);
+			GlobalVideo.get().clearPause();
+			if (GlobalVideo.isWebm)
+			{
+				GlobalVideo.get().updatePlayer();
+			}
+			GlobalVideo.get().show();
+
+			if (GlobalVideo.isWebm)
+			{
+				GlobalVideo.get().restart();
+			}
+			else
+			{
+				GlobalVideo.get().play();
+			}
+
+			// var data = webmHandler.webm.bitmapData;
+
+			// videoSprite = new FlxSprite(0, 0).loadGraphic(data);
+
+			// videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
+			// videoSprite.cameras = [camHUD];
+			// videoSprite.scrollFactor.set();
+
+			// add(videoSprite);
+			_tankmanVideoDoShit = true;
+		}
+		else
+		{
+			Debug.logError('Global Video werror missing?! NULL');
+			tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+				handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+		}
+		#else
+		trace('Tankman Video unsupported, yahh... ');
+		tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+			handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 		#end
+	}
+
+	// JOELwindows7: this causes us to make tankman intro dictionary version
+	function tankmanIntroDictionary(theDictionary:Dynamic)
+	{
+		tankmanIntro(theDictionary.source, theDictionary.outro, theDictionary.handoverName, theDictionary.isNextSong, theDictionary.handoverDelayFirst,
+			theDictionary.handoverHasEpilogueVid, theDictionary.handoverEpilogueVidPath, theDictionary.handoverHasTankmanEpilogueVid,
+			theDictionary.handoverTankmanEpilogueVidPath);
 	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
@@ -4963,6 +5080,7 @@ class PlayState extends MusicBeatState
 
 		// JOELwindows7: MOAR FUNCTION OF UPDATE. use wisely!
 		// manageHeartbeats(elapsed); // no, it's already up there. NVM no need.
+		manageWebmer(elapsed);
 	}
 
 	// JOELwindows7: check if the song should display epilogue chat once the song has finished.
@@ -8545,6 +8663,116 @@ class PlayState extends MusicBeatState
 			{
 				dad.doHeartbeats(elapsed);
 			}
+		}
+	}
+
+	// JOELwindows7: for tankman intro outro webm js
+	function manageWebmer(handoverElapsed:Float = 0)
+	{
+		if (GlobalVideo.get() != null)
+		{
+			// steal from video state
+			if (_tankmanVideoActive)
+			{
+				if (_tankmanVideoUseSound)
+				{
+					var wasFuckingHit = GlobalVideo.get().webm.wasHitOnce;
+					_tankmanVideoSoundMultiplier = GlobalVideo.get().webm.renderedCount / _tankmanVideoFrames;
+
+					if (_tankmanVideoSoundMultiplier > 1)
+					{
+						_tankmanVideoSoundMultiplier = 1;
+					}
+					if (_tankmanVideoSoundMultiplier < 0)
+					{
+						_tankmanVideoSoundMultiplier = 0;
+					}
+					if (_tankmanVideoDoShit)
+					{
+						var compareShit:Float = 50;
+						if (_tankmanVideoSound.time >= (_tankmanVideoSound.length * _tankmanVideoSoundMultiplier) + compareShit || _tankmanVideoSound.time <= (_tankmanVideoSound.length * _tankmanVideoSoundMultiplier)
+							- compareShit)
+							_tankmanVideoSound.time = _tankmanVideoSound.length * _tankmanVideoSoundMultiplier;
+					}
+					if (wasFuckingHit)
+					{
+						if (_tankmanVideoSoundMultiplier == 0)
+						{
+							if (_tankmanVideoSoundPrevMultiplier != 0)
+							{
+								_tankmanVideoSound.pause();
+								_tankmanVideoSound.time = 0;
+							}
+						}
+						else
+						{
+							if (_tankmanVideoSoundPrevMultiplier == 0)
+							{
+								_tankmanVideoSound.resume();
+								_tankmanVideoSound.time = _tankmanVideoSound.length * _tankmanVideoSoundMultiplier;
+							}
+						}
+						_tankmanVideoSoundPrevMultiplier = _tankmanVideoSoundMultiplier;
+					}
+				}
+
+				GlobalVideo.get().update(handoverElapsed);
+
+				if (controls.RESET)
+				{
+					GlobalVideo.get().restart();
+				}
+
+				if (FlxG.keys.justPressed.P || FlxG.mouse.justPressed) // JOELwindows7: click to pause/unpause
+				{
+					// txt.text = pauseText;
+					trace("PRESSED PAUSE");
+					GlobalVideo.get().togglePause();
+					if (GlobalVideo.get().paused)
+					{
+						GlobalVideo.get().alpha();
+					}
+					else
+					{
+						GlobalVideo.get().unalpha();
+						// txt.text = defaultText;
+					}
+				}
+
+				if (controls.ACCEPT || GlobalVideo.get().ended || GlobalVideo.get().stopped)
+				{
+					GlobalVideo.get().hide();
+					GlobalVideo.get().stop();
+				}
+
+				if (controls.ACCEPT || GlobalVideo.get().ended)
+				{
+					if (_tankmanVideoSlaguotin)
+					{
+						if (_tankmanVideoActive)
+						{
+							tankmanIntroDictionary(_tankmanVideoDictionary);
+							if (_tankmanVideoIsOutro)
+							{
+							}
+							else
+							{
+							}
+						}
+						_tankmanVideoSlaguotin = false;
+					}
+				}
+
+				if (GlobalVideo.get().played || GlobalVideo.get().restarted)
+				{
+					GlobalVideo.get().show();
+				}
+			}
+
+			GlobalVideo.get().restarted = false;
+			GlobalVideo.get().played = false;
+			GlobalVideo.get().stopped = false;
+			GlobalVideo.get().ended = false;
 		}
 	}
 }

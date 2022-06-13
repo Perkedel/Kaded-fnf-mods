@@ -258,7 +258,7 @@
 	<!-- JOELwindows7: VVV Danger -->
 	<!-- <haxelib name="faxe"/>  -->
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
-	<haxelib name="polymod" if="FEATURE_MODCORE"/>
+	<haxelib name="polymod" if="cpp" unless="linux"/>
 	<haxelib name="discord_rpc" if="cpp desktop" unless="neko || hl"/>
 	<haxelib name="linc_luajit" if="desktop"/>
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
