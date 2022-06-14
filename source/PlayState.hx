@@ -570,6 +570,7 @@ class PlayState extends MusicBeatState
 		camNotes = new FlxCamera();
 		camNotes.bgColor.alpha = 0;
 
+		// FlxG.cameras.add(camGame, true); // JOELwindows7: okay we discovered new things here
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD);
 		FlxG.cameras.add(camSustains);
@@ -582,7 +583,7 @@ class PlayState extends MusicBeatState
 		camHUD.zoom = PlayStateChangeables.zoom;
 
 		FlxCamera.defaultCameras = [camGame];
-		// FlxG.cameras.setDefaultDrawTarget(camGame, true); //JOELwindows7: try the new one
+		// FlxG.cameras.setDefaultDrawTarget(camGame, false); // JOELwindows7: try the new one
 		// see if it works..
 		// nope. well it works, but
 		// alot of semantics here has to be changed first before hand, so uh. unfortunately
@@ -1811,6 +1812,14 @@ class PlayState extends MusicBeatState
 			handoverHasTankmanEpilogueVid: handoverHasTankmanEpilogueVid,
 			handoverTankmanEpilogueVidPath: handoverTankmanEpilogueVidPath,
 		};
+		// cancel breakpoint
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			Debug.logInfo("Video cutscener disabled");
+			tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+				handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+			return;
+		}
 		#if (FEATURE_VLC)
 		trace("Prep da VLC");
 		// JOELwindows7: inspire that luckydog7's webmer bellow, build the VLC version of function!
@@ -6238,6 +6247,12 @@ class PlayState extends MusicBeatState
 
 	public function backgroundVideo(source:String) // for background videos
 	{
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			Debug.logInfo('Video Cutscener disabled. No BG video');
+			return;
+		}
+
 		#if FEATURE_VLC
 		// JOELwindows7: from that BrightFyre MP4 support, outputting to FlxSprite
 		// https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support#outputting-to-a-flxsprite
@@ -6465,6 +6480,8 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words. here this too! also more idk.
 		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
 		judgementCounter.text = 'Combo: ${combo}\nMax Combo: ${highestCombo}\n\n${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
+		judgementCounter.setPosition(FlxG.width - judgementCounter.width - 15, 0); // JOELwindows7: don't forget readjust everytime.
+		judgementCounter.screenCenter(Y); // JOELwindows7: yeah
 	}
 
 	function getKeyPresses(note:Note):Int

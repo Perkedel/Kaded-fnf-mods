@@ -100,6 +100,9 @@ class OptionsMenu extends CoreSubState
 	public var selectedCatIndex = 0;
 	public var selectedOptionIndex = 0;
 
+	var maxCatIndex = 6; // JOELwindows7: how many visible categories we had here?
+	var maxHiddenCatIndex = 2; // JOELwindows7: and the hidden ones.
+
 	public var isInCat:Bool = false;
 
 	public var options:Array<OptionCata>;
@@ -126,8 +129,14 @@ class OptionsMenu extends CoreSubState
 	public var descText:FlxText;
 	public var descBack:FlxSprite;
 
+	var menuTweenSo:Array<Array<FlxTween>> = [[], [], [], []]; // JOELwindows7: this machine tweenso.
+	var menuTweenTime:Float = .3;
+
 	override function create()
 	{
+		// JOELwindows7: init tweenso first!
+		menuTweenSo = [[], [], [], []];
+
 		options = [
 			new OptionCata(50, 40, "Gameplay", [
 				new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
@@ -217,6 +226,7 @@ class OptionsMenu extends CoreSubState
 				new AnKem0xTestStateOption("EXPERIMENTAL! Test Kem0x's Nexus Engine stuffs"),
 				// new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
 				new FreeplayThreadedOption("BETA! Enable Freeplay Threading, may cause system instabilities"),
+				new WorkaroundNoVideoOption("Disable Video Cutscener to workaround crash when trying to start loading video or whatever"),
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
 				new PrintAnnoyingDebugWarnOption("Toggle whether should frequent warns appears (is annoying)"),
 				new ModConfigurationsOption("Configure which Polymod Kade-LFM mods to be loaded"),
@@ -356,7 +366,7 @@ class OptionsMenu extends CoreSubState
 				object.text = selectedOption.getValue();
 			}
 
-			if (selectedCatIndex > options.length - 3 && checkForOutOfBounds)
+			if (selectedCatIndex > options.length - maxHiddenCatIndex - 1 && checkForOutOfBounds) // JOELwindows7: options.length minus 3
 				selectedCatIndex = 0;
 
 			if (selectedCat.middle)
@@ -515,10 +525,10 @@ class OptionsMenu extends CoreSubState
 					selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
 					selectedCatIndex++;
 
-					if (selectedCatIndex > options.length - 3)
+					if (selectedCatIndex > options.length - maxHiddenCatIndex - 1) // JOELwindows7: 2 hidden max cat?
 						selectedCatIndex = 0;
 					if (selectedCatIndex < 0)
-						selectedCatIndex = options.length - 3;
+						selectedCatIndex = options.length - maxHiddenCatIndex - 1; // JOELwindows7: 2 yeah. was `3`
 
 					switchCat(options[selectedCatIndex]);
 				}
@@ -528,10 +538,10 @@ class OptionsMenu extends CoreSubState
 					selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
 					selectedCatIndex--;
 
-					if (selectedCatIndex > options.length - 3)
+					if (selectedCatIndex > options.length - maxHiddenCatIndex - 1) // JOElwindows7: yea
 						selectedCatIndex = 0;
 					if (selectedCatIndex < 0)
-						selectedCatIndex = options.length - 3;
+						selectedCatIndex = options.length - maxHiddenCatIndex - 1; // JOELwindows7: woohoo
 
 					switchCat(options[selectedCatIndex]);
 				}
@@ -626,6 +636,7 @@ class OptionsMenu extends CoreSubState
 
 					if (down)
 					{
+						cancelTweenSo(); // JOELwindows7: clear tween!
 						if (selectedOption.acceptType)
 							selectedOption.waitingType = false;
 						FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -639,7 +650,10 @@ class OptionsMenu extends CoreSubState
 							for (i in 0...selectedCat.options.length)
 							{
 								var opt = selectedCat.optionObjects.members[i];
-								opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+								// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+								// JOELwindows7: let's make fancy
+								menuTweenSo[0][i] = FlxTween.tween(opt, {y: selectedCat.titleObject.y + 54 + (46 * i)}, menuTweenTime,
+									{ease: FlxEase.quadInOut});
 							}
 							selectedOptionIndex = 0;
 						}
@@ -648,10 +662,15 @@ class OptionsMenu extends CoreSubState
 							&& selectedOptionIndex != options[selectedCatIndex].options.length - 1
 							&& options[selectedCatIndex].options.length > 6)
 						{
-							if (selectedOptionIndex >= (options[selectedCatIndex].options.length - 1) / 2)
+							var andex:Int = 0; // JOELwindows7: tweenSo
+							// if (selectedOptionIndex >= (options[selectedCatIndex].options.length - 1) / 2)
+							if (selectedOptionIndex >= 9) // JOELwindows7: attempt manual fix late scroll for many option in that category
 								for (i in selectedCat.optionObjects.members)
 								{
-									i.y -= 46;
+									// i.y -= 46;
+									// JOELwindows7: fancy move attempt
+									menuTweenSo[2][andex] = FlxTween.tween(i, {y: i.y - 46}, menuTweenTime, {ease: FlxEase.quadInOut});
+									andex++;
 								}
 						}
 
@@ -663,6 +682,7 @@ class OptionsMenu extends CoreSubState
 					}
 					else if (up)
 					{
+						cancelTweenSo(); // JOELwindows7: clear tween!
 						if (selectedOption.acceptType)
 							selectedOption.waitingType = false;
 						FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -673,21 +693,31 @@ class OptionsMenu extends CoreSubState
 
 						if (selectedOptionIndex < 0)
 						{
+							var andex:Int = 0; // JOELwindows7 for this tweenerSo
 							selectedOptionIndex = options[selectedCatIndex].options.length - 1;
 
 							if (options[selectedCatIndex].options.length > 6)
 								for (i in selectedCat.optionObjects.members)
 								{
-									i.y -= (46 * ((options[selectedCatIndex].options.length - 1) / 2));
+									i.y -= (46 * ((options[selectedCatIndex].options.length - 1) / 2)); // JOELwindows7: keep, because there is bug here.
+									// JOELwindows7: fancy movement attempt
+									menuTweenSo[1][andex] = FlxTween.tween(i, {y: i.y - (46 * ((options[selectedCatIndex].options.length - 1) / 2))},
+										menuTweenTime, {ease: FlxEase.quadInOut});
+									andex++;
 								}
 						}
 
 						if (selectedOptionIndex != 0 && options[selectedCatIndex].options.length > 6)
 						{
-							if (selectedOptionIndex >= (options[selectedCatIndex].options.length - 1) / 2)
+							var andex:Int = 0; // JOELwindows7: tweenSO
+							// if (selectedOptionIndex >= (options[selectedCatIndex].options.length - 1) / 2)
+							if (selectedOptionIndex >= 9) // JOELwindows7: attempt manual fix late scroll for many option in that category
 								for (i in selectedCat.optionObjects.members)
 								{
-									i.y += 46;
+									// i.y += 46;
+									// JOELwindows7: fancy move attempt
+									menuTweenSo[2][andex] = FlxTween.tween(i, {y: i.y + 46}, menuTweenTime, {ease: FlxEase.quadInOut});
+									andex++;
 								}
 						}
 
@@ -696,7 +726,10 @@ class OptionsMenu extends CoreSubState
 							for (i in 0...selectedCat.options.length)
 							{
 								var opt = selectedCat.optionObjects.members[i];
-								opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+								// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+								// JOELwindows7: attempt fancy movement
+								menuTweenSo[0][i] = FlxTween.tween(opt, {y: selectedCat.titleObject.y + 54 + (46 * i)}, menuTweenTime,
+									{ease: FlxEase.quadInOut});
 							}
 						}
 
@@ -740,7 +773,7 @@ class OptionsMenu extends CoreSubState
 					{
 						FlxG.sound.play(Paths.sound('scrollMenu'));
 
-						if (selectedCatIndex >= 4)
+						if (selectedCatIndex >= maxCatIndex) // JOELwindows7: oyeng!
 							selectedCatIndex = 0;
 
 						PlayerSettings.player1.controls.loadKeyBinds();
@@ -796,6 +829,7 @@ class OptionsMenu extends CoreSubState
 		}
 		catch (e)
 		{
+			cancelTweenSo(); // JOELwindows7: clear tween immediately
 			Debug.logError("wtf we actually did something wrong, but we dont crash bois.\n" + e + ": " + e.message);
 			selectedCatIndex = 0;
 			selectedOptionIndex = 0;
@@ -823,6 +857,7 @@ class OptionsMenu extends CoreSubState
 	{
 		if (!rawMouseHeld) // Only if you had not held mouse.
 		{
+			cancelTweenSo(); // clear tween
 			if (selectedOption.acceptType)
 				selectedOption.waitingType = false;
 			FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
@@ -838,7 +873,9 @@ class OptionsMenu extends CoreSubState
 				for (i in 0...selectedCat.options.length)
 				{
 					var opt = selectedCat.optionObjects.members[i];
-					opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+					// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+					// JOELwindows7: make fancy movement
+					menuTweenSo[0][i] = FlxTween.tween(opt, {y: selectedCat.titleObject.y + 54 + (46 * i)}, menuTweenTime, {ease: FlxEase.quadInOut});
 				}
 				selectedOptionIndex = 0;
 			}
@@ -847,10 +884,14 @@ class OptionsMenu extends CoreSubState
 				&& selectedOptionIndex != options[selectedCatIndex].options.length - 1
 				&& options[selectedCatIndex].options.length > 6)
 			{
+				var andex:Int = 0;
 				if (selectedOptionIndex >= (options[selectedCatIndex].options.length - 1) / 2)
 					for (i in selectedCat.optionObjects.members)
 					{
-						i.y -= 46;
+						// i.y -= 46;
+						// JOELwindows7: fancy movement
+						menuTweenSo[2][andex] = FlxTween.tween(i, {y: i.y - 46}, menuTweenTime, {ease: FlxEase.quadInOut});
+						andex++;
 					}
 			}
 
@@ -1057,5 +1098,27 @@ class OptionsMenu extends CoreSubState
 				}
 			}
 		});
+	}
+
+	// JOELwindows7: clear currently running tween first!
+	function cancelTweenSo()
+	{
+		if (menuTweenSo != null)
+		{
+			for (i in 0...menuTweenSo.length)
+			{
+				if (menuTweenSo[i] != null)
+				{
+					for (j in 0...menuTweenSo[i].length)
+					{
+						if (menuTweenSo[i][j] != null)
+						{
+							menuTweenSo[i][j].cancel();
+							menuTweenSo[i][j].destroy();
+						}
+					}
+				}
+			}
+		}
 	}
 }

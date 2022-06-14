@@ -382,6 +382,14 @@ class KadeEngineData
 		// Then eh whatever why not call this character for Rhythm Tale / Rune "Ioniq" idk.. because
 		// We made our own Sky, drives Hyundai IONIQ 5 lmao!
 
+		// JOELwindows7: workarounds!
+
+		// video cutscene crash on Linux
+		if (FlxG.save.data.disableVideoCutscener == null)
+			FlxG.save.data.disableVideoCutscener = false;
+
+		// end workarounds
+
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
 		KeyBinds.gamepad = gamepad != null;

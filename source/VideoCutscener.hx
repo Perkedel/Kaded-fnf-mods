@@ -47,6 +47,13 @@ class VideoCutscener
 {
 	public static function startThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = true)
 	{
+		// cancel breakpoint
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			Debug.logInfo("Video Cutscener disabled");
+			FlxG.switchState(toTrans);
+			return;
+		}
 		FlxG.switchState(#if FEATURE_VLC new VLCState(Paths.video(source), toTrans, frameSkipLimit,
 			autopause) #elseif (!FEATURE_VLC && FEATURE_WEBM_NATIVE && !android) new VideoState(Paths.video(source), toTrans, frameSkipLimit,
 				autopause) #else new VideoSelfContained(source, toTrans, frameSkipLimit, autopause) #end);
@@ -54,6 +61,13 @@ class VideoCutscener
 
 	public static function getThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = true):MusicBeatState
 	{
+		// cancel breakpoint
+		// if (FlxG.save.data.disableVideoCutscener)
+		// {
+		// 	Debug.logInfo("Video Cutscener disabled");
+		// 	FlxG.switchState(toTrans);
+		// 	return toTrans;
+		// }
 		return #if FEATURE_VLC
 			new VLCState(Paths.video(source), toTrans, frameSkipLimit, autopause)
 		#elseif (!FEATURE_VLC && (FEATURE_WEBM_NATIVE || FEATURE_WEBM_JS))
@@ -102,6 +116,14 @@ class VideoSelfContained extends MusicBeatState
 		// FlxG.sound.music.stop();
 		peckingVolume = FlxG.sound.music.volume;
 		FlxG.sound.music.volume = 0;
+
+		// cancel breakpoint
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			Debug.logInfo('Video Cutscener disabled');
+			donedCallback();
+			return;
+		}
 		try
 		{
 			if (videoSprite != null)
@@ -205,6 +227,14 @@ class VLCState extends MusicBeatState
 
 		FlxG.sound.music.stop();
 		peckingVolume = FlxG.sound.music.volume;
+
+		// cancel breakpoint
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			Debug.logInfo('Video Cutscener disabled');
+			donedCallback();
+			return;
+		}
 
 		#if FEATURE_VLC
 		// FlxG.sound.music.volume = 0;

@@ -201,6 +201,7 @@ class SplashScreen extends MusicBeatState
 		_productLogo.setPosition((FlxG.width / 2) - (_productLogo.width / 2), (FlxG.height / 2) - (_productLogo.height / 2));
 		_productLogo.screenCenter(XY);
 		_productLogo.scrollFactor.set();
+		_productLogo.antialiasing = FlxG.save.data.antialiasing;
 		add(_productLogo);
 
 		_companyLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("Perkedel_Logo_Typeborder"));
@@ -208,6 +209,7 @@ class SplashScreen extends MusicBeatState
 		_companyLogo.setGraphicSize(Std.int(_companyLogo.width * .075), Std.int(_companyLogo.height * .075));
 		_companyLogo.setPosition((FlxG.width / 2) - (_companyLogo.width / 2), (FlxG.height / 2) - (_companyLogo.height / 2) + 80);
 		_companyLogo.scrollFactor.set();
+		_companyLogo.antialiasing = FlxG.save.data.antialiasing;
 		add(_companyLogo);
 
 		// FlxG.sound.play(Paths.sound('scrollMenu'));

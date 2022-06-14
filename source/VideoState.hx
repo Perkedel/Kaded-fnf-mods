@@ -85,6 +85,14 @@ class VideoState extends MusicBeatState
 	override function create()
 	{
 		super.create();
+
+		// JOELwindows7: cancel breakpoint
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			FlxG.switchState(transClass);
+			return;
+		}
+
 		FlxG.autoPause = false;
 		doShit = false;
 

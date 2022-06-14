@@ -3699,3 +3699,36 @@ class ModConfigurationsOption extends Option
 		return "Mod Configurations";
 	}
 }
+
+class WorkaroundNoVideoOption extends Option
+{
+	public function new(desc:String = "Disable Video Cutscener to workaround crash when trying to start loading video or whatever")
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.disableVideoCutscener = !FlxG.save.data.disableVideoCutscener;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return '(Workaround) Disable Video <${FlxG.save.data.disableVideoCutscener ? "Video Disabled" : "Video Enabled"}>';
+	}
+}

@@ -323,6 +323,18 @@ class Paths
 		return doesAnythingAssetExist(path);
 	}
 
+	// JOELwindows7: and for those who typo
+	inline static public function exists(path:String)
+	{
+		return exist(path);
+	}
+
+	// JOELwindows7: also manually
+	inline static public function manuallyExist(path:String, type:AssetType)
+	{
+		return OpenFlAssets.exists(path, type);
+	}
+
 	inline static public function image(key:String, ?library:String)
 	{
 		return getPath('images/$key.png', IMAGE, library);
