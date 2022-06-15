@@ -3672,13 +3672,13 @@ class ModConfigurationsOption extends Option
 
 	public override function left():Bool
 	{
-		press(); // same as press
+		// press(); // same as press
 		return false;
 	}
 
 	public override function right():Bool
 	{
-		press(); // same as press
+		// press(); // same as press
 		return false;
 	}
 
@@ -3690,16 +3690,22 @@ class ModConfigurationsOption extends Option
 		OptionsMenu.goToState(new ModMenuState());
 		return true;
 		#else
+		Main.gjToastManager.createToast(null, "Modcore not supported", "Sorry, your platform does not support modding.");
 		return false;
 		#end
 	}
 
 	private override function updateDisplay():String
 	{
+		#if FEATURE_MODCORE
 		return "Mod Configurations";
+		#else
+		return "Modcore not supported";
+		#end
 	}
 }
 
+// JOELwindows7: disable video for those who crash. such as Linux some reason idk help pls help
 class WorkaroundNoVideoOption extends Option
 {
 	public function new(desc:String = "Disable Video Cutscener to workaround crash when trying to start loading video or whatever")
@@ -3724,6 +3730,7 @@ class WorkaroundNoVideoOption extends Option
 	{
 		FlxG.save.data.disableVideoCutscener = !FlxG.save.data.disableVideoCutscener;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
 	}
 

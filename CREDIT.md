@@ -385,6 +385,9 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://stackoverflow.com/questions/55342758/haxe-uncaught-global-exception-handler uncaught error handler
 - https://rustyanimator.com/free-maya-rigs/ Random list of **$0 / Free 3D model** for Autodesk Maya (some includes FBX) & little promo for paywalled models.
 - https://www.cgtrader.com/3d-models?keywords=free+3d+mode cg trader search for `free 3d model` missing `l`.
+- https://www.kernel.org/doc/html/latest/sound/hd-audio/models.html hd audio kernel parameter mode
+- https://www.linuxuprising.com/2018/06/fix-no-sound-dummy-output-issue-in.html fix sound 
+- https://askubuntu.com/questions/1272908/ubuntu-20-04-headphones-detected-but-no-sound headphone no sound fix
 
 # in event of git merge conflict
 use VScode and Github desktop!

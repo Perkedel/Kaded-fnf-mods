@@ -372,6 +372,10 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
 	}
 
+	inline static public function getBitmapSpriteSheet(key:String, ?library:String, ?isCharacter:Bool = false)
+	{
+	}
+
 	// JOELwindows7: add pathers for GrowtopiaFli video cutsceners
 	inline static public function video(key:String, ?library:String)
 	{

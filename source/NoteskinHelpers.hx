@@ -67,7 +67,7 @@ class NoteskinHelpers
 
 		Debug.logTrace("bruh momento id=" + Std.string(id) + " typeSpecial=" + Std.string(typeSpecial));
 
-		var path = 'noteskins/${getNoteskinByID(id)}${(otherWayAround ? "/NOTE_assets" : "")}'; // JOELwindows7: simpler
+		var path = 'noteskins/${getNoteskinByID(id)}${(otherWayAround ? "/NOTE_assets" : "")}${typeSuffix}'; // JOELwindows7: simpler
 		// var path = FileSystem.absolutePath("assets/shared/images/noteskins")
 		// 	+ "/"
 		// 	+ getNoteskinByID(id)
@@ -82,7 +82,7 @@ class NoteskinHelpers
 		// 	// return Paths.getSparrowAtlas('noteskins/Arrows', "shared");
 		// 	path = FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + "Arrows" + typeSuffix;
 		// }
-		// // Debug.logInfo("now load path " + path);
+		Debug.logInfo("now load path " + path);
 		// var data:BitmapData = BitmapData.fromFile(path + ".png");
 
 		// return FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data), xmlData[id]);
@@ -91,7 +91,7 @@ class NoteskinHelpers
 
 		// JOELwindows7: alright, this is too far. let's just simplify it
 		return Paths.doesTextAssetExist(Paths.sparrowXml(path,
-			"shared")) ? Paths.getSparrowAtlas(path, 'shared') : Paths.getSparrowAtlas('noteskins/Arrows', "shared");
+			"shared")) ? Paths.getSparrowAtlas(path, 'shared') : Paths.getSparrowAtlas('noteskins/Arrows$typeSuffix', "shared");
 		// Oh wow that works. well uh, don't use `FileSystem` anymore, coz it's buggy, on Linux e.g.
 		// here my `neofetch` btw
 		/*
@@ -137,7 +137,7 @@ class NoteskinHelpers
 
 		Debug.logTrace("bruh momento name=" + say + " typeSpecial=" + Std.string(typeSpecial));
 
-		var path = 'noteskins/${say}${otherWayAround ? "/NOTE_assets" : ""}'; // JOELwindows7: simpler
+		var path = 'noteskins/${say}${otherWayAround ? "/NOTE_assets" : ""}${typeSuffix}'; // JOELwindows7: simpler
 		// var path = FileSystem.absolutePath("assets/shared/images/noteskins")
 		// 	+ "/"
 		// 	+ say
@@ -150,12 +150,12 @@ class NoteskinHelpers
 		// 	// return Paths.getSparrowAtlas('noteskins/Arrows', "shared");
 		// 	path = FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + "Arrows" + typeSuffix;
 		// }
-		// // Debug.logInfo("now load path " + path);
+		Debug.logInfo("now load path " + path);
 		// var data:BitmapData = BitmapData.fromFile(path + ".png");
 
 		// return FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data), sys.io.File.getContent(path + ".xml"));
 		return Paths.doesTextAssetExist(Paths.sparrowXml(path,
-			"shared")) ? Paths.getSparrowAtlas(path, 'shared') : Paths.getSparrowAtlas('noteskins/Arrows', "shared");
+			"shared")) ? Paths.getSparrowAtlas(path, 'shared') : Paths.getSparrowAtlas('noteskins/Arrows$typeSuffix', "shared");
 
 		// return Paths.getSparrowAtlas('noteskins/' + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin), "shared");
 		// #else
@@ -166,92 +166,102 @@ class NoteskinHelpers
 	static public function generatePixelSprite(id:Int, ends:Bool = false, typeSpecial:Int = 0, otherWayAround:Bool = false)
 	{
 		var typeSuffix:String = generateTypePostFix(typeSpecial);
-		// #if FEATURE_FILESYSTEM
+		#if FEATURE_FILESYSTEM
 		// TODO: Make this use OpenFlAssets.
 		// JOELwindows7: alright, let's slay these & just simplify!
 
 		Debug.logTrace("bruh momento id=" + Std.int(id) + " ends=" + Std.string(ends));
 
-		var path = 'noteskins/${getNoteskinByID(id)}-pixel${(ends ? "-ends" : "")}'; // JOELwindows7: simpler
-		if (otherWayAround)
-			path = 'noteskins/${getNoteskinByID(id)}/arrows${ends ? "Ends" : "-pixels"}';
-		// var path = FileSystem.absolutePath("assets/shared/images/noteskins")
-		// 	+ "/"
-		// 	+ getNoteskinByID(id)
-		// 	+ "-pixel"
-		// 	+ (ends ? "-ends" : "")
-		// 	+ typeSuffix; // JOELwindows7: watch the png path
+		// var path = 'noteskins/${getNoteskinByID(id)}-pixel${(ends ? "-ends" : "")}${typeSuffix}'; // JOELwindows7: simpler
 		// if (otherWayAround)
-		// {
-		// 	path = FileSystem.absolutePath("assets/shared/images/noteskins")
-		// 		+ "/"
-		// 		+ getNoteskinByID(id)
-		// 		+ "/arrows"
-		// 		+ (ends ? "Ends" : "-pixels")
-		// 		+ typeSuffix; // JOELwindows7: watch the png path
-		// }
-		// if (!FileSystem.exists(path + ".png"))
-		// {
-		// 	Debug.logTrace("getting default pixel skin");
-		// 	return BitmapData.fromFile(FileSystem.absolutePath("assets/shared/images/noteskins") + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
-		// }
-		// Debug.logInfo("now load path " + path);
-		// return BitmapData.fromFile(path + ".png");
+		// 	path = 'noteskins/${getNoteskinByID(id)}/arrows${ends ? "Ends" : "-pixels"}${typeSuffix}';
+		var path = FileSystem.absolutePath("assets/shared/images/noteskins")
+			+ "/"
+			+ getNoteskinByID(id)
+			+ "-pixel"
+			+ (ends ? "-ends" : "")
+			+ typeSuffix; // JOELwindows7: watch the png path
+		if (otherWayAround)
+		{
+			path = FileSystem.absolutePath("assets/shared/images/noteskins")
+				+ "/"
+				+ getNoteskinByID(id)
+				+ "/arrows"
+				+ (ends ? "Ends" : "-pixels")
+				+ typeSuffix; // JOELwindows7: watch the png path
+		}
+		if (!FileSystem.exists(path + ".png"))
+		{
+			Debug.logTrace("getting default pixel skin");
+			return BitmapData.fromFile(FileSystem.absolutePath("assets/shared/images/noteskins") + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
+		}
+		Debug.logInfo("now load path " + path);
+		return BitmapData.fromFile(path + ".png");
 
-		return Paths.doesImageAssetExist(Paths.image(path,
-			'shared')) ? BitmapData.fromFile(Paths.image(path, 'shared')) : BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
+		// return Paths.doesImageAssetExist(Paths.image(path,
+		// 	'shared')) ? BitmapData.fromFile(Paths.image(path, 'shared')) : BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
+		// return Paths.doesImageAssetExist(Paths.image(path,
+		// 	'shared')) ? BitmapData.loadFromFile(Paths.image(path, 'shared'))
+		// 	.result() : BitmapData.loadFromFile(Paths.image('noteskins/Arrows-pixel', "shared")).result();
+		// return Paths.doesImageAssetExist(Paths.image(path,
+		// 	'shared')) ? BitmapData.loadFromFile(Asset2File.getPath(Paths.image(path, 'shared')))
+		// 	.result() : BitmapData.loadFromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared"))).result();
 		// return Paths.getSparrowAtlas('noteskins/' + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin), "shared");
-		// #else
+		#else
 		// return BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
-		// JOELwindows7: here because Android requires Asset2File
+		// JOELwindows7:here because Android requires Asset2File
 		// return BitmapData.fromFile(#if !mobile Paths.image('noteskins/Arrows-pixel',
 		// 	"shared") #else Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared")) #end);
-		// return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared")));
-		// #end
+		return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel$typtypeSuffix', "shared")));
+		#end
+		// JOELwindows7: wtf, new way doesn't work for pixel noteskins??!?!??!?!?!??!?!?
+		// only `FileSystem`er??!??!?!
 	}
 
 	// JOELwindows7: this is string version of it.
 	static public function generatePixelSpriteFromSay(say:String, ends:Bool = false, typeSpecial:Int = 0, otherWayAround:Bool = false)
 	{
 		var typeSuffix:String = generateTypePostFix(typeSpecial);
-		// #if FEATURE_FILESYSTEM
+		#if FEATURE_FILESYSTEM
 		// TODO: Make this use OpenFlAssets.
 		// JOELwindows7: make simpler!
 
 		Debug.logTrace("bruh momento name=" + say + " ends=" + Std.string(ends));
-		var path = 'noteskins/${say}-pixel${ends ? "-ends" : ""}'; // JOELwindows7: simpler
-		if (otherWayAround)
-			path = 'noteskins/${say}/arrows${ends ? "Ends" : "-pixels"}';
-		// var path = FileSystem.absolutePath("assets/shared/images/noteskins")
-		// 	+ "/"
-		// 	+ say
-		// 	+ "-pixel"
-		// 	+ (ends ? "-ends" : "")
-		// 	+ typeSuffix; // JOELwindows7: watch the png path
+		// var path = 'noteskins/${say}-pixel${ends ? "-ends" : ""}${typeSuffix}'; // JOELwindows7: simpler
 		// if (otherWayAround)
-		// {
-		// 	path = FileSystem.absolutePath("assets/shared/images/noteskins")
-		// 		+ "/"
-		// 		+ say
-		// 		+ "/arrows"
-		// 		+ (ends ? "Ends" : "-pixels")
-		// 		+ typeSuffix; // JOELwindows7: watch the png path
-		// }
-		// if (!FileSystem.exists(say + ".png"))
-		// {
-		// 	Debug.logTrace("getting default pixel skin");
-		// 	return BitmapData.fromFile(FileSystem.absolutePath("assets/shared/images/noteskins") + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
-		// }
-		// Debug.logInfo("now load path " + path);
-		// return BitmapData.fromFile(path + ".png");
-		return Paths.doesImageAssetExist(Paths.image(path,
-			'shared')) ? BitmapData.fromFile(Paths.image(path, 'shared')) : BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
-		// #else
-		// return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared")));
-		// #end
-	}
+		// 	path = 'noteskins/${say}/arrows${ends ? "Ends" : "-pixels"}${typeSuffix}';
+		var path = FileSystem.absolutePath("assets/shared/images/noteskins")
+			+ "/"
+			+ say
+			+ "-pixel"
+			+ (ends ? "-ends" : "")
+			+ typeSuffix; // JOELwindows7: watch the png path
+		if (otherWayAround)
+		{
+			path = FileSystem.absolutePath("assets/shared/images/noteskins")
+				+ "/"
+				+ say
+				+ "/arrows"
+				+ (ends ? "Ends" : "-pixels")
+				+ typeSuffix; // JOELwindows7: watch the png path
+		}
+		if (!FileSystem.exists(say + ".png"))
+		{
+			Debug.logTrace("getting default pixel skin");
+			return BitmapData.fromFile(FileSystem.absolutePath("assets/shared/images/noteskins") + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
+		}
+		Debug.logInfo("now load path " + path);
+		return BitmapData.fromFile(path + ".png");
+		// return Paths.doesImageAssetExist(Paths.image(path,
+		// 	'shared')) ? BitmapData.fromFile(Paths.image(path, 'shared')) : BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
+		// return Paths.doesImageAssetExist(Paths.image(path,
+		// 	'shared')) ? BitmapData.loadFromFile(Asset2File.getPath(Paths.image(path, 'shared')))
+		// 	.result() : BitmapData.loadFromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared"))).result();
+		#else
+		return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel$typetypeSuffix', "shared")));
+		#end
+	} // JOELwindows7: generate type postfix for which note type yey. usual, mine, power ups?
 
-	// JOELwindows7: generate type postfix for which note type yey. usual, mine, power ups?
 	static public function generateTypePostFix(typeSpecial:Int = 0)
 	{
 		return switch (typeSpecial)
