@@ -11,7 +11,8 @@ import flixel.FlxG;
 import flixel.FlxSubState;
 import CoreState;
 
-//JOELwindows7: now inherit CoreSubState instead of FlxSubState
+// JOELwindows7: now inherit CoreSubState instead of FlxSubState
+// and pls FlxUI fy this. okay, there gotta be one here, for sure. ok idk anymore.
 class MusicBeatSubstate extends CoreSubState
 {
 	public function new()
@@ -19,7 +20,7 @@ class MusicBeatSubstate extends CoreSubState
 		super();
 	}
 
-	//JOELwindows7: variables moved to CoreState.hx
+	// JOELwindows7: variables moved to CoreState.hx
 
 	override function destroy()
 	{
@@ -40,14 +41,14 @@ class MusicBeatSubstate extends CoreSubState
 
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
+
 	// private var controls(get, never):Controls; //JOELwindows7: steal control. sorry guys
+	// JOELwindows7: stole this getter too, sorry guys.
 
-	//JOELwindows7: stole this getter too, sorry guys.
 	/*
-	inline function get_controls():Controls
-		return PlayerSettings.player1.controls;
-	*/
-
+		inline function get_controls():Controls
+			return PlayerSettings.player1.controls;
+	 */
 	override function update(elapsed:Float)
 	{
 		// everyStep();
@@ -143,5 +144,5 @@ class MusicBeatSubstate extends CoreSubState
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 	}
 
-	//JOELwindows7: functions I add moved to CoreState.hx
+	// JOELwindows7: functions I add moved to CoreState.hx
 }

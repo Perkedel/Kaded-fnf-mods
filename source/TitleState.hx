@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.addons.display.FlxBackdrop;
 import plugins.sprites.QmovephBackground;
 import GalleryAchievements;
@@ -43,21 +44,23 @@ import sys.thread.Mutex;
 
 using StringTools;
 
+// JOELwindows7: here another one. FlxUI things yeah
+
 class TitleState extends MusicBeatState
 {
 	static var initialized:Bool = false;
 
-	var blackScreen:FlxSprite;
+	var blackScreen:FlxUISprite;
 	var credGroup:FlxGroup;
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
-	var ngSpr:FlxSprite;
-	var perkedelSpr:FlxSprite; // JOELwindows7: the Perkedel Logo
-	var odyseeSpr:FlxSprite; // JOELwindows7: the Odysee Logo
+	var ngSpr:FlxUISprite;
+	var perkedelSpr:FlxUISprite; // JOELwindows7: the Perkedel Logo
+	var odyseeSpr:FlxUISprite; // JOELwindows7: the Odysee Logo
 
 	var curWacky:Array<String> = [];
 
-	var wackyImage:FlxSprite;
+	var wackyImage:FlxUISprite;
 
 	var alreadyDecideOutdated:Bool = false; // JOELwindows7: flag to decide outdated.
 
@@ -191,10 +194,10 @@ class TitleState extends MusicBeatState
 		#end
 	}
 
-	var logoBl:FlxSprite;
-	var gfDance:FlxSprite;
+	var logoBl:FlxUISprite;
+	var gfDance:FlxUISprite;
 	var danceLeft:Bool = false;
-	var titleText:FlxSprite;
+	var titleText:FlxUISprite;
 
 	// JOELwindows7: globalize button
 	var pressedEnter:Bool = false;
@@ -211,7 +214,8 @@ class TitleState extends MusicBeatState
 		}
 		else
 		{
-			var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+			// JOELwindows7: yeah
+			var bg:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 			// bg.antialiasing = FlxG.save.data.antialiasing;
 			// bg.setGraphicSize(Std.int(bg.width * 0.6));
 			// bg.updateHitbox();
@@ -220,13 +224,13 @@ class TitleState extends MusicBeatState
 
 		if (Main.watermarks)
 		{
-			logoBl = new FlxSprite(-150, 1500);
+			logoBl = new FlxUISprite(-150, 1500);
 			// logoBl.frames = Paths.getSparrowAtlas('KadeEngineLogoBumpin');
 			logoBl.frames = Paths.getSparrowAtlas(Main.perkedelMark ? 'LFMLogoBumpin' : 'KadeEngineLogoBumpin');
 		}
 		else
 		{
-			logoBl = new FlxSprite(-150, -100);
+			logoBl = new FlxUISprite(-150, -100);
 			logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		}
 		logoBl.antialiasing = FlxG.save.data.antialiasing;
@@ -235,7 +239,7 @@ class TitleState extends MusicBeatState
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
 
-		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
+		gfDance = new FlxUISprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
@@ -243,7 +247,7 @@ class TitleState extends MusicBeatState
 		add(gfDance);
 		add(logoBl);
 
-		titleText = new FlxSprite(100, FlxG.height * 0.8);
+		titleText = new FlxUISprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
@@ -253,7 +257,8 @@ class TitleState extends MusicBeatState
 		// titleText.screenCenter(X);
 		add(titleText);
 
-		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('logo'));
+		// JOELwindows7: yeah
+		var logo:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage('logo'));
 		logo.screenCenter();
 		logo.antialiasing = FlxG.save.data.antialiasing;
 		// add(logo);
@@ -265,7 +270,8 @@ class TitleState extends MusicBeatState
 		add(credGroup);
 		textGroup = new FlxGroup();
 
-		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		// JOELwindows7: yeah
+		blackScreen = cast new FlxUISprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
 
 		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
@@ -275,7 +281,8 @@ class TitleState extends MusicBeatState
 
 		credTextShit.visible = false;
 
-		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('newgrounds_logo'));
+		// JOELwindows7: all these logos
+		ngSpr = cast new FlxUISprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('newgrounds_logo'));
 		add(ngSpr);
 		ngSpr.visible = false;
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
@@ -284,7 +291,7 @@ class TitleState extends MusicBeatState
 		ngSpr.antialiasing = FlxG.save.data.antialiasing;
 
 		// JOELwindows7: odysee spriter
-		odyseeSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('odysee_Logo_Transparent_White_Text'));
+		odyseeSpr = cast new FlxUISprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('odysee_Logo_Transparent_White_Text'));
 		add(odyseeSpr);
 		odyseeSpr.visible = false;
 		odyseeSpr.setGraphicSize(Std.int(odyseeSpr.width * .5), Std.int(odyseeSpr.height * .5));
@@ -293,7 +300,7 @@ class TitleState extends MusicBeatState
 		odyseeSpr.antialiasing = FlxG.save.data.antialiasing;
 
 		// JOELwindows7: Perkedel spriter
-		perkedelSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('Perkedel_Logo_Typeborder'));
+		perkedelSpr = cast new FlxUISprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('Perkedel_Logo_Typeborder'));
 		add(perkedelSpr);
 		perkedelSpr.visible = false;
 		perkedelSpr.setGraphicSize(Std.int(perkedelSpr.width * .2), Std.int(perkedelSpr.height * .2));

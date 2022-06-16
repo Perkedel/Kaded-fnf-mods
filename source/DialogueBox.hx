@@ -1,5 +1,8 @@
 package;
 
+import flixel.addons.ui.FlxUIGroup;
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIText;
 import flixel.addons.display.FlxPieDial;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUICheckBox;
@@ -19,9 +22,11 @@ import flixel.util.FlxTimer;
 
 using StringTools;
 
-class DialogueBox extends FlxSpriteGroup
+// JOELwindows7: use FlxUI stuffs!
+// and remember, `FlxUIGroup` inherits `FlxSpriteGroup`.
+class DialogueBox extends FlxUIGroup
 {
-	var box:FlxSprite;
+	var box:FlxUISprite;
 
 	var curCharacter:String = '';
 
@@ -31,25 +36,25 @@ class DialogueBox extends FlxSpriteGroup
 	// SECOND DIALOGUE FOR THE PIXEL SHIT INSTEAD???
 	var swagDialogue:FlxTypeText;
 
-	var dropText:FlxText;
-	var skipText:FlxText;
+	var dropText:FlxUIText;
+	var skipText:FlxUIText;
 
 	var paththing:String = 'sky/port'; // JOELwindows7: I swear, this was how bbpanzu did this on vs. Sky!
 
 	// public var finishThing:Void->Void;
 	public var finishThing:Void->Void;
 
-	var portraitLeft:FlxSprite;
-	var portraitRight:FlxSprite;
-	var portraitMiddle:FlxSprite; // JOELwindows7: for gf
-	var portraitJustDoIt:FlxSprite; // JOELwindows7: for custom character beyond bf, dad, or gf. use in-game image from character folder I guess
+	var portraitLeft:FlxUISprite;
+	var portraitRight:FlxUISprite;
+	var portraitMiddle:FlxUISprite; // JOELwindows7: for gf
+	var portraitJustDoIt:FlxUISprite; // JOELwindows7: for custom character beyond bf, dad, or gf. use in-game image from character folder I guess
 	// JOELwindows7: incoming! bbpanzu's vs. Sky'
-	var portraitB:FlxSprite;
-	var portraitD:FlxSprite;
-	var portraitDD:FlxSprite;
+	var portraitB:FlxUISprite;
+	var portraitD:FlxUISprite;
+	var portraitDD:FlxUISprite;
 
-	var handSelect:FlxSprite;
-	var bgFade:FlxSprite;
+	var handSelect:FlxUISprite;
+	var bgFade:FlxUISprite;
 
 	// JOELwindows7: heuristic flag for non-pixel level
 	var nonPixel:Bool = false;
@@ -77,7 +82,7 @@ class DialogueBox extends FlxSpriteGroup
 	var skipButton:FlxUIButton;
 	var autoClickCheckbox:FlxUICheckBox;
 	var autoClickDelayStepper:FlxUINumericStepper;
-	var autoClickDelayLabel:FlxText;
+	var autoClickDelayLabel:FlxUIText;
 	var haveSkippedDialogue:Bool = false;
 	var tobeAutoClicked:Bool = false;
 
@@ -162,7 +167,8 @@ class DialogueBox extends FlxSpriteGroup
 		// FlxG.sound.list.add(ownIntroMusic);
 		// DialogueBox.ownIntroMusic.play();
 
-		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
+		// JOELwindows7: rehg
+		bgFade = cast new FlxUISprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
 		bgFade.scrollFactor.set();
 		bgFade.alpha = 0;
 		add(bgFade);
@@ -175,7 +181,7 @@ class DialogueBox extends FlxSpriteGroup
 				bgFade.alpha = 0.7;
 		}, 5);
 
-		box = new FlxSprite(-20, 45);
+		box = new FlxUISprite(-20, 45);
 
 		var hasDialog = false;
 		// JOELwindows7: no lowercase needed anymore.
@@ -206,7 +212,8 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByPrefix('normalOpen', 'Spirit Textbox spawn', 24, false);
 				box.animation.addByIndices('normal', 'Spirit Textbox spawn', [11], "", 24);
 
-				var face:FlxSprite = new FlxSprite(320, 170).loadGraphic(Paths.loadImage('weeb/spiritFaceForward'));
+				// JOELwindows7: bruh
+				var face:FlxUISprite = cast new FlxUISprite(320, 170).loadGraphic(Paths.loadImage('weeb/spiritFaceForward'));
 				face.setGraphicSize(Std.int(face.width * 6));
 				add(face);
 			// JOELwindows7: bbpanzu's vs. Sky
@@ -297,7 +304,7 @@ class DialogueBox extends FlxSpriteGroup
 		// for dad player
 		if (!customCharPls)
 		{
-			portraitLeft = new FlxSprite(-20, 40);
+			portraitLeft = new FlxUISprite(-20, 40);
 			portraitLeft.frames = Paths.getSparrowAtlas('weeb/senpaiPortrait');
 			portraitLeft.animation.addByPrefix('enter', 'Senpai Portrait Enter', 24, false);
 			portraitLeft.setGraphicSize(Std.int(portraitLeft.width * CoolUtil.daPixelZoom * 0.9));
@@ -309,7 +316,7 @@ class DialogueBox extends FlxSpriteGroup
 		else if (skyDialogue)
 		{
 			// JOELwindows7: here bbpanzu's vs. Sky
-			portraitLeft = new FlxSprite(276.95, 149.9);
+			portraitLeft = new FlxUISprite(276.95, 149.9);
 			portraitLeft.frames = Paths.getSparrowAtlas(paththing);
 			portraitLeft.animation.addByPrefix('enter', 'portrait', 24, false);
 			// portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
@@ -322,7 +329,7 @@ class DialogueBox extends FlxSpriteGroup
 		// JOELwindows7: Oh, God. there's alot of unprocedural objectings here. vs. Sky by bbpanzu
 		// if (skyDialogue)
 		// {
-		portraitD = new FlxSprite(276.95, 149.9);
+		portraitD = new FlxUISprite(276.95, 149.9);
 		portraitD.frames = Paths.getSparrowAtlas('sky/port_an');
 		portraitD.animation.addByPrefix('enter', 'portrait', 24, false);
 		// portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
@@ -331,7 +338,7 @@ class DialogueBox extends FlxSpriteGroup
 		add(portraitD);
 		portraitD.visible = false;
 
-		portraitDD = new FlxSprite(276.95, 149.9);
+		portraitDD = new FlxUISprite(276.95, 149.9);
 		portraitDD.frames = Paths.getSparrowAtlas('sky/port');
 		portraitDD.animation.addByPrefix('enter', 'portrait', 24, false);
 		// portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
@@ -340,7 +347,7 @@ class DialogueBox extends FlxSpriteGroup
 		add(portraitDD);
 		portraitDD.visible = false;
 
-		portraitB = new FlxSprite(684.05, 149.9);
+		portraitB = new FlxUISprite(684.05, 149.9);
 		portraitB.frames = Paths.getSparrowAtlas('sky/bfport');
 		portraitB.animation.addByPrefix('enter', 'bfport', 24, false);
 		// portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
@@ -354,7 +361,7 @@ class DialogueBox extends FlxSpriteGroup
 		// For BF too as well
 		if (!customBfPls)
 		{
-			portraitRight = new FlxSprite(0, 40);
+			portraitRight = new FlxUISprite(0, 40);
 			portraitRight.frames = Paths.getSparrowAtlas('weeb/bfPortrait');
 			portraitRight.animation.addByPrefix('enter', 'Boyfriend portrait enter', 24, false);
 			portraitRight.setGraphicSize(Std.int(portraitRight.width * CoolUtil.daPixelZoom * 0.9));
@@ -366,7 +373,7 @@ class DialogueBox extends FlxSpriteGroup
 		else if (skyDialogue)
 		{
 			// JOELwindows7: here bbpanzu's vs. Sky
-			portraitRight = new FlxSprite(684.05, 149.9);
+			portraitRight = new FlxUISprite(684.05, 149.9);
 			if (PlayState.SONG.songId == "manifest")
 			{
 				portraitRight.frames = Paths.getSparrowAtlas('sky/gfport');
@@ -388,7 +395,7 @@ class DialogueBox extends FlxSpriteGroup
 		// last but not least the bf
 		if (!customGfPls)
 		{
-			portraitMiddle = new FlxSprite(0, 40);
+			portraitMiddle = new FlxUISprite(0, 40);
 			portraitMiddle.frames = Paths.getSparrowAtlas('weeb/gfPortrait', 'shared');
 			portraitMiddle.animation.addByPrefix('enter', 'Girlfriend portrait enter', 24, false);
 			portraitMiddle.setGraphicSize(Std.int(portraitMiddle.width * CoolUtil.daPixelZoom * 0.9));
@@ -399,7 +406,7 @@ class DialogueBox extends FlxSpriteGroup
 		}
 		else if (skyDialogue)
 		{
-			portraitMiddle = new FlxSprite(684.05, 149.9);
+			portraitMiddle = new FlxUISprite(684.05, 149.9);
 			// if (PlayState.SONG.songId == "manifest")
 			// {
 			portraitMiddle.frames = Paths.getSparrowAtlas('sky/gfport');
@@ -440,12 +447,13 @@ class DialogueBox extends FlxSpriteGroup
 
 		box.screenCenter(X);
 		portraitLeft.screenCenter(X);
-		skipText = new FlxText(10, 18, Std.int(FlxG.width * 0.6), "", 16); // JOELwindows7: due to watermark, push Y down. was Y = 10
+		skipText = new FlxUIText(10, 18, Std.int(FlxG.width * 0.6), "", 16); // JOELwindows7: due to watermark, push Y down. was Y = 10
 		skipText.font = 'Pixel Arial 11 Bold';
 		skipText.color = 0x000000;
 		skipText.text = 'press back to skip';
 		add(skipText);
-		handSelect = new FlxSprite(FlxG.width * 0.9, FlxG.height * 0.9).loadGraphic(Paths.loadImage('weeb/pixelUI/hand_textbox'));
+		// JOELwindows7: c'mon, why chain return data type is not the extension class itself? why? `cast` keyword will accumulate & becomes expensive!!!
+		handSelect = cast new FlxUISprite(FlxG.width * 0.9, FlxG.height * 0.9).loadGraphic(Paths.loadImage('weeb/pixelUI/hand_textbox'));
 		add(handSelect);
 
 		if (!talkingRight)
@@ -453,7 +461,7 @@ class DialogueBox extends FlxSpriteGroup
 			// box.flipX = true;
 		}
 
-		dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
+		dropText = new FlxUIText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
 		dropText.font = 'Pixel Arial 11 Bold';
 		dropText.color = 0xFFD89494;
 		add(dropText);
@@ -503,7 +511,7 @@ class DialogueBox extends FlxSpriteGroup
 		// 	FlxG.save.flush();
 		// };
 		add(autoClickDelayStepper);
-		autoClickDelayLabel = new FlxText(FlxG.width - 180, 45, Std.int(FlxG.width * 0.6), "", 8);
+		autoClickDelayLabel = new FlxUIText(FlxG.width - 180, 45, Std.int(FlxG.width * 0.6), "", 8);
 		autoClickDelayLabel.scrollFactor.set();
 		autoClickDelayLabel.font = 'Pixel Arial 11 Bold';
 		autoClickDelayLabel.color = 0x00000000;
@@ -665,7 +673,7 @@ class DialogueBox extends FlxSpriteGroup
 	function initiatePortraitLeft(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/senpaiPortrait',
 			name:String = 'enter', prefix:String = 'Senpai Portrait Enter', frameRate:Int = 24, flip:Bool = false, ?library = ''):Void
 	{
-		portraitLeft = new FlxSprite(newSpriteX, newSpriteY);
+		portraitLeft = new FlxUISprite(newSpriteX, newSpriteY);
 		portraitLeft.frames = Paths.getSparrowAtlas(textureXmlPath, library);
 		portraitLeft.animation.addByPrefix(name, prefix, frameRate, flip);
 		portraitLeft.setGraphicSize(Std.int(portraitLeft.width * CoolUtil.daPixelZoom * zooming));
@@ -680,7 +688,7 @@ class DialogueBox extends FlxSpriteGroup
 	function initiatePortraitRight(newSpriteX:Int = 0, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/bfPortrait',
 			name:String = 'enter', prefix:String = 'Boyfriend portrait Enter', frameRate:Int = 24, flip:Bool = false, ?library = ''):Void
 	{
-		portraitRight = new FlxSprite(newSpriteX, newSpriteY);
+		portraitRight = new FlxUISprite(newSpriteX, newSpriteY);
 		portraitRight.frames = Paths.getSparrowAtlas(textureXmlPath, library);
 		portraitRight.animation.addByPrefix(name, prefix, frameRate, flip);
 		portraitRight.setGraphicSize(Std.int(portraitRight.width * CoolUtil.daPixelZoom * zooming));
@@ -693,7 +701,7 @@ class DialogueBox extends FlxSpriteGroup
 	function initiatePortraitMiddle(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/gfPortrait',
 			name:String = 'enter', prefix:String = 'Girlfriend portrait enter', frameRate:Int = 24, flip:Bool = false, ?library = 'shared')
 	{
-		portraitMiddle = new FlxSprite(newSpriteX, newSpriteY);
+		portraitMiddle = new FlxUISprite(newSpriteX, newSpriteY);
 		portraitMiddle.frames = Paths.getSparrowAtlas(textureXmlPath, library);
 		portraitMiddle.animation.addByPrefix(name, prefix, frameRate, flip);
 		portraitMiddle.setGraphicSize(Std.int(portraitMiddle.width * CoolUtil.daPixelZoom * zooming));

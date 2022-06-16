@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIText;
 import CoreState;
 import flixel.FlxState;
 import GalleryAchievements;
@@ -24,14 +26,16 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
-class OptionCata extends FlxSprite
+//JOELwindows7: FlxUI fy!!!
+
+class OptionCata extends FlxUISprite
 {
 	public var title:String;
 	public var options:Array<Option>;
 
-	public var optionObjects:FlxTypedGroup<FlxText>;
+	public var optionObjects:FlxTypedGroup<FlxUIText>;
 
-	public var titleObject:FlxText;
+	public var titleObject:FlxUIText;
 
 	public var middle:Bool = false;
 
@@ -48,7 +52,7 @@ class OptionCata extends FlxSprite
 
 		optionObjects = new FlxTypedGroup();
 
-		titleObject = new FlxText((middleType ? 1180 / 2 : x), y + (middleType ? 0 : 16), 0, title);
+		titleObject = new FlxUIText((middleType ? 1180 / 2 : x), y + (middleType ? 0 : 16), 0, title);
 		titleObject.setFormat(Paths.font("vcr.ttf"), 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		titleObject.borderSize = 3;
 
@@ -66,7 +70,7 @@ class OptionCata extends FlxSprite
 		for (i in 0...options.length)
 		{
 			var opt = options[i];
-			var text:FlxText = new FlxText((middleType ? 1180 / 2 : 72), titleObject.y + 54 + (46 * i), 0, opt.getValue());
+			var text:FlxUIText = new FlxUIText((middleType ? 1180 / 2 : 72), titleObject.y + 54 + (46 * i), 0, opt.getValue());
 			if (middleType)
 			{
 				text.screenCenter(X);
@@ -91,7 +95,7 @@ class OptionsMenu extends CoreSubState
 {
 	public static var instance:OptionsMenu;
 
-	public var background:FlxSprite;
+	public var background:FlxUISprite;
 
 	public var selectedCat:OptionCata;
 
@@ -109,7 +113,7 @@ class OptionsMenu extends CoreSubState
 
 	public static var isInPause = false;
 
-	public var shownStuff:FlxTypedGroup<FlxText>;
+	public var shownStuff:FlxTypedGroup<FlxUIText>;
 
 	public static var visibleRange = [114, 640]; // JOELwindows7: was 640
 
@@ -124,10 +128,10 @@ class OptionsMenu extends CoreSubState
 		isInPause = pauseMenu;
 	}
 
-	public var menu:FlxTypedGroup<FlxSprite>;
+	public var menu:FlxTypedGroup<FlxUISprite>;
 
-	public var descText:FlxText;
-	public var descBack:FlxSprite;
+	public var descText:FlxUIText;
+	public var descBack:FlxUISprite;
 
 	var menuTweenSo:Array<Array<FlxTween>> = [[], [], [], []]; // JOELwindows7: this machine tweenso.
 	var menuTweenTime:Float = .3;
@@ -262,17 +266,17 @@ class OptionsMenu extends CoreSubState
 
 		instance = this;
 
-		menu = new FlxTypedGroup<FlxSprite>();
+		menu = new FlxTypedGroup<FlxUISprite>();
 
-		shownStuff = new FlxTypedGroup<FlxText>();
+		shownStuff = new FlxTypedGroup<FlxUIText>();
 
-		// JOELwindows7: pinpoint, this is inner square
-		background = new FlxSprite(50, 40).makeGraphic(1180, 640, FlxColor.BLACK);
+		// JOELwindows7: pinpoint, this is inner square. also the cast
+		background = cast new FlxUISprite(50, 40).makeGraphic(1180, 640, FlxColor.BLACK);
 		background.alpha = 0.5;
 		background.scrollFactor.set();
 		menu.add(background);
 
-		descBack = new FlxSprite(50, 640).makeGraphic(1180, 38, FlxColor.BLACK);
+		descBack = cast new FlxUISprite(50, 640).makeGraphic(1180, 38, FlxColor.BLACK);
 		descBack.alpha = 0.3;
 		descBack.scrollFactor.set();
 		menu.add(descBack);
@@ -280,7 +284,7 @@ class OptionsMenu extends CoreSubState
 		if (isInPause)
 		{
 			// JOELwindows7: pinpoint, this is outer square that fill entire game screen when in Pause.
-			var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+			var bg:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 			bg.alpha = 0;
 			bg.scrollFactor.set();
 			menu.add(bg);
@@ -314,7 +318,7 @@ class OptionsMenu extends CoreSubState
 			// So, you can only have this title text thingy side by side, on top of the cat FlxSprite itself.
 		}
 
-		descText = new FlxText(62, 648);
+		descText = new FlxUIText(62, 648);
 		descText.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		descText.borderSize = 2;
 
@@ -944,7 +948,7 @@ class OptionsMenu extends CoreSubState
 	function assignIDToOptions()
 	{
 		var count = 0;
-		selectedCat.optionObjects.forEach(function(option:FlxText)
+		selectedCat.optionObjects.forEach(function(option:FlxUIText)
 		{
 			option.ID = count;
 			count++;
@@ -1015,7 +1019,7 @@ class OptionsMenu extends CoreSubState
 		}
 
 		// JOELwindows7: check if you have clicked on an item.
-		shownStuff.forEach(function(stuff:FlxText)
+		shownStuff.forEach(function(stuff:FlxUIText)
 		{
 			if (FlxG.mouse.overlaps(stuff))
 			{

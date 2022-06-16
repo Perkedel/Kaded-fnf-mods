@@ -1,13 +1,16 @@
 // JOELwindows7: yoink from https://github.com/kem0x/Nexus-Engine/blob/master/source/AttachedSprite.hx
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxSprite;
 
 using StringTools;
 
-class AttachedSprite extends FlxSprite
+// JOELwindows7: FlxUI fy now
+
+class AttachedSprite extends FlxUISprite
 {
-	public var sprTracker:FlxSprite;
+	public var sprTracker:FlxUISprite;
 	public var xAdd:Float = 0;
 	public var yAdd:Float = 0;
 	public var angleAdd:Float = 0;

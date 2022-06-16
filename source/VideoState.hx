@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 #if cpp
 import webm.WebmPlayer;
 #end
@@ -18,11 +20,13 @@ import openfl.Lib;
 
 using StringTools;
 
+// JOELwindows7: carefully FlxUI fy!
+
 class VideoState extends MusicBeatState
 {
 	public var leSource:String = "";
 	public var transClass:FlxState;
-	public var txt:FlxText;
+	public var txt:FlxUIText;
 	public var fuckingVolume:Float = 1;
 	public var notDone:Bool = true;
 	public var vidSound:FlxSound;
@@ -120,7 +124,7 @@ class VideoState extends MusicBeatState
 		#if web
 		isHTML = true;
 		#end
-		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		var bg:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 		var html5Text:String = "You Are Not Using HTML5...\nThe Video Didnt Load!";
 		if (isHTML)
@@ -128,7 +132,7 @@ class VideoState extends MusicBeatState
 			html5Text = "You Are Using HTML5!";
 		}
 		defaultText = "If Your On HTML5\nTap Anything...\nThe Bottom Text Indicates If You\nAre Using HTML5...\n\n" + html5Text;
-		txt = new FlxText(0, 0, FlxG.width, defaultText, 32);
+		txt = new FlxUIText(0, 0, FlxG.width, defaultText, 32);
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
 		add(txt);

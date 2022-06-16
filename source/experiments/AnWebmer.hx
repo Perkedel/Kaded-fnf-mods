@@ -18,6 +18,7 @@
 
 package experiments;
 
+import flixel.addons.ui.FlxUIText;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxColor;
@@ -30,7 +31,7 @@ import vlc.VideoHandler as MP4Handler; // JOELwindows7: newe
 // import extension.android.*;
 class AnWebmer extends MusicBeatState
 {
-	public var infoText:FlxText;
+	public var infoText:FlxUIText;
 	public var ownVidSprite:VideoPlayer;
 	#if FEATURE_VLC
 	public var anVideo:MP4Handler;
@@ -40,7 +41,7 @@ class AnWebmer extends MusicBeatState
 	{
 		super.create();
 
-		infoText = new FlxText();
+		infoText = new FlxUIText();
 		infoText.text = "WEBM tester\n" + "\n" + "ENTER = Play the video\n" + "V = Play the video with VLC" + "\nESCAPE = Go back\n" + "";
 		infoText.size = 32;
 		infoText.screenCenter(X);

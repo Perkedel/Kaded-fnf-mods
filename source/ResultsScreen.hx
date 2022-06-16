@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 import CoreState;
 import haxe.Exception;
 #if FEATURE_STEPMANIA
@@ -36,18 +38,19 @@ using StringTools;
 
 // JOELwindows7: let use CoreSubState instead of FlxSubState instead!
 // I have more functions that are cool and good here.
+// also FlxUI this pls.
 class ResultsScreen extends CoreSubState
 {
-	public var background:FlxSprite;
-	public var text:FlxText;
+	public var background:FlxUISprite;
+	public var text:FlxUIText;
 
-	public var anotherBackground:FlxSprite;
+	public var anotherBackground:FlxUISprite;
 	public var graph:HitGraph;
 	public var graphSprite:OFLSprite;
 
-	public var comboText:FlxText;
-	public var contText:FlxText;
-	public var settingsText:FlxText;
+	public var comboText:FlxUIText;
+	public var contText:FlxUIText;
+	public var settingsText:FlxUIText;
 
 	public var music:FlxSound;
 
@@ -72,7 +75,8 @@ class ResultsScreen extends CoreSubState
 
 	override function create()
 	{
-		background = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		// JOELwindows7: cast!
+		background = cast new FlxUISprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		background.scrollFactor.set();
 		add(background);
 
@@ -86,7 +90,7 @@ class ResultsScreen extends CoreSubState
 
 		background.alpha = 0;
 
-		text = new FlxText(20, -55, 0, "Song Cleared!");
+		text = new FlxUIText(20, -55, 0, "Song Cleared!");
 		text.size = 34;
 		text.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
 		text.color = FlxColor.WHITE;
@@ -105,7 +109,7 @@ class ResultsScreen extends CoreSubState
 		var bads = PlayState.isStoryMode ? PlayState.campaignBads : PlayState.bads;
 		var shits = PlayState.isStoryMode ? PlayState.campaignShits : PlayState.shits;
 
-		comboText = new FlxText(20, -75, 0,
+		comboText = new FlxUIText(20, -75, 0,
 			'Judgements:\nSicks - ${sicks}\nGoods - ${goods}\nBads - ${bads}\n\nCombo Breaks: ${(PlayState.isStoryMode ? PlayState.campaignMisses : PlayState.misses)}\nHighest Combo: ${PlayState.highestCombo + 1}\nScore: ${PlayState.instance.songScore}\nAccuracy: ${HelperFunctions.truncateFloat(PlayState.instance.accuracy, 2)}%\n\n${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}\nRate: ${PlayState.songMultiplier}x\n\n${!PlayState.loadRep ? "\nF1 - Replay song" : ""}
         ');
 		comboText.size = 28;
@@ -114,14 +118,15 @@ class ResultsScreen extends CoreSubState
 		comboText.scrollFactor.set();
 		add(comboText);
 
-		contText = new FlxText(FlxG.width - 475, FlxG.height + 50, 0, 'Press ${KeyBinds.gamepad ? 'A' : 'ENTER'} to continue.');
+		contText = new FlxUIText(FlxG.width - 475, FlxG.height + 50, 0, 'Press ${KeyBinds.gamepad ? 'A' : 'ENTER'} to continue.');
 		contText.size = 28;
 		contText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
 		contText.color = FlxColor.WHITE;
 		contText.scrollFactor.set();
 		add(contText);
 
-		anotherBackground = new FlxSprite(FlxG.width - 500, 45).makeGraphic(450, 240, FlxColor.BLACK);
+		// JOELwindows7: Yeah
+		anotherBackground = cast new FlxUISprite(FlxG.width - 500, 45).makeGraphic(450, 240, FlxColor.BLACK);
 		anotherBackground.scrollFactor.set();
 		anotherBackground.alpha = 0;
 		add(anotherBackground);
@@ -175,7 +180,7 @@ class ResultsScreen extends CoreSubState
 
 		mean = HelperFunctions.truncateFloat(mean / PlayState.rep.replay.songNotes.length, 2);
 
-		settingsText = new FlxText(20, FlxG.height + 50, 0,
+		settingsText = new FlxUIText(20, FlxG.height + 50, 0,
 			'Mean: ${mean}ms (SICK:${Ratings.timingWindows[3]}ms,GOOD:${Ratings.timingWindows[2]}ms,BAD:${Ratings.timingWindows[1]}ms,SHIT:${Ratings.timingWindows[0]}ms)');
 		settingsText.size = 16;
 		settingsText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);

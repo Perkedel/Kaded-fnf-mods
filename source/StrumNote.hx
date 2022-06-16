@@ -1,15 +1,16 @@
 // JOELwindows7: yoink from https://github.com/kem0x/Nexus-Engine/blob/master/source/StrumNote.hx
 // what is this for? OH, it's for test okeh.
-
+// FlxUI fy this pls.
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
 using StringTools;
 
-class StrumNote extends FlxSprite
+class StrumNote extends FlxUISprite
 {
 	public var resetAnim:Float = 0;
 
@@ -39,8 +40,7 @@ class StrumNote extends FlxSprite
 		super(x, y);
 
 		// var skin:String = 'NOTE_assets';
-		var skin:String = PlayState.SONG.useCustomNoteStyle ? ('noteskins/' +
-			PlayState.SONG.noteStyle) : FlxG.save.data.noteskin;
+		var skin:String = PlayState.SONG.useCustomNoteStyle ? ('noteskins/' + PlayState.SONG.noteStyle) : FlxG.save.data.noteskin;
 		texture = skin; // Load texture and anims
 
 		scrollFactor.set();

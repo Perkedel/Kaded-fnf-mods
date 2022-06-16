@@ -34,6 +34,7 @@ import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import ui.components.input.InteractableUIGroup;
 import openfl.geom.Rectangle;
+#if FEATURE_MODCORE // JOELwindows7: filterer!
 import polymod.Polymod.ModMetadata;
 
 class ModListItem extends InteractableUIGroup
@@ -253,3 +254,4 @@ class ModListItem extends InteractableUIGroup
 		});
 	}
 }
+#end

@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
@@ -21,6 +22,8 @@ import haxe.io.Path;
 
 // import haxe.ui.components.Progress as ProgressBar; // JOELwindows7: a little help here?
 
+// JOElwindows7: FlxUI fy!!!
+
 class LoadingState extends MusicBeatState
 {
 	inline static var MIN_TIME = 1.0;
@@ -30,14 +33,14 @@ class LoadingState extends MusicBeatState
 	var stopMusic = false;
 	var callbacks:MultiCallback;
 
-	var logo:FlxSprite;
-	var gfDance:FlxSprite;
+	var logo:FlxUISprite;
+	var gfDance:FlxUISprite;
 	var danceLeft = false;
-	var bg:FlxSprite; // JOELwindows7: I prefer that also the week7 loading background to be global too as well.
+	var bg:FlxUISprite; // JOELwindows7: I prefer that also the week7 loading background to be global too as well.
 
 	// JOELwindows7: da loading bar pls
 	// var loadingBar:ProgressBar;
-	var loadBar:FlxSprite; // JOELwindows7: luckydog7's version
+	var loadBar:FlxUISprite; // JOELwindows7: luckydog7's version
 
 	var selectImageNumber:Int = 0; // JOELwindows7: choose loading images
 
@@ -63,7 +66,7 @@ class LoadingState extends MusicBeatState
 		// JOELwindows7: bekgron stuff
 		installStarfield3D(0, 0, FlxG.width, FlxG.height);
 		// the luckydog7's reverse engineer week7 loading bg
-		bg = new FlxSprite();
+		bg = new FlxUISprite();
 		// bg.loadGraphic(Paths.image('funkay'));
 		// JOELwindows7: yoink image above from https://github.com/luckydog7/Funkin-android/blob/master/assets/preload/images/funkay.png
 		bg.loadGraphic(Paths.image('loading/loading_screen' + Std.string(selectImageNumber), 'shared')); // JOELwindows7: the week7 loading screen LFM edition
@@ -81,11 +84,12 @@ class LoadingState extends MusicBeatState
 
 		// JOELwindows7: oh also luckydog7's reverse engineering I think loading bar & stuff?
 		// https://github.com/luckydog7/Funkin-android/blob/master/source/LoadingState.hx
-		loadBar = new FlxSprite(0, FlxG.height - 20).makeGraphic(FlxG.width, 10, -59694);
+		// cast too!
+		loadBar = cast new FlxUISprite(0, FlxG.height - 20).makeGraphic(FlxG.width, 10, -59694);
 		loadBar.screenCenter(FlxAxes.X);
 		add(loadBar);
 
-		logo = new FlxSprite(-150, -100);
+		logo = new FlxUISprite(-150, -100);
 		logo.frames = Paths.getSparrowAtlas('logoBumpin');
 		logo.antialiasing = FlxG.save.data.antialiasing;
 		logo.animation.addByPrefix('bump', 'logo bumpin', 24);
@@ -94,7 +98,7 @@ class LoadingState extends MusicBeatState
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
 
-		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
+		gfDance = new FlxUISprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);

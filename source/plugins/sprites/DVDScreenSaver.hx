@@ -18,6 +18,7 @@
 
 package plugins.sprites;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.system.FlxAssets;
 import flixel.graphics.FlxGraphic;
@@ -30,7 +31,7 @@ import flixel.FlxSprite;
  * DVD screensaver. running sprite that bounces back when hit the screen border.
  * @author JOELwindows7
  */
-class DVDScreenSaver extends FlxSprite{
+class DVDScreenSaver extends FlxUISprite{
 
     public function new(?theGraphic:FlxGraphicAsset, velocityX:Float = 100, velocityY:Float = 100){
         super();

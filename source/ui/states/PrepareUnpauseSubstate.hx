@@ -19,6 +19,8 @@
 package ui.states;
 
 // JOELwindows7: somehow the import detector IntelliSense broken today lmao!
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 import flixel.util.FlxTimer;
 import flixel.util.FlxSpriteUtil;
 import flixel.FlxSprite;
@@ -26,6 +28,8 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+
+// JOELwindows7: FlxUI fy!!!!!!!
 
 /**
  * This Substate appears upon unpausing to let you prepare with countdown like song start.
@@ -39,7 +43,7 @@ class PrepareUnpauseSubstate extends MusicBeatSubstate
 {
 	var startedCountdown:Bool = false;
 	var startTimer:FlxTimer;
-	var getReadyText:FlxText;
+	var getReadyText:FlxUIText;
 
 	/**
 	 * Construct unpause preparation countdown substate.
@@ -49,7 +53,7 @@ class PrepareUnpauseSubstate extends MusicBeatSubstate
 		super();
 		Debug.logInfo("Prepare for Unpause!");
 
-		getReadyText = new FlxText((FlxG.width / 2) - 100, (FlxG.height / 2) + 50, 0, "Get Ready!", 32);
+		getReadyText = new FlxUIText((FlxG.width / 2) - 100, (FlxG.height / 2) + 50, 0, "Get Ready!", 32);
 		getReadyText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // was vcr.ttf
 		getReadyText.scrollFactor.set();
 		getReadyText.screenCenter(XY);
@@ -120,7 +124,7 @@ class PrepareUnpauseSubstate extends MusicBeatSubstate
 					if (!silent)
 						FlxG.sound.play(Paths.sound('intro3' + altSuffix + midiSuffix), 0.6);
 				case 1:
-					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[0], week6Bullshit));
+					var ready:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(introAlts[0], week6Bullshit));
 					ready.scrollFactor.set();
 					ready.updateHitbox();
 
@@ -144,7 +148,7 @@ class PrepareUnpauseSubstate extends MusicBeatSubstate
 					// JOELwindows7: set color for get ready text
 					getReadyText.color = FlxColor.RED;
 				case 2:
-					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[1], week6Bullshit));
+					var set:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(introAlts[1], week6Bullshit));
 					set.scrollFactor.set();
 
 					if (PlayState.SONG.noteStyle == 'pixel')
@@ -167,7 +171,7 @@ class PrepareUnpauseSubstate extends MusicBeatSubstate
 					// JOELwindows7: set color for get ready text
 					getReadyText.color = FlxColor.YELLOW;
 				case 3:
-					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[2], week6Bullshit));
+					var go:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(introAlts[2], week6Bullshit));
 					go.scrollFactor.set();
 
 					if (PlayState.SONG.noteStyle == 'pixel')

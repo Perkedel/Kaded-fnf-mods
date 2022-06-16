@@ -18,6 +18,8 @@
 
 package;
 
+import flixel.addons.ui.FlxUIButton;
+import flixel.addons.ui.FlxUISprite;
 import flixel.system.FlxSoundGroup;
 import flixel.system.FlxSound;
 import flixel.input.gamepad.FlxGamepad;
@@ -120,34 +122,34 @@ class CoreState extends FlxUIState implements ICoreStating
 	private var haveDebugSevenedHeld:Bool = false;
 	private var haveShiftedHeld:Bool = false;
 
-	var backButton:FlxSprite; // JOELwindows7: the back button here
-	var leftButton:FlxSprite; // JOELwindows7: the left button here
-	var rightButton:FlxSprite; // JOELwindows7: the right button here
-	var upButton:FlxSprite; // JOELwindows7: the up button here
-	var downButton:FlxSprite; // JOELwindows7: the down button here
-	var pauseButton:FlxSprite; // JOELwindows7: the pause button here
-	var acceptButton:FlxSprite; // JOELwindows7: the accept button here
-	var retryButton:FlxSprite; // JOELwindows7: the retry button here
-	var viewReplayButton:FlxSprite; // JOELwindows7: the view replay button here
+	var backButton:FlxUISprite; // JOELwindows7: the back button here
+	var leftButton:FlxUISprite; // JOELwindows7: the left button here
+	var rightButton:FlxUISprite; // JOELwindows7: the right button here
+	var upButton:FlxUISprite; // JOELwindows7: the up button here
+	var downButton:FlxUISprite; // JOELwindows7: the down button here
+	var pauseButton:FlxUISprite; // JOELwindows7: the pause button here
+	var acceptButton:FlxUISprite; // JOELwindows7: the accept button here
+	var retryButton:FlxUISprite; // JOELwindows7: the retry button here
+	var viewReplayButton:FlxUISprite; // JOELwindows7: the view replay button here
 	// JOELwindows7: starfields here.
 	var starfield2D:FlxStarField2D;
 	var starfield3D:FlxStarField3D;
 	var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
 	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
 	// var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
-	var hourGlass:FlxSprite; // JOELwindows7: animated gravity hourglass Piskel
+	var hourGlass:FlxUISprite; // JOELwindows7: animated gravity hourglass Piskel
 
 	// JOELwindows7: okay, let's be real button instead.
-	var backButtonReal:FlxButton;
-	var leftButtonReal:FlxButton;
-	var rightButtonReal:FlxButton;
-	var upButtonReal:FlxButton;
-	var downButtonReal:FlxButton;
-	var pauseButtonReal:FlxButton;
-	var acceptButtonReal:FlxButton;
-	var retryButtonReal:FlxButton;
-	var viewReplayButtonReal:FlxButton;
-	var shiftButtonReal:FlxButton;
+	var backButtonReal:FlxUIButton;
+	var leftButtonReal:FlxUIButton;
+	var rightButtonReal:FlxUIButton;
+	var upButtonReal:FlxUIButton;
+	var downButtonReal:FlxUIButton;
+	var pauseButtonReal:FlxUIButton;
+	var acceptButtonReal:FlxUIButton;
+	var retryButtonReal:FlxUIButton;
+	var viewReplayButtonReal:FlxUIButton;
+	var shiftButtonReal:FlxUIButton;
 
 	// JOELwindows7: raw button situations
 	var rawMouseHeld:Bool = false;
@@ -246,7 +248,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	// JOELwindows7: buttons
 	private function addBackButton(x:Int = 100, y:Int = 720 - 100, scale:Float = .5)
 	{
-		backButton = new FlxSprite(x, y).loadGraphic(Paths.image('backButton'));
+		backButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale), Std.int(backButton.height * scale));
 		backButton.scrollFactor.set();
 		backButton.updateHitbox();
@@ -259,7 +261,7 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	private function addLeftButton(x:Int = 100, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		leftButton = new FlxSprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
+		leftButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale), Std.int(leftButton.height * scale));
 		leftButton.scrollFactor.set();
 		leftButton.updateHitbox();
@@ -272,7 +274,7 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	private function addRightButton(x:Int = 525, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		rightButton = new FlxSprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
+		rightButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale), Std.int(rightButton.height * scale));
 		rightButton.scrollFactor.set();
 		rightButton.updateHitbox();
@@ -285,7 +287,7 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	private function addUpButton(x:Int = 240, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		upButton = new FlxSprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
+		upButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
 		upButton.setGraphicSize(Std.int(upButton.width * scale), Std.int(upButton.height * scale));
 		upButton.scrollFactor.set();
 		upButton.updateHitbox();
@@ -298,7 +300,7 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	private function addDownButton(x:Int = 450, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		downButton = new FlxSprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
+		downButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
 		downButton.setGraphicSize(Std.int(downButton.width * scale), Std.int(downButton.height * scale));
 		downButton.scrollFactor.set();
 		downButton.updateHitbox();
@@ -311,7 +313,7 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	private function addPauseButton(x:Int = 640, y:Int = 10, scale:Float = .5)
 	{
-		pauseButton = new FlxSprite(x, y).loadGraphic(Paths.image('pauseButton'));
+		pauseButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('pauseButton'));
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale), Std.int(pauseButton.height * scale));
 		pauseButton.scrollFactor.set();
 		pauseButton.updateHitbox();
@@ -324,7 +326,7 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	private function addAcceptButton(x:Int = 1280 - 100, y:Int = 720 - 100, scale:Float = .5)
 	{
-		acceptButton = new FlxSprite(x, y).loadGraphic(Paths.image('acceptButton'));
+		acceptButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('acceptButton'));
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale), Std.int(acceptButton.height * scale));
 		acceptButton.scrollFactor.set();
 		acceptButton.updateHitbox();
@@ -337,7 +339,7 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	private function addRetryButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		retryButton = new FlxSprite(x, y).loadGraphic(Paths.image('retryButton'));
+		retryButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('retryButton'));
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale), Std.int(retryButton.height * scale));
 		retryButton.scrollFactor.set();
 		retryButton.updateHitbox();
@@ -350,7 +352,7 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	private function addViewReplayButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		viewReplayButton = new FlxSprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
+		viewReplayButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale), Std.int(viewReplayButton.height * scale));
 		viewReplayButton.scrollFactor.set();
 		viewReplayButton.updateHitbox();
@@ -380,9 +382,9 @@ class CoreState extends FlxUIState implements ICoreStating
 	}
 
 	// JOELwindows7: here shift button touchscreen mouse
-	private function addShiftButton(x:Int = 300, y:Int = 680):FlxButton
+	private function addShiftButton(x:Int = 300, y:Int = 680):FlxUIButton
 	{
-		shiftButtonReal = new FlxButton(x, y, 'Shift');
+		shiftButtonReal = new FlxUIButton(x, y, 'Shift');
 		shiftButtonReal.loadGraphic(Paths.loadImage('shiftButtonSmall'), false);
 		shiftButtonReal.onDown.callback = shiftButtonHeldCallback;
 		shiftButtonReal.onUp.callback = shiftButtonUnheldCallback;
@@ -390,7 +392,7 @@ class CoreState extends FlxUIState implements ICoreStating
 		return shiftButtonReal;
 	}
 
-	private function installBusyHourglassScreenSaver():FlxSprite
+	private function installBusyHourglassScreenSaver():FlxUISprite
 	{
 		hourGlass = new DVDScreenSaver(null, 100, 100);
 		hourGlass.frames = Paths.getSparrowAtlas('Gravity-HourGlass');
@@ -807,7 +809,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
 
-	var hourGlass:FlxSprite;
+	var hourGlass:FlxUISprite;
 
 	var defaultBekgron:FlxBackdrop;
 
@@ -842,27 +844,27 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	private var haveDebugSevenedHeld:Bool = false;
 	private var haveShiftedHeld:Bool = false;
 
-	var backButton:FlxSprite; // JOELwindows7: the back button here
-	var leftButton:FlxSprite; // JOELwindows7: the left button here
-	var rightButton:FlxSprite; // JOELwindows7: the right button here
-	var upButton:FlxSprite; // JOELwindows7: the up button here
-	var downButton:FlxSprite; // JOELwindows7: the down button here
-	var pauseButton:FlxSprite; // JOELwindows7: the pause button here
-	var acceptButton:FlxSprite; // JOELwindows7: the accept button here
-	var retryButton:FlxSprite; // JOELwindows7: the retry button here
-	var viewReplayButton:FlxSprite; // JOELwindows7: the view replay button here
+	var backButton:FlxUISprite; // JOELwindows7: the back button here
+	var leftButton:FlxUISprite; // JOELwindows7: the left button here
+	var rightButton:FlxUISprite; // JOELwindows7: the right button here
+	var upButton:FlxUISprite; // JOELwindows7: the up button here
+	var downButton:FlxUISprite; // JOELwindows7: the down button here
+	var pauseButton:FlxUISprite; // JOELwindows7: the pause button here
+	var acceptButton:FlxUISprite; // JOELwindows7: the accept button here
+	var retryButton:FlxUISprite; // JOELwindows7: the retry button here
+	var viewReplayButton:FlxUISprite; // JOELwindows7: the view replay button here
 
 	// JOELwindows7: okay, let's be real button instead.
-	var backButtonReal:FlxButton;
-	var leftButtonReal:FlxButton;
-	var rightButtonReal:FlxButton;
-	var upButtonReal:FlxButton;
-	var downButtonReal:FlxButton;
-	var pauseButtonReal:FlxButton;
-	var acceptButtonReal:FlxButton;
-	var retryButtonReal:FlxButton;
-	var viewReplayButtonReal:FlxButton;
-	var shiftButtonReal:FlxButton;
+	var backButtonReal:FlxUIButton;
+	var leftButtonReal:FlxUIButton;
+	var rightButtonReal:FlxUIButton;
+	var upButtonReal:FlxUIButton;
+	var downButtonReal:FlxUIButton;
+	var pauseButtonReal:FlxUIButton;
+	var acceptButtonReal:FlxUIButton;
+	var retryButtonReal:FlxUIButton;
+	var viewReplayButtonReal:FlxUIButton;
+	var shiftButtonReal:FlxUIButton;
 
 	public var camControl:FlxCamera;
 
@@ -933,7 +935,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	// JOELwindows7: buttons
 	private function addBackButton(x:Int = 720 - 200, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		backButton = new FlxSprite(x, y).loadGraphic(Paths.image('backButton'));
+		backButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale), Std.int(backButton.height * scale));
 		backButton.scrollFactor.set();
 		backButton.updateHitbox();
@@ -946,7 +948,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addLeftButton(x:Int = 100, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		leftButton = new FlxSprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
+		leftButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale), Std.int(leftButton.height * scale));
 		leftButton.scrollFactor.set();
 		leftButton.updateHitbox();
@@ -959,7 +961,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addRightButton(x:Int = 525, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		rightButton = new FlxSprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
+		rightButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale), Std.int(rightButton.height * scale));
 		rightButton.scrollFactor.set();
 		rightButton.updateHitbox();
@@ -972,7 +974,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addUpButton(x:Int = 240, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		upButton = new FlxSprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
+		upButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
 		upButton.setGraphicSize(Std.int(upButton.width * scale), Std.int(upButton.height * scale));
 		upButton.scrollFactor.set();
 		upButton.updateHitbox();
@@ -985,7 +987,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addDownButton(x:Int = 450, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		downButton = new FlxSprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
+		downButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
 		downButton.setGraphicSize(Std.int(downButton.width * scale), Std.int(downButton.height * scale));
 		downButton.scrollFactor.set();
 		downButton.updateHitbox();
@@ -998,7 +1000,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addPauseButton(x:Int = 640, y:Int = 10, scale:Float = .5)
 	{
-		pauseButton = new FlxSprite(x, y).loadGraphic(Paths.image('pauseButton'));
+		pauseButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('pauseButton'));
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale), Std.int(pauseButton.height * scale));
 		pauseButton.scrollFactor.set();
 		pauseButton.updateHitbox();
@@ -1011,7 +1013,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addAcceptButton(x:Int = 1280, y:Int = 360, scale:Float = .5)
 	{
-		acceptButton = new FlxSprite(x, y).loadGraphic(Paths.image('acceptButton'));
+		acceptButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('acceptButton'));
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale), Std.int(acceptButton.height * scale));
 		acceptButton.scrollFactor.set();
 		acceptButton.updateHitbox();
@@ -1024,7 +1026,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addRetryButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		retryButton = new FlxSprite(x, y).loadGraphic(Paths.image('retryButton'));
+		retryButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('retryButton'));
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale), Std.int(retryButton.height * scale));
 		retryButton.scrollFactor.set();
 		retryButton.updateHitbox();
@@ -1037,7 +1039,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addViewReplayButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		viewReplayButton = new FlxSprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
+		viewReplayButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale), Std.int(viewReplayButton.height * scale));
 		viewReplayButton.scrollFactor.set();
 		viewReplayButton.updateHitbox();
@@ -1067,9 +1069,9 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	}
 
 	// JOELwindows7: here shift button touchscreen mouse
-	private function addShiftButton(x:Int = 300, y:Int = 680):FlxButton
+	private function addShiftButton(x:Int = 300, y:Int = 680):FlxUIButton
 	{
-		shiftButtonReal = new FlxButton(x, y, 'Shift');
+		shiftButtonReal = new FlxUIButton(x, y, 'Shift');
 		shiftButtonReal.loadGraphic(Paths.loadImage('shiftButtonSmall'), false);
 		shiftButtonReal.onDown.callback = shiftButtonHeldCallback;
 		shiftButtonReal.onUp.callback = shiftButtonUnheldCallback;
@@ -1077,7 +1079,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 		return shiftButtonReal;
 	}
 
-	private function installBusyHourglassScreenSaver():FlxSprite
+	private function installBusyHourglassScreenSaver():FlxUISprite
 	{
 		hourGlass = new DVDScreenSaver(null, 100, 100);
 		hourGlass.frames = Paths.getSparrowAtlas('Gravity-HourGlass');
@@ -1572,34 +1574,34 @@ interface ICoreStating
 	private var haveShiftedHeld:Bool;
 
 	// JOELwindows7: default is public. explicitly private it!
-	private var backButton:FlxSprite; // JOELwindows7: the back button here
-	private var leftButton:FlxSprite; // JOELwindows7: the left button here
-	private var rightButton:FlxSprite; // JOELwindows7: the right button here
-	private var upButton:FlxSprite; // JOELwindows7: the up button here
-	private var downButton:FlxSprite; // JOELwindows7: the down button here
-	private var pauseButton:FlxSprite; // JOELwindows7: the pause button here
-	private var acceptButton:FlxSprite; // JOELwindows7: the accept button here
-	private var retryButton:FlxSprite; // JOELwindows7: the retry button here
-	private var viewReplayButton:FlxSprite; // JOELwindows7: the view replay button here
+	private var backButton:FlxUISprite; // JOELwindows7: the back button here
+	private var leftButton:FlxUISprite; // JOELwindows7: the left button here
+	private var rightButton:FlxUISprite; // JOELwindows7: the right button here
+	private var upButton:FlxUISprite; // JOELwindows7: the up button here
+	private var downButton:FlxUISprite; // JOELwindows7: the down button here
+	private var pauseButton:FlxUISprite; // JOELwindows7: the pause button here
+	private var acceptButton:FlxUISprite; // JOELwindows7: the accept button here
+	private var retryButton:FlxUISprite; // JOELwindows7: the retry button here
+	private var viewReplayButton:FlxUISprite; // JOELwindows7: the view replay button here
 	// JOELwindows7: starfields here.
 	private var starfield2D:FlxStarField2D;
 	private var starfield3D:FlxStarField3D;
 	private var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
 	private var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
 	// var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
-	private var hourGlass:FlxSprite; // JOELwindows7: animated gravity hourglass Piskel
+	private var hourGlass:FlxUISprite; // JOELwindows7: animated gravity hourglass Piskel
 
 	// JOELwindows7: okay, let's be real button instead.
-	private var backButtonReal:FlxButton;
-	private var leftButtonReal:FlxButton;
-	private var rightButtonReal:FlxButton;
-	private var upButtonReal:FlxButton;
-	private var downButtonReal:FlxButton;
-	private var pauseButtonReal:FlxButton;
-	private var acceptButtonReal:FlxButton;
-	private var retryButtonReal:FlxButton;
-	private var viewReplayButtonReal:FlxButton;
-	private var shiftButtonReal:FlxButton;
+	private var backButtonReal:FlxUIButton;
+	private var leftButtonReal:FlxUIButton;
+	private var rightButtonReal:FlxUIButton;
+	private var upButtonReal:FlxUIButton;
+	private var downButtonReal:FlxUIButton;
+	private var pauseButtonReal:FlxUIButton;
+	private var acceptButtonReal:FlxUIButton;
+	private var retryButtonReal:FlxUIButton;
+	private var viewReplayButtonReal:FlxUIButton;
+	private var shiftButtonReal:FlxUIButton;
 
 	// JOELwindows7: raw button situations
 	private var rawMouseHeld:Bool;
@@ -1641,22 +1643,22 @@ interface ICoreStating
 	private function initCamControl():Void;
 
 	// JOELwindows7: buttons
-	private function addBackButton(x:Int = 720 - 200, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
+	private function addBackButton(x:Int = 720 - 200, y:Int = 1280 - 100, scale:Float = .5):FlxUISprite;
 
-	private function addLeftButton(x:Int = 100, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
+	private function addLeftButton(x:Int = 100, y:Int = 1280 - 100, scale:Float = .5):FlxUISprite;
 
-	private function addRightButton(x:Int = 525, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
-	private function addUpButton(x:Int = 240, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
+	private function addRightButton(x:Int = 525, y:Int = 1280 - 100, scale:Float = .5):FlxUISprite;
+	private function addUpButton(x:Int = 240, y:Int = 1280 - 100, scale:Float = .5):FlxUISprite;
 
-	private function addDownButton(x:Int = 450, y:Int = 1280 - 100, scale:Float = .5):FlxSprite;
+	private function addDownButton(x:Int = 450, y:Int = 1280 - 100, scale:Float = .5):FlxUISprite;
 
-	private function addPauseButton(x:Int = 640, y:Int = 10, scale:Float = .5):FlxSprite;
+	private function addPauseButton(x:Int = 640, y:Int = 10, scale:Float = .5):FlxUISprite;
 
-	private function addAcceptButton(x:Int = 1280, y:Int = 360, scale:Float = .5):FlxSprite;
+	private function addAcceptButton(x:Int = 1280, y:Int = 360, scale:Float = .5):FlxUISprite;
 
-	private function addRetryButton(x:Int = 500, y:Int = 500, scale:Float = .5):FlxSprite;
+	private function addRetryButton(x:Int = 500, y:Int = 500, scale:Float = .5):FlxUISprite;
 
-	private function addViewReplayButton(x:Int = 500, y:Int = 500, scale:Float = .5):FlxSprite;
+	private function addViewReplayButton(x:Int = 500, y:Int = 500, scale:Float = .5):FlxUISprite;
 
 	private function shiftButtonCallback():Void;
 
@@ -1665,9 +1667,9 @@ interface ICoreStating
 	private function shiftButtonUnheldCallback():Void;
 
 	// JOELwindows7: here shift button touchscreen mouse
-	private function addShiftButton(x:Int = 300, y:Int = 680):FlxButton;
+	private function addShiftButton(x:Int = 300, y:Int = 680):FlxUIButton;
 
-	private function installBusyHourglassScreenSaver():FlxSprite;
+	private function installBusyHourglassScreenSaver():FlxUISprite;
 
 	private function addTouchScreenButtons(howManyButtons:Int = 4, initVisible:Bool = false):OnScreenGameplayButtons;
 

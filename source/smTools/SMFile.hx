@@ -8,6 +8,7 @@ import lime.app.Application;
 import Section.SwagSection;
 import haxe.Json;
 
+// TODO: JOELwindows7: I thin I can attempt to multi diff & modes here. idk. just array of headers yeah!
 class SMFile
 {
 	public static function loadFile(path):SMFile

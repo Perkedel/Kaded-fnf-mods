@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.util.FlxAxes;
 import utils.Asset2File;
 import flixel.util.FlxDestroyUtil;
@@ -120,7 +121,7 @@ class HaxeScriptState
 
 	// var instancering;
 	// Some other variables
-	public static var hscriptSprite:Map<String, FlxSprite> = [];
+	public static var hscriptSprite:Map<String, FlxUISprite> = [];
 
 	public var haxeWiggles:Map<String, WiggleEffect> = new Map<String, WiggleEffect>();
 
@@ -1829,7 +1830,7 @@ class HaxeScriptState
 		);
 		trace("bitmap data " + Std.string(data));
 
-		var sprite:FlxSprite = new FlxSprite(0, 0);
+		var sprite:FlxUISprite = new FlxUISprite(0, 0);
 		var imgWidth:Float = FlxG.width / data.width;
 		var imgHeight:Float = FlxG.height / data.height;
 		var scale:Float = imgWidth <= imgHeight ? imgWidth : imgHeight;
@@ -1968,7 +1969,7 @@ class HaxeScriptState
 		var data:BitmapData = BitmapData.fromFile(#if !mobile path + "/" + spritePath + ".png" #else Asset2File.getPath(path + "/" + spritePath + ".png") #end
 		);
 
-		var sprite:FlxSprite = new FlxSprite(0, 0);
+		var sprite:FlxUISprite = new FlxUISprite(0, 0);
 
 		// sprite.frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data), Sys.getCwd() + "assets/data/" + songLowercase + "/" + spritePath + ".xml");
 		sprite.frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data), Paths.xml(songLowercase + "/" + spritePath));

@@ -1,12 +1,14 @@
 // JOELwindows7: Psyched note splash lmao
 // yoink from https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/NoteSplash.hx
+// pls FlxUI fy
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
-class NoteSplash extends FlxSprite
+class NoteSplash extends FlxUISprite
 {
 	// public var colorSwap:ColorSwap = null;
 	private var idleAnim:String;

@@ -18,6 +18,7 @@
 
 package plugins.sprites;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.system.FlxAssets;
 import flixel.graphics.FlxGraphic;
@@ -28,7 +29,7 @@ import flixel.FlxSprite;
  * Busy hourGlass for loading animation stuffs
  * @author JOELwindows7
  */
-class BusyHourglass extends FlxSprite{
+class BusyHourglass extends FlxUISprite{
     public function new(positionX:Float = 100, positionY:Float = 100){
         super();
         frames = Paths.getSparrowAtlas('Gravity-HourGlass');

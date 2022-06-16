@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
 #if FEATURE_LUAMODCHART
@@ -18,6 +20,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
+// JOELwindows7: FlxUI fy!
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -40,12 +43,12 @@ class PauseSubState extends MusicBeatSubstate
 
 	var noMusicPls:Bool = false; // JOELwindows7: enable to skip adding music.
 
-	var perSongOffset:FlxText;
+	var perSongOffset:FlxUIText;
 
 	var offsetChanged:Bool = false;
 	var startOffset:Float = PlayState.songOffset;
 
-	var bg:FlxSprite;
+	var bg:FlxUISprite;
 
 	public static var inCharter:Bool = false; // JOELwindows7: set this for in chartener or not.
 	public static var inStoryMenu:Bool = false; // JOELwindows7: maybe we should make this substate aware where state are we instead?
@@ -135,12 +138,13 @@ class PauseSubState extends MusicBeatSubstate
 				pauseMusic.destroy(); // JOELwindows7: make sure it completely destroy for no music allowed mode.
 		}
 
-		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		// JOELwindows7: recast
+		bg = cast new FlxUISprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0;
 		bg.scrollFactor.set();
 		add(bg);
 
-		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
+		var levelInfo:FlxUIText = new FlxUIText(20, 15, 0, "", 32);
 		levelInfo.text += PlayState.SONG.songName;
 		levelInfo.scrollFactor.set();
 		// levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
@@ -148,7 +152,7 @@ class PauseSubState extends MusicBeatSubstate
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
-		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
+		var levelDifficulty:FlxUIText = new FlxUIText(20, 15 + 32, 0, "", 32);
 		levelDifficulty.text += CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toUpperCase();
 		levelDifficulty.scrollFactor.set();
 		// levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
@@ -157,7 +161,7 @@ class PauseSubState extends MusicBeatSubstate
 		add(levelDifficulty);
 
 		// JOELwindows7: show how many you failed during playing this song.
-		var levelBlueballs:FlxText = new FlxText(20, 15 + (32 * 2), 0, "", 32);
+		var levelBlueballs:FlxUIText = new FlxUIText(20, 15 + (32 * 2), 0, "", 32);
 		levelBlueballs.text += "Blueballed: " + Std.string(GameOverSubstate.getBlueballCounter());
 		levelBlueballs.scrollFactor.set();
 		// levelBlueballs.setFormat(Paths.font('vcr.ttf'), 32);
@@ -180,8 +184,8 @@ class PauseSubState extends MusicBeatSubstate
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
-		// perSongOffset = new FlxText(5, FlxG.height - 18, 0, "Hello chat", 12);
-		perSongOffset = new FlxText(5, FlxG.height - 18, 0, "Song ID: " + PlayState.SONG.songId + " | Hello Chat", 12); // JOELwindows7: don't empty that this!
+		// perSongOffset = new FlxUIText(5, FlxG.height - 18, 0, "Hello chat", 12);
+		perSongOffset = new FlxUIText(5, FlxG.height - 18, 0, "Song ID: " + PlayState.SONG.songId + " | Hello Chat", 12); // JOELwindows7: don't empty that this!
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
@@ -669,7 +673,8 @@ class PauseSubState extends MusicBeatSubstate
 	}
 
 	// JOELwindows7: move them here!
-	override function manageMouse(){
+	override function manageMouse()
+	{
 		super.manageMouse();
 	}
 }

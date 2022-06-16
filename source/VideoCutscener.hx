@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.addons.ui.FlxUIText;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.text.FlxText;
 import flixel.FlxG;
@@ -92,7 +93,7 @@ class VideoSelfContained extends MusicBeatState
 	public var pauseText:String = "Press P To Pause/Unpause";
 	public var autoPause:Bool = false;
 	public var musicPaused:Bool = false;
-	public var txt:FlxText;
+	public var txt:FlxUIText;
 	public var peckingVolume:Float = 1;
 
 	var defaultText:String = "";
@@ -147,7 +148,7 @@ class VideoSelfContained extends MusicBeatState
 			donedCallback();
 		}
 
-		txt = new FlxText(0, 0, FlxG.width, defaultText, 32);
+		txt = new FlxUIText(0, 0, FlxG.width, defaultText, 32);
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
 		add(txt);
@@ -194,7 +195,7 @@ class VLCState extends MusicBeatState
 	public var pauseText:String = "Press P To Pause/Unpause";
 	public var autoPause:Bool = false;
 	public var musicPaused:Bool = false;
-	public var txt:FlxText;
+	public var txt:FlxUIText;
 	public var peckingVolume:Float = 1;
 
 	var defaultText:String = "";
@@ -278,7 +279,7 @@ class VLCState extends MusicBeatState
 		donedCallback();
 		#end
 
-		txt = new FlxText(0, 0, FlxG.width, defaultText, 32);
+		txt = new FlxUIText(0, 0, FlxG.width, defaultText, 32);
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
 		add(txt);

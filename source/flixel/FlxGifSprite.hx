@@ -1,5 +1,6 @@
 package flixel;
 
+import flixel.addons.ui.FlxUISprite;
 import com.yagp.GifDecoder;
 import com.yagp.Gif;
 import com.yagp.GifPlayer;
@@ -17,8 +18,10 @@ import haxe.ValueException;
 import flixel.system.FlxGifAsset;
 import haxe.io.Bytes;
 
+// JOELwindows7: FlxUIfy pls
+
 @:access(openfl.utils.ByteArrayData)
-class FlxGifSprite extends FlxSprite
+class FlxGifSprite extends FlxUISprite
 {
 	public var gif:Gif;
 	public var player:GifPlayer;

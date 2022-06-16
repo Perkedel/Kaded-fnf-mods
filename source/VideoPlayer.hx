@@ -2,6 +2,7 @@
 // https://github.com/luckydog7/Funkin-android/blob/master/source/VideoPlayer.hx
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import openfl.utils.Assets;
 // import utils.AndroidData;
 import flixel.FlxG;
@@ -17,6 +18,8 @@ import openfl.media.Video;
 #end
 import flixel.FlxSprite;
 
+// JOELwindows7: flxui fy?
+
 /**
 	usage:
 	var video = new VideoPlayer('videos/ughintro.webm');
@@ -26,7 +29,7 @@ import flixel.FlxSprite;
 	- Bitstream not supported by this decoder
 	maybe use vp8 (idk)
 **/
-class VideoPlayer extends FlxSprite
+class VideoPlayer extends FlxUISprite
 {
 	public static var SKIP_STEP_LIMIT:Int = 90;
 

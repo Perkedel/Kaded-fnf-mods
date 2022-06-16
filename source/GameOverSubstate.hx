@@ -11,6 +11,8 @@ import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
+//JOELwindows7: FlxUI fy!!!
+
 class GameOverSubstate extends MusicBeatSubstate
 {
 	// class TesMo{} // TEST: JOELwindows7: class definition is not allowed inside a class defintion.
@@ -129,7 +131,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				if (handoverUnspawnNotes[i].mustPress)
 				{
-					// var imageArrow = new FlxSprite(handoverUnspawnNotes[i].x, handoverUnspawnNotes[i].y, handoverUnspawnNotes[i].graphic);
+					// var imageArrow = new FlxUISprite(handoverUnspawnNotes[i].x, handoverUnspawnNotes[i].y, handoverUnspawnNotes[i].graphic);
 					var imageArrow = handoverUnspawnNotes[i];
 					imageArrow.totalOverride = true; // Must be on, don't let update parameter holds the original angle supposed to be.
 					// imageArrow.animation.play(imageArrow.dataColor[imageArrow.noteData] + 'Scroll');
@@ -153,7 +155,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			for (i in 0...handoverStaticArrow.length)
 			{
-				// var imageStaticArrow = new FlxSprite(handoverStaticArrow[i].x, handoverStaticArrow[i].y, handoverStaticArrow[i].graphic);
+				// var imageStaticArrow = new FlxUISprite(handoverStaticArrow[i].x, handoverStaticArrow[i].y, handoverStaticArrow[i].graphic);
 				var imageStaticArrow = handoverStaticArrow[i];
 				imageStaticArrow.totalOverride = true; // this must be on to disable enforcement (update) by external parameters.
 				imageStaticArrow.playAnim('static');

@@ -26,7 +26,7 @@ also a **Friday Night Funkin modding engine** yey!!!
   - [Linux x64](https://odysee.com/@JOELwindows7:a/last-funkin-moments:b?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
   - ~~[Linux 32 bit](https://odysee.com/@JOELwindows7:a/last-funkin-32bit )~~
   - [Win64](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows:c?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
-  - [Win32](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows32 )
+  - ~~[Win32](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows32 )~~
   - [macOS](https://odysee.com/@JOELwindows7:a/last-funkin-moments-macOS)
   - [Android](https://odysee.com/@JOELwindows7:a/last-funkin-moments-android )
 - GameBanana https://gamebanana.com/mods/293257

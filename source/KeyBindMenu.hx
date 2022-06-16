@@ -2,7 +2,8 @@ package;
 
 /// Code created by Rozebud for FPS Plus (thanks rozebud)
 // modified by KadeDev for use in Kade Engine/Tricky
-
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIText;
 import GalleryAchievements;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.util.FlxAxes;
@@ -27,10 +28,12 @@ import flixel.input.FlxKeyManager;
 
 using StringTools;
 
-class KeyBindMenu extends FlxSubState
+// JOELwindows7: despite this outdated. maybe still uh.. adapt to for..?
+// FlxUI fy, corestate fy, everything.
+class KeyBindMenu extends CoreSubState // FlxSubState
 {
-	var keyTextDisplay:FlxText;
-	var keyWarning:FlxText;
+	var keyTextDisplay:FlxUIText;
+	var keyWarning:FlxUIText;
 	var warningTween:FlxTween;
 	var keyText:Array<String> = [
 		"LEFT", "DOWN", "UP", "RIGHT", "PAUSE", "RESET", "MUTE", "VOLUME UP", "VOLUME DOWN", "FULLSCREEN"
@@ -56,8 +59,8 @@ class KeyBindMenu extends FlxSubState
 	var tempKey:String = "";
 	var blacklist:Array<String> = ["ESCAPE", "BACKSPACE", "SPACE", "TAB"];
 
-	var blackBox:FlxSprite;
-	var infoText:FlxText;
+	var blackBox:FlxUISprite;
+	var infoText:FlxUIText;
 
 	var state:String = "select";
 
@@ -79,16 +82,16 @@ class KeyBindMenu extends FlxSubState
 
 		persistentUpdate = true;
 
-		keyTextDisplay = new FlxText(-10, 0, 1280, "", 72);
+		keyTextDisplay = new FlxUIText(-10, 0, 1280, "", 72);
 		keyTextDisplay.scrollFactor.set(0, 0);
 		keyTextDisplay.setFormat("VCR OSD Mono", 42, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		keyTextDisplay.borderSize = 3;
 		keyTextDisplay.borderQuality = 1;
 
-		blackBox = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		blackBox = cast new FlxUISprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(blackBox);
 
-		infoText = new FlxText(-10, 630, 1280,
+		infoText = new FlxUIText(-10, 630, 1280,
 			'Current Mode: ${KeyBinds.gamepad ? 'GAMEPAD' : 'KEYBOARD'}. Press TAB to switch\n(${KeyBinds.gamepad ? 'RIGHT Trigger' : 'Escape'} to save, ${KeyBinds.gamepad ? 'LEFT Trigger' : 'Backspace'} to leave without saving. ${KeyBinds.gamepad ? 'START To change a keybind' : ''})',
 			72);
 		infoText.scrollFactor.set(0, 0);
@@ -111,8 +114,8 @@ class KeyBindMenu extends FlxSubState
 
 		super.create();
 
-        //JOELwindows7: stuffs
-        AchievementUnlocked.whichIs("key_map");
+		// JOELwindows7: stuffs
+		AchievementUnlocked.whichIs("key_map");
 	}
 
 	var frames = 0;
@@ -470,11 +473,12 @@ class KeyBindMenu extends FlxSubState
 		if (curSelected < 0)
 			curSelected = 9;
 	}
-	//JOELwindows7: go to item for mouse
-    function goToItem(_amount:Int = 0)
+
+	// JOELwindows7: go to item for mouse
+	function goToItem(_amount:Int = 0)
 	{
 		curSelected = _amount;
-				
+
 		if (curSelected > 9)
 			curSelected = 0;
 		if (curSelected < 0)

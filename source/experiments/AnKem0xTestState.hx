@@ -1,6 +1,8 @@
 package experiments;
 
 // JOELwindows7: yoink from https://github.com/kem0x/Nexus-Engine/blob/master/source/TestState.hx
+// pls flxui this
+import flixel.addons.ui.FlxUISprite;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -23,7 +25,7 @@ using StringTools;
 class AnKem0xTestState extends AbstractTestMenu
 {
 	var strumLineNotes:FlxTypedGroup<StrumNote>;
-	var strumLine:FlxSprite;
+	var strumLine:FlxUISprite;
 
 	public function new()
 	{
@@ -32,7 +34,8 @@ class AnKem0xTestState extends AbstractTestMenu
 
 	override function create()
 	{
-		strumLine = new FlxSprite(0, 50).makeGraphic(Std.int(112 * 4), 4);
+		// JOELwindows7: cast
+		strumLine = cast new FlxUISprite(0, 50).makeGraphic(Std.int(112 * 4), 4);
 
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		for (i in 0...4)

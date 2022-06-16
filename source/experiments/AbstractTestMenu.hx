@@ -18,6 +18,7 @@
 
 package experiments;
 
+import flixel.addons.ui.FlxUIText;
 import flixel.FlxState;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.addons.display.FlxStarField;
@@ -29,7 +30,7 @@ import flixel.text.FlxText;
 // import extension.android.*;
 class AbstractTestMenu extends MusicBeatState
 {
-	public var infoText:FlxText;
+	public var infoText:FlxUIText;
 	public var wouldGoBackToStateOf:FlxState = new MainMenuState();
 	public var needsSpeciallyLoad:Bool = false;
 
@@ -37,7 +38,7 @@ class AbstractTestMenu extends MusicBeatState
 	{
 		super.create();
 
-		infoText = new FlxText();
+		infoText = new FlxUIText();
 		infoText.text = "ESCAPE = Go back\n" + "";
 		infoText.size = 32;
 		infoText.screenCenter(X);

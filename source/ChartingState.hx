@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.util.FlxTimer;
 import const.Perkedel;
 import tjson.TJSON;
@@ -62,6 +63,8 @@ import Discord.DiscordClient;
 
 using StringTools;
 
+// JOELwindows7: Yo! for things that meant for UI stuffs, whyn't use FlxUI addon classes instead?!
+// you should use e.g. `FlxUISprite` instead of regular `FlxSprite` bruh!!!
 class ChartingState extends MusicBeatState
 {
 	public static var instance:ChartingState;
@@ -101,26 +104,27 @@ class ChartingState extends MusicBeatState
 
 	public static var lastSection:Int = 0;
 
-	var bpmTxt:FlxText;
+	// JOELwindows7: go ye
+	var bpmTxt:FlxUIText;
 
-	var strumLine:FlxSprite;
+	var strumLine:FlxUISprite;
 	var curSong:String = 'Dad Battle';
 	var amountSteps:Int = 0;
 	var bullshitUI:FlxGroup;
-	var writingNotesText:FlxText;
-	var highlight:FlxSprite;
+	var writingNotesText:FlxUIText;
+	var highlight:FlxUISprite;
 
 	var GRID_SIZE:Int = 40;
 
 	var subDivisions:Float = 1;
 	var defaultSnap:Bool = true;
 
-	var dummyArrow:FlxSprite;
+	var dummyArrow:FlxUISprite;
 
 	var curRenderedNotes:FlxTypedGroup<Note>;
-	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
+	var curRenderedSustains:FlxTypedGroup<FlxUISprite>;
 
-	var gridBG:FlxSprite;
+	var gridBG:FlxUISprite;
 
 	public var sectionRenderes:FlxTypedGroup<SectionRender>;
 
@@ -134,7 +138,7 @@ class ChartingState extends MusicBeatState
 	var curSelectedNote:Array<Dynamic>;
 
 	var tempBpm:Float = 0;
-	var gridBlackLine:FlxSprite;
+	var gridBlackLine:FlxUISprite;
 	var vocals:FlxSound;
 
 	var player2:Character = new Character(0, 0, "dad");
@@ -150,11 +154,11 @@ class ChartingState extends MusicBeatState
 
 	private var lastNote:Note;
 
-	public var lines:FlxTypedGroup<FlxSprite>;
+	public var lines:FlxTypedGroup<FlxUISprite>;
 
 	var claps:Array<Note> = [];
 
-	public var snapText:FlxText;
+	public var snapText:FlxUIText;
 
 	var camFollow:FlxObject;
 
@@ -228,8 +232,8 @@ class ChartingState extends MusicBeatState
 			FlxG.save.data.showHelp = true;
 
 		sectionRenderes = new FlxTypedGroup<SectionRender>();
-		lines = new FlxTypedGroup<FlxSprite>();
-		texts = new FlxTypedGroup<FlxText>();
+		lines = new FlxTypedGroup<FlxUISprite>();
+		texts = new FlxTypedGroup<FlxUIText>();
 
 		TimingStruct.clearTimings();
 
@@ -295,16 +299,17 @@ class ChartingState extends MusicBeatState
 		if (_song.chartVersion == null)
 			_song.chartVersion = "2";
 
-		// var blackBorder:FlxSprite = new FlxSprite(60,10).makeGraphic(120,100,FlxColor.BLACK);
+		// JOELwindows7: event comment?
+		// var blackBorder:FlxUISprite = cast new FlxUISprite(60,10).makeGraphic(120,100,FlxColor.BLACK);
 		// blackBorder.scrollFactor.set();
 
 		// blackBorder.alpha = 0.3;
 
-		snapText = new FlxText(60, 10, 0, "", 14);
+		snapText = new FlxUIText(60, 10, 0, "", 14);
 		snapText.scrollFactor.set();
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
-		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
+		curRenderedSustains = new FlxTypedGroup<FlxUISprite>();
 
 		FlxG.mouse.visible = true;
 
@@ -420,6 +425,7 @@ class ChartingState extends MusicBeatState
 
 			var down = getYfromStrum(renderer.section.startTime) * zoomFactor;
 
+			// JOELwindows7: at this point should gonna cast right at the end, should we? right??
 			var sectionicon = _song.notes[awfgaw].mustHitSection ? new HealthIcon(_song.player1).clone() : new HealthIcon(_song.player2).clone();
 			sectionicon.x = -95;
 			sectionicon.y = down - 75;
@@ -432,8 +438,8 @@ class ChartingState extends MusicBeatState
 			gfSectionIcon.setGraphicSize(0, 45);
 			gfSectionIcon.visible = _song.notes[awfgaw].gfSection != null ? _song.notes[awfgaw].gfSection != null : false;
 
-			renderer.icon = sectionicon;
-			renderer.iconGf = gfSectionIcon;
+			renderer.icon = cast sectionicon;
+			renderer.iconGf = cast gfSectionIcon;
 			renderer.lastUpdated = _song.notes[awfgaw].mustHitSection;
 
 			add(sectionicon);
@@ -443,7 +449,8 @@ class ChartingState extends MusicBeatState
 
 		Debug.logTrace(height);
 
-		gridBlackLine = new FlxSprite(gridBG.width / 2).makeGraphic(2, height, FlxColor.BLACK);
+		// JOELwindows7: yea boyyyyyyyyyy
+		gridBlackLine = cast new FlxUISprite(gridBG.width / 2).makeGraphic(2, height, FlxColor.BLACK);
 
 		// leftIcon.scrollFactor.set();
 		// rightIcon.scrollFactor.set();
@@ -464,13 +471,14 @@ class ChartingState extends MusicBeatState
 		rightIcon.scrollFactor.set();
 		middleIcon.scrollFactor.set(); // JOELwindows7: here
 
-		bpmTxt = new FlxText(985, 25, 0, "", 16);
+		bpmTxt = new FlxUIText(985, 25, 0, "", 16);
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);
 
-		strumLine = new FlxSprite(0, 0).makeGraphic(Std.int(GRID_SIZE * 8), 4);
+		// JOELwindows7: cast it up buddy!
+		strumLine = cast new FlxUISprite(0, 0).makeGraphic(Std.int(GRID_SIZE * 8), 4);
 
-		dummyArrow = new FlxSprite().makeGraphic(GRID_SIZE, GRID_SIZE);
+		dummyArrow = cast new FlxUISprite().makeGraphic(GRID_SIZE, GRID_SIZE);
 		var tabs = [
 			{name: "Song", label: 'Song Data'},
 			{name: "Section", label: 'Section Data'},
@@ -544,7 +552,7 @@ class ChartingState extends MusicBeatState
 		// super.create(); //JOELwindows7: moved to top
 	}
 
-	public var texts:FlxTypedGroup<FlxText>;
+	public var texts:FlxTypedGroup<FlxUIText>;
 
 	function regenerateLines()
 	{
@@ -582,8 +590,9 @@ class ChartingState extends MusicBeatState
 
 				var type = i.type;
 
-				var text = new FlxText(-190, pos, 0, i.name + "\n" + type + "\n" + i.value, 12);
-				var line = new FlxSprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLUE);
+				// JOELwindows7: gruing gruing guring
+				var text:FlxUIText = cast new FlxUIText(-190, pos, 0, i.name + "\n" + type + "\n" + i.value, 12);
+				var line:FlxUISprite = cast new FlxUISprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLUE);
 
 				line.alpha = 0.2;
 
@@ -599,7 +608,8 @@ class ChartingState extends MusicBeatState
 			var pos = getYfromStrum(i.section.startTime) * zoomFactor;
 			i.icon.y = pos - 75;
 
-			var line = new FlxSprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLACK);
+			// JOELwindows7: hokeh
+			var line:FlxUISprite = cast new FlxUISprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLACK);
 			line.alpha = 0.4;
 			lines.add(line);
 		}
@@ -613,7 +623,8 @@ class ChartingState extends MusicBeatState
 			h = GRID_SIZE;
 
 		remove(gridBG);
-		gridBG = FlxGridOverlay.create(GRID_SIZE, Std.int(h), GRID_SIZE * 8, GRID_SIZE * 16);
+		// JOELwindows7: crodoc
+		gridBG = cast FlxGridOverlay.create(GRID_SIZE, Std.int(h), GRID_SIZE * 8, GRID_SIZE * 16);
 		Debug.logTrace(gridBG.height);
 		// gridBG.scrollFactor.set();
 		// gridBG.x += 358;
@@ -633,8 +644,9 @@ class ChartingState extends MusicBeatState
 
 		// add(gridBG);
 
+		// JOELwindows7: kengzen
 		remove(gridBlackLine);
-		gridBlackLine = new FlxSprite(0 + gridBG.width / 2).makeGraphic(2, Std.int(Math.floor(lengthInSteps)), FlxColor.BLACK);
+		gridBlackLine = cast new FlxUISprite(0 + gridBG.width / 2).makeGraphic(2, Std.int(Math.floor(lengthInSteps)), FlxColor.BLACK);
 		add(gridBlackLine);
 	}
 
@@ -679,10 +691,10 @@ class ChartingState extends MusicBeatState
 			firstEvent = _song.eventObjects[0].name;
 		}
 
-		var listLabel = new FlxText(10, 5, 'List of Events');
-		var nameLabel = new FlxText(150, 5, 'Event Name');
+		var listLabel = new FlxUIText(10, 5, 'List of Events');
+		var nameLabel = new FlxUIText(150, 5, 'Event Name');
 		var eventName = new FlxUIInputText(150, 20, 80, "");
-		var typeLabel = new FlxText(10, 45, 'Type of Event');
+		var typeLabel = new FlxUIText(10, 45, 'Type of Event');
 		// JOELwindows7: alright, here events
 		// theseEvents; //here.
 		// JOELwindows7: list of event here
@@ -710,7 +722,7 @@ class ChartingState extends MusicBeatState
 				item: theseEvents[i],
 			});
 		}
-		var valueLabel = new FlxText(150, 45, 'Event Value');
+		var valueLabel = new FlxUIText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");
 		// JOELwindows7: moar of them!
 		var eventValue2 = new FlxUIInputText(230, 60, 80, "");
@@ -803,7 +815,7 @@ class ChartingState extends MusicBeatState
 
 			Debug.logTrace('end');
 		});
-		var posLabel = new FlxText(150, 85, 'Event Position');
+		var posLabel = new FlxUIText(150, 85, 'Event Position');
 		var eventPos = new FlxUIInputText(150, 100, 80, "");
 		var eventAdd = new FlxUIButton(95, 155, "Add Event", function()
 		{
@@ -1475,7 +1487,7 @@ class ChartingState extends MusicBeatState
 		// JOELwindows7: put the charter / author input text field here somewhere
 		var UI_charter = new FlxUIInputText(10, 50, 70, _song.charter, 8);
 		typingShit2 = UI_charter;
-		var stepperAuthorLabel = new FlxText(80, 50, 'Chart Author');
+		var stepperAuthorLabel = new FlxUIText(80, 50, 'Chart Author');
 
 		var saveButton:FlxUIButton = new FlxUIButton(110, 8, "Save", function()
 		{
@@ -1514,13 +1526,13 @@ class ChartingState extends MusicBeatState
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 
-		var stepperBPMLabel = new FlxText(74, 65, 'BPM');
+		var stepperBPMLabel = new FlxUIText(74, 65, 'BPM');
 
 		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, 80, 0.1, 1, 0.1, 10, 1);
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 
-		var stepperSpeedLabel = new FlxText(74, 80, 'Scroll Speed');
+		var stepperSpeedLabel = new FlxUIText(74, 80, 'Scroll Speed');
 
 		var stepperVocalVol:FlxUINumericStepper = new FlxUINumericStepper(10, 95, 0.1, 1, 0.1, 10, 1);
 		#if FEATURE_STEPMANIA
@@ -1533,21 +1545,21 @@ class ChartingState extends MusicBeatState
 		#end
 		stepperVocalVol.name = 'song_vocalvol';
 
-		var stepperVocalVolLabel = new FlxText(74, 95, 'Vocal Volume');
+		var stepperVocalVolLabel = new FlxUIText(74, 95, 'Vocal Volume');
 
 		var stepperSongVol:FlxUINumericStepper = new FlxUINumericStepper(10, 110, 0.1, 1, 0.1, 10, 1);
 		stepperSongVol.value = FlxG.sound.music.volume;
 		stepperSongVol.name = 'song_instvol';
 
-		var stepperSongVolLabel = new FlxText(74, 110, 'Instrumental Volume');
+		var stepperSongVolLabel = new FlxUIText(74, 110, 'Instrumental Volume');
 
-		var shiftNoteDialLabel = new FlxText(10, 245, 'Shift All Notes by # Sections');
+		var shiftNoteDialLabel = new FlxUIText(10, 245, 'Shift All Notes by # Sections');
 		var stepperShiftNoteDial:FlxUINumericStepper = new FlxUINumericStepper(10, 260, 1, 0, -1000, 1000, 0);
 		stepperShiftNoteDial.name = 'song_shiftnote';
-		var shiftNoteDialLabel2 = new FlxText(10, 275, 'Shift All Notes by # Steps');
+		var shiftNoteDialLabel2 = new FlxUIText(10, 275, 'Shift All Notes by # Steps');
 		var stepperShiftNoteDialstep:FlxUINumericStepper = new FlxUINumericStepper(10, 290, 1, 0, -1000, 1000, 0);
 		stepperShiftNoteDialstep.name = 'song_shiftnotems';
-		var shiftNoteDialLabel3 = new FlxText(10, 305, 'Shift All Notes by # ms');
+		var shiftNoteDialLabel3 = new FlxUIText(10, 305, 'Shift All Notes by # ms');
 		var stepperShiftNoteDialms:FlxUINumericStepper = new FlxUINumericStepper(10, 320, 1, 0, -1000, 1000, 2);
 		stepperShiftNoteDialms.name = 'song_shiftnotems';
 
@@ -1573,7 +1585,7 @@ class ChartingState extends MusicBeatState
 		});
 		player1DropDown.selectedLabel = _song.player1;
 
-		var player1Label = new FlxText(10, 80, 64, 'Player 1');
+		var player1Label = new FlxUIText(10, 80, 64, 'Player 1');
 
 		var player2DropDown = new FlxUIDropDownMenu(140, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
@@ -1581,7 +1593,7 @@ class ChartingState extends MusicBeatState
 		});
 		player2DropDown.selectedLabel = _song.player2;
 
-		var player2Label = new FlxText(140, 80, 64, 'Player 2');
+		var player2Label = new FlxUIText(140, 80, 64, 'Player 2');
 
 		var gfVersionDropDown = new FlxUIDropDownMenu(10, 200, FlxUIDropDownMenu.makeStrIdLabelArray(gfVersions, true), function(gfVersion:String)
 		{
@@ -1589,7 +1601,7 @@ class ChartingState extends MusicBeatState
 		});
 		gfVersionDropDown.selectedLabel = _song.gfVersion;
 
-		var gfVersionLabel = new FlxText(10, 180, 64, 'Girlfriend');
+		var gfVersionLabel = new FlxUIText(10, 180, 64, 'Girlfriend');
 
 		var stageDropDown = new FlxUIDropDownMenu(140, 200, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stage:String)
 		{
@@ -1597,7 +1609,7 @@ class ChartingState extends MusicBeatState
 		});
 		stageDropDown.selectedLabel = _song.stage;
 
-		var stageLabel = new FlxText(140, 180, 64, 'Stage');
+		var stageLabel = new FlxUIText(140, 180, 64, 'Stage');
 
 		var noteStyleDropDown = new FlxUIDropDownMenu(10, 300, FlxUIDropDownMenu.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String)
 		{
@@ -1605,7 +1617,7 @@ class ChartingState extends MusicBeatState
 		});
 		noteStyleDropDown.selectedLabel = _song.noteStyle;
 
-		var noteStyleLabel = new FlxText(10, 280, 64, 'Note Skin');
+		var noteStyleLabel = new FlxUIText(10, 280, 64, 'Note Skin');
 
 		// JOELwindows7: pinpoint the UI group tab window. do add your stuff here I guess
 
@@ -1674,7 +1686,7 @@ class ChartingState extends MusicBeatState
 		tab_group_section.name = 'Section';
 
 		var stepperCopy:FlxUINumericStepper = new FlxUINumericStepper(110, 132, 1, 1, -999, 999, 0);
-		var stepperCopyLabel = new FlxText(174, 132, 'sections back');
+		var stepperCopyLabel = new FlxUIText(174, 132, 'sections back');
 
 		var copyButton:FlxUIButton = new FlxUIButton(10, 130, "Copy last section", function()
 		{
@@ -1713,6 +1725,7 @@ class ChartingState extends MusicBeatState
 			{
 				if (i.section.startTime == sect.startTime)
 				{
+					// JOELwindows7: well uh, cast it up. idk man.
 					var cachedY = i.icon.y;
 					remove(i.icon);
 					var sectionicon = check_mustHitSection.checked ? new HealthIcon(_song.player1).clone() : new HealthIcon(_song.player2).clone();
@@ -1727,8 +1740,8 @@ class ChartingState extends MusicBeatState
 					gfSectionIcon.setGraphicSize(0, 45);
 					gfSectionIcon.visible = check_gfHitSection.checked;
 
-					i.icon = sectionicon;
-					i.iconGf = gfSectionIcon;
+					i.icon = cast sectionicon;
+					i.iconGf = cast gfSectionIcon;
 					i.lastUpdated = sect.mustHitSection;
 
 					add(sectionicon);
@@ -1756,6 +1769,7 @@ class ChartingState extends MusicBeatState
 			{
 				if (i.section.startTime == sect.startTime)
 				{
+					// JOELwindows7: cast at the end yeah.
 					var cachedY = i.icon.y;
 					remove(i.icon);
 					var sectionicon = check_mustHitSection.checked ? new HealthIcon(_song.player1).clone() : new HealthIcon(_song.player2).clone();
@@ -1770,8 +1784,8 @@ class ChartingState extends MusicBeatState
 					gfSectionIcon.setGraphicSize(0, 45);
 					gfSectionIcon.visible = check_gfHitSection.checked;
 
-					i.icon = sectionicon;
-					i.iconGf = gfSectionIcon; // JOELwindows7: here gf icon
+					i.icon = cast sectionicon;
+					i.iconGf = cast gfSectionIcon; // JOELwindows7: here gf icon
 					i.lastUpdated = sect.gfSection;
 
 					add(sectionicon);
@@ -1943,13 +1957,13 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		var stepperSusLengthLabel = new FlxText(74, 10, 'Note Sustain Length');
+		var stepperSusLengthLabel = new FlxUIText(74, 10, 'Note Sustain Length');
 
-		var stepperNoteTypeLabel = new FlxText(74, 40, 'Note Type'); // JOELwindows7: note type label
+		var stepperNoteTypeLabel = new FlxUIText(74, 40, 'Note Type'); // JOELwindows7: note type label
 
-		var hitsoundNotePathLabel = new FlxText(95, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label
+		var hitsoundNotePathLabel = new FlxUIText(95, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label
 
-		var stepperVowelTypeLabel = new FlxText(74, 100, 'Vowel Type'); // JOELwindows7: vowel type label
+		var stepperVowelTypeLabel = new FlxUIText(74, 100, 'Vowel Type'); // JOELwindows7: vowel type label
 
 		var applyLength:FlxUIButton = new FlxUIButton(10, 340, 'Apply Data',
 			function()
@@ -2024,7 +2038,8 @@ class ChartingState extends MusicBeatState
 
 					if (note.sustainLength > 0)
 					{
-						var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2),
+						// JOELwindows7: woo yeah
+						var sustainVis:FlxUISprite = cast new FlxUISprite(note.x + (GRID_SIZE / 2),
 							note.y + GRID_SIZE).makeGraphic(8, Math.floor((getYfromStrum(note.strumTime + note.sustainLength) * zoomFactor) - note.y));
 
 						note.noteCharterObject = sustainVis;
@@ -2098,7 +2113,8 @@ class ChartingState extends MusicBeatState
 
 					if (note.sustainLength > 0)
 					{
-						var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2),
+						// JOELwindows7: okey yea
+						var sustainVis:FlxUISprite = cast new FlxUISprite(note.x + (GRID_SIZE / 2),
 							note.y + GRID_SIZE).makeGraphic(8, Math.floor((getYfromStrum(note.strumTime + note.sustainLength) * zoomFactor) - note.y));
 
 						note.noteCharterObject = sustainVis;
@@ -2200,7 +2216,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		// general shit
-		var title:FlxText = new FlxText(UI_box.x + 20, UI_box.y + 20, 0);
+		var title:FlxUIText = new FlxUIText(UI_box.x + 20, UI_box.y + 20, 0);
 		bullshitUI.add(title);
 		/* 
 			var loopCheck = new FlxUICheckBox(UI_box.x + 10, UI_box.y + 50, null, null, "Loops", 100, ['loop check']);
@@ -2528,8 +2544,9 @@ class ChartingState extends MusicBeatState
 			i.y = getYfromStrum(i.strumTime) * zoomFactor;
 			if (i.noteCharterObject != null)
 			{
+				// JOELwindows7: yey
 				curRenderedSustains.remove(i.noteCharterObject);
-				var sustainVis:FlxSprite = new FlxSprite(i.x + (GRID_SIZE / 2),
+				var sustainVis:FlxUISprite = cast new FlxUISprite(i.x + (GRID_SIZE / 2),
 					i.y + GRID_SIZE).makeGraphic(8, Math.floor((getYfromStrum(i.strumTime + i.sustainLength) * zoomFactor) - i.y), FlxColor.WHITE);
 
 				i.noteCharterObject = sustainVis;
@@ -2545,7 +2562,7 @@ class ChartingState extends MusicBeatState
 	public var selectedBoxes:FlxTypedGroup<ChartingBox>;
 
 	public var waitingForRelease:Bool = false;
-	public var selectBox:FlxSprite;
+	public var selectBox:FlxUISprite;
 
 	public var copiedNotes:Array<Array<Dynamic>> = [];
 	public var pastedNotes:Array<Note> = [];
@@ -2776,7 +2793,8 @@ class ChartingState extends MusicBeatState
 					{
 						Debug.logTrace("creating select box");
 						waitingForRelease = true;
-						selectBox = new FlxSprite(FlxG.mouse.x, FlxG.mouse.y);
+						// JOELwindows7: yeah
+						selectBox = new FlxUISprite(FlxG.mouse.x, FlxG.mouse.y);
 						selectBox.makeGraphic(0, 0, FlxColor.fromRGB(173, 216, 230));
 						selectBox.alpha = 0.4;
 
@@ -3365,6 +3383,7 @@ class ChartingState extends MusicBeatState
 
 					Debug.logTrace(sect);
 
+					// JOELwindows7: cast at the end.
 					sect.mustHitSection = !sect.mustHitSection;
 					updateHeads();
 					check_mustHitSection.checked = sect.mustHitSection;
@@ -3382,8 +3401,8 @@ class ChartingState extends MusicBeatState
 					gfSectionIcon.setGraphicSize(0, 45);
 					gfSectionIcon.visible = check_gfHitSection.checked;
 
-					i.icon = sectionicon;
-					i.iconGf = gfSectionIcon;
+					i.icon = cast sectionicon;
+					i.iconGf = cast gfSectionIcon;
 					i.lastUpdated = sect.mustHitSection;
 
 					add(sectionicon);
@@ -3586,7 +3605,7 @@ class ChartingState extends MusicBeatState
 
 				remove(curSelectedNoteObject.noteCharterObject);
 
-				var sustainVis:FlxSprite = new FlxSprite(curSelectedNoteObject.x + (GRID_SIZE / 2),
+				var sustainVis:FlxUISprite = cast new FlxUISprite(curSelectedNoteObject.x + (GRID_SIZE / 2),
 					curSelectedNoteObject.y + GRID_SIZE).makeGraphic(8,
 					Math.floor((getYfromStrum(curSelectedNoteObject.strumTime + curSelectedNote[2]) * zoomFactor) - curSelectedNoteObject.y));
 				curSelectedNoteObject.sustainLength = curSelectedNote[2];
@@ -3707,6 +3726,7 @@ class ChartingState extends MusicBeatState
 
 		function iconUpdate(failsafe:Bool = false):Void
 		{
+			// JOELwindows7: cast at the end
 			var sect = _song.notes[curSection];
 			var cachedY = i.icon.y;
 			remove(i.icon);
@@ -3721,8 +3741,8 @@ class ChartingState extends MusicBeatState
 			gfSectionIcon.setGraphicSize(0, 45);
 			gfSectionIcon.visible = gfHit;
 
-			i.icon = sectionicon;
-			i.iconGf = gfSectionIcon;
+			i.icon = cast sectionicon;
+			i.iconGf = cast gfSectionIcon;
 			i.lastUpdated = sect.mustHitSection;
 
 			add(sectionicon);
@@ -3854,7 +3874,8 @@ class ChartingState extends MusicBeatState
 
 				if (daSus > 0)
 				{
-					var sustainVis:FlxSprite = new FlxSprite(note.x + (GRID_SIZE / 2),
+					// JOELwindows7: yey
+					var sustainVis:FlxUISprite = cast new FlxUISprite(note.x + (GRID_SIZE / 2),
 						note.y + GRID_SIZE).makeGraphic(8, Math.floor((getYfromStrum(note.strumTime + note.sustainLength) * zoomFactor) - note.y));
 
 					note.noteCharterObject = sustainVis;

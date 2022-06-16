@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.addons.ui.FlxUI;
 import flixel.FlxState;
 import plugins.sprites.QmovephBackground;
@@ -33,6 +34,7 @@ import flixel.addons.ui.FlxUIState;
 using StringTools;
 
 // JOELwindows7: now inherit from CoreState instead of FlxUIState
+// also pls FlxUI fy this!
 class MusicBeatState extends CoreState
 {
 	// JOELwindows7: all var I add moved to CoreState.hx
@@ -75,6 +77,17 @@ class MusicBeatState extends CoreState
 		if (Std.isOfType(Object, FlxSprite))
 		{
 			var spr:FlxSprite = cast(Object, FlxSprite);
+			if (spr.graphic != null)
+			{
+				if (spr.graphic.bitmap.image == null)
+					if (FlxG.save.data.annoyingWarns)
+						Debug.logWarn("you are adding a fuckin null texture (THIS WILL CRASH YOUR GAME!)");
+			}
+		}
+		// JOELwindows7: FlxUISprite version!
+		else if (Std.isOfType(Object, FlxUISprite))
+		{
+			var spr:FlxUISprite = cast(Object, FlxUISprite);
 			if (spr.graphic != null)
 			{
 				if (spr.graphic.bitmap.image == null)

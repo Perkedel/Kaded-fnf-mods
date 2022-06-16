@@ -18,6 +18,7 @@
 
 package ui;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.addons.ui.FlxUIButton;
 import ui.states.modding.ModMenuState;
 import flixel.text.FlxText;
@@ -89,8 +90,8 @@ class SplashScreen extends MusicBeatState
 	var _aModOfText:FlxUIText;
 	var _aPressEscapeToBiosText:FlxUIText;
 	var _aPressEscapeToBiosButton:FlxUIButton;
-	var _productLogo:FlxSprite;
-	var _companyLogo:FlxSprite;
+	var _productLogo:FlxUISprite;
+	var _companyLogo:FlxUISprite;
 
 	public function new()
 	{
@@ -197,14 +198,14 @@ class SplashScreen extends MusicBeatState
 		add(_aPressEscapeToBiosButton);
 		_aPressEscapeToBiosButton.visible = !CarryAround.modAlreadyLoaded() && CarryAround.supportsModding(); // only visiblize if not already loaded & supports modding
 
-		_productLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("LFMLogoSplash"));
+		_productLogo = new FlxUISprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("LFMLogoSplash"));
 		_productLogo.setPosition((FlxG.width / 2) - (_productLogo.width / 2), (FlxG.height / 2) - (_productLogo.height / 2));
 		_productLogo.screenCenter(XY);
 		_productLogo.scrollFactor.set();
 		_productLogo.antialiasing = FlxG.save.data.antialiasing;
 		add(_productLogo);
 
-		_companyLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("Perkedel_Logo_Typeborder"));
+		_companyLogo = new FlxUISprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("Perkedel_Logo_Typeborder"));
 		// _companyLogo.scale.x = _companyLogo.scale.y = .5;
 		_companyLogo.setGraphicSize(Std.int(_companyLogo.width * .075), Std.int(_companyLogo.height * .075));
 		_companyLogo.setPosition((FlxG.width / 2) - (_companyLogo.width / 2), (FlxG.height / 2) - (_companyLogo.height / 2) + 80);

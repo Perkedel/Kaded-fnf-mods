@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import Paths;
@@ -36,7 +37,9 @@ import sys.FileSystem;
 
 using StringTools;
 
-class TankmenBG extends FlxSprite
+// JOELwindows7: FlxUI fy!
+
+class TankmenBG extends FlxUISprite
 {
 	public var tankSpeed:Float = 0.7 * 1000;
 	public var goingRight:Bool = false;

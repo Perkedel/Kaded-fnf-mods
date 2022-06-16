@@ -1,3 +1,4 @@
+import flixel.addons.ui.*;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -17,22 +18,23 @@ import flixel.FlxG;
 
 using StringTools;
 
+// JOELwindows7: FlxUI fy!!!
 class GameplayCustomizeState extends MusicBeatState
 {
 	var defaultX:Float = FlxG.width * 0.55 - 135;
 	var defaultY:Float = FlxG.height / 2 - 50;
 
-	var sick:FlxSprite;
+	var sick:FlxUISprite;
 
-	var text:FlxText;
-	var blackBorder:FlxSprite;
+	var text:FlxUIText;
+	var blackBorder:FlxUISprite;
 
-	var laneunderlay:FlxSprite;
-	var laneunderlayOpponent:FlxSprite;
+	var laneunderlay:FlxUISprite;
+	var laneunderlayOpponent:FlxUISprite;
 
-	var strumLine:FlxSprite;
-	var strumLineNotes:FlxTypedGroup<FlxSprite>;
-	var playerStrums:FlxTypedGroup<FlxSprite>;
+	var strumLine:FlxUISprite;
+	var strumLineNotes:FlxTypedGroup<FlxUISprite>;
+	var playerStrums:FlxTypedGroup<FlxUISprite>;
 	var cpuStrums:FlxTypedGroup<StaticArrow>;
 
 	var camPos:FlxPoint;
@@ -246,7 +248,7 @@ class GameplayCustomizeState extends MusicBeatState
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
-		strumLine = new FlxSprite(0, FlxG.save.data.strumline).makeGraphic(FlxG.width, 14);
+		strumLine = new FlxUISprite(0, FlxG.save.data.strumline).makeGraphic(FlxG.width, 14);
 		strumLine.scrollFactor.set();
 		strumLine.alpha = 0.4;
 
@@ -255,13 +257,13 @@ class GameplayCustomizeState extends MusicBeatState
 		if (FlxG.save.data.downscroll)
 			strumLine.y = FlxG.height - 165;
 
-		laneunderlayOpponent = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		laneunderlayOpponent = new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlayOpponent.alpha = 1 - FlxG.save.data.laneTransparency;
 		laneunderlayOpponent.color = FlxColor.BLACK;
 		laneunderlayOpponent.scrollFactor.set();
 		laneunderlayOpponent.cameras = [camHUD];
 
-		laneunderlay = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		laneunderlay = new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlay.alpha = 1 - FlxG.save.data.laneTransparency;
 		laneunderlay.color = FlxColor.BLACK;
 		laneunderlay.scrollFactor.set();
@@ -276,10 +278,10 @@ class GameplayCustomizeState extends MusicBeatState
 			add(laneunderlay);
 		}
 
-		strumLineNotes = new FlxTypedGroup<FlxSprite>();
+		strumLineNotes = new FlxTypedGroup<FlxUISprite>();
 		add(strumLineNotes);
 
-		playerStrums = new FlxTypedGroup<FlxSprite>();
+		playerStrums = new FlxTypedGroup<FlxUISprite>();
 		cpuStrums = new FlxTypedGroup<StaticArrow>();
 
 		if (freeplayNoteStyle == 'pixel')
@@ -290,7 +292,7 @@ class GameplayCustomizeState extends MusicBeatState
 			pixelShitPart4 = 'week6';
 		}
 
-		sick = new FlxSprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'sick' + pixelShitPart2, pixelShitPart3));
+		sick = new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'sick' + pixelShitPart2, pixelShitPart3));
 		sick.setGraphicSize(Std.int(sick.width * 0.7));
 		sick.scrollFactor.set();
 
@@ -318,13 +320,13 @@ class GameplayCustomizeState extends MusicBeatState
 		laneunderlay.screenCenter(Y);
 		laneunderlayOpponent.screenCenter(Y);
 
-		text = new FlxText(5, FlxG.height + 40, 0,
+		text = new FlxUIText(5, FlxG.height + 40, 0,
 			"Click and drag around gameplay elements to customize their positions. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.",
 			12);
 		text.scrollFactor.set();
 		text.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
-		blackBorder = new FlxSprite(-30, FlxG.height + 40).makeGraphic((Std.int(text.width + 900)), Std.int(text.height + 600), FlxColor.BLACK);
+		blackBorder = new FlxUISprite(-30, FlxG.height + 40).makeGraphic((Std.int(text.width + 900)), Std.int(text.height + 600), FlxColor.BLACK);
 		blackBorder.alpha = 0.5;
 
 		blackBorder.cameras = [camHUD];
@@ -402,7 +404,7 @@ class GameplayCustomizeState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.C)
 		{
-			var visibleCombos:Array<FlxSprite> = [];
+			var visibleCombos:Array<FlxUISprite> = [];
 
 			var seperatedScore:Array<Int> = [];
 
@@ -426,7 +428,8 @@ class GameplayCustomizeState extends MusicBeatState
 			var daLoop:Int = 0;
 			for (i in seperatedScore)
 			{
-				var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2, pixelShitPart4));
+				var numScore:FlxUISprite = new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2,
+					pixelShitPart4));
 				numScore.screenCenter();
 				numScore.x = sick.x + (43 * daLoop) - 50;
 				numScore.y = sick.y + 100;
@@ -613,7 +616,7 @@ class GameplayCustomizeState extends MusicBeatState
 			if (FlxG.save.data.middleScroll)
 				babyArrow.x -= 320;
 
-			cpuStrums.forEach(function(spr:FlxSprite)
+			cpuStrums.forEach(function(spr:FlxUISprite)
 			{
 				spr.centerOffsets(); // CPU arrows start out slightly off-center
 			});

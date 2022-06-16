@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import const.Perkedel;
 import CoreState;
 import GalleryAchievements;
@@ -26,13 +27,14 @@ import Discord.DiscordClient;
 
 using StringTools;
 
+// JOELwindows7: FlxUI fy!
 class MainMenuState extends MusicBeatState
 {
 	var curSelected:Int = 0;
 	// JOELwindows7: which clicked & have they clicked.
 	var curClicked:Int = 0;
 
-	var menuItems:FlxTypedGroup<FlxSprite>;
+	var menuItems:FlxTypedGroup<FlxUISprite>;
 
 	#if !switch
 	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
@@ -53,7 +55,7 @@ class MainMenuState extends MusicBeatState
 	public static var lastFunkinMomentVer:String = Perkedel.ENGINE_VERSION + larutMalam; // JOELwindows7: last funkin moments version
 	public static var yourModVer:String = "0.0.0.0"; // JOELwindows7: your own mod version
 
-	var magenta:FlxSprite;
+	var magenta:FlxUISprite;
 	var camFollow:FlxObject;
 
 	public static var finishedFunnyMove:Bool = false;
@@ -75,7 +77,8 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('MenuBGAlt')); // JOELwindows7: was menuBG
+		// JOELwindows7: cast
+		var bg:FlxUISprite = cast new FlxUISprite(-100).loadGraphic(Paths.loadImage('MenuBGAlt')); // JOELwindows7: was menuBG
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.10;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
@@ -87,7 +90,8 @@ class MainMenuState extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
-		magenta = new FlxSprite(-80).loadGraphic(Paths.loadImage('MenuBGDesatAlt')); // JOELwindows7: was menuDesat
+		// JOELwindows7: cast
+		magenta = cast new FlxUISprite(-80).loadGraphic(Paths.loadImage('MenuBGDesatAlt')); // JOELwindows7: was menuDesat
 		magenta.scrollFactor.x = 0;
 		magenta.scrollFactor.y = 0.10;
 		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
@@ -99,7 +103,7 @@ class MainMenuState extends MusicBeatState
 		add(magenta);
 		// magenta.scrollFactor.set();
 
-		menuItems = new FlxTypedGroup<FlxSprite>();
+		menuItems = new FlxTypedGroup<FlxUISprite>();
 		add(menuItems);
 
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
@@ -111,7 +115,7 @@ class MainMenuState extends MusicBeatState
 
 		for (i in 0...optionShit.length)
 		{
-			var menuItem:FlxSprite = new FlxSprite(0, FlxG.height * 1.6);
+			var menuItem:FlxUISprite = new FlxUISprite(0, FlxG.height * 1.6);
 			menuItem.frames = tex;
 			// menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			// menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
@@ -283,7 +287,7 @@ class MainMenuState extends MusicBeatState
 					if (FlxG.save.data.flashing)
 						FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
-					menuItems.forEach(function(spr:FlxSprite)
+					menuItems.forEach(function(spr:FlxUISprite)
 					{
 						if (curSelected != spr.ID)
 						{
@@ -334,7 +338,7 @@ class MainMenuState extends MusicBeatState
 
 		// JOELwindows7: not my code, but this one is important!
 		// do this all time to center the spr every single time!
-		menuItems.forEach(function(spr:FlxSprite)
+		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			// JOELwindows7: itterate sprite menu items overlaps and click functions
 			if (!selectedSomethin && FlxG.mouse.visible && finishedFunnyMove)
@@ -403,7 +407,7 @@ class MainMenuState extends MusicBeatState
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
 		}
-		menuItems.forEach(function(spr:FlxSprite)
+		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			spr.animation.play('idle');
 
@@ -432,7 +436,7 @@ class MainMenuState extends MusicBeatState
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
 		}
-		menuItems.forEach(function(spr:FlxSprite)
+		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			spr.animation.play('idle');
 

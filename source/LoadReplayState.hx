@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import lime.utils.Assets;
 import CoreState;
 import haxe.Json;
@@ -30,6 +31,7 @@ import sys.io.File;
 
 using StringTools;
 
+// JOELwindows7: FlxUI fy
 class LoadReplayState extends MusicBeatState
 {
 	var initWeekJson:SwagWeeks; // JOELwindows7: week JSON
@@ -48,7 +50,7 @@ class LoadReplayState extends MusicBeatState
 
 	override function create()
 	{
-		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('replayBg')); // JOELwindows7: was menuDesat
+		var menuBG:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage('replayBg')); // JOELwindows7: was menuDesat
 		// TODO: Refactor this to use OpenFlAssets.
 		#if FEATURE_FILESYSTEM
 		controlsStrings = sys.FileSystem.readDirectory(Sys.getCwd() + "/assets/replays/");

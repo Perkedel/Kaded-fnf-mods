@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
@@ -7,11 +8,12 @@ import flixel.graphics.frames.FlxAtlasFrames;
 
 using StringTools;
 
-class StaticArrow extends FlxSprite
+// JOELwindows7: change the object to FlxUISprite, idk.
+class StaticArrow extends FlxUISprite
 {
 	public var modifiedByLua:Bool = false;
 	public var modAngle:Float = 0; // The angle set by modcharts
-	public var totalOverride:Bool = false; //JOELwindows7: enable to disable special parametering & leave its original parametering.
+	public var totalOverride:Bool = false; // JOELwindows7: enable to disable special parametering & leave its original parametering.
 	public var localAngle:Float = 0; // The angle to be edited inside here
 
 	public function new(xx:Float, yy:Float)
@@ -24,7 +26,8 @@ class StaticArrow extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if(!totalOverride){ //JOELwindows7: here total overrider.
+		if (!totalOverride)
+		{ // JOELwindows7: here total overrider.
 			if (!modifiedByLua)
 				angle = localAngle + modAngle;
 			else

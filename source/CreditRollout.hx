@@ -21,6 +21,7 @@
  * @author JOELwindows7
  *
  */
+import flixel.addons.ui.FlxUIText;
 import flixel.FlxG;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
@@ -33,11 +34,11 @@ import flixel.group.FlxGroup;
  * Credit Fades in out for seasonal series e.g.
  * @author JOELwindows7
  */
-class CreditRollout extends FlxTypedGroup<FlxText>
+class CreditRollout extends FlxTypedGroup<FlxUIText>
 {
-	public var textTitle:FlxText;
-	public var textName:FlxText;
-	public var textRole:FlxText;
+	public var textTitle:FlxUIText;
+	public var textName:FlxUIText;
+	public var textRole:FlxUIText;
 
 	var linesOfThem:Array<String> = ["Lorem Ipsum:Dolor Sit Amet:Consectetur Adipiscing Elit",]; // lines of the credit roll
 	var indexening:Int = 0;
@@ -53,17 +54,17 @@ class CreditRollout extends FlxTypedGroup<FlxText>
 
 	public function build()
 	{
-		textTitle = new FlxText(90, FlxG.height - 200, 0, "Title", 20);
+		textTitle = new FlxUIText(90, FlxG.height - 200, 0, "Title", 20);
 		textTitle.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		textTitle.scrollFactor.set();
 		textTitle.alpha = 0;
 
-		textName = new FlxText(90, textTitle.y + textTitle.height + 2, 0, "Lorem Ipsum", 44);
+		textName = new FlxUIText(90, textTitle.y + textTitle.height + 2, 0, "Lorem Ipsum", 44);
 		textName.setFormat(Paths.font("vcr.ttf"), 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		textName.scrollFactor.set();
 		textName.alpha = 0;
 
-		textRole = new FlxText(90, textName.y + textName.height + 2, 0, "Dolor sit", 14);
+		textRole = new FlxUIText(90, textName.y + textName.height + 2, 0, "Dolor sit", 14);
 		textRole.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		textRole.scrollFactor.set();
 		textRole.alpha = 0;

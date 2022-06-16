@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import ui.states.PrepareUnpauseSubstate;
 #if EXPERIMENTAL_KEM0X_SHADERS
 import DynamicShaderHandler; // JOELwindows7: kem0x mod shader https://github.com/kem0x/FNF-ModShaders
@@ -138,9 +139,10 @@ class PlayState extends MusicBeatState
 	public static var goods:Int = 0;
 	public static var sicks:Int = 0;
 
-	public static var songPosBG:FlxSprite;
+	// JOELwindows7: everything here make it FlxUISprite!
+	public static var songPosBG:FlxUISprite;
 
-	public var visibleCombos:Array<FlxSprite> = [];
+	public var visibleCombos:Array<FlxUISprite> = [];
 
 	public var addedBotplay:Bool = false;
 
@@ -168,9 +170,9 @@ class PlayState extends MusicBeatState
 	var halloweenLevel:Bool = false;
 
 	// JOELwindows7: global backgrounder. to prioritize add() in order after all variable has been filled with instances
-	var bgAll:FlxTypedGroup<FlxSprite>;
-	var stageFrontAll:FlxTypedGroup<FlxSprite>;
-	var stageCurtainAll:FlxTypedGroup<FlxSprite>;
+	var bgAll:FlxTypedGroup<FlxUISprite>;
+	var stageFrontAll:FlxTypedGroup<FlxUISprite>;
+	var stageCurtainAll:FlxTypedGroup<FlxUISprite>;
 	var trailAll:FlxTypedGroup<FlxTrail>;
 
 	// JOELwindows7: numbers of Missnote sfx! load from text file, how many Miss notes you had?
@@ -223,7 +225,7 @@ class PlayState extends MusicBeatState
 
 	private var unspawnNotes:Array<Note> = [];
 
-	public var strumLine:FlxSprite;
+	public var strumLine:FlxUISprite;
 
 	private var curSection:Int = 0;
 
@@ -232,22 +234,22 @@ class PlayState extends MusicBeatState
 	private static var prevCamFollow:FlxObject;
 
 	// JOELwindows7: oh the blackbars but right here
-	public var realBlackbarsTop:FlxSprite;
-	public var realBlackbarsBottom:FlxSprite;
+	public var realBlackbarsTop:FlxUISprite;
+	public var realBlackbarsBottom:FlxUISprite;
 	public var realBlackbarHeight:Int = 100;
 
 	// JOELwindows7: flag to let stage or whatever override camFollow position
 	private var manualCamFollowPosP1:Array<Float> = [0, 0];
 	private var manualCamFollowPosP2:Array<Float> = [0, 0];
 
-	public var laneunderlay:FlxSprite;
-	public var laneunderlayOpponent:FlxSprite;
+	public var laneunderlay:FlxUISprite;
+	public var laneunderlayOpponent:FlxUISprite;
 
 	public static var strumLineNotes:FlxTypedGroup<StaticArrow> = null;
 	public static var playerStrums:FlxTypedGroup<StaticArrow> = null;
 	public static var cpuStrums:FlxTypedGroup<StaticArrow> = null;
 	public static var grpNoteSplashes:FlxTypedGroup<NoteSplash>; // JOELwindows7: Psyched note splash
-	public static var grpNoteHitlineParticles:FlxTypedGroup<FlxSprite>; // JOELwindows7: same as note splash but simpler, to see perfect, late early you hit.
+	public static var grpNoteHitlineParticles:FlxTypedGroup<FlxUISprite>; // JOELwindows7: same as note splash but simpler, to see perfect, late early you hit.
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -273,7 +275,7 @@ class PlayState extends MusicBeatState
 	private var totalPlayed:Int = 0;
 	private var ss:Bool = false;
 
-	private var healthBarBG:FlxSprite;
+	private var healthBarBG:FlxUISprite;
 	private var healthBar:FlxBar;
 	private var songPositionBar:Float = 0;
 
@@ -331,22 +333,23 @@ class PlayState extends MusicBeatState
 
 	public var songScore:Int = 0;
 
+	// JOELwindows7: everything here must use `FlxUIText`!!!
 	var songScoreDef:Int = 0;
-	var scoreTxt:FlxText;
-	var judgementCounter:FlxText;
-	var replayTxt:FlxText;
+	var scoreTxt:FlxUIText;
+	var judgementCounter:FlxUIText;
+	var replayTxt:FlxUIText;
 	var scoreTxtTween:FlxTween; // JOELwindows7: Psyched score zoom yeah!
 
 	var needSkip:Bool = false;
 	var skipActive:Bool = false;
-	var skipText:FlxText;
+	var skipText:FlxUIText;
 	var skipTo:Float;
 
 	public static var campaignScore:Int = 0;
 
 	public static var theFunne:Bool = true;
 
-	var funneEffect:FlxSprite;
+	var funneEffect:FlxUISprite;
 	var inCutscene:Bool = false;
 	var usedTimeTravel:Bool = false;
 
@@ -371,7 +374,7 @@ class PlayState extends MusicBeatState
 	public static var songOffset:Float = 0;
 
 	// BotPlay text
-	private var botPlayState:FlxText;
+	private var botPlayState:FlxUIText;
 	// Replay shit
 	private var saveNotes:Array<Dynamic> = [];
 	private var saveJudge:Array<String> = [];
@@ -576,7 +579,7 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.add(camSustains);
 		FlxG.cameras.add(camNotes);
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>(); // JOELwindows7: okey why ShadowMario or whoever
-		grpNoteHitlineParticles = new FlxTypedGroup<FlxSprite>(); // JOELwindows7: okey here note hitlines. inspired from that notesplash & viking timpani game called 'Ragnarock'. Steam.
+		grpNoteHitlineParticles = new FlxTypedGroup<FlxUISprite>(); // JOELwindows7: okey here note hitlines. inspired from that notesplash & viking timpani game called 'Ragnarock'. Steam.
 		// in the blame init that notesplash group here? Psyched
 		// maybe because it's after add all those cameras?
 
@@ -1025,18 +1028,19 @@ class PlayState extends MusicBeatState
 		Conductor.songPosition = -5000;
 		Conductor.rawPosition = Conductor.songPosition;
 
-		strumLine = new FlxSprite(0, 50).makeGraphic(FlxG.width, 10);
+		// JOELwindows7: Really bruh!
+		strumLine = cast new FlxUISprite(0, 50).makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
 
 		if (PlayStateChangeables.useDownscroll)
 			strumLine.y = FlxG.height - 165;
 
-		laneunderlayOpponent = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		laneunderlayOpponent = cast new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlayOpponent.alpha = FlxG.save.data.laneTransparency;
 		laneunderlayOpponent.color = FlxColor.BLACK;
 		laneunderlayOpponent.scrollFactor.set();
 
-		laneunderlay = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		laneunderlay = cast new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlay.alpha = FlxG.save.data.laneTransparency;
 		laneunderlay.color = FlxColor.BLACK;
 		laneunderlay.scrollFactor.set();
@@ -1062,7 +1066,7 @@ class PlayState extends MusicBeatState
 		splash.alpha = 0.0;
 
 		// JOELwindows7: as well as the hitline. 1 atleast.
-		var hitline:FlxSprite = new FlxSprite(100, 100);
+		var hitline:FlxUISprite = new FlxUISprite(100, 100);
 		grpNoteHitlineParticles.add(hitline);
 		hitline.alpha = 0.0;
 
@@ -1261,7 +1265,8 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
-		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.loadImage('healthBar'));
+		// JOELwindows7: This sucks!! the extenderin did not return the same type.
+		healthBarBG = cast new FlxUISprite(0, FlxG.height * 0.9).loadGraphic(Paths.loadImage('healthBar'));
 		if (PlayStateChangeables.useDownscroll)
 			healthBarBG.y = 50;
 		healthBarBG.screenCenter(X);
@@ -1368,7 +1373,7 @@ class PlayState extends MusicBeatState
 		if (PlayStateChangeables.useDownscroll)
 			kadeEngineWatermark.y = FlxG.height * 0.9 + 45;
 
-		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
+		scoreTxt = new FlxUIText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
 		// JOELwindows7: move this up a bit due to elongated texts.
 		// Y was 50px beneath health bar BG
 		// oh this had Kaded already?
@@ -1384,7 +1389,7 @@ class PlayState extends MusicBeatState
 
 		add(scoreTxt);
 
-		judgementCounter = new FlxText(20, 0, 0, "", 20);
+		judgementCounter = new FlxUIText(20, 0, 0, "", 20);
 		// JOELwindows7: I think this should be placed on right as where your player strum is at.
 		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		judgementCounter.alpha = .5; // JOELwindows7: also bit opaque pls!
@@ -1403,7 +1408,7 @@ class PlayState extends MusicBeatState
 			add(judgementCounter);
 		}
 
-		replayTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0, "REPLAY",
+		replayTxt = new FlxUIText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0, "REPLAY",
 			20);
 		replayTxt.setPosition((FlxG.width / 2) - 75, 130); // JOELwindows7: oh wait, Psych this up pls!
 		replayTxt.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1416,7 +1421,7 @@ class PlayState extends MusicBeatState
 			add(replayTxt);
 		}
 		// Literally copy-paste of the above, fu
-		botPlayState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
+		botPlayState = new FlxUIText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
 			"BOTPLAY", 20);
 		botPlayState.setPosition((FlxG.width / 2) - 75, 130); // JOELwindows7: oh wait, Psych this up pls!
 		botPlayState.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // JOELwindows7: was size 42
@@ -1514,7 +1519,8 @@ class PlayState extends MusicBeatState
 			switch (StringTools.replace(curSong, " ", "-").toLowerCase())
 			{
 				case "winter-horrorland":
-					var blackScreen:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
+					// JOELwindows7: You gotta be kidding me. why did not you override all functions to it returns as same type as the extended?!?!?
+					var blackScreen:FlxUISprite = cast new FlxUISprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 					add(blackScreen);
 					blackScreen.scrollFactor.set();
 					camHUD.visible = false;
@@ -1825,7 +1831,7 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: inspire that luckydog7's webmer bellow, build the VLC version of function!
 		// inspire from function backgroundVideo if the FEATURE_VLC is available!
 
-		// var videoSpriteFirst = new FlxSprite();
+		// var videoSpriteFirst = new FlxUISprite();
 		// Build own cam!
 		// var ownCam = new FlxCamera();
 		// FlxG.cameras.add(ownCam);
@@ -1921,7 +1927,7 @@ class PlayState extends MusicBeatState
 
 			// var data = webmHandler.webm.bitmapData;
 
-			// videoSprite = new FlxSprite(0, 0).loadGraphic(data);
+			// videoSprite = new FlxUISprite(0, 0).loadGraphic(data);
 
 			// videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
 			// videoSprite.cameras = [camHUD];
@@ -1953,15 +1959,16 @@ class PlayState extends MusicBeatState
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
+		// JOELwindows7: WHAT?! `makeGraphic` is not overridden!!! hence it returns to regular `FlxSprite` of itself instead of `FlxUISprite`!!!
 		// trace("has school intro " + Std.string(dialogueBox));
-		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		var black:FlxUISprite = cast new FlxUISprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		black.scrollFactor.set();
 		add(black);
 
-		var red:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, 0xFFff1b31);
+		var red:FlxUISprite = cast new FlxUISprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, 0xFFff1b31);
 		red.scrollFactor.set();
 
-		var senpaiEvil:FlxSprite = new FlxSprite();
+		var senpaiEvil:FlxUISprite = new FlxUISprite();
 		senpaiEvil.frames = Paths.getSparrowAtlas('weeb/senpaiCrazy');
 		senpaiEvil.animation.addByPrefix('idle', 'Senpai Pre Explosion', 24, false);
 		senpaiEvil.setGraphicSize(Std.int(senpaiEvil.width * 6));
@@ -2214,7 +2221,8 @@ class PlayState extends MusicBeatState
 					if (!silent)
 						FlxG.sound.play(Paths.sound((reversed ? 'intro1' : 'intro3') + altSuffix + midiSuffix), 0.6);
 				case 1:
-					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[0], week6Bullshit));
+					// JOELwindows7: idk if this gonna work.
+					var ready:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(introAlts[0], week6Bullshit));
 					ready.scrollFactor.set();
 					ready.updateHitbox();
 
@@ -2235,7 +2243,8 @@ class PlayState extends MusicBeatState
 					if (!silent) // JOELwindows7: Silencio Bruno!
 						FlxG.sound.play(Paths.sound('intro2' + altSuffix + midiSuffix), 0.6);
 				case 2:
-					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[1], week6Bullshit));
+					// JOELwindows7: we'll see
+					var set:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(introAlts[1], week6Bullshit));
 					set.scrollFactor.set();
 
 					if (SONG.noteStyle == 'pixel')
@@ -2255,7 +2264,8 @@ class PlayState extends MusicBeatState
 					if (!silent) // JOELwindows7: ssshhh + reverse pls dont gone!
 						FlxG.sound.play(Paths.sound((reversed ? 'intro3' : 'intro1') + altSuffix + midiSuffix), 0.6);
 				case 3:
-					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[2], week6Bullshit));
+					// JOELwindows7: idk if this decision is good.. idk...
+					var go:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(introAlts[2], week6Bullshit));
 					go.scrollFactor.set();
 
 					if (SONG.noteStyle == 'pixel')
@@ -2477,7 +2487,7 @@ class PlayState extends MusicBeatState
 
 	public static var songMultiplier = 1.0;
 
-	public var bar:FlxSprite;
+	public var bar:FlxUISprite;
 
 	public var previousRate = songMultiplier;
 
@@ -2609,7 +2619,7 @@ class PlayState extends MusicBeatState
 		if (needSkip)
 		{
 			skipActive = true;
-			skipText = new FlxText(healthBarBG.x + 80, healthBarBG.y - 110, 500);
+			skipText = new FlxUIText(healthBarBG.x + 80, healthBarBG.y - 110, 500);
 			skipText.text = "Press Space to Skip Intro";
 			skipText.size = 30;
 			skipText.color = FlxColor.WHITE;
@@ -2721,7 +2731,8 @@ class PlayState extends MusicBeatState
 		if (FlxG.save.data.songPosition)
 		{
 			Debug.logInfo("Install Song Position bar!");
-			songPosBG = new FlxSprite(0, 10).loadGraphic(Paths.loadImage('healthBar'));
+			// JOELwindows7: bruh
+			songPosBG = cast new FlxUISprite(0, 10).loadGraphic(Paths.loadImage('healthBar'));
 			if (PlayStateChangeables.useDownscroll)
 				songPosBG.y = FlxG.height * 0.9 + 35;
 			songPosBG.screenCenter(X);
@@ -2758,7 +2769,9 @@ class PlayState extends MusicBeatState
 			songPosBar.createFilledBar(PlayStateChangeables.songPosBarColorBg, PlayStateChangeables.songPosBarColor); // JOELwindows7: here with custom color!
 			add(songPosBar);
 
-			bar = new FlxSprite(songPosBar.x, songPosBar.y).makeGraphic(Math.floor(songPosBar.width), Math.floor(songPosBar.height), FlxColor.TRANSPARENT);
+			// JOELwindows7: idk anymore
+			bar = cast new FlxUISprite(songPosBar.x,
+				songPosBar.y).makeGraphic(Math.floor(songPosBar.width), Math.floor(songPosBar.height), FlxColor.TRANSPARENT);
 
 			add(bar);
 
@@ -2766,7 +2779,7 @@ class PlayState extends MusicBeatState
 
 			songPosBG.width = songPosBar.width;
 
-			// songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.songName.length * 5), songPosBG.y - 15, 0, SONG.songName, 16);
+			// songName = new FlxUIText(songPosBG.x + (songPosBG.width / 2) - (SONG.songName.length * 5), songPosBG.y - 15, 0, SONG.songName, 16);
 			// JOELwindows7: Pls put artist
 			songName = new FlxUIText(songPosBG.x
 				+ (songPosBG.width / 2)
@@ -3047,7 +3060,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			cpuStrums.forEach(function(spr:FlxSprite)
+			cpuStrums.forEach(function(spr:FlxUISprite)
 			{
 				spr.centerOffsets(); // CPU arrows start out slightly off-center
 			});
@@ -3059,7 +3072,7 @@ class PlayState extends MusicBeatState
 	private function appearStaticArrows():Void
 	{
 		var index = 0;
-		strumLineNotes.forEach(function(babyArrow:FlxSprite)
+		strumLineNotes.forEach(function(babyArrow:FlxUISprite)
 		{
 			// JOELwindows7: if or haxescript
 			if (isStoryMode && !FlxG.save.data.middleScroll || (executeModchart || executeModHscript))
@@ -5416,7 +5429,7 @@ class PlayState extends MusicBeatState
 					// if (StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase() == 'eggnog')
 					if (lastSonginPlaylist == 'eggnog') // Now this should fix it I guess. Not elegant but it works.
 					{
-						// var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
+						// var blackShit:FlxUISprite = new FlxUISprite(-FlxG.width * FlxG.camera.zoom,
 						// 	-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
 						// blackShit.scrollFactor.set();
 						// add(blackShit);
@@ -5536,7 +5549,7 @@ class PlayState extends MusicBeatState
 	}
 
 	var timeShown = 0;
-	var currentTimingShown:FlxText = null;
+	var currentTimingShown:FlxUIText = null;
 
 	private function popUpScore(daNote:Note):Void
 	{
@@ -5551,14 +5564,14 @@ class PlayState extends MusicBeatState
 		vocals2.volume = 1; // JOELwindows7: ye
 		var placement:String = Std.string(combo);
 
-		var coolText:FlxText = new FlxText(0, 0, 0, placement, 32);
+		var coolText:FlxUIText = new FlxUIText(0, 0, 0, placement, 32);
 		coolText.screenCenter();
 		coolText.x = FlxG.width * 0.55;
 		coolText.y -= 350;
 		coolText.cameras = [camHUD];
 		//
 
-		var rating:FlxSprite = new FlxSprite();
+		var rating:FlxUISprite = new FlxUISprite();
 		var score:Float = 350;
 
 		if (FlxG.save.data.accuracyMod == 1)
@@ -5724,7 +5737,7 @@ class PlayState extends MusicBeatState
 			if (currentTimingShown != null)
 				remove(currentTimingShown);
 
-			currentTimingShown = new FlxText(0, 0, 0, "0ms");
+			currentTimingShown = new FlxUIText(0, 0, 0, "0ms");
 			timeShown = 0;
 			switch (daRating)
 			{
@@ -5766,7 +5779,8 @@ class PlayState extends MusicBeatState
 			if (!PlayStateChangeables.botPlay || loadRep)
 				add(currentTimingShown);
 
-			var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'combo' + pixelShitPart2, pixelShitPart3));
+			// JOELwindows7: idk man.
+			var comboSpr:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'combo' + pixelShitPart2, pixelShitPart3));
 			comboSpr.screenCenter();
 			comboSpr.x = rating.x;
 			comboSpr.y = rating.y + 100;
@@ -5830,7 +5844,9 @@ class PlayState extends MusicBeatState
 			var daLoop:Int = 0;
 			for (i in seperatedScore)
 			{
-				var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2, pixelShitPart3));
+				// JOELwindows7: okeh
+				var numScore:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2,
+					pixelShitPart3));
 				numScore.screenCenter();
 				numScore.x = rating.x + (43 * daLoop) - 50;
 				numScore.y = rating.y + 100;
@@ -6243,7 +6259,7 @@ class PlayState extends MusicBeatState
 	#end
 	public var playingDathing = false;
 
-	public var videoSprite:FlxSprite;
+	public var videoSprite:FlxUISprite;
 
 	public function backgroundVideo(source:String) // for background videos
 	{
@@ -6318,7 +6334,7 @@ class PlayState extends MusicBeatState
 
 		var data = webmHandler.webm.bitmapData;
 
-		videoSprite = new FlxSprite(-470, -30).loadGraphic(data);
+		videoSprite = new FlxUISprite(-470, -30).loadGraphic(data);
 
 		videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
 
@@ -7554,7 +7570,8 @@ class PlayState extends MusicBeatState
 					if (!silent)
 						FlxG.sound.play(Paths.sound((reversed ? 'intro1' : 'intro3') + altSuffix + midiSuffix), 0.6);
 				case 1:
-					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
+					// JOELwindows7: mrebem
+					var ready:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.image(introAlts[0]));
 					ready.scrollFactor.set();
 					ready.updateHitbox();
 
@@ -7575,7 +7592,8 @@ class PlayState extends MusicBeatState
 					if (!silent)
 						FlxG.sound.play(Paths.sound('intro2' + altSuffix + midiSuffix), 0.6);
 				case 2:
-					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
+					// JOELwindows7: hmm this seems only add stuffs doesn't so much to do. but eh!
+					var set:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.image(introAlts[1]));
 					set.scrollFactor.set();
 
 					if (Stage.curStage.startsWith('school'))
@@ -7595,7 +7613,8 @@ class PlayState extends MusicBeatState
 					if (!silent)
 						FlxG.sound.play(Paths.sound((reversed ? 'intro3' : 'intro1') + altSuffix + midiSuffix), 0.6);
 				case 3:
-					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
+					// JOELwindows7: crogom
+					var go:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.image(introAlts[2]));
 					go.scrollFactor.set();
 
 					if (Stage.curStage.startsWith('school'))
@@ -7912,7 +7931,7 @@ class PlayState extends MusicBeatState
 		{
 			case 'mayday': // blacken the screen like going to Winter Horrorland but slowed and sadder
 				// to contemplate in memory of those 3 taken down mods. and more.
-				// var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
+				// var blackShit:FlxUISprite = new FlxUISprite(-FlxG.width * FlxG.camera.zoom,
 				// 	-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
 				// blackShit.scrollFactor.set();
 				// blackShit.alpha = 0;
@@ -7942,7 +7961,8 @@ class PlayState extends MusicBeatState
 				});
 			case 'eggnog':
 				// JOELwindows7: right, we've migrated those here yey. add more things if necessary.
-				var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
+				// Oh yeah, also I cast, hopefully safe because this just adds insignificant things. idk..
+				var blackShit:FlxUISprite = cast new FlxUISprite(-FlxG.width * FlxG.camera.zoom,
 					-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
 				blackShit.scrollFactor.set();
 				add(blackShit);
@@ -8004,7 +8024,7 @@ class PlayState extends MusicBeatState
 					{
 					}
 				});
-				var whichEndingImage:FlxSprite = new FlxSprite(0, 0);
+				var whichEndingImage:FlxUISprite = new FlxUISprite(0, 0);
 				var endingSound:FlxSound;
 				if (accuracy >= 70)
 				{
@@ -8442,7 +8462,7 @@ class PlayState extends MusicBeatState
 	// JOELwindows7: spawn hitline particle like splash but it's line to determine how late, early, or perfect you hit it.
 	public function spawnHitlineParticle(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0, rating:Int = 0)
 	{
-		var hitline:FlxSprite = grpNoteHitlineParticles.recycle(FlxSprite);
+		var hitline:FlxUISprite = grpNoteHitlineParticles.recycle(FlxUISprite);
 		hitline.loadGraphic(Paths.loadImage((note != null ? note.hitlinePath : "HitLineParticle"), 'shared'));
 		// hitline.setGraphicSize(Std.int(.5)); // why integer, HaxeFlixel?!
 		hitline.scale.x = .6;
@@ -8482,11 +8502,11 @@ class PlayState extends MusicBeatState
 	// JOELwindows7: Psyched blackbar stuff
 	function buildRealBlackBars()
 	{
-		realBlackbarsTop = new FlxSprite(0, 0);
+		realBlackbarsTop = new FlxUISprite(0, 0);
 		realBlackbarsTop.makeGraphic(FlxG.width, realBlackbarHeight, 0xFF000000);
 		realBlackbarsTop.alpha = 0;
 		realBlackbarsTop.scrollFactor.set();
-		realBlackbarsBottom = new FlxSprite(0, FlxG.height - realBlackbarHeight);
+		realBlackbarsBottom = new FlxUISprite(0, FlxG.height - realBlackbarHeight);
 		realBlackbarsBottom.makeGraphic(FlxG.width, realBlackbarHeight, 0xFF000000);
 		realBlackbarsBottom.alpha = 0;
 		realBlackbarsBottom.scrollFactor.set();
@@ -8573,7 +8593,7 @@ class PlayState extends MusicBeatState
 		// Copy from cheat sheet, section Drawing Shapes
 		var lineStyle:LineStyle = {color: FlxColor.RED, thickness: 1};
 		var drawStyle:DrawStyle = {smoothing: true};
-		var daDot = new FlxSprite();
+		var daDot = new FlxUISprite();
 		daDot.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 		daDot.drawCircle(FlxG.width - 10, 140, 100, FlxColor.PURPLE, lineStyle, drawStyle);
 		daDot.scrollFactor.set(); // don't forget!

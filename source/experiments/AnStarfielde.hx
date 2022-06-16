@@ -18,6 +18,7 @@
 
 package experiments;
 
+import flixel.addons.ui.FlxUIText;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.addons.display.FlxStarField;
 import flixel.FlxSprite;
@@ -28,7 +29,7 @@ import flixel.text.FlxText;
 
 class AnStarfielde extends MusicBeatState{
 
-    public var infoText:FlxText;
+    public var infoText:FlxUIText;
     var stars:FlxStarField3D;
     var stors:FlxStarField2D;
     var is2D:Bool = false;
@@ -41,7 +42,7 @@ class AnStarfielde extends MusicBeatState{
         add(stors);
         stors.visible = false;
 
-        infoText = new FlxText();
+        infoText = new FlxUIText();
         infoText.text = "Starfielder Test\n" +
         "\n" +
         "ENTER = Change mode\n" +

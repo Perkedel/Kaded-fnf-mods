@@ -4,6 +4,7 @@
 // LuaJit only works for C++; JOELwindows7: wtf Linux not working?
 // https://lib.haxe.org/p/linc_luajit/
 // Lua
+import flixel.addons.ui.FlxUISprite;
 import LuaClass;
 #if FEATURE_GIF
 import flixel.FlxGifSprite;
@@ -38,6 +39,8 @@ import openfl.Lib;
 import HaxeScriptState;
 
 using StringTools;
+
+//JOELwindows7: FlxUI fy!
 
 class ModchartState
 {
@@ -294,7 +297,7 @@ class ModchartState
 		return Reflect.field(PlayState.instance, id);
 	}
 
-	public static var luaSprites:Map<String, FlxSprite> = [];
+	public static var luaSprites:Map<String, FlxUISprite> = [];
 
 	function changeDadCharacter(id:String)
 	{
@@ -344,7 +347,7 @@ class ModchartState
 				+ spritePath
 				+ ".png") #end);
 
-		var sprite:FlxSprite = new FlxSprite(0, 0);
+		var sprite:FlxUISprite = new FlxUISprite(0, 0);
 
 		// JOELwindows7: heuristical
 		sprite.frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data),
@@ -408,7 +411,7 @@ class ModchartState
 		// var data:BitmapData = BitmapData.fromFile(path + spritePath + ".png");
 		var data:BitmapData = BitmapData.fromFile(#if !mobile path + "/" + spritePath + ".png" #else Asset2File.getPath(path + "/" + spritePath + ".png") #end);
 
-		var sprite:FlxSprite = new FlxSprite(0, 0);
+		var sprite:FlxUISprite = new FlxUISprite(0, 0);
 		var imgWidth:Float = FlxG.width / data.width;
 		var imgHeight:Float = FlxG.height / data.height;
 		var scale:Float = imgWidth <= imgHeight ? imgWidth : imgHeight;

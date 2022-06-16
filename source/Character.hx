@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import DokiDoki;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -12,7 +13,8 @@ import haxe.Json;
 
 using StringTools;
 
-class Character extends FlxSprite
+// JOELwindows7: hey, should we do that here too as well??
+class Character extends FlxUISprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var animInterrupt:Map<String, Bool>;
@@ -28,7 +30,7 @@ class Character extends FlxSprite
 
 	public var holdTimer:Float = 0;
 
-	public var name:String = 'Boyfriend'; // JOELwindows7: JSON character name, with detaile.
+	// public var name:String = 'Boyfriend'; // JOELwindows7: JSON character name, with detaile. Oh, there's already built in.
 	public var displayName:String = 'Boyfriend'; // JOELwindows7: for showcase name on screen rather than ID
 	public var replacesGF:Bool;
 	public var hasTrail:Bool;

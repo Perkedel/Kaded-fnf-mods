@@ -1,12 +1,14 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
-class HealthIcon extends FlxSprite
+// JOELwindows7: use `FlxUISprite` instead.
+class HealthIcon extends FlxUISprite
 {
 	public var char:String = 'bf';
 	public var isPlayer:Bool = false;
@@ -16,7 +18,7 @@ class HealthIcon extends FlxSprite
 	/**
 	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying
 	 */
-	public var sprTracker:FlxSprite;
+	public var sprTracker:FlxUISprite;
 
 	public function new(?char:String = "bf", ?isPlayer:Bool = false, ?forceIcon:Bool = false)
 	{

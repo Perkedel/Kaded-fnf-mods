@@ -19,6 +19,7 @@
 // yoink from https://github.com/Paidyy/Funkin-PEngine/blob/main/source/Main.hx
 package ui.states.debug;
 
+import flixel.addons.ui.FlxUIText;
 import flixel.util.FlxColor;
 import haxe.Exception;
 #if FEATURE_CLIPBOARD
@@ -31,6 +32,7 @@ class WerrorForceMajeurState extends CoreState
 {
 	// inspired from ddlc mod and old minecraft crash handler
 	// can someone explain to me why some people use external exes for crash handlers? it's fucking dumb
+	// JOELwindows7: change to FlxUI things
 	var exception:Exception;
 	var gf:Character;
 
@@ -51,7 +53,7 @@ class WerrorForceMajeurState extends CoreState
 		// bg.scrollFactor.set(0, 0);
 		// add(bg);
 
-		var bottomText = new FlxText(0, 0, 0, "C to copy exception | ESC to send to menu");
+		var bottomText = new FlxUIText(0, 0, 0, "C to copy exception | ESC to send to menu");
 		bottomText.scrollFactor.set(0, 0);
 		bottomText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE);
 		bottomText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 1);
@@ -59,7 +61,7 @@ class WerrorForceMajeurState extends CoreState
 		bottomText.y = FlxG.height - bottomText.height - 10;
 		add(bottomText);
 
-		var exceptionText = new FlxText();
+		var exceptionText = new FlxUIText();
 		exceptionText.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE);
 		exceptionText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 1);
 		exceptionText.text = "Game has encountered a Exception!";
@@ -68,7 +70,7 @@ class WerrorForceMajeurState extends CoreState
 		exceptionText.y += 20;
 		// add(exceptionText);
 
-		var crashShit = new FlxText();
+		var crashShit = new FlxUIText();
 		crashShit.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE);
 		crashShit.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 1);
 		crashShit.text = exception.details();

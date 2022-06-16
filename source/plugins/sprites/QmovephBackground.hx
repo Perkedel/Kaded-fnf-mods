@@ -18,6 +18,7 @@
 
 package plugins.sprites;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxBasic;
 import flixel.util.FlxGradient;
@@ -33,7 +34,7 @@ import flixel.group.FlxSpriteGroup;
  * @author JOELwindows7
  */
 class QmovephBackground extends FlxGroup{
-    var bg:FlxSprite;
+    var bg:FlxUISprite;
     var stars:FlxTypedGroup<QmovephFlying>;
     var starSpawnTime:Float;
     var bubbles:FlxTypedGroup<QmovephFlying>;
@@ -52,7 +53,7 @@ class QmovephBackground extends FlxGroup{
         //     ]
         //     )
         //     ;
-        bg = new FlxSprite(0,0,Paths.image("DefaultBackground-empty720p"));
+        bg = new FlxUISprite(0,0,Paths.image("DefaultBackground-empty720p"));
         trace("addre");
         stars = new FlxTypedGroup<QmovephFlying>(50);
         trace("dreea");
@@ -94,7 +95,7 @@ class QmovephBackground extends FlxGroup{
  * The flying objects in this Qmoveph background. can be circle or star
  * @author JOELwindows7
  */
-class QmovephFlying extends FlxSprite{
+class QmovephFlying extends FlxUISprite{
     public var aStar:Bool = true;
     public function new()
     {
@@ -134,7 +135,7 @@ class QmovephFlying extends FlxSprite{
     }
 }
 
-class QmovephBubble extends FlxSprite{
+class QmovephBubble extends FlxUISprite{
     public function new()
     {
         super();

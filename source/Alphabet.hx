@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUIGroup;
 import flixel.math.FlxPoint;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -13,10 +14,12 @@ import openfl.Lib;
 
 using StringTools;
 
+// JOELwindows7: There is FlxUIGroup which inherits from that FlxSpriteGroup. go try it!
+
 /**
  * Loosley based on FlxTypeText lolol
  */
-class Alphabet extends FlxSpriteGroup
+class Alphabet extends FlxUIGroup
 {
 	public var delay:Float = 0.05;
 	public var paused:Bool = false;

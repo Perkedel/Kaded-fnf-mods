@@ -56,11 +56,11 @@ class AnMIDIyeay extends MusicBeatState{
     var maxStep:Int;
     var isPlaying:Bool = false;
 
-    public var infoText:FlxText;
+    public var infoText:FlxUIText;
     override function create(){
         super.create();
 
-        infoText = new FlxText();
+        infoText = new FlxUIText();
         infoText.text = "MIDI tester\n" +
         "\n" +
         "ENTER = Play the MIDI\n" +

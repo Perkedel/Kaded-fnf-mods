@@ -1,10 +1,13 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
-class BackgroundDancer extends FlxSprite
+// JOELwindows7: FlxUI fy
+
+class BackgroundDancer extends FlxUISprite
 {
 	public function new(x:Float, y:Float)
 	{

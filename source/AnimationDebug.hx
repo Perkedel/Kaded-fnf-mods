@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -41,9 +42,10 @@ class AnimationDebug extends MusicBeatState
 	var daAnim:String = 'spooky';
 	var camFollow:FlxObject;
 
-	var background:FlxSprite;
-	var curt:FlxSprite;
-	var front:FlxSprite;
+	// JOELwindows7: FlxUI fy!!!
+	var background:FlxUISprite;
+	var curt:FlxUISprite;
+	var front:FlxUISprite;
 
 	var UI_box:FlxUITabMenu;
 	var UI_options:FlxUITabMenu;
@@ -62,15 +64,16 @@ class AnimationDebug extends MusicBeatState
 	{
 		// FlxG.sound.music.stop();
 
-		// var gridBG:FlxSprite = FlxGridOverlay.create(10, 10);
+		// var gridBG:FlxUISprite = FlxGridOverlay.create(10, 10);
 		// gridBG.scrollFactor.set(0.5, 0.5);
 		// add(gridBG);
 
 		FlxG.mouse.visible = true;
 
-		background = new FlxSprite(-600, -525).loadGraphic(Paths.loadImage('stageback', 'shared'));
-		front = new FlxSprite(-650, 325).loadGraphic(Paths.loadImage('stagefront', 'shared'));
-		curt = new FlxSprite(-500, -625).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
+		// JOELwindows7: triple cast badum tss
+		background = cast new FlxUISprite(-600, -525).loadGraphic(Paths.loadImage('stageback', 'shared'));
+		front = cast new FlxUISprite(-650, 325).loadGraphic(Paths.loadImage('stagefront', 'shared'));
+		curt = cast new FlxUISprite(-500, -625).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
 		background.antialiasing = FlxG.save.data.antialiasing;
 		front.antialiasing = FlxG.save.data.antialiasing;
 		curt.antialiasing = FlxG.save.data.antialiasing;

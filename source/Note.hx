@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -19,7 +20,7 @@ using StringTools;
 	- https://gamebanana.com/questions/17887
  */
 // Yes, noteTypes like mine or so.
-class Note extends FlxSprite
+class Note extends FlxUISprite
 {
 	public var strumTime:Float = 0;
 	public var baseStrum:Float = 0;
@@ -47,7 +48,8 @@ class Note extends FlxSprite
 
 	public var isAlt:Bool = false;
 
-	public var noteCharterObject:FlxSprite;
+	// JOELwindows7: everything must use `FlxUISprite` from now on.
+	public var noteCharterObject:FlxUISprite;
 
 	public var noteScore:Float = 1;
 
