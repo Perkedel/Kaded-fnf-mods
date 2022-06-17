@@ -7815,7 +7815,7 @@ class PlayState extends MusicBeatState
 			case 1:
 				AchievementUnlocked.whichIs("anSpook");
 			case 6:
-				createToast(null, "No Tankman", "Week 7 still not released!!!");
+				createToast(null, "No Tankman", "Week 7 still not released!!!\nEdit: Asset released");
 				AchievementUnlocked.whichIs("tankman_in_embargo");
 			default:
 				trace("week completa");
@@ -8601,6 +8601,8 @@ class PlayState extends MusicBeatState
 		daDot.cameras = [camHUD]; // NOPE!!! without putting on HUD, it stays there.
 		// where is draw n-gon (draw polygon easy with just Int num of vertices)?
 		// the polygon requires you put vertices one by one! what the peck?!?
+		// don't forget antialias!
+		daDot.antialiasing = FlxG.save.data.antialiasing;
 		if (!hasAppearedDot)
 		{
 			add(daDot);

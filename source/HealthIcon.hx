@@ -18,7 +18,7 @@ class HealthIcon extends FlxUISprite
 	/**
 	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying
 	 */
-	public var sprTracker:FlxUISprite;
+	public var sprTracker:FlxSprite; // JOELwindows7: turns out FlxUISprite fy causes position trouble.
 
 	public function new(?char:String = "bf", ?isPlayer:Bool = false, ?forceIcon:Bool = false)
 	{

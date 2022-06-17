@@ -71,10 +71,11 @@ class DiffOverview extends CoreSubState // FlxSubState
 
 		SONG = FreeplayState.songData.get(FreeplayState.songs[FreeplayState.curSelected].songName)[FreeplayState.curDifficulty];
 
-		strumLine = new FlxUISprite(0, (FlxG.height / 2) - 295).makeGraphic(FlxG.width, 10);
+		// JOELwindows7: GOIYYYYYYY
+		strumLine = cast new FlxUISprite(0, (FlxG.height / 2) - 295).makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
 
-		blackBox = new FlxUISprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		blackBox = cast new FlxUISprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		blackBox.alpha = 0;
 		add(blackBox);
 

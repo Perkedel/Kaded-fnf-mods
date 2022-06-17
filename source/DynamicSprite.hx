@@ -3,6 +3,7 @@
 
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.FlxSprite;

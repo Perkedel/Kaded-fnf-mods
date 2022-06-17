@@ -380,7 +380,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 				grpSongs.add(songText);
 
 				var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-				icon.sprTracker = cast songText; // JOELwindows7: oh wow. look that that. put a text as a sprite.
+				icon.sprTracker = songText; // JOELwindows7: oh wow. look that that. put a text as a sprite.
 				icon.ID = i;
 
 				// using a FlxGroup is too much fuss!
@@ -657,7 +657,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			grpSongs.add(songText);
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.sprTracker = cast songText; // JOELwindows7: well uh..
+			icon.sprTracker = songText; // JOELwindows7: well uh..
 			icon.ID = i;
 
 			// using a FlxGroup is too much fuss!

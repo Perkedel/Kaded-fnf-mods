@@ -1,4 +1,6 @@
 import flixel.addons.ui.*;
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -248,7 +250,8 @@ class GameplayCustomizeState extends MusicBeatState
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
-		strumLine = new FlxUISprite(0, FlxG.save.data.strumline).makeGraphic(FlxG.width, 14);
+		// JOELwindows7: "hey girl nch nch nch, suiuit! mwah mwah". Idk, why that's called `Cat Calling` lmao!
+		strumLine = cast new FlxUISprite(0, FlxG.save.data.strumline).makeGraphic(FlxG.width, 14);
 		strumLine.scrollFactor.set();
 		strumLine.alpha = 0.4;
 
@@ -257,13 +260,15 @@ class GameplayCustomizeState extends MusicBeatState
 		if (FlxG.save.data.downscroll)
 			strumLine.y = FlxG.height - 165;
 
-		laneunderlayOpponent = new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		// JOELwindows7: Oh man. I guess I gotta lorecast lotsa things again
+		laneunderlayOpponent = cast new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlayOpponent.alpha = 1 - FlxG.save.data.laneTransparency;
 		laneunderlayOpponent.color = FlxColor.BLACK;
 		laneunderlayOpponent.scrollFactor.set();
 		laneunderlayOpponent.cameras = [camHUD];
 
-		laneunderlay = new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		// JOELwindows7: Maybe I should cease marketing promo atm due to these expose. Be famous, and then exposed. wtf.
+		laneunderlay = cast new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlay.alpha = 1 - FlxG.save.data.laneTransparency;
 		laneunderlay.color = FlxColor.BLACK;
 		laneunderlay.scrollFactor.set();
@@ -292,7 +297,8 @@ class GameplayCustomizeState extends MusicBeatState
 			pixelShitPart4 = 'week6';
 		}
 
-		sick = new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'sick' + pixelShitPart2, pixelShitPart3));
+		// JOELwindows7: ayy
+		sick = cast new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'sick' + pixelShitPart2, pixelShitPart3));
 		sick.setGraphicSize(Std.int(sick.width * 0.7));
 		sick.scrollFactor.set();
 
@@ -325,8 +331,9 @@ class GameplayCustomizeState extends MusicBeatState
 			12);
 		text.scrollFactor.set();
 		text.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-
-		blackBorder = new FlxUISprite(-30, FlxG.height + 40).makeGraphic((Std.int(text.width + 900)), Std.int(text.height + 600), FlxColor.BLACK);
+		
+		// JOELwindows7: zocc
+		blackBorder = cast new FlxUISprite(-30, FlxG.height + 40).makeGraphic((Std.int(text.width + 900)), Std.int(text.height + 600), FlxColor.BLACK);
 		blackBorder.alpha = 0.5;
 
 		blackBorder.cameras = [camHUD];
@@ -428,7 +435,8 @@ class GameplayCustomizeState extends MusicBeatState
 			var daLoop:Int = 0;
 			for (i in seperatedScore)
 			{
-				var numScore:FlxUISprite = new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2,
+				// JOELwindows7: bruh!
+				var numScore:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2,
 					pixelShitPart4));
 				numScore.screenCenter();
 				numScore.x = sick.x + (43 * daLoop) - 50;

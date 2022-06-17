@@ -559,6 +559,12 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://github.com/Paidyy/haxe-yaml Paidyy. YAML interpreter.
 - https://github.com/jigsaw-4277821/extension-androidtools https://github.com/jigsaw-4277821/extension-videoview jigsaw-4277821. Android tools & java native video view for haxe flixel
 - https://github.com/josuigoa/linc_clipboard josuigoa. Clipboard manager. set & get system clipboard!. interacts with OS / Desktop Environment clipboard!
+- https://gamebanana.com/members/submissions/mods/1881129 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. All mods from this.
+- https://gamebanana.com/mods/287311 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Niko fnf mod playable
+- https://gamebanana.com/mods/374302 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Alula bf skin
+- https://gamebanana.com/mods/334106 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Noelle bf skin
+- https://gamebanana.com/mods/328542 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Plight
+- https://gamebanana.com/mods/329405 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Silver mommy mearest skin
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
