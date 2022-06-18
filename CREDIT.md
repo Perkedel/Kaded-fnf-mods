@@ -388,6 +388,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://www.kernel.org/doc/html/latest/sound/hd-audio/models.html hd audio kernel parameter mode
 - https://www.linuxuprising.com/2018/06/fix-no-sound-dummy-output-issue-in.html fix sound 
 - https://askubuntu.com/questions/1272908/ubuntu-20-04-headphones-detected-but-no-sound headphone no sound fix
+- https://twitter.com/EliteMasterEric/status/1537634171732037633 Master Eric, on PNG & memory usages things upon those.
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -559,12 +560,12 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://github.com/Paidyy/haxe-yaml Paidyy. YAML interpreter.
 - https://github.com/jigsaw-4277821/extension-androidtools https://github.com/jigsaw-4277821/extension-videoview jigsaw-4277821. Android tools & java native video view for haxe flixel
 - https://github.com/josuigoa/linc_clipboard josuigoa. Clipboard manager. set & get system clipboard!. interacts with OS / Desktop Environment clipboard!
-- https://gamebanana.com/members/submissions/mods/1881129 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. All mods from this.
-- https://gamebanana.com/mods/287311 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Niko fnf mod playable
-- https://gamebanana.com/mods/374302 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Alula bf skin
-- https://gamebanana.com/mods/334106 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Noelle bf skin
-- https://gamebanana.com/mods/328542 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Plight
-- https://gamebanana.com/mods/329405 (WARNING: PERMISSION ASK DID NOT RESPONDED YET) DemonOfRazgriz. Silver mommy mearest skin
+- https://gamebanana.com/members/submissions/mods/1881129 (Permissioned) DemonOfRazgriz. All mods from this.
+- https://gamebanana.com/mods/287311 (Permissioned) DemonOfRazgriz. Niko fnf mod playable
+- https://gamebanana.com/mods/374302 (Permissioned) DemonOfRazgriz. Alula bf skin
+- https://gamebanana.com/mods/334106 (Permissioned) DemonOfRazgriz. Noelle bf skin
+- https://gamebanana.com/mods/328542 (Permissioned) DemonOfRazgriz. Plight
+- https://gamebanana.com/mods/329405 (Permissioned) DemonOfRazgriz. Silver mommy mearest skin
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

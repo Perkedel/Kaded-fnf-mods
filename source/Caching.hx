@@ -50,6 +50,7 @@ class Caching extends MusicBeatState
 
 	public static var bitmapData:Map<String, FlxGraphic>;
 
+	// public static var rawBitmapData:Map<String, BitmapData>; // JOELwindows7: I said, the raw bitmap data!
 	var images = [];
 	var music = [];
 	var charts = [];
@@ -76,6 +77,7 @@ class Caching extends MusicBeatState
 		FlxG.worldBounds.set(0, 0);
 
 		bitmapData = new Map<String, FlxGraphic>();
+		// rawBitmapData = new Map<String, BitmapData>();
 
 		text = new FlxUIText(FlxG.width / 2, FlxG.height / 2 + 300, 0, "Loading...");
 		text.size = 34;

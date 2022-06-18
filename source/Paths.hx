@@ -1,5 +1,6 @@
 package;
 
+import openfl.display.BitmapData;
 import openfl.media.Video;
 import openfl.utils.Assets;
 import flixel.graphics.FlxGraphic;
@@ -75,6 +76,35 @@ class Paths
 		else
 		{
 			Debug.logWarn('Could not find image at path $path');
+			return null;
+		}
+	}
+
+	// JOELwindows7: okay, raw load just bitmap pls..
+	static public function loadBitmap(key:String, ?library:String):BitmapData
+	{
+		var path = image(key, library);
+
+		#if FEATURE_FILESYSTEM
+		if (Caching.bitmapData != null)
+		{
+			if (Caching.bitmapData.exists(key))
+			{
+				Debug.logTrace('Loading image from bitmap cache: $key');
+				// Get data from cache.
+				return Caching.bitmapData.get(key).bitmap;
+			}
+		}
+		#end
+
+		if (OpenFlAssets.exists(path, IMAGE))
+		{
+			var bitmap = OpenFlAssets.getBitmapData(path);
+			return bitmap;
+		}
+		else
+		{
+			Debug.logWarn('Could not find bitmap at path $path');
 			return null;
 		}
 	}
@@ -372,10 +402,16 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
 	}
 
-	inline static public function getBitmapSpriteSheet(key:String, ?library:String, ?isCharacter:Bool = false)
-	{
-	}
-
+	// JOELwindows7: the get bitmap sprite sheet for pixel e.g.
+	// inline static public function getBitmapSpriteSheet(key:String, ?library:String, ?isCharacter:Bool = false, ?unique:Bool = false)
+	// {
+	// 	if (isCharacter)
+	// 	{
+	// 		return FlxGraphic.getBitmap(loadImage('characters/$key', library), unique);
+	// 	}
+	// 	return FlxGraphic.getBitmap(loadImage(key, library), unique);
+	// }
+	//
 	// JOELwindows7: add pathers for GrowtopiaFli video cutsceners
 	inline static public function video(key:String, ?library:String)
 	{

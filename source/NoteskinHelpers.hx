@@ -166,37 +166,37 @@ class NoteskinHelpers
 	static public function generatePixelSprite(id:Int, ends:Bool = false, typeSpecial:Int = 0, otherWayAround:Bool = false)
 	{
 		var typeSuffix:String = generateTypePostFix(typeSpecial);
-		#if FEATURE_FILESYSTEM
+		// #if FEATURE_FILESYSTEM
 		// TODO: Make this use OpenFlAssets.
 		// JOELwindows7: alright, let's slay these & just simplify!
 
 		Debug.logTrace("bruh momento id=" + Std.int(id) + " ends=" + Std.string(ends));
 
-		// var path = 'noteskins/${getNoteskinByID(id)}-pixel${(ends ? "-ends" : "")}${typeSuffix}'; // JOELwindows7: simpler
-		// if (otherWayAround)
-		// 	path = 'noteskins/${getNoteskinByID(id)}/arrows${ends ? "Ends" : "-pixels"}${typeSuffix}';
-		var path = FileSystem.absolutePath("assets/shared/images/noteskins")
-			+ "/"
-			+ getNoteskinByID(id)
-			+ "-pixel"
-			+ (ends ? "-ends" : "")
-			+ typeSuffix; // JOELwindows7: watch the png path
+		var path = 'noteskins/${getNoteskinByID(id)}-pixel${(ends ? "-ends" : "")}${typeSuffix}'; // JOELwindows7: simpler
 		if (otherWayAround)
-		{
-			path = FileSystem.absolutePath("assets/shared/images/noteskins")
-				+ "/"
-				+ getNoteskinByID(id)
-				+ "/arrows"
-				+ (ends ? "Ends" : "-pixels")
-				+ typeSuffix; // JOELwindows7: watch the png path
-		}
-		if (!FileSystem.exists(path + ".png"))
-		{
-			Debug.logTrace("getting default pixel skin");
-			return BitmapData.fromFile(FileSystem.absolutePath("assets/shared/images/noteskins") + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
-		}
+			path = 'noteskins/${getNoteskinByID(id)}/arrows${ends ? "Ends" : "-pixels"}${typeSuffix}';
+		// var path = FileSystem.absolutePath("assets/shared/images/noteskins")
+		// 	+ "/"
+		// 	+ getNoteskinByID(id)
+		// 	+ "-pixel"
+		// 	+ (ends ? "-ends" : "")
+		// 	+ typeSuffix; // JOELwindows7: watch the png path
+		// if (otherWayAround)
+		// {
+		// 	path = FileSystem.absolutePath("assets/shared/images/noteskins")
+		// 		+ "/"
+		// 		+ getNoteskinByID(id)
+		// 		+ "/arrows"
+		// 		+ (ends ? "Ends" : "-pixels")
+		// 		+ typeSuffix; // JOELwindows7: watch the png path
+		// }
+		// if (!FileSystem.exists(path + ".png"))
+		// {
+		// 	Debug.logTrace("getting default pixel skin");
+		// 	return BitmapData.fromFile(FileSystem.absolutePath("assets/shared/images/noteskins") + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
+		// }
 		Debug.logInfo("now load path " + path);
-		return BitmapData.fromFile(path + ".png");
+		// return BitmapData.fromFile(path + ".png");
 
 		// return Paths.doesImageAssetExist(Paths.image(path,
 		// 	'shared')) ? BitmapData.fromFile(Paths.image(path, 'shared')) : BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
@@ -207,13 +207,16 @@ class NoteskinHelpers
 		// 	'shared')) ? BitmapData.loadFromFile(Asset2File.getPath(Paths.image(path, 'shared')))
 		// 	.result() : BitmapData.loadFromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared"))).result();
 		// return Paths.getSparrowAtlas('noteskins/' + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin), "shared");
-		#else
-		// return BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
-		// JOELwindows7:here because Android requires Asset2File
-		// return BitmapData.fromFile(#if !mobile Paths.image('noteskins/Arrows-pixel',
-		// 	"shared") #else Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared")) #end);
-		return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel$typtypeSuffix', "shared")));
-		#end
+
+		return Paths.doesImageAssetExist(Paths.image(path,
+			'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
+		// #else
+		// // return BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
+		// // JOELwindows7:here because Android requires Asset2File
+		// // return BitmapData.fromFile(#if !mobile Paths.image('noteskins/Arrows-pixel',
+		// // 	"shared") #else Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared")) #end);
+		// return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel$typtypeSuffix', "shared")));
+		// #end
 		// JOELwindows7: wtf, new way doesn't work for pixel noteskins??!?!??!?!?!??!?!?
 		// only `FileSystem`er??!??!?!
 	}
@@ -222,44 +225,47 @@ class NoteskinHelpers
 	static public function generatePixelSpriteFromSay(say:String, ends:Bool = false, typeSpecial:Int = 0, otherWayAround:Bool = false)
 	{
 		var typeSuffix:String = generateTypePostFix(typeSpecial);
-		#if FEATURE_FILESYSTEM
+		// #if FEATURE_FILESYSTEM
 		// TODO: Make this use OpenFlAssets.
 		// JOELwindows7: make simpler!
 
 		Debug.logTrace("bruh momento name=" + say + " ends=" + Std.string(ends));
-		// var path = 'noteskins/${say}-pixel${ends ? "-ends" : ""}${typeSuffix}'; // JOELwindows7: simpler
-		// if (otherWayAround)
-		// 	path = 'noteskins/${say}/arrows${ends ? "Ends" : "-pixels"}${typeSuffix}';
-		var path = FileSystem.absolutePath("assets/shared/images/noteskins")
-			+ "/"
-			+ say
-			+ "-pixel"
-			+ (ends ? "-ends" : "")
-			+ typeSuffix; // JOELwindows7: watch the png path
+		var path = 'noteskins/${say}-pixel${ends ? "-ends" : ""}${typeSuffix}'; // JOELwindows7: simpler
 		if (otherWayAround)
-		{
-			path = FileSystem.absolutePath("assets/shared/images/noteskins")
-				+ "/"
-				+ say
-				+ "/arrows"
-				+ (ends ? "Ends" : "-pixels")
-				+ typeSuffix; // JOELwindows7: watch the png path
-		}
-		if (!FileSystem.exists(say + ".png"))
-		{
-			Debug.logTrace("getting default pixel skin");
-			return BitmapData.fromFile(FileSystem.absolutePath("assets/shared/images/noteskins") + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
-		}
+			path = 'noteskins/${say}/arrows${ends ? "Ends" : "-pixels"}${typeSuffix}';
+		// var path = FileSystem.absolutePath("assets/shared/images/noteskins")
+		// 	+ "/"
+		// 	+ say
+		// 	+ "-pixel"
+		// 	+ (ends ? "-ends" : "")
+		// 	+ typeSuffix; // JOELwindows7: watch the png path
+		// if (otherWayAround)
+		// {
+		// 	path = FileSystem.absolutePath("assets/shared/images/noteskins")
+		// 		+ "/"
+		// 		+ say
+		// 		+ "/arrows"
+		// 		+ (ends ? "Ends" : "-pixels")
+		// 		+ typeSuffix; // JOELwindows7: watch the png path
+		// }
+		// if (!FileSystem.exists(say + ".png"))
+		// {
+		// 	Debug.logTrace("getting default pixel skin");
+		// 	return BitmapData.fromFile(FileSystem.absolutePath("assets/shared/images/noteskins") + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
+		// }
 		Debug.logInfo("now load path " + path);
-		return BitmapData.fromFile(path + ".png");
+		// return BitmapData.fromFile(path + ".png");
 		// return Paths.doesImageAssetExist(Paths.image(path,
 		// 	'shared')) ? BitmapData.fromFile(Paths.image(path, 'shared')) : BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
 		// return Paths.doesImageAssetExist(Paths.image(path,
 		// 	'shared')) ? BitmapData.loadFromFile(Asset2File.getPath(Paths.image(path, 'shared')))
 		// 	.result() : BitmapData.loadFromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared"))).result();
-		#else
-		return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel$typetypeSuffix', "shared")));
-		#end
+
+		return Paths.doesImageAssetExist(Paths.image(path,
+			'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
+		// #else
+		// return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel$typetypeSuffix', "shared")));
+		// #end
 	} // JOELwindows7: generate type postfix for which note type yey. usual, mine, power ups?
 
 	static public function generateTypePostFix(typeSpecial:Int = 0)

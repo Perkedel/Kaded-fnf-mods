@@ -6,12 +6,12 @@ import Section.SwagSection;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.FlxSprite;
 
-// JOELwindows7: use `FlxUISprite` from now on.
+// JOELwindows7: use `FlxUISprite` from now on. umm, maybe nvm. this cause issues. null object reference. but keep extend, FlxUISprite.
 class SectionRender extends FlxUISprite
 {
 	public var section:SwagSection;
-	public var icon:FlxUISprite;
-	public var iconGf:FlxUISprite; // JOELwindows7: this one shows / hides depending on gfSection checkbox situation.
+	public var icon:FlxSprite;
+	public var iconGf:FlxSprite; // JOELwindows7: this one shows / hides depending on gfSection checkbox situation.
 	public var lastUpdated:Bool;
 
 	public function new(x:Float, y:Float, GRID_SIZE:Int, ?Height:Int = 16)

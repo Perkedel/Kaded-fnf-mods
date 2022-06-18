@@ -124,7 +124,7 @@ class ChartingState extends MusicBeatState
 	var curRenderedNotes:FlxTypedGroup<Note>;
 	var curRenderedSustains:FlxTypedGroup<FlxUISprite>;
 
-	var gridBG:FlxUISprite;
+	var gridBG:FlxSprite; // JOELwindows7: FlxUI fy causes trouble, it seemes. Null object reference thingy.
 
 	public var sectionRenderes:FlxTypedGroup<SectionRender>;
 
@@ -154,7 +154,7 @@ class ChartingState extends MusicBeatState
 
 	private var lastNote:Note;
 
-	public var lines:FlxTypedGroup<FlxUISprite>;
+	public var lines:FlxTypedGroup<FlxSprite>; // JOELwindows7: FlxUI fy cause trouble.
 
 	var claps:Array<Note> = [];
 
@@ -163,6 +163,7 @@ class ChartingState extends MusicBeatState
 	var camFollow:FlxObject;
 
 	public var waveform:Waveform;
+	public var waveformVoice:Waveform; // JOELwindows7: need separate!
 
 	public static var latestChartVersion = "2";
 
@@ -232,7 +233,7 @@ class ChartingState extends MusicBeatState
 			FlxG.save.data.showHelp = true;
 
 		sectionRenderes = new FlxTypedGroup<SectionRender>();
-		lines = new FlxTypedGroup<FlxUISprite>();
+		lines = new FlxTypedGroup<FlxSprite>(); // JOELwindows7: FlxUI fy trouble
 		texts = new FlxTypedGroup<FlxUIText>();
 
 		TimingStruct.clearTimings();
@@ -475,6 +476,9 @@ class ChartingState extends MusicBeatState
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);
 
+		// JOELwindows7: idk, maybe just start instantiate waveform first ah man
+		installWaveform();
+
 		// JOELwindows7: cast it up buddy!
 		strumLine = cast new FlxUISprite(0, 0).makeGraphic(Std.int(GRID_SIZE * 8), 4);
 
@@ -531,6 +535,7 @@ class ChartingState extends MusicBeatState
 		add(lines);
 		add(texts);
 		add(gridBlackLine);
+		addWaveforms(); // JOELwindows7: & here it is.
 		add(curRenderedNotes);
 		add(curRenderedSustains);
 		selectedBoxes = new FlxTypedGroup();
@@ -556,62 +561,79 @@ class ChartingState extends MusicBeatState
 
 	function regenerateLines()
 	{
-		while (lines.members.length > 0)
+		try
 		{
-			lines.members[0].destroy();
-			lines.members.remove(lines.members[0]);
-		}
-
-		while (texts.members.length > 0)
-		{
-			texts.members[0].destroy();
-			texts.members.remove(texts.members[0]);
-		}
-		Debug.logTrace("removed lines and texts");
-
-		if (_song.eventObjects != null)
-			for (i in _song.eventObjects)
+			Debug.logTrace('Regen Lines');
+			while (lines.members.length > 0)
 			{
-				var seg = TimingStruct.getTimingAtBeat(i.position);
-
-				var posi:Float = 0;
-
-				if (seg != null)
-				{
-					var start:Float = (i.position - seg.startBeat) / (seg.bpm / 60);
-
-					posi = seg.startTime + start;
-				}
-
-				var pos = getYfromStrum(posi * 1000) * zoomFactor;
-
-				if (pos < 0)
-					pos = 0;
-
-				var type = i.type;
-
-				// JOELwindows7: gruing gruing guring
-				var text:FlxUIText = cast new FlxUIText(-190, pos, 0, i.name + "\n" + type + "\n" + i.value, 12);
-				var line:FlxUISprite = cast new FlxUISprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLUE);
-
-				line.alpha = 0.2;
-
-				lines.add(line);
-				texts.add(text);
-
-				add(line);
-				add(text);
+				lines.members[0].destroy();
+				lines.members.remove(lines.members[0]);
 			}
 
-		for (i in sectionRenderes)
-		{
-			var pos = getYfromStrum(i.section.startTime) * zoomFactor;
-			i.icon.y = pos - 75;
+			while (texts.members.length > 0)
+			{
+				texts.members[0].destroy();
+				texts.members.remove(texts.members[0]);
+			}
+			Debug.logTrace("removed lines and texts");
 
-			// JOELwindows7: hokeh
-			var line:FlxUISprite = cast new FlxUISprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLACK);
-			line.alpha = 0.4;
-			lines.add(line);
+			if (_song.eventObjects != null)
+				for (i in _song.eventObjects)
+				{
+					var seg = TimingStruct.getTimingAtBeat(i.position);
+
+					var posi:Float = 0;
+
+					if (seg != null)
+					{
+						var start:Float = (i.position - seg.startBeat) / (seg.bpm / 60);
+
+						posi = seg.startTime + start;
+					}
+
+					var pos = getYfromStrum(posi * 1000) * zoomFactor;
+
+					if (pos < 0)
+						pos = 0;
+
+					var type = i.type;
+
+					// JOELwindows7: gruing gruing guring
+					var text:FlxUIText = new FlxUIText(-190, pos, 0, i.name + "\n" + type + "\n" + i.value, 12);
+					var line:FlxSprite = new FlxSprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLUE); // JOELwindows7: FlxUI fy trouble
+
+					line.alpha = 0.2;
+
+					lines.add(line);
+					texts.add(text);
+
+					add(line);
+					add(text);
+				}
+			// Debug.logTrace("Now Section Renderes");
+			for (i in sectionRenderes)
+			{
+				// Debug.logTrace('Section Renderes the $i');
+				var pos = getYfromStrum(i.section.startTime) * zoomFactor;
+				// Debug.logTrace('pos is $pos'); // JOELwindows7: almost there.
+				i.icon.y = pos - 75;
+				i.iconGf.y = pos - 75; // JOELwindows7: don't forget
+				// Debug.logTrace('Have set ${i.icon} & ${i.iconGf} y pos into ${pos - 75}');
+
+				// JOELwindows7: hokeh. nvm.
+				// Debug.logTrace('lining for $i at $pos');
+				var line:FlxSprite = new FlxSprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLACK);
+				line.alpha = 0.4;
+				lines.add(line);
+				// Debug.logTrace('line $line done, going next');
+			}
+			// Debug.logTrace("Complete Regen Lines");
+		}
+		catch (e)
+		{
+			// JOELwindows7: WTF IS THIS ERROR?!?!?!?
+			throw 'WERROR REGEN LINES: $e: ${e.message}\n${e.details()}';
+			// Issue resolved. that's because health icon in section render. should've stayed FlxSprite instead of FlxUISprite.
 		}
 	}
 
@@ -623,8 +645,8 @@ class ChartingState extends MusicBeatState
 			h = GRID_SIZE;
 
 		remove(gridBG);
-		// JOELwindows7: crodoc
-		gridBG = cast FlxGridOverlay.create(GRID_SIZE, Std.int(h), GRID_SIZE * 8, GRID_SIZE * 16);
+		// JOELwindows7: crodoc. nvm. this cause trouble.
+		gridBG = FlxGridOverlay.create(GRID_SIZE, Std.int(h), GRID_SIZE * 8, GRID_SIZE * 16);
 		Debug.logTrace(gridBG.height);
 		// gridBG.scrollFactor.set();
 		// gridBG.x += 358;
@@ -1740,8 +1762,9 @@ class ChartingState extends MusicBeatState
 					gfSectionIcon.setGraphicSize(0, 45);
 					gfSectionIcon.visible = check_gfHitSection.checked;
 
-					i.icon = cast sectionicon;
-					i.iconGf = cast gfSectionIcon;
+					// JOELwindows7: nvm FlxUI fy
+					i.icon = sectionicon;
+					i.iconGf = gfSectionIcon;
 					i.lastUpdated = sect.mustHitSection;
 
 					add(sectionicon);
@@ -1784,8 +1807,9 @@ class ChartingState extends MusicBeatState
 					gfSectionIcon.setGraphicSize(0, 45);
 					gfSectionIcon.visible = check_gfHitSection.checked;
 
-					i.icon = cast sectionicon;
-					i.iconGf = cast gfSectionIcon; // JOELwindows7: here gf icon
+					// JOELwindows7: nvm FlxUI fy & cast. issues!
+					i.icon = sectionicon;
+					i.iconGf = gfSectionIcon; // JOELwindows7: here gf icon
 					i.lastUpdated = sect.gfSection;
 
 					add(sectionicon);
@@ -2553,6 +2577,18 @@ class ChartingState extends MusicBeatState
 				curRenderedSustains.add(i.noteCharterObject);
 			}
 		}
+
+		// JOELwindows7: resize waveform
+		if (waveform != null)
+		{
+			waveform.scale.set(1, zoomFactor);
+			waveform.updateHitbox();
+		}
+		if (waveformVoice != null)
+		{
+			waveformVoice.scale.set(1, zoomFactor);
+			waveformVoice.updateHitbox();
+		}
 	}
 
 	public var shownNotes:Array<Note> = [];
@@ -3103,6 +3139,11 @@ class ChartingState extends MusicBeatState
 
 			strumLine.y = getYfromStrum(start) * zoomFactor;
 			camFollow.y = strumLine.y;
+			// JOELwindows7: waveform positioner too too
+			if (waveform != null)
+				waveform.y = strumLine.y;
+			if (waveformVoice != null)
+				waveformVoice.y = strumLine.y;
 
 			bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 				+ " / "
@@ -3517,7 +3558,7 @@ class ChartingState extends MusicBeatState
 		}
 		catch (e)
 		{
-			Debug.logError("Error on this shit???\n" + e + ": " + e.message); // JOELwindows7: error title & description
+			Debug.logError('Error on this shit???\n$e: ${e.message}\n${e.details()}'); // JOELwindows7: error title & description
 		}
 		super.update(elapsed);
 	}
@@ -4744,5 +4785,32 @@ class ChartingState extends MusicBeatState
 				playSoundEffect(Perkedel.METRONOME_REST_SOUND_PATH);
 			}
 		}
+	}
+
+	// JOELwindows7: attempt install waveform! based on the test!
+	function installWaveform()
+	{
+		if (PlayState.isSM)
+		{
+			#if FEATURE_FILESYSTEM
+			waveform = new Waveform(0, 0, PlayState.pathToSm + "/" + PlayState.sm.header.MUSIC, 720);
+			#end
+		}
+		else
+		{
+			if (PlayState.SONG.needsVoices)
+				waveformVoice = new Waveform(0, 0, Paths.voices(PlayState.SONG.songId), 720);
+
+			waveform = new Waveform(0, 0, Paths.inst(PlayState.SONG.songId), 720);
+		}
+	}
+
+	// JOELwindows7: then add later
+	function addWaveforms()
+	{
+		if (waveform != null)
+			add(waveform);
+		if (waveformVoice != null)
+			add(waveformVoice);
 	}
 }
