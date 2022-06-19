@@ -60,6 +60,9 @@ import openfl.utils.ByteArray;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+#if (sys && !hl)
+import systools.Dialogs;
+#end
 
 using StringTools;
 
@@ -4602,6 +4605,11 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
+
+			// TODO: JOELwindows7: use the Dialog file save instead!
+			// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/FileBrowse/source/PlayState.hx
+			// https://haxeflixel.com/demos/FileBrowse/
+			// Dialogs.
 		}
 	}
 
