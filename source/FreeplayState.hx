@@ -85,10 +85,12 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 	static var legacyJSONWeekList:Bool = false; // JOELwindows7: in case you want to use the old JSONed week list.
 
-	// var asyncLoader:FlxAsyncLoop; // JOELwindows7: here loader thingy.
-	var loadedUp:Bool = false; // JOELwindows7: flag to raise when loading complete.
-	var legacySynchronousLoading:Bool = true; // JOELwindows7: keep false to use new async loading.
-	var unthreadLoading:Bool = false; // JOELwindows7: keep false to use Kade's threaded loading.
+	static var asyncLoader:FlxAsyncLoop; // JOELwindows7: here loader thingy.
+	static var asyncStepmaniaLoader:FlxAsyncLoop; // JOELwindows7: here stepmania loader thingy
+	static var asyncListSong:FlxAsyncLoop; // JOELwindows7: List song loop thingy.
+	static var loadedUp:Bool = false; // JOELwindows7: flag to raise when loading complete.
+	static var legacySynchronousLoading:Bool = true; // JOELwindows7: keep false to use new async loading.
+	static var unthreadLoading:Bool = false; // JOELwindows7: keep false to use Kade's threaded loading.
 
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
@@ -270,8 +272,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		// 	asyncLoader = new FlxAsyncLoop(1, asynchronouslyLoadSongList);
 		// wait, wrong. in down!
 
-		if (legacySynchronousLoading)
-			populateSongData(); // JOELwindows7: uncomment for synchronous
+		// if (legacySynchronousLoading)
+		populateSongData(); // JOELwindows7: uncomment for synchronous
 		PlayState.inDaPlay = false;
 		PlayState.currentSong = "bruh";
 
@@ -463,18 +465,18 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			// else
 			// {
 			// JOELwindows7: so yeah, maybe use already proven working Kade's way of multithreading?
-			#if FEATURE_MULTITHREADING
-			// TODO: have cancel when back button pressed
-			Debug.logInfo("Multi thread loading pls");
-			unthreadLoading = false;
-			Threading.run(function()
-			{
-				Debug.logInfo("start loading on a different thread");
-				asynchronouslyLoadSongList();
-				asyncCompleteLoad();
-			}, true);
-			#else
-			#end
+			// #if FEATURE_MULTITHREADING
+			// // TODO: have cancel when back button pressed
+			// Debug.logInfo("Multi thread loading pls");
+			// unthreadLoading = false;
+			// Threading.run(function()
+			// {
+			// 	Debug.logInfo("start loading on a different thread");
+			// 	asynchronouslyLoadSongList();
+			// 	asyncCompleteLoad();
+			// }, true);
+			// #else
+			// #end
 			// }
 		}
 		else
@@ -491,8 +493,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 	/**
 	 * Load song data from the data files.
 	 */
-	static function populateSongData()
+	static function populateSongData(forceSynchronous:Bool = false) // JOELwindows7: here force the synchronous to be false
 	{
+		if (!(legacySynchronousLoading || forceSynchronous))
+		{
+			Debug.logInfo('FlxAsyncLoop loading ready');
+			nuevosPopulateSongData();
+			return;
+		}
+
 		cached = false;
 		// TODO: JOELwindows7: make this loading procedural & automatic
 		Main.loadingBar.setInfoText("Loading songs...");
@@ -563,6 +572,122 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		}
 	}
 
+	static var itterateFill:Int = 0; // JOELwindows7: here the counter for it.
+
+	// JOELwindows7: try again the song loading with above approach but by the for loop, FlxAsyncLoop right here.
+	static public function nuevosPopulateSongData()
+	{
+		// reset latch
+		if (FreeplayState.instance != null)
+		{
+			FreeplayState.instance.__latchFillSong = false;
+			FreeplayState.instance.__latchStepmaniaSong = false;
+			FreeplayState.instance.__latchListSong = false;
+		}
+		loadedUp = false;
+		cached = false;
+		// TODO: JOELwindows7: make this loading procedural & automatic
+		Main.loadingBar.setInfoText("Loading songs...");
+		Main.loadingBar.setLoadingType(ExtraLoadingType.GOING);
+		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+		// JOELwindows7: hey, you must say goodbye to this. just load this one up from directory shall we?
+		// right, how do we do this..
+
+		songData = [];
+		songs = [];
+		itterateFill = 0;
+		asyncLoader = new FlxAsyncLoop(list.length, __fillDaSongLoop, 0);
+		if (FreeplayState.instance != null)
+		{
+			FreeplayState.instance.add(asyncLoader);
+		}
+		asyncLoader.start();
+		Debug.logInfo('Populate Song Data Async Loop');
+	}
+
+	// JOELwindows7: the for loop now designed for async loop FlxAsyncLoop
+	static function __fillDaSongLoop()
+	{
+		var data:Array<String> = list[itterateFill].split(':');
+		var songId = data[0];
+		var meta = new FreeplaySongMetadata(songId, Std.parseInt(data[2]), data[1]);
+		// JOELwindows7: loading text
+		Main.loadingBar.setInfoText("Loading song " + songId + "...");
+		Main.loadingBar.setPercentage((itterateFill / list.length) * 100);
+
+		var diffs = [];
+		var diffsThatExist = [];
+		#if FEATURE_FILESYSTEM
+		if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hard')))
+			diffsThatExist.push("Hard");
+		if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-easy')))
+			diffsThatExist.push("Easy");
+		if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId')))
+			diffsThatExist.push("Normal");
+
+		if (diffsThatExist.length == 0)
+		{
+			Debug.displayAlert(meta.songName + " Chart", "No difficulties found for chart, skipping.");
+		}
+		#else
+		diffsThatExist = ["Easy", "Normal", "Hard"];
+		#end
+
+		if (diffsThatExist.contains("Easy"))
+			FreeplayState.loadDiff(0, songId, diffs);
+		if (diffsThatExist.contains("Normal"))
+			FreeplayState.loadDiff(1, songId, diffs);
+		if (diffsThatExist.contains("Hard"))
+			FreeplayState.loadDiff(2, songId, diffs);
+
+		meta.diffs = diffsThatExist;
+
+		if (diffsThatExist.length < 3) // JOELwindows7: was `!= 3`. yess.
+		{
+			trace("I ONLY FOUND " + diffsThatExist);
+			Debug.displayAlert(meta.songName + " Chart missing diff", "I ONLY FOUND " + diffsThatExist);
+		}
+
+		FreeplayState.songData.set(songId, diffs);
+		trace('loaded diffs for ' + songId);
+		FreeplayState.songs.push(meta);
+
+		#if FEATURE_FILESYSTEM // JOELwindows7: mitsake fixed. wait, isn't this supposed to be FEATURE_MULTITHREADING instead?
+		sys.thread.Thread.create(() ->
+		{
+			FlxG.sound.cache(Paths.inst(songId));
+			// FlxG.sound.cache(Paths.voices(songId)); // JOELwindows7: also cache voices too! NO! too much memory usage!
+		});
+		#else
+		FlxG.sound.cache(Paths.inst(songId));
+		// FlxG.sound.cache(Paths.voices(songId)); // JOELwindows7: also cache voices too!
+		#end
+
+		itterateFill++;
+	}
+
+	// JOELwindows7: Okay fine. let's use single use latch, how about that?!
+	var __latchFillSong:Bool = false;
+	var __latchStepmaniaSong:Bool = false;
+	var __latchListSong:Bool = false;
+
+	// JOELwindows7: and cleanups
+	function __filledThoseSongs()
+	{
+		if (!__latchFillSong)
+		{
+			// asyncCompleteLoad();
+			if (asyncLoader != null)
+			{
+				asyncLoader.kill();
+				remove(asyncLoader);
+				asyncLoader.destroy();
+				loadStepmania();
+			}
+			__latchFillSong = true;
+		}
+	}
+
 	public function addSong(songName:String, weekNum:Int, songCharacter:String)
 	{
 		songs.push(new FreeplaySongMetadata(songName, weekNum, songCharacter));
@@ -583,60 +708,121 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		}
 	}
 
+	var itterateStepmaniaList:Array<String>;
+	var itterateStepmaniaCount:Int = 0;
+
 	// JOELwindows7: stepmania loading copy into here instead
 	function loadStepmania()
 	{
 		#if !FEATURE_STEPMANIA
 		trace("FEATURE_STEPMANIA was not specified during build, sm file loading is disabled.");
+		__filledStepmania();
 		#elseif FEATURE_STEPMANIA
 		// TODO: Refactor this to use OpenFlAssets.
 		trace("tryin to load sm files");
 		_loadingBar.setInfoText("Loading StepMania files...");
 		_loadingBar.setLoadingType(ExtraLoadingType.VAGUE);
-		// JOELwindows7: android crash if attempt FileSystem stuffs
-		for (i in FileSystem.readDirectory("assets/sm/"))
-		{
-			trace(i);
 
-			if (FileSystem.isDirectory("assets/sm/" + i))
-			{
-				trace("Reading SM file dir " + i);
-				for (file in FileSystem.readDirectory("assets/sm/" + i))
-				{
-					if (file.contains(" "))
-						FileSystem.rename("assets/sm/" + i + "/" + file, "assets/sm/" + i + "/" + file.replace(" ", "_"));
-					if (file.endsWith(".sm") && !FileSystem.exists("assets/sm/" + i + "/converted.json"))
-					{
-						trace("reading " + file);
-						_loadingBar.setInfoText("Reading StepMania " + file + " file...");
-						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
-						trace("Converting " + file.header.TITLE);
-						_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
-						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-						var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
-						songs.push(meta);
-						var song = Song.loadFromJsonRAW(data);
-						songData.set(file.header.TITLE, [song, song, song]);
-					}
-					else if (FileSystem.exists("assets/sm/" + i + "/converted.json") && file.endsWith(".sm"))
-					{
-						trace("reading " + file);
-						_loadingBar.setInfoText("Reading StepMania " + file + " file...");
-						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
-						trace("Converting " + file.header.TITLE);
-						_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
-						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-						var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
-						songs.push(meta);
-						var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + i + "/converted.json"));
-						trace("got content lol");
-						songData.set(file.header.TITLE, [song, song, song]);
-					}
-				}
-			}
+		/**
+			PAIN IS TEMPORARY
+			GLORY IS FOREVER
+			lol wintergatan
+		**/
+		// JOELwindows7: android crash if attempt FileSystem stuffs
+		itterateStepmaniaList = FileSystem.readDirectory("assets/sm/");
+
+		trace('There are ${itterateStepmaniaList.length}');
+		itterateStepmaniaCount = 0;
+
+		// for (i in FileSystem.readDirectory("assets/sm/"))
+		// {
+		// }
+		if (itterateStepmaniaList.length > 0)
+		{
+			asyncStepmaniaLoader = new FlxAsyncLoop(itterateStepmaniaList.length, __fillStepmaniaSong, 0);
+			add(asyncStepmaniaLoader);
+			asyncStepmaniaLoader.start();
+		}
+		else
+		{
+			__filledStepmania();
 		}
 		#end
 	}
+
+	function __fillStepmaniaSong()
+	{
+		#if FEATURE_STEPMANIA
+		var thon = itterateStepmaniaList[itterateStepmaniaCount];
+
+		// trace('filling stepmania $itterateStepmaniaCount: $thon');
+
+		if (FileSystem.isDirectory("assets/sm/" + thon))
+		{
+			trace('Reading SM file dir $itterateStepmaniaCount, $thon');
+			for (file in FileSystem.readDirectory("assets/sm/" + thon))
+			{
+				if (file.contains(" "))
+					FileSystem.rename("assets/sm/" + thon + "/" + file, "assets/sm/" + thon + "/" + file.replace(" ", "_"));
+				if (file.endsWith(".sm") && !FileSystem.exists("assets/sm/" + thon + "/converted.json"))
+				{
+					trace("reading " + file);
+					_loadingBar.setInfoText("Reading StepMania " + file + " file...");
+					var file:SMFile = SMFile.loadFile("assets/sm/" + thon + "/" + file.replace(" ", "_"));
+					trace("Converting " + file.header.TITLE);
+					_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
+					var data = file.convertToFNF("assets/sm/" + thon + "/converted.json");
+					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + thon);
+					songs.push(meta);
+					var song = Song.loadFromJsonRAW(data);
+					songData.set(file.header.TITLE, [song, song, song]);
+				}
+				else if (FileSystem.exists("assets/sm/" + thon + "/converted.json") && file.endsWith(".sm"))
+				{
+					trace("reading " + file);
+					_loadingBar.setInfoText("Reading StepMania " + file + " file...");
+					var file:SMFile = SMFile.loadFile("assets/sm/" + thon + "/" + file.replace(" ", "_"));
+					trace("Converting " + file.header.TITLE);
+					_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
+					var data = file.convertToFNF("assets/sm/" + thon + "/converted.json");
+					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + thon);
+					songs.push(meta);
+					var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + thon + "/converted.json"));
+					trace("got content lol");
+					songData.set(file.header.TITLE, [song, song, song]);
+				}
+			}
+		}
+
+		// itterateStepmaniaList.remove(thon);
+		itterateStepmaniaCount++;
+		#else
+		#end
+	}
+
+	// JOELwindows7: stepmania done
+	function __filledStepmania()
+	{
+		if (!__latchStepmaniaSong)
+		{
+			#if FEATURE_STEPMANIA
+			if (asyncStepmaniaLoader != null)
+			{
+				Debug.logTrace('Completa stepmania pls next');
+				asyncStepmaniaLoader.kill();
+				remove(asyncStepmaniaLoader);
+				asyncStepmaniaLoader.destroy();
+				// list the song now!
+				listTheSongs();
+			}
+			#else
+			listTheSongs();
+			#end
+			__latchStepmaniaSong = true;
+		}
+	}
+
+	var itterateListSong:Int = 0;
 
 	// JOELwindows7: here list the song in that list file.
 	function listTheSongs()
@@ -645,29 +831,51 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		_loadingBar.setInfoText("Listing the songs");
 		_loadingBar.popNow();
 		_loadingBar.setLoadingType(ExtraLoadingType.GOING);
-		for (i in 0...songs.length)
-		{
-			_loadingBar.setInfoText("Listing the songs " + songs[i].songName + " " + i + " of " + songs.length);
-			_loadingBar.setPercentage(i / songs.length);
 
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
-			songText.isMenuItem = true;
-			songText.targetY = i;
-			songText.ID = i; // ID the song text to compare curSelected song.
-			grpSongs.add(songText);
+		/**
+			PAIN IS TEMPORARY
+			GLORY IS FOREVER
+		**/
+		itterateListSong = 0;
 
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.sprTracker = songText; // JOELwindows7: well uh..
-			icon.ID = i;
+		// for (i in 0...songs.length)
+		// {
 
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
+		// }
+		asyncListSong = new FlxAsyncLoop(songs.length, __listSongItterator, 0);
+		add(asyncListSong);
+		asyncListSong.start();
+	}
 
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
-		}
+	// JOELwindows7: the itterator for it.
+	function __listSongItterator()
+	{
+		_loadingBar.setInfoText("Listing the songs " + songs[itterateListSong].songName + " " + itterateListSong + " of " + songs.length);
+		_loadingBar.setPercentage(itterateListSong / songs.length);
+
+		var songText:Alphabet = new Alphabet(0, (70 * itterateListSong) + 30, songs[itterateListSong].songName, true, false, true);
+		songText.isMenuItem = true;
+		songText.targetY = itterateListSong;
+		songText.ID = itterateListSong; // ID the song text to compare curSelected song.
+		grpSongs.add(songText);
+
+		var icon:HealthIcon = new HealthIcon(songs[itterateListSong].songCharacter);
+		icon.sprTracker = songText; // JOELwindows7: well uh..
+		icon.ID = itterateListSong;
+
+		// using a FlxGroup is too much fuss!
+		iconArray.push(icon);
+		add(icon);
+
+		// songText.x += 40;
+		// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+		// songText.screenCenter(X);
+		itterateListSong++;
+	}
+
+	function __filledListedSong()
+	{
+		asyncCompleteLoad();
 	}
 
 	// JOELwindows7: attempt to async the loading of this freeplay song list. use FlxAsyncLoop
@@ -687,18 +895,68 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 	// JOELwindows7: and async complete
 	function asyncCompleteLoad()
 	{
-		// JOELwindows7: done loading bar
-		_loadingBar.setInfoText("Done loading!");
-		_loadingBar.setLoadingType(ExtraLoadingType.DONE);
+		if (!__latchListSong)
+		{
+			// JOELwindows7: done loading bar
+			_loadingBar.setInfoText("Done loading!");
+			_loadingBar.setLoadingType(ExtraLoadingType.DONE);
+			_loadingBar.delayedUnPopNow(5);
+
+			// JOELwindows7: now clean up the loader. 1 last time
+			if (asyncLoader != null)
+			{
+				asyncLoader.kill();
+				remove(asyncLoader);
+				asyncLoader.destroy();
+			}
+			if (asyncStepmaniaLoader != null)
+			{
+				asyncStepmaniaLoader.kill();
+				remove(asyncStepmaniaLoader);
+				asyncStepmaniaLoader.destroy();
+			}
+			if (asyncListSong != null)
+			{
+				asyncListSong.kill();
+				remove(asyncListSong);
+				asyncListSong.destroy();
+			}
+			// there are list song & Stepmania too
+
+			loadedUp = true;
+			changeSelection();
+			changeDiff();
+			__latchListSong = true;
+		}
+	}
+
+	// JOELwindows7: cancel everything!
+	function cancelAsyncLoading()
+	{
+		// JOELwindows7: canceled loading bar
+		_loadingBar.setInfoText("Canceled loading!");
+		_loadingBar.setLoadingType(ExtraLoadingType.NONE);
 		_loadingBar.delayedUnPopNow(5);
 
-		// JOELwindows7: now clean up the loader.
-		// asyncLoader.kill();
-		// asyncLoader.destroy();
-
-		loadedUp = true;
-		changeSelection();
-		changeDiff();
+		if (asyncLoader != null)
+		{
+			asyncLoader.kill();
+			remove(asyncLoader);
+			asyncLoader.destroy();
+		}
+		if (asyncStepmaniaLoader != null)
+		{
+			asyncStepmaniaLoader.kill();
+			remove(asyncStepmaniaLoader);
+			asyncStepmaniaLoader.destroy();
+		}
+		if (asyncListSong != null)
+		{
+			asyncListSong.kill();
+			remove(asyncListSong);
+			asyncListSong.destroy();
+		}
+		// loadedUp = true;
 	}
 
 	override function update(elapsed:Float)
@@ -708,24 +966,54 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		// JOELwindows7: now, begin the async process
 		if (!legacySynchronousLoading)
 		{
-			if (!unthreadLoading)
+			// if (!unthreadLoading)
+			// {
+			if (asyncLoader != null && !__latchFillSong)
 			{
-				// if (asyncLoader != null)
-				// {
-				// 	if (!asyncLoader.started)
-				// 	{
-				// 		Debug.logInfo("start da loaging");
-				// 		asyncLoader.start();
-				// 	}
-				// 	else
-				// 	{
-				// 		if (asyncLoader.finished)
-				// 		{
-				// 			asyncCompleteLoad();
-				// 		}
-				// 	}
-				// }
+				if (!asyncLoader.started)
+				{
+					// Debug.logInfo("start da loaging");
+					// asyncLoader.start();
+					// no, don't!
+				}
+				else
+				{
+					if (asyncLoader.finished)
+					{
+						// asyncCompleteLoad();
+						// load stepmania, then list song
+						__filledThoseSongs();
+					}
+				}
 			}
+			if (asyncStepmaniaLoader != null && !__latchStepmaniaSong)
+			{
+				if (!asyncStepmaniaLoader.started)
+				{
+				}
+				else
+				{
+					if (asyncStepmaniaLoader.finished)
+					{
+						// now list all song!
+						__filledStepmania();
+					}
+				}
+			}
+			if (asyncListSong != null && !__latchListSong)
+			{
+				if (!asyncListSong.started)
+				{
+				}
+				else
+				{
+					if (asyncListSong.finished)
+					{
+						__filledListedSong();
+					}
+				}
+			}
+			// }
 		}
 
 		if (FlxG.sound.music.volume < 0.7)
@@ -862,6 +1150,12 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 				// FlxG.switchState(new MainMenuState());
 				switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
 			}
+			else
+			{
+				// no, just add it here.
+				cancelAsyncLoading();
+				switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+			}
 			haveBacked = false;
 		}
 
@@ -933,7 +1227,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 		// Make sure song data is initialized first.
 		if (songData == null || Lambda.count(songData) == 0)
-			populateSongData();
+			populateSongData(true);
 
 		var currentSongData;
 		try
