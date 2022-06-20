@@ -60,8 +60,8 @@ import openfl.utils.ByteArray;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
-#if (sys && !hl)
-import systools.Dialogs;
+#if (systools)
+// import systools.Dialogs;
 #end
 
 using StringTools;
@@ -4600,16 +4600,22 @@ class ChartingState extends MusicBeatState
 
 		if ((data != null) && (data.length > 0))
 		{
+			// #if (systools)
+			// JOELwindows7: use the Dialog file save instead!
+			// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/FileBrowse/source/PlayState.hx
+			// https://haxeflixel.com/demos/FileBrowse/
+			// Dialogs.
+			// var result:String = Dialogs.saveFile("Save Chart JSON", "Please select file destination in *.json", '${Paths.file('data/songs/${_song.songId}')}',
+			// 	Perkedel.SAVE_LEVEL_FILTER);
+
+			// onSaveCompleteNueva(result);
+			// #else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
-
-			// TODO: JOELwindows7: use the Dialog file save instead!
-			// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/FileBrowse/source/PlayState.hx
-			// https://haxeflixel.com/demos/FileBrowse/
-			// Dialogs.
+			// #end
 		}
 	}
 
@@ -4639,6 +4645,42 @@ class ChartingState extends MusicBeatState
 		var difficultyArray = ["easy", "normal", "hard"]; // note, this is different than above's array! this is for ID, not file namer.
 		_song.difficultyId = difficultyArray[PlayState.storyDifficulty];
 		_song.difficultyStrength = DiffCalc.CalculateDiff(_song, .93, true);
+	}
+
+	// JOELwindows7: here with new sys save dialog!
+	// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/FileBrowse/source/PlayState.hx
+	// https://haxeflixel.com/demos/FileBrowse/
+
+	/**
+	 *	Called when the save is successfull
+	 *	@param say the result say
+	 *	@see https://haxeflixel.com/demos/FileBrowse/
+	 * 	@author JOELwindows7
+	 */
+	function onSaveCompleteNueva(say:String)
+	{
+		if (say != null && say.length > 0)
+		{
+			Debug.logInfo('Save Result = $say');
+			createToast(null, 'Saved', 'Save Result = \n$say');
+			FlxG.sound.play(Paths.sound("saveSuccess"));
+		}
+		else
+		{
+			onSaveCancelNueva(say);
+		}
+	}
+
+	/**
+	 *	Called when the save is canceled or error
+	 *	@param say the result say
+	 *	@see https://haxeflixel.com/demos/FileBrowse/
+	 *	@author JOELwindows7
+	 */
+	function onSaveCancelNueva(say:String)
+	{
+		Debug.logInfo('nvm! save canceled!, say $say');
+		createToast(null, 'Save Cancel', 'Save Canceled = \n$say');
 	}
 
 	/**

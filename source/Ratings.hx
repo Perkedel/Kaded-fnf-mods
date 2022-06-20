@@ -124,7 +124,7 @@ class Ratings
 	}
 
 	// JOELwindows7: here judge metronome
-	public static function judgeMetronome(curBeat:Int = 0, beatsInABar:Int = 4):String
+	public static function judgeMetronome(curBeat:Int = 0, beatsInABar:Int = 4, formating:Bool = false):String
 	{
 		var say:String = '';
 		if (curBeat >= 0)
@@ -133,11 +133,15 @@ class Ratings
 			{
 				say += if (curBeat % beatsInABar == i)
 				{
-					(i == 0 ? Perkedel.METRONOME_FIRST_TICK_ICON : Perkedel.METRONOME_REST_TICK_ICON);
+					(i == 0 ? (formating ? Perkedel.METRONOME_FIRST_SYNTAX : '') + Perkedel.METRONOME_FIRST_TICK_ICON
+						+ (formating ? Perkedel.METRONOME_FIRST_SYNTAX : '') : (formating ? Perkedel.METRONOME_REST_SYNTAX : '')
+							+ Perkedel.METRONOME_REST_TICK_ICON + (formating ? Perkedel.METRONOME_REST_SYNTAX : ''));
 				}
 				else
 				{
-					(i == 0 ? Perkedel.METRONOME_FIRST_OFF_ICON : Perkedel.METRONOME_REST_OFF_ICON);
+					(i == 0 ? (formating ? Perkedel.METRONOME_OFF_SYNTAX : '') + Perkedel.METRONOME_FIRST_OFF_ICON
+						+ (formating ? Perkedel.METRONOME_OFF_SYNTAX : '') : (formating ? Perkedel.METRONOME_OFF_SYNTAX : '')
+							+ Perkedel.METRONOME_REST_OFF_ICON + (formating ? Perkedel.METRONOME_OFF_SYNTAX : ''));
 				};
 			}
 			return say;

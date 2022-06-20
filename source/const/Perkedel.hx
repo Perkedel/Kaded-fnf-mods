@@ -21,6 +21,9 @@
  */
 package const;
 
+// import systools.Dialogs;
+import flixel.text.FlxText.FlxTextFormatMarkerPair;
+import flixel.text.FlxText.FlxTextFormat;
 import flixel.util.FlxColor;
 import DokiDoki;
 
@@ -76,7 +79,13 @@ class Perkedel
 		+ "\n-Sky"
 		+ "\n-Whitty"
 		+ "\nKeep in mind, new mods will still be on Full Ass instead of here, sorry.";
-
+	#if systools
+	// public static final SAVE_LEVEL_FILTER:FILEFILTERS = {
+	// 	count: 1,
+	// 	descriptions: ["JSON file"],
+	// 	extensions: ["*.json"]
+	// }
+	#end
 	public static final NULL_HEART_SPEC:SwagHeart = {
 		character: "null",
 		isEmulator: false,
@@ -112,6 +121,19 @@ class Perkedel
 	public static final METRONOME_FIRST_TICK_ICON:String = "A";
 	public static final METRONOME_REST_OFF_ICON:String = "o";
 	public static final METRONOME_REST_TICK_ICON:String = "a";
+	// see https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/FlxTextFormat/source/PlayState.hx
+	// https://haxeflixel.com/demos/FlxTextFormat/
+	public static final METRONOME_FIRST_FONT_FORMAT:FlxTextFormat = new FlxTextFormat(FlxColor.RED, true, false, FlxColor.CYAN);
+	public static final METRONOME_REST_FONT_FORMAT:FlxTextFormat = new FlxTextFormat(FlxColor.BLUE, true, false, FlxColor.LIME);
+	public static final METRONOME_OFF_FONT_FORMAT:FlxTextFormat = new FlxTextFormat(FlxColor.WHITE, false, false, FlxColor.BLACK);
+	public static final METRONOME_FIRST_SYNTAX:String = '<MetroFirst>';
+	public static final METRONOME_REST_SYNTAX:String = '<MetroRest>';
+	public static final METRONOME_OFF_SYNTAX:String = '<MetroOff>';
+	public static final METRONOME_FORMAT_BINDINGS:Array<FlxTextFormatMarkerPair> = [
+		new FlxTextFormatMarkerPair(METRONOME_FIRST_FONT_FORMAT, METRONOME_FIRST_SYNTAX),
+		new FlxTextFormatMarkerPair(METRONOME_REST_FONT_FORMAT, METRONOME_REST_SYNTAX),
+		new FlxTextFormatMarkerPair(METRONOME_OFF_FONT_FORMAT, METRONOME_OFF_SYNTAX),
+	];
 	public static final METRONOME_FIRST_SOUND_PATH:String = "CLAP-midi-ding";
 	public static final METRONOME_REST_SOUND_PATH:String = "CLAP-midi";
 	public static final NOTE_SNAP_SOUND_PATH:String = "SNAP";
