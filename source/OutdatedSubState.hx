@@ -112,8 +112,12 @@ class OutdatedSubState extends MusicBeatState
 		if (MainMenuState.larutMalam != "")
 			teks.text = "You are on\n"
 				+ MainMenuState.lastFunkinMomentVer
-				+ "\nWhich is a PRE-RELEASE BUILD!"
-				+ "\n\nReport all bugs to the author of the pre-release.\nSpace/Escape ignores this.";
+				+ "\nWhich is beyond the main version than: "
+				+ needVerLast
+				+ '\n\nReport all bugs to the bug report place at: \n${Perkedel.ENGINE_BUGREPORT_URL}'
+				+ '\n\nPress Space to visit the bug report place and report bugs\nor ESCAPE to ignore this'
+				+
+				'And remember folks, only Perkedel Technologies will be fine with software leaks like this.\nDon\'t leak other people\'s project UNLESS they are also CONFIRMED fine with it, people!';
 
 		teks.setFormat("VCR OSD Mono", 32, FlxColor.fromRGB(200, 200, 200), CENTER);
 		teks.borderColor = FlxColor.BLACK;
@@ -204,13 +208,16 @@ class OutdatedSubState extends MusicBeatState
 			else
 				FlxTween.tween(lfmLogo, {alpha: 0.8}, 0.8, {ease: FlxEase.quartInOut});
 		}, 0);
+
+		addBackButton();
+		addAcceptButton();
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (controls.ACCEPT && MainMenuState.nightly == "" && MainMenuState.larutMalam == "")
+		if ((controls.ACCEPT || haveClicked) && MainMenuState.nightly == "" && MainMenuState.larutMalam == "")
 		{
-			// JOELwindows7: accepted, go to which area should be updated
+			// JOELwindows7: accepted, go to which area should be updated. don't forget mouse!
 			switch (whichAreaOutdated)
 			{
 				case 0:
@@ -220,6 +227,8 @@ class OutdatedSubState extends MusicBeatState
 				default:
 					fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
 			}
+
+			haveClicked = false;
 		}
 		else if (controls.ACCEPT || haveClicked)
 		{
@@ -229,6 +238,7 @@ class OutdatedSubState extends MusicBeatState
 				case 0: // Kade Engine
 					leftState = true;
 				case 1: // Last Funkin Moment
+					fancyOpenURL(Perkedel.ENGINE_BUGREPORT_URL);
 					tinggalkanState = true;
 				case 2: // Your mod
 					trace("your mod");
@@ -257,5 +267,26 @@ class OutdatedSubState extends MusicBeatState
 			haveBacked = false;
 		}
 		super.update(elapsed);
+	}
+
+	override function manageMouse()
+	{
+		if (FlxG.mouse.overlaps(backButton))
+		{
+			if (FlxG.mouse.justPressed)
+			{
+				if (!haveBacked)
+					haveBacked = true;
+			}
+		}
+		if (FlxG.mouse.overlaps(acceptButton))
+		{
+			if (FlxG.mouse.justPressed)
+			{
+				if (!haveClicked)
+					haveClicked = true;
+			}
+		}
+		super.manageMouse();
 	}
 }

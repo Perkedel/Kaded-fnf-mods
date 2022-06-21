@@ -1,0 +1,1939 @@
+{
+     "ProgramUsed" : "Last Funkin Moments"
+    ,"charter" : "JOELwindows7"
+    ,"generatedBy" : "charting"
+    ,"song" : {
+         "songName" : "Go Cart"
+        ,"videoPath" : ""
+        ,"delayBeforeStart" : 0
+        ,"isCreditRoll" : false
+        ,"strumProfile" : "Dance-Single"
+        ,"notes" : [
+             {
+                 "endTime" : 2086.95652173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 0
+            }
+            ,{
+                 "endTime" : 4173.91304347826
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 2086.95652173913
+            }
+            ,{
+                 "endTime" : 6260.86956521739
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 4173.91304347826
+            }
+            ,{
+                 "endTime" : 8347.82608695652
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 6260.86956521739
+            }
+            ,{
+                 "endTime" : 10434.7826086957
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 8347.82608695652
+            }
+            ,{
+                 "endTime" : 12521.7391304348
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 10434.7826086957
+            }
+            ,{
+                 "endTime" : 14608.6956521739
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 12521.7391304348
+            }
+            ,{
+                 "endTime" : 16695.652173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : false
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 14608.6956521739
+            }
+            ,{
+                 "endTime" : 18782.6086956522
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 16695.652173913
+            }
+            ,{
+                 "endTime" : 20869.5652173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 18782.6086956522
+            }
+            ,{
+                 "endTime" : 22956.5217391304
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 20869.5652173913
+            }
+            ,{
+                 "endTime" : 25043.4782608696
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 22956.5217391304
+            }
+            ,{
+                 "endTime" : 27130.4347826087
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 25043.4782608696
+            }
+            ,{
+                 "endTime" : 29217.3913043478
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 27130.4347826087
+            }
+            ,{
+                 "endTime" : 31304.347826087
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 29217.3913043478
+            }
+            ,{
+                 "endTime" : 33391.3043478261
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 31304.347826087
+            }
+            ,{
+                 "endTime" : 35478.2608695652
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 33391.3043478261
+            }
+            ,{
+                 "endTime" : 37565.2173913043
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 35478.2608695652
+            }
+            ,{
+                 "endTime" : 39652.1739130435
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 37565.2173913043
+            }
+            ,{
+                 "endTime" : 41739.1304347826
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 39652.1739130435
+            }
+            ,{
+                 "endTime" : 43826.0869565217
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 41739.1304347826
+            }
+            ,{
+                 "endTime" : 45913.0434782609
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 43826.0869565217
+            }
+            ,{
+                 "endTime" : 48000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 45913.0434782609
+            }
+            ,{
+                 "endTime" : 50086.9565217391
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 48000
+            }
+            ,{
+                 "endTime" : 52173.9130434783
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 50086.9565217391
+            }
+            ,{
+                 "endTime" : 54260.8695652174
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 52173.9130434783
+            }
+            ,{
+                 "endTime" : 56347.8260869565
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 54260.8695652174
+            }
+            ,{
+                 "endTime" : 58434.7826086956
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 56347.8260869565
+            }
+            ,{
+                 "endTime" : 60521.7391304348
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 58434.7826086956
+            }
+            ,{
+                 "endTime" : 62608.6956521739
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 60521.7391304348
+            }
+            ,{
+                 "endTime" : 64695.652173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 62608.6956521739
+            }
+            ,{
+                 "endTime" : 66782.6086956522
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 64695.652173913
+            }
+            ,{
+                 "endTime" : 68869.5652173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 66782.6086956522
+            }
+            ,{
+                 "endTime" : 70956.5217391304
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 68869.5652173913
+            }
+            ,{
+                 "endTime" : 73043.4782608696
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 70956.5217391304
+            }
+            ,{
+                 "endTime" : 75130.4347826087
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 73043.4782608696
+            }
+            ,{
+                 "endTime" : 77217.3913043478
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 75130.4347826087
+            }
+            ,{
+                 "endTime" : 79304.347826087
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 77217.3913043478
+            }
+            ,{
+                 "endTime" : 81391.3043478261
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 79304.347826087
+            }
+            ,{
+                 "endTime" : 83478.2608695652
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 81391.3043478261
+            }
+            ,{
+                 "endTime" : 85565.2173913043
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 83478.2608695652
+            }
+            ,{
+                 "endTime" : 87652.1739130435
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 85565.2173913043
+            }
+            ,{
+                 "endTime" : 89739.1304347826
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 87652.1739130435
+            }
+            ,{
+                 "endTime" : 91826.0869565217
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 89739.1304347826
+            }
+            ,{
+                 "endTime" : 93913.0434782609
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 91826.0869565217
+            }
+            ,{
+                 "endTime" : 96000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 93913.0434782609
+            }
+            ,{
+                 "endTime" : 98086.9565217391
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 96000
+            }
+            ,{
+                 "endTime" : 100173.913043478
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 98086.9565217391
+            }
+            ,{
+                 "endTime" : 102260.869565217
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 100173.913043478
+            }
+            ,{
+                 "endTime" : 104347.826086957
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 102260.869565217
+            }
+            ,{
+                 "endTime" : 106434.782608696
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 104347.826086957
+            }
+            ,{
+                 "endTime" : 108521.739130435
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 106434.782608696
+            }
+            ,{
+                 "endTime" : 110608.695652174
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 108521.739130435
+            }
+            ,{
+                 "endTime" : 112695.652173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 110608.695652174
+            }
+            ,{
+                 "endTime" : 114782.608695652
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 112695.652173913
+            }
+            ,{
+                 "endTime" : 116869.565217391
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 114782.608695652
+            }
+            ,{
+                 "endTime" : 118956.52173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 116869.565217391
+            }
+            ,{
+                 "endTime" : 121043.47826087
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 118956.52173913
+            }
+            ,{
+                 "endTime" : 123130.434782609
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 121043.47826087
+            }
+            ,{
+                 "endTime" : 125217.391304348
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 123130.434782609
+            }
+            ,{
+                 "endTime" : 127304.347826087
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 125217.391304348
+            }
+            ,{
+                 "endTime" : 129391.304347826
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 127304.347826087
+            }
+            ,{
+                 "endTime" : 131478.260869565
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 129391.304347826
+            }
+            ,{
+                 "endTime" : 133565.217391304
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 131478.260869565
+            }
+            ,{
+                 "endTime" : 135652.173913043
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 133565.217391304
+            }
+            ,{
+                 "endTime" : 137739.130434783
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 135652.173913043
+            }
+            ,{
+                 "endTime" : 139826.086956522
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 137739.130434783
+            }
+            ,{
+                 "endTime" : 141913.043478261
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 139826.086956522
+            }
+            ,{
+                 "endTime" : 144000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 141913.043478261
+            }
+            ,{
+                 "endTime" : 146086.956521739
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 144000
+            }
+            ,{
+                 "endTime" : 148173.913043478
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 146086.956521739
+            }
+            ,{
+                 "endTime" : 150260.869565217
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 148173.913043478
+            }
+            ,{
+                 "endTime" : 152347.826086957
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 150260.869565217
+            }
+            ,{
+                 "endTime" : 154434.782608696
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 152347.826086957
+            }
+            ,{
+                 "endTime" : 156521.739130435
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 154434.782608696
+            }
+            ,{
+                 "endTime" : 158608.695652174
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 156521.739130435
+            }
+            ,{
+                 "endTime" : 160695.652173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 158608.695652174
+            }
+            ,{
+                 "endTime" : 162782.608695652
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 160695.652173913
+            }
+            ,{
+                 "endTime" : 164869.565217391
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 162782.608695652
+            }
+            ,{
+                 "endTime" : 166956.52173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 164869.565217391
+            }
+            ,{
+                 "endTime" : 169043.47826087
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 166956.52173913
+            }
+            ,{
+                 "endTime" : 171130.434782609
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 169043.47826087
+            }
+            ,{
+                 "endTime" : 173217.391304348
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 171130.434782609
+            }
+            ,{
+                 "endTime" : 175304.347826087
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 173217.391304348
+            }
+            ,{
+                 "endTime" : 177391.304347826
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 175304.347826087
+            }
+            ,{
+                 "endTime" : 179478.260869565
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 177391.304347826
+            }
+            ,{
+                 "endTime" : 181565.217391304
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 179478.260869565
+            }
+            ,{
+                 "endTime" : 183652.173913043
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 181565.217391304
+            }
+            ,{
+                 "endTime" : 185739.130434783
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 183652.173913043
+            }
+            ,{
+                 "endTime" : 187826.086956522
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 185739.130434783
+            }
+            ,{
+                 "endTime" : 189913.043478261
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 187826.086956522
+            }
+            ,{
+                 "endTime" : 192000
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 189913.043478261
+            }
+            ,{
+                 "endTime" : 194086.956521739
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 192000
+            }
+            ,{
+                 "endTime" : 196173.913043478
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 194086.956521739
+            }
+            ,{
+                 "endTime" : 198260.869565217
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 196173.913043478
+            }
+            ,{
+                 "endTime" : 200347.826086957
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 198260.869565217
+            }
+            ,{
+                 "endTime" : 202434.782608696
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 200347.826086957
+            }
+            ,{
+                 "endTime" : 204521.739130435
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 202434.782608696
+            }
+            ,{
+                 "endTime" : 206608.695652174
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 204521.739130435
+            }
+            ,{
+                 "endTime" : 208695.652173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 206608.695652174
+            }
+            ,{
+                 "endTime" : 210782.608695652
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 208695.652173913
+            }
+            ,{
+                 "endTime" : 212869.565217391
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 210782.608695652
+            }
+            ,{
+                 "endTime" : 214956.52173913
+                ,"playerAltAnim" : false
+                ,"altAnim" : false
+                ,"CPUAltAnim" : false
+                ,"mustHitSection" : true
+                ,"lengthInSteps" : 16
+                ,"typeOfSection" : 0
+                ,"sectionNotes" : [
+
+                ]
+                ,"betterSectionNotes" : [
+
+                ]
+                ,"changeBPM" : false
+                ,"bpm" : 115
+                ,"startTime" : 212869.565217391
+            }
+        ]
+        ,"hasVideo" : false
+        ,"creditRunsOnce" : false
+        ,"isCheer" : false
+        ,"cutsceneType" : "none"
+        ,"forceHscriptModchart" : false
+        ,"invisibleCountdown" : false
+        ,"loadNoteStyleOtherWayAround" : false
+        ,"hasTankmanVideo" : false
+        ,"useCustomStage" : false
+        ,"epilogueTankmanVideoPath" : "null"
+        ,"speed" : 1.5
+        ,"artist" : "Kevin Macleod"
+        ,"useCustomNoteStyle" : true
+        ,"sectionLengths" : [
+
+        ]
+        ,"hasEpilogueChat" : false
+        ,"forceLuaModchart" : false
+        ,"epilogueVideoPath" : ""
+        ,"hasDialogueChat" : true
+        ,"outroCutSceneDoneManually" : false
+        ,"charter" : "JOELwindows7"
+        ,"hasEpilogueVideo" : false
+        ,"preferredNoteAmount" : 4
+        ,"introCutSceneDoneManually" : false
+        ,"delayAfterFinish" : 0
+        ,"strumCounts" : 4
+        ,"sections" : 0
+        ,"uiType" : "normal"
+        ,"reversedCountdown" : false
+        ,"songId" : "go-cart"
+        ,"player1" : "bf-covid"
+        ,"tankmanVideoPath" : "null"
+        ,"player2" : "hookx"
+        ,"isHey" : false
+        ,"diffVariables" : {
+
+        }
+        ,"forceLuaModchartLegacy" : false
+        ,"offset" : 0
+        ,"isSpooky" : false
+        ,"song" : "go-cart"
+        ,"validScore" : true
+        ,"difficultyId" : "normal"
+        ,"variables" : {
+
+        }
+        ,"selectionColor" : ""
+        ,"isMoody" : false
+        ,"gfVersion" : "gf-covid"
+        ,"chartVersion" : "KE1"
+        ,"eventObjects" : [
+             {
+                 "_hxcls" : "Event"
+                ,"name" : "Init BPM"
+                ,"position" : 0
+                ,"value" : 115
+                ,"value2" : 0
+                ,"value3" : 0
+                ,"type" : "BPM Change"
+            }
+        ]
+        ,"allowedToHeadbang" : false
+        ,"hasEpilogueTankmanVideo" : false
+        ,"difficulty" : 0
+        ,"silentCountdown" : false
+        ,"difficultyStrength" : 9e+16
+        ,"needsVoices" : false
+        ,"stage" : "stage"
+        ,"noteStyle" : "saubo"
+        ,"bpm" : 115
+    }
+}

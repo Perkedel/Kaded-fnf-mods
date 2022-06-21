@@ -45,7 +45,6 @@ import sys.thread.Mutex;
 using StringTools;
 
 // JOELwindows7: here another one. FlxUI things yeah
-
 class TitleState extends MusicBeatState
 {
 	static var initialized:Bool = false;
@@ -521,17 +520,91 @@ class TitleState extends MusicBeatState
 		#if FEATURE_HTTP
 		var http = new haxe.Http(Perkedel.ENGINE_VERSION_URL);
 		var returnedData:Array<String> = [];
+		var versionNumbering:Array<Int> = []; // watch this.
+		var comparinglyOutdated:Bool = false; // First, check year, month, patchoid.
+		var cuttingEdged:Bool = true; // if this is cutting edge, then tell them.
 
 		http.onData = function(data:String)
 		{
 			returnedData[0] = data.substring(0, data.indexOf(';'));
+			var pisah:Array<String> = returnedData[0].split('.');
+			for (i in 0...pisah.length)
+			{
+				// tada separating version number for more detailed positional.
+				versionNumbering[i] = Std.parseInt(pisah[i]);
+			};
 			returnedData[1] = data.substring(data.indexOf('-'), data.length);
-			if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.tinggalkanState)
+			if (versionNumbering[0] == Perkedel.ENGINE_VERSION_NUMBER[0])
+			{
+				// up to date, right? check month
+				if (versionNumbering[1] == Perkedel.ENGINE_VERSION_NUMBER[1])
+				{
+					// up to date?, okay, check patchoid!
+					if (versionNumbering[2] == Perkedel.ENGINE_VERSION_NUMBER[2])
+					{
+						// Okay, confirmed up to date.
+						trace('patch version up to date');
+					}
+					else if (versionNumbering[2] > Perkedel.ENGINE_VERSION_NUMBER[2])
+					{
+						// naahp, still out of date.
+						comparinglyOutdated = true;
+						trace('patch version out of date');
+					}
+					else if (versionNumbering[2] < Perkedel.ENGINE_VERSION_NUMBER[2])
+					{
+						// cutting edge patch
+						MainMenuState.larutMalam = 'LARUT_MALAM';
+						cuttingEdged = true;
+						trace('patch version cutting edge');
+					}
+					trace('month version up to date');
+				}
+				else if (versionNumbering[1] > Perkedel.ENGINE_VERSION_NUMBER[1])
+				{
+					// welp outdated.
+					comparinglyOutdated = true;
+					trace('month version out of date');
+				}
+				else if (versionNumbering[1] < Perkedel.ENGINE_VERSION_NUMBER[1])
+				{
+					// cutting edge month
+					MainMenuState.larutMalam = 'LARUT_MALAM';
+					cuttingEdged = true;
+					trace('month version cutting edge');
+				}
+				trace('year version up to date');
+			}
+			else if (versionNumbering[0] > Perkedel.ENGINE_VERSION_NUMBER[0])
+			{
+				// outdated
+				comparinglyOutdated = true;
+				trace('year version out of date');
+			}
+			else if (versionNumbering[0] < Perkedel.ENGINE_VERSION_NUMBER[0])
+			{
+				// cutting edge year
+				MainMenuState.larutMalam = 'LARUT_MALAM';
+				cuttingEdged = true;
+				trace('year version cutting edge');
+			}
+
+			// wait! clear the larut malam first, if it is outdated.
+			if (comparinglyOutdated)
+			{
+				MainMenuState.larutMalam = '';
+				cuttingEdged = false;
+			}
+
+			// if (!MainMenuState.lastFunkinMomentVer.contains(returnedData[0].trim()) && !OutdatedSubState.tinggalkanState)
+			if ((comparinglyOutdated || cuttingEdged) && !OutdatedSubState.tinggalkanState) // JOELwindows7: here the new comparator!
 			{
 				if (!alreadyDecideOutdated)
 					OutdatedSubState.whichAreaOutdated = 1; // mark that LFM one is outdated
 				alreadyDecideOutdated = true;
-				trace('LFM outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.lastFunkinMomentVer);
+				trace('LFM ${comparinglyOutdated ? 'outdated lmao!' : cuttingEdge ? 'LEAKED UPDATE!!! whoah!!!' : ''} ${returnedData[0]} !=  ${MainMenuState.lastFunkinMomentVer}\n'
+					);
+				// Disclaimer: Perkedel is fine with cutting edge leak & JOELwindows7 even personal fine with it. as long it does not harm reputation of course.
 				OutdatedSubState.needVerLast = returnedData[0];
 				OutdatedSubState.perubahanApaSaja = returnedData[1];
 				// FlxG.switchState(new OutdatedSubState());
