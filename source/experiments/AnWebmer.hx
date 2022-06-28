@@ -24,7 +24,7 @@ import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 #if FEATURE_VLC
-import vlc.VideoHandler as MP4Handler; // JOELwindows7: newe
+import VideoHandler as MP4Handler; // JOELwindows7: newe
 
 // import vlc.MP4Handler; // wait what?!
 #end

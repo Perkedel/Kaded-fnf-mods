@@ -77,6 +77,12 @@ Unfortunately folks, we still not witness JUCE integrator to Haxe, OpenFl, HaxeF
 - HTML5 (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/ngwvliwkacsu0nly?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-winhtml5)
 - macOS [![Build status macOS](https://ci.appveyor.com/api/projects/status/61pl7ba9rgu375pn?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-macos)
 
+## License
+### FOSSA 
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods?ref=badge_small)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods?ref=badge_shield)
+
 ## Mods comeback status (Protoglin Amexamlef)
 - Sky ✅. https://gamebanana.com/mods/44555 . More: [NuSky + SkyVerse](https://gamebanana.com/mods/369981 ), [ReManifested](https://gamebanana.com/mods/370008 )
 - Whitty ✅. https://gamebanana.com/mods/44214 . More: [Definitive Psyched](https://gamebanana.com/mods/354884 )

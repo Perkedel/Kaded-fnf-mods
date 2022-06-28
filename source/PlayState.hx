@@ -104,8 +104,8 @@ import openfl.filters.ShaderFilter;
 import Discord.DiscordClient;
 #end
 #if FEATURE_VLC
-import vlc.VideoHandler as MP4Handler; // JOELwindows7: BrightFyre handed over hxCodec to PolybiusProxy
-import vlc.VideoSprite as MP4Sprite; // yeah.
+import VideoHandler as MP4Handler; // JOELwindows7: BrightFyre handed over hxCodec to PolybiusProxy
+import VideoSprite as MP4Sprite; // yeah.
 
 // import vlc.MP4Handler; // wait what??
 // import vlc.MP4Sprite; // Oh, c'mon!!
@@ -2534,7 +2534,9 @@ class PlayState extends MusicBeatState
 		{
 			#if FEATURE_VLC
 			if (vlcHandler != null)
-				vlcHandler.resume();
+			{
+				// vlcHandler.resume(); // JOELwindows7: FORGOTR!!!!
+			}
 			#end
 		}
 
@@ -6302,10 +6304,11 @@ class PlayState extends MusicBeatState
 
 		Debug.logInfo('poggers');
 
-		if (!songStarted)
-			vlcHandler.pause();
-		else
-			vlcHandler.resume();
+		// JOELwindows7: wtf, you still forgot these?!?!?!?
+		// if (!songStarted)
+		// 	vlcHandler.pause();
+		// else
+		// 	vlcHandler.resume();
 		#elseif (FEATURE_WEBM && !FEATURE_VLC)
 		useVideo = true;
 		useVLC = false; // JOELwindows7: not VLC

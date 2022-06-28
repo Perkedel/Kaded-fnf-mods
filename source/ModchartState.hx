@@ -40,8 +40,7 @@ import HaxeScriptState;
 
 using StringTools;
 
-//JOELwindows7: FlxUI fy!
-
+// JOELwindows7: FlxUI fy!
 class ModchartState
 {
 	// public static var shaders:Array<LuaShader> = null; // JOELwindows7: uncomment now!!! nvm
@@ -784,7 +783,7 @@ class ModchartState
 				if (PlayState.instance.useVLC)
 				{
 					#if FEATURE_VLC
-					PlayState.instance.vlcHandler.pause();
+					// PlayState.instance.vlcHandler.pause(); // JOELwindows7: FIXX!!!!
 					#end
 				}
 				else if (!GlobalVideo.get().paused)
@@ -796,7 +795,7 @@ class ModchartState
 				if (PlayState.instance.useVLC)
 				{
 					#if FEATURE_VLC
-					PlayState.instance.vlcHandler.resume();
+					// PlayState.instance.vlcHandler.resume(); // JOELwindows7: FORGOR
 					#end
 				}
 				else if (GlobalVideo.get().paused)

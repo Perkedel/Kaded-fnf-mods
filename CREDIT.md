@@ -389,6 +389,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://www.linuxuprising.com/2018/06/fix-no-sound-dummy-output-issue-in.html fix sound 
 - https://askubuntu.com/questions/1272908/ubuntu-20-04-headphones-detected-but-no-sound headphone no sound fix
 - https://twitter.com/EliteMasterEric/status/1537634171732037633 Master Eric, on PNG & memory usages things upon those.
+- https://www.youtube.com/watch?v=crnGzF43aoc How to write your own Arch User Repository PKGBUILD. 30 minutes video!
 
 # in event of git merge conflict
 use VScode and Github desktop!

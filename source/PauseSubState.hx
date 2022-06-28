@@ -86,7 +86,7 @@ class PauseSubState extends MusicBeatSubstate
 				menuItems.remove("Resume");
 				#if FEATURE_VLC
 				// if (PlayState.instance.vlcHandler.isPlaying)
-				PlayState.instance.vlcHandler.pause();
+				// PlayState.instance.vlcHandler.pause(); // JOELwindows7: YOU PECKING FORGOT!!!
 				#end
 			}
 
