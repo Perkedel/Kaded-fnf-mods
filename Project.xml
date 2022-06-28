@@ -323,7 +323,7 @@
 	<!-- https://github.com/datee/HaxeVLC -->
 	<!-- NEW BrightFyre VLC MP4 support (now handed over to PolybiusProxy, as hxCodec) -->
 	<!-- <haxelib name="hxCodec" if="cpp desktop || mobile" unless="neko || hl"/> -->
-	<haxelib name="hxCodec" unless="neko || hl"/>
+	<haxelib name="hxCodec" unless="neko || hl || web"/>
 
 	<!-- JOELwindows7: try Android Media extension thingy -->
 	<!-- <haxelib name="extension-android-media"/> -->
@@ -543,7 +543,7 @@
 	<haxedef name="FEATURE_WEBM_JS" if="web"/>
 	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
 	<!-- <haxedef name="FEATURE_VLC" if="cpp desktop || mobile" unless="neko || hl"/> -->
-	<haxedef name="FEATURE_VLC" unless="neko || hl"/>
+	<haxedef name="FEATURE_VLC" unless="neko || hl || web"/>
 	<haxedef name="FEATURE_GIF" unless="web"/>
 	<!-- JOELwindows7: additional howl for LIME project xml here -->
 	<echo value="This is Odysee build" if="odysee"/>

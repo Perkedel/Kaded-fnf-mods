@@ -6305,10 +6305,10 @@ class PlayState extends MusicBeatState
 		Debug.logInfo('poggers');
 
 		// JOELwindows7: wtf, you still forgot these?!?!?!?
-		// if (!songStarted)
-		// 	vlcHandler.pause();
-		// else
-		// 	vlcHandler.resume();
+		if (!songStarted)
+			vlcHandler.bitmap.pause();
+		else
+			vlcHandler.bitmap.resume();
 		#elseif (FEATURE_WEBM && !FEATURE_VLC)
 		useVideo = true;
 		useVLC = false; // JOELwindows7: not VLC

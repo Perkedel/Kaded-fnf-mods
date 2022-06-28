@@ -302,6 +302,12 @@ class VLCState extends MusicBeatState
 			//     videoSprite.undim();
 			// 	txt.text = defaultText;
 			// }
+			#if FEATURE_VLC
+			if (theVLC != null)
+			{
+				theVLC.togglePause();
+			}
+			#end
 		}
 	}
 

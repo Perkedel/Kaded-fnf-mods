@@ -86,7 +86,7 @@ class PauseSubState extends MusicBeatSubstate
 				menuItems.remove("Resume");
 				#if FEATURE_VLC
 				// if (PlayState.instance.vlcHandler.isPlaying)
-				// PlayState.instance.vlcHandler.pause(); // JOELwindows7: YOU PECKING FORGOT!!!
+				PlayState.instance.vlcHandler.bitmap.pause(); // JOELwindows7: YOU PECKING FORGOT!!!
 				#end
 			}
 
@@ -185,7 +185,8 @@ class PauseSubState extends MusicBeatSubstate
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
 		// perSongOffset = new FlxUIText(5, FlxG.height - 18, 0, "Hello chat", 12);
-		perSongOffset = new FlxUIText(5, FlxG.height - 18, 0, "Song ID: " + PlayState.SONG.songId + " | Hello Chat", 12); // JOELwindows7: don't empty that this!
+		perSongOffset = new FlxUIText(5, FlxG.height - 18, 0, "Song ID: " + PlayState.SONG.songId + " | Hello Chat",
+			12); // JOELwindows7: don't empty that this!
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 

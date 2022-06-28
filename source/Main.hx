@@ -245,7 +245,7 @@ class Main extends Sprite
 		#if FEATURE_WEBM_JS
 		trace("Video Cutscener is built-in Browser's");
 		var str1:String = "HTML CRAP";
-		var vHandler = new VideoHandler();
+		var vHandler = new VideoHandlir();
 		vHandler.init1();
 		vHandler.video.name = str1;
 		addChild(vHandler.video);

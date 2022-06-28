@@ -616,7 +616,7 @@ class HaxeScriptState
 			if (PlayState.instance.useVLC)
 			{
 				#if FEATURE_VLC
-				// PlayState.instance.vlcHandler.pause(); // JOELwindows7: FIX PLS!!
+				PlayState.instance.vlcHandler.bitmap.pause(); // JOELwindows7: FIX PLS!!
 				#end
 			}
 			else if (!GlobalVideo.get().paused)
@@ -627,7 +627,7 @@ class HaxeScriptState
 			if (PlayState.instance.useVLC)
 			{
 				#if FEATURE_VLC
-				// PlayState.instance.vlcHandler.resume(); // JOELwindows7: fix!!!!
+				PlayState.instance.vlcHandler.bitmap.resume(); // JOELwindows7: fix!!!!
 				#end
 			}
 			else if (GlobalVideo.get().paused)
