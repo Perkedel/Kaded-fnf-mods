@@ -390,6 +390,13 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://askubuntu.com/questions/1272908/ubuntu-20-04-headphones-detected-but-no-sound headphone no sound fix
 - https://twitter.com/EliteMasterEric/status/1537634171732037633 Master Eric, on PNG & memory usages things upon those.
 - https://www.youtube.com/watch?v=crnGzF43aoc How to write your own Arch User Repository PKGBUILD. 30 minutes video!
+- https://wiki.archlinux.org/title/Arch_User_Repository AUR article
+- https://wiki.archlinux.org/title/Creating_packages creating packages
+- https://wiki.archlinux.org/title/Arch_package_guidelines AUR guideline
+- https://wiki.archlinux.org/title/PKGBUILD PKGBUILD
+- https://wiki.archlinux.org/title/VCS_package_guidelines#The_pkgver()_function VCS Package
+- https://wiki.archlinux.org/title/AUR_helpers AUR Helper
+- https://linuxhint.com/aur_arch_linux/ How to AUR
 
 # in event of git merge conflict
 use VScode and Github desktop!
