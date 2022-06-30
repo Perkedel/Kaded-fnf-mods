@@ -16,6 +16,14 @@
     "dialogueChatSoundPaths": [
         "pixelText"
     ],
+    "deathSoundPaths":[
+        {
+            "pathPrefix":"fnf_loss_sfx",
+            "volume":1.0,
+            "addSuffixes":true
+        }
+    ],
+    "randomizedDeathSoundPaths":[],
     "heartSpecs": {
         "initHR": 70,
         "maxHR": 220,

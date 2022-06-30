@@ -575,6 +575,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/mods/328542 (Permissioned) DemonOfRazgriz. Plight
 - https://gamebanana.com/mods/329405 (Permissioned) DemonOfRazgriz. Silver mommy mearest skin
 - https://gamebanana.com/mods/385202 Cool Leaf. Pixel note but non-week 6 classic. Inspired from normal noteskin
+- https://gamebanana.com/mods/384783 https://github.com/BoloVEVO/Kade-Engine-Public BoloVEVO / Boloxd. Continued Kade Engine development & added week 7. also added serveral stuffs too as well!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

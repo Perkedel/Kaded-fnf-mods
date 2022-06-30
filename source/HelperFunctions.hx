@@ -39,15 +39,21 @@ class HelperFunctions
 
 	/**
 	 * @param duration The duration in seconds
-	 * @return The duration in the format "MM:SS"
+	 * @return The duration in the format "HH:MM:SS"
 	 */
 	public static function durationToString(duration:Float):String
 	{
 		var seconds = FlxMath.roundDecimal(duration, 0) % 60;
 		var secondsStr = Strings.lpad('$seconds', 2, '0');
 		var minutes = FlxMath.roundDecimal(duration - seconds, 0) / 60;
-		var minutesStr = FlxMath.roundDecimal(minutes, 0);
-		return '$minutesStr:$secondsStr';
+		var minutesRem = FlxMath.roundDecimal(duration - seconds, 0) % 60; // JOELwindows7: okay, there's remainer.
+		// var minutesStr = FlxMath.roundDecimal(minutes, 0);
+		var minutesStr = FlxMath.roundDecimal(minutesRem, 0);
+		// JOELwindows7: add more pls!!!
+		var hours = FlxMath.roundDecimal(duration - minutes, 0) / 60;
+		var hoursStr = FlxMath.roundDecimal(hours, 0);
+		// JOELwindows7: here more!
+		return '${hoursStr > 0 ? '$hoursStr:' : ''}$minutesStr:$secondsStr';
 	}
 
 	public static function getTypeName(input:Dynamic):String

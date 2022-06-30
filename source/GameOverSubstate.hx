@@ -11,8 +11,7 @@ import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
-//JOELwindows7: FlxUI fy!!!
-
+// JOELwindows7: FlxUI fy!!!
 class GameOverSubstate extends MusicBeatSubstate
 {
 	// class TesMo{} // TEST: JOELwindows7: class definition is not allowed inside a class defintion.
@@ -86,6 +85,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			detectMidiSuffix = "";
 		}
+
+		// JOELwindows7: & conclusion for these suffixes
+		setAddSuffixes(stageSuffix, detectMemeSuffix, detectMidiSuffix);
 
 		// JOELwindows7: checks depending on song
 		switch (daSong.toLowerCase())
@@ -396,5 +398,22 @@ class GameOverSubstate extends MusicBeatSubstate
 	public static function reloadBlueballCounterFromWeekSave()
 	{
 		return GameOverSubstate.blueBallCounter = FlxG.save.data.leftBlueball;
+	}
+
+	// JOELwindows7: and suffixes yess
+	static var finalStageSuffix:String = "";
+	static var finalMemeSuffix:String = "";
+	static var finalMidiSuffix:String = "";
+
+	public static function getAddSuffixes(doIt:Bool = false)
+	{
+		return doIt ? '${finalStageSuffix}${finalMemeSuffix}${finalMidiSuffix}' : '';
+	}
+
+	static function setAddSuffixes(stageS:String = "", memeS:String = "", midiS:String = "")
+	{
+		finalStageSuffix = stageS;
+		finalMemeSuffix = memeS;
+		finalMidiSuffix = midiS;
 	}
 }

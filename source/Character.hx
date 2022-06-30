@@ -41,6 +41,10 @@ class Character extends FlxUISprite
 	public var camFollow:Array<Int>;
 
 	public var heartOrgans:Array<SwagHeart>; // JOELwindows7: for the 🫀 hearts. yep, Shinon51788 Doki Doki dance thingy. turns out either:
+	public var deathSoundPaths:Array<DeathSoundPath>; // JOELwindows7: play these death sounds defined in this list on the asset sound folders.
+	public var randomizedDeathSoundPaths:Array<RandomizedDeathSoundPath>; // JOELwindows7: same but each bit plays one of the random variations
+	public var riseUpAgainSoundPaths:Array<DeathSoundPath>; // JOELwindows7: press retry
+	public var randomizedRiseUpAgainSoundPaths:Array<RandomizedDeathSoundPath>; // JOELwindows7: and random one each bit plays one of the random variations
 
 	public var font:String; // JOELwindows7: name of the font for dialoguebox. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
 	public var fontDrop:String; // JOELwindows7: & for the text behind
@@ -113,7 +117,7 @@ class Character extends FlxUISprite
 
 		// to be deleted
 		name = data.name; // JOELwindows7: name it. wow, Kade and friends prepared that already lol! thancc Eric Millyoja yey cool and good!
-		displayName = data.displayName;
+		displayName = data.displayName; // JOELwindows7: separate name for on screen because `name` can have variation descriptors.
 		if (data.displayName == null) // JOELwindows7: If displayName is empty, copy from name
 			displayName = name;
 		// tex:FlxAtlasFrames = Paths.getSparrowAtlas(data.asset, 'shared');
@@ -160,6 +164,10 @@ class Character extends FlxUISprite
 		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
 		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
 		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
+		this.deathSoundPaths = data.deathSoundPaths == null ? Perkedel.NULL_DEATH_SOUND_PATHS : data.deathSoundPaths;
+		this.randomizedDeathSoundPaths = data.randomizedDeathSoundPaths == null ? Perkedel.NULL_RANDOMIZED_DEATH_SOUND_PATHS : data.randomizedDeathSoundPaths;
+		this.riseUpAgainSoundPaths = data.riseUpAgainSoundPaths == null ? Perkedel.NULL_RISE_UP_AGAIN_SOUND_PATHS : data.riseUpAgainSoundPaths;
+		this.randomizedRiseUpAgainSoundPaths = data.randomizedRiseUpAgainSoundPaths == null ? Perkedel.NULL_RANDOMIZED_DEATH_SOUND_PATHS : data.randomizedRiseUpAgainSoundPaths;
 		this.heartOrgans = data.heartOrgans == null ? [Perkedel.NULL_HEART_SPEC] : data.heartOrgans; // JOELwindows7: yess, the hearts & each specification!
 		this.font = data.font == null ? Perkedel.NULL_DIALOGUE_FONT : data.font;
 		this.fontDrop = data.fontDrop == null ? Perkedel.NULL_DIALOGUE_FONT_DROP : data.fontDrop;
@@ -505,6 +513,71 @@ class Character extends FlxUISprite
 			}
 		}
 	}
+
+	// JOELwindows7: play death animation & all sounds defined
+	public function blueballsNow(mute:Bool = false)
+	{
+		playAnim('firstDeath');
+		if (!mute)
+		{
+			if (deathSoundPaths != null && deathSoundPaths.length > 0)
+			{
+				for (daThing in deathSoundPaths)
+				{
+					FlxG.sound.play(Paths.sound('${daThing.pathPrefix}${(daThing.addSuffixes == null ? true : daThing.addSuffixes) ? GameOverSubstate.getAddSuffixes() : ""}',
+						'shared'),
+						daThing.volume == null ? Perkedel.NULL_DEATH_SOUND_VOLUME : daThing.volume);
+				}
+			}
+			if (randomizedDeathSoundPaths != null && randomizedDeathSoundPaths.length > 0)
+			{
+				for (daThing in randomizedDeathSoundPaths)
+				{
+					FlxG.sound.play(Paths.soundRandom('${daThing.pathPrefix}${(daThing.addSuffixes == null ? false : daThing.addSuffixes) ? GameOverSubstate.getAddSuffixes() : ""}',
+						daThing.minRange, daThing.maxRange, 'shared'),
+						daThing.volume == null ? Perkedel.NULL_DEATH_SOUND_VOLUME : daThing.volume);
+				}
+			}
+		}
+	}
+
+	// JOELwindows7: maybe also add witnessing of death too? e.g. when fail in tutorial uh.. idk.
+	public function witnessBlueball(mute:Bool = false, yayPersonDied:Bool = false)
+	{
+		// yayPersonDied true means this character play "yay he's dead!" animation a.k.a. evil character.
+		// otherwise show pity a.k.a. good character
+		if (!mute)
+		{
+			// TODO: pls build way of differenter.
+		}
+	}
+
+	// JOELwindows7: press retry
+	public function riseUpAgain(mute:Bool = false)
+	{
+		playAnim('deathConfirm', true);
+		if (!mute)
+		{
+			if (riseUpAgainSoundPaths != null && riseUpAgainSoundPaths.length > 0)
+			{
+				for (daThing in riseUpAgainSoundPaths)
+				{
+					FlxG.sound.play(Paths.sound('${daThing.pathPrefix}${(daThing.addSuffixes == null ? true : daThing.addSuffixes) ? GameOverSubstate.getAddSuffixes() : ""}',
+						'shared'),
+						daThing.volume == null ? Perkedel.NULL_DEATH_SOUND_VOLUME : daThing.volume);
+				}
+			}
+			if (randomizedRiseUpAgainSoundPaths != null && randomizedRiseUpAgainSoundPaths.length > 0)
+			{
+				for (daThing in randomizedRiseUpAgainSoundPaths)
+				{
+					FlxG.sound.play(Paths.soundRandom('${daThing.pathPrefix}${(daThing.addSuffixes == null ? false : daThing.addSuffixes) ? GameOverSubstate.getAddSuffixes() : ""}',
+						daThing.minRange, daThing.maxRange, 'shared'),
+						daThing.volume == null ? Perkedel.NULL_DEATH_SOUND_VOLUME : daThing.volume);
+				}
+			}
+		}
+	}
 }
 
 typedef CharacterData =
@@ -530,6 +603,28 @@ typedef CharacterData =
 	 * Drop Font for the dialog text behind. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
 	 */
 	var ?fontDrop:String; // JOELwindows7: & for the text behind
+
+	/**
+	 * Paths of sounds to play all at the same time in event of death / blueball
+	 */
+	var ?deathSoundPaths:Array<DeathSoundPath>; // JOELwindows7: sounds to play when death. plays these all at the same time.
+
+	/**
+	 * Paths of sounds to play all at the same time in event of death / blueball
+	 * with each bit randomly chooses different variations ranging from minimum number to maximum number
+	 */
+	var ?randomizedDeathSoundPaths:Array<RandomizedDeathSoundPath>; // JOELwindows7: and play sound randomized one. play all, each bit plays which.
+
+	/**
+	 * Paths of sounds to play all at the same time in event of press retry
+	 */
+	var ?riseUpAgainSoundPaths:Array<DeathSoundPath>; // JOELwindows7: press retry
+
+	/**
+	 * Paths of sounds to play all at the same time in event of press retry
+	 * with each bit randomly chooses different variations ranging from minimum number to maximum number
+	 */
+	var ?randomizedRiseUpAgainSoundPaths:Array<RandomizedDeathSoundPath>; // and randomized ones.
 
 	// var ?forceHealthIconIsThat:Bool; // JOELwindows7: force the health icon to be specific icon regardless of the filter.
 	var asset:String;
@@ -655,4 +750,39 @@ typedef AnimationData =
 	 * Only works for characters with isDancing enabled.
 	 */
 	var ?isDanced:Bool;
+}
+
+// JOELwindows7: turns out there is random sound bits from num which to what.
+typedef RandomizedDeathSoundPath =
+{
+	var pathPrefix:String;
+	var minRange:Int;
+	var maxRange:Int;
+	var ?volume:Float;
+	var ?addSuffixes:Bool;
+}
+
+// JOELwindows7: oh turns out the regular death sound may have various volumes too!
+typedef DeathSoundPath =
+{
+	var pathPrefix:String;
+	var ?volume:Float;
+	var ?addSuffixes:Bool;
+}
+
+// JOELwindows7: damn, could've just one unisound type for many various parametering things right? this used for both regular & randomized one.
+typedef WitnessBlueballSoundPath =
+{
+	var pathPrefix:String;
+	var ?minRange:Int;
+	var ?maxRange:Int;
+	var ?volume:Float;
+	var ?addSuffixes:Bool;
+
+	/**
+		Set this to `true`, if this character hates that opponent, it'll play sound with `insulting` set to `true`. show insult haha you lose!!
+		Set this to `false`, if this character likes the opponent, it'll play sound with `insulting` set to `false`. show pity oh no are you okay?!
+	**/
+	var ?insulting:Bool; // JOELwindows7: true means that this if for when hated opponent lose. otherwise this is for to pity.
+
 }

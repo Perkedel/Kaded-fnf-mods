@@ -84,14 +84,14 @@ class CreditRollout extends FlxTypedGroup<FlxUIText>
 		}
 		catch (e)
 		{
-			Debug.logError("Could not load Cool credit text " + path);
-			Debug.logError(e + ": " + e.message); // JOELwindows7: error title & description
-			trace("Werror " + e + ": " + e.message + " at " + path);
+			// Debug.logError("Could not load Cool credit text " + path);
+			Debug.logError('Could not load Cool credit text $path\n$e : ${e.message}\n${e.details()}'); // JOELwindows7: error title & description
+			// trace("Werror " + e + ": " + e.message + " at " + path);
 			linesOfThem = [
 				"Error:404:Credit Text file not found",
-				"Error:Check Path:" + path,
-				"Error:Message:" + e,
-				"Error:Description:" + e.message
+				'Error:Check Path: $path',
+				'Error:Message: $e',
+				'Error:Description: ${e.message}',
 			];
 		}
 		currentLineSet = linesOfThem[indexening].split(":");

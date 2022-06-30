@@ -728,13 +728,15 @@ class DialogueBox extends FlxUIGroup
 
 		// JOELwindows7: tired to go everything invisiblize each. let's invisiblez all first instead
 		// regular
-		portraitRight.visible = false;
-		portraitLeft.visible = false;
-		portraitMiddle.visible = false;
+		// portraitRight.visible = false;
+		// portraitLeft.visible = false;
+		// portraitMiddle.visible = false;
 		// bbpanzu's vs. sky
-		portraitB.visible = false;
-		portraitD.visible = false;
-		portraitDD.visible = false;
+		// portraitB.visible = false;
+		// portraitD.visible = false;
+		// portraitDD.visible = false;
+		// JOELwindows7: NEW!!! ALL IN ONE INVISIBILIZER WITH SAFETY!
+		invisiblizePortraits();
 
 		switch (curCharacter)
 		{
@@ -1063,6 +1065,23 @@ class DialogueBox extends FlxUIGroup
 				}
 			}
 		}
+	}
+
+	// JOELwindows7: clear all portraits out the visibility
+	function invisiblizePortraits()
+	{
+		if (portraitRight != null)
+			portraitRight.visible = false;
+		if (portraitLeft != null)
+			portraitLeft.visible = false;
+		if (portraitMiddle != null)
+			portraitMiddle.visible = false;
+		if (portraitB != null)
+			portraitB.visible = false;
+		if (portraitD != null)
+			portraitD.visible = false;
+		if (portraitDD != null)
+			portraitDD.visible = false;
 	}
 
 	// JOELwindows7: check autoclick

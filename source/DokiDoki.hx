@@ -203,6 +203,7 @@ class JantungOrgan
 	var currCompression:Int = 0; // how many compressions have been done. reach required compression number to restore arrest.
 	var yayDids:Int = 0; // how many successed step.
 	var _debugPrinted:Bool = false; // (DEBUG) printed heartbeat
+	var _laserStethBroadcast:Bool = false; // (DEBUG) sound the heart organ directly audible lub dub. not to be confused with regular stething click mouse!
 
 	// Callbacks
 	public var onStepHitCallback:Void->Void;
@@ -523,6 +524,17 @@ class JantungOrgan
 			+ " will "
 			+ (_debugPrinted ? "print" : "not print")
 			+ " LUB DUB"
+			+ "; Life Position "
+			+ Std.string(lifePosition));
+	}
+
+	public function _setLaserStethBroadcast(into:Bool = false)
+	{
+		_laserStethBroadcast = into;
+		Debug.logInfo("Heart "
+			+ character
+			+ " will "
+			+ (_laserStethBroadcast ? "BABOOM LOUDLY for pair of ears" : "sounds regularly inside")
 			+ "; Life Position "
 			+ Std.string(lifePosition));
 	}

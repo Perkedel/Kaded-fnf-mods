@@ -3737,6 +3737,6 @@ class WorkaroundNoVideoOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return '(Workaround) Disable Video <${FlxG.save.data.disableVideoCutscener ? "Video Disabled" : "Video Enabled"}>';
+		return '${Perkedel.VIDEO_DISABLED_OPTION_NAME} <${FlxG.save.data.disableVideoCutscener ? "Video Disabled" : "Video Enabled"}>';
 	}
 }

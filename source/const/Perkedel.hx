@@ -22,6 +22,7 @@
 package const;
 
 // import systools.Dialogs;
+import Character;
 import flixel.text.FlxText.FlxTextFormatMarkerPair;
 import flixel.text.FlxText.FlxTextFormat;
 import flixel.util.FlxColor;
@@ -89,6 +90,15 @@ class Perkedel
 	// 	extensions: ["*.json"]
 	// }
 	#end
+	public static final NULL_DEATH_SOUND_PATHS:Array<DeathSoundPath> = [
+		{
+			pathPrefix: 'fnf_loss_sfx',
+			volume: 1.0,
+		},
+	];
+	public static final NULL_RANDOMIZED_DEATH_SOUND_PATHS:Array<RandomizedDeathSoundPath> = [];
+	public static final NULL_RISE_UP_AGAIN_SOUND_PATHS:Array<DeathSoundPath> = [];
+	public static final NULL_RANDOMIZED_RISE_UP_AGAIN_SOUND_PATHS:Array<RandomizedDeathSoundPath> = [];
 	public static final NULL_HEART_SPEC:SwagHeart = {
 		character: "null",
 		isEmulator: false,
@@ -118,6 +128,7 @@ class Perkedel
 	public static final NULL_DIALOGUE_FONT_COLOR_DROP:String = "0xFFD89494";
 	public static final NULL_DIALOGUE_SOUND_PATHS:Array<String> = ['pixelText'];
 	public static final NULL_DIALOGUE_SOUND_VOLUME:Float = .6;
+	public static final NULL_DEATH_SOUND_VOLUME:Float = .3;
 	public static final BIOS_BUTTON_DELAY_TIME:Float = 2;
 	public static final BIOS_BUTTON_SAY:String = "Press ESCAPE / Gamepad SELECT to go to BIOS setting";
 	public static final METRONOME_FIRST_OFF_ICON:String = "O";
@@ -141,4 +152,7 @@ class Perkedel
 	public static final METRONOME_REST_SOUND_PATH:String = "CLAP-midi";
 	public static final NOTE_SNAP_SOUND_PATH:String = "SNAP";
 	public static final SONG_POS_BAR_COLOR:FlxColor = FlxColor.fromRGB(0, 255, 128); // default color of bar
+	public static final VIDEO_DISABLED_OPTION_NAME:String = "(Workaround) Disable Video";
+	public static final VIDEO_DISABLED_TITLE:String = "Video Disabled";
+	public static final VIDEO_DISABLED_DESCRIPTION:String = 'You have setting that disabled video.\nTo reenable, go to Setting, Misc, uncheck ${VIDEO_DISABLED_OPTION_NAME}';
 }

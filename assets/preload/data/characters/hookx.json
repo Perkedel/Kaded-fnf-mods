@@ -14,6 +14,12 @@
         "textSpeak/hookx/talk2",
         "textSpeak/hookx/talk3"
     ],
+    "deathSoundPaths":[
+        {
+            "pathPrefix":"fnf_loss_sfx-BSoD",
+            "volume":1.0
+        }
+    ],
     "heartOrgans": [{
         "character": "hookx",
         "isEmulator": true,

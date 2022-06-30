@@ -44,7 +44,7 @@ prepare() {
 
     # API placeholder pls
     wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
-    mv -n ./GJkeys.hx "source/GJkeys.hx"
+    mv -n ./GJkeys.hx "source/GJKeys.hx"
 }
 
 build() {

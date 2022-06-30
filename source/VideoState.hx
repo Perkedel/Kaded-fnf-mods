@@ -21,7 +21,6 @@ import openfl.Lib;
 using StringTools;
 
 // JOELwindows7: carefully FlxUI fy!
-
 class VideoState extends MusicBeatState
 {
 	public var leSource:String = "";
@@ -93,6 +92,7 @@ class VideoState extends MusicBeatState
 		// JOELwindows7: cancel breakpoint
 		if (FlxG.save.data.disableVideoCutscener)
 		{
+			Main.gjToastManager.createToast(null, Perkedel.VIDEO_DISABLED_TITLE, Perkedel.VIDEO_DISABLED_DESCRIPTION);
 			FlxG.switchState(transClass);
 			return;
 		}

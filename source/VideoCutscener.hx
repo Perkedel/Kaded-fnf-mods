@@ -52,6 +52,7 @@ class VideoCutscener
 		if (FlxG.save.data.disableVideoCutscener)
 		{
 			Debug.logInfo("Video Cutscener disabled");
+			Main.gjToastManager.createToast(null, Perkedel.VIDEO_DISABLED_TITLE, Perkedel.VIDEO_DISABLED_DESCRIPTION);
 			FlxG.switchState(toTrans);
 			return;
 		}
@@ -122,6 +123,7 @@ class VideoSelfContained extends MusicBeatState
 		if (FlxG.save.data.disableVideoCutscener)
 		{
 			Debug.logInfo('Video Cutscener disabled');
+			Main.gjToastManager.createToast(null, Perkedel.VIDEO_DISABLED_TITLE, Perkedel.VIDEO_DISABLED_DESCRIPTION);
 			donedCallback();
 			return;
 		}
@@ -233,6 +235,7 @@ class VLCState extends MusicBeatState
 		if (FlxG.save.data.disableVideoCutscener)
 		{
 			Debug.logInfo('Video Cutscener disabled');
+			Main.gjToastManager.createToast(null, Perkedel.VIDEO_DISABLED_TITLE, Perkedel.VIDEO_DISABLED_DESCRIPTION);
 			donedCallback();
 			return;
 		}

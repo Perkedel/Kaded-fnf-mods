@@ -2795,8 +2795,8 @@ class PlayState extends MusicBeatState
 				FlxColor.BLACK); // JOELwindows7: I want international support!
 			songName.scrollFactor.set();
 
-			// JOELwindows7: YOU SNEAKY LITTLE PUNK!!! WHY TEXT CHANGE AGAIN HERE?!??!
-			songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime(songLength, false) + ')';
+			// JOELwindows7: YOU SNEAKY LITTLE PUNK!!! WHY TEXT CHANGE AGAIN HERE?!??! hey how about milisecond?
+			songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime(songLength, true) + ')';
 			songName.y = songPosBG.y + (songPosBG.height / 3);
 
 			add(songName);
@@ -4168,10 +4168,10 @@ class PlayState extends MusicBeatState
 				if (secondsTotal < 0)
 					secondsTotal = 0;
 
-				// JOELwindows7: sneaky sneaky songName thingy
+				// JOELwindows7: sneaky sneaky songName thingy. HEY milisecond
 				if (FlxG.save.data.songPosition)
 				{
-					songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime((songLength - secondsTotal), false) + ')';
+					songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime((songLength - secondsTotal), true) + ')';
 					tempoBar.text = 'TEMPO: ${Conductor.bpm} BPM';
 					// metronomeBar.text = 'MEASURES: ${Ratings.judgeMetronome(curBeat, 4)} ${Std.int(curBeat / 4)}/${SONG.notes.length - 1} | BEAT: ${curBeat} | STEP: ${curStep}';
 					metronomeBar.applyMarkup('MEASURES: ${Ratings.judgeMetronome(curBeat, 4, true)} ${Std.int(curBeat / 4)}/${SONG.notes.length - 1} | BEAT: ${curBeat} | STEP: ${curStep}',
