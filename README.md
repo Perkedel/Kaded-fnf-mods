@@ -45,6 +45,17 @@ It is also ***PRO GAMER MOVE*** if you completely rely only towards Polymod LFM 
 
 see folder `/example_mods/`, `/Admiral_Zumi/`, `/separate_mods/` for examples of Polymod LFM sub-mods.
 
+### *Sir! But my platform doesn't have Polymod modcore, we tried compiling the support for it & unlocked it for my OS but it still not compile & if does, it crash!*
+Oh. uh..  😬sssssss, ummm... Well, that was arrogance of me, my apology. I shouldn't have done that.
+
+I see. Right so, I understand. Me too. I tried to Polymod in my environment here on Arch with VScode terminal. it does compile, but crashes before even went to splash screen. just loading & then crash without clear explanation that could figure how to make solution resolve.
+
+Well, since that the case, keep building mods polymodding way, but enjoyers are free to extract the mod and place respective assets dirrectly **ONLY IF** they cannot Polymod. Seriously, if your platform can polymod, I recommend that you do that. The organizer will thank you. Okay, cannot be encouraged. Polymod did not work cross platformly without crashing. Just make sure you don't mess up the assets, and make sure too you remember which assets did you add, and which did crashes things, idk.
+
+And also the Polymod is essential for mods that are controversial & is suicidal if built in, you know... umm Okay, yea you know. Kamatussas hates that, and you already know what are those 😏😏😏😏😏😏😏😏😏.
+
+In conclusion, This is your download, you free to do anything, I just recommend this easier way to manage custom things, if you messed it up, figure out yourself or download from scratch again, bla bla bla. If you publish something involving our stuffs or others make sure credit at least URL where you got it from, yeah.
+
 ## Using API
 - GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (**Private, do not share** if filled with your keys). Here's the code:
 ```haxe
