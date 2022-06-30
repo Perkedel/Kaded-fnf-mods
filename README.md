@@ -6,7 +6,7 @@
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-meta-thumb.png ) -->
 [Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
 
-# Last Funkin Moments
+# [![](https://github.com/Perkedel/Kaded-fnf-mods/raw/stable/art/LFMicon64.png )]() Last Funkin Moments
 
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
@@ -86,7 +86,7 @@ Unfortunately folks, we still not witness JUCE integrator to Haxe, OpenFl, HaxeF
 ## Mods comeback status (Protoglin Amexamlef)
 - Sky ✅. https://gamebanana.com/mods/44555 . More: [NuSky + SkyVerse](https://gamebanana.com/mods/369981 ), [ReManifested](https://gamebanana.com/mods/370008 )
 - Whitty ✅. https://gamebanana.com/mods/44214 . More: [Definitive Psyched](https://gamebanana.com/mods/354884 )
-- Mid Fight Masses ❌.
+- Mid Fight Masses ❌. (*Because one of the contributor had pranked us saying this comeback but it's a fool in time like this, maybe we should just... idk, just saying.*)
 
 ## Stuff
 - WakaTime Total [![wakatime](https://wakatime.com/badge/user/dbc5f9fc-c736-48c6-83db-e5a221526daa.svg)](https://wakatime.com/@dbc5f9fc-c736-48c6-83db-e5a221526daa)
@@ -272,8 +272,13 @@ edit: goned the day. we lack more than 1 person after 1 week.
 
 # Friday Night Funkin': Kade Engine
 
-### If you want to contribute to Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/CONTRIBUTING.md) first.
-### If you want to build Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/docs/building.md).
+### ~~If you want to contribute to Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/CONTRIBUTING.md) first.~~
+### ~~If you want to build Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/docs/building.md).~~
+
+### Folks, unfortunately, Kade Engine has been discontinued. This or [that](https://github.com/BoloVEVO/Kade-Engine-Public ) or other are the continuations.
+wait wait, be careful. I only have confirmed this, & [that](https://github.com/BoloVEVO/Kade-Engine-Public ), are safe. Just, careful when trying other Kade Engine continuation or whatever. review codes carefully, and you're good to go. yeah.
+
+If you going to use this, read very above. This is also Kade Engine continuation mod engine.
 
 ## Friday Night Funkin'
 **Friday Night Funkin'** is a rhythm game originally made for Ludum Dare 47 "Stuck In a Loop".
