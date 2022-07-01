@@ -18,6 +18,8 @@
 
 package;
 
+import ui.states.transition.PsychTransition;
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUISprite;
 import flixel.system.FlxSoundGroup;
@@ -92,6 +94,9 @@ enum ExtraLoadingType
  */
 class CoreState extends FlxUIState implements ICoreStating
 {
+	// JOELwindows7: do not forget instance
+	public static var instance:CoreState;
+
 	// JOELwindows7: copy screen size
 	private var screenWidth:Int = FlxG.width;
 	private var screenHeight:Int = FlxG.height;
@@ -189,8 +194,19 @@ class CoreState extends FlxUIState implements ICoreStating
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
+	public function new()
+	{
+		super();
+		instance = this;
+	}
+
 	override function create()
 	{
+		// JOELwindows7: BROTHER, there is BOLO's yoink of Forever legacy things here!
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/GlobalUIState.hx
+		if (!FlxTransitionableState.skipNextTransOut)
+			openSubState(new PsychTransition(0.75, true));
+
 		super.create();
 
 		initCamControl(); // JOELwindows7: init the cam control now!
@@ -796,6 +812,9 @@ class CoreState extends FlxUIState implements ICoreStating
  */
 class CoreSubState extends FlxUISubState implements ICoreStating
 {
+	// JOELwindows7: do not forget instance
+	public static var instance:CoreSubState;
+
 	// JOELwindows7: copy screen size
 	var screenWidth:Int;
 
@@ -898,6 +917,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	public function new()
 	{
 		super();
+		instance = this;
 	}
 
 	override function create()

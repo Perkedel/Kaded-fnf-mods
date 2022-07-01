@@ -1,0 +1,115 @@
+{
+    "name": "Wawa",
+    "displayName": "Wawa",
+    "asset": "characters/wawa",
+    "barColor": "#8F8986",
+    "flipX": true,
+    "startingAnim": "idle",
+    "isDancing": false,
+    "forceIcon": false,
+    "deathCharacter": "wawa",
+    "deathCharacterIsSameAsThis": true,
+    "font": "Pixel Arial 11 Bold",
+    "fontDrop": "Pixel Arial 11 Bold",
+    "fontColor": "0xFF3F2021",
+    "fontColorDrop": "0xFFD89494",
+    "dialogueChatSoundPaths": [
+        "pixelText"
+    ],
+    "deathSoundPaths":[
+        {
+            "pathPrefix":"fnf_loss_sfx",
+            "volume":1.0,
+            "addSuffixes":true
+        }
+    ],
+    "randomizedDeathSoundPaths":[],
+    "heartOrgans": [{
+        "character": "wawa",
+        "initHR": 120,
+        "maxHR": 400,
+        "minHR": 120,
+        "isEmulator": false,
+        "heartTierBoundaries": [130, 160, 200, 300],
+        "successionAdrenalAdd": [4, 3, 2, 1],
+        "fearShockAdd": [10, 8, 7, 5],
+        "relaxMinusPerBeat": [1, 2, 4, 7]
+    }],
+    "containsHeartOrgans": ["bf"],
+    "phobia": {
+        "lightningStorm": true,
+        "cancelCulture": false
+    },
+    "animations": [{
+            "name": "idle",
+            "prefix": "BF idle dance",
+            "offsets": [-5, 0]
+        },
+        {
+            "name": "singUP",
+            "prefix": "BF NOTE UP0",
+            "offsets": [-16, 31]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "BF NOTE LEFT0",
+            "offsets": [46, -2]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "BF NOTE RIGHT0",
+            "offsets": [-9, -2]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "BF NOTE DOWN0",
+            "offsets": [4, -33]
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "BF NOTE UP MISS",
+            "offsets": [-14, 51]
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "BF NOTE LEFT MISS",
+            "offsets": [19, 19]
+        },
+        {
+            "name": "singRIGHTmiss",
+            "prefix": "BF NOTE RIGHT MISS",
+            "offsets": [-9, 12]
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "BF NOTE DOWN MISS",
+            "offsets": [-1, 6]
+        },
+        {
+            "name": "hey",
+            "prefix": "BF HEY",
+            "offsets": [1, 8]
+        },
+        {
+            "name": "firstDeath",
+            "prefix": "BF dies",
+            "offsets": [37, 11]
+        },
+        {
+            "name": "deathLoop",
+            "prefix": "BF Dead Loop",
+            "offsets": [37, 5]
+        },
+        {
+            "name": "deathConfirm",
+            "prefix": "BF Dead confirm",
+            "offsets": [37, 69]
+        },
+        {
+            "name": "scared",
+            "prefix": "BF idle shaking",
+            "offsets": [-8, 0],
+            "looped": true
+        }
+    ]
+}

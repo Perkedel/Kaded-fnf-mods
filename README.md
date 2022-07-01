@@ -54,7 +54,7 @@ Well, since that the case, keep building mods polymodding way, but enjoyers are 
 
 And also the Polymod is essential for mods that are controversial & is suicidal if built in, you know... umm Okay, yea you know. Kamatussas hates that, and you already know what are those 😏😏😏😏😏😏😏😏😏.
 
-In conclusion, This is your download, you free to do anything, I just recommend this easier way to manage custom things, if you messed it up, figure out yourself or download from scratch again, bla bla bla. If you publish something involving our stuffs or others make sure credit at least URL where you got it from, yeah.
+In conclusion, This is your download, you free to do anything, I just recommend this easier way to manage custom things, if you messed it up, figure out yourself or download from scratch again, bla bla bla. If you publish something involving our stuffs or others make sure credit at least URL where you got it from, yeah. and make sure that when you publish something, it's easy to setup so ***everyone*** from various skill level can join in idk..
 
 ## Using API
 - GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (**Private, do not share** if filled with your keys). Here's the code:

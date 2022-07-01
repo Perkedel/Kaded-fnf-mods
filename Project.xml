@@ -555,7 +555,7 @@
 	<!-- JOELwindows7: Defines whether the HTTP query possible. -->
 	<haxedef name="FEATURE_HTTP" unless="mobile"/>
 	<!-- JOELwindows7: Defines whether OpenAl audio manipulation is available -->
-	<haxedef name="FEATURE_AUDIO_MANIPULATE" if="cpp"/>
+	<haxedef name="FEATURE_AUDIO_MANIPULATE" if="cpp || web"/>
 	<!-- JOELwindows7: Defines whether FPS change is possible safely -->
 	<haxedef name="FEATURE_DISPLAY_FPS_CHANGE" unless = "mobile"/>
 

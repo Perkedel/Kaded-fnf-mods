@@ -26,7 +26,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
-//JOELwindows7: FlxUI fy!!!
+// JOELwindows7: FlxUI fy!!!
 
 class OptionCata extends FlxUISprite
 {
@@ -104,7 +104,7 @@ class OptionsMenu extends CoreSubState
 	public var selectedCatIndex = 0;
 	public var selectedOptionIndex = 0;
 
-	var maxCatIndex = 6; // JOELwindows7: how many visible categories we had here?
+	var maxCatIndex = 7; // JOELwindows7: how many visible categories we had here?
 	var maxHiddenCatIndex = 2; // JOELwindows7: and the hidden ones.
 
 	public var isInCat:Bool = false;
@@ -117,7 +117,8 @@ class OptionsMenu extends CoreSubState
 
 	public static var visibleRange = [114, 640]; // JOELwindows7: was 640
 
-	public var upToHowManyCatsOnScreen:Int = 6; // JOELwindows7: by default there was 4 categories.
+	public var upToHowManyCatsOnScreen:Int = 6; // JOELwindows7: by default there was 4 categories. Now we have 6 on first row, 1 on second row.
+	public var upToHowManyCatsOnSecond:Int = 1;
 
 	public static var markForGameplayRestart:Bool = false; // JOELwindows7: mark this true to tell that you have to restart song.
 
@@ -149,8 +150,9 @@ class OptionsMenu extends CoreSubState
 				new GhostTapOption("Toggle counting pressing a directional input when no arrow is there as a miss."),
 				new DownscrollOption("Toggle making the notes scroll down rather than up."),
 				new BotPlay("A bot plays for you!"),
-				#if desktop new FPSCapOption("Change your FPS Cap."),
-				#end
+				// #if desktop // JOELwindows7: BOLO no longer do this.
+				new FPSCapOption("Change your FPS Cap."),
+				// #end
 				new ResetButtonOption("Toggle pressing R to gameover."),
 				new InstantRespawn("Toggle if you instantly respawn after dying."),
 				new CamZoomOption("Toggle the camera zoom in-game."),
@@ -170,7 +172,7 @@ class OptionsMenu extends CoreSubState
 				new NoteSplashOption("Have your note press splash"),
 				new RotateSpritesOption("Should the game rotate the sprites to do color quantization (turn off for bar skins)"),
 				new EditorRes("Not showing the editor grid will greatly increase editor performance"),
-				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
+				// new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
 				new MiddleScrollOption("Put your lane in the center or on the right."),
 				new HealthBarOption("Toggles health bar visibility"),
 				new JudgementCounter("Show your judgements that you've gotten in the song"),
@@ -193,6 +195,7 @@ class OptionsMenu extends CoreSubState
 				// new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."), //JOELwindows7: how about move it here?
 				new AccidentVolumeKeysOption("Enable / Disable volume shortcut key all time beyond pause menu (- decrease, + increase, 0 mute)"),
 				new HitsoundOption("Enable / Disable Gameplay Hitsound everytime note got hit in Gameplay (not in Editor)"),
+				new HitSoundVolume("Set hitsound volume."), // JOELwindows7: BOLO's hitsound volume
 				// JOELwindows7: IDEA: only enable volume keys on pause menu?
 				new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
 				// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
@@ -235,8 +238,14 @@ class OptionsMenu extends CoreSubState
 				new PrintAnnoyingDebugWarnOption("Toggle whether should frequent warns appears (is annoying)"),
 				new ModConfigurationsOption("Configure which Polymod Kade-LFM mods to be loaded"),
 			]),
-			// JOELwindows7: was 935, 40
-			new OptionCata(1100, 40, "Saves", [
+			// JOELwindows7: BOLO had this category of Performance
+			new OptionCata(1100, 40, "Performance", [
+				new OptimizeOption("Disable Background and Characters to save memory. Useful to low-end computers."),
+				new Background("Disable Stage Background to save memory (Only characters are visible)."),
+				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay and save memory.")
+			]),
+			// JOELwindows7: was 935, 40. was 1100, 40
+			new OptionCata(50, 140, "Saves", [
 				#if desktop // new ReplayOption("View saved song replays."),
 				#end
 				new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
@@ -276,7 +285,9 @@ class OptionsMenu extends CoreSubState
 		background.scrollFactor.set();
 		menu.add(background);
 
-		descBack = cast new FlxUISprite(50, 640).makeGraphic(1180, 38, FlxColor.BLACK);
+		// JOELwindows7: was 50, 640.
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/OptionsMenu.hx
+		descBack = cast new FlxUISprite(50, 642).makeGraphic(1180, 38, FlxColor.BLACK);
 		descBack.alpha = 0.3;
 		descBack.scrollFactor.set();
 		menu.add(descBack);
@@ -333,6 +344,7 @@ class OptionsMenu extends CoreSubState
 
 		// JOELwindows7: now tidy the category
 		tidyThoseCats();
+		tidySecondRowCats();
 
 		// JOELwindows7: now add these all up
 		addBackButton(1, FlxG.height, .3);
@@ -362,8 +374,9 @@ class OptionsMenu extends CoreSubState
 		try
 		{
 			visibleRange = [114, 640]; // JOELwindows7: expand check visible range. was [114, 640]
-			if (cat.middle)
-				visibleRange = [Std.int(cat.titleObject.y), 640]; // JOELwindows7: was [the value, 640]
+			// JOELwindows7: BOLO disabled it?!
+			// if (cat.middle)
+			// 	visibleRange = [Std.int(cat.titleObject.y), 640]; // JOELwindows7: was [the value, 640]
 			if (selectedOption != null)
 			{
 				var object = selectedCat.optionObjects.members[selectedOptionIndex];
@@ -439,11 +452,16 @@ class OptionsMenu extends CoreSubState
 		}
 		catch (e)
 		{
-			Debug.logError("oops\n" + e + ": " + e.message);
+			// JOELwindows7: add detaile!
+			Debug.logError('oops\n $e : ${e.message}\n${e.details()}');
 			selectedCatIndex = 0;
 		}
 
 		Debug.logTrace("Changed cat: " + selectedCatIndex);
+
+		// updateOptColors(); // JOELwindows7: Change color based on things. wait, don't do now. there's alot of illelegancies.
+
+		haveClicked = false; // JOELwindows7 idk..
 	}
 
 	public function selectOption(option:Option)
@@ -958,7 +976,8 @@ class OptionsMenu extends CoreSubState
 	// JOELwindows7: we need to tidy the categories first
 	function tidyThoseCats()
 	{
-		for (i in 0...options.length - 1)
+		// for (i in 0...options.length - 1)
+		for (i in 0...upToHowManyCatsOnScreen - 1)
 		{
 			// options[i].width = background.width / upToHowManyCatsOnScreen; //Unfortunately this only adjust the hitbox, not the graphic.
 			options[i].setGraphicSize(Std.int(background.width / upToHowManyCatsOnScreen), Std.int(options[i].height));
@@ -968,6 +987,118 @@ class OptionsMenu extends CoreSubState
 			options[i].titleObject.x = options[i].x + (options[i].width / 2) - (options[i].titleObject.width / 2);
 			options[i].titleObject.y = options[i].y + 10;
 			// Wow, GitHub Copilot sentience yeay!
+		}
+	}
+
+	// JOELwindows7: well, second row..
+	function tidySecondRowCats()
+	{
+		for (i in 0...upToHowManyCatsOnSecond)
+		{
+			var prakstend = i + upToHowManyCatsOnScreen;
+			// options[i].width = background.width / upToHowManyCatsOnScreen; //Unfortunately this only adjust the hitbox, not the graphic.
+			options[prakstend].setGraphicSize(Std.int(Math.max(background.width / upToHowManyCatsOnSecond, options[prakstend].width)),
+				Std.int(options[prakstend].height));
+			options[prakstend].x = (background.width / upToHowManyCatsOnSecond) * i;
+			// I guess..
+			// oh almost forgot!
+			options[prakstend].titleObject.x = options[prakstend].x + (options[prakstend].width / 2) - (options[prakstend].titleObject.width / 2);
+			options[prakstend].titleObject.y = options[prakstend].y + 10;
+			// Wow, GitHub Copilot sentience yeay!
+		}
+	}
+
+	// JOELwindows7: BOLO has option color!?!?!??!
+	function updateOptColors():Void
+	{
+		for (i in 0...selectedCat.optionObjects.length)
+		{
+			selectedCat.optionObjects.members[i].color = FlxColor.WHITE;
+		}
+		if (selectedCatIndex == 0)
+		{
+			#if html5
+			selectedCat.optionObjects.members[8].color = FlxColor.YELLOW;
+			#end
+			if (FlxG.save.data.optimize)
+				selectedCat.optionObjects.members[11].color = FlxColor.YELLOW;
+		}
+		if (FlxG.save.data.optimize && selectedCatIndex == 3)
+		{
+			selectedCat.optionObjects.members[1].color = FlxColor.YELLOW;
+			selectedCat.optionObjects.members[2].color = FlxColor.YELLOW;
+		}
+		if (!FlxG.save.data.background && selectedCatIndex == 3)
+		{
+			selectedCat.optionObjects.members[2].color = FlxColor.YELLOW;
+		}
+		if (selectedCatIndex == 1)
+		{
+			if (!FlxG.save.data.healthBar)
+				selectedCat.optionObjects.members[12].color = FlxColor.YELLOW;
+		}
+
+		if (isInPause) // DUPLICATED CUZ MEMORY LEAK OR SMTH IDK
+		{
+			switch (selectedCatIndex)
+			{
+				case 0:
+					selectedCat.optionObjects.members[2].color = FlxColor.YELLOW;
+					selectedCat.optionObjects.members[14].color = FlxColor.YELLOW;
+					if (PlayState.isStoryMode)
+						selectedCat.optionObjects.members[7].color = FlxColor.YELLOW;
+				case 1:
+					selectedCat.optionObjects.members[17].color = FlxColor.YELLOW;
+				case 3:
+					for (i in 0...3)
+						selectedCat.optionObjects.members[i].color = FlxColor.YELLOW;
+				case 4:
+					for (i in 0...4)
+						selectedCat.optionObjects.members[i].color = FlxColor.YELLOW;
+			}
+		}
+
+		// JOELwindows7: this is way too inellegant!! I gotta fix this!
+		if (!isInCat)
+		{
+			if (selectedOptionIndex == 12 && !FlxG.save.data.healthBar && selectedCatIndex == 1)
+			{
+				descText.text = "HEALTH BAR IS DISABLED! Colored health bar are disabled.";
+				descText.color = FlxColor.YELLOW;
+			}
+			if (selectedOptionIndex == 1 && FlxG.save.data.optimize && selectedCatIndex == 3)
+			{
+				descText.text = "OPTIMIZATION IS ENABLED! Distracions are disabled.";
+				descText.color = FlxColor.YELLOW;
+			}
+			if (selectedOptionIndex == 2 && FlxG.save.data.optimize && selectedCatIndex == 3)
+			{
+				descText.text = "OPTIMIZATION IS ENABLED! Backgrounds are disabled.";
+				descText.color = FlxColor.YELLOW;
+			}
+			if (selectedOptionIndex == 2 && !FlxG.save.data.background && selectedCatIndex == 3)
+			{
+				descText.text = "BACKGROUNDS ARE DISABLED! Distracions are disabled.";
+				descText.color = FlxColor.YELLOW;
+			}
+			if (selectedOptionIndex == 9 && FlxG.save.data.optimize && selectedCatIndex == 0)
+			{
+				descText.text = "OPTIMIZATION IS ENABLED! Cam Zooming is disabled.";
+				descText.color = FlxColor.YELLOW;
+			}
+			#if html5
+			if (selectedOptionIndex == 6 && selectedCatIndex == 0)
+			{
+				descText.text = "FPS cap setting is disabled in browser build.";
+				descText.color = FlxColor.YELLOW;
+			}
+			#end
+			if (descText.text == "BOTPLAY is disabled on Story Mode.")
+			{
+				descText.color = FlxColor.YELLOW;
+			}
+			if (descText.text == "This option cannot be toggled in the pause menu.")
+				descText.color = FlxColor.YELLOW;
 		}
 	}
 

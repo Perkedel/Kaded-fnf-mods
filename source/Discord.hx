@@ -8,6 +8,10 @@ using StringTools;
 
 class DiscordClient
 {
+	public static var instance:DiscordClient; // JOELwindows7: not sure if this secure or not. I mean, this only do presence that's it. idk..
+
+	// nah, everything here are static. maybe one day there're more non-static things, I guess?? yeah.
+
 	public function new()
 	{
 		trace("Discord Client starting...");
@@ -32,6 +36,7 @@ class DiscordClient
 	public static function shutdown()
 	{
 		DiscordRpc.shutdown();
+		instance = null; // JOELwindows7: empty it out!
 	}
 
 	static function onReady()
@@ -58,7 +63,7 @@ class DiscordClient
 	{
 		var DiscordDaemon = sys.thread.Thread.create(() ->
 		{
-			new DiscordClient();
+			instance = new DiscordClient();
 		});
 		trace("Discord Client initialized");
 	}

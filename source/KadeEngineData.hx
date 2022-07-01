@@ -382,6 +382,35 @@ class KadeEngineData
 		// Then eh whatever why not call this character for Rhythm Tale / Rune "Ioniq" idk.. because
 		// We made our own Sky, drives Hyundai IONIQ 5 lmao!
 
+		// JOELwindows7: BOLO's modifier init!!!
+		if (FlxG.save.data.hgain == null)
+			FlxG.save.data.hgain = 1;
+
+		if (FlxG.save.data.hloss == null)
+			FlxG.save.data.hloss = 1;
+
+		if (FlxG.save.data.hdrain == null)
+			FlxG.save.data.hdrain = false;
+
+		if (FlxG.save.data.sustains == null)
+			FlxG.save.data.sustains = true;
+
+		if (FlxG.save.data.noMisses == null)
+			FlxG.save.data.noMisses = false;
+
+		if (FlxG.save.data.modcharts == null)
+			FlxG.save.data.modcharts = true;
+
+		if (FlxG.save.data.practice == null)
+			FlxG.save.data.practice = false;
+
+		if (FlxG.save.data.opponent == null)
+			FlxG.save.data.opponent = false;
+
+		if (FlxG.save.data.mirror == null)
+			FlxG.save.data.mirror = false;
+		// end BOLO's modifier init!!!
+
 		// JOELwindows7: workarounds!
 
 		// video cutscene crash on Linux
@@ -408,4 +437,21 @@ class KadeEngineData
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		Debug.logInfo("successfully set FPS settings"); // JOELwindows7: see if Android version crash!
 	}
+
+	// JOELwindows7: BOLO's reset modifier
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/KadeEngineData.hx
+	public static function resetModifiers():Void
+	{
+		FlxG.save.data.hgain = 1;
+		FlxG.save.data.hloss = 1;
+		FlxG.save.data.hdrain = false;
+		FlxG.save.data.sustains = true;
+		FlxG.save.data.noMisses = false;
+		FlxG.save.data.modcharts = true;
+		FlxG.save.data.practice = false;
+		FlxG.save.data.opponent = false;
+		FlxG.save.data.mirror = false;
+	}
 }
+
+

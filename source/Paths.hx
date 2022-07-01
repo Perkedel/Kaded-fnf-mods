@@ -1,11 +1,13 @@
 package;
 
+import flash.media.Sound;
 import openfl.display.BitmapData;
 import openfl.media.Video;
 import openfl.utils.Assets;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
+import openfl.system.System;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import haxe.Json;
@@ -43,6 +45,45 @@ class Paths
 		}
 
 		return getPreloadPath(file);
+	}
+
+	// JOELwindows7: BOLO stuffs!
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Paths.hx
+	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
+
+	public static var currentTrackedSounds:Map<String, Sound> = [];
+
+	public static function loadSound(path:String, key:String, ?library:String)
+	{
+		// I hate this so god damn much
+		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
+		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
+		// trace(gottenPath);
+		if (!currentTrackedSounds.exists(gottenPath))
+		{
+			var folder:String = '';
+
+			if (path == 'songs')
+				folder = 'songs:';
+
+			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+		}
+
+		localTrackedAssets.push(gottenPath);
+
+		return currentTrackedSounds.get(gottenPath);
+	}
+
+	// JOELwindows7: da hx file
+	static public function getHaxeScript(string:String)
+	{
+		return Assets.getText('assets/data/$string/HaxeModchart.hx');
+	}
+
+	// JOELwindows7: wait, Hx file? okay, my modchart is in hscript!
+	static public function getHaxeModscript(string:String)
+	{
+		return Assets.getText('assets/data/$string/modchart.hscript');
 	}
 
 	/**
@@ -365,6 +406,12 @@ class Paths
 		return OpenFlAssets.exists(path, type);
 	}
 
+	// JOELwindows7: peck it! typo too aswell!
+	inline static public function manuallyExists(path:String, type:AssetType)
+	{
+		return manuallyExist(path, type);
+	}
+
 	inline static public function image(key:String, ?library:String)
 	{
 		return getPath('images/$key.png', IMAGE, library);
@@ -379,6 +426,101 @@ class Paths
 	inline static public function font(key:String)
 	{
 		return 'assets/fonts/$key';
+	}
+
+	// JOELwindows7: BOLO has exclude asset!!!
+	public static function excludeAsset(key:String)
+	{
+		if (!dumpExclusions.contains(key))
+			dumpExclusions.push(key);
+	}
+
+	// JOELwindows7: BOLO's dump exclusion thingy
+	public static var dumpExclusions:Array<String> = ['assets/music/freakyMenu.$SOUND_EXT', 'assets/shared/music/breakfast.$SOUND_EXT'];
+
+	// JOELwindows7: BOLO's star of the show, clear unused memory!!!
+	/// haya I love you for the base cache dump I took to the max
+	public static function clearUnusedMemory()
+	{
+		// clear non local assets in the tracked assets list
+		var counter:Int = 0;
+		for (key in currentTrackedAssets.keys())
+		{
+			// if it is not currently contained within the used local assets
+			if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key))
+			{
+				// get rid of it
+				var obj = currentTrackedAssets.get(key);
+				@:privateAccess
+				if (obj != null)
+				{
+					OpenFlAssets.cache.removeBitmapData(key);
+					OpenFlAssets.cache.clear(key);
+					FlxG.bitmap._cache.remove(key);
+					obj.destroy();
+					currentTrackedAssets.remove(key);
+					counter++;
+					Debug.logTrace('Cleared and removed $counter assets.');
+				}
+			}
+		}
+		// run the garbage collector for good measure lmfao
+
+		System.gc();
+	}
+
+	public static var localTrackedAssets:Array<String> = [];
+
+	public static function clearStoredMemory(?cleanUnused:Bool = false)
+	{
+		#if FEATURE_MULTITHREADING
+		// clear remaining objects
+		MasterObjectLoader.resetAssets();
+		#end
+
+		// clear anything not in the tracked assets list
+		var counterAssets:Int = 0;
+		var counterSound:Int = 0;
+		@:privateAccess
+		for (key in FlxG.bitmap._cache.keys())
+		{
+			var obj = FlxG.bitmap._cache.get(key);
+			if (obj != null && !currentTrackedAssets.exists(key))
+			{
+				OpenFlAssets.cache.removeBitmapData(key);
+				OpenFlAssets.cache.clear(key);
+				FlxG.bitmap._cache.remove(key);
+				obj.destroy();
+				counterAssets++;
+				Debug.logTrace('Cleared and removed $counterAssets cached assets.');
+			}
+		}
+
+		#if PRELOAD_ALL
+		// clear all sounds that are cached
+		for (key in currentTrackedSounds.keys())
+		{
+			if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key) && key != null)
+			{
+				// trace('test: ' + dumpExclusions, key);
+				Assets.cache.clear(key);
+				currentTrackedSounds.remove(key);
+				counterSound++;
+				Debug.logTrace('Cleared and removed $counterSound cached sounds.');
+			}
+		}
+		// flags everything to be cleared out next unused memory clear
+		localTrackedAssets = [];
+		openfl.Assets.cache.clear("songs");
+		#end
+	}
+
+	// JOELwindows7: BOLO's file exists!!!
+	inline static public function fileExists(key:String, type:AssetType, ?library:String)
+	{
+		if (OpenFlAssets.exists(getPath(key, type, library)))
+			return true;
+		return false;
 	}
 
 	static public function getSparrowAtlas(key:String, ?library:String, ?isCharacter:Bool = false)

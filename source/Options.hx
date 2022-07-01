@@ -2060,6 +2060,11 @@ class ResetSettings extends Option
 		FlxG.save.data.cacheImages = null;
 		FlxG.save.data.editor = null;
 		FlxG.save.data.laneTransparency = 0;
+		// JOELwindows7: whoah you forgot this. thancc BOLO
+		FlxG.save.data.middleScroll = null;
+		FlxG.save.data.InstantRespawn = null;
+		FlxG.save.data.memoryDisplay = null;
+		// end forgot this.
 		// JOELwindows7: oh man! don't forget my new setting data!
 		FlxG.save.data.accidentVolumeKeys = null;
 		FlxG.save.data.fullscreen = false;
@@ -2094,6 +2099,10 @@ class ResetSettings extends Option
 		// FlxG.save.data.leftCampaignScore = 0;
 		// FlxG.save.data.leftCampaignMisses = 0;
 		FlxG.save.data.blueballWeek = null;
+		FlxG.save.data.disableVideoCutscener = null;
+		// JOELwindows7: MORE BOLO RESETS
+		FlxG.save.data.hitVolume = null;
+		// end BOLO RESET
 
 		KadeEngineData.initSave();
 		confirm = false;
@@ -3595,6 +3604,79 @@ class HitsoundOption extends Option
 	}
 }
 
+// JOELwindows7: BOLO had something called hitsound volume now
+class HitSoundVolume extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+
+		acceptValues = true;
+	}
+
+	public override function press():Bool
+	{
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		// JOELwindows7: hey, here's fancier one instead
+		// https://github.com/ninjamuffin99/SHOOM/blob/master/source/PlayState.hx
+		// lmao shoooooooooooooooooooooooooooooooooooooooooooooooooom
+		var shoomSays:String = "SH";
+		var remains:Int = 10;
+		for (i in 0...(Std.int(FlxG.save.data.hitVolume * 10)))
+		{
+			shoomSays += 'O';
+			remains--;
+		}
+		shoomSays += 'M';
+		if (remains < 0)
+			remains = 0;
+		if (remains <= 0)
+			AchievementUnlocked.whichIs("anBeethoven");
+		for (i in 0...(remains))
+		{
+			shoomSays += ' '; // was `U` before. now space supported so yeah.
+		}
+		return "Hitsound Volume < " + shoomSays + " (" + Std.string(Std.int(FlxG.save.data.hitVolume * 100)) + "%)" + " >";
+		// return "Hitsound Volume: < " + HelperFunctions.truncateFloat(FlxG.save.data.hitVolume, 1) + " >";
+	}
+
+	override function right():Bool
+	{
+		FlxG.save.data.hitVolume += 0.1;
+
+		if (FlxG.save.data.hitVolume < 0)
+			FlxG.save.data.hitVolume = 0;
+
+		if (FlxG.save.data.hitVolume > 1)
+			FlxG.save.data.hitVolume = 1;
+		return true;
+	}
+
+	override function getValue():String
+	{
+		// return "Hitsound Volume: < " + HelperFunctions.truncateFloat(FlxG.save.data.hitVolume, 1) + " >";
+		return updateDisplay();
+	}
+
+	override function left():Bool
+	{
+		FlxG.save.data.hitVolume -= 0.1;
+
+		if (FlxG.save.data.hitVolume < 0)
+			FlxG.save.data.hitVolume = 0;
+
+		if (FlxG.save.data.hitVolume > 1)
+			FlxG.save.data.hitVolume = 1;
+
+		return true;
+	}
+}
+
 // JOELwindows7: CPU notesplash! inspire from flash CPU strum, and this enable / disable `cpuSplash`. requires `noteSplash` to be ON.
 class CpuSplashOption extends Option
 {
@@ -3738,5 +3820,119 @@ class WorkaroundNoVideoOption extends Option
 	private override function updateDisplay():String
 	{
 		return '${Perkedel.VIDEO_DISABLED_OPTION_NAME} <${FlxG.save.data.disableVideoCutscener ? "Video Disabled" : "Video Enabled"}>';
+	}
+}
+
+// JOELwindows7: BOLO's reset modifier!!!
+class ResetModifiersOption extends Option
+{
+	var confirm:Bool = false;
+
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		if (!confirm)
+		{
+			confirm = true;
+			display = updateDisplay();
+			return true;
+		}
+
+		KadeEngineData.resetModifiers();
+		confirm = false;
+		trace('Modifiers went brrrr');
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return confirm ? "Confirm Modifiers reset" : "Reset Modifiers";
+	}
+}
+
+// JOELwindows7: we didn't realize the optimize option is gone! thancc BOLO for restoring it
+class OptimizeOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu."
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
+		// requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
+		OptionsMenu.markRestartSong();
+		// acceptValues = true;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		FlxG.save.data.optimize = !FlxG.save.data.optimize;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Optimization: < " + (FlxG.save.data.optimize ? "Enabled" : "Disabled") + " >";
+	}
+}
+
+// JOELwindows7: BOLO's background enable / disable
+class Background extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu."
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
+		OptionsMenu.markRestartSong();
+		// acceptValues = true;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause || FlxG.save.data.optimize)
+			return false;
+		FlxG.save.data.background = !FlxG.save.data.background;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Background Stage: < " + (FlxG.save.data.background ? "Enabled" : "Disabled") + " >";
 	}
 }

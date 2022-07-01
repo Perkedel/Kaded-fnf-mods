@@ -1,5 +1,7 @@
 package;
 
+import flixel.math.FlxMath;
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUISprite;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -21,13 +23,14 @@ import lime.utils.AssetManifest;
 import haxe.io.Path;
 
 // import haxe.ui.components.Progress as ProgressBar; // JOELwindows7: a little help here?
-
-// JOElwindows7: FlxUI fy!!!
+// JOELwindows7: FlxUI fy!!!
+// JOELwindows7: yoinks BOLO's https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/LoadingState.hx
 
 class LoadingState extends MusicBeatState
 {
 	inline static var MIN_TIME = 1.0;
 
+	var loadingText:FlxText; // JOELwindows7: BOLO's loading text
 	var target:FlxState;
 	var previously:FlxState; // JOELwindows7: to store previous state.
 	var stopMusic = false;
@@ -41,6 +44,7 @@ class LoadingState extends MusicBeatState
 	// JOELwindows7: da loading bar pls
 	// var loadingBar:ProgressBar;
 	var loadBar:FlxUISprite; // JOELwindows7: luckydog7's version
+	var targetShit:Float = 0; // JOELwindows7: BOLO's interpreted loading targetals.
 
 	var selectImageNumber:Int = 0; // JOELwindows7: choose loading images
 
@@ -85,8 +89,11 @@ class LoadingState extends MusicBeatState
 		// JOELwindows7: oh also luckydog7's reverse engineering I think loading bar & stuff?
 		// https://github.com/luckydog7/Funkin-android/blob/master/source/LoadingState.hx
 		// cast too!
-		loadBar = cast new FlxUISprite(0, FlxG.height - 20).makeGraphic(FlxG.width, 10, -59694);
+		loadBar = cast new FlxUISprite(0,
+			FlxG.height - 20).makeGraphic(FlxG.width, 10,
+				0xffff00ff); // JOELwindows7: was -59694, now use BOLO's proper hex 0xfffffab8! nvm. use same magenta!
 		loadBar.screenCenter(FlxAxes.X);
+		loadBar.antialiasing = FlxG.save.data.antialiasing; // JOELwindows7: BOLO antialias the loading bar too!
 		add(loadBar);
 
 		logo = new FlxUISprite(-150, -100);
@@ -106,20 +113,49 @@ class LoadingState extends MusicBeatState
 		// add(gfDance); // JOELwindows7: sorry man, according to luckydog7 and other credible sources:
 		// add(logo); // JOELwindows7: week 7 has already made new screen of it instead.
 
+		// JOELwindows7: BOLO's loading text stuffs
+		loadingText = new FlxText(FlxG.width * 8, FlxG.height * 0.07, 0, "Loading", 42);
+		loadingText.antialiasing = false;
+		loadingText.setFormat(Paths.font('pixel.otf'), 42, 0xFFFFFF, CENTER);
+		loadingText.screenCenter();
+
+		loadingText.x -= 425;
+		loadingText.y += 125;
+
+		// add(gfDance);
+		// add(logo);
+		add(loadingText);
+
 		installBusyHourglassScreenSaver(); // JOELwindows7: another indicator making sure no hang
+
+		FlxTransitionableState.skipNextTransOut = false; // JOELwindows7: BOLO destroy this for Psyched transitioning!
 
 		initSongsManifest().onComplete(function(lib)
 		{
 			callbacks = new MultiCallback(onLoad);
 			var introComplete = callbacks.add("introComplete");
-			checkLoadSong(getSongPath());
-			if (PlayState.SONG.needsVoices)
-				checkLoadSong(getVocalPath());
+			// JOELwindows7: Brother! do not forget safety!!! thancc BOLO
+			if (PlayState.SONG != null)
+			{
+				checkLoadSong(getSongPath());
+				if (PlayState.SONG.needsVoices)
+					checkLoadSong(getVocalPath());
+			}
+
+			// Essential libraries (characters,notes,gameplay elements) (JOELwindows7: BOLO's said)
+			// JOELwindows7: also here comes more optimize!
 			checkLibrary("shared");
-			if (PlayState.storyWeek > 0)
-				checkLibrary("week" + PlayState.storyWeek);
-			else
-				checkLibrary("tutorial");
+			if (!FlxG.save.data.optimize && FlxG.save.data.background)
+			{
+				if (PlayState.storyWeek > 0)
+					checkLibrary("week" + PlayState.storyWeek);
+				else
+					checkLibrary("tutorial");
+			}
+
+			// JOELwindows7: also BOLO check if pixel
+			if (GameplayCustomizeState.freeplayNoteStyle == 'pixel') // Essential library for Customize gameplay. (Very light)
+				checkLibrary("week6");
 
 			var fadeTime = 0.5;
 			FlxG.camera.fade(FlxG.camera.bgColor, fadeTime, true);
@@ -132,25 +168,29 @@ class LoadingState extends MusicBeatState
 
 	function checkLoadSong(path:String)
 	{
-		if (!OpenFlAssets.cache.hasSound(path))
-		{
-			var library = OpenFlAssets.getLibrary("songs");
-			final symbolPath = path.split(":").pop();
-			// @:privateAccess
-			// library.types.set(symbolPath, SOUND);
-			// @:privateAccess
-			// library.pathGroups.set(symbolPath, [library.__cacheBreak(symbolPath)]);
-			var callback = callbacks.add("song:" + path);
-			OpenFlAssets.loadSound(path).onComplete(function(_)
+		if (path != null)
+		{ // JOELwindows7: BOLO added safety!!!
+			if (!OpenFlAssets.cache.hasSound(path))
 			{
-				callback();
-			});
+				var library = OpenFlAssets.getLibrary("songs");
+				final symbolPath = path.split(":").pop();
+				// @:privateAccess
+				// library.types.set(symbolPath, SOUND);
+				// @:privateAccess
+				// library.pathGroups.set(symbolPath, [library.__cacheBreak(symbolPath)]);
+				var callback = callbacks.add("song:" + path);
+				OpenFlAssets.loadSound(path).onComplete(function(_)
+				{
+					callback();
+				});
+			}
 		}
 	}
 
 	function checkLibrary(library:String)
 	{
-		trace(OpenFlAssets.hasLibrary(library));
+		// trace(OpenFlAssets.hasLibrary(library));
+		Debug.logInfo('$library exists? ${OpenFlAssets.hasLibrary(library)}'); // JOELwindows7: BOLO's better tellings!!!
 		if (OpenFlAssets.getLibrary(library) == null)
 		{
 			@:privateAccess
@@ -169,6 +209,8 @@ class LoadingState extends MusicBeatState
 	{
 		super.beatHit();
 
+		// JOELwindows7: in BOLO it's step hit with if curStep % 4 == 0 do these.
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/LoadingState.hx
 		logo.animation.play('bump');
 		danceLeft = !danceLeft;
 
@@ -185,13 +227,19 @@ class LoadingState extends MusicBeatState
 		// JOELwindows7: and to see loading progress here. luckydog7 thing
 		if (callbacks != null)
 		{
-			loadBar.scale.x = callbacks.getFired().length / callbacks.getUnfired().length;
+			// loadBar.scale.x = callbacks.getFired().length / callbacks.getUnfired().length; // JOELwindows7: was used
 			// _loadingBar.setPercentage((callbacks.getFired().length / callbacks.getUnfired().length)*100);
+
+			// JOELwindows7: here new BOLO's way
+			loadingText.text = 'Loading [${callbacks.length - callbacks.numRemaining}/${callbacks.length}]';
+			targetShit = FlxMath.remapToRange(callbacks.numRemaining / callbacks.length, 1, 0, 0, 1);
+			loadBar.scale.x += 0.5 * (targetShit - loadBar.scale.x);
 		}
 
 		#if debug
 		if (FlxG.keys.justPressed.SPACE)
-			trace('fired: ' + callbacks.getFired() + " unfired:" + callbacks.getUnfired());
+			// trace('fired: ' + callbacks.getFired() + " unfired:" + callbacks.getUnfired());
+			Debug.logTrace('fired: ' + callbacks.getFired() + " unfired:" + callbacks.getUnfired()); // JOELwindows7: BOLO's better tellings!
 		#end
 
 		// JOELwindows7: too long didn't load controls
@@ -226,7 +274,10 @@ class LoadingState extends MusicBeatState
 			tooLongDidntLoadTimer = null;
 		}
 
-		FlxG.switchState(target);
+		// FlxG.switchState(target);
+		// JOELwindows7: BOLO used this!
+		// MusicBeatState.instance.switchState(target);
+		MusicBeatState.switchStateStatic(target);
 	}
 
 	static function getSongPath()
@@ -241,7 +292,9 @@ class LoadingState extends MusicBeatState
 
 	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false, ?previously:FlxState)
 	{
-		FlxG.switchState(getNextState(target, stopMusic, previously));
+		// FlxG.switchState(getNextState(target, stopMusic, previously));
+		// JOELwindows7: use BOLO's new way!
+		MusicBeatState.switchStateStatic(getNextState(target, stopMusic, previously));
 	}
 
 	static function getNextState(target:FlxState, stopMusic = false, ?previously:FlxState):FlxState // JOELwindows7: here previously
@@ -252,7 +305,9 @@ class LoadingState extends MusicBeatState
 		{ // JOELwindows7: folks, unfortunately it cannot load stepmania this way. there is different instruction!
 			var loaded = isSoundLoaded(getSongPath())
 				&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
-				&& isLibraryLoaded("shared");
+				&& isLibraryLoaded("shared")
+				&& isLibraryLoaded("week" + PlayState.storyWeek) // JOELwindows7: and BOLO's week checks!
+				;
 
 			if (!loaded)
 				return new LoadingState(target, stopMusic, previously); // JOELwindows7: here previously

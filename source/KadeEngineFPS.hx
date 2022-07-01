@@ -49,6 +49,9 @@ class KadeEngineFPS extends TextField
 
 	public var memoryUsage:Float;
 	public var imInDanger:Bool = false; // JOELwindows7: flag whether memory is low or FPS too low
+	// JOELwindows7: kay, you know what? why not just detail which one that went wrong?
+	public var memoryUsageTooHigh:Bool = false;
+	public var fpsTooLow:Bool = false;
 
 	public var bitmap:Bitmap;
 
@@ -278,16 +281,24 @@ class KadeEngineFPS extends TextField
 			#if openfl
 			// JOELwindows7: get RAM usage Psychedly.
 			memoryUsage = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
-			text += "Memory: " + memoryUsage + " MB\n";
+			text += (FlxG.save.data.memoryDisplay ? 'Memory: $memoryUsage MB\n' : ""); // JOELwindows7: get the BOLO memory display option!
+			// here's BOLO's implementation https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/KadeEngineFPS.hx
 			#end
 			text += (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "");
 			text += (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "");
+			// JOELwindows7: OH COOL!! GREAT IDEA, BOLO. Debug mode indicator, yess!!!
+			text += (#if debug "DEBUG MODE" #else "" #end);
 			text += extraInfo; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
 			// remember to have \n at the beginning of the line at available if case.
 			// No, at the end of line at available if case. + "\n" one.
 
 			// JOELwindows7: psyched check danger status
-			if (memoryUsage > 3000 || currentFPS <= FlxG.save.data.fpsCap / 2)
+			// JOELwindows7: Okay, on second thought you know what? let's just tell which one is in danger.
+			memoryUsageTooHigh = memoryUsage > 3000;
+			fpsTooLow = currentFPS <= 60;
+			// if (memoryUsage > 3000 || currentFPS <= FlxG.save.data.fpsCap / 2)
+			if (memoryUsageTooHigh || fpsTooLow) // JOELwindows7: no uuuh, Why half of the fps cap? perhaps, panic only if uh..
+				// you just have FPS lower than what considerable as lag usually? idk I guess...
 			{
 				imInDanger = true;
 			}

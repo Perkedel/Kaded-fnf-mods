@@ -1,5 +1,6 @@
 package;
 
+import behavior.audio.IManipulateAudio;
 import ui.states.IBGColorTweening;
 import flixel.tweens.misc.ColorTween;
 import flixel.addons.util.FlxAsyncLoop;
@@ -42,7 +43,8 @@ import VideoSprite as MP4Sprite; // yep.
 #end
 using StringTools;
 
-class FreeplayState extends MusicBeatState implements IBGColorTweening
+// JOELwindows7: I gotta add stuffs!
+class FreeplayState extends MusicBeatState implements IBGColorTweening implements IManipulateAudio
 {
 	public static var instance:FreeplayState; // JOELwindows7: AAAAA why no detect class!!
 
@@ -63,8 +65,17 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 	var previewtext:FlxText;
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
-	var combo:String = '';
+	var combo:String = 'N/A'; // JOELwindows7: Add the placeholder like BOLO did
+	// JOELwindows7: here comes BOLO thingy
+	var helpText:FlxText;
+	var opponentText:FlxText;
+	var intendedaccuracy:Float = 0.00;
+	var letter:String;
+	var lerpaccuracy:Float = 0.00;
 
+	public static var openMod:Bool = false;
+
+	// end BOLO thingy
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 
@@ -79,6 +90,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 	// JOELwindows7: aesthetic
 	var bgColorTween:ColorTween; // FlxTween change bg color.
+	var intendedColor:Int; // and BOLO's intended coloring
 
 	// JOELwindows7: week data here
 	var weekInfo:SwagWeeks;
@@ -226,11 +238,23 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 	var charting:Bool;
 
 	override function create()
-	{
+	{ // JOELwindows7: first, BOLO clears memory!
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+
+		FlxG.mouse.visible = true; // JOELwindows7: don't forget mouse!!! thancc BOLO.
 		instance = this; // JOELwindows7: ugung.
 
 		// JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
+
+		// PlayState.wentToChartEditor = false; // JOELwindows7: BOLO resets went to chart editor.
+		// JOELwindows7: BOLO put placeholder if music not playing
+		if (!FlxG.sound.music.playing)
+		{
+			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			// MainMenuState.freakyPlaying = true;
+		}
 
 		// JOELwindows7: okey how about attempt to have sys multithreading?
 		#if FEATURE_MULTITHREADING
@@ -400,10 +424,43 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		// scoreText.alignment = RIGHT;
 
-		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.4), 135, 0xFF000000);
+		// JOELwindows7: there are additional BOLO's notes
+		var bottomBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(Std.int(FlxG.width), 26, 0xFF000000);
+		bottomBG.alpha = 0.6;
+		add(bottomBG);
+
+		var bottomText:String = #if !mobile #if PRELOAD_ALL "  Press SPACE to listen to the Song Instrumental / Click and scroll through the songs with your MOUSE /"
+			+ #else "  Click and scroll through the songs with your MOUSE /"
+			+ #end #end
+		" Your offset is "
+		+ FlxG.save.data.offset
+		+ "ms "
+		+ (FlxG.save.data.optimize ? "/ Optimized" : "");
+
+		var downText:FlxText = new FlxText(bottomBG.x, bottomBG.y + 4, FlxG.width, bottomText, 16);
+		downText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT);
+		downText.scrollFactor.set();
+		add(downText);
+		// end additional
+
+		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.4), 337, 0xFF000000); // JOELwindows7: height was 135.
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
+		// JOELwindows7: Folks, everything here going to be rearraged here by BOLO.
+		// So we apologize if the looks on here seems way too different than original here.
+
+		// comboText = new FlxText(diffText.x + 100, diffText.y, 0, "", 24); // was width 0
+		comboText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		comboText.font = diffText.font;
+		add(comboText);
+
+		// JOELwindows7: oh man, BOLO's opponent text slid here!
+		opponentText = new FlxText(scoreText.x, scoreText.y + 66, 0, "", 24);
+		opponentText.font = scoreText.font;
+		add(opponentText);
+
+		// JOELwindows7: back to diffs
 		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		diffText.font = scoreText.font;
 		add(diffText);
@@ -416,13 +473,25 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		previewtext.font = scoreText.font;
 		add(previewtext);
 
-		comboText = new FlxText(diffText.x + 100, diffText.y, 0, "", 24);
-		comboText.font = diffText.font;
-		add(comboText);
+		// JOELwindows7: was combo
+
+		// JOELwindows7: & here are BOLO's stuffs to be thought about.
+		helpText = new FlxText(scoreText.x, scoreText.y + 211, 0, "", 20);
+		helpText.text = "LEFT-RIGHT to change Difficulty\n\n" + "SHIFT + LEFT-RIGHT to change Rate\n" + "if it's possible\n\n"
+			+ "CTRL to open Gameplay Modifiers\n" + "";
+		helpText.font = scoreText.font;
+		helpText.color = 0xFFfaff96;
+		add(helpText);
 
 		add(scoreText);
 
-		if (legacySynchronousLoading)
+		// JOELwindows7: the color BOLO
+		if (curSelected >= songs.length)
+			curSelected = 0;
+		bg.color = songs[curSelected].color;
+		intendedColor = bg.color;
+
+		if (!openMod && legacySynchronousLoading) // JOELwindows7: BOLO's check
 		{
 			changeSelection();
 			changeDiff();
@@ -437,6 +506,18 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		// add(selector);
 
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
+
+		// JOELwindows7: BOLO set PlayState variables!
+		PlayStateChangeables.modchart = FlxG.save.data.modcharts;
+		PlayStateChangeables.botPlay = FlxG.save.data.botplay;
+		PlayStateChangeables.opponentMode = FlxG.save.data.opponent;
+		PlayStateChangeables.mirrorMode = FlxG.save.data.mirror;
+		PlayStateChangeables.holds = FlxG.save.data.sustains;
+		PlayStateChangeables.healthDrain = FlxG.save.data.hdrain;
+		PlayStateChangeables.healthGain = FlxG.save.data.hgain;
+		PlayStateChangeables.healthLoss = FlxG.save.data.hloss;
+		PlayStateChangeables.practiceMode = FlxG.save.data.practice;
+		PlayStateChangeables.skillIssue = FlxG.save.data.noMisses;
 
 		super.create();
 
@@ -482,9 +563,12 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		else
 		{
 			loadedUp = true;
-			// JOELwindows7: do it again because last time it ignored because not loaded yet to this point.
-			changeSelection();
-			changeDiff();
+			// JOELwindows7: do it again because last time it ignored because not loaded yet to this point. add BOLO's check
+			if (!openMod)
+			{
+				changeSelection();
+				changeDiff();
+			}
 		}
 	}
 
@@ -517,7 +601,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		{
 			var data:Array<String> = list[i].split(':');
 			var songId = data[0];
-			var meta = new FreeplaySongMetadata(songId, Std.parseInt(data[2]), data[1]);
+			// JOELwindows7: BOLO color
+			var color = data[3];
+
+			// JOELwindows7: & the fallback of it
+			if (color == null)
+			{
+				color = "#9271fd";
+			}
+			var meta = new FreeplaySongMetadata(songId, Std.parseInt(data[2]), data[1], FlxColor.fromString(color));
 			// JOELwindows7: loading text
 			Main.loadingBar.setInfoText("Loading song " + songId + "...");
 			Main.loadingBar.setPercentage((i / list.length) * 100);
@@ -567,7 +659,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			});
 			#else
 			FlxG.sound.cache(Paths.inst(songId));
-			FlxG.sound.cache(Paths.voices(songId)); // JOELwindows7: also cache voices too!
+			// FlxG.sound.cache(Paths.voices(songId)); // JOELwindows7: also cache voices too!
 			#end
 		}
 	}
@@ -610,7 +702,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 	{
 		var data:Array<String> = list[itterateFill].split(':');
 		var songId = data[0];
-		var meta = new FreeplaySongMetadata(songId, Std.parseInt(data[2]), data[1]);
+		// JOELwindows7: BOLO color
+		var color = data[3];
+
+		// JOELwindows7: & the fallback of it
+		if (color == null)
+		{
+			color = "#9271fd";
+		}
+		var meta = new FreeplaySongMetadata(songId, Std.parseInt(data[2]), data[1], FlxColor.fromString(color));
 		// JOELwindows7: loading text
 		Main.loadingBar.setInfoText("Loading song " + songId + "...");
 		Main.loadingBar.setPercentage((itterateFill / list.length) * 100);
@@ -688,12 +788,50 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		}
 	}
 
-	public function addSong(songName:String, weekNum:Int, songCharacter:String)
+	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:String) // JOELwindows7: BOLO add color
 	{
-		songs.push(new FreeplaySongMetadata(songName, weekNum, songCharacter));
+		// songs.push(new FreeplaySongMetadata(songName, weekNum, songCharacter, color)); // JOELwindows7: da color
+
+		// JOELwindows7: INCOMING BOLO'S WAY OF COMPLEXITY!!!
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
+		var meta = new FreeplaySongMetadata(songName, weekNum, songCharacter, FlxColor.fromString(color));
+
+		var diffs = [];
+		var diffsThatExist = [];
+
+		#if FEATURE_FILESYSTEM
+		if (Paths.doesTextAssetExist(Paths.json('songs/$songName/$songName-hard')))
+			diffsThatExist.push("Hard");
+		if (Paths.doesTextAssetExist(Paths.json('songs/$songName/$songName')))
+			diffsThatExist.push("Normal");
+		if (Paths.doesTextAssetExist(Paths.json('songs/$songName/$songName-easy')))
+			diffsThatExist.push("Easy");
+		if (diffsThatExist.length == 0)
+		{
+			Debug.displayAlert(meta.songName + " Chart", "No difficulties found for chart, skipping.");
+		}
+		#else
+		diffsThatExist = ["Easy", "Normal", "Hard"];
+		#end
+
+		if (diffsThatExist.contains("Easy"))
+			FreeplayState.loadDiff(0, songName, diffs);
+		if (diffsThatExist.contains("Normal"))
+			FreeplayState.loadDiff(1, songName, diffs);
+		if (diffsThatExist.contains("Hard"))
+			FreeplayState.loadDiff(2, songName, diffs);
+
+		meta.diffs = diffsThatExist;
+
+		if (diffsThatExist.length != 5)
+			trace("I ONLY FOUND " + diffsThatExist);
+
+		songData.set(songName, diffs);
+
+		songs.push(meta);
 	}
 
-	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
+	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>, ?color:String) // JOELwindows7: BOLO has colorer!
 	{
 		if (songCharacters == null)
 			songCharacters = ['dad'];
@@ -701,7 +839,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		var num:Int = 0;
 		for (song in songs)
 		{
-			addSong(song, weekNum, songCharacters[num]);
+			addSong(song, weekNum, songCharacters[num], color); // JOELwindows7: BOLO add color
 
 			if (songCharacters.length != 1)
 				num++;
@@ -924,8 +1062,11 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			// there are list song & Stepmania too
 
 			loadedUp = true;
-			changeSelection();
-			changeDiff();
+			if (!openMod) // JOELwindows7: BOLO's check
+			{
+				changeSelection();
+				changeDiff();
+			}
 			__latchListSong = true;
 		}
 	}
@@ -1046,135 +1187,171 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
-		if (gamepad != null)
+		// JOELwindows7: BOLO wraps these around!
+		if (!openMod && !MusicBeatState.switchingState)
 		{
-			if (gamepad.justPressed.DPAD_UP)
+			if (gamepad != null)
 			{
-				changeSelection(-1);
-			}
-			if (gamepad.justPressed.DPAD_DOWN)
-			{
-				changeSelection(1);
-			}
-			if (gamepad.justPressed.DPAD_LEFT)
-			{
-				changeDiff(-1);
-			}
-			if (gamepad.justPressed.DPAD_RIGHT)
-			{
-				changeDiff(1);
+				if (gamepad.justPressed.DPAD_UP)
+				{
+					changeSelection(-1);
+				}
+				if (gamepad.justPressed.DPAD_DOWN)
+				{
+					changeSelection(1);
+				}
+				if (gamepad.justPressed.DPAD_LEFT)
+				{
+					changeDiff(-1);
+				}
+				if (gamepad.justPressed.DPAD_RIGHT)
+				{
+					changeDiff(1);
+				}
+
+				// if (gamepad.justPressed.X && !openedPreview)
+				// openSubState(new DiffOverview());
 			}
 
-			// if (gamepad.justPressed.X && !openedPreview)
+			// JOELwindows7: prevent go if shift is being held
+			if (!FlxG.keys.pressed.SHIFT)
+			{
+				if (upP)
+				{
+					changeSelection(-1);
+				}
+				if (downP)
+				{
+					changeSelection(1);
+				}
+			}
+
+			// if (FlxG.keys.justPressed.SPACE && !openedPreview)
 			// openSubState(new DiffOverview());
-		}
 
-		// JOELwindows7: prevent go if shift is being held
-		if (!FlxG.keys.pressed.SHIFT)
-		{
-			if (upP)
+			if (FlxG.keys.pressed.SHIFT)
 			{
-				changeSelection(-1);
-			}
-			if (downP)
-			{
-				changeSelection(1);
-			}
-		}
+				if (FlxG.keys.justPressed.LEFT || FlxG.mouse.wheel == -1 || haveLefted)
+				{
+					rate -= 0.05;
+					// diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+					updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
+					haveLefted = false;
+				}
+				if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.wheel == 1 || haveRighted)
+				{
+					rate += 0.05;
+					// diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+					updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
+					haveRighted = false;
+				}
 
-		// if (FlxG.keys.justPressed.SPACE && !openedPreview)
-		// openSubState(new DiffOverview());
+				if (FlxG.keys.justPressed.R || FlxG.mouse.justPressedMiddle)
+				{
+					rate = 1;
+					// diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+					updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
+				}
 
-		if (FlxG.keys.pressed.SHIFT)
-		{
-			if (FlxG.keys.justPressed.LEFT || FlxG.mouse.wheel == -1 || haveLefted)
-			{
-				rate -= 0.05;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-				haveLefted = false;
-			}
-			if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.wheel == 1 || haveRighted)
-			{
-				rate += 0.05;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-				haveRighted = false;
-			}
+				if (rate > 3)
+				{
+					rate = 3;
+					// diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+					updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
+				}
+				else if (rate < 0.5)
+				{
+					rate = 0.5;
+					// diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+					updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
+				}
 
-			if (FlxG.keys.justPressed.R || FlxG.mouse.justPressedMiddle)
-			{
-				rate = 1;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-			}
-
-			if (rate > 3)
-			{
-				rate = 3;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-			}
-			else if (rate < 0.5)
-			{
-				rate = 0.5;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-			}
-
-			previewtext.text = "Rate: " + FlxMath.roundDecimal(rate, 2) + "x";
-		}
-		else
-		{
-			if (FlxG.keys.justPressed.LEFT || haveLefted)
-			{
-				changeDiff(-1);
-				haveLefted = false;
-			}
-			if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
-			{
-				changeDiff(1);
-				haveRighted = false;
-			}
-		}
-
-		// JOELwindows7: there you are, audio manipulate lol
-		#if FEATURE_AUDIO_MANIPULATE
-		@:privateAccess
-		{
-			if (FlxG.sound.music.playing)
-				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
-		}
-		#end
-
-		if (controls.BACK || haveBacked)
-		{
-			if (loadedUp) // JOELwindows7: workaround for no cancel in sys.thread.Thread . do not go out until that thread finished
-				// otherwise it'll null object reference
-			{
-				// FlxG.switchState(new MainMenuState());
-				switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+				previewtext.text = "Rate: " + FlxMath.roundDecimal(rate, 2) + "x";
 			}
 			else
 			{
-				// no, just add it here.
-				cancelAsyncLoading();
-				switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+				if (FlxG.keys.justPressed.LEFT || haveLefted)
+				{
+					changeDiff(-1);
+					haveLefted = false;
+				}
+				if (FlxG.keys.justPressed.RIGHT || FlxG.mouse.justPressedMiddle || haveRighted)
+				{
+					changeDiff(1);
+					haveRighted = false;
+				}
 			}
-			haveBacked = false;
 		}
 
-		if (accepted)
-			loadSong();
-		else if (charting)
-			loadSong(true);
+		// JOELwindows7: BOLO's modifier menu and stuff
+		previewtext.text = "Rate: " + FlxMath.roundDecimal(rate, 2) + "x";
 
-		// AnimationDebug and StageDebug are only enabled in debug builds.
-		#if debug
-		if (dadDebug)
+		previewtext.alpha = 1;
+
+		if (FlxG.keys.justPressed.CONTROL && !openMod && !MusicBeatState.switchingState)
 		{
-			loadAnimDebug(true);
+			openMod = true;
+			FlxG.sound.play(Paths.sound('scrollMenu'));
+			openSubState(new FreeplaySubState.ModMenu());
 		}
-		if (bfDebug)
+
+		// JOELwindows7: there you are, audio manipulate lol
+		manipulateTheAudio(); // moved out to easiner!
+
+		// JOELwindows7: BOLO still has more!
+		if (!openMod && !MusicBeatState.switchingState)
 		{
-			loadAnimDebug(false);
+			if (controls.BACK || haveBacked)
+			{
+				if (loadedUp) // JOELwindows7: workaround for no cancel in sys.thread.Thread . do not go out until that thread finished
+					// otherwise it'll null object reference
+				{
+					// FlxG.switchState(new MainMenuState());
+					switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+				}
+				else
+				{
+					// no, just add it here.
+					cancelAsyncLoading();
+					switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+				}
+				// JOELwindows7: additional optimize BOLO
+				clean();
+				if (bgColorTween != null)
+				{
+					bgColorTween.cancel();
+				}
+				haveBacked = false;
+			}
+
+			if (accepted)
+				loadSong();
+			// JOELwindows7: NO, BOLO, ALWAYS ENABLE CHARTING ON ALL BUILD!!!
+			else if (charting)
+				loadSong(true);
+
+			// AnimationDebug and StageDebug are only enabled in debug builds.
+			// #if debug // JOELwindows7: NOT ANYMORE!!!
+			if (dadDebug)
+			{
+				loadAnimDebug(true);
+			}
+			if (bfDebug)
+			{
+				loadAnimDebug(false);
+			}
+			// #end
 		}
-		#end
+
+		// JOELwindows7: one last BOLO thingy
+		if (openMod)
+		{
+			for (i in 0...iconArray.length)
+				iconArray[i].alpha = 0;
+
+			for (item in grpSongs.members)
+				item.alpha = 0;
+		}
 	}
 
 	// JOELwindows7: maybe clean up variables?
@@ -1243,6 +1420,23 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			return;
 		}
 
+		// JOELwindows7: BOLO's funny egg change
+		/*
+			// 3% chance for loading Kade Engine's remix of test song.
+			if (FlxG.random.bool(3))
+			{
+				PlayState.SONG = Song.loadFromJson('test', '');
+				PlayState.storyDifficulty = 1;
+				PlayState.storyWeek = 0;
+			}
+			else
+			{
+				PlayState.SONG = currentSongData;
+				PlayState.storyDifficulty = difficulty;
+				PlayState.storyWeek = songs[curSelected].week;
+			}
+		 */
+		// JOELwindows7: No, we already have visiblized it here. let's not surprise the test unit & everyone.
 		PlayState.SONG = currentSongData;
 		PlayState.isStoryMode = false;
 		PlayState.storyDifficulty = difficulty;
@@ -1325,14 +1519,16 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
 		combo = Highscore.getCombo(songHighscore, curDifficulty);
 		#end
-		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-		diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+		// diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+		// diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+		updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
 
 		// JOELwindows7: now change bg color based on what week did this on
 		// changeColorByWeekOf(curSelected);
 	}
 
-	function changeSelection(change:Int = 0)
+	// JOELwindows7: BOLO made this public
+	public function changeSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
@@ -1360,6 +1556,25 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			}
 		}
 
+		// JOELwindows7: BOLO's differentialized bg color based on song
+		var alreadyColored:Bool = false;
+		var newColor:Int = songs[curSelected].color;
+		if (newColor != intendedColor)
+		{
+			if (bgColorTween != null)
+			{
+				bgColorTween.cancel();
+			}
+			intendedColor = newColor;
+			bgColorTween = FlxTween.color(bg, 0.5, bg.color, intendedColor, {
+				onComplete: function(twn:FlxTween)
+				{
+					bgColorTween = null;
+				}
+			});
+			alreadyColored = true;
+		}
+
 		// selector.y = (70 * curSelected) + 30;
 
 		// adjusting the highscore song name to be compatible (changeSelection)
@@ -1381,8 +1596,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		// lerpScore = 0;
 		#end
 
-		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-		diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+		// diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+		// diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+		updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
 
 		#if PRELOAD_ALL
 		if (songs[curSelected].songCharacter == "sm")
@@ -1428,30 +1644,39 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 		var bullShit:Int = 0;
 
-		for (i in 0...iconArray.length)
+		// JOELwindows7: BOLO's check
+		if (!openMod && !MusicBeatState.switchingState)
 		{
-			iconArray[i].alpha = 0.6;
-		}
+			for (i in 0...iconArray.length)
+			{
+				iconArray[i].alpha = 0.6;
+			}
 
-		iconArray[curSelected].alpha = 1;
+			iconArray[curSelected].alpha = 1;
+		}
 
 		for (item in grpSongs.members)
 		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
-
-			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
-
-			if (item.targetY == 0)
+			// JOELwindows7: entire BOLO's check
+			if (!openMod && !MusicBeatState.switchingState)
 			{
-				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
+				item.targetY = bullShit - curSelected;
+				bullShit++;
+
+				item.alpha = 0.6;
+				// item.setGraphicSize(Std.int(item.width * 0.8));
+
+				if (item.targetY == 0)
+				{
+					item.alpha = 1;
+					// item.setGraphicSize(Std.int(item.width));
+				}
 			}
 		}
 
 		// JOELwindows7: now change bg color based on what week did this on
-		changeColorByWeekOf(curSelected);
+		if (!alreadyColored)
+			changeColorByWeekOf(curSelected);
 	}
 
 	// JOELwindows7: copy from above but this time it set selection number
@@ -1484,6 +1709,25 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 			}
 		}
 
+		// JOELwindows7: BOLO's differentialized bg color based on song
+		var alreadyColored:Bool = false;
+		var newColor:Int = songs[curSelected].color;
+		if (newColor != intendedColor)
+		{
+			if (bgColorTween != null)
+			{
+				bgColorTween.cancel();
+			}
+			intendedColor = newColor;
+			bgColorTween = FlxTween.color(bg, 0.5, bg.color, intendedColor, {
+				onComplete: function(twn:FlxTween)
+				{
+					bgColorTween = null;
+				}
+			});
+			alreadyColored = true;
+		}
+
 		// selector.y = (70 * curSelected) + 30;
 
 		// adjusting the highscore song name to be compatible (changeSelection)
@@ -1505,8 +1749,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		// lerpScore = 0;
 		#end
 
-		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-		diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+		// diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+		// diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+		updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
 
 		#if PRELOAD_ALL
 		if (songs[curSelected].songCharacter == "sm")
@@ -1552,30 +1797,40 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 
 		var bullShit:Int = 0;
 
-		for (i in 0...iconArray.length)
+		// JOELwindows7: BOLO's check
+		if (!openMod && !MusicBeatState.switchingState)
 		{
-			iconArray[i].alpha = 0.6;
-		}
+			for (i in 0...iconArray.length)
+			{
+				iconArray[i].alpha = 0.6;
+			}
 
-		iconArray[curSelected].alpha = 1;
+			iconArray[curSelected].alpha = 1;
+		}
 
 		for (item in grpSongs.members)
 		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
-
-			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
-
-			if (item.targetY == 0)
+			// JOELwindows7: entire BOLO's check
+			if (!openMod && !MusicBeatState.switchingState)
 			{
-				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
+				item.targetY = bullShit - curSelected;
+				bullShit++;
+
+				item.alpha = 0.6;
+				// item.setGraphicSize(Std.int(item.width * 0.8));
+
+				if (item.targetY == 0)
+				{
+					item.alpha = 1;
+					// item.setGraphicSize(Std.int(item.width));
+				}
 			}
+			// could've just wrap entirer from previous above.
 		}
 
 		// JOELwindows7: now change bg color based on what week did this on
-		changeColorByWeekOf(curSelected);
+		if (!alreadyColored)
+			changeColorByWeekOf(curSelected);
 	}
 
 	function changeColorByWeekOf(which:Int = 0)
@@ -1748,6 +2003,41 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening
 		}
 		super.manageMouse();
 	}
+
+	// JOELwindows7: BOLO has brought diffcalc to here!
+	public function updateDiffCalc():Void
+	{
+		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+		diffText.text = 'DIFFICULTY: < ' + CoolUtil.difficultyFromInt(curDifficulty).toUpperCase() + ' >'; // also let's add this too.
+	}
+
+	// JOELwindows7: Okay, here's the new hack audio with BOLO's figure outs!
+	function manipulateTheAudio():Void
+	{
+		#if FEATURE_AUDIO_MANIPULATE
+		@:privateAccess
+		{
+			// JOELwindows7: hey, there's a new advanced way of doing this with BOLO's figure outs!
+			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
+			if (FlxG.sound.music.playing)
+			{
+				#if web
+				#if (lime >= "8.0.0" && lime_howlerjs)
+				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				#else
+				FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+				#end
+				#elseif cpp
+				#if (lime >= "8.0.0")
+				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				#else
+				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
+				#end
+				#end
+			}
+		}
+		#end
+	}
 }
 
 class FreeplaySongMetadata
@@ -1759,24 +2049,28 @@ class FreeplaySongMetadata
 	public var path:String;
 	#end
 	public var songCharacter:String = "";
+	public var color:Int = -7179779; // JOELwindows7: BOLO has color, idk!!!
 
 	public var diffs = [];
 
 	#if FEATURE_STEPMANIA
-	public function new(song:String, week:Int, songCharacter:String, ?sm:SMFile = null, ?path:String = "")
+	public function new(song:String, week:Int, songCharacter:String, ?color:FlxColor, ?sm:SMFile = null,
+			?path:String = "") // JOELwindows7: WHAT? you intercepted that in middle?!
 	{
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
+		this.color = color; // JOELwindows7: here color BOLO
 		this.sm = sm;
 		this.path = path;
 	}
 	#else
-	public function new(song:String, week:Int, songCharacter:String)
+	public function new(song:String, week:Int, songCharacter:String, ?color:FlxColor)
 	{
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
+		this.color = color; // JOELwindows7: here color BOLO
 	}
 	#end
 }
