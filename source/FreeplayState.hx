@@ -429,7 +429,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		bottomBG.alpha = 0.6;
 		add(bottomBG);
 
-		var bottomText:String = #if !mobile #if PRELOAD_ALL "  Press SPACE to listen to the Song Instrumental / Click and scroll through the songs with your MOUSE /"
+		// JOELwindows7: BOLO has manual preview "Press SPACE to listen to the Song Instrumental /". well, no need!
+		var bottomText:String = #if !mobile #if PRELOAD_ALL "  Click and scroll through the songs with your MOUSE /"
 			+ #else "  Click and scroll through the songs with your MOUSE /"
 			+ #end #end
 		" Your offset is "
@@ -1297,6 +1298,12 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		// JOELwindows7: there you are, audio manipulate lol
 		manipulateTheAudio(); // moved out to easiner!
+
+		// JOELwindows7: & BOLO has this..
+		#if html5
+		diffCalcText.text = "RATING: N/A";
+		diffCalcText.alpha = 0.5;
+		#end
 
 		// JOELwindows7: BOLO still has more!
 		if (!openMod && !MusicBeatState.switchingState)

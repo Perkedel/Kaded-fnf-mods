@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxSort;
+import Section;
 import flixel.addons.ui.FlxUISprite;
 import DokiDoki;
 import flixel.tweens.FlxTween;
@@ -56,6 +58,8 @@ class Character extends FlxUISprite
 	// - more than one characters at once in this class instance, which of course has 1 heart each.
 	// - more than one hearts at once in this class instance, which yess they do exists.
 	public var externalBeating:Bool = false;
+
+	public static var animationNotes:Array<Note> = []; // JOELwindows7: BOLO animation note contains.
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -372,6 +376,43 @@ class Character extends FlxUISprite
 				danced = !danced;
 			}
 		}
+	}
+
+	// JOELwindows7: add BOLO things here.
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Character.hx
+	// the load mapped anim
+	public static function loadMappedAnims():Void
+	{
+		var noteData:Array<SwagSection> = Song.loadFromJson(PlayState.SONG.songId, 'picospeaker').notes;
+		for (section in noteData)
+		{
+			for (songNotes in section.sectionNotes)
+			{
+				var daStrumTime:Float = (songNotes[0] - FlxG.save.data.offset - PlayState.songOffset) / PlayState.songMultiplier;
+				if (daStrumTime < 0)
+					daStrumTime = 0;
+
+				var daNoteData:Int = Std.int(songNotes[1] % 4);
+
+				var oldNote:Note;
+
+				if (PlayState.instance.unspawnNotes.length > 0)
+					oldNote = PlayState.instance.unspawnNotes[Std.int(PlayState.instance.unspawnNotes.length - 1)];
+				else
+					oldNote = null;
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4]);
+
+				animationNotes.push(swagNote);
+			}
+		}
+		TankmenBG.animationNotes = animationNotes;
+		animationNotes.sort(sortAnims);
+	}
+
+	// JOELwindows7: BOLO sort anims
+	static function sortAnims(Obj1:Note, Obj2:Note):Int
+	{
+		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)

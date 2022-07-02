@@ -64,6 +64,8 @@ class GameplayCustomizeState extends MusicBeatState
 	public static var freeplaySong:String = 'bopeebo';
 	public static var freeplayWeek:Int = 1;
 
+	var changedPos:Bool = false; // JOELwindows7: BOLO change check!
+
 	public override function create()
 	{
 		super.create();
@@ -259,6 +261,8 @@ class GameplayCustomizeState extends MusicBeatState
 
 		if (FlxG.save.data.downscroll)
 			strumLine.y = FlxG.height - 165;
+		else
+			strumLine.y += 60; // JOELwindows7: BOLO else if not downscroll apparently
 
 		// JOELwindows7: Oh man. I guess I gotta lorecast lotsa things again
 		laneunderlayOpponent = cast new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
@@ -326,12 +330,15 @@ class GameplayCustomizeState extends MusicBeatState
 		laneunderlay.screenCenter(Y);
 		laneunderlayOpponent.screenCenter(Y);
 
+		// JOELwindows7: There is BOLO's revision
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/GameplayCustomizeState.hx
 		text = new FlxUIText(5, FlxG.height + 40, 0,
-			"Click and drag around gameplay elements to customize their positions. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.",
+			// "Click and drag around gameplay elements to customize their positions. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.",
+			"Use Arrows or Mouse to move your elements around. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.", // JOELwindows7: yeah. uh just a little edit here.
 			12);
 		text.scrollFactor.set();
 		text.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		
+
 		// JOELwindows7: zocc
 		blackBorder = cast new FlxUISprite(-30, FlxG.height + 40).makeGraphic((Std.int(text.width + 900)), Std.int(text.height + 600), FlxColor.BLACK);
 		blackBorder.alpha = 0.5;
@@ -379,10 +386,38 @@ class GameplayCustomizeState extends MusicBeatState
 		FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
 		camHUD.zoom = FlxMath.lerp(FlxG.save.data.zoom, camHUD.zoom, 0.95);
 
+		// JOELwindows7: & now, BOLO's arrow keys!!!
+		if (FlxG.keys.justPressed.LEFT || FlxG.keys.pressed.LEFT)
+		{
+			sick.x -= 2;
+			sick.y -= 0;
+			changedPos = true;
+		}
+		if (FlxG.keys.justPressed.RIGHT || FlxG.keys.pressed.RIGHT)
+		{
+			sick.x += 2;
+			sick.y -= 0;
+			changedPos = true;
+		}
+		if (FlxG.keys.justPressed.UP || FlxG.keys.pressed.UP)
+		{
+			sick.y -= 2;
+			sick.x += 0;
+			changedPos = true;
+		}
+		if (FlxG.keys.justPressed.DOWN || FlxG.keys.pressed.DOWN)
+		{
+			sick.y += 2;
+			sick.x += 0;
+			changedPos = true;
+		}
+		var mousePos:FlxPoint = FlxG.mouse.getScreenPosition(); // JOELwindows7: don't forget, mouse position! BOLO
+
 		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.pressed)
 		{
 			sick.x = (FlxG.mouse.screenX - (sick.width + 145));
 			sick.y = (FlxG.mouse.screenY - (sick.height + 145));
+			changedPos = true; // JOELwindows7: BOLO mark this alright
 		}
 
 		for (i in playerStrums)
@@ -402,7 +437,8 @@ class GameplayCustomizeState extends MusicBeatState
 			camHUD.zoom = FlxG.save.data.zoom;
 		}
 
-		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.justReleased)
+		// if (FlxG.mouse.overlaps(sick) && FlxG.mouse.justReleased)
+		if (changedPos) // JOELwindows7: use BOLO's check way!
 		{
 			FlxG.save.data.changedHitX = sick.x;
 			FlxG.save.data.changedHitY = sick.y;
@@ -416,6 +452,32 @@ class GameplayCustomizeState extends MusicBeatState
 			var seperatedScore:Array<Int> = [];
 
 			var comboSplit:Array<String> = (FlxG.random.int(10, 420) + "").split('');
+
+			// JOELwindows7: INCOMING BOLO COMBO SPR
+			var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2, pixelShitPart3));
+			comboSpr.screenCenter();
+			comboSpr.x = sick.x - 150;
+			comboSpr.y = sick.y + 125;
+			if (freeplayNoteStyle == 'pixel')
+			{
+				comboSpr.x += 142.5;
+				comboSpr.y += 65;
+			}
+			comboSpr.cameras = [camHUD];
+			comboSpr.acceleration.y = 600;
+			comboSpr.velocity.y -= 150;
+
+			if (freeplayNoteStyle != 'pixel')
+			{
+				comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.6));
+				comboSpr.antialiasing = FlxG.save.data.antialiasing;
+			}
+			else
+			{
+				comboSpr.setGraphicSize(Std.int(comboSpr.width * CoolUtil.daPixelZoom * 0.7));
+			}
+
+			add(comboSpr);
 
 			// make sure we have 3 digits to display (looks weird otherwise lol)
 			if (comboSplit.length == 1)
@@ -503,9 +565,10 @@ class GameplayCustomizeState extends MusicBeatState
 
 		if (controls.BACK || haveBacked)
 		{
-			FlxG.mouse.visible = false;
+			// FlxG.mouse.visible = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			FlxG.switchState(new OptionsDirect());
+			// FlxG.switchState(new OptionsDirect());
+			switchState(new OptionsDirect(), false, false, false, false, this); // JOELwindows7: bro, use this one instead!
 			haveBacked = false; // JOELwindows7: here yo!
 		}
 	}
@@ -531,6 +594,7 @@ class GameplayCustomizeState extends MusicBeatState
 
 		if (!FlxG.keys.pressed.SPACE)
 		{
+			// JOELwindows7: BOLO why still `if curbeat % 4 == 0`?!
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.010;
 		}

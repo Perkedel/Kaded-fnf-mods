@@ -1,5 +1,7 @@
 package;
 
+import ui.states.transition.PsychTransition;
+import Shader;
 import flixel.addons.ui.FlxUISprite;
 import ui.states.PrepareUnpauseSubstate;
 #if EXPERIMENTAL_KEM0X_SHADERS
@@ -123,6 +125,13 @@ class PlayState extends MusicBeatState
 {
 	public static var instance:PlayState = null;
 
+	// JOELwindows7: BOLO psyched thing & stuffs
+	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>(); // psych again -saw
+
+	public static var tweenManager:FlxTweenManager;
+	public static var timerManager:FlxTimerManager;
+
+	// end of that
 	// public static var curStage:String = ''; // to be removed
 	public static var SONG:SongData;
 	// public static var customStage:SwagStage;
@@ -201,6 +210,7 @@ class PlayState extends MusicBeatState
 	// Discord RPC variables
 	var storyDifficultyText:String = "";
 	var iconRPC:String = "";
+	var iconRPCBefore:String = ""; // JOELwindows7: BOLO rpc icon holder
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
 	#end
@@ -223,7 +233,7 @@ class PlayState extends MusicBeatState
 
 	public var notes:FlxTypedGroup<Note>;
 
-	private var unspawnNotes:Array<Note> = [];
+	public var unspawnNotes:Array<Note> = []; // JOELwindows7: was private. BOLO Publicize!
 
 	public var strumLine:FlxUISprite;
 
@@ -290,8 +300,17 @@ class PlayState extends MusicBeatState
 	public var camHUD:FlxCamera;
 	public var camSustains:FlxCamera;
 	public var camNotes:FlxCamera;
-
 	public var camGame:FlxCamera; // JOELwindows7: (was private) dude whyn't work anymore after 1.7
+	// JOELwindows7: There are more BOLO cameras to be handled!!!
+	public var mainCam:FlxCamera;
+	public var camStrums:FlxCamera;
+	public var mainCamShaders:Array<ShaderEffect> = [];
+	public var camHUDShaders:Array<ShaderEffect> = [];
+	public var camGameShaders:Array<ShaderEffect> = [];
+	public var camNotesShaders:Array<ShaderEffect> = [];
+	public var camSustainsShaders:Array<ShaderEffect> = [];
+	public var camStrumsShaders:Array<ShaderEffect> = [];
+	public var shaderUpdates:Array<Float->Void> = []; // JOELwindows7: BOLO also has shader too!
 
 	public var cannotDie = false;
 
@@ -344,6 +363,8 @@ class PlayState extends MusicBeatState
 	var skipActive:Bool = false;
 	var skipText:FlxUIText;
 	var skipTo:Float;
+
+	var accText:FlxText; // JOELwindows7: BOLO's accuracy watermark
 
 	public static var campaignScore:Int = 0;
 
@@ -402,6 +423,73 @@ class PlayState extends MusicBeatState
 	public static var judgementWords:Array<String> = ["Misses", "Shits", "Bads", "Goods", "Sicks", "Danks", "MVPs"];
 
 	// API stuff
+	// JOELwindows7: INCOMING BOLO & friend's stuffs!!!
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/PlayState.hx
+	// WTF WHERE IS IT?
+	// MAKING DEEZ PUBLIC TO MAKE COMPLEX ACCURACY WORK
+	public var msTiming:Float;
+
+	public var updatedAcc:Bool = false;
+
+	// SONG MULTIPLIER STUFF
+	var speedChanged:Bool = false;
+
+	// public var previousRate:Float = songMultiplier; // already defined bellow!
+	// Scroll Speed changes multiplier
+	public var scrollMult:Float = 1.0;
+
+	public var songFixedName:String = SONG.songName;
+
+	// SCROLL SPEED
+	// public var scrollSpeed(default, set):Float = 1.0; // already defined in PlayStateChangeables
+	public var scrollTween:FlxTween;
+
+	// VARS FOR LUA DUE TO FUCKING BUGGED BOOLS
+	public var LuaDownscroll:Bool = FlxG.save.data.downscroll;
+	public var LuaMidscroll:Bool = FlxG.save.data.middleScroll;
+	public var zoomAllowed:Bool = FlxG.save.data.camzoom;
+	public var LuaColours:Bool = FlxG.save.data.colour;
+	public var LuaStepMania:Bool = FlxG.save.data.stepMania;
+	public var LuaOpponent:Bool = FlxG.save.data.opponent;
+
+	// Cheatin
+	public static var usedBot:Bool = false;
+
+	public static var wentToChartEditor:Bool = false;
+
+	// Fake crochet for Sustain Notes
+	public var fakeCrochet:Float = 0;
+
+	public static var fakeNoteStepCrochet:Float;
+
+	// Precache List for some stuff (Like frames, sounds and that kinda of shit) // Yoinked from Psych Engine.
+	public var precacheList:Map<String, String> = new Map<String, String>();
+
+	var camLerp = #if !html5 0.04 * (30 / (cast(Lib.current.getChildAt(0), Main))
+		.getFPS()) * songMultiplier; #else 0.09 * (30 / (cast(Lib.current.getChildAt(0), Main)).getFPS()) * songMultiplier; #end
+
+	public function createTween(Object:Dynamic, Values:Dynamic, Duration:Float, ?Options:TweenOptions):FlxTween
+	{
+		var tween:FlxTween = tweenManager.tween(Object, Values, Duration, Options);
+		tween.manager = tweenManager;
+		return tween;
+	}
+
+	public function createTweenNum(FromValue:Float, ToValue:Float, Duration:Float = 1, ?Options:TweenOptions, ?TweenFunction:Float->Void):FlxTween
+	{
+		var tween:FlxTween = tweenManager.num(FromValue, ToValue, Duration, Options, TweenFunction);
+		tween.manager = tweenManager;
+		return tween;
+	}
+
+	public function createTimer(Time:Float = 1, ?OnComplete:FlxTimer->Void, Loops:Int = 1):FlxTimer
+	{
+		var timer:FlxTimer = new FlxTimer();
+		timer.manager = timerManager;
+		return timer.start(Time, OnComplete, Loops);
+	}
+
+	// end BOLO lotsa stuff
 	// JOELwindows7: week 7 stuff yoinked from luckydog7 android port that yoinked it
 	// for test song cuz it sucks. 4 bfs :)
 	private var boyfriend2:Boyfriend;
@@ -419,8 +507,13 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		Paths.clearStoredMemory(); // JOELwindows7: BOLO clear memory!
 		FlxG.mouse.visible = false;
 		instance = this;
+
+		// JOELwindows7: BOLO instantiate managers
+		tweenManager = new FlxTweenManager();
+		timerManager = new FlxTimerManager();
 
 		// grab variables here too or else its gonna break stuff later on
 		GameplayCustomizeState.freeplayBf = SONG.player1;
@@ -453,6 +546,7 @@ class PlayState extends MusicBeatState
 		{
 			currentSong = SONG.songName;
 			Main.dumpCache();
+			Paths.clearStoredMemory(); // JOELwindows7: & BOLO Clear memory again!
 		}
 
 		sicks = 0;
@@ -475,18 +569,59 @@ class PlayState extends MusicBeatState
 		PlayStateChangeables.zoom = FlxG.save.data.zoom;
 		PlayStateChangeables.legacyLuaModchartSupport = FlxG.save.data.legacyLuaScript || SONG.forceLuaModchartLegacy;
 
+		// JOELwindows7: & BOLO scroll speeder
+		if (FlxG.save.data.scrollSpeed == 1)
+			PlayStateChangeables.scrollSpeed = SONG.speed * songMultiplier;
+		else
+			PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * songMultiplier;
+
+		// JOELwindows7: also BOLO modifiers!
+		if (!isStoryMode)
+		{
+			PlayStateChangeables.modchart = FlxG.save.data.modcharts;
+			// PlayStateChangeables.botPlay = FlxG.save.data.botplay; // NO, peck you!
+			PlayStateChangeables.opponentMode = FlxG.save.data.opponent;
+			PlayStateChangeables.mirrorMode = FlxG.save.data.mirror;
+			PlayStateChangeables.holds = FlxG.save.data.sustains;
+			PlayStateChangeables.healthDrain = FlxG.save.data.hdrain;
+			PlayStateChangeables.healthGain = FlxG.save.data.hgain;
+			PlayStateChangeables.healthLoss = FlxG.save.data.hloss;
+			PlayStateChangeables.practiceMode = FlxG.save.data.practice;
+			PlayStateChangeables.skillIssue = FlxG.save.data.noMisses;
+		}
+		else
+		{
+			PlayStateChangeables.modchart = true;
+			// PlayStateChangeables.botPlay = false; // Not to mention!
+			PlayStateChangeables.opponentMode = false;
+			PlayStateChangeables.mirrorMode = false;
+			PlayStateChangeables.holds = true;
+			PlayStateChangeables.healthDrain = false;
+			PlayStateChangeables.healthGain = 1;
+			PlayStateChangeables.healthLoss = 1;
+			PlayStateChangeables.practiceMode = false;
+			PlayStateChangeables.skillIssue = false;
+		}
+
 		removedVideo = false;
 
+		// JOELwindows7: BOLO clear memory all again when optimize
+		if (FlxG.save.data.optimize)
+		{
+			Paths.clearStoredMemory();
+		}
+
+		// JOELwindows7: now BOLO has modchart switch!
 		#if FEATURE_LUAMODCHART
-		// TODO: Refactor this to use OpenFlAssets.
+		// DONE: Refactor this to use OpenFlAssets.
 		// executeModchart = FileSystem.exists(Paths.lua('songs/${PlayState.SONG.songId}/modchart'))
-		executeModchart = Paths.doesTextAssetExist(Paths.lua('songs/${PlayState.SONG.songId}/modchart'))
-			|| SONG.forceLuaModchart; // JOELwindows7: don't forgot force it.
+		executeModchart = (Paths.doesTextAssetExist(Paths.lua('songs/${PlayState.SONG.songId}/modchart')) || SONG.forceLuaModchart)
+			&& PlayStateChangeables.modchart; // JOELwindows7: don't forgot force it.
 		if (isSM)
 			// executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
-			executeModchart = Paths.doesTextAssetExist(pathToSm + "/modchart.lua");
-		if (executeModchart)
-			PlayStateChangeables.Optimize = false;
+			executeModchart = (Paths.doesTextAssetExist(pathToSm + "/modchart.lua")) && PlayStateChangeables.modchart;
+		// if (executeModchart)
+		// 	PlayStateChangeables.Optimize = false; // JOELwindows7: BOLO no longer disable this if there is modchart or what uh.
 		#end
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
@@ -498,32 +633,45 @@ class PlayState extends MusicBeatState
 
 		// JOELwindows7: now for the hscript
 		// JOELwindows7: new exists
-		executeModHscript = Paths.doesTextAssetExist(Paths.hscript('songs/${PlayState.SONG.songId}/modchart'))
-			|| SONG.forceHscriptModchart;
+		executeModHscript = (Paths.doesTextAssetExist(Paths.hscript('songs/${PlayState.SONG.songId}/modchart'))
+			|| SONG.forceHscriptModchart)
+			&& PlayStateChangeables.modchart;
 		// trace("forced hscript exist is " + Std.string(SONG.forceHscriptModchart));
-		if (executeModHscript)
-			PlayStateChangeables.Optimize = false;
+		// if (executeModHscript)
+		// 	PlayStateChangeables.Optimize = false; // this too. BOLO no longer disable optimize just because modchart.
 		// trace('Mod hscript chart: ' + executeModHscript + " - " + Paths.hscript('songs/${PlayState.SONG.songId}/modchart');
 
-		if (executeModchart)
-			songMultiplier = 1;
+		// JOELwindows7: having modchart no longer reset song multiplier! BOLO yess.
+		// if (executeModchart || executeModHscript)
+		// 	songMultiplier = 1;
 
 		#if FEATURE_DISCORD
 		// Making difficulty text for Discord Rich Presence.
 		storyDifficultyText = CoolUtil.difficultyFromInt(storyDifficulty);
 
-		iconRPC = SONG.player2;
+		// iconRPC = SONG.player2;
+		// JOELwindows7: Don't forger! BOLO set icon based on opponent mode
+		if (!PlayStateChangeables.opponentMode)
+			iconRPCBefore = SONG.player2;
+		else
+			iconRPCBefore = SONG.player1;
 
+		// JOELwindows7: BOLO have it this
 		// To avoid having duplicate images in Discord assets
-		switch (iconRPC)
+		// switch (iconRPC)
+		switch (iconRPCBefore)
 		{
 			case 'senpai-angry':
-				iconRPC = 'senpai';
+				// iconRPC = 'senpai';
+				iconRPCBefore = 'senpai';
 			case 'monster-christmas':
-				iconRPC = 'monster';
+				// iconRPC = 'monster';
+				iconRPCBefore = 'senpai';
 			case 'mom-car':
-				iconRPC = 'mom';
+				// iconRPC = 'mom';
+				iconRPCBefore = 'senpai';
 		}
+		iconRPC = iconRPCBefore; // JOELwindows7: now set it! idk why BOLO do this?
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		if (isStoryMode)
@@ -538,20 +686,15 @@ class PlayState extends MusicBeatState
 		// String for when the game is paused
 		detailsPausedText = "Paused - " + detailsText;
 
+		// JOELwindows7: BOLO set detailness of Discord RPC. and more stuffs!
 		// Updating Discord Rich Presence.
-		DiscordClient.changePresence(detailsText
-			+ " "
-			+ SONG.songName
-			+ " ("
-			+ storyDifficultyText
-			+ ") "
-			+ Ratings.GenerateLetterRank(accuracy),
-			"\nAcc: "
-			+ HelperFunctions.truncateFloat(accuracy, 2)
-			+ "% | Score: "
-			+ songScore
-			+ " | Misses: "
-			+ misses, iconRPC);
+		if (FlxG.save.data.discordMode != 0)
+			DiscordClient.changePresence(detailsText + " " + SONG.songName + " (" + storyDifficultyText + " " + songMultiplier + "x" + ") "
+				+ Ratings.GenerateLetterRank(accuracy),
+				"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore + " | Misses: "
+				+ misses, iconRPC);
+		else
+			DiscordClient.changePresence("Playing " + SONG.songName + " (" + storyDifficultyText + " " + songMultiplier + "x" + ") ", "", iconRPC);
 		#end
 
 		// JOELwindows7: load the num missnote sfx file and interpret!
@@ -569,21 +712,35 @@ class PlayState extends MusicBeatState
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		camSustains = new FlxCamera();
+		camSustains.height = 1300; // JOELwindows7: BOLO sets cam sustains height so high!
 		camSustains.bgColor.alpha = 0;
 		camNotes = new FlxCamera();
+		camNotes.height = 1300; // JOELwindows7: BOLO sets cam notes height so high too as well!
 		camNotes.bgColor.alpha = 0;
+		// JOELwindows7: of course also, BOLO cameras!!!
+		mainCam = new FlxCamera();
+		mainCam.bgColor.alpha = 0;
+		camStrums = new FlxCamera();
+		camStrums.height = 1300;
+		camStrums.bgColor.alpha = 0;
 
-		// FlxG.cameras.add(camGame, true); // JOELwindows7: okay we discovered new things here
-		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camHUD);
-		FlxG.cameras.add(camSustains);
-		FlxG.cameras.add(camNotes);
+		// FlxG.cameras.add(camGame, true); // JOELwindows7: okay we discovered new things here. also add BOLO things!
+		FlxG.cameras.reset(camGame); // Game Camera (where stage and characters are)
+		FlxG.cameras.add(camHUD); // HUD Camera (Health Bar, scoreTxt, etc)
+		FlxG.cameras.add(camStrums); // StrumLine Camera
+		FlxG.cameras.add(camSustains); // Long Notes camera
+		FlxG.cameras.add(camNotes); // Single Notes camera
+		FlxG.cameras.add(mainCam); // Main Camera
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>(); // JOELwindows7: okey why ShadowMario or whoever
 		grpNoteHitlineParticles = new FlxTypedGroup<FlxUISprite>(); // JOELwindows7: okey here note hitlines. inspired from that notesplash & viking timpani game called 'Ragnarock'. Steam.
 		// in the blame init that notesplash group here? Psyched
 		// maybe because it's after add all those cameras?
 
 		camHUD.zoom = PlayStateChangeables.zoom;
+		// JOELwindows7: & syncronize the zoom like BOLO did
+		camNotes.zoom = camHUD.zoom;
+		camSustains.zoom = camHUD.zoom;
+		camStrums.zoom = camHUD.zoom;
 
 		FlxCamera.defaultCameras = [camGame];
 		// FlxG.cameras.setDefaultDrawTarget(camGame, false); // JOELwindows7: try the new one
@@ -593,11 +750,78 @@ class PlayState extends MusicBeatState
 		// I can't yet.
 		// hey bbpanzu how the peck do we supposed to make this work??!?!?
 
+		// JOELwindows7: BOLO set transition for Psyched to main cam
+		PsychTransition.nextCamera = mainCam;
+
 		persistentUpdate = true;
 		persistentDraw = true;
 
 		if (SONG == null)
 			SONG = Song.loadFromJson('tutorial', '');
+
+		// JOELwindows7: BOLO's hardcoded songnamer
+		switch (SONG.songId)
+		{
+			case 'tutorial':
+				songFixedName = "Tutorial";
+				sourceModchart = true;
+			case 'bopeebo':
+				songFixedName = "Bopeebo";
+
+			case 'fresh':
+				songFixedName = "Fresh!";
+
+			case 'dadbattle':
+				songFixedName = "Dad Battle";
+
+			case "spookeez":
+				songFixedName = "Spookeez!";
+
+			case "south":
+				songFixedName = "South";
+
+			case "monster":
+				songFixedName = "Monster...";
+
+			case "pico":
+				songFixedName = "Pico";
+
+			case "philly":
+				songFixedName = "Philly Noice";
+
+			case "blammed":
+				songFixedName = "Blammed";
+
+			case "high":
+				songFixedName = "High!";
+
+			case "cocoa":
+				songFixedName = "Cocoa";
+
+			case "eggnog":
+				songFixedName = "EGGnog";
+
+			case "winter horroland":
+				songFixedName = "Winter Horroland...";
+
+			case "senpai":
+				songFixedName = "Senpai!"; // Cringe lol
+
+			case "roses":
+				songFixedName = "Roses...";
+
+			case "thorns":
+				songFixedName = "Thorns!";
+
+			case "ugh":
+				songFixedName = "Ugh!";
+
+			case "guns":
+				songFixedName = "Guns!";
+
+			case "stress":
+				songFixedName = "Stress";
+		}
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
@@ -647,12 +871,14 @@ class PlayState extends MusicBeatState
 		if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue')))
 		{
 			dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue'));
+			inCutscene = true; // JOELwindows7: oh man! forgot this! thancc BOLO
 		}
 
 		// JOELwinodws7: Epilogue shit (sorry, that profanity wasn't mine, it was ninja's semantic)
 		if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/epilogue')))
 		{
 			epilogue = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/epilogue'));
+			inCutscene = true; // JOELwindows7: oh man! forgot this! thancc BOLO
 		}
 		// see, as simple as that
 		// NEW: conform the dash is space like in FreeplayState.hx loadings
@@ -724,7 +950,7 @@ class PlayState extends MusicBeatState
 			gfCheck = SONG.gfVersion;
 		}
 
-		if (!stageTesting)
+		if (!stageTesting || !PlayStateChangeables.Optimize) // JOELwindows7: BOLO or if not optimize. originally based on save data. but let's just.. this.
 		{
 			gf = new Character(400, 130, gfCheck);
 
@@ -811,6 +1037,22 @@ class PlayState extends MusicBeatState
 		{
 			add(i);
 		}
+
+		// JOELwindows7: BOLO's tankman stress
+		/*
+		if (!FlxG.save.data.optimize && FlxG.save.data.distractions && FlxG.save.data.background)
+		{
+			if (SONG.songId == 'stress')
+			{
+				switch (gf.curCharacter)
+				{
+					case 'pico-speaker':
+						Character.loadMappedAnims();
+				}
+			}
+		}
+		*/
+
 		if (!PlayStateChangeables.Optimize)
 		{
 			for (index => array in Stage.layInFront)
@@ -845,6 +1087,23 @@ class PlayState extends MusicBeatState
 
 		camPos = new FlxPoint(dad.getGraphicMidpoint().x + dad.camPos[0], dad.getGraphicMidpoint().y + dad.camPos[1]);
 
+		// JOELwindows7: BOLO's hardcode camPos midpoint
+		switch (Stage.curStage)
+		{
+			case 'halloween':
+				camPos = new FlxPoint(gf.getMidpoint().x + dad.camPos[0], gf.getMidpoint().y + dad.camPos[1]);
+			case 'tank' | 'tankStage' | 'tankStage2':
+				if (SONG.player2 == 'tankman')
+					camPos = new FlxPoint(436.5, 534.5);
+			case 'stage':
+				if (dad.replacesGF)
+					camPos = new FlxPoint(dad.getGraphicMidpoint().x + dad.camPos[0] - 200, dad.getGraphicMidpoint().y + dad.camPos[1]);
+			case 'mallEvil':
+				camPos = new FlxPoint(boyfriend.getMidpoint().x - 100 + boyfriend.camPos[0], boyfriend.getMidpoint().y - 100 + boyfriend.camPos[1]);
+			default:
+				camPos = new FlxPoint(dad.getGraphicMidpoint().x + dad.camPos[0], dad.getGraphicMidpoint().y + dad.camPos[1]);
+		}
+
 		// switch (dad.curCharacter)
 		if (dad.replacesGF)
 		{
@@ -854,11 +1113,12 @@ class PlayState extends MusicBeatState
 			if (!stageTesting)
 				dad.setPosition(gf.x, gf.y);
 			gf.visible = false;
-			if (isStoryMode)
-			{
+			// JOELwindows7: gf tween in no longer just for story mode! BOLO yess.
+			//if (isStoryMode)
+			//{
 				camPos.x += 600;
 				tweenCamIn();
-			}
+			//}
 
 			// case 'gf-standalone':
 			// 	// JOELwindows7: reserved for future use
@@ -930,7 +1190,8 @@ class PlayState extends MusicBeatState
 		// }
 		// Optional unless your character is not default bf
 
-		Stage.update(0);
+		if (!PlayStateChangeables.Optimize && FlxG.save.data.background) // JOELwindows7: BOLO bg check
+			Stage.update(0);
 		manageHeartbeats(0); // JOELwindows7: initially update heartbeats first!
 
 		// JOELwindows7: reposition per stage was here. now we must reposition for custom stage.
@@ -976,8 +1237,9 @@ class PlayState extends MusicBeatState
 			eoof.finishThing = endSong; // JOELwindows7: ahh, now I get it. the callable variable is filled right here. okay! I thought..
 		}
 
-		if (!isStoryMode && songMultiplier == 1)
-		{
+		// JOELwindows7: BOLO removes this check
+		//if (!isStoryMode && songMultiplier == 1)
+		//{
 			var firstNoteTime = Math.POSITIVE_INFINITY;
 			var playerTurn = false;
 			for (index => section in SONG.notes)
@@ -1023,7 +1285,7 @@ class PlayState extends MusicBeatState
 					}
 				}
 			}
-		}
+		//}
 
 		Conductor.songPosition = -5000;
 		Conductor.rawPosition = Conductor.songPosition;
@@ -1044,6 +1306,15 @@ class PlayState extends MusicBeatState
 		laneunderlay.alpha = FlxG.save.data.laneTransparency;
 		laneunderlay.color = FlxColor.BLACK;
 		laneunderlay.scrollFactor.set();
+
+		// JOELwindows7: no need, but this just in case. BOLO invisibilize lane underlay
+		/*
+		if ((storyPlaylist.length >= 3 && inCutscene) || inCinematic)
+		{
+			laneunderlayOpponent.alpha = 0;
+			laneunderlay.alpha = 0;
+		}
+		*/
 
 		if (FlxG.save.data.laneUnderlay && !PlayStateChangeables.Optimize)
 		{
@@ -1103,11 +1374,40 @@ class PlayState extends MusicBeatState
 		noteskinPixelSpriteEndsMine = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, true, 2,
 			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true, 2);
 
-		Debug.logTrace("Now for static arrows");
-		generateStaticArrows(0);
-		Debug.logTrace("and other player static arrows");
-		generateStaticArrows(1);
-		Debug.logTrace("Doned static arrows");
+		// JOELwindows7: Hold, there's advanced BOLO's opponent mode check
+		if (!FlxG.save.data.middleScroll || (((executeModchart || executeModHscript) || sourceModchart) && PlayStateChangeables.modchart)){
+			Debug.logTrace("Now for static arrows");
+			generateStaticArrows(0);
+			Debug.logTrace("and other player static arrows");
+			generateStaticArrows(1);
+			Debug.logTrace("Doned static arrows");
+		} else {
+			if (#if FEATURE_LUAMODCHART !(executeModchart || executeModHscript) #else !(sourceModchart || executeModHscript) #end || !PlayStateChangeables.modchart)
+			{
+				if (!PlayStateChangeables.opponentMode)
+					generateStaticArrows(1);
+				else
+					generateStaticArrows(0);
+			}
+		}
+
+		// JOELwindows7: PSST! BOLO's CPU strum modification
+		if (sourceModchart && PlayStateChangeables.modchart)
+		{
+			if (FlxG.save.data.middleScroll)
+			{
+				if (PlayStateChangeables.opponentMode)
+				{
+					for (i in 0...cpuStrums.members.length)
+						cpuStrums.members[i].x += 900;
+				}
+				else
+				{
+					for (i in 0...cpuStrums.members.length)
+						cpuStrums.members[i].x -= 900;
+				}
+			}
+		}
 
 		// Update lane underlay positions AFTER static arrows :)
 
@@ -1192,8 +1492,9 @@ class PlayState extends MusicBeatState
 		{
 			new LuaCamera(camGame, "camGame").Register(ModchartState.lua);
 			new LuaCamera(camHUD, "camHUD").Register(ModchartState.lua);
+			new LuaCamera(mainCam, "mainCam").Register(ModchartState.lua); // JOELwindows7: BOLO's main cam
+			new LuaCamera(camStrums, "camStrums").Register(ModchartState.lua); // JOELwindows7: BOLO's sustain cam
 			new LuaCamera(camSustains, "camSustains").Register(ModchartState.lua);
-			// new LuaCamera(camSustains, "camNotes").Register(ModchartState.lua);
 			new LuaCamera(camNotes, "camNotes").Register(ModchartState.lua); // JOELwindows7: oops! somebody typo
 			new LuaCharacter(dad, "dad").Register(ModchartState.lua);
 			new LuaCharacter(gf, "gf").Register(ModchartState.lua);
@@ -1245,9 +1546,9 @@ class PlayState extends MusicBeatState
 
 		#if FEATURE_DISPLAY_FPS_CHANGE
 		// JOELwindows7: issue with Android version, this function crash!
-		FlxG.camera.follow(camFollow, LOCKON, 0.04 * (30 / (cast(Lib.current.getChildAt(0), Main)).getFPS()));
+// 		FlxG.camera.follow(camFollow, LOCKON, 0.04 * (30 / (cast(Lib.current.getChildAt(0), Main)).getFPS()));
 		#else
-		FlxG.camera.follow(camFollow, LOCKON, 0.008);
+// 		FlxG.camera.follow(camFollow, LOCKON, 0.008);
 		// use Banbud's trickster .008
 		// JOELwindows7: from Klavier & Verwex
 		// https://github.com/KlavierGayming/FNF-Micd-Up-Mobile/blob/main/source/PlayState.hx
@@ -1257,6 +1558,8 @@ class PlayState extends MusicBeatState
 			0.10 - 90 Fps speed
 			0.16 - Micd up speed */
 		#end
+		// JOELwindows7: hey, there's brand new BOLO's camera lerp based follow instead.
+		FlxG.camera.follow(camFollow, LOCKON, camLerp);
 		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
 		FlxG.camera.zoom = Stage.camZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
@@ -1325,6 +1628,13 @@ class PlayState extends MusicBeatState
 		// healthBar
 		// add(healthBar);
 
+		//JOELwindows7: BOLO's accuracy mode text say
+		var accMode:String = "None";
+		if (FlxG.save.data.accuracyMod == 0)
+			accMode = "Accurate";
+		else if (FlxG.save.data.accuracyMod == 1)
+			accMode = "Complex";
+
 		// JOELwindows7: add reupload watermark
 		// usually, YouTube mod showcase only shows gameplay
 		// and there are some naughty youtubers who did not credit link in description neither comment.
@@ -1373,6 +1683,16 @@ class PlayState extends MusicBeatState
 		if (PlayStateChangeables.useDownscroll)
 			kadeEngineWatermark.y = FlxG.height * 0.9 + 45;
 
+		//JOELwindows7: BOLO's accurac watermark?!!?!?
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx
+		// ACCURACY WATERMARK
+		accText = new FlxText(4, FlxG.height * 0.9 + 45 - 20, 0, "Accuracy Mode: " + accMode, 16);
+		accText.scrollFactor.set();
+		accText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		//add(accText);
+
+		// TODO: JOELwindows7: This maybe can be the Korean pop tv show lyric bottom left corner?
+
 		scoreTxt = new FlxUIText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
 		// JOELwindows7: move this up a bit due to elongated texts.
 		// Y was 50px beneath health bar BG
@@ -1386,7 +1706,10 @@ class PlayState extends MusicBeatState
 		);
 		if (!FlxG.save.data.healthBar)
 			scoreTxt.y = healthBarBG.y;
-
+		// JOELwindows7: BOLO said HTML5 antialiasing NO!
+		#if html5
+		scoreTxt.antialiasing = false;
+		#end
 		add(scoreTxt);
 
 		judgementCounter = new FlxUIText(20, 0, 0, "", 20);
@@ -1471,10 +1794,10 @@ class PlayState extends MusicBeatState
 		add(creditRollout.textName);
 		add(creditRollout.textRole);
 
-		strumLineNotes.cameras = [camHUD];
-		grpNoteSplashes.cameras = [camHUD]; // JOELwindows7: notesplash group put in camHUD! Psychedly
-		grpNoteHitlineParticles.cameras = [camHUD]; // JOELwindows7: also the hitlines
-		notes.cameras = [camHUD];
+		strumLineNotes.cameras = [camStrums]; //JOELwindows7: was camHUD. BOLO new camStrums
+		grpNoteSplashes.cameras = [camStrums]; // JOELwindows7: notesplash group put in camHUD! Psychedly. okay how about camStrums?
+		grpNoteHitlineParticles.cameras = [camStrums]; // JOELwindows7: also the hitlines
+		notes.cameras = [camNotes]; // JOELwindows7: was camHUD, now camNotes
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
@@ -1510,9 +1833,15 @@ class PlayState extends MusicBeatState
 
 		trace('starting');
 
-		dad.dance();
-		boyfriend.dance();
-		gf.dance();
+		// JOELwindows7: wait, check BOLO!
+		if (!PlayStateChangeables.optimize)
+		{
+			dad.dance();
+			boyfriend.dance();
+			gf.dance();
+		}
+
+		cacheCountdown(); //JOELwindows7: BOLO has Cache countdown?
 
 		if (isStoryMode)
 		{
@@ -2106,6 +2435,36 @@ class PlayState extends MusicBeatState
 
 		// it looks like the finishThing variable calling means call the function who called it again. right?
 		// so it then fell to the empty dialog.
+	}
+
+	// JOELwindows7: BOLO setter Scroll speed
+	function set_scrollSpeed(value:Float):Float // STOLEN FROM PSYCH ENGINE ONLY SPRITE SCALING PART.
+	{
+		speedChanged = true;
+		if (generatedMusic)
+		{
+			var ratio:Float = value / PlayStateChangeables.scrollSpeed;
+			for (note in notes)
+			{
+				if (note.animation.curAnim != null)
+					if (note.isSustainNote && !note.animation.curAnim.name.endsWith('end'))
+					{
+						note.scale.y *= ratio;
+						note.updateHitbox();
+					}
+			}
+			for (note in unspawnNotes)
+			{
+				if (note.animation.curAnim != null)
+					if (note.isSustainNote && !note.animation.curAnim.name.endsWith('end'))
+					{
+						note.scale.y *= ratio;
+						note.updateHitbox();
+					}
+			}
+		}
+		PlayStateChangeables.scrollSpeed = value;
+		return value;
 	}
 
 	var startTimer:FlxTimer;

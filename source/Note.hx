@@ -10,6 +10,7 @@ import flixel.util.FlxColor;
 #if polymod
 import polymod.format.ParseRules.TargetSignatureElement;
 #end
+import LuaClass;
 import PlayState;
 
 using StringTools;
@@ -28,6 +29,12 @@ class Note extends FlxUISprite
 	public var charterSelected:Bool = false;
 
 	public var rStrumTime:Float = 0;
+
+	// JOELwindows7: BOLO's psyched LuaNote reference
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Note.hx
+	#if FEATURE_LUAMODCHART
+	public var LuaNote:LuaNote;
+	#end
 
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0; // Orders for 4K = left, down, up, right.
@@ -98,6 +105,12 @@ class Note extends FlxUISprite
 	// IDEA: JOELwindows7: you can have more variables about string or whatever too! like
 	// sylables or phoneme for VOCALOID
 	// noteNumber MIDI note number for everything
+	// JOELwindows7: Hold on, BOLO has more of these
+	public var stepHeight:Float = 0;
+
+	var leSpeed:Float = 0;
+
+	var leBpm:Float = 0;
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
 			?bet:Float = 0, ?noteType:Int = 0) // JOELwindows7: edge long noteType
@@ -144,6 +157,14 @@ class Note extends FlxUISprite
 			this.strumTime = 0;
 
 		this.noteData = noteData;
+
+		// JOELwindows7: BOLO's mirror modifier people!!!
+		// YOOO WTF IT WORKED???!!!
+		if (PlayStateChangeables.mirrorMode)
+		{
+			this.noteData = Std.int(Math.abs(3 - noteData));
+			noteData = Std.int(Math.abs(3 - noteData));
+		}
 
 		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.Optimize) ? PlayState.Stage.curStage : 'stage');
 
@@ -318,7 +339,8 @@ class Note extends FlxUISprite
 			}
 		}
 
-		x += swagWidth * noteData;
+		// x += swagWidth * noteData;
+		x += swagWidth * (noteData % 4); // JOELwindows7: idk why BOLO has this here, idk.. note row id modulo how many row we had..
 		animation.play(dataColor[noteData] + 'Scroll');
 		originColor = noteData; // The note's origin color will be checked by its sustain notes
 
@@ -380,6 +402,7 @@ class Note extends FlxUISprite
 		if (isSustainNote && prevNote != null)
 		{
 			noteYOff = Math.round(-stepHeight + swagWidth * 0.5) + FlxG.save.data.offset + PlayState.songOffset;
+			// noteYOff = -stepHeight + swagWidth * 0.5; // JOELwindows7: hey, BOLO got this instead...
 
 			noteScore * 0.2;
 			alpha = 0.6;
@@ -409,6 +432,10 @@ class Note extends FlxUISprite
 
 				if (antialiasing)
 					prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
+
+				// JOELwindows7: BOLO update all hitbox one last time
+				prevNote.updateHitbox();
+				updateHitbox();
 			}
 		}
 
@@ -417,6 +444,22 @@ class Note extends FlxUISprite
 
 	override function update(elapsed:Float)
 	{
+		// JOELwindows7: INCOMING! BOLO STUFF FIXES
+		// This updates hold notes height to current scroll Speed in case of scroll Speed changes.
+
+		var newStepHeight = (((0.45 * PlayState.fakeNoteStepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
+			2)) * PlayState.songMultiplier;
+
+		if (stepHeight != newStepHeight)
+		{
+			stepHeight = newStepHeight;
+			if (isSustainNote)
+			{
+				// noteYOff = -stepHeight + swagWidth * 0.5;
+				noteYOff = Math.round(-stepHeight + swagWidth * 0.5) + FlxG.save.data.offset + PlayState.songOffset;
+			}
+		}
+
 		super.update(elapsed);
 		// JOELwindows7: mine rotate pls
 		if (!totalOverride)

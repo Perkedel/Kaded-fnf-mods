@@ -1,3 +1,4 @@
+import haxe.display.Protocol.Version;
 import lime.app.Application;
 import lime.system.System as LimeSys;
 #if FEATURE_MODCORE
@@ -225,6 +226,8 @@ class Debug
 		#else
 		logInfo("This is a RELEASE build.");
 		#end
+		// logInfo('Haxe version: ${Version}'); // JOELwindows7: haxe version!!!
+		// logInfo('Lime version: ${Lime.}'); // JOELwindows7: ugh, so haard!
 		logInfo('HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
 		logInfo('Friday Night Funkin\' version: ${MainMenuState.gameVer}');
 		logInfo('KadeEngine version: ${MainMenuState.kadeEngineVer}');

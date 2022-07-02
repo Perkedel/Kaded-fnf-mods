@@ -3,5 +3,6 @@ gf-covid
 gf-car
 gf-christmas
 gf-pixel
+pico-speaker
 gf-ht
 gf-placeholder

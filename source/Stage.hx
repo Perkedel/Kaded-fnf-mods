@@ -227,6 +227,7 @@ class Stage extends MusicBeatState
 	public var tankWatchtower:FlxUISprite;
 	public var tankRolling:FlxUISprite;
 	public var tankmanRun:FlxTypedGroup<TankmenBG>;
+	public var tankGround:FlxUISprite; // JOELwindows7: BOLO's implementation of week 7. same as tankRolling.
 	// tankbop shit
 	public var tankBop1:FlxUISprite;
 	public var tankBop2:FlxUISprite;
@@ -989,6 +990,211 @@ class Stage extends MusicBeatState
 						tankBop5.animation.play('bop');
 						tankBop6.animation.play('bop');
 					}
+				// JOELwindows7: here's BOLO's implementation of week 7 stage
+				case 'tank':
+					{
+						camZoom = 0.9;
+						var tankSky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.image('tankSky', 'week7'));
+						tankSky.antialiasing = FlxG.save.data.antialiasing;
+						tankSky.scrollFactor.set(0, 0);
+						swagBacks['tankSky'] = tankSky;
+						toAdd.push(tankSky);
+						if (FlxG.save.data.distractions)
+						{
+							var tankClouds:FlxSprite = new FlxSprite(FlxG.random.int(-700, -100),
+								FlxG.random.int(-20, 20)).loadGraphic(Paths.image('tankClouds', 'week7'));
+							tankClouds.antialiasing = FlxG.save.data.antialiasing;
+							tankClouds.scrollFactor.set(0.9, 0.9);
+							swagBacks['tankClouds'] = tankClouds;
+							toAdd.push(tankClouds);
+
+							var tankMountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.image('tankMountains', 'week7'));
+							tankMountains.antialiasing = FlxG.save.data.antialiasing;
+							tankMountains.setGraphicSize(Std.int(1.2 * tankMountains.width));
+							tankMountains.scrollFactor.set(0.2, 0.2);
+							tankMountains.updateHitbox();
+
+							swagBacks['tankMountains'] = tankMountains;
+							toAdd.push(tankMountains);
+
+							var tankBuildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankBuildings', 'week7'));
+
+							tankBuildings.setGraphicSize(Std.int(1.1 * tankBuildings.width));
+							tankBuildings.scrollFactor.set(0.3, 0.3);
+							tankBuildings.antialiasing = FlxG.save.data.antialiasing;
+							tankBuildings.updateHitbox();
+							swagBacks['tankBuildings'] = tankBuildings;
+							toAdd.push(tankBuildings);
+						}
+
+						var tankRuins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankRuins', 'week7'));
+						tankRuins.setGraphicSize(Std.int(1.1 * tankRuins.width));
+						tankRuins.antialiasing = FlxG.save.data.antialiasing;
+						tankRuins.scrollFactor.set(0.35, 0.35);
+						tankRuins.updateHitbox();
+						swagBacks['tankRuins'] = tankRuins;
+						toAdd.push(tankRuins);
+
+						if (FlxG.save.data.distractions)
+						{
+							var smokeLeft:FlxSprite = new FlxSprite(-200, -100);
+							smokeLeft.antialiasing = FlxG.save.data.antialiasing;
+							smokeLeft.scrollFactor.set(0.4, 0.4);
+							smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft', 'week7');
+							smokeLeft.animation.addByPrefix('idle', 'SmokeBlurLeft instance ', Std.int(24 * PlayState.songMultiplier), true);
+							smokeLeft.animation.play('idle');
+							swagBacks['smokeLeft'] = smokeLeft;
+							toAdd.push(smokeLeft);
+
+							var smokeRight:FlxSprite = new FlxSprite(1100, -100);
+							smokeRight.antialiasing = FlxG.save.data.antialiasing;
+							smokeRight.scrollFactor.set(0.4, 0.4);
+							smokeRight.frames = Paths.getSparrowAtlas('smokeRight', 'week7');
+							smokeRight.animation.addByPrefix('idle', 'SmokeRight instance ', Std.int(24 * PlayState.songMultiplier), true);
+							smokeRight.animation.play('idle');
+							swagBacks['smokeRight'] = smokeRight;
+							toAdd.push(smokeRight);
+
+							var tankWatchTower:FlxSprite = new FlxSprite(100, 50);
+							tankWatchTower.antialiasing = FlxG.save.data.antialiasing;
+							tankWatchTower.scrollFactor.set(0.5, 0.5);
+							tankWatchTower.frames = Paths.getSparrowAtlas('tankWatchtower', 'week7');
+							tankWatchTower.animation.addByPrefix('idle', 'watchtower gradient color instance ', Std.int(24 * PlayState.songMultiplier));
+							tankWatchTower.animation.play('idle');
+							tankWatchTower.active = true;
+							swagBacks['tankWatchTower'] = tankWatchTower;
+							toAdd.push(tankWatchTower);
+						}
+// 						var tankGround:FlxSprite = new FlxSprite(300, 300);
+						tankGround = new FlxSprite(300, 300); // JOELwindows7: globalize it!
+						tankGround.scrollFactor.set(0.5, 0.5);
+						tankGround.antialiasing = FlxG.save.data.antialiasing;
+						tankGround.frames = Paths.getSparrowAtlas('tankRolling', 'week7');
+						tankGround.animation.addByPrefix('idle', 'BG tank w lighting instance ', Std.int(24 * PlayState.songMultiplier), true);
+						tankGround.animation.play('idle');
+						swagBacks['tankGround'] = tankGround;
+						toAdd.push(tankGround);
+
+						var tankmanRun = new FlxTypedGroup<TankmenBG>();
+						swagBacks['tankmanRun'] = tankmanRun;
+						toAdd.push(tankmanRun);
+
+						var tankField:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.image('tankGround', 'week7'));
+						tankField.antialiasing = FlxG.save.data.antialiasing;
+						tankField.setGraphicSize(Std.int(1.15 * tankField.width));
+						tankField.updateHitbox();
+						swagBacks['tankField'] = tankField;
+						toAdd.push(tankField);
+
+						if (PlayState.isStoryMode)
+						{
+							if (PlayState.SONG.songId == 'stress')
+							{
+								var dummyGf:FlxSprite = new FlxSprite(200, 105);
+								dummyGf.antialiasing = FlxG.save.data.antialiasing;
+								dummyGf.frames = Paths.getSparrowAtlas('characters/gfTankmen');
+								dummyGf.animation.addByPrefix('idle', 'GF Dancing at Gunpoint', 24, false);
+								dummyGf.animation.play('idle');
+								swagBacks['dummyGf'] = dummyGf;
+								layInFront[2].push(dummyGf);
+
+								var gfCutscene:FlxSprite = new FlxSprite(200, 85);
+								gfCutscene.antialiasing = FlxG.save.data.antialiasing;
+								gfCutscene.frames = Paths.getSparrowAtlas('cutscenes/stressGF');
+								gfCutscene.animation.addByPrefix('dieBitch', 'GF STARTS TO TURN PART 1', 24, false);
+								gfCutscene.animation.addByPrefix('getRektLmao', 'GF STARTS TO TURN PART 2', 24, false);
+								gfCutscene.visible = false;
+								swagBacks['gfCutscene'] = gfCutscene;
+								layInFront[2].push(gfCutscene);
+
+								var picoCutscene:FlxSprite = new FlxSprite(-552, -298);
+								picoCutscene.antialiasing = FlxG.save.data.antialiasing;
+								swagBacks['picoCutscene'] = picoCutscene;
+								picoCutscene.frames = AtlasFrameMaker.construct('cutscenes/stressPico', 'week7');
+								picoCutscene.animation.addByPrefix('anim', 'Pico Badass', 24, false);
+								picoCutscene.visible = false;
+
+								toAdd.push(picoCutscene);
+
+								var bfCutscene:FlxSprite = new FlxSprite(815, 500);
+								bfCutscene.antialiasing = FlxG.save.data.antialiasing;
+								bfCutscene.frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
+								bfCutscene.animation.addByPrefix('idle', 'BF idle dance', 24, false);
+								bfCutscene.animation.play('idle', true);
+								swagBacks['bfCutscene'] = bfCutscene;
+								layInFront[2].push(bfCutscene);
+							}
+
+							var tankman:FlxSprite = new FlxSprite(18, 333);
+							tankman.frames = Paths.getSparrowAtlas('cutscenes/' + PlayState.SONG.songId);
+							tankman.antialiasing = FlxG.save.data.antialiasing;
+							swagBacks['tankman'] = tankman;
+							layInFront[2].push(tankman);
+						}
+
+						var foreGround0 = new FlxSprite(-500, 600);
+						foreGround0.scrollFactor.set(1.7, 1.5);
+						foreGround0.antialiasing = FlxG.save.data.antialiasing;
+						foreGround0.frames = Paths.getSparrowAtlas('tank0', 'week7');
+						foreGround0.animation.addByPrefix('idle', 'fg tankhead far right instance ', Std.int(24 * PlayState.songMultiplier));
+						foreGround0.animation.play('idle');
+						swagBacks['foreGround0'] = foreGround0;
+						layInFront[2].push(foreGround0);
+
+						if (FlxG.save.data.distractions)
+						{
+							var foreGround1 = new FlxSprite(-300, 750);
+							foreGround1.scrollFactor.set(2, 0.2);
+							foreGround1.antialiasing = FlxG.save.data.antialiasing;
+							foreGround1.frames = Paths.getSparrowAtlas('tank1', 'week7');
+							foreGround1.animation.addByPrefix('idle', 'fg tankhead 5 instance ', Std.int(24 * PlayState.songMultiplier));
+							foreGround1.animation.play('idle');
+							swagBacks['foreGround1'] = foreGround1;
+							layInFront[2].push(foreGround1);
+						}
+
+						var foreGround2 = new FlxSprite(450, 940);
+						foreGround2.scrollFactor.set(1.5, 1.5);
+						foreGround2.antialiasing = FlxG.save.data.antialiasing;
+						foreGround2.frames = Paths.getSparrowAtlas('tank2', 'week7');
+						foreGround2.animation.addByPrefix('idle', 'foreground man 3 instance ', Std.int(24 * PlayState.songMultiplier));
+						foreGround2.animation.play('idle');
+						swagBacks['foreGround2'] = foreGround2;
+						layInFront[2].push(foreGround2);
+
+						if (FlxG.save.data.distractions)
+						{
+							var foreGround3 = new FlxSprite(1300, 900);
+							foreGround3.scrollFactor.set(1.5, 1.5);
+							foreGround3.antialiasing = FlxG.save.data.antialiasing;
+							foreGround3.frames = Paths.getSparrowAtlas('tank4', 'week7');
+							foreGround3.animation.addByPrefix('idle', 'fg tankman bobbin 3 instance ', Std.int(24 * PlayState.songMultiplier));
+							foreGround3.animation.play('idle');
+							swagBacks['foreGround3'] = foreGround3;
+							layInFront[2].push(foreGround3);
+						}
+
+						var foreGround4 = new FlxSprite(1620, 710);
+						foreGround4.scrollFactor.set(1.5, 1.5);
+						foreGround4.antialiasing = FlxG.save.data.antialiasing;
+						foreGround4.frames = Paths.getSparrowAtlas('tank5', 'week7');
+						foreGround4.animation.addByPrefix('idle', 'fg tankhead far right instance ', Std.int(24 * PlayState.songMultiplier));
+						foreGround4.animation.play('idle');
+						swagBacks['foreGround4'] = foreGround4;
+						layInFront[2].push(foreGround4);
+
+						if (FlxG.save.data.distractions)
+						{
+							var foreGround5 = new FlxSprite(1400, 1290);
+							foreGround5.scrollFactor.set(3.5, 2.5);
+							foreGround5.antialiasing = FlxG.save.data.antialiasing;
+							foreGround5.frames = Paths.getSparrowAtlas('tank3', 'week7');
+							foreGround5.animation.addByPrefix('idle', 'fg tankhead 4 instance ', Std.int(24 * PlayState.songMultiplier));
+							foreGround5.animation.play('idle');
+							swagBacks['foreGround5'] = foreGround5;
+							layInFront[2].push(foreGround5);
+						}
+					}
 				// JOELwindows7: da bbpanzu sky. sorry, people. KitsuneSkulls turns out to be a bad guy. Not Micheal's fault! We wish Rodrigo had it instead, idk..
 				case 'theShift':
 					{
@@ -1388,6 +1594,9 @@ class Stage extends MusicBeatState
 					moveTank();
 				case 'tankStage2':
 					moveTank();
+				// JOELwindows7: & BOLO's week 7 implementation
+				case 'tank':
+					moveTank();
 			}
 		}
 	}
@@ -1480,13 +1689,13 @@ class Stage extends MusicBeatState
 	{
 		super.beatHit();
 
-		if (FlxG.save.data.distractions && animatedBacks.length > 0)
+		if (FlxG.save.data.distractions && FlxG.save.data.background && animatedBacks.length > 0) // JOELwindows7: BOLO check bg setting
 		{
 			for (bg in animatedBacks)
 				bg.animation.play('idle', true);
 		}
 
-		if (!PlayStateChangeables.Optimize)
+		if (!PlayStateChangeables.Optimize && FlxG.save.data.distractions && FlxG.save.data.background) // JOELwindows7: BOLO check distract & bg setting
 		{
 			switch (curStage)
 			{
@@ -1905,9 +2114,21 @@ class Stage extends MusicBeatState
 	function moveTank()
 	{
 		tankAngle += FlxG.elapsed * tankSpeed;
-		tankRolling.angle = tankAngle - 90 + 15;
-		tankRolling.x = tankX + 1500 * FlxMath.fastCos(FlxAngle.asRadians(tankAngle + 180));
-		tankRolling.y = 1300 + 1100 * FlxMath.fastSin(FlxAngle.asRadians(tankAngle + 180));
+
+		if(tankRolling != null){
+			tankRolling.angle = tankAngle - 90 + 15;
+			tankRolling.x = tankX + 1500 * FlxMath.fastCos(FlxAngle.asRadians(tankAngle + 180));
+			tankRolling.y = 1300 + 1100 * FlxMath.fastSin(FlxAngle.asRadians(tankAngle + 180));
+		}
+
+		// JOELwindows7: BOLO said:
+		// Worst fix I've ever done in my life. I hope this doesn't make lag stutters.
+		if (swagBacks['tankGround'] != null){
+			if (!PlayState.instance.endingSong)
+				PlayState.instance.createTween(swagBacks['tankGround'], {angle: tankAngle - 90 + 15}, 0.01, {type: FlxTweenType.ONESHOT});
+			swagBacks['tankGround'].x = tankX + 1500 * FlxMath.fastCos(FlxAngle.asRadians(tankAngle + 180));
+			swagBacks['tankGround'].y = 1300 + 1100 * FlxMath.fastSin(FlxAngle.asRadians(tankAngle + 180));
+		}
 	}
 
 	function again()
