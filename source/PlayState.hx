@@ -372,6 +372,7 @@ class PlayState extends MusicBeatState
 
 	var funneEffect:FlxUISprite;
 	var inCutscene:Bool = false;
+	var inCinematic:Bool = true; // JOELwindows7: BOLO's inCinematic flag
 	var usedTimeTravel:Bool = false;
 
 	public static var stageTesting:Bool = false;
@@ -1845,8 +1846,10 @@ class PlayState extends MusicBeatState
 
 		if (isStoryMode)
 		{
+			// JOELwindows7: This portion is going to be angle grinded!
 			switch (StringTools.replace(curSong, " ", "-").toLowerCase())
 			{
+
 				case "winter-horrorland":
 					// JOELwindows7: You gotta be kidding me. why did not you override all functions to it returns as same type as the extended?!?!?
 					var blackScreen:FlxUISprite = cast new FlxUISprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
@@ -1894,6 +1897,21 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'thorns' | 'thorns-midi':
 					schoolIntro(doof);
+				// JOELwindows7: BOLO do this!
+				/*
+				case 'ugh', 'guns', 'stress':
+					if (!FlxG.save.data.optimize && FlxG.save.data.background)
+						tankIntro();
+					else
+					{
+						removeStaticArrows();
+						#if FEATURE_MP4VIDEOS
+						startVideo('cutscenes/${SONG.songId}_cutscene');
+						#else
+						startCountdown();
+						#end
+					}
+				*/
 				default:
 					if (SONG.hasTankmanVideo)
 					{
@@ -1922,6 +1940,9 @@ class PlayState extends MusicBeatState
 						// });
 					}
 			}
+			// end angle grinded. PAIN IS TEMPORARY, GLORY IS FOREVER lol wintergatan
+			// just do this instead!
+			// introScene();
 		}
 		else
 		{
@@ -1933,6 +1954,18 @@ class PlayState extends MusicBeatState
 			});
 		}
 
+		// JOELwindows7: BOLO precache missnote sounds!
+		for(i in 1...numOfMissNoteSfx){
+			precacheList.set('missnote${i}', 'sound');
+		}
+
+		// JOELwindows7: BOLO precache bf holding gf
+		if (!FlxG.save.data.optimize)
+		{
+			if (boyfriend.curCharacter == 'bf-holding-gf')
+				precacheList.set('tankman/bfHoldingGF-DEAD', 'frame');
+		}
+
 		if (!loadRep)
 			rep = new Replay("na");
 
@@ -1942,9 +1975,38 @@ class PlayState extends MusicBeatState
 		FlxG.keys.preventDefaultKeys = []; // JOELwindows7: wait, put the android back button there!
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, releaseInput);
-		super.create();
+		//super.create(); // JOELwindows7: BOLO instead do it after additional stuffs bellow
 
 		trace("grepke super create e");
+
+		// JOELwindows7: BOLO destroy everything in optimize
+				// AFTER EVERYTHING LOAD DESTROY EVERYTHING TO SAVE MEMORY IN OPTIMIZED MOD
+		if (FlxG.save.data.optimize)
+		{
+			boyfriend.kill();
+			gf.destroy();
+			dad.kill();
+			boyfriend.destroy();
+			gf.destroy();
+			dad.destroy();
+			for (i in Stage.toAdd)
+			{
+				remove(i, true);
+				i.kill();
+				i.destroy();
+			}
+		}
+
+		// JOELwindows7: & wait, Stage again? BOLO
+		if (!FlxG.save.data.background)
+		{
+			for (i in Stage.toAdd)
+			{
+				remove(i, true);
+				i.kill();
+				i.destroy();
+			}
+		}
 
 		// JOELwindows7: install debugge haxeflixeler
 		// commands
@@ -1990,7 +2052,81 @@ class PlayState extends MusicBeatState
 			justHey();
 			justCheer();
 		});
+		//TODO: JOELwindows7: add debug function connect steth character & disconnect steth too as well.
 
+		super.create(); // JOELwindows7: BOLO moved it here.
+
+		// JOELwindows7: There's still more BOLO!!!
+		trace('BOLO more stuffs');
+
+		// JOELwindows7: BOLO tank stage check
+		if (FlxG.save.data.distractions && FlxG.save.data.background && !FlxG.save.data.optimize)
+		{
+			if (gfCheck == 'pico-speaker' && Stage.curStage == 'tank')
+			{
+				if (FlxG.save.data.distractions)
+				{
+					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
+					firstTank.resetShit(20, 600, true);
+					firstTank.strumTime = 10;
+					if (Stage.swagBacks['tankmanRun'] != null)
+					{
+						Stage.swagBacks['tankmanRun'].add(firstTank);
+
+						for (i in 0...TankmenBG.animationNotes.length)
+						{
+							if (FlxG.random.bool(16))
+							{
+								var tankBih = Stage.swagBacks['tankmanRun'].recycle(TankmenBG);
+								tankBih.strumTime = TankmenBG.animationNotes[i].strumTime;
+								tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i].noteData < 2);
+								Stage.swagBacks['tankmanRun'].add(tankBih);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// JOELwindows7: idk BOLO. Immediately raise tankIntroEnd flag if not in story mode (a.k.a. Freeplay)
+		if (!isStoryMode)
+			tankIntroEnd = true;
+
+		// JOELwindows7: BOLO precache pause song & alphabets
+		precacheList.set('alphabet', 'frame');
+		precacheList.set('breakfast', 'sound');
+
+		// JOELwindows7: BOLO hitsound cacher
+		/*
+		if (FlxG.save.data.hitSound != 0)
+			precacheList.set(HitSounds.getSoundByID(FlxG.save.data.hitSound).toLowerCase(), 'sound');
+		*/
+
+		cachePopUpScore(); // JOELwindows7: BOLO cache popup score
+
+		// JOELwindows7: BOLO *holy grail* of precache interpretations.
+		// scour everything in that precacheList & then trigger loading each & everyone of them!
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx#L1459
+		for (key => type in precacheList)
+		{
+			switch (type)
+			{
+				#if !debug
+				case 'image':
+					Paths.image(key);
+				case 'frame':
+					Paths.getSparrowAtlas(key);
+				case 'atlasFrame':
+					AtlasFrameMaker.construct(key);
+				case 'sound':
+					Paths.sound(key);
+				case 'music':
+					Paths.music(key);
+				#end
+			}
+		}
+
+		trace('One last, last modchartoid thingies');
 		// object debugs. also register objects for debugs
 		Debug.addObject("PlayState", this);
 		Debug.addObject("Stage", Stage);
@@ -2022,8 +2158,102 @@ class PlayState extends MusicBeatState
 		// JOELwindows7: unpop loading bar!
 		_loadingBar.unPopNow();
 
+		// JOELwindows7: BOLO clear unused memory one last time
+		Paths.clearUnusedMemory();
+
+		// JOELwindows7: BOLO set the next camera to mainCam in Psyched transition!
+		PsychTransition.nextCamera = mainCam;
+
 		// JOELwindows7: why the peck with touchscreen button game crash on second run?!
 		trace("finish create PlayState");
+	}
+
+	// JOELwindows7: BOLO remove static arrow thingy?!?!?
+	// remove static arrow from the gameplay with optional whether want to destroy afterward.
+	function removeStaticArrows(?destroy:Bool = false)
+	{
+		playerStrums.forEach(function(babyArrow:StaticArrow)
+		{
+			playerStrums.remove(babyArrow);
+			if (destroy)
+				babyArrow.destroy();
+		});
+		cpuStrums.forEach(function(babyArrow:StaticArrow)
+		{
+			cpuStrums.remove(babyArrow);
+			if (destroy)
+				babyArrow.destroy();
+		});
+		strumLineNotes.forEach(function(babyArrow:StaticArrow)
+		{
+			strumLineNotes.remove(babyArrow);
+			if (destroy)
+				babyArrow.destroy();
+		});
+	}
+
+	// JOELwindows7: BOLO's add shader to cameras!!!
+		public function addShaderToCamera(camera:String, effect:ShaderEffect)
+	{
+		switch (camera.toLowerCase())
+		{
+			case 'camhud' | 'hud':
+				camHUDShaders.push(effect);
+				var newCamEffects:Array<BitmapFilter> = [];
+				for (i in camHUDShaders)
+					newCamEffects.push(new ShaderFilter(i.shader));
+				camHUD.setFilters(newCamEffects);
+			case 'camgame' | 'game':
+				camGameShaders.push(effect);
+				var newCamEffects:Array<BitmapFilter> = [];
+				for (i in camGameShaders)
+					newCamEffects.push(new ShaderFilter(i.shader));
+				camGame.setFilters(newCamEffects);
+			case 'cammain' | 'main':
+				mainCamShaders.push(effect);
+				var newCamEffects:Array<BitmapFilter> = [];
+				for (i in mainCamShaders)
+					newCamEffects.push(new ShaderFilter(i.shader));
+				mainCam.setFilters(newCamEffects);
+			case 'camnotes' | 'notes':
+				camNotesShaders.push(effect);
+				var newCamEffects:Array<BitmapFilter> = [];
+				for (i in camNotesShaders)
+					newCamEffects.push(new ShaderFilter(i.shader));
+				camNotes.setFilters(newCamEffects);
+			case 'camsustains' | 'sustains':
+				camSustainsShaders.push(effect);
+				var newCamEffects:Array<BitmapFilter> = [];
+				for (i in camSustainsShaders)
+					newCamEffects.push(new ShaderFilter(i.shader));
+				camSustains.setFilters(newCamEffects);
+			case 'camstrums' | 'strums':
+				camStrumsShaders.push(effect);
+				var newCamEffects:Array<BitmapFilter> = [];
+				for (i in camStrumsShaders)
+					newCamEffects.push(new ShaderFilter(i.shader));
+				camStrums.setFilters(newCamEffects);
+		}
+	}
+
+	// JOELwindows7: also the removal for it. BOLO yess.
+	public function clearShaderFromCamera(camera:String)
+	{
+		switch (camera.toLowerCase())
+		{
+			case 'camhud' | 'hud':
+				camHUDShaders = [];
+				var newCamEffects:Array<BitmapFilter> = [];
+				camHUD.setFilters(newCamEffects);
+			case 'camgame' | 'game':
+				camGameShaders = [];
+				var newCamEffects:Array<BitmapFilter> = [];
+				camGame.setFilters(newCamEffects);
+			case 'cammain' | 'main':
+				mainCamShaders = [];
+				var newCamEffects:Array<BitmapFilter> = [];
+				mainCam.setFilters(newCamEffects);
+		}
 	}
 
 	function tankmanIntroVidFinish(source:String, outro:Bool = false, handoverName:String = "", isNextSong:Bool = false, handoverDelayFirst:Float = 0,
@@ -2337,7 +2567,8 @@ class PlayState extends MusicBeatState
 					{
 						add(senpaiEvil);
 						senpaiEvil.alpha = 0;
-						new FlxTimer().start(0.3, function(swagTimer:FlxTimer)
+						//new FlxTimer().start(0.3, function(swagTimer:FlxTimer)
+						createTimer(0.3, function(swagTimer:FlxTimer) // JOELwindows7: BOLO's managed create timer here!
 						{
 							senpaiEvil.alpha += 0.15;
 							if (senpaiEvil.alpha < 1)
@@ -2490,8 +2721,50 @@ class PlayState extends MusicBeatState
 		var invisible:Bool = SONG.invisibleCountdown;
 		var reversed:Bool = SONG.reversedCountdown;
 
-		// trace("startCountdown! Begin Funkin now");
+		// JOELwindows7: Looks like we've got BOLO complicated incutscene checks here.
+		if (inCinematic || inCutscene)
+		{
+			createTween(laneunderlay, {alpha: FlxG.save.data.laneTransparency}, 0.75, {ease: FlxEase.bounceOut});
+			if (!FlxG.save.data.middleScroll || executeModchart || sourceModchart)
+			{
+				createTween(laneunderlayOpponent, {alpha: FlxG.save.data.laneTransparency}, 0.75, {ease: FlxEase.bounceOut});
+				generateStaticArrows(0);
+				generateStaticArrows(1);
+			}
+			else
+			{
+				// JOELwindows7: we have haxe script too
+				if (#if FEATURE_LUAMODCHART !(executeModchart || executeModHscript) || !sourceModchart #else !executeModHscript || !sourceModchart #end)
+				{
+					if (!PlayStateChangeables.opponentMode)
+						generateStaticArrows(1);
+					else
+						generateStaticArrows(0);
+				}
+			}
+
+			if (sourceModchart && PlayStateChangeables.modchart)
+			{
+				if (FlxG.save.data.middleScroll)
+				{
+					if (PlayStateChangeables.opponentMode)
+					{
+						for (i in 4...strumLineNotes.members.length)
+							strumLineNotes.members[i].x += 900;
+					}
+					else
+					{
+						for (i in 0...strumLineNotes.members.length - 4)
+							strumLineNotes.members[i].x -= 900;
+					}
+				}
+			}
+		}
+		inCinematic = false;
 		inCutscene = false;
+
+		// trace("startCountdown! Begin Funkin now");
+ 		//inCutscene = false; // JOELwindows7: already covered above
 
 		// JOELwindows7:visiblize buttons
 		/*
@@ -2505,7 +2778,7 @@ class PlayState extends MusicBeatState
 		// showOnScreenGameplayButtons();
 
 		// trace("Generate Static arrows");
-		appearStaticArrows();
+		//appearStaticArrows(); // JOELwindows7: BOLO removed this.
 		// generateStaticArrows(0);
 		// generateStaticArrows(1);
 
@@ -2525,7 +2798,8 @@ class PlayState extends MusicBeatState
 
 		musicCompleted = false; // JOELwindows7: just in case somebody out of cage. unraise the flag, until music finished.
 
-		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+		//startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+		startTimer = createTimer((Conductor.crochet / 1000), function(tmr:FlxTimer) // JOELwindows7: BOLO's managed create timer
 		{
 			// this just based on beatHit stuff but compact
 			if (allowedToHeadbang && swagCounter % gfSpeed == 0)
@@ -7608,6 +7882,227 @@ class PlayState extends MusicBeatState
 	}
 
 	// var curLight:Int = 0; //JOELwindows7: RIP, curLight variable. maybe moved to Stage.hx
+
+	// JOELwindows7: BOLO's stuffs zoids
+
+	// update setting
+	public function updateSettings():Void
+	{
+		scoreTxt.y = healthBarBG.y;
+		if (FlxG.save.data.colour)
+			healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
+		else
+			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+		healthBar.updateBar();
+		laneunderlay.alpha = FlxG.save.data.laneTransparency;
+		if (!FlxG.save.data.middleScroll)
+			laneunderlayOpponent.alpha = FlxG.save.data.laneTransparency;
+
+		if (!isStoryMode)
+			PlayStateChangeables.botPlay = FlxG.save.data.botplay;
+
+		iconP1.kill();
+		iconP2.kill();
+		healthBar.kill();
+		healthBarBG.kill();
+		remove(healthBar);
+		remove(iconP1);
+		remove(iconP2);
+		remove(healthBarBG);
+
+		judgementCounter.kill();
+		remove(judgementCounter);
+
+		if (FlxG.save.data.judgementCounter)
+		{
+			judgementCounter.revive();
+			add(judgementCounter);
+		}
+
+		if (songStarted)
+		{
+			songName.kill();
+			songPosBar.kill();
+			bar.kill();
+			remove(bar);
+			remove(songName);
+			remove(songPosBar);
+			songName.visible = FlxG.save.data.songPosition;
+			songPosBar.visible = FlxG.save.data.songPosition;
+			bar.visible = FlxG.save.data.songPosition;
+			if (FlxG.save.data.songPosition)
+			{
+				songName.revive();
+				songPosBar.revive();
+				bar.revive();
+				add(songPosBar);
+				add(songName);
+				add(bar);
+				songName.alpha = 1;
+				songPosBar.alpha = 0.85;
+				bar.alpha = 1;
+			}
+		}
+
+		if (!isStoryMode)
+		{
+			botPlayState.kill();
+			remove(botPlayState);
+			if (PlayStateChangeables.botPlay)
+			{
+				usedBot = true;
+				botPlayState.revive();
+				add(botPlayState);
+			}
+		}
+
+		if (FlxG.save.data.healthBar)
+		{
+			healthBarBG.revive();
+			healthBar.revive();
+			iconP1.revive();
+			iconP2.revive();
+			add(healthBarBG);
+			add(healthBar);
+			add(iconP1);
+			add(iconP2);
+			scoreTxt.y = healthBarBG.y + 50;
+		}
+	}
+
+	// change scroll speed
+	public function changeScrollSpeed(mult:Float, time:Float, ease):Void
+	{
+		var newSpeed = scrollSpeed * mult;
+		if (time <= 0)
+		{
+			scrollSpeed *= newSpeed;
+		}
+		else
+		{
+			scrollTween = createTween(this, {scrollSpeed: newSpeed}, time, {
+				ease: ease,
+				onComplete: function(twn:FlxTween)
+				{
+					scrollTween = null;
+				}
+			});
+			scrollMult = mult;
+		}
+	}
+
+		// LUA MODCHART TO SOURCE FOR HTML5 TUTORIAL MODCHART :)
+	//#if !cpp
+	function elasticCamZoom()
+	{
+		var camGroup:Array<FlxCamera> = [camHUD, camNotes, camSustains, camStrums];
+		for (camShit in camGroup)
+		{
+			camShit.zoom += 0.06;
+			createTween(camShit, {zoom: camShit.zoom - 0.06}, 0.5 / songMultiplier, {
+				ease: FlxEase.elasticOut
+			});
+		}
+
+		FlxG.camera.zoom += 0.06;
+
+		createTweenNum(FlxG.camera.zoom, FlxG.camera.zoom - 0.06, 0.5 / songMultiplier, {ease: FlxEase.elasticOut}, updateCamZoom.bind(FlxG.camera));
+	}
+
+	function receptorTween()
+	{
+		for (i in 0...strumLineNotes.length)
+		{
+			createTween(strumLineNotes.members[i], {modAngle: strumLineNotes.members[i].modAngle + 360}, 0.5 / songMultiplier,
+				{ease: FlxEase.smootherStepInOut});
+		}
+	}
+
+	function updateCamZoom(camGame:FlxCamera, upZoom:Float)
+	{
+		camGame.zoom = upZoom;
+	}
+
+	function speedBounce()
+	{
+		var scrollSpeedShit:Float = scrollSpeed;
+		scrollSpeed /= scrollSpeed;
+		changeScrollSpeed(scrollSpeedShit, 0.35 / songMultiplier, FlxEase.sineOut);
+	}
+
+	var isTweeningThisShit:Bool = false;
+
+	function tweenCamZoom(isDad:Bool)
+	{
+		if (isDad)
+			createTweenNum(FlxG.camera.zoom, FlxG.camera.zoom + 0.3, (Conductor.stepCrochet * 4 / 1000) / songMultiplier, {
+				ease: FlxEase.smootherStepInOut,
+			}, updateCamZoom.bind(FlxG.camera));
+		else
+			createTweenNum(FlxG.camera.zoom, FlxG.camera.zoom - 0.3, (Conductor.stepCrochet * 4 / 1000) / songMultiplier, {
+				ease: FlxEase.smootherStepInOut,
+			}, updateCamZoom.bind(FlxG.camera));
+	}
+	//#end
+
+		// https://github.com/ShadowMario/FNF-PsychEngine/pull/9015
+	// Seems like a good pull request. Credits: Raltyro.
+	private function cachePopUpScore()
+	{
+		var pixelShitPart1:String = '';
+		var pixelShitPart2:String = '';
+		var pixelShitPart3:String = null;
+		if (SONG.noteStyle == 'pixel')
+		{
+			pixelShitPart1 = 'weeb/pixelUI/';
+			pixelShitPart2 = '-pixel';
+			pixelShitPart3 = 'week6';
+		}
+
+		Paths.image(pixelShitPart1 + "sick" + pixelShitPart2, pixelShitPart3);
+		Paths.image(pixelShitPart1 + "good" + pixelShitPart2, pixelShitPart3);
+		Paths.image(pixelShitPart1 + "bad" + pixelShitPart2, pixelShitPart3);
+		Paths.image(pixelShitPart1 + "shit" + pixelShitPart2, pixelShitPart3);
+		Paths.image(pixelShitPart1 + "combo" + pixelShitPart2, pixelShitPart3);
+
+		for (i in 0...10)
+		{
+			Paths.image(pixelShitPart1 + 'num' + i + pixelShitPart2, pixelShitPart3);
+		}
+	}
+
+	function cacheCountdown()
+	{
+		var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
+		introAssets.set('default', ['ready', 'set', 'go']);
+		introAssets.set('pixel', ['weeb/pixelUI/ready-pixel', 'weeb/pixelUI/set-pixel', 'weeb/pixelUI/date-pixel']);
+
+		var week6Bullshit = null;
+		var introAlts:Array<String> = introAssets.get('default');
+		if (SONG.noteStyle == 'pixel')
+		{
+			introAlts = introAssets.get('pixel');
+			week6Bullshit = 'week6';
+		}
+
+		for (asset in introAlts)
+			Paths.image(asset, week6Bullshit);
+
+		Paths.sound('intro3' + altSuffix);
+		Paths.sound('intro2' + altSuffix);
+		Paths.sound('intro1' + altSuffix);
+		Paths.sound('introGo' + altSuffix);
+	}
+
+	function startAndEnd()
+	{
+		if (endingSong)
+			endSong();
+		else
+			startCountdown();
+	}
+	// end BOLO's stuffs zoids
+
 	// JOELwindows7: not my code. hey, Ninja! you should've white light like I do above
 	// and randomize the color. look at randomizeColoring() above!
 	// JOELwindows7: make cam zoom a function pls
@@ -8234,6 +8729,69 @@ class PlayState extends MusicBeatState
 		inCutscene = true;
 		switch (curSong)
 		{
+			// JOELwindows7: Well, let's just copy everything from original to here. look, winter horrorland is cutscene!
+			case "winter-horrorland":
+				// JOELwindows7: You gotta be kidding me. why did not you override all functions to it returns as same type as the extended?!?!?
+				var blackScreen:FlxUISprite = cast new FlxUISprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
+				add(blackScreen);
+				blackScreen.scrollFactor.set();
+				camHUD.visible = false;
+				// JOELwindows7: hide the lemon guy character icon!
+				iconP2.changeIcon('placeholder');
+
+				new FlxTimer().start(0.1, function(tmr:FlxTimer)
+				{
+					remove(blackScreen);
+					FlxG.sound.play(Paths.sound('Lights_Turn_On'));
+					// JOELwindows7: vibrate the device
+					Controls.vibrate(0, 2700);
+					camFollow.y = -2050;
+					camFollow.x += 200;
+					FlxG.camera.focusOn(camFollow.getPosition());
+					FlxG.camera.zoom = 1.5;
+
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+					{
+						camHUD.visible = true;
+						remove(blackScreen);
+						FlxTween.tween(FlxG.camera, {zoom: Stage.camZoom}, 2.5, {
+							ease: FlxEase.quadInOut,
+							onComplete: function(twn:FlxTween)
+							{
+								startCountdown();
+							}
+						});
+					});
+				});
+			case 'senpai' | 'senpai-midi':
+				schoolIntro(doof);
+			case 'roses':
+				FlxG.sound.play(Paths.sound('ANGRY'));
+				// JOELwindows7: vibrate device as it this angery
+				Controls.vibrate(0, 1000);
+				schoolIntro(doof);
+			case 'roses-midi': // JOELwindows7: for midi version
+				FlxG.sound.play(Paths.sound('ANGRY-midi'));
+				// JOELwindows7: vibrate device as it this angery
+				Controls.vibrate(0, 1000);
+				schoolIntro(doof);
+			case 'thorns' | 'thorns-midi':
+				schoolIntro(doof);
+			// JOELwindows7: BOLO do this!
+			/*
+			case 'ugh', 'guns', 'stress':
+				if (!FlxG.save.data.optimize && FlxG.save.data.background)
+					tankIntro();
+				else
+				{
+					removeStaticArrows();
+					#if FEATURE_MP4VIDEOS
+					startVideo('cutscenes/${SONG.songId}_cutscene');
+					#else
+					startCountdown();
+					#end
+				}
+			*/
 			default:
 				// No cutscene intro
 				decideIntroSceneDone(SONG.introCutSceneDoneManually);
