@@ -13,6 +13,7 @@ class PlayStateChangeables
 	public static var songPosBarColor:FlxColor = Perkedel.SONG_POS_BAR_COLOR; // JOELwindows7: to be changed into color of the week.
 	public static var songPosBarColorBg:FlxColor = FlxColor.BLACK; // JOELwindows7: and meter back color.
 	public static var weekColor:FlxColor = FlxColor.YELLOW; // JOELwindows7: the obvious week color. for any reference & fallback.
+	public static var howManySongThisWeek:Int = 0; // JOELwindows7: Story menu set this to how many song in the week, before begin campaign.
 
 	// JOELwindows7: MOAR FROM BOLO
 	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/PlayStateChangeables.hx
