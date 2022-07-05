@@ -54,6 +54,30 @@ class CoolUtil
 		return dumbArray;
 	}
 
+	// JOELwindows7: BOLO incoming stuff
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/CoolUtil.hx
+	inline public static function boundTo(value:Float, min:Float, max:Float):Float
+	{
+		return Math.max(min, Math.min(max, value));
+	}
+
+	public static function dashToSpace(string:String):String
+	{
+		return string.replace("-", " ");
+	}
+
+	public static function spaceToDash(string:String):String
+	{
+		return string.replace(" ", "-");
+	}
+
+	public static function swapSpaceDash(string:String):String
+	{
+		return StringTools.contains(string, '-') ? dashToSpace(string) : spaceToDash(string);
+	}
+	// end BOLO stuff
+
+	// JOELwindows7: Oh this is lowercasify & turn space to dash.
 	public static function toCompatCase(daString:String):String{
 		return StringTools.replace(daString, " ", "-").toLowerCase();
 	}
