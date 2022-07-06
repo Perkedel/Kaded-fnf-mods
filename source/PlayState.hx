@@ -1,5 +1,9 @@
 package;
 
+import LuaClass;
+import openfl.filters.BitmapFilter;
+import CoolUtil;
+import behavior.audio.IManipulateAudio;
 import ui.states.transition.PsychTransition;
 import Shader;
 import flixel.addons.ui.FlxUISprite;
@@ -278,6 +282,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	public static var campaignShits:Int = 0;
 
 	public var accuracy:Float = 0.00;
+	public var shownAccuracy:Float = 0; // JOELwindows7: BOLO's shown accuracy thingy
 
 	private var accuracyDefault:Float = 0.00;
 	private var totalNotesHit:Float = 0;
@@ -338,6 +343,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	var songName:FlxUIText; // JOELwindows7: use FlxUIText from now on.
 
+	var spin:Float; // JOELwindows7: BOLO spin value
+
 	var altSuffix:String = "";
 
 	public var currentSection:SwagSection;
@@ -351,6 +358,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	public static var currentSong = "noneYet";
 
 	public var songScore:Int = 0;
+	public var shownSongScore:Int = 0; // JOELwindows7: BOLO for display song score
 
 	// JOELwindows7: everything here must use `FlxUIText`!!!
 	var songScoreDef:Int = 0;
@@ -367,6 +375,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	var accText:FlxText; // JOELwindows7: BOLO's accuracy watermark
 
 	public static var campaignScore:Int = 0;
+
+	var newLerp:Float = 0; // JOELwindows7: BOLO new lerp!
 
 	public static var theFunne:Bool = true;
 
@@ -408,6 +418,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	public var executeStageScript = false; // JOELwindows7: for stage lua scripter
 	public var executeModHscript = false; // JOELwindows7: modchart but hscript. thancc BulbyVR
 	public var executeStageHscript = false; // JOELwindows7: stage haxe script yeaha
+	public var sourceModchart = false; // JOELwindows7: idk why BOLO have this.
 
 	// Animation common suffixes
 	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT'];
@@ -566,7 +577,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		PlayStateChangeables.safeFrames = FlxG.save.data.frames;
 		PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * songMultiplier;
 		PlayStateChangeables.botPlay = FlxG.save.data.botplay;
-		PlayStateChangeables.Optimize = FlxG.save.data.optimize;
+		PlayStateChangeables.optimize = FlxG.save.data.optimize;
 		PlayStateChangeables.zoom = FlxG.save.data.zoom;
 		PlayStateChangeables.legacyLuaModchartSupport = FlxG.save.data.legacyLuaScript || SONG.forceLuaModchartLegacy;
 
@@ -622,7 +633,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// executeModchart = FileSystem.exists(pathToSm + "/modchart.lua");
 			executeModchart = (Paths.doesTextAssetExist(pathToSm + "/modchart.lua")) && PlayStateChangeables.modchart;
 		// if (executeModchart)
-		// 	PlayStateChangeables.Optimize = false; // JOELwindows7: BOLO no longer disable this if there is modchart or what uh.
+		// 	PlayStateChangeables.optimize = false; // JOELwindows7: BOLO no longer disable this if there is modchart or what uh.
 		#end
 		#if !cpp
 		executeModchart = false; // FORCE disable for non cpp targets
@@ -639,7 +650,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			&& PlayStateChangeables.modchart;
 		// trace("forced hscript exist is " + Std.string(SONG.forceHscriptModchart));
 		// if (executeModHscript)
-		// 	PlayStateChangeables.Optimize = false; // this too. BOLO no longer disable optimize just because modchart.
+		// 	PlayStateChangeables.optimize = false; // this too. BOLO no longer disable optimize just because modchart.
 		// trace('Mod hscript chart: ' + executeModHscript + " - " + Paths.hscript('songs/${PlayState.SONG.songId}/modchart');
 
 		// JOELwindows7: having modchart no longer reset song multiplier! BOLO yess.
@@ -951,7 +962,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			gfCheck = SONG.gfVersion;
 		}
 
-		if (!stageTesting || !PlayStateChangeables.Optimize) // JOELwindows7: BOLO or if not optimize. originally based on save data. but let's just.. this.
+		if (!stageTesting || !PlayStateChangeables.optimize) // JOELwindows7: BOLO or if not optimize. originally based on save data. but let's just.. this.
 		{
 			gf = new Character(400, 130, gfCheck);
 
@@ -1041,20 +1052,20 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// JOELwindows7: BOLO's tankman stress
 		/*
-		if (!FlxG.save.data.optimize && FlxG.save.data.distractions && FlxG.save.data.background)
-		{
-			if (SONG.songId == 'stress')
+			if (!FlxG.save.data.optimize && FlxG.save.data.distractions && FlxG.save.data.background)
 			{
-				switch (gf.curCharacter)
+				if (SONG.songId == 'stress')
 				{
-					case 'pico-speaker':
-						Character.loadMappedAnims();
+					switch (gf.curCharacter)
+					{
+						case 'pico-speaker':
+							Character.loadMappedAnims();
+					}
 				}
 			}
-		}
-		*/
+		 */
 
-		if (!PlayStateChangeables.Optimize)
+		if (!PlayStateChangeables.optimize)
 		{
 			for (index => array in Stage.layInFront)
 			{
@@ -1115,11 +1126,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				dad.setPosition(gf.x, gf.y);
 			gf.visible = false;
 			// JOELwindows7: gf tween in no longer just for story mode! BOLO yess.
-			//if (isStoryMode)
-			//{
-				camPos.x += 600;
-				tweenCamIn();
-			//}
+			// if (isStoryMode)
+			// {
+			camPos.x += 600;
+			tweenCamIn();
+			// }
 
 			// case 'gf-standalone':
 			// 	// JOELwindows7: reserved for future use
@@ -1167,7 +1178,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (FlxG.save.data.distractions)
 			{
 				// trailArea.scrollFactor.set();
-				if (!PlayStateChangeables.Optimize)
+				if (!PlayStateChangeables.optimize)
 				{
 					var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
 					// evilTrail.changeValuesEnabled(false, false, false, false);
@@ -1191,7 +1202,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// }
 		// Optional unless your character is not default bf
 
-		if (!PlayStateChangeables.Optimize && FlxG.save.data.background) // JOELwindows7: BOLO bg check
+		if (!PlayStateChangeables.optimize && FlxG.save.data.background) // JOELwindows7: BOLO bg check
 			Stage.update(0);
 		manageHeartbeats(0); // JOELwindows7: initially update heartbeats first!
 
@@ -1239,54 +1250,54 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 
 		// JOELwindows7: BOLO removes this check
-		//if (!isStoryMode && songMultiplier == 1)
-		//{
-			var firstNoteTime = Math.POSITIVE_INFINITY;
-			var playerTurn = false;
-			for (index => section in SONG.notes)
+		// if (!isStoryMode && songMultiplier == 1)
+		// {
+		var firstNoteTime = Math.POSITIVE_INFINITY;
+		var playerTurn = false;
+		for (index => section in SONG.notes)
+		{
+			if (section.sectionNotes.length > 0 && !isSM)
 			{
-				if (section.sectionNotes.length > 0 && !isSM)
+				if (section.startTime > 5000)
 				{
-					if (section.startTime > 5000)
+					needSkip = true;
+					skipTo = section.startTime - 1000;
+				}
+				break;
+			}
+			else if (isSM)
+			{
+				for (note in section.sectionNotes)
+				{
+					if (note[0] < firstNoteTime)
+					{
+						if (!PlayStateChangeables.optimize)
+						{
+							firstNoteTime = note[0];
+							if (note[1] > 3)
+								playerTurn = true;
+							else
+								playerTurn = false;
+						}
+						else if (note[1] > 3)
+						{
+							firstNoteTime = note[0];
+						}
+					}
+				}
+				if (index + 1 == SONG.notes.length)
+				{
+					var timing = ((!playerTurn && !PlayStateChangeables.optimize) ? firstNoteTime : TimingStruct.getTimeFromBeat(TimingStruct.getBeatFromTime(firstNoteTime)
+						- 4));
+					if (timing > 5000)
 					{
 						needSkip = true;
-						skipTo = section.startTime - 1000;
-					}
-					break;
-				}
-				else if (isSM)
-				{
-					for (note in section.sectionNotes)
-					{
-						if (note[0] < firstNoteTime)
-						{
-							if (!PlayStateChangeables.Optimize)
-							{
-								firstNoteTime = note[0];
-								if (note[1] > 3)
-									playerTurn = true;
-								else
-									playerTurn = false;
-							}
-							else if (note[1] > 3)
-							{
-								firstNoteTime = note[0];
-							}
-						}
-					}
-					if (index + 1 == SONG.notes.length)
-					{
-						var timing = ((!playerTurn && !PlayStateChangeables.Optimize) ? firstNoteTime : TimingStruct.getTimeFromBeat(TimingStruct.getBeatFromTime(firstNoteTime)
-							- 4));
-						if (timing > 5000)
-						{
-							needSkip = true;
-							skipTo = timing - 1000;
-						}
+						skipTo = timing - 1000;
 					}
 				}
 			}
-		//}
+		}
+		// }
 
 		Conductor.songPosition = -5000;
 		Conductor.rawPosition = Conductor.songPosition;
@@ -1310,14 +1321,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// JOELwindows7: no need, but this just in case. BOLO invisibilize lane underlay
 		/*
-		if ((storyPlaylist.length >= 3 && inCutscene) || inCinematic)
-		{
-			laneunderlayOpponent.alpha = 0;
-			laneunderlay.alpha = 0;
-		}
-		*/
+			if ((storyPlaylist.length >= 3 && inCutscene) || inCinematic)
+			{
+				laneunderlayOpponent.alpha = 0;
+				laneunderlay.alpha = 0;
+			}
+		 */
 
-		if (FlxG.save.data.laneUnderlay && !PlayStateChangeables.Optimize)
+		if (FlxG.save.data.laneUnderlay && !PlayStateChangeables.optimize)
 		{
 			// JOELwindows7: haxe script too
 			if (!FlxG.save.data.middleScroll || executeModchart || executeModHscript)
@@ -1376,14 +1387,18 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true, 2);
 
 		// JOELwindows7: Hold, there's advanced BOLO's opponent mode check
-		if (!FlxG.save.data.middleScroll || (((executeModchart || executeModHscript) || sourceModchart) && PlayStateChangeables.modchart)){
+		if (!FlxG.save.data.middleScroll || (((executeModchart || executeModHscript) || sourceModchart) && PlayStateChangeables.modchart))
+		{
 			Debug.logTrace("Now for static arrows");
 			generateStaticArrows(0);
 			Debug.logTrace("and other player static arrows");
 			generateStaticArrows(1);
 			Debug.logTrace("Doned static arrows");
-		} else {
-			if (#if FEATURE_LUAMODCHART !(executeModchart || executeModHscript) #else !(sourceModchart || executeModHscript) #end || !PlayStateChangeables.modchart)
+		}
+		else
+		{
+			if (#if FEATURE_LUAMODCHART !(executeModchart || executeModHscript) #else !(sourceModchart || executeModHscript) #end
+				|| !PlayStateChangeables.modchart)
 			{
 				if (!PlayStateChangeables.opponentMode)
 					generateStaticArrows(1);
@@ -1547,9 +1562,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		#if FEATURE_DISPLAY_FPS_CHANGE
 		// JOELwindows7: issue with Android version, this function crash!
-// 		FlxG.camera.follow(camFollow, LOCKON, 0.04 * (30 / (cast(Lib.current.getChildAt(0), Main)).getFPS()));
+		// 		FlxG.camera.follow(camFollow, LOCKON, 0.04 * (30 / (cast(Lib.current.getChildAt(0), Main)).getFPS()));
 		#else
-// 		FlxG.camera.follow(camFollow, LOCKON, 0.008);
+		// 		FlxG.camera.follow(camFollow, LOCKON, 0.008);
 		// use Banbud's trickster .008
 		// JOELwindows7: from Klavier & Verwex
 		// https://github.com/KlavierGayming/FNF-Micd-Up-Mobile/blob/main/source/PlayState.hx
@@ -1629,7 +1644,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// healthBar
 		// add(healthBar);
 
-		//JOELwindows7: BOLO's accuracy mode text say
+		// JOELwindows7: BOLO's accuracy mode text say
 		var accMode:String = "None";
 		if (FlxG.save.data.accuracyMod == 0)
 			accMode = "Accurate";
@@ -1684,13 +1699,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		if (PlayStateChangeables.useDownscroll)
 			kadeEngineWatermark.y = FlxG.height * 0.9 + 45;
 
-		//JOELwindows7: BOLO's accurac watermark?!!?!?
+		// JOELwindows7: BOLO's accurac watermark?!!?!?
 		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx
 		// ACCURACY WATERMARK
 		accText = new FlxText(4, FlxG.height * 0.9 + 45 - 20, 0, "Accuracy Mode: " + accMode, 16);
 		accText.scrollFactor.set();
 		accText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		//add(accText);
+		// add(accText);
 
 		// TODO: JOELwindows7: This maybe can be the Korean pop tv show lyric bottom left corner?
 
@@ -1795,7 +1810,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		add(creditRollout.textName);
 		add(creditRollout.textRole);
 
-		strumLineNotes.cameras = [camStrums]; //JOELwindows7: was camHUD. BOLO new camStrums
+		strumLineNotes.cameras = [camStrums]; // JOELwindows7: was camHUD. BOLO new camStrums
 		grpNoteSplashes.cameras = [camStrums]; // JOELwindows7: notesplash group put in camHUD! Psychedly. okay how about camStrums?
 		grpNoteHitlineParticles.cameras = [camStrums]; // JOELwindows7: also the hitlines
 		notes.cameras = [camNotes]; // JOELwindows7: was camHUD, now camNotes
@@ -1842,14 +1857,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			gf.dance();
 		}
 
-		cacheCountdown(); //JOELwindows7: BOLO has Cache countdown?
+		cacheCountdown(); // JOELwindows7: BOLO has Cache countdown?
 
 		if (isStoryMode)
 		{
 			// JOELwindows7: This portion is going to be angle grinded!
 			switch (StringTools.replace(curSong, " ", "-").toLowerCase())
 			{
-
 				case "winter-horrorland":
 					// JOELwindows7: You gotta be kidding me. why did not you override all functions to it returns as same type as the extended?!?!?
 					var blackScreen:FlxUISprite = cast new FlxUISprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
@@ -1899,19 +1913,19 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					schoolIntro(doof);
 				// JOELwindows7: BOLO do this!
 				/*
-				case 'ugh', 'guns', 'stress':
-					if (!FlxG.save.data.optimize && FlxG.save.data.background)
-						tankIntro();
-					else
-					{
-						removeStaticArrows();
-						#if FEATURE_MP4VIDEOS
-						startVideo('cutscenes/${SONG.songId}_cutscene');
-						#else
-						startCountdown();
-						#end
-					}
-				*/
+					case 'ugh', 'guns', 'stress':
+						if (!FlxG.save.data.optimize && FlxG.save.data.background)
+							tankIntro();
+						else
+						{
+							removeStaticArrows();
+							#if FEATURE_MP4VIDEOS
+							startVideo('cutscenes/${SONG.songId}_cutscene');
+							#else
+							startCountdown();
+							#end
+						}
+				 */
 				default:
 					if (SONG.hasTankmanVideo)
 					{
@@ -1955,7 +1969,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 
 		// JOELwindows7: BOLO precache missnote sounds!
-		for(i in 1...numOfMissNoteSfx){
+		for (i in 1...numOfMissNoteSfx)
+		{
 			precacheList.set('missnote${i}', 'sound');
 		}
 
@@ -1975,12 +1990,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		FlxG.keys.preventDefaultKeys = []; // JOELwindows7: wait, put the android back button there!
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, releaseInput);
-		//super.create(); // JOELwindows7: BOLO instead do it after additional stuffs bellow
+		// super.create(); // JOELwindows7: BOLO instead do it after additional stuffs bellow
 
 		trace("grepke super create e");
 
 		// JOELwindows7: BOLO destroy everything in optimize
-				// AFTER EVERYTHING LOAD DESTROY EVERYTHING TO SAVE MEMORY IN OPTIMIZED MOD
+		// AFTER EVERYTHING LOAD DESTROY EVERYTHING TO SAVE MEMORY IN OPTIMIZED MOD
 		if (FlxG.save.data.optimize)
 		{
 			boyfriend.kill();
@@ -2052,7 +2067,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			justHey();
 			justCheer();
 		});
-		//TODO: JOELwindows7: add debug function connect steth character & disconnect steth too as well.
+		// TODO: JOELwindows7: add debug function connect steth character & disconnect steth too as well.
 
 		super.create(); // JOELwindows7: BOLO moved it here.
 
@@ -2060,33 +2075,35 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		trace('BOLO more stuffs');
 
 		// JOELwindows7: BOLO tank stage check
-		if (FlxG.save.data.distractions && FlxG.save.data.background && !FlxG.save.data.optimize)
-		{
-			if (gfCheck == 'pico-speaker' && Stage.curStage == 'tank')
+		/*
+			if (FlxG.save.data.distractions && FlxG.save.data.background && !FlxG.save.data.optimize)
 			{
-				if (FlxG.save.data.distractions)
+				if (gfCheck == 'pico-speaker' && Stage.curStage == 'tank')
 				{
-					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
-					firstTank.resetShit(20, 600, true);
-					firstTank.strumTime = 10;
-					if (Stage.swagBacks['tankmanRun'] != null)
+					if (FlxG.save.data.distractions)
 					{
-						Stage.swagBacks['tankmanRun'].add(firstTank);
-
-						for (i in 0...TankmenBG.animationNotes.length)
+						var firstTank:TankmenBG = new TankmenBG(20, 500, true);
+						firstTank.resetShit(20, 600, true);
+						firstTank.strumTime = 10;
+						if (Stage.swagBacks['tankmanRun'] != null)
 						{
-							if (FlxG.random.bool(16))
+							Stage.swagBacks['tankmanRun'].add(firstTank);
+
+							for (i in 0...TankmenBG.animationNotes.length)
 							{
-								var tankBih = Stage.swagBacks['tankmanRun'].recycle(TankmenBG);
-								tankBih.strumTime = TankmenBG.animationNotes[i].strumTime;
-								tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i].noteData < 2);
-								Stage.swagBacks['tankmanRun'].add(tankBih);
+								if (FlxG.random.bool(16))
+								{
+									var tankBih = Stage.swagBacks['tankmanRun'].recycle(TankmenBG);
+									tankBih.strumTime = TankmenBG.animationNotes[i].strumTime;
+									tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i].noteData < 2);
+									Stage.swagBacks['tankmanRun'].add(tankBih);
+								}
 							}
 						}
 					}
 				}
 			}
-		}
+		 */
 
 		// JOELwindows7: idk BOLO. Immediately raise tankIntroEnd flag if not in story mode (a.k.a. Freeplay)
 		if (!isStoryMode)
@@ -2098,9 +2115,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// JOELwindows7: BOLO hitsound cacher
 		/*
-		if (FlxG.save.data.hitSound != 0)
-			precacheList.set(HitSounds.getSoundByID(FlxG.save.data.hitSound).toLowerCase(), 'sound');
-		*/
+			if (FlxG.save.data.hitSound != 0)
+				precacheList.set(HitSounds.getSoundByID(FlxG.save.data.hitSound).toLowerCase(), 'sound');
+		 */
 
 		cachePopUpScore(); // JOELwindows7: BOLO cache popup score
 
@@ -2193,7 +2210,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	}
 
 	// JOELwindows7: BOLO's add shader to cameras!!!
-		public function addShaderToCamera(camera:String, effect:ShaderEffect)
+	public function addShaderToCamera(camera:String, effect:ShaderEffect)
 	{
 		switch (camera.toLowerCase())
 		{
@@ -2567,7 +2584,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					{
 						add(senpaiEvil);
 						senpaiEvil.alpha = 0;
-						//new FlxTimer().start(0.3, function(swagTimer:FlxTimer)
+						// new FlxTimer().start(0.3, function(swagTimer:FlxTimer)
 						createTimer(0.3, function(swagTimer:FlxTimer) // JOELwindows7: BOLO's managed create timer here!
 						{
 							senpaiEvil.alpha += 0.15;
@@ -2734,7 +2751,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			else
 			{
 				// JOELwindows7: we have haxe script too
-				if (#if FEATURE_LUAMODCHART !(executeModchart || executeModHscript) || !sourceModchart #else !executeModHscript || !sourceModchart #end)
+				if (#if FEATURE_LUAMODCHART !(executeModchart || executeModHscript)
+					|| !sourceModchart #else !executeModHscript
+					|| !sourceModchart #end)
 				{
 					if (!PlayStateChangeables.opponentMode)
 						generateStaticArrows(1);
@@ -2764,7 +2783,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		inCutscene = false;
 
 		// trace("startCountdown! Begin Funkin now");
- 		//inCutscene = false; // JOELwindows7: already covered above
+		// inCutscene = false; // JOELwindows7: already covered above
 
 		// JOELwindows7:visiblize buttons
 		/*
@@ -2778,7 +2797,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// showOnScreenGameplayButtons();
 
 		// trace("Generate Static arrows");
-		//appearStaticArrows(); // JOELwindows7: BOLO removed this.
+		// appearStaticArrows(); // JOELwindows7: BOLO removed this.
 		// generateStaticArrows(0);
 		// generateStaticArrows(1);
 
@@ -2798,7 +2817,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		musicCompleted = false; // JOELwindows7: just in case somebody out of cage. unraise the flag, until music finished.
 
-		//startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+		// startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 		startTimer = createTimer((Conductor.crochet / 1000), function(tmr:FlxTimer) // JOELwindows7: BOLO's managed create timer
 		{
 			// this just based on beatHit stuff but compact
@@ -2868,7 +2887,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					add(ready);
 					if (invisible)
 						ready.visible = false; // JOELwindows7: infisipel
-					//FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					// FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
 					createTween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, { // JOELwindows7: BOLO's managed tweener
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
@@ -2892,7 +2911,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					add(set);
 					if (invisible)
 						set.visible = false; // JOELwindows7: inbizibel
-					//FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					// FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
 					createTween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, { // JOELwindows7: BOLO's managed tweener
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
@@ -3073,7 +3092,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (i.noteData == data && !i.isSustainNote)
 				dataNotes.push(i);
 
-		//trace("notes able to hit for " + key.toString() + " " + dataNotes.length); //JOELwindows7: BOLO disable because this is noisy
+		// trace("notes able to hit for " + key.toString() + " " + dataNotes.length); //JOELwindows7: BOLO disable because this is noisy
 
 		if (dataNotes.length != 0)
 		{
@@ -3122,7 +3141,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			ana.hit = false;
 			ana.hitJudge = "shit";
 			ana.nearestNote = [];
-			//health -= 0.20;
+			// health -= 0.20;
 			// JOELwindows7: BOLO's ghost tapping opponent mode
 			if (!PlayStateChangeables.opponentMode)
 				health -= 0.04 * PlayStateChangeables.healthLoss;
@@ -3351,7 +3370,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: BOLO add the song file to the list
 		FlxG.sound.list.add(new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.songId)));
 
-		//JOELwindows7: BOLO skill issue
+		// JOELwindows7: BOLO skill issue
 		if (PlayStateChangeables.skillIssue)
 		{
 			var redVignette:FlxSprite = new FlxUISprite().loadGraphic(Paths.image('nomisses_vignette', 'shared'));
@@ -3378,13 +3397,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				FlxG.sound.playMusic(sound, 1, false); // JOELwindows7: DO NOT PECKING FORGET TO DESTROY THE LOOP
 				// Otherwise the end of the song is spasm since the end music signal does not trigger with loop ON.
 			}
-			//JOELwindows7: BOLO disables these
+			// JOELwindows7: BOLO disables these
 			/*
-			else
+				else
+					FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
+				#else
 				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
-			#else
-			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
-			*/
+			 */
 			#end
 		}
 
@@ -3436,7 +3455,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (PlayStateChangeables.useDownscroll)
 				songPosBG.y = FlxG.height * 0.9 + 35;
 			songPosBG.screenCenter(X);
-			songPosBG.alpha = 0; //JOELwindows7: Inviblize first
+			songPosBG.alpha = 0; // JOELwindows7: Inviblize first
 			songPosBG.scrollFactor.set();
 
 			// JOELwindows7: okay, process colors inline!
@@ -3497,7 +3516,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// JOELwindows7: YOU SNEAKY LITTLE PUNK!!! WHY TEXT CHANGE AGAIN HERE?!??! hey how about milisecond?
 			songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime(songLength, true) + ')';
 			songName.y = songPosBG.y + (songPosBG.height / 3);
-			songName.alpha = 0; //JOELwindows7: invisibilize first.
+			songName.alpha = 0; // JOELwindows7: invisibilize first.
 			add(songName);
 
 			songName.screenCenter(X);
@@ -3574,7 +3593,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				swagNote.hitsoundPath = songNotes[6]; // JOELwindows7: and the hit sound file name;
 
 				// JOELwindows7: incoming BOLO advanced complicated skip to next itteration thingy
-				//if (!gottaHitNote && PlayStateChangeables.Optimize)
+				// if (!gottaHitNote && PlayStateChangeables.optimize)
 				if ((!gottaHitNote && FlxG.save.data.middleScroll && PlayStateChangeables.optimize && !PlayStateChangeables.opponentMode
 					&& !PlayStateChangeables.healthDrain)
 					|| (!gottaHitNote && FlxG.save.data.middleScroll && PlayStateChangeables.optimize && PlayStateChangeables.opponentMode
@@ -3582,7 +3601,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					continue;
 
 				// JOELwindows7: BOLO advanced hold enable / disable modifier
-				//swagNote.sustainLength = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(songNotes[2] / songMultiplier)));
+				// swagNote.sustainLength = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(songNotes[2] / songMultiplier)));
 				if (PlayStateChangeables.holds)
 				{
 					swagNote.sustainLength = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(songNotes[2] / songMultiplier)));
@@ -3600,11 +3619,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				swagNote.isAlt = songNotes[3]
 					|| ((section.altAnim || section.CPUAltAnim) && !gottaHitNote)
-					|| (section.playerAltAnim && gottaHitNote)
-					//JOELwindows7: There's stil more from BOLO!
+					|| (section.playerAltAnim && gottaHitNote) // JOELwindows7: There's stil more from BOLO!
 					|| (PlayStateChangeables.opponentMode && gottaHitNote && (section.altAnim || section.CPUAltAnim))
-					|| (PlayStateChangeables.opponentMode && !gottaHitNote && section.playerAltAnim)
-					;
+					|| (PlayStateChangeables.opponentMode && !gottaHitNote && section.playerAltAnim);
 
 				if (susLength > 0)
 					swagNote.isParent = true;
@@ -3615,23 +3632,22 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				var floorSus:Int = Math.floor(susLength);
 				if (floorSus > 0)
 				{
-					//for (susNote in 0...Math.floor(susLength))
+					// for (susNote in 0...Math.floor(susLength))
 					for (susNote in 0...floorSus + 1) // JOELwindows7: & yeah this too BOLO
 					{
 						oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
-						var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false,
-							false, songNotes[4], songNotes[5]); // JOELwindows7: here sustain note too.
+						var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true,
+							false, false, songNotes[4], songNotes[5]); // JOELwindows7: here sustain note too.
 						sustainNote.hitsoundPath = songNotes[6]; // JOELwindows7: and the hit sound file name as well.
 						sustainNote.scrollFactor.set();
 						unspawnNotes.push(sustainNote);
 						sustainNote.isAlt = songNotes[3]
 							|| ((section.altAnim || section.CPUAltAnim) && !gottaHitNote)
-							|| (section.playerAltAnim && gottaHitNote)
-							// JOELwindows7: & the BOLO's more check
+							|| (section.playerAltAnim && gottaHitNote) // JOELwindows7: & the BOLO's more check
 							|| (PlayStateChangeables.opponentMode && gottaHitNote && (section.altAnim || section.CPUAltAnim))
-							|| (PlayStateChangeables.opponentMode && !gottaHitNote && section.playerAltAnim);
-							;
+							|| (PlayStateChangeables.opponentMode && !gottaHitNote && section.playerAltAnim) // JOELwindows7: LIMI
+						;
 
 						sustainNote.mustPress = gottaHitNote;
 
@@ -3673,7 +3689,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	}
 
 	private function generateStaticArrows(player:Int, ?tween:Bool = true):Void // JOELwindows7: BOLO add.
-	// you can now optionally disable tween strum bar fancy entrance!
+		// you can now optionally disable tween strum bar fancy entrance!
 	{
 		for (i in 0...4)
 		{
@@ -3683,11 +3699,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// defaults if no noteStyle was found in chart
 			var noteTypeCheck:String = 'normal';
 
-			JOELwindows7: BOLO remove disable CPU strum on optimize
+			// JOELwindows7:BOLO remove disable CPU strum on optimize
 			/*
-			if (PlayStateChangeables.Optimize && player == 0)
-				continue;
-			*/
+				if (PlayStateChangeables.optimize && player == 0)
+					continue;
+			 */
 
 			if (SONG.noteStyle == null && FlxG.save.data.overrideNoteskins)
 			{
@@ -3730,8 +3746,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				default:
 					babyArrow.frames = noteskinSprite;
 					if (FlxG.save.data.traceSongChart) // JOELwindows7: this is gets bigger, the bigger Chart JSON is.
-					// may cause lag! turn off to have clean Trace.
-					Debug.logTrace(babyArrow.frames);
+						// may cause lag! turn off to have clean Trace.
+						Debug.logTrace(babyArrow.frames);
 					for (j in 0...4)
 					{
 						babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
@@ -3754,16 +3770,20 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			babyArrow.scrollFactor.set();
 
 			if (storyPlaylist.length < PlayStateChangeables.howManySongThisWeek) // JOELwindows7: BOLO. Change to 4 if your week has more than 3 songs.
-			// thancc but I just rather count this automatically instead.
+				// thancc but I just rather count this automatically instead.
 				babyArrow.alpha = 1;
-			if (!isStoryMode || storyPlaylist.length >= PlayStateChangeables.howManySongThisWeek || SONG.songId == 'tutorial' || tankIntroEnd)
-			// JOELwindows7: BOLO. For default each week has 3 songs. So only in the first song will do the tween, in the others the strums already appeared.
+			if (!isStoryMode
+				|| storyPlaylist.length >= PlayStateChangeables.howManySongThisWeek
+				|| SONG.songId == 'tutorial'
+				|| tankIntroEnd)
+				// JOELwindows7: BOLO. For default each week has 3 songs. So only in the first song will do the tween, in the others the strums already appeared.
 			{
 				babyArrow.y -= 10;
 				babyArrow.alpha = 0;
 				// JOELwindows7: execute stage script & hscript
 				if (!FlxG.save.data.middleScroll || (executeModchart || executeModHscript) || player == 1)
-					createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)}); // JOELwindows7: managed BOLO tween.
+					createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
+						{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)}); // JOELwindows7: managed BOLO tween.
 			}
 
 			babyArrow.ID = i;
@@ -3798,45 +3818,45 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			}
 
 			babyArrow.playAnim('static');
-			babyArrow.x += 98.5; //JOELwindows7: BOLO push left a bit. was 110
+			babyArrow.x += 98.5; // JOELwindows7: BOLO push left a bit. was 110
 			babyArrow.x += ((FlxG.width / 2) * player);
 
 			// JOELwindows7: filtere Haxe script. also BOLO new stuffs!!!
-			//if (PlayStateChangeables.Optimize || (FlxG.save.data.middleScroll && !(executeModchart || executeModHscript)))
+			// if (PlayStateChangeables.optimize || (FlxG.save.data.middleScroll && !(executeModchart || executeModHscript)))
 			if (FlxG.save.data.middleScroll && (!(executeModchart || executeModHscript) || !sourceModchart))
 			{
 				if (!PlayStateChangeables.opponentMode)
 					babyArrow.x -= 303.5; // JOELwindows7: was 320.
 
-					// JOELwindows7: interupt now! We got Psyched cpu static arrow positionings in middle scroll mode. watch this!
-					if (player == 0)
+				// JOELwindows7: interupt now! We got Psyched cpu static arrow positionings in middle scroll mode. watch this!
+				if (player == 0)
+				{
+					babyArrow.x += 320; // JOELwindows7: hey push the position back for the CPU okay.
+					if (i >= 0 && i <= 1) // JOELwindows7: here 1st two of CPU arrow
 					{
-						babyArrow.x += 320; // JOELwindows7: hey push the position back for the CPU okay.
-						if (i >= 0 && i <= 1) // JOELwindows7: here 1st two of CPU arrow
-						{
-							babyArrow.x += 20;
-						}
-						else if (i >= 2 && i <= 3) // JOELwindows7: and then rest 2 of the CPU arrow.
-						{
-							babyArrow.x += 600;
-						}
+						babyArrow.x += 20;
+					}
+					else if (i >= 2 && i <= 3) // JOELwindows7: and then rest 2 of the CPU arrow.
+					{
+						babyArrow.x += 600;
 					}
 				}
-				else {
-					babyArrow.x += 311.5;
+			}
+			else
+			{
+				babyArrow.x += 311.5;
 
-					// JOELwindows7: repeat for opponent mode
-					if (player == 1)
+				// JOELwindows7: repeat for opponent mode
+				if (player == 1)
+				{
+					babyArrow.x += 320; // JOELwindows7: hey push the position back for the CPU okay.
+					if (i >= 4 && i <= 5) // JOELwindows7: here 1st two of CPU arrow
 					{
-						babyArrow.x += 320; // JOELwindows7: hey push the position back for the CPU okay.
-						if (i >= 4 && i <= 5) // JOELwindows7: here 1st two of CPU arrow
-						{
-							babyArrow.x += 20; // TODO: optimize pls
-						}
-						else if (i >= 6 && i <= 7) // JOELwindows7: and then rest 2 of the CPU arrow.
-						{
-							babyArrow.x += 600; // TODO: optimize pls
-						}
+						babyArrow.x += 20; // TODO: optimize pls
+					}
+					else if (i >= 6 && i <= 7) // JOELwindows7: and then rest 2 of the CPU arrow.
+					{
+						babyArrow.x += 600; // TODO: optimize pls
 					}
 				}
 			}
@@ -3871,7 +3891,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// JOELwindows7: make public for modchart
 	public function tweenCamIn():Void
 	{
-		createTween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});// JOELwindows7: BOLO managed tweener
+		createTween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut}); // JOELwindows7: BOLO managed tweener
 	}
 
 	override function openSubState(SubState:FlxSubState)
@@ -3897,7 +3917,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				if (vocals2.playing)
 					vocals2.pause();
 
-			//JOELwindows7: BOLO deactivate Lua tween receptor
+			// JOELwindows7: BOLO deactivate Lua tween receptor
 			#if FEATURE_LUAMODCHART
 			if (LuaReceptor.receptorTween != null)
 				LuaReceptor.receptorTween.active = false;
@@ -3984,12 +4004,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 		else if (paused)
 		{
-			//JOELwindows7: BOLO resumes video. pls bring that our function here!
+			// JOELwindows7: BOLO resumes video. pls bring that our function here!
 			#if FEATURE_VLC
-			if(useVLC && vlcHandler != null)
+			if (useVLC && vlcHandler != null)
 				vlcHandler.bitmap.resume();
 			#elseif (FEATURE_WEBM && !FEATURE_VLC)
-			if(useVideo && webmHandler != null)
+			if (useVideo && webmHandler != null)
 				webmHandler.resume();
 			#end
 
@@ -4017,13 +4037,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (scrollTween != null)
 				scrollTween.active = true;
 
-
 			if (!startTimer.finished)
 				startTimer.active = true;
 			paused = false;
 
 			#if FEATURE_DISCORD
-			//if (startTimer.finished)
+			// if (startTimer.finished)
 			if (FlxG.save.data.discordMode != 0) // JOELwindows7: BOLO discord mode
 			{
 				DiscordClient.changePresence(detailsText
@@ -4080,19 +4099,19 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// JOELwindows7: pls install BOLO manipulate audio!
 		/*
-		@:privateAccess
-		{
-			// JOELwindows7: add haxedef FEATURE_AUDIO_MANIPULATE if cpp desktop?
-			#if FEATURE_AUDIO_MANIPULATE
-			// The __backend.handle attribute is only available on native.
-			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals.playing)
-				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals2.playing) // JOELwindows7: ye
-				lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			#end
-		}
-		*/
+			@:privateAccess
+			{
+				// JOELwindows7: add haxedef FEATURE_AUDIO_MANIPULATE if cpp desktop?
+				#if FEATURE_AUDIO_MANIPULATE
+				// The __backend.handle attribute is only available on native.
+				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+				if (vocals.playing)
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+				if (vocals2.playing) // JOELwindows7: ye
+					lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+				#end
+			}
+		 */
 		if (FlxG.sound.music.playing)
 			manipulateTheAudio(); // JOELwindows7: there you go! BOLO manipulate audio!
 
@@ -4100,22 +4119,22 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// JOELwindows7: BOLO remove this. okay honestly why this here??
 		/*
-		#if FEATURE_DISCORD
-		DiscordClient.changePresence(detailsText
-			+ " "
-			+ SONG.songName
-			+ " ("
-			+ storyDifficultyText
-			+ ") "
-			+ Ratings.GenerateLetterRank(accuracy),
-			"\nAcc: "
-			+ HelperFunctions.truncateFloat(accuracy, 2)
-			+ "% | Score: "
-			+ songScore
-			+ " | Misses: "
-			+ misses, iconRPC);
-		#end
-		*/
+			#if FEATURE_DISCORD
+			DiscordClient.changePresence(detailsText
+				+ " "
+				+ SONG.songName
+				+ " ("
+				+ storyDifficultyText
+				+ ") "
+				+ Ratings.GenerateLetterRank(accuracy),
+				"\nAcc: "
+				+ HelperFunctions.truncateFloat(accuracy, 2)
+				+ "% | Score: "
+				+ songScore
+				+ " | Misses: "
+				+ misses, iconRPC);
+			#end
+		 */
 	}
 
 	function percentageOfSong():Float
@@ -4135,11 +4154,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// public static var songRate = 1.5; //JOELwindows7: was here. now deleted.
 	public var stopUpdate = false;
 	public var removedVideo = false;
-
 	public var currentBPM = 0;
-
 	public var updateFrame = 0;
-
 	public var pastScrollChanges:Array<Song.Event> = [];
 
 	var currentLuaIndex = 0;
@@ -4149,7 +4165,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		#if !debug
 		perfectMode = false;
 		#end
-		if (!PlayStateChangeables.Optimize)
+		if (!PlayStateChangeables.optimize)
 			Stage.update(elapsed);
 
 		// JOELwindows7: BOLO tween & timer manager updates
@@ -4276,21 +4292,21 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				}
 
 				// JOELwindows7: BOLO keeps notes on its cameras!
-				//if (executeModchart || executeModHscript) // JOELwindows7: hey, hscript too pls
-				//{
-					// #if FEATURE_LUAMODCHART //JOELwindows7: why tho? there is also hscript too.
-					/*
+				// if (executeModchart || executeModHscript) // JOELwindows7: hey, hscript too pls
+				// {
+				// #if FEATURE_LUAMODCHART //JOELwindows7: why tho? there is also hscript too.
+				/*
 					if (!dunceNote.isSustainNote)
 						dunceNote.cameras = [camNotes];
 					else
 						dunceNote.cameras = [camSustains];
-					*/
-					// #end
-				//}
-				//else
-				//{
+				 */
+				// #end
+				// }
+				// else
+				// {
 				//	dunceNote.cameras = [camHUD];
-				//}
+				// }
 				// JOELwindows7: You know what, get the new BOLO's simpler one.
 				dunceNote.cameras = [camNotes];
 				if (dunceNote.isSustainNote)
@@ -4304,19 +4320,19 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// JOELwindows7: audio manipulate haxedef
 		/*
-		#if FEATURE_AUDIO_MANIPULATE
-		if (FlxG.sound.music.playing)
-			@:privateAccess
-		{
-			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals.playing)
-				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			// JOELwindows7: ye
-			if (vocals2.playing)
-				lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-		}
-		#end
-		*/
+			#if FEATURE_AUDIO_MANIPULATE
+			if (FlxG.sound.music.playing)
+				@:privateAccess
+			{
+				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+				if (vocals.playing)
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+				// JOELwindows7: ye
+				if (vocals2.playing)
+					lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			}
+			#end
+		 */
 		// JOELwindows7: BOLO's additional message:
 		// Pull request that support new pitch shifting functions for New Dev Lime version: https://github.com/openfl/lime/pull/1510
 		// YOOO WTF PULLED BY NINJAMUFFIN?? WEEK 8 LEAK???
@@ -4359,9 +4375,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					}
 
 					// JOELwindows7: Here BOLO's song end checks
-					//if (FlxG.save.data.endSongEarly ? ((FlxG.sound.music.time / songMultiplier) > (songLength - 0)) : musicCompleted)
+					// if (FlxG.save.data.endSongEarly ? ((FlxG.sound.music.time / songMultiplier) > (songLength - 0)) : musicCompleted)
 					if (FlxG.save.data.endSongEarly ? ((FlxG.sound.music.length / songMultiplier) - Conductor.songPosition <= 0) : musicCompleted)
-					// WELL THAT WAS EASY
+						// WELL THAT WAS EASY
 						// JOELwindows7: was:
 						// if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 100))
 					{
@@ -4440,7 +4456,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				if (timingSegBpm != Conductor.bpm)
 				{
-					//trace("BPM CHANGE to " + timingSegBpm);
+					// trace("BPM CHANGE to " + timingSegBpm);
 					Debug.logInfo("BPM CHANGE to " + timingSegBpm); // JOELwindows7: ey BOLO wouldn't this be noisy also on Release & Final build?
 					Conductor.changeBPM(timingSegBpm, false);
 					Conductor.crochet = ((60 / (timingSegBpm) * 1000)) / songMultiplier;
@@ -4469,8 +4485,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			if (newScroll != 0)
 			{
+				// scrollSpeed *= newScroll; // JOELwindows7: BOLO's adds
 				PlayStateChangeables.scrollSpeed *= newScroll;
-				scrollSpeed *= newScroll; // JOELwindows7: BOLO's adds
 			}
 		}
 
@@ -4482,14 +4498,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (GlobalVideo.get().ended && !removedVideo)
 			{
 				/*
-				remove(videoSprite);
-				#if FEATURE_VLC
-				// if (vlcHandler != null)
-				remove(vlcHandler);
-				#end
-				*/
+					remove(videoSprite);
+					#if FEATURE_VLC
+					// if (vlcHandler != null)
+					remove(vlcHandler);
+					#end
+				 */
 				#if (FEATURE_WEBM && !FEATURE_VLC)
-				if(videoSprite != null)
+				if (videoSprite != null)
 					remove(videoSprite);
 				removedVideo = true;
 				#end
@@ -4498,7 +4514,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: VLC version
 		if (useVLC && vlcHandler != null && !stopUpdate)
 		{
-			if (vlcHandlerHasFinished && !removedVideo){
+			if (vlcHandlerHasFinished && !removedVideo)
+			{
 				#if FEATURE_VLC
 				remove(vlcHandler);
 				#end
@@ -4576,7 +4593,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			camSustains.x = camHUD.x;
 			camSustains.y = camHUD.y;
 			camSustains.angle = camHUD.angle;
-			//JOELwindows7: new cams!
+			// JOELwindows7: new cams!
 			camStrums.zoom = camHUD.zoom;
 			camStrums.x = camHUD.x;
 			camStrums.y = camHUD.y;
@@ -4600,7 +4617,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: the hscript version
 		if (executeModHscript && hscriptModchart != null && songStarted)
 		{
-			hscriptModChart.setVar('zoomAllowed', FlxG.save.data.camzoom); // JOELwindows7: BOLO allow zoom check
+			hscriptModchart.setVar('zoomAllowed', FlxG.save.data.camzoom); // JOELwindows7: BOLO allow zoom check
 			hscriptModchart.setVar('songPos', Conductor.songPosition);
 			hscriptModchart.setVar('hudZoom', camHUD.zoom);
 			hscriptModchart.setVar('curBeat', HelperFunctions.truncateFloat(curDecimalBeat, 3));
@@ -4666,7 +4683,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			camSustains.x = camHUD.x;
 			camSustains.y = camHUD.y;
 			camSustains.angle = camHUD.angle;
-			//JOELwindows7: new cams!
+			// JOELwindows7: new cams!
 			camStrums.zoom = camHUD.zoom;
 			camStrums.x = camHUD.x;
 			camStrums.y = camHUD.y;
@@ -4762,7 +4779,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		if (FlxG.keys.justPressed.FIVE && songStarted)
 			// JOELwindows7:wait. where's debug sevened? why.. WaveformTest?!??!?
 		{
-			//songMultiplier = 1; // JOELwindows7: BOLO disable this anymore.
+			// songMultiplier = 1; // JOELwindows7: BOLO disable this anymore.
 			immediatelyRemoveVideo(); // JOELwindows7: remove video bg useVideo useVLC
 			cannotDie = true;
 			removeTouchScreenButtons();
@@ -4774,14 +4791,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
 			/*
-			#if FEATURE_LUAMODCHART
-			if (luaModchart != null)
-			{
-				luaModchart.die();
-				luaModchart = null;
-			}
-			#end
-			*/
+				#if FEATURE_LUAMODCHART
+				if (luaModchart != null)
+				{
+					luaModchart.die();
+					luaModchart = null;
+				}
+				#end
+			 */
 			scronchModcharts(); // JOELwindows7: do this immediately from now on.
 		}
 
@@ -4799,7 +4816,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			executeStageScript = false;
 			executeStageHscript = false;
 
-			//songMultiplier = 1;
+			// songMultiplier = 1;
 			immediatelyRemoveVideo(); // JOELwindows7: remove video bg useVideo useVLC
 			cannotDie = true;
 			removeTouchScreenButtons();
@@ -4812,20 +4829,20 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
 			/*
-			#if FEATURE_LUAMODCHART
-			if (luaModchart != null)
-			{
-				luaModchart.die();
-				luaModchart = null;
-			}
-			if (stageScript != null)
-			{
-				stageScript.die();
-				stageScript = null;
-			}
-			#end
-			scronchHscript();
-			*/
+				#if FEATURE_LUAMODCHART
+				if (luaModchart != null)
+				{
+					luaModchart.die();
+					luaModchart = null;
+				}
+				if (stageScript != null)
+				{
+					stageScript.die();
+					stageScript = null;
+				}
+				#end
+				scronchHscript();
+			 */
 			scronchModcharts(); // JOELwindows7: do this immediately from now on.
 			haveDebugSevened = false;
 		}
@@ -4834,7 +4851,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
 		// JOELwindows7: use new BOLO iconLerp
-		//var iconLerp = 0.5;
+		// var iconLerp = 0.5;
 		var iconLerp = CoolUtil.boundTo(1 - (elapsed * 35 * songMultiplier), 0, 1);
 		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, iconLerp)));
 		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, iconLerp)));
@@ -4899,7 +4916,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			scronchModcharts(); // JOELwindows7: do this immediately from now on.
 		}
 
-		if (!PlayStateChangeables.Optimize)
+		if (!PlayStateChangeables.optimize)
 			if (FlxG.keys.justPressed.EIGHT && songStarted)
 			{
 				removeTouchScreenButtons();
@@ -4947,7 +4964,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			scronchModcharts(); // JOELwindows7: do this immediately from now on.
 		}
 
-		//JOELwindows7: additionally, BOLO has animation debug for gf!
+		// JOELwindows7: additionally, BOLO has animation debug for gf!
 		if (FlxG.keys.justPressed.THREE)
 		{
 			removeTouchScreenButtons();
@@ -5002,7 +5019,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		if (skipActive && Conductor.songPosition >= skipTo)
 		{
-			//remove(skipText);
+			// remove(skipText);
 			// JOELwindows7: BOLO's more elaborate skip text fade that Kade forgot bruh
 			createTween(skipText, {alpha: 0}, 0.2, {
 				onComplete: function(tw)
@@ -5170,14 +5187,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						case 'philly':
 							{
 								// General duration of the song
-								//if (curBeat < 250)
+								// if (curBeat < 250)
 								if (curStep < Math.round(1000 * songMultiplier)) // JOELwindows7: use BOLO's songMiltiplier based!
 								{
 									// Beats to skip or to stop GF from cheering
-									//if (curBeat != 184 && curBeat != 216)
-									if (curStep != Math.round(736 * songMultiplier) && curStep != Math.round(864 * songMultiplier)) // JOELwindows7: BOLO ye
+									// if (curBeat != 184 && curBeat != 216)
+									if (curStep != Math.round(736 * songMultiplier)
+										&& curStep != Math.round(864 * songMultiplier)) // JOELwindows7: BOLO ye
 									{
-										//if (curBeat % 16 == 8)
+										// if (curBeat % 16 == 8)
 										if (curStep % Math.round(64 * songMultiplier) == Math.round(32 * songMultiplier)) // JOELwindows7: BOLO ye
 										{
 											// Just a garantee that it'll trigger just once
@@ -5195,10 +5213,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						case 'bopeebo':
 							{
 								// Where it starts || where it ends
-								//if (curBeat > 5 && curBeat < 130)
-								if (curStep > Math.round(20 * songMultiplier) && curStep < Math.round(520 * songMultiplier)) // JOELwindows7 BOLO ye
+								// if (curBeat > 5 && curBeat < 130)
+								if (curStep > Math.round(20 * songMultiplier)
+									&& curStep < Math.round(520 * songMultiplier)) // JOELwindows7 BOLO ye
 								{
-									//if (curBeat % 8 == 7)
+									// if (curBeat % 8 == 7)
 									if (curStep % Math.round(32 * songMultiplier) == Math.round(28 * songMultiplier)) // JOELwindows7: BOLO ye
 									{
 										if (!triggeredAlready)
@@ -5215,13 +5234,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						case 'blammed':
 							{
 								// JOELwindows7: BOLO ye
-								//if (curBeat > 30 && curBeat < 190)
+								// if (curBeat > 30 && curBeat < 190)
 								if (curStep > Math.round(120 * songMultiplier) && curStep < Math.round(760 * songMultiplier))
 								{
-									//if (curBeat < 90 || curBeat > 128)
+									// if (curBeat < 90 || curBeat > 128)
 									if (curStep < Math.round(360 * songMultiplier) || curStep > Math.round(512 * songMultiplier))
 									{
-										//if (curBeat % 4 == 2)
+										// if (curBeat % 4 == 2)
 										if (curStep % Math.round(16 * songMultiplier) == Math.round(8 * songMultiplier))
 										{
 											if (!triggeredAlready)
@@ -5241,12 +5260,16 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						case 'cocoa':
 							{
 								// JOELwindows7: yeah BOLO.
-								//if (curBeat < 170)
+								// if (curBeat < 170)
 								if (curStep < Math.round(680 * songMultiplier))
 								{
-									if (curBeat < 65 || curBeat > 130 && curBeat < 145)
+									// if (curBeat < 65 || curBeat > 130 && curBeat < 145)
+									if (curStep < Math.round(260 * songMultiplier)
+										|| curStep > Math.round(520 * songMultiplier)
+										&& curStep < Math.round(580 * songMultiplier))
 									{
-										if (curBeat % 16 == 15)
+										// if (curBeat % 16 == 15)
+										if (curStep % Math.round(64 * songMultiplier) == Math.round(60 * songMultiplier))
 										{
 											if (!triggeredAlready)
 											{
@@ -5261,9 +5284,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							}
 						case 'eggnog':
 							{
-								if (curBeat > 10 && curBeat != 111 && curBeat < 220)
+								// JOELwindows7: Yeah BOLO
+								// if (curBeat > 10 && curBeat != 111 && curBeat < 220)
+								if (curStep > Math.round(40 * songMultiplier)
+									&& curStep != Math.round(444 * songMultiplier)
+									&& curStep < Math.round(880 * songMultiplier))
 								{
-									if (curBeat % 8 == 7)
+									// if (curBeat % 8 == 7)
+									if (curStep % Math.round(32 * songMultiplier) == Math.round(28 * songMultiplier))
 									{
 										if (!triggeredAlready)
 										{
@@ -5285,9 +5313,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 								// I think if curBeat modulo 4 is 0 means every new section?
 								// yes they are. so there are 0 1 2 3 in curBeat modulo 4.
 								// you can granularlize it if you want like 0 1 2 3 4 5 6 7 in curBeat % 8 etc.
-								if (curBeat < 16 || (curBeat > 80 && curBeat < 96) || (curBeat > 160 && curBeat < 192) || (curBeat > 264 && curBeat < 304))
+								// if (curBeat < 16 || (curBeat > 80 && curBeat < 96) || (curBeat > 160 && curBeat < 192) || (curBeat > 264 && curBeat < 304))
+								if (getStepCompare(64, LESSER) || getStepBetween(320, 284) || getStepBetween(640, 768) || getStepBetween(1056, 1216))
 								{
-									if (curBeat % 4 == 0 || curBeat % 4 == 2)
+									// if (curBeat % 4 == 0 || curBeat % 4 == 2)
+									// if (curStep % Math.round(16 * songMultiplier) == 0
+									// 	|| curStep % Math.round(16 * songMultiplier) == Math.round(8 * songMultiplier))
+									if (getStepModulo(16, 0) || getStepModulo(16, 8))
 									{
 										if (!triggeredAlready)
 										{
@@ -5303,8 +5335,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						case 'well-meet-again':
 							{
 								// JOELwindows7: cheer on the beatdrop yeay
-								if (!inCutscene && curBeat < 307) // make sure do this only when not in cutscene, & song still going
-									if ((curBeat > 80 && curBeat < 112) || (curBeat > 176 && curBeat < 208) || (curBeat > 272 && curBeat < 308))
+								// if (!inCutscene && curBeat < 307) // make sure do this only when not in cutscene, & song still going
+								if (!inCutscene && getStepCompare(1228, LESSER))
+									// if ((curBeat > 80 && curBeat < 112) || (curBeat > 176 && curBeat < 208) || (curBeat > 272 && curBeat < 308))
+									if (getStepBetween(320, 448) || getStepBetween(704, 832) || getStepBetween(1088, 1232))
 									{
 										// copy from the hardcode zoom milfe
 										cheerNow(4, 2, true);
@@ -5314,7 +5348,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							{
 								// JOELwindows7: silence is music lmao
 								// John Cage = 4'33", haha
-								if (curBeat % 4 == 0)
+								// if (curBeat % 4 == 0)
+								if (getStepModulo(16, 0))
 								{
 									if (!triggeredAlready)
 									{
@@ -5375,7 +5410,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
 				}
 				else
-					// JOELwindows7: yeah cam position dad.
+					// JOELwindows7: yeah cam position dad. PLAYER 2 TURN CAMERA SET POSITION
 					camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
 				#if FEATURE_LUAMODCHART
 				if (luaModchart != null)
@@ -5421,7 +5456,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
 				}
 				else
-					// JOELwindows7: yeah cam position bf.
+					// JOELwindows7: yeah cam position bf. PLAYER 1 TURN CAMERA SET POSITION
 					camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
 
 				#if FEATURE_LUAMODCHART
@@ -5435,7 +5470,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				if (stageHscript != null)
 					stageHscript.executeState('playerOneTurn', []);
 
-				if (!PlayStateChangeables.Optimize)
+				if (!PlayStateChangeables.optimize)
 					switch (Stage.curStage)
 					{
 						case 'limo':
@@ -6166,18 +6201,18 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
 		/*
-		if (useVideo)
-		{
-			GlobalVideo.get().stop();
-			PlayState.instance.remove(PlayState.instance.videoSprite);
-			// JOELwindows7: VLC stop!
-			#if FEATURE_VLC
-			if (vlcHandler != null)
-				vlcHandler.kill();
-			PlayState.instance.remove(PlayState.instance.vlcHandler);
-			#end
-		}
-		*/
+			if (useVideo)
+			{
+				GlobalVideo.get().stop();
+				PlayState.instance.remove(PlayState.instance.videoSprite);
+				// JOELwindows7: VLC stop!
+				#if FEATURE_VLC
+				if (vlcHandler != null)
+					vlcHandler.kill();
+				PlayState.instance.remove(PlayState.instance.vlcHandler);
+				#end
+			}
+		 */
 		immediatelyRemoveVideo(); // JOELwindows7: use this instead!
 
 		if (!loadRep)
@@ -7248,7 +7283,6 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	#end
 	public var vlcHandlerHasFinished:Bool = false; // JOELwindows7: flag to be lifted by vlcHandler when video finish.
 	public var playingDathing = false;
-
 	public var videoSprite:FlxUISprite;
 
 	public function backgroundVideo(source:String) // for background videos
@@ -7489,6 +7523,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		judgementCounter.screenCenter(Y); // JOELwindows7: yeah
 	}
 
+	// JOELwindows7: BOLO update score text like osu!
+	function updateScoreText()
+	{
+		scoreTxt.text = Ratings.CalculateRanking(shownSongScore, songScoreDef, nps, maxNPS,
+			(FlxG.save.data.roundAccuracy ? FlxMath.roundDecimal(shownAccuracy, 0) : shownAccuracy), boyfriend.getHeartRate(0), boyfriend.getHeartTier(0));
+	}
+
 	function getKeyPresses(note:Note):Int
 	{
 		var possibleNotes:Array<Note> = []; // copypasted but you already know that
@@ -7508,7 +7549,6 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	var mashing:Int = 0;
 	var mashViolations:Int = 0;
-
 	var etternaModeScore:Int = 0;
 
 	function noteCheck(controlArray:Array<Bool>, note:Note):Void // sorry lol
@@ -8107,7 +8147,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				}
 			}
 
-			if (PlayStateChangeables.Optimize)
+			if (PlayStateChangeables.optimize)
 			{
 				if (vocals.volume == 0 && !currentSection.mustHitSection)
 					vocals.volume = 1;
@@ -8231,9 +8271,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	}
 
 	// var curLight:Int = 0; //JOELwindows7: RIP, curLight variable. maybe moved to Stage.hx
-
 	// JOELwindows7: BOLO's stuffs zoids
-
 	// update setting
 	public function updateSettings():Void
 	{
@@ -8334,10 +8372,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// change scroll speed
 	public function changeScrollSpeed(mult:Float, time:Float, ease):Void
 	{
-		var newSpeed = scrollSpeed * mult;
+		var newSpeed = PlayStateChangeables.scrollSpeed * mult;
 		if (time <= 0)
 		{
-			scrollSpeed *= newSpeed;
+			PlayStateChangeables.scrollSpeed *= newSpeed;
 		}
 		else
 		{
@@ -8352,8 +8390,334 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 	}
 
-		// LUA MODCHART TO SOURCE FOR HTML5 TUTORIAL MODCHART :)
-	//#if !cpp
+	// JOELwindows7: BOLO tankIntro
+	public var tankIntroEnd:Bool = false;
+
+	// JOELwindows7: BOLO comprehensive tankIntro!!!
+	function tankIntro()
+	{
+		dad.visible = false;
+		precacheList.set('DISTORTO', 'music');
+		var tankManEnd:Void->Void = function()
+		{
+			tankIntroEnd = true;
+			var timeForStuff:Float = Conductor.crochet / 1000 * 5;
+			createTween(FlxG.camera, {zoom: Stage.camZoom}, timeForStuff, {ease: FlxEase.quadInOut});
+			startCountdown();
+			camStrums.visible = true;
+			camHUD.visible = true;
+			dad.visible = true;
+
+			var cutSceneStuff:Array<FlxSprite> = [Stage.swagBacks['tankman']];
+			if (SONG.songId == 'stress')
+			{
+				cutSceneStuff.push(Stage.swagBacks['bfCutscene']);
+				cutSceneStuff.push(Stage.swagBacks['gfCutscene']);
+			}
+			for (char in cutSceneStuff)
+			{
+				char.kill();
+				remove(char);
+				char.destroy();
+			}
+			Paths.clearUnusedMemory();
+		}
+
+		switch (SONG.songId)
+		{
+			case 'ugh':
+				removeStaticArrows();
+				camHUD.visible = false;
+				precacheList.set('wellWellWell', 'sound');
+				precacheList.set('killYou', 'sound');
+				precacheList.set('bfBeep', 'sound');
+				var WellWellWell:FlxSound = new FlxSound().loadEmbedded(Paths.sound('wellWellWell', 'week7'));
+
+				FlxG.sound.list.add(WellWellWell);
+
+				FlxG.sound.playMusic(Paths.music('DISTORTO', 'week7'));
+				FlxG.sound.music.fadeIn();
+				Stage.swagBacks['tankman'].animation.addByPrefix('wellWell', 'TANK TALK 1 P1', 24, false);
+				Stage.swagBacks['tankman'].animation.addByPrefix('killYou', 'TANK TALK 1 P2', 24, false);
+				Stage.swagBacks['tankman'].animation.play('wellWell', true);
+				FlxG.camera.zoom *= 1.2;
+				camFollow.x = 436.5;
+				camFollow.y = 534.5;
+
+				// Well well well, what do we got here?
+				createTimer(0.1, function(tmr:FlxTimer)
+				{
+					WellWellWell.play(true);
+				});
+
+				// Move camera to BF
+				createTimer(3, function(tmr:FlxTimer)
+				{
+					camFollow.x += 400;
+					camFollow.y += 60;
+					// Beep!
+					createTimer(1.5, function(tmr:FlxTimer)
+					{
+						boyfriend.playAnim('singUP', true);
+						FlxG.sound.play(Paths.sound('bfBeep'));
+					});
+
+					// Move camera to Tankman
+					createTimer(3, function(tmr:FlxTimer)
+					{
+						camFollow.x = 436.5;
+						camFollow.y = 534.5;
+						boyfriend.dance();
+						Stage.swagBacks['tankman'].animation.play('killYou', true);
+						FlxG.sound.play(Paths.sound('killYou'));
+
+						// We should just kill you but... what the hell, it's been a boring day... let's see what you've got!
+						createTimer(6.1, function(tmr:FlxTimer)
+						{
+							tankManEnd();
+						});
+					});
+				});
+
+			case 'guns':
+				precacheList.set('tankSong2', 'sound');
+				FlxG.sound.playMusic(Paths.music('DISTORTO', 'week7'), 0, false);
+				FlxG.sound.music.fadeIn();
+
+				var tightBars:FlxSound = new FlxSound().loadEmbedded(Paths.sound('tankSong2', 'week7'));
+				FlxG.sound.list.add(tightBars);
+
+				laneunderlayOpponent.alpha = FlxG.save.data.laneTransparency;
+				laneunderlay.alpha = FlxG.save.data.laneTransparency;
+
+				createTimer(0.01, function(tmr:FlxTimer)
+				{
+					tightBars.play(true);
+				});
+
+				createTimer(0.5, function(tmr:FlxTimer)
+				{
+					createTween(camStrums, {alpha: 0}, 1.5, {ease: FlxEase.quadInOut});
+					createTween(camHUD, {alpha: 0}, 1.5, {
+						ease: FlxEase.quadInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							camHUD.visible = false;
+							camHUD.alpha = 1;
+							camStrums.visible = false;
+							camStrums.alpha = 1;
+							removeStaticArrows();
+							laneunderlayOpponent.alpha = 0;
+							laneunderlay.alpha = 0;
+						}
+					});
+				});
+
+				Stage.swagBacks['tankman'].animation.addByPrefix('tightBars', 'TANK TALK 2', 24, false);
+				Stage.swagBacks['tankman'].animation.play('tightBars', true);
+				boyfriend.animation.curAnim.finish();
+
+				createTimer(1, function(tmr:FlxTimer)
+				{
+					camFollow.x = 436.5;
+					camFollow.y = 534.5;
+				});
+
+				createTimer(4, function(tmr:FlxTimer)
+				{
+					camFollow.y -= 150;
+					camFollow.x += 100;
+				});
+				createTimer(1, function(tmr:FlxTimer)
+				{
+					createTween(FlxG.camera, {zoom: Stage.camZoom * 1.2}, 3, {ease: FlxEase.quadInOut});
+
+					createTween(FlxG.camera, {zoom: Stage.camZoom * 1.2 * 1.2}, 0.5, {ease: FlxEase.quadInOut, startDelay: 3});
+					createTween(FlxG.camera, {zoom: Stage.camZoom * 1.2}, 1, {ease: FlxEase.quadInOut, startDelay: 3.5});
+				});
+
+				createTimer(4, function(tmr:FlxTimer)
+				{
+					gf.playAnim('sad', true);
+					gf.animation.finishCallback = function(name:String)
+					{
+						gf.playAnim('sad', true);
+					};
+				});
+
+				createTimer(11.6, function(tmr:FlxTimer)
+				{
+					camFollow.x = 440;
+					camFollow.y = 534.5;
+					tankManEnd();
+
+					gf.dance();
+					gf.animation.finishCallback = null;
+				});
+
+			case 'stress':
+				Stage.swagBacks['tankman'].setPosition(-77, 307);
+				laneunderlayOpponent.alpha = FlxG.save.data.laneTransparency;
+				laneunderlay.alpha = FlxG.save.data.laneTransparency;
+				precacheList.set('stressCutscene', 'sound');
+
+				precacheList.set('cutscenes/stress2', 'frame');
+
+				#if html5
+				Paths.getSparrowAtlas('cutscenes/stress2', 'week7');
+				#end
+
+				createTimer(0.5, function(tmr:FlxTimer)
+				{
+					createTween(camStrums, {alpha: 0}, 1.5, {ease: FlxEase.quadInOut});
+					createTween(camHUD, {alpha: 0}, 1.5, {
+						ease: FlxEase.quadInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							camHUD.visible = false;
+							camHUD.alpha = 1;
+							camStrums.visible = false;
+							camStrums.alpha = 1;
+							removeStaticArrows();
+							laneunderlayOpponent.alpha = 0;
+							laneunderlay.alpha = 0;
+						}
+					});
+				});
+
+				gf.visible = false;
+				boyfriend.visible = false;
+				createTimer(1, function(tmr:FlxTimer)
+				{
+					camFollow.x = 436.5;
+					camFollow.y = 534.5;
+					createTween(FlxG.camera, {zoom: 0.9 * 1.2}, 1, {ease: FlxEase.quadInOut});
+				});
+
+				Stage.swagBacks['bfCutscene'].animation.finishCallback = function(name:String)
+				{
+					Stage.swagBacks['bfCutscene'].animation.play('idle');
+				}
+
+				Stage.swagBacks['dummyGf'].animation.finishCallback = function(name:String)
+				{
+					Stage.swagBacks['dummyGf'].animation.play('idle');
+				}
+
+				var cutsceneSnd:FlxSound = new FlxSound().loadEmbedded(Paths.sound('stressCutscene'));
+				FlxG.sound.list.add(cutsceneSnd);
+
+				Stage.swagBacks['tankman'].animation.addByPrefix('godEffingDamnIt', 'TANK TALK 3', 24, false);
+				Stage.swagBacks['tankman'].animation.play('godEffingDamnIt', true);
+
+				createTimer(0.01, function(tmr:FlxTimer) // Fixes sync????
+				{
+					cutsceneSnd.play(true);
+				});
+
+				createTimer(14.2, function(tmr:FlxTimer)
+				{
+					Stage.swagBacks['bfCutscene'].animation.finishCallback = null;
+					Stage.swagBacks['dummyGf'].animation.finishCallback = null;
+				});
+
+				createTimer(15.2, function(tmr:FlxTimer)
+				{
+					createTween(camFollow, {x: 650, y: 300}, 1, {ease: FlxEase.sineOut});
+					createTween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 2.25, {ease: FlxEase.quadInOut});
+					createTimer(2.3, function(tmr:FlxTimer)
+					{
+						camFollow.x = 630;
+						camFollow.y = 425;
+						FlxG.camera.zoom = 0.9;
+					});
+
+					Stage.swagBacks['dummyGf'].visible = false;
+					Stage.swagBacks['gfCutscene'].visible = true;
+					Stage.swagBacks['gfCutscene'].animation.play('dieBitch', true);
+					Stage.swagBacks['gfCutscene'].animation.finishCallback = function(name:String)
+					{
+						if (name == 'dieBitch') // Next part
+						{
+							Stage.swagBacks['gfCutscene'].animation.play('getRektLmao', true);
+							Stage.swagBacks['gfCutscene'].offset.set(224, 445);
+						}
+						else
+						{
+							Stage.swagBacks['gfCutscene'].visible = false;
+							Stage.swagBacks['picoCutscene'].visible = true;
+							Stage.swagBacks['picoCutscene'].animation.play('anim', true);
+
+							boyfriend.visible = true;
+							Stage.swagBacks['bfCutscene'].visible = false;
+							boyfriend.playAnim('bfCatch', true);
+							boyfriend.animation.finishCallback = function(name:String)
+							{
+								if (name != 'idle')
+								{
+									boyfriend.playAnim('idle', true);
+									boyfriend.animation.curAnim.finish(); // Instantly goes to last frame
+								}
+							};
+
+							Stage.swagBacks['picoCutscene'].animation.finishCallback = function(name:String)
+							{
+								Stage.swagBacks['picoCutscene'].visible = false;
+								gf.visible = true;
+								Stage.swagBacks['picoCutscene'].animation.finishCallback = null;
+							};
+							Stage.swagBacks['gfCutscene'].animation.finishCallback = null;
+						}
+					};
+				});
+
+				createTimer(19.5, function(tmr:FlxTimer)
+				{
+					Stage.swagBacks['tankman'].frames = Paths.getSparrowAtlas('cutscenes/stress2', 'week7');
+					Stage.swagBacks['tankman'].animation.addByPrefix('lookWhoItIs', 'TANK TALK 3', 24, false);
+					Stage.swagBacks['tankman'].animation.play('lookWhoItIs', true);
+					Stage.swagBacks['tankman'].x += 90;
+					Stage.swagBacks['tankman'].y += 6;
+
+					createTimer(0.5, function(tmr:FlxTimer)
+					{
+						camFollow.x = 436.5;
+						camFollow.y = 534.5;
+					});
+				});
+
+				createTimer(31.2, function(tmr:FlxTimer)
+				{
+					boyfriend.playAnim('singUPmiss', true);
+					boyfriend.animation.finishCallback = function(name:String)
+					{
+						if (name == 'singUPmiss')
+						{
+							boyfriend.playAnim('idle', true);
+							boyfriend.animation.curAnim.finish(); // Instantly goes to last frame
+						}
+					};
+					FlxG.camera.follow(camFollow, LOCKON, 1);
+
+					camFollow.setPosition(1100, 625);
+					FlxG.camera.zoom = 1.3;
+
+					createTimer(1, function(tmr:FlxTimer)
+					{
+						FlxG.camera.zoom = 0.9;
+						camFollow.setPosition(440, 534.5);
+					});
+				});
+				createTimer(35.5, function(tmr:FlxTimer)
+				{
+					tankManEnd();
+					boyfriend.animation.finishCallback = null;
+				});
+		}
+	}
+
+	// LUA MODCHART TO SOURCE FOR HTML5 TUTORIAL MODCHART :)
+	// #if !cpp
 	function elasticCamZoom()
 	{
 		var camGroup:Array<FlxCamera> = [camHUD, camNotes, camSustains, camStrums];
@@ -8386,8 +8750,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	function speedBounce()
 	{
-		var scrollSpeedShit:Float = scrollSpeed;
-		scrollSpeed /= scrollSpeed;
+		var scrollSpeedShit:Float = PlayStateChangeables.scrollSpeed;
+		PlayStateChangeables.scrollSpeed /= PlayStateChangeables.scrollSpeed;
 		changeScrollSpeed(scrollSpeedShit, 0.35 / songMultiplier, FlxEase.sineOut);
 	}
 
@@ -8404,9 +8768,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				ease: FlxEase.smootherStepInOut,
 			}, updateCamZoom.bind(FlxG.camera));
 	}
-	//#end
 
-		// https://github.com/ShadowMario/FNF-PsychEngine/pull/9015
+	// #end
+	// https://github.com/ShadowMario/FNF-PsychEngine/pull/9015
 	// Seems like a good pull request. Credits: Raltyro.
 	private function cachePopUpScore()
 	{
@@ -8462,8 +8826,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		else
 			startCountdown();
 	}
-	// end BOLO's stuffs zoids
 
+	// end BOLO's stuffs zoids
 	// JOELwindows7: not my code. hey, Ninja! you should've white light like I do above
 	// and randomize the color. look at randomizeColoring() above!
 	// JOELwindows7: make cam zoom a function pls
@@ -8947,7 +9311,6 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			stageHscript.die();
 			stageHscript = null;
 		}
-
 	}
 
 	// JOELwindows7: scronch Lua script
@@ -9144,19 +9507,19 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				schoolIntro(doof);
 			// JOELwindows7: BOLO do this!
 			/*
-			case 'ugh', 'guns', 'stress':
-				if (!FlxG.save.data.optimize && FlxG.save.data.background)
-					tankIntro();
-				else
-				{
-					removeStaticArrows();
-					#if FEATURE_MP4VIDEOS
-					startVideo('cutscenes/${SONG.songId}_cutscene');
-					#else
-					startCountdown();
-					#end
-				}
-			*/
+				case 'ugh', 'guns', 'stress':
+					if (!FlxG.save.data.optimize && FlxG.save.data.background)
+						tankIntro();
+					else
+					{
+						removeStaticArrows();
+						#if FEATURE_MP4VIDEOS
+						startVideo('cutscenes/${SONG.songId}_cutscene');
+						#else
+						startCountdown();
+						#end
+					}
+			 */
 			default:
 				// No cutscene intro
 				decideIntroSceneDone(SONG.introCutSceneDoneManually);
@@ -10115,44 +10478,45 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx#L2614
 			#if cpp
-				#if (lime >= "8.0.0")
-				FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
-				if (vocals.playing)
-					vocals._channel.__source.__backend.setPitch(songMultiplier);
-				if (vocals2.playing)
-					vocals._channel.__source.__backend.setPitch(songMultiplier);
-				#else
-				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-				if (vocals.playing)
-					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-				if (vocals2.playing)
-					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-				#end
+			#if (lime >= "8.0.0")
+			FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals.playing)
+				vocals._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals2.playing)
+				vocals._channel.__source.__backend.setPitch(songMultiplier);
+			#else
+			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			if (vocals.playing)
+				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			if (vocals2.playing)
+				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			#end
 			#elseif web
-				#if (lime >= "8.0.0" && lime_howlerjs)
-				FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
-				if (vocals.playing)
-					vocals._channel.__source.__backend.setPitch(songMultiplier);
-				if (vocals2.playing)
-					vocals2._channel.__source.__backend.setPitch(songMultiplier);
-				#else
-				FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
-				if (vocals.playing)
-					vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
-				if (vocals2.playing)
-					vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
-				#end
+			#if (lime >= "8.0.0" && lime_howlerjs)
+			FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals.playing)
+				vocals._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals2.playing)
+				vocals2._channel.__source.__backend.setPitch(songMultiplier);
+			#else
+			FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			if (vocals.playing)
+				vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			if (vocals2.playing)
+				vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			#end
 			#end
 		}
 		#end
 	}
 
 	// JOELwindows7: Here new destroy background video
-	function immediatelyRemoveVideo(){
+	function immediatelyRemoveVideo()
+	{
 		if (useVideo)
 		{
 			GlobalVideo.get().stop();
-			if(videoSprite != null)
+			if (videoSprite != null)
 			{
 				videoSprite.kill();
 				remove(videoSprite);
@@ -10172,9 +10536,37 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			removedVideo = true;
 		}
 	}
-}
 
-// u looked :O -ides
+	// JOELwindows7: Step compare syndication pls
+	function getStepCompare(stepWhich:Int, compareType:CompareTypes):Bool
+	{
+		return CoolUtil.stepCompare(curStep, stepWhich, songMultiplier, compareType);
+	}
+
+	// JOELwindows7: Oh, he needs int version
+	function getStepCompareInt(stepWhich:Int, compareType:Int):Bool
+	{
+		return CoolUtil.stepCompareInt(curStep, stepWhich, songMultiplier, compareType);
+	}
+
+	function getStepCompareStr(stepWhich:Int, compareType:String):Bool
+	{
+		return CoolUtil.stepCompareStr(curStep, stepWhich, songMultiplier, compareType);
+	}
+
+	// JOELwindows7: Syndicate also the between pls
+	function getStepBetween(stepLeft:Int, stepRight:Int, withEquals:Bool = false, leftEquals:Bool = true, rightEquals:Bool = true):Bool
+	{
+		return CoolUtil.stepBetween(curStep, stepLeft, stepRight, songMultiplier, withEquals, leftEquals, rightEquals);
+	}
+
+	// JOELwindows7: the modulo too!!
+	function getStepModulo(stepWhich:Int, equalsWhat:Float = 0):Bool
+	{
+		return CoolUtil.stepModulo(curStep, stepWhich, songMultiplier, equalsWhat);
+	}
+} // u looked :O -ides
+
 // JOELwindows7: Ahei, luckydog7 with Android port, on week 7 yoink, there are these at the end:
 // picoshoot
 typedef Ps =

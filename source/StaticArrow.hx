@@ -11,6 +11,10 @@ using StringTools;
 // JOELwindows7: change the object to FlxUISprite, idk.
 class StaticArrow extends FlxUISprite
 {
+	// JOELwindows7: BOLO lua object reference
+	#if FEATURE_LUAMODCHART
+	public var luaObject:LuaReceptor;
+	#end
 	public var modifiedByLua:Bool = false;
 	public var modAngle:Float = 0; // The angle set by modcharts
 	public var totalOverride:Bool = false; // JOELwindows7: enable to disable special parametering & leave its original parametering.

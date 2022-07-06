@@ -1,5 +1,6 @@
 package;
 
+import Shader;
 import flixel.addons.ui.FlxUISprite;
 import flixel.util.FlxAxes;
 import utils.Asset2File;
@@ -119,6 +120,9 @@ class HaxeScriptState
 	var hscriptState:Map<String, InterpEx>;
 	var defaultUseHaxe:String = "modchart";
 
+	// JOELwindows7: NEW BOLO
+	var lastCalledFunction:String = '';
+
 	// var instancering;
 	// Some other variables
 	public static var hscriptSprite:Map<String, FlxUISprite> = [];
@@ -145,6 +149,7 @@ class HaxeScriptState
 
 	function callHscript(func_name:String, args:Array<Dynamic>, useHaxe:String = "modchart"):Dynamic
 	{
+		lastCalledFunction = func_name; // JOELwindows7: BOLO remember last called function
 		if (retailIsReady)
 		{
 			// if function doesn't exist
@@ -356,11 +361,18 @@ class HaxeScriptState
 		// now with copy from ModChartState.hx
 		setVar("difficulty", PlayState.storyDifficulty);
 		setVar("bpm", Conductor.bpm);
-		setVar("scrollspeed", FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed : PlayState.SONG.speed);
+		// setVar("scrollspeed", FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed : PlayState.SONG.speed);
+		// JOELwindows7: complicated set of scroll speed BOLO yess.
+		setVar("scrollspeed",
+			FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed * PlayState.songMultiplier : PlayState.SONG.speed * PlayState.songMultiplier);
 		setVar("fpsCap", FlxG.save.data.fpsCap);
 		setVar("downscroll", FlxG.save.data.downscroll);
 		setVar("flashing", FlxG.save.data.flashing);
 		setVar("distractions", FlxG.save.data.distractions);
+		setVar("colour", FlxG.save.data.colour); // JOELwindows7: oops forgot Kade's
+		// JOELwindows7: BOLO things
+		setVar("middlescroll", FlxG.save.data.middleScroll);
+		setVar("rate", PlayState.songMultiplier); // Kinda XD since you can modify this through Lua and break the game.
 		trace("setVar those metadata");
 
 		setVar("curStep", 0);
@@ -473,6 +485,12 @@ class HaxeScriptState
 		setVar("Paths", Paths);
 
 		trace("setVar BulbyVR stuffs");
+
+		// JOELwindows7: BOLO precache
+		addCallback("precache", function(asset:String, type:String)
+		{
+			PlayState.instance.precacheList.set(asset, type);
+		});
 
 		// You must init the function callbacks first before even considered existed.
 		addCallback("loaded", function(song)
@@ -638,7 +656,10 @@ class HaxeScriptState
 			if (PlayState.instance.useVLC)
 			{
 				#if FEATURE_VLC
-				// PlayState.instance.vlcHandler.restart();
+				// PlayState.instance.vlcHandler.bitmap.restart();
+				PlayState.instance.vlcHandler.bitmap.pause();
+				PlayState.instance.vlcHandler.bitmap.seek(0);
+				PlayState.instance.vlcHandler.bitmap.play();
 				#end
 			}
 			else
@@ -660,6 +681,27 @@ class HaxeScriptState
 		{
 			PlayState.instance.videoSprite.setGraphicSize(Std.int(PlayState.instance.videoSprite.width * scale));
 		});
+		// JOELwindows7: BOLO set lane underlay
+		addCallback("setLaneUnderLayPos", function(value:Int)
+		{
+			PlayState.instance.laneunderlay.x = value;
+		});
+		// JOELwindows7: & the oppponent ones.
+		addCallback("setOpponentLaneUnderLayOpponentPos", function(value:Int)
+		{
+			PlayState.instance.laneunderlayOpponent.x = value;
+		});
+		// JOELwindows7: Don't forget the lane alpha
+		addCallback("setLaneUnderLayAlpha", function(value:Int)
+		{
+			PlayState.instance.laneunderlay.alpha = value;
+		});
+		// JOELwindows7: and opponent lane alpha
+		addCallback("setOpponentLaneUnderLayOpponentAlpha", function(value:Int)
+		{
+			PlayState.instance.laneunderlayOpponent.alpha = value;
+		});
+		// JOELwindows7: that's it. now the rest.
 		addCallback("setHudAngle", function(x:Float)
 		{
 			PlayState.instance.camHUD.angle = x;
@@ -735,6 +777,38 @@ class HaxeScriptState
 		{
 			PlayState.instance.strumLine.y = y;
 		});
+
+		// JOELwindows7: BOLO note stuffs here we go
+		addCallback("getNotes", function(y:Float)
+		{
+			/*
+				Lua.newtable(lua);
+
+				for (i in 0...PlayState.instance.notes.members.length)
+				{
+					var note = PlayState.instance.notes.members[i];
+					Lua.pushstring(lua, note.LuaNote.className);
+					Lua.rawseti(lua, -2, i);
+				}
+			 */
+
+			for (i in 0...PlayState.instance.notes.members.length)
+			{
+				var note = PlayState.instance.notes.members[i];
+			}
+		});
+
+		addCallback("setScrollSpeed", function(value:Float)
+		{
+			// PlayState.instance.scrollSpeed = value;
+			PlayStateChangeables.scrollSpeed = value; // JOELwindows7: No, Kade use static variable over there instead.
+		});
+
+		addCallback("changeScrollSpeed", function(mult:Float, time:Float, ?ease:String)
+		{
+			PlayState.instance.changeScrollSpeed(mult, time, getFlxEaseByString(ease));
+		});
+		// end BOLO note stuffs
 
 		// Actors
 		addCallback("getRenderedNotes", function()
@@ -1507,6 +1581,40 @@ class HaxeScriptState
 			#end
 		});
 
+		// JOELwindows7: BOLO Psyched shaders!!!!
+		// SHADER SHIT (Thanks old psych engine)
+
+		addCallback("addChromaticAbberationEffect", function(camera:String, chromeOffset:Float = 0.005)
+		{
+			PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
+		});
+
+		addCallback("addVignetteEffect", function(camera:String, radius:Float = 0.5, smoothness:Float = 0.5)
+		{
+			PlayState.instance.addShaderToCamera(camera, new VignetteEffect(radius, smoothness));
+		});
+
+		addCallback("addGameboyEffect", function(camera:String, brightness:Float = 1.0)
+		{
+			PlayState.instance.addShaderToCamera(camera, new GameboyEffect(brightness));
+		});
+
+		addCallback("addCRTEffect", function(camera:String, curved:Bool = true)
+		{
+			PlayState.instance.addShaderToCamera(camera, new CRTEffect(curved));
+		});
+
+		addCallback("addGlitchEffect", function(camera:String, waveSpeed:Float = 0, waveFrq:Float = 0, waveAmp:Float = 0)
+		{
+			PlayState.instance.addShaderToCamera(camera, new GlitchEffect(waveSpeed, waveFrq, waveAmp));
+		});
+
+		addCallback("clearEffects", function(camera:String)
+		{
+			PlayState.instance.clearShaderFromCamera(camera);
+		});
+		// end Psyched shader
+
 		// shader set
 
 		addCallback("setShadersToCamera", function(shaderName:Array<String>, cameraName)
@@ -1719,6 +1827,28 @@ class HaxeScriptState
 			setVar("defaultStrum" + i + "Angle", Math.floor(member.angle));
 			trace("Adding strum" + i);
 		}
+
+		// JOELwindows7: NOW NEW FUNCTIONALITY
+		addCallback('getStepModulo', function(stepWhich:Int, equalsWhat:Float = 0)
+		{
+			@:privateAccess {
+				return PlayState.instance.getStepModulo(stepWhich, equalsWhat);
+			}
+		});
+
+		addCallback('getStepBetween', function(stepLeft:Int, stepRight:Int, withEquals:Bool = false, leftEquals:Bool = true, rightEquals:Bool = true)
+		{
+			@:privateAccess {
+				return PlayState.instance.getStepBetween(stepLeft, stepRight, withEquals, leftEquals, rightEquals);
+			}
+		});
+
+		addCallback('getStepCompare', function(stepWhich:Int, compareType:String)
+		{
+			@:privateAccess {
+				return PlayState.instance.getStepCompareStr(stepWhich, compare);
+			}
+		});
 
 		// JOELwindows7: okay, now here
 		fillInScripts(rawMode, path);
@@ -2076,6 +2206,14 @@ class HaxeScriptState
 		parser = null;
 		script = "";
 		retailIsReady = false;
+	}
+
+	// JOELwindows7: BOLO get FlxEase by string
+	// ouu, we gotta fix capital here. nvm, it's already lowercased so whatever it says caps, some, or not.
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/ModchartState.hx
+	public static function getFlxEaseByString(?ease:String = ''):Float
+	{
+		return HelperFunctions.getFlxEaseByString(ease);
 	}
 }
 
