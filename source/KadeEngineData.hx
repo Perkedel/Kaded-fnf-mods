@@ -80,7 +80,7 @@ class KadeEngineData
 			FlxG.save.data.scrollSpeed = 1;
 
 		if (FlxG.save.data.npsDisplay == null)
-			FlxG.save.data.npsDisplay = false;
+			FlxG.save.data.npsDisplay = true; // JOELwindows7: BRO, set it tru instead!. BOLO did.
 
 		if (FlxG.save.data.frames == null)
 			FlxG.save.data.frames = 10;
@@ -261,6 +261,14 @@ class KadeEngineData
 			FlxG.save.data.hitsound = false; // originally in this game FNF, it's OFF. while osu! is ON
 		}
 
+		// JOELwindows7: BOLO's hitsound select!
+		if (FlxG.save.data.hitSoundSelect == null)
+			FlxG.save.data.hitSoundSelect = 0;
+
+		// JOELwindows7: BOLO's hitsound volume
+		if (FlxG.save.data.hitVolume == null)
+			FlxG.save.data.hitVolume = 0.5;
+
 		// JOELwindows7: left stuffs
 		if (FlxG.save.data.leftAWeek == null)
 		{
@@ -368,6 +376,10 @@ class KadeEngineData
 			FlxG.save.data.sickMs
 		];
 
+		// JOELwindows7: BOLO background stage enablement
+		if (FlxG.save.data.background == null)
+			FlxG.save.data.background = true;
+
 		if (FlxG.save.data.noteskin == null)
 			FlxG.save.data.noteskin = 0;
 
@@ -453,5 +465,3 @@ class KadeEngineData
 		FlxG.save.data.mirror = false;
 	}
 }
-
-

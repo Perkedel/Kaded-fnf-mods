@@ -5424,6 +5424,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					stageHscript.executeState('playerTwoTurn', []);
 				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
 
+				// JOELwindows7: BOLO if lua no modchart support
+				#if !FEATURE_LUAMODCHART
+				if (SONG.songId == 'tutorial')
+					tweenCamZoom(true);
+				#end
+
 				camFollow.x += dad.camFollow[0];
 				camFollow.y += dad.camFollow[1];
 			}
@@ -5470,6 +5476,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				if (stageHscript != null)
 					stageHscript.executeState('playerOneTurn', []);
 
+				// JOELwindows7: BOLO if no lua modchart support
+				#if !FEATURE_LUAMODCHART
+				if (SONG.songId == 'tutorial')
+					tweenCamZoom(false);
+				#end
+
 				if (!PlayStateChangeables.optimize)
 					switch (Stage.curStage)
 					{
@@ -5503,6 +5515,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				camNotes.zoom = camHUD.zoom;
 				camSustains.zoom = camHUD.zoom;
+				camStrums.zoom = camHUD.zoom; // JOELwindows7: BOLO
 			}
 			else
 			{
@@ -5511,6 +5524,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				camNotes.zoom = camHUD.zoom;
 				camSustains.zoom = camHUD.zoom;
+				camStrums.zoom = camHUD.zoom; // JOELwindows7: BOLO
 			}
 		}
 
@@ -5559,7 +5573,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			}
 		}
 
-		if (health <= 0 && !cannotDie)
+		// if (health <= 0 && !cannotDie)
+		// JOELwindows7: BOLO hp check
+		if ((health <= 0 && !cannotDie && !PlayStateChangeables.practiceMode && !PlayStateChangeables.opponentMode)
+			|| (health > 2 && !cannotDie && !PlayStateChangeables.practiceMode && PlayStateChangeables.opponentMode))
 		{
 			if (!usedTimeTravel)
 			{
@@ -5573,8 +5590,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				vocals2.stop(); // JOELwindows7: ye
 				FlxG.sound.music.stop();
 
-				if (FlxG.save.data.InstantRespawn)
+				// JOELwindows7: more BOLO check. optimize also insta respawns you.
+				if (FlxG.save.data.InstantRespawn || PlayStateChangeables.optimize || PlayStateChangeables.opponentMode)
 				{
+					// JOELwindows7: okay. how about you add little fail effect sound here? idk..
+					// FlxG.sound.music.stop();
+					// uh, turns out it's more complicated. I gotta syndicate functions first then.
+
+					PsychTransition.nextCamera = mainCam; // JOELwindows7: transition don't forget!
 					// FlxG.switchState(new PlayState());
 					switchState(new PlayState()); // JOELwindows7: use hex weekend version Kade + YinYang48
 				}
@@ -5609,20 +5632,29 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				vocals2.stop(); // JOELwindows7: ye
 				FlxG.sound.music.stop();
 
+				// JOELwindows7: BOLO bro discord
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here
-				DiscordClient.changePresence("GAME OVER -- "
-					+ SONG.songName
-					+ " ("
-					+ storyDifficultyText
-					+ ") "
-					+ Ratings.GenerateLetterRank(accuracy),
-					"\nAcc: "
-					+ HelperFunctions.truncateFloat(accuracy, 2)
-					+ "% | Score: "
-					+ songScore
-					+ " | Misses: "
-					+ misses, iconRPC);
+				if (FlxG.save.data.discordMode != 0)
+				{
+					DiscordClient.changePresence("GAME OVER -- "
+						+ SONG.songName
+						+ " ("
+						+ storyDifficultyText
+						+ ") "
+						+ Ratings.GenerateLetterRank(accuracy),
+						"\nAcc: "
+						+ HelperFunctions.truncateFloat(accuracy, 2)
+						+ "% | Score: "
+						+ songScore
+						+ " | Misses: "
+						+ misses, iconRPC);
+				}
+				else
+				{
+					DiscordClient.changePresence("GAME OVER -- " + "\nPlaying " + SONG.songName + " (" + storyDifficultyText + " " + songMultiplier + "x"
+						+ ") ", "", iconRPC);
+				}
 				#end
 				// God i love futabu!! so fucking much (From: McChomk)
 				// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
@@ -5647,8 +5679,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				vocals2.stop(); // JOELwindows7: ye
 				FlxG.sound.music.stop();
 
-				if (FlxG.save.data.InstantRespawn)
+				if (FlxG.save.data.InstantRespawn || PlayStateChangeables.optimize || PlayStateChangeables.opponentMode)
 				{
+					PsychTransition.nextCamera = mainCam; // JOELwindows7: transition don't forget!
 					// FlxG.switchState(new PlayState());
 					switchState(new PlayState()); // JOELwindows7: use hex weekend version Kade + YinYang48
 				}
@@ -5683,99 +5716,167 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				vocals2.stop(); // JOELwindows7: ye
 				FlxG.sound.music.stop();
 
+				// JOELwindows7: BOLO bro discord
 				#if FEATURE_DISCORD
 				// Game Over doesn't get his own variable because it's only used here
-				DiscordClient.changePresence("GAME OVER -- "
-					+ SONG.songName
-					+ " ("
-					+ storyDifficultyText
-					+ ") "
-					+ Ratings.GenerateLetterRank(accuracy),
-					"\nAcc: "
-					+ HelperFunctions.truncateFloat(accuracy, 2)
-					+ "% | Score: "
-					+ songScore
-					+ " | Misses: "
-					+ misses, iconRPC);
+				if (FlxG.save.data.discordMode != 0)
+				{
+					DiscordClient.changePresence("GAME OVER -- "
+						+ SONG.songName
+						+ " ("
+						+ storyDifficultyText
+						+ ") "
+						+ Ratings.GenerateLetterRank(accuracy),
+						"\nAcc: "
+						+ HelperFunctions.truncateFloat(accuracy, 2)
+						+ "% | Score: "
+						+ songScore
+						+ " | Misses: "
+						+ misses, iconRPC);
+				}
+				else
+				{
+					DiscordClient.changePresence("GAME OVER -- " + "\nPlaying " + SONG.songName + " (" + storyDifficultyText + " " + songMultiplier + "x"
+						+ ") ", "", iconRPC);
+				}
 				#end
 
 				// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 			}
 		}
 
-		if (generatedMusic)
+		// JOELwindow7: getin ye BOLO
+		if (generatedMusic && !(inCutscene || inCinematic))
 		{
 			var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
-			var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayState.SONG.speed, 2));
+			// var stepHeight = (0.45 * Conductor.stepCrochet * FlxMath.roundDecimal(PlayState.SONG.speed, 2));
+			// JOELwindows7: BOLO yo
+			var stepHeight = (0.45 * fakeNoteStepCrochet * FlxMath.roundDecimal((PlayState.SONG.speed * Math.pow(PlayState.songMultiplier, 2)), 2));
 
 			notes.forEachAlive(function(daNote:Note)
 			{
 				// instead of doing stupid y > FlxG.height
 				// we be men and actually calculate the time :)
 
+				// JOELwindows7: BOLO weird note killer!
+				if (daNote.noteData == -1)
+				{
+					Debug.logWarn('Weird Note detected! Note Data = "${daNote.rawNoteData}" is not valid, deleting...');
+					daNote.kill();
+					daNote.alive = false;
+					notes.remove(daNote, true);
+					daNote.destroy();
+				}
+
+				// JOELwindows7: and BOLO strumY
+				var strumY = playerStrums.members[daNote.noteData].y;
+
+				// JOELwindows7: check must press
+				if (!daNote.mustPress)
+					strumY = strumLineNotes.members[daNote.noteData].y;
+
+				// JOELwindows7: & origin here.
+				var origin = strumY + Note.swagWidth / 2;
+				// JOELwindows7: continue rest.
 				if (!daNote.modifiedByLua)
 				{
 					if (PlayStateChangeables.useDownscroll)
 					{
-						if (daNote.mustPress)
-							daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
-								+
-								0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
-									2)))
-								- daNote.noteYOff;
-						else
-							daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
-								+
-								0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
-									2)))
-								- daNote.noteYOff;
+						/*
+							if (daNote.mustPress)
+								daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
+									+
+									0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+										2)))
+									- daNote.noteYOff;
+							else
+								daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
+									+
+									0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+										2)))
+									- daNote.noteYOff;
+						 */
+						// JOELwindows7: & so BOLO already has newer system for that note y positionalizier
+						daNote.y = (strumY
+							+
+							0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+								2)))
+							- daNote.noteYOff;
+						// and there you go. more still comes here bellow!!!
 						if (daNote.isSustainNote)
 						{
-							daNote.y -= daNote.height - stepHeight;
+							// JOELwindows7: Here's BOLO drastic edit here. and the message,
+							// // Jesus Christ my head and it's still broken this shit FUCK.
+							var bpmRatio = (SONG.bpm / 100);
+
+							// daNote.y -= daNote.height - stepHeight;
+							// JOELwindows7: BOLO incorporate bpmRatio to this now.
+							daNote.y -= daNote.height - (1.5 * stepHeight / SONG.speed * bpmRatio);
 
 							// If not in botplay, only clip sustain notes when properly hit, botplay gets to clip it everytime
-							if ((PlayStateChangeables.botPlay
-								|| !daNote.mustPress
-								|| daNote.wasGoodHit
-								|| holdArray[Math.floor(Math.abs(daNote.noteData))])
-								&& daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= (strumLine.y + Note.swagWidth / 2))
+							if ((daNote.sustainActive || !daNote.mustPress) && songStarted)
 							{
-								// Clip to strumline
-								var swagRect = new FlxRect(0, 0, daNote.frameWidth * 2, daNote.frameHeight * 2);
-								swagRect.height = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
-									+ Note.swagWidth / 2
-									- daNote.y) / daNote.scale.y;
-								swagRect.y = daNote.frameHeight - swagRect.height;
+								if ((PlayStateChangeables.botPlay
+									|| !daNote.mustPress
+									|| daNote.wasGoodHit
+									|| holdArray[Math.floor(Math.abs(daNote.noteData))])
+									&& daNote.y
+									- daNote.offset.y * daNote.scale.y // + daNote.height >= (strumLine.y + Note.swagWidth / 2))
+									+ daNote.height >= (origin)) // JOELwindows7: use above BOLO's origin already measured.
+								{
+									// Clip to strumline
+									var swagRect = new FlxRect(0, 0, daNote.frameWidth * 2, daNote.frameHeight * 2);
+									/*
+										swagRect.height = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
+											+ Note.swagWidth / 2
+											- daNote.y) / daNote.scale.y;
+									 */
+									// JOELwindows7: New BOLO's swagRect height pls
+									swagRect.height = (origin - daNote.y) / daNote.scale.y;
+									swagRect.y = daNote.frameHeight - swagRect.height;
 
-								daNote.clipRect = swagRect;
+									daNote.clipRect = swagRect;
+								}
 							}
 						}
 					}
 					else
 					{
-						if (daNote.mustPress)
-							daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
-								- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
-									2)))
-								+ daNote.noteYOff;
-						else
-							daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
-								- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
-									2)))
-								+ daNote.noteYOff;
+						// JOELwindows7: & so on. BOLO
+						/*
+							if (daNote.mustPress)
+								daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
+									- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+										2)))
+									+ daNote.noteYOff;
+							else
+								daNote.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
+									- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+										2)))
+									+ daNote.noteYOff;
+						 */
+						daNote.y = (strumY
+							- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+								2)))
+							+ daNote.noteYOff;
 						if (daNote.isSustainNote)
 						{
 							if ((PlayStateChangeables.botPlay
 								|| !daNote.mustPress
 								|| daNote.wasGoodHit
-								|| holdArray[Math.floor(Math.abs(daNote.noteData))])
-								&& daNote.y + daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2))
+								|| holdArray[Math.floor(Math.abs(daNote.noteData))]) // && daNote.y + daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2))
+								&& daNote.y
+								+ daNote.offset.y * daNote.scale.y <= (origin)) // JOELwindows7: again, BOLO's above origin
 							{
 								// Clip to strumline
 								var swagRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
-								swagRect.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
-									+ Note.swagWidth / 2
-									- daNote.y) / daNote.scale.y;
+								/*
+									swagRect.y = (strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].y
+										+ Note.swagWidth / 2
+										- daNote.y) / daNote.scale.y;
+								 */
+								// JOELwindows7: new BOLO swagRect y position pls
+								swagRect.y = (origin - daNote.y) / daNote.scale.y;
 								swagRect.height -= swagRect.y;
 
 								daNote.clipRect = swagRect;
@@ -5784,17 +5885,81 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					}
 				}
 
+				// JOELwindows7: Confustaron
+
 				if (!daNote.mustPress && Conductor.songPosition >= daNote.strumTime)
 				{
-					if (SONG.songId != 'tutorial')
-						camZooming = true;
+					if (SONG.songId != 'tutorial' && !PlayStateChangeables.optimize)
+						camZooming = FlxG.save.data.camzoom; // JOELwindows7: was always true, now is BOLO's based on camzoom option.
 
 					var altAnim:String = "";
+					var curSection:Int = Math.floor((curStep / 16)); // JOELwindows7: grab curSection pls. BOLO
 
 					if (daNote.isAlt)
 					{
 						altAnim = '-alt';
 						trace("YOO WTF THIS IS AN ALT NOTE????");
+					}
+
+					// JOELwindows7: BOLO discord RPC
+					#if FEATURE_DISCORD
+					if (FlxG.save.data.discordMode == 1)
+						DiscordClient.changePresence(SONG.songName
+							+ " ("
+							+ storyDifficultyText
+							+ " "
+							+ songMultiplier
+							+ "x"
+							+ ") " // + Ratings.GenerateComboRank(accuracy) + " " + Ratings.GenerateLetterRank(accuracy),
+							+ Ratings.GenerateLetterRank(accuracy),
+							"\nScr: "
+							+ songScore
+							+ " ("
+							+ HelperFunctions.truncateFloat(accuracy, 2)
+							+ "%)"
+							+ " | Misses: "
+							+ misses, iconRPC);
+					#end
+
+					// JOELwindows7: BOLO's health draineh
+					if (PlayStateChangeables.healthDrain)
+					{
+						if (!daNote.isSustainNote)
+							updateScoreText();
+						if (!daNote.isSustainNote)
+						{
+							if (!PlayStateChangeables.opponentMode)
+							{
+								health -= .04 * PlayStateChangeables.healthLoss;
+								if (health <= 0.01)
+								{
+									health = 0.01;
+								}
+							}
+							else
+							{
+								health += .04 * PlayStateChangeables.healthLoss;
+								if (health >= 2)
+									health = 2;
+							}
+						}
+						else
+						{
+							if (!PlayStateChangeables.opponentMode)
+							{
+								health -= .02 * PlayStateChangeables.healthLoss;
+								if (health <= 0.01)
+								{
+									health = 0.01;
+								}
+							}
+							else
+							{
+								health += .02 * PlayStateChangeables.healthLoss;
+								if (health >= 2)
+									health = 2;
+							}
+						}
 					}
 
 					if (daNote.noteType != 2 || FlxG.random.bool(PlayStateChangeables.stupidityChances[1]))
@@ -5806,7 +5971,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							if (daNote.spotInLine != daNote.parent.children.length - 1)
 							{
 								var singData:Int = Std.int(Math.abs(daNote.noteData));
-								dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+								// dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+								// JOELwindows7: we got BOLO opponent mode now so pls check based on these pls
+								if (!PlayStateChangeables.optimize)
+								{
+									if (PlayStateChangeables.opponentMode)
+										boyfriend.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+									else
+										dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+								}
 
 								if (FlxG.save.data.cpuStrums)
 								{
@@ -5828,16 +6001,30 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 								#if FEATURE_LUAMODCHART
 								if (luaModchart != null)
-									luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+									luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
 								if (stageScript != null)
-									stageScript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+									stageScript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
 								#end
 								if (hscriptModchart != null)
-									hscriptModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+									hscriptModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
 								if (stageHscript != null)
-									stageHscript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+									stageHscript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
+								// JOELwindows7: welp, gotta do this then! PLAYER TWO 2
+								executeModchartState('characterSing', [
+									!PlayStateChangeables.opponentMode ? 1 : 0,
+									1,
+									Math.abs(daNote.noteData),
+									Conductor.songPosition,
+									curBeat,
+									curStep
+								]);
 
-								dad.holdTimer = 0;
+								// dad.holdTimer = 0;
+								// JOELwindows7: BOLO opponent hold timer
+								if (!PlayStateChangeables.opponentMode)
+									dad.holdTimer = 0;
+								else
+									boyfriend.holdTimer = 0;
 
 								if (SONG.needsVoices)
 									vocals.volume = 1;
@@ -5848,7 +6035,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						else
 						{
 							var singData:Int = Std.int(Math.abs(daNote.noteData));
-							dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+							// dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+							// JOELwindows7: BOLO new opponent mode play anim check
+							if (!PlayStateChangeables.optimize)
+							{
+								if (PlayStateChangeables.opponentMode)
+									boyfriend.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+								else
+									dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+							}
 
 							if (FlxG.save.data.cpuStrums)
 							{
@@ -5868,18 +6063,45 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 								});
 							}
 
+							// JOELwindows7: now BOLO changes the player sing which here! ORIGINALLY `playerTwoSing`
 							#if FEATURE_LUAMODCHART
 							if (luaModchart != null)
-								luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+								if (!PlayStateChangeables.opponentMode)
+									luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
+								else
+									luaModchart.executeState('playerOneSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
 							if (stageScript != null)
-								stageScript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+								if (!PlayStateChangeables.opponentMode)
+									stageScript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
+								else
+									stageScript.executeState('playerOneSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
 							#end
 							if (hscriptModchart != null)
-								hscriptModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+								if (!PlayStateChangeables.opponentMode)
+									hscriptModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
+								else
+									hscriptModchart.executeState('playerOneSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
 							if (stageHscript != null)
-								stageHscript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+								if (!PlayStateChangeables.opponentMode)
+									stageHscript.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
+								else
+									stageHscript.executeState('playerOneSing', [Math.abs(daNote.noteData), Conductor.songPosition, curBeat, curStep]);
+							// JOELwindows7: welp, gotta do this then! PLAYER TWO 2
+							executeModchartState('characterSing', [
+								!PlayStateChangeables.opponentMode ? 1 : 0,
+								1,
+								Math.abs(daNote.noteData),
+								Conductor.songPosition,
+								curBeat,
+								curStep
+							]);
 
-							dad.holdTimer = 0;
+							// dad.holdTimer = 0;
+							// JOELwindows7: BOLO hold timer opponent mode!!!!!!!!!!!!!
+							if (!PlayStateChangeables.opponentMode)
+								dad.holdTimer = 0;
+							else
+								boyfriend.holdTimer = 0;
 
 							if (SONG.needsVoices)
 								vocals.volume = 1;
@@ -5919,84 +6141,204 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				if (daNote.mustPress && !daNote.modifiedByLua)
 				{
-					daNote.visible = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].visible;
+					// daNote.visible = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].visible; // JOELwindows7: BOLO disable
 					daNote.x = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].x;
 					if (!daNote.isSustainNote)
 						daNote.modAngle = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
 					if (daNote.sustainActive)
 					{
-						if (executeModchart || executeModHscript)
+						if ((executeModchart || executeModHscript) && daNote.isParent) // JOELwindows7: BOLO's only if is parent
 							daNote.alpha = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].alpha;
 					}
 					daNote.modAngle = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
 				}
 				else if (!daNote.wasGoodHit && !daNote.modifiedByLua)
 				{
-					daNote.visible = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].visible;
+					// daNote.visible = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].visible; // JOELwindows7: BOLO disable
 					daNote.x = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].x;
 					if (!daNote.isSustainNote)
 						daNote.modAngle = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
 					if (daNote.sustainActive)
 					{
-						if (executeModchart || executeModHscript)
+						if ((executeModchart || executeModHscript) && daNote.isParent) // JOELwindows7: BOLO's only if is parent
 							daNote.alpha = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].alpha;
 					}
 					daNote.modAngle = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
 				}
 
-				// JOELwindows7: moverd hscript & also alpha note pls
-				if (!daNote.mustPress && FlxG.save.data.middleScroll && !(executeModchart || executeModHscript))
+				// JOELwindows7: Position x whether opponent mode pls. BOLO
+				if (PlayStateChangeables.opponentMode
+					&& !daNote.mustPress
+					&& !FlxG.save.data.middleScroll
+					|| (PlayStateChangeables.opponentMode && !daNote.mustPress && FlxG.save.data.middleScroll && executeModchart))
+				{
+					daNote.x = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData)) + 4].x;
+				}
+
+				// JOELwindows7: moverd hscript & also alpha note pls. BOLO add!
+				if (!daNote.mustPress
+					&& FlxG.save.data.middleScroll
+					&& !(executeModchart || executeModHscript || sourceModchart)
+					&& !PlayStateChangeables.opponentMode)
 					daNote.alpha = 0.5; // JOELwindows7: was 0
+				else if (!daNote.mustPress
+					&& FlxG.save.data.middleScroll
+					&& !(executeModchart || executeModHscript || sourceModchart)
+					&& PlayStateChangeables.opponentMode)
+					daNote.alpha = 0.5;
 
 				if (daNote.isSustainNote)
 				{
-					daNote.x += daNote.width / 2 + 20;
+					// daNote.x += daNote.width / 2 + 20;
+					// JOELwindows7: BOLO comprehensive note x opponent
+					if (daNote.mustPress)
+					{
+						daNote.x += daNote.width / 2 + 18.5;
+					}
+					else
+					{
+						if (!FlxG.save.data.middleScroll || executeModchart || sourceModchart)
+							if (!PlayStateChangeables.opponentMode)
+								daNote.x = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].x + 36.5;
+							else
+								daNote.x = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData)) + 4].x + 36.5;
+					}
+					// JOELwindows7: event this. BOLO
 					if (SONG.noteStyle == 'pixel')
-						daNote.x -= 11;
+					{
+						// daNote.x -= 11;
+						if (daNote.mustPress)
+							daNote.x -= 9;
+						else
+							daNote.x -= 6;
+					}
 				}
 
 				// trace(daNote.y);
 				// WIP interpolation shit? Need to fix the pause issue
 				// daNote.y = (strumLine.y - (songTime - daNote.strumTime) * (0.45 * PlayState.SONG.speed));
 
-				if (daNote.isSustainNote && daNote.wasGoodHit && Conductor.songPosition >= daNote.strumTime)
+				// JOELwindows7: BOLO
+				if (Conductor.songPosition > ((350 * songMultiplier) / (PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed))
+					+ daNote.strumTime)
 				{
-					daNote.kill();
-					notes.remove(daNote, true);
-					daNote.destroy();
-				}
-				else if ((daNote.mustPress && !PlayStateChangeables.useDownscroll || daNote.mustPress && PlayStateChangeables.useDownscroll)
-					&& daNote.mustPress
-					&& daNote.strumTime / songMultiplier - Conductor.songPosition / songMultiplier < -(166 * Conductor.timeScale)
-					&& songStarted)
-				{
-					if (daNote.isSustainNote && daNote.wasGoodHit)
+					if (daNote.isSustainNote && daNote.wasGoodHit && Conductor.songPosition >= daNote.strumTime)
 					{
 						daNote.kill();
 						notes.remove(daNote, true);
+						daNote.alive = false; // JOELwindows7: BOLO unalive this note.
+						daNote.destroy();
 					}
-					else
+					// JOELwindows7: was else. now with BOLO, no longer else
+					/*else*/
+					if ((daNote.mustPress && !PlayStateChangeables.useDownscroll || daNote.mustPress && PlayStateChangeables.useDownscroll)
+						&& daNote.mustPress
+						&& daNote.strumTime / songMultiplier - Conductor.songPosition / songMultiplier < -(166 * Conductor.timeScale)
+						&& songStarted)
 					{
-						// JOELwindows7: Skip da mine
-						if (daNote.noteType == 2)
+						if (daNote.isSustainNote && daNote.wasGoodHit)
 						{
-							// trace("Sneaked past the mine whew");
+							daNote.kill();
+							daNote.alive = false; // JOELwindows7: BOLO unalive this note!
+							notes.remove(daNote, true);
+							daNote.destroy(); // JOELwindows7: don't forget destroy. BOLO ye
 						}
-						if (daNote.noteType == 1 || daNote.noteType == 0)
-							if (loadRep && daNote.isSustainNote)
+						else
+						{
+							// JOELwindows7: Skip da mine
+							if (daNote.noteType == 2)
 							{
-								// im tired and lazy this sucks I know i'm dumb
-								if (findByTime(daNote.strumTime) != null)
-									totalNotesHit += 1;
+								// trace("Sneaked past the mine whew");
+							}
+							if (daNote.noteType == 1 || daNote.noteType == 0)
+								if (loadRep && daNote.isSustainNote)
+								{
+									// im tired and lazy this sucks I know i'm dumb
+									if (findByTime(daNote.strumTime) != null)
+										totalNotesHit += 1;
+									else
+									{
+										vocals.volume = 0;
+										// JOELwindows7: vocals2 not need vol 0
+										/*
+											if (theFunne && !daNote.isSustainNote)
+											{
+												noteMiss(daNote.noteData, daNote);
+											}
+										 */
+										if (daNote.isParent)
+										{
+											// health -= 0.15; // give a health punishment for failing a LN // JOELwindows7: BOLO disable. because
+											trace("hold fell over at the start");
+											for (i in daNote.children)
+											{
+												i.alpha = 0.3;
+												i.sustainActive = false;
+											}
+											noteMiss(daNote.noteData, daNote); // JOELwindows7: BOLO now get this.
+										}
+										else
+										{
+											if (!daNote.wasGoodHit
+												&& daNote.isSustainNote
+												&& daNote.sustainActive
+												&& daNote.spotInLine < daNote.parent.children.length) // JOELwindows7: do not `!=`. use `<` like BOLO did!
+											{
+												// health -= 0.05; // give a health punishment for failing a LN
+												trace("hold fell over at " + daNote.spotInLine);
+												for (i in daNote.parent.children)
+												{
+													i.alpha = 0.3;
+													i.sustainActive = false;
+												}
+												if (daNote.parent.wasGoodHit)
+												{
+													misses++;
+													totalNotesHit -= 1;
+												}
+												updateAccuracy();
+												noteMiss(daNote.noteData, daNote); // JOELwindows7: nvm. this seems all note miss here. ah whatever.
+											}
+											else if (!daNote.wasGoodHit && !daNote.isSustainNote)
+											{
+												noteMiss(daNote.noteData, daNote); // JOELwindows7: coz afterall we need 2B
+												// precisely correct which moment here idk.
+												misses++;
+												// updateAccuracy();
+												// health -= 0.15;
+												// JOELwindows7: BOLO opponent mode! BOLO's is .04 times health loss value. rawly is .15.
+												if (!PlayStateChangeables.opponentMode)
+													health -= 0.04 * PlayStateChangeables.healthLoss;
+												else
+													health += 0.04 * PlayStateChangeables.healthLoss;
+											}
+										}
+									}
+								}
 								else
 								{
+									// JOELwindows7: pinpoin COCAL
 									vocals.volume = 0;
-									// JOELwindows7: vocals2 not need vol 0
+									// JOELwindows7: vocals2 no need vol 0
 									if (theFunne && !daNote.isSustainNote)
 									{
-										noteMiss(daNote.noteData, daNote);
+										if (PlayStateChangeables.botPlay)
+										{
+											daNote.rating = "bad";
+											goodNoteHit(daNote);
+										}
+										else
+										{
+											// noteMiss(daNote.noteData, daNote);
+											// JOElwindows7: BOLO miss funneh hp inflict
+											if (!PlayStateChangeables.opponentMode)
+												health -= 0.04 * PlayStateChangeables.healthLoss;
+											else
+												health += 0.04 * PlayStateChangeables.healthLoss;
+										}
 									}
-									if (daNote.isParent)
+
+									if (daNote.isParent && daNote.visible)
 									{
 										health -= 0.15; // give a health punishment for failing a LN
 										trace("hold fell over at the start");
@@ -6005,6 +6347,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 											i.alpha = 0.3;
 											i.sustainActive = false;
 										}
+										noteMiss(daNote.noteData, daNote); // JOELwindows7: BOLO
 									}
 									else
 									{
@@ -6019,82 +6362,41 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 											{
 												i.alpha = 0.3;
 												i.sustainActive = false;
+												// JOELwindows7: BOLO hp inflict
+												if (!PlayStateChangeables.opponentMode)
+													health -= (0.04 * PlayStateChangeables.healthLoss) / daNote.parent.children.length;
+												else
+													health += (0.04 * PlayStateChangeables.healthLoss) / daNote.parent.children.length;
 											}
 											if (daNote.parent.wasGoodHit)
 											{
 												misses++;
 												totalNotesHit -= 1;
 											}
-											updateAccuracy();
+											noteMiss(daNote.noteData, daNote); // JOELwindows7: BOLO
+											// updateAccuracy();
 										}
 										else if (!daNote.wasGoodHit && !daNote.isSustainNote)
 										{
 											misses++;
-											updateAccuracy();
-											health -= 0.15;
+											// JOELwindows7: and BOLO
+											noteMiss(daNote.noteData, daNote);
+											// updateAccuracy();
+											// health -= 0.15; // JOELwindows7: BOLO says
+											// "I forgot replay is broken. So it's not necessary to uncommment deez."
 										}
 									}
 								}
-							}
-							else
-							{
-								vocals.volume = 0;
-								// JOELwindows7: vocals2 no need vol 0
-								if (theFunne && !daNote.isSustainNote)
-								{
-									if (PlayStateChangeables.botPlay)
-									{
-										daNote.rating = "bad";
-										goodNoteHit(daNote);
-									}
-									else
-										noteMiss(daNote.noteData, daNote);
-								}
+						}
 
-								if (daNote.isParent && daNote.visible)
-								{
-									health -= 0.15; // give a health punishment for failing a LN
-									trace("hold fell over at the start");
-									for (i in daNote.children)
-									{
-										i.alpha = 0.3;
-										i.sustainActive = false;
-									}
-								}
-								else
-								{
-									if (!daNote.wasGoodHit
-										&& daNote.isSustainNote
-										&& daNote.sustainActive
-										&& daNote.spotInLine != daNote.parent.children.length)
-									{
-										// health -= 0.05; // give a health punishment for failing a LN
-										trace("hold fell over at " + daNote.spotInLine);
-										for (i in daNote.parent.children)
-										{
-											i.alpha = 0.3;
-											i.sustainActive = false;
-										}
-										if (daNote.parent.wasGoodHit)
-										{
-											misses++;
-											totalNotesHit -= 1;
-										}
-										updateAccuracy();
-									}
-									else if (!daNote.wasGoodHit && !daNote.isSustainNote)
-									{
-										misses++;
-										updateAccuracy();
-										health -= 0.15;
-									}
-								}
-							}
+						// JOELwindows7: with additional BOLO
+						daNote.active = false; // here
+						daNote.visible = false;
+						daNote.kill();
+						notes.remove(daNote, true);
+						daNote.alive = false; // here,
+						daNote.destroy(); // and boom.
 					}
-
-					daNote.visible = false;
-					daNote.kill();
-					notes.remove(daNote, true);
 				}
 			});
 		}
@@ -6121,6 +6423,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		#end
 
 		super.update(elapsed);
+
+		// JOELwindows7: BOLO shader update
+		for (i in shaderUpdates)
+			i(elapsed);
 
 		// JOELwindows7: MOAR FUNCTION OF UPDATE. use wisely!
 		// manageHeartbeats(elapsed); // no, it's already up there. NVM no need.
@@ -6197,6 +6503,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	function endSong():Void
 	{
+		camZooming = false; // JOELwindows7: BOLO do stop cam zooming.
 		endingSong = true;
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
@@ -6260,6 +6567,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				stageHscript.executeState("songEnd", []); // JOELwindows7: gotta call one last thing before you unload it.
 			}
 			scronchHscript();
+			// JOELwindows7: BOLO
+			if (ModchartState.haxeInterp != null)
+				ModchartState.haxeInterp = null;
 		 */
 
 		// JOELwindows7: instead just
@@ -6298,18 +6608,35 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// FlxG.sound.music.stop(); // JOELwindows7: Woha do not stop music because there is delay defined in the song!
 		vocals.stop(); // JOELwindows7: Woha do not stop vocal because there is delay defined in the song! nvm
 		vocals2.stop(); // JOELwindows7: Woha do not stop vocal because there is delay defined in the song! nvm ye
-		if (SONG.validScore)
+
+		// JOELwindows7: INCOMING BOLO'S SUPER MEGA CONDITION POOPS. cAOCAS
+		var superMegaConditionShit:Bool = Ratings.timingWindows[3] == 45
+			&& Ratings.timingWindows[2] == 90
+			&& Ratings.timingWindows[1] == 135
+			&& Ratings.timingWindows[0] == 160
+			&& (!PlayStateChangeables.botPlay || !PlayState.usedBot)
+			&& !FlxG.save.data.practice
+			&& PlayStateChangeables.holds
+			&& !PlayState.wentToChartEditor
+			&& HelperFunctions.truncateFloat(PlayStateChangeables.healthGain, 2) <= 1
+			&& HelperFunctions.truncateFloat(PlayStateChangeables.healthLoss, 2) >= 1;
+
+		if (SONG.validScore && superMegaConditionShit) // JOELwindows7: & install it.
 		{
-			#if !switch
+			// #if !switch // JOELwindows7: no longer kill by switch
 			Highscore.saveScore(PlayState.SONG.songId, Math.round(songScore), storyDifficulty);
 			Highscore.saveCombo(PlayState.SONG.songId, Ratings.GenerateLetterRank(accuracy), storyDifficulty);
-			#end
+			// JOELwindows7: BOLO more
+			Highscore.saveAcc(PlayState.SONG.songId, HelperFunctions.truncateFloat(accuracy, 2), storyDifficulty);
+			Highscore.saveLetter(PlayState.SONG.songId, Ratings.GenerateJustLetterRank(accuracy), storyDifficulty);
+			// #end
 		}
 
 		if (offsetTesting)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			offsetTesting = false;
+			PsychTransition.nextCamera = mainCam; // JOElwindows7: don't forgeton BOLO.
 			// LoadingState.loadAndSwitchState(new OptionsMenu());
 			switchState(new OptionsMenu(), true, true, true, true); // JOELwindows7: hex switch state lol
 			clean();
@@ -6332,11 +6659,25 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				remove(dad);
 				remove(gf);
 			});
+			PsychTransition.nextCamera = mainCam; // JOELwindows7: don't forget man. BOLO
 			// FlxG.switchState(new StageDebugState(Stage.curStage));
 			switchState(new StageDebugState(Stage.curStage)); // JOELwindows7: hex switch state lol
 		}
 		else
 		{
+			// JOELwindows7: idk why. BOLO
+			#if FEAUTURE_DISCORD
+			if (FlxG.save.data.scoreScreen)
+			{
+				if (FlxG.save.data.discordMode != 0)
+					DiscordClient.changePresence('RESULTS SCREEN -- ' + SONG.song + " (" + storyDifficultyText + " " + songMultiplier + "x" + ") "
+						+ Ratings.GenerateComboRank(accuracy) + " " + Ratings.GenerateLetterRank(accuracy),
+						"\nScr: " + songScore + " ("
+						+ HelperFunctions.truncateFloat(accuracy, 2) + "%)" + " | Misses: " + misses, iconRPC);
+				else
+					DiscordClient.changePresence('RESULTS SCREEN -- ' + SONG.song + " (" + storyDifficultyText + " " + songMultiplier + "x" + ") ", iconRPC);
+			}
+			#end
 			if (isStoryMode)
 			{
 				campaignScore += Math.round(songScore);
@@ -6371,10 +6712,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					outroScene(lastSonginPlaylist, false, delayFirstBeforeThat, SONG.hasEpilogueVideo, SONG.epilogueVideoPath, SONG.hasEpilogueTankmanVideo,
 						SONG.epilogueTankmanVideoPath);
 					// outroScene(lastSonginPlaylist);
+					// JOELwindows7: pinpoin CAOCAS
 					// new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
 					// {
 					// 	if (FlxG.save.data.scoreScreen)
 					// 	{
+					//		paused = true;
 					// 		if (FlxG.save.data.songPosition)
 					// 		{
 					// 			FlxTween.tween(songPosBar, {alpha: 0}, 1);
@@ -6384,7 +6727,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					//			FlxTween.tween(metronomeBar, {alpha: 0}, 1); // JOELwindows7: & metronome bar
 					// 		}
 					// 		openSubState(new ResultsScreen(SONG.hasEpilogueVideo, SONG.hasEpilogueVideo ? SONG.epilogueVideoPath : "null"));
-					// 		new FlxTimer().start(1, function(tmr:FlxTimer)
+					// 		createTimer(1, function(tmr:FlxTimer) // JOELwindows7: Managed BOLO timer
 					// 		{
 					// 			inResults = true;
 					// 		});
@@ -6400,6 +6743,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					// 		GameplayCustomizeState.freeplayWeek = 1;
 					// 		FlxG.sound.playMusic(Paths.music('freakyMenu'));
 					// 		Conductor.changeBPM(102);
+					//		PsychTransition.nextCamera = mainCam; // JOELwindows7: BOLO
 					// 		// FlxG.switchState(new StoryMenuState());
 					// 		FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
 					// 			new StoryMenuState()) : new StoryMenuState());
@@ -6470,6 +6814,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					FlxTransitionableState.skipNextTransOut = true;
 					prevCamFollow = camFollow;
 
+					// JOELwindows7: BOLO Psyched trans in next camera
+					if (FlxTransitionableState.skipNextTransIn)
+					{
+						PsychTransition.nextCamera = null;
+					}
+
 					// JOELwindows7: wait wwiat atiw! remember the epilogue path first before go to the next song!
 					var hasEpilogueVideo:Bool = SONG.hasEpilogueVideo;
 					var epilogueVideoPath:String = SONG.epilogueVideoPath;
@@ -6512,33 +6862,36 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// var delayFirstBeforeThat:Float = SONG.delayAfterFinish; // JOELwindows7: forgor
 				var delayFirstBeforeThat:Float = 0; // JOELwindows7: no more delay.
 
-				new FlxTimer().start(delayFirstBeforeThat, function(tmr:FlxTimer)
-				{ // JOELwindows7: here this delay wow.
-					paused = true;
+				// createTimer(delayFirstBeforeThat, function(tmr:FlxTimer) // JOELwindows7: BOLO managed timer
+				// { // JOELwindows7: here this delay wow.
+				paused = true;
 
-					FlxG.sound.music.stop();
-					vocals.stop();
-					vocals2.stop(); // JOELwindows7: ye
+				FlxG.sound.music.stop();
+				vocals.stop();
+				vocals2.stop(); // JOELwindows7: ye
 
-					// JOELwindows7: don't forget clean modchart if haven't already
-					scronchLuaScript();
-					scronchHscript();
+				// JOELwindows7: don't forget clean modchart if haven't already
+				scronchLuaScript();
+				scronchHscript();
 
-					if (FlxG.save.data.scoreScreen)
+				if (FlxG.save.data.scoreScreen)
+				{
+					paused = true; // JOELwindows7: BOLO make sure again.
+					openSubState(new ResultsScreen());
+					createTimer(1, function(tmr:FlxTimer) // JOELwindows7: BOLO managed timer
 					{
-						openSubState(new ResultsScreen());
-						new FlxTimer().start(1, function(tmr:FlxTimer)
-						{
-							inResults = true;
-						});
-					}
-					else
-					{
-						// FlxG.switchState(new FreeplayState());
-						switchState(new FreeplayState()); // JOELwindows7: hex switch state lol
-						clean();
-					}
-				});
+						inResults = true;
+					});
+				}
+				else
+				{
+					PsychTransition.nextCamera = mainCam; // JOELwindows7: BOLO
+					// FlxG.switchState(new FreeplayState());
+					Conductor.changeBPM(102); // JOELwindows7: change tempo to this??
+					switchState(new FreeplayState()); // JOELwindows7: hex switch state lol
+					clean();
+				}
+				// });
 			}
 		}
 
@@ -6576,6 +6929,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	var timeShown = 0;
 	var currentTimingShown:FlxUIText = null;
 
+	// JOELwindows7: pinpoin HUACADOS
+
 	private function popUpScore(daNote:Note):Void
 	{
 		var noteDiff:Float;
@@ -6583,7 +6938,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			noteDiff = -(daNote.strumTime - Conductor.songPosition);
 		else
 			noteDiff = Conductor.safeZoneOffset; // Assumed SHIT if no note was given
-		var wife:Float = EtternaFunctions.wife3(-noteDiff, Conductor.timeScale);
+		// JOELwindows7: BOLO if not sustain????
+		// TODO: enableable wife score just like Pump it up??
+		var wife:Float = 0;
+		if (!daNote.isSustainNote)
+			wife = EtternaFunctions.wife3(-noteDiff, Conductor.timeScale);
 		// boyfriend.playAnim('hey');
 		vocals.volume = 1;
 		vocals2.volume = 1; // JOELwindows7: ye
@@ -6612,15 +6971,31 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// wait sir, play the sound in successfully step instead!
 				if (daNote.noteType == 2) // hit mine duar
 				{
-					health -= 1;
-					// playSoundEffect("mine-duar", 1, 'shared');
+					if (!PlayStateChangeables.opponentMode)
+						health -= 1;
+					else
+						health += 1;
+					playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
 					score = -300;
 					combo = 0;
 					misses++;
-					health -= 0.1;
+					// health -= 0.1;
+					// JOELwindows7: BOLO health hp
+					if (!PlayStateChangeables.opponentMode)
+					{
+						health -= 0.2 * PlayStateChangeables.healthLoss;
+						if (PlayStateChangeables.skillIssue)
+							health = 0;
+					}
+					else
+					{
+						health += 0.2 * PlayStateChangeables.healthLoss;
+						if (PlayStateChangeables.skillIssue)
+							health = 2.1;
+					}
 					ss = false;
 					shits++;
 					if (FlxG.save.data.accuracyMod == 0)
@@ -6629,14 +7004,22 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			case 'bad':
 				if (daNote.noteType == 2)
 				{
-					health -= 1;
-					// playSoundEffect("mine-duar", 1, 'shared');
+					if (!PlayStateChangeables.opponentMode)
+						health -= 1;
+					else
+						health += 1;
+					playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
 					daRating = 'bad';
 					score = 0;
-					health -= 0.06;
+					// health -= 0.06;
+					// JOELwindows7: BOLO hp
+					if (!PlayStateChangeables.opponentMode)
+						health -= 0.06 * PlayStateChangeables.healthLoss;
+					else
+						health += 0.06 * PlayStateChangeables.healthLoss;
 					ss = false;
 					bads++;
 					if (FlxG.save.data.accuracyMod == 0)
@@ -6645,8 +7028,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			case 'good':
 				if (daNote.noteType == 2)
 				{
-					health -= 1;
-					// playSoundEffect("mine-duar", 1, 'shared');
+					if (!PlayStateChangeables.opponentMode)
+						health -= 1;
+					else
+						health += 1;
+					playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -6660,13 +7046,26 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			case 'sick':
 				if (daNote.noteType == 2)
 				{
-					health -= 1;
-					// playSoundEffect("mine-duar", 1, 'shared');
+					if (!PlayStateChangeables.opponentMode)
+						health -= 1;
+					else
+						health += 1;
+					playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
-					if (health < 2)
-						health += 0.04;
+					score = 350; // JOELwindows7: okee BOLO
+					// if (health < 2)
+					// 	health += 0.04;
+					// JOELwindows7: BOLO advanced hp
+					if (!PlayStateChangeables.opponentMode && health < 2)
+					{
+						health += 0.04 * PlayStateChangeables.healthGain;
+					}
+					else if (PlayStateChangeables.opponentMode && health > 0)
+					{
+						health -= 0.04 * PlayStateChangeables.healthGain;
+					}
 					if (FlxG.save.data.accuracyMod == 0)
 						totalNotesHit += 1;
 					sicks++;
@@ -6686,6 +7085,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 		spawnNoteHitlineOnNote(daNote, daNote.noteType, 0, daRatingInt);
 		// C'mon, Cam (ninjamuffin)!!! finish embargo rn!!! do not finish plot twistly as a demo for the full ass!!! that's rude!
+		// oh, embargo done??
+
+		// JOELwindows7: also here's BOLO notesplash in case you need it idk
+		/*
+		if (daRating == 'sick')
+		{
+			NoteSplashesSpawn(daNote);
+		}
+		*/
 
 		if (songMultiplier >= 1.05)
 			score = getRatesScore(songMultiplier, score);
@@ -7382,8 +7790,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	{
 		if (!boyfriend.stunned)
 		{
+			// JOELwindows7: BOLO skill issue
+			if (PlayStateChangeables.skillIssue)
+				if (!PlayStateChangeables.opponentMode)
+					health = 0;
+				else
+					health = 2.1;
 			// health -= 0.2;
-			if (combo > 5 && gf.animOffsets.exists('sad'))
+			if (combo > 5 && gf.animOffsets.exists('sad') && !PlayStateChangeables.opponentMode) // JOELwindows7: BOLO said only if not in opponent
 			{
 				// JOELwindows7: add girlfriend oop & aah for combo break,
 				// Just like osu!
@@ -7427,7 +7841,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// var noteDiff:Float = Math.abs(daNote.strumTime - Conductor.songPosition);
 			// var wife:Float = EtternaFunctions.wife3(noteDiff, FlxG.save.data.etternaMode ? 1 : 1.7);
 
-			totalNotesHit -= 1;
+			totalNotesHit -= .5; // JOELwindows7: was 1. now add .5 . BOLO
 
 			if (daNote != null)
 			{
@@ -7450,18 +7864,34 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			Controls.vibrate(0, 50);
 
 			// Hole switch statement replaced with a single line :)
-			boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
+			// boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
+			if (!PlayStateChangeables.optimize)
+			{
+				// JOELwindows7: BOLO opponent mode check check
+				if (!PlayStateChangeables.opponentMode)
+					boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
+				else if (PlayStateChangeables.opponentMode && dad.animOffsets.exists('sing' + dataSuffix[direction] + 'miss'))
+					dad.playAnim('sing' + dataSuffix[direction] + 'miss', true);
+			}
 
 			#if FEATURE_LUAMODCHART
 			if (luaModchart != null)
-				luaModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
+				luaModchart.executeState('playerOneMiss', [direction, Conductor.songPosition, curBeat, curStep]);
 			if (stageScript != null)
-				stageScript.executeState('playerOneMiss', [direction, Conductor.songPosition]);
+				stageScript.executeState('playerOneMiss', [direction, Conductor.songPosition, curBeat, curStep]);
 			#end
 			if (hscriptModchart != null)
-				hscriptModchart.executeState('playerOneMiss', [direction, Conductor.songPosition]);
+				hscriptModchart.executeState('playerOneMiss', [direction, Conductor.songPosition, curBeat, curStep]);
 			if (stageHscript != null)
-				stageHscript.executeState('playerOneMiss', [direction, Conductor.songPosition]);
+				stageHscript.executeState('playerOneMiss', [direction, Conductor.songPosition, curBeat, curStep]);
+			executeModchartState('characterMiss', [
+				!PlayStateChangeables.opponentMode ? 0 : 1,
+				0,
+				direction,
+				Conductor.songPosition,
+				curBeat,
+				curStep
+			]);
 
 			updateAccuracy();
 		}
@@ -10069,6 +10499,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 	}
 
+	// JOELwindows7: my hitline like Ragnarock game VR
 	function spawnNoteHitlineOnNote(note:Note, noteType:Int = 0, whichPlayer:Int = 0, rating:Int = 0)
 	{
 		if (FlxG.save.data.noteSplashes && note != null)
@@ -10150,6 +10581,62 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				hitline.kill();
 			}
 		});
+	}
+
+	// JOELwindows7: BOLO note splash
+	public function NoteSplashesSpawn(daNote:Note):Void
+	{
+		var sploosh:FlxUISprite = new FlxUISprite(playerStrums.members[daNote.noteData].x + 10.5, playerStrums.members[daNote.noteData].y - 20);
+		sploosh.antialiasing = FlxG.save.data.antialiasing;
+		if (FlxG.save.data.noteSplashes)
+		{
+			switch (SONG.noteStyle)
+			{
+				case 'pixel':
+					var tex:flixel.graphics.frames.FlxAtlasFrames = Paths.getSparrowAtlas('weeb/pixelUI/noteSplashes-pixels', 'week6');
+					sploosh.frames = tex;
+					sploosh.animation.addByPrefix('splash 0 0', 'note splash 1 purple', 24, false);
+					sploosh.animation.addByPrefix('splash 0 1', 'note splash 1  blue', 24, false);
+					sploosh.animation.addByPrefix('splash 0 2', 'note splash 1 green', 24, false);
+					sploosh.animation.addByPrefix('splash 0 3', 'note splash 1 red', 24, false);
+					sploosh.animation.addByPrefix('splash 1 0', 'note splash 2 purple', 24, false);
+					sploosh.animation.addByPrefix('splash 1 1', 'note splash 2 blue', 24, false);
+					sploosh.animation.addByPrefix('splash 1 2', 'note splash 2 green', 24, false);
+					sploosh.animation.addByPrefix('splash 1 3', 'note splash 2 red', 24, false);
+
+					add(sploosh);
+					sploosh.cameras = [camStrums];
+					sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + daNote.noteData);
+					sploosh.alpha = 0.6;
+					sploosh.offset.x += 90;
+					sploosh.offset.y += 80;
+					sploosh.animation.finishCallback = function(name) sploosh.kill();
+
+					sploosh.update(0);
+				default:
+					var tex:flixel.graphics.frames.FlxAtlasFrames = Paths.getSparrowAtlas('noteSplashes', 'shared');
+					sploosh.frames = tex;
+
+					sploosh.animation.addByPrefix('splash 0 0', 'note splash 1 purple', 24, false);
+					sploosh.animation.addByPrefix('splash 0 1', 'note splash 1  blue', 24, false);
+					sploosh.animation.addByPrefix('splash 0 2', 'note splash 1 green', 24, false);
+					sploosh.animation.addByPrefix('splash 0 3', 'note splash 1 red', 24, false);
+					sploosh.animation.addByPrefix('splash 1 0', 'note splash 2 purple', 24, false);
+					sploosh.animation.addByPrefix('splash 1 1', 'note splash 2 blue', 24, false);
+					sploosh.animation.addByPrefix('splash 1 2', 'note splash 2 green', 24, false);
+					sploosh.animation.addByPrefix('splash 1 3', 'note splash 2 red', 24, false);
+
+					add(sploosh);
+					sploosh.cameras = [camStrums];
+					sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + daNote.noteData);
+					sploosh.alpha = 0.6;
+					sploosh.offset.x += 90;
+					sploosh.offset.y += 80; // lets stick to eight not nine
+					sploosh.animation.finishCallback = function(name) sploosh.kill();
+
+					sploosh.update(0);
+			}
+		}
 	}
 
 	// JOELwindows7: Psyched blackbar stuff

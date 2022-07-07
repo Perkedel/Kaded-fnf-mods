@@ -393,6 +393,15 @@ class Main extends Sprite
 		return fpsCounter.currentFPS;
 	}
 
+	// JOELwindows7: BOLO adjust FPS pls
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/Main.hx
+	// lov u tails
+	// https://github.com/nebulazorua/tails-gets-trolled-v3/blob/master/source/Main.hx
+	public static function adjustFPS(num:Float):Float
+	{
+		return num * (60 / (cast(Lib.current.getChildAt(0), Main)).getFPS());
+	}
+
 	// JOELwindows7: Pusholl! Disable vol keys pls! it annoys me!!!
 	public function destroyAccidentVolKeys()
 	{

@@ -312,7 +312,8 @@ class MusicBeatState extends CoreState
 	// JOELwindows7: BOLO's reset state!!!
 	public static function resetState()
 	{
-		MusicBeatState.instance.switchState(FlxG.state);
+		// MusicBeatState.instance.switchState(FlxG.state);
+		MusicBeatState.switchStateStatic(FlxG.state);
 	}
 
 	var loadedCompletely:Bool = false; // JOELwindows7: also used by that Switch state above

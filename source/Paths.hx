@@ -19,6 +19,8 @@ class Paths
 {
 	// JOELwindows7: not my code. but hey uh, is it has to be it, the web cannot ogg?
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
+	// inline public static var VIDEO_EXT = #if FEATURE_MP4VIDEOS "mp4" #elseif (!FEATURE_MP4VIDEOS || FEATURE_WEBM) "webm" #end; // JOELwindows7: BOLO
+	inline public static var VIDEO_EXT = "webm"; // JOELwindows7: or just settle on WEBM? man that takes time to rerender everything to mo.
 
 	static var currentLevel:String;
 
@@ -230,6 +232,18 @@ class Paths
 	inline static public function xml(key:String, ?library:String)
 	{
 		return getPath('data/$key.xml', TEXT, library);
+	}
+
+	// JOELwindows7: MORE BOLO JSON Atlas frame. animJSON
+	inline static public function animJson(key:String, ?library:String)
+	{
+		return getPath('images/$key/Animation.json', TEXT, library);
+	}
+
+	// JOELwindows7: & the spritemap
+	inline static public function spriteMapJson(key:String, ?library:String)
+	{
+		return getPath('images/$key/spritemap.json', TEXT, library);
 	}
 
 	inline static public function json(key:String, ?library:String)
@@ -557,7 +571,7 @@ class Paths
 	// JOELwindows7: add pathers for GrowtopiaFli video cutsceners
 	inline static public function video(key:String, ?library:String)
 	{
-		return getPath('videos/$key.webm', TEXT, library);
+		return getPath('videos/$key.$VIDEO_EXT', TEXT, library);
 	}
 
 	inline static public function videoSound(key:String, ?library:String)

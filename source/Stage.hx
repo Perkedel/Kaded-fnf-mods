@@ -263,7 +263,7 @@ class Stage extends MusicBeatState
 		super();
 		this.curStage = daStage;
 		camZoom = 1.05; // Don't change zoom here, unless you want to change zoom of every stage that doesn't have custom one
-		if (PlayStateChangeables.Optimize)
+		if (PlayStateChangeables.optimize)
 			return;
 
 		trace("Load da stage here ya"); // JOELwindows7: wtf happened
@@ -994,21 +994,21 @@ class Stage extends MusicBeatState
 				case 'tank':
 					{
 						camZoom = 0.9;
-						var tankSky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.image('tankSky', 'week7'));
+						var tankSky:FlxSprite = new FlxUISprite(-400, -400).loadGraphic(Paths.image('tankSky', 'week7'));
 						tankSky.antialiasing = FlxG.save.data.antialiasing;
 						tankSky.scrollFactor.set(0, 0);
 						swagBacks['tankSky'] = tankSky;
 						toAdd.push(tankSky);
 						if (FlxG.save.data.distractions)
 						{
-							var tankClouds:FlxSprite = new FlxSprite(FlxG.random.int(-700, -100),
+							var tankClouds:FlxSprite = new FlxUISprite(FlxG.random.int(-700, -100),
 								FlxG.random.int(-20, 20)).loadGraphic(Paths.image('tankClouds', 'week7'));
 							tankClouds.antialiasing = FlxG.save.data.antialiasing;
 							tankClouds.scrollFactor.set(0.9, 0.9);
 							swagBacks['tankClouds'] = tankClouds;
 							toAdd.push(tankClouds);
 
-							var tankMountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.image('tankMountains', 'week7'));
+							var tankMountains:FlxSprite = new FlxUISprite(-300, -20).loadGraphic(Paths.image('tankMountains', 'week7'));
 							tankMountains.antialiasing = FlxG.save.data.antialiasing;
 							tankMountains.setGraphicSize(Std.int(1.2 * tankMountains.width));
 							tankMountains.scrollFactor.set(0.2, 0.2);
@@ -1017,7 +1017,7 @@ class Stage extends MusicBeatState
 							swagBacks['tankMountains'] = tankMountains;
 							toAdd.push(tankMountains);
 
-							var tankBuildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankBuildings', 'week7'));
+							var tankBuildings:FlxSprite = new FlxUISprite(-200, 0).loadGraphic(Paths.image('tankBuildings', 'week7'));
 
 							tankBuildings.setGraphicSize(Std.int(1.1 * tankBuildings.width));
 							tankBuildings.scrollFactor.set(0.3, 0.3);
@@ -1027,7 +1027,7 @@ class Stage extends MusicBeatState
 							toAdd.push(tankBuildings);
 						}
 
-						var tankRuins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.image('tankRuins', 'week7'));
+						var tankRuins:FlxSprite = new FlxUISprite(-200, 0).loadGraphic(Paths.image('tankRuins', 'week7'));
 						tankRuins.setGraphicSize(Std.int(1.1 * tankRuins.width));
 						tankRuins.antialiasing = FlxG.save.data.antialiasing;
 						tankRuins.scrollFactor.set(0.35, 0.35);
@@ -1037,7 +1037,7 @@ class Stage extends MusicBeatState
 
 						if (FlxG.save.data.distractions)
 						{
-							var smokeLeft:FlxSprite = new FlxSprite(-200, -100);
+							var smokeLeft:FlxUISprite = new FlxUISprite(-200, -100);
 							smokeLeft.antialiasing = FlxG.save.data.antialiasing;
 							smokeLeft.scrollFactor.set(0.4, 0.4);
 							smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft', 'week7');
@@ -1046,7 +1046,7 @@ class Stage extends MusicBeatState
 							swagBacks['smokeLeft'] = smokeLeft;
 							toAdd.push(smokeLeft);
 
-							var smokeRight:FlxSprite = new FlxSprite(1100, -100);
+							var smokeRight:FlxUISprite = new FlxUISprite(1100, -100);
 							smokeRight.antialiasing = FlxG.save.data.antialiasing;
 							smokeRight.scrollFactor.set(0.4, 0.4);
 							smokeRight.frames = Paths.getSparrowAtlas('smokeRight', 'week7');
@@ -1055,7 +1055,7 @@ class Stage extends MusicBeatState
 							swagBacks['smokeRight'] = smokeRight;
 							toAdd.push(smokeRight);
 
-							var tankWatchTower:FlxSprite = new FlxSprite(100, 50);
+							var tankWatchTower:FlxUISprite = new FlxUISprite(100, 50);
 							tankWatchTower.antialiasing = FlxG.save.data.antialiasing;
 							tankWatchTower.scrollFactor.set(0.5, 0.5);
 							tankWatchTower.frames = Paths.getSparrowAtlas('tankWatchtower', 'week7');
@@ -1065,8 +1065,8 @@ class Stage extends MusicBeatState
 							swagBacks['tankWatchTower'] = tankWatchTower;
 							toAdd.push(tankWatchTower);
 						}
-// 						var tankGround:FlxSprite = new FlxSprite(300, 300);
-						tankGround = new FlxSprite(300, 300); // JOELwindows7: globalize it!
+						// 						var tankGround:FlxUISprite = new FlxSprite(300, 300);
+						tankGround = new FlxUISprite(300, 300); // JOELwindows7: globalize it!
 						tankGround.scrollFactor.set(0.5, 0.5);
 						tankGround.antialiasing = FlxG.save.data.antialiasing;
 						tankGround.frames = Paths.getSparrowAtlas('tankRolling', 'week7');
@@ -1090,7 +1090,7 @@ class Stage extends MusicBeatState
 						{
 							if (PlayState.SONG.songId == 'stress')
 							{
-								var dummyGf:FlxSprite = new FlxSprite(200, 105);
+								var dummyGf:FlxUISprite = new FlxUISprite(200, 105);
 								dummyGf.antialiasing = FlxG.save.data.antialiasing;
 								dummyGf.frames = Paths.getSparrowAtlas('characters/gfTankmen');
 								dummyGf.animation.addByPrefix('idle', 'GF Dancing at Gunpoint', 24, false);
@@ -1098,7 +1098,7 @@ class Stage extends MusicBeatState
 								swagBacks['dummyGf'] = dummyGf;
 								layInFront[2].push(dummyGf);
 
-								var gfCutscene:FlxSprite = new FlxSprite(200, 85);
+								var gfCutscene:FlxUISprite = new FlxUISprite(200, 85);
 								gfCutscene.antialiasing = FlxG.save.data.antialiasing;
 								gfCutscene.frames = Paths.getSparrowAtlas('cutscenes/stressGF');
 								gfCutscene.animation.addByPrefix('dieBitch', 'GF STARTS TO TURN PART 1', 24, false);
@@ -1107,7 +1107,7 @@ class Stage extends MusicBeatState
 								swagBacks['gfCutscene'] = gfCutscene;
 								layInFront[2].push(gfCutscene);
 
-								var picoCutscene:FlxSprite = new FlxSprite(-552, -298);
+								var picoCutscene:FlxUISprite = new FlxUISprite(-552, -298);
 								picoCutscene.antialiasing = FlxG.save.data.antialiasing;
 								swagBacks['picoCutscene'] = picoCutscene;
 								picoCutscene.frames = AtlasFrameMaker.construct('cutscenes/stressPico', 'week7');
@@ -1116,7 +1116,7 @@ class Stage extends MusicBeatState
 
 								toAdd.push(picoCutscene);
 
-								var bfCutscene:FlxSprite = new FlxSprite(815, 500);
+								var bfCutscene:FlxUISprite = new FlxUISprite(815, 500);
 								bfCutscene.antialiasing = FlxG.save.data.antialiasing;
 								bfCutscene.frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
 								bfCutscene.animation.addByPrefix('idle', 'BF idle dance', 24, false);
@@ -1125,14 +1125,14 @@ class Stage extends MusicBeatState
 								layInFront[2].push(bfCutscene);
 							}
 
-							var tankman:FlxSprite = new FlxSprite(18, 333);
+							var tankman:FlxUISprite = new FlxUISprite(18, 333);
 							tankman.frames = Paths.getSparrowAtlas('cutscenes/' + PlayState.SONG.songId);
 							tankman.antialiasing = FlxG.save.data.antialiasing;
 							swagBacks['tankman'] = tankman;
 							layInFront[2].push(tankman);
 						}
 
-						var foreGround0 = new FlxSprite(-500, 600);
+						var foreGround0 = new FlxUISprite(-500, 600);
 						foreGround0.scrollFactor.set(1.7, 1.5);
 						foreGround0.antialiasing = FlxG.save.data.antialiasing;
 						foreGround0.frames = Paths.getSparrowAtlas('tank0', 'week7');
@@ -1143,7 +1143,7 @@ class Stage extends MusicBeatState
 
 						if (FlxG.save.data.distractions)
 						{
-							var foreGround1 = new FlxSprite(-300, 750);
+							var foreGround1 = new FlxUISprite(-300, 750);
 							foreGround1.scrollFactor.set(2, 0.2);
 							foreGround1.antialiasing = FlxG.save.data.antialiasing;
 							foreGround1.frames = Paths.getSparrowAtlas('tank1', 'week7');
@@ -1153,7 +1153,7 @@ class Stage extends MusicBeatState
 							layInFront[2].push(foreGround1);
 						}
 
-						var foreGround2 = new FlxSprite(450, 940);
+						var foreGround2 = new FlxUISprite(450, 940);
 						foreGround2.scrollFactor.set(1.5, 1.5);
 						foreGround2.antialiasing = FlxG.save.data.antialiasing;
 						foreGround2.frames = Paths.getSparrowAtlas('tank2', 'week7');
@@ -1164,7 +1164,7 @@ class Stage extends MusicBeatState
 
 						if (FlxG.save.data.distractions)
 						{
-							var foreGround3 = new FlxSprite(1300, 900);
+							var foreGround3 = new FlxUISprite(1300, 900);
 							foreGround3.scrollFactor.set(1.5, 1.5);
 							foreGround3.antialiasing = FlxG.save.data.antialiasing;
 							foreGround3.frames = Paths.getSparrowAtlas('tank4', 'week7');
@@ -1174,7 +1174,7 @@ class Stage extends MusicBeatState
 							layInFront[2].push(foreGround3);
 						}
 
-						var foreGround4 = new FlxSprite(1620, 710);
+						var foreGround4 = new FlxUISprite(1620, 710);
 						foreGround4.scrollFactor.set(1.5, 1.5);
 						foreGround4.antialiasing = FlxG.save.data.antialiasing;
 						foreGround4.frames = Paths.getSparrowAtlas('tank5', 'week7');
@@ -1185,7 +1185,7 @@ class Stage extends MusicBeatState
 
 						if (FlxG.save.data.distractions)
 						{
-							var foreGround5 = new FlxSprite(1400, 1290);
+							var foreGround5 = new FlxUISprite(1400, 1290);
 							foreGround5.scrollFactor.set(3.5, 2.5);
 							foreGround5.antialiasing = FlxG.save.data.antialiasing;
 							foreGround5.frames = Paths.getSparrowAtlas('tank3', 'week7');
@@ -1573,7 +1573,7 @@ class Stage extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (!PlayStateChangeables.Optimize)
+		if (!PlayStateChangeables.optimize)
 		{
 			switch (curStage)
 			{
@@ -1605,7 +1605,7 @@ class Stage extends MusicBeatState
 	{
 		super.stepHit();
 
-		if (!PlayStateChangeables.Optimize)
+		if (!PlayStateChangeables.optimize)
 		{
 			var array = slowBacks[curStep];
 			if (array != null && array.length > 0)
@@ -1695,7 +1695,7 @@ class Stage extends MusicBeatState
 				bg.animation.play('idle', true);
 		}
 
-		if (!PlayStateChangeables.Optimize && FlxG.save.data.distractions && FlxG.save.data.background) // JOELwindows7: BOLO check distract & bg setting
+		if (!PlayStateChangeables.optimize && FlxG.save.data.distractions && FlxG.save.data.background) // JOELwindows7: BOLO check distract & bg setting
 		{
 			switch (curStage)
 			{
@@ -2115,7 +2115,8 @@ class Stage extends MusicBeatState
 	{
 		tankAngle += FlxG.elapsed * tankSpeed;
 
-		if(tankRolling != null){
+		if (tankRolling != null)
+		{
 			tankRolling.angle = tankAngle - 90 + 15;
 			tankRolling.x = tankX + 1500 * FlxMath.fastCos(FlxAngle.asRadians(tankAngle + 180));
 			tankRolling.y = 1300 + 1100 * FlxMath.fastSin(FlxAngle.asRadians(tankAngle + 180));
@@ -2123,7 +2124,8 @@ class Stage extends MusicBeatState
 
 		// JOELwindows7: BOLO said:
 		// Worst fix I've ever done in my life. I hope this doesn't make lag stutters.
-		if (swagBacks['tankGround'] != null){
+		if (swagBacks['tankGround'] != null)
+		{
 			if (!PlayState.instance.endingSong)
 				PlayState.instance.createTween(swagBacks['tankGround'], {angle: tankAngle - 90 + 15}, 0.01, {type: FlxTweenType.ONESHOT});
 			swagBacks['tankGround'].x = tankX + 1500 * FlxMath.fastCos(FlxAngle.asRadians(tankAngle + 180));
@@ -2256,7 +2258,7 @@ class Stage extends MusicBeatState
 			// trailAll = new FlxTypedGroup<FlxTrail>();
 			// add(trailAll);
 			#if FEATURE_LUAMODCHART
-			executeStageScript = !PlayStateChangeables.Optimize
+			executeStageScript = !PlayStateChangeables.optimize
 				&& PlayState.SONG.useCustomStage
 				&& customStage.useStageScript
 				&& (Paths.doesTextAssetExist(Paths.lua("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/stageScript"))
@@ -2267,7 +2269,7 @@ class Stage extends MusicBeatState
 			#end
 
 			// for hscript pls
-			executeStageHscript = !PlayStateChangeables.Optimize
+			executeStageHscript = !PlayStateChangeables.optimize
 				&& PlayState.SONG.useCustomStage
 				&& customStage.useStageScript
 				&& (Paths.doesTextAssetExist(Paths.hscript("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/stageScript"))
@@ -2309,7 +2311,7 @@ class Stage extends MusicBeatState
 	{
 		colorableGround = useImage ? cast new FlxUISprite(positionX,
 			positionY).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'), animated, width, height,
-			unique) : cast new FlxUISprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
+				unique) : cast new FlxUISprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
 		colorableGround.setGraphicSize(Std.int(colorableGround.width * upscaleX), Std.int(colorableGround.height * upscaleY));
 		colorableGround.updateHitbox();
 		colorableGround.antialiasing = antialiasing;

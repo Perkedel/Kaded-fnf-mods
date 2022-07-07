@@ -533,6 +533,17 @@ class HaxeScriptState
 		addCallback("playerOneSing", function(note, position, beatOf, stepOf)
 		{
 		});
+		// JOELwindows7: well, because there is opponent mode, you should then use absolute character positionals here.
+		addCallback("characterTurn", function(whichTurn:Int, absoluteCharId:Int)
+		{
+		});
+		addCallback("characterSing", function(whichTurn:Int, absoluteCharId:Int, note, position, beatOf, stepOf)
+		{
+		});
+		addCallback("characterMiss", function(whichTurn:Int, absoluteCharId:Int, note, position, beatOf, stepOf)
+		{
+		});
+		// yeah.
 		addCallback("noteHit", function(player1:Bool, note:Note)
 		{
 		});
@@ -583,6 +594,12 @@ class HaxeScriptState
 		addCallback("setSustainWiggle", function(wiggleId)
 		{
 			PlayState.instance.camSustains.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
+		});
+
+		// JOELwindows7: here strums BOLO wiggle
+		addCallback("setStrumsWiggle", function(wiggleId)
+		{
+			PlayState.instance.camStrums.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
 		});
 
 		addCallback("createWiggle", function(freq:Float, amplitude:Float, speed:Float)
@@ -1846,7 +1863,7 @@ class HaxeScriptState
 		addCallback('getStepCompare', function(stepWhich:Int, compareType:String)
 		{
 			@:privateAccess {
-				return PlayState.instance.getStepCompareStr(stepWhich, compare);
+				return PlayState.instance.getStepCompareStr(stepWhich, compareType);
 			}
 		});
 
@@ -2211,7 +2228,7 @@ class HaxeScriptState
 	// JOELwindows7: BOLO get FlxEase by string
 	// ouu, we gotta fix capital here. nvm, it's already lowercased so whatever it says caps, some, or not.
 	// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/ModchartState.hx
-	public static function getFlxEaseByString(?ease:String = ''):Float
+	public static function getFlxEaseByString(?ease:String = '')
 	{
 		return HelperFunctions.getFlxEaseByString(ease);
 	}

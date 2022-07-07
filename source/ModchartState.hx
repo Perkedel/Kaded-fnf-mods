@@ -4,6 +4,7 @@
 // LuaJit only works for C++; JOELwindows7: wtf Linux not working?
 // https://lib.haxe.org/p/linc_luajit/
 // Lua
+import Shader;
 import hscript.Interp;
 import flixel.addons.ui.FlxUISprite;
 import LuaClass;
@@ -38,6 +39,8 @@ import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import openfl.Lib;
+import hscript.Parser;
+import hscript.Interp;
 import HaxeScriptState;
 
 using StringTools;
@@ -749,6 +752,12 @@ class ModchartState
 		Lua_helper.add_callback(lua, "setSustainWiggle", function(wiggleId)
 		{
 			PlayState.instance.camSustains.setFilters([new ShaderFilter(luaWiggles.get(wiggleId).shader)]);
+		});
+
+		// JOELwindows7: here wiggle for strum BOLO too
+		Lua_helper.add_callback(lua, "setStrumsWiggle", function(wiggleId)
+		{
+			PlayState.instance.camStrums.setFilters([new ShaderFilter(luaWiggles.get(wiggleId).shader)]);
 		});
 
 		Lua_helper.add_callback(lua, "createWiggle", function(freq:Float, amplitude:Float, speed:Float)
@@ -2078,7 +2087,7 @@ class ModchartState
 		Lua_helper.add_callback(lua, 'getStepCompare', function(stepWhich:Int, compareType:String)
 		{
 			@:privateAccess {
-				return PlayState.instance.getStepCompareStr(stepWhich, compare);
+				return PlayState.instance.getStepCompareStr(stepWhich, compareType);
 			}
 		});
 
@@ -2222,7 +2231,7 @@ class ModchartState
 	// JOELwindows7: BOLO get FlxEase by string
 	// ouu, we gotta fix capital here. nvm, it's already lowercased so whatever it says caps, some, or not.
 	// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/ModchartState.hx
-	public static function getFlxEaseByString(?ease:String = ''):Float
+	public static function getFlxEaseByString(?ease:String = '')
 	{
 		return HelperFunctions.getFlxEaseByString(ease);
 	}

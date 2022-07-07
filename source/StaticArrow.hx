@@ -1,5 +1,6 @@
 package;
 
+import LuaClass;
 import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -12,6 +13,7 @@ using StringTools;
 class StaticArrow extends FlxUISprite
 {
 	// JOELwindows7: BOLO lua object reference
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/StaticArrow.hx
 	#if FEATURE_LUAMODCHART
 	public var luaObject:LuaReceptor;
 	#end
