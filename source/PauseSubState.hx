@@ -369,7 +369,9 @@ class PauseSubState extends MusicBeatSubstate
 						PlayState.instance.removedVideo = true;
 					}
 					PlayState.instance.clean();
-					FlxG.resetState();
+					// FlxG.resetState();
+					// MusicBeatState.resetState(); // JOELwindows7: BOLO reset state
+					MusicBeatState.switchStateStatic(new PlayState()); // JOELwindows7: BOLO nvm just manually go to playstate again instead.
 					PlayState.stageTesting = false;
 				case "Options":
 					goToOptions = true;

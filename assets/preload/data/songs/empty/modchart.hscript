@@ -81,35 +81,51 @@ function keyReleased(key)
     
 }
 
-function playerTwoTurn()
+function playerTwoTurn(beatOf, stepOf)
 {
 
 }
 
-function playerTwoMiss(note, position)
+function playerTwoMiss(note, position, beatOf, stepOf)
 {
 
 }
 
-function playerTwoSing(note, position)
+function playerTwoSing(note, position, beatOf, stepOf)
 {
 
 }
 
-function playerOneTurn()
+function playerOneTurn(beatOf, stepOf)
 {
     
 }
 
-function playerOneMiss(note, position)
+function playerOneMiss(note, position, beatOf, stepOf)
 {
 
 }
 
-function playerOneSing(note, position)
+function playerOneSing(note, position, beatOf, stepOf)
 {
-    // note:Int => left, down, up, right
-    // position:Float
+    // note:Int => left 0, down 1, up 2, right 3
+    // position:Float => Song position where pressed
+}
+
+function characterSing(whichTurn, absoluteCharId, note, position, beatOf, stepOf)
+{
+    // whichTurn:Int => 0 your turn (bf if not opponent, dad if opponent), 1 opponent turn
+    // absoluteCharId:Int => bf 0, dad 1
+}
+
+function characterTurn(whichTurn, absoluteCharId)
+{
+
+}
+
+function characterMiss(whichTurn, absoluteCharId, note, position, beatOf, stepOf)
+{
+
 }
 
 function variableChange(name,value)

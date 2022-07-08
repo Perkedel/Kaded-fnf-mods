@@ -83,7 +83,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				daBf = 'bf-holding-gf-dead';
 			default:
 				// daBf = 'bf';
-				daBf = PlayState.boyfriend.curCharacter; // JOELwindows7: or maybe we should specify?
+				daBf = PlayState.boyfriend.deathCharacterIsSameAsThis ? PlayState.boyfriend.curCharacter : PlayState.boyfriend.deathCharacter; // JOELwindows7: or maybe we should specify? YES we must
 		}
 		daDad = PlayState.dad.curCharacter; // JOELwindows7: here the player 2
 

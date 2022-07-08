@@ -515,7 +515,7 @@ class HaxeScriptState
 		addCallback("stepHit", function(step)
 		{
 		});
-		addCallback("playerTwoTurn", function()
+		addCallback("playerTwoTurn", function(beatOf, stepOf) // JOELwindows7: GOUYA
 		{
 		});
 		addCallback("playerTwoMiss", function(note, position, beatOf, stepOf)
@@ -524,7 +524,7 @@ class HaxeScriptState
 		addCallback("playerTwoSing", function(note, position, beatOf, stepOf)
 		{
 		});
-		addCallback("playerOneTurn", function()
+		addCallback("playerOneTurn", function(beatOf, stepOf) // JOELwindows7: GOUYA
 		{
 		});
 		addCallback("playerOneMiss", function(note, position, beatOf, stepOf)

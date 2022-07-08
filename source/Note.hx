@@ -60,7 +60,7 @@ class Note extends FlxUISprite
 
 	public var noteScore:Float = 1;
 
-	public var noteYOff:Int = 0;
+	public var noteYOff:Float = 0; // JOELwindows7: Brother, it's Float supposedly bruh. look at BOLO!
 
 	public var beat:Float = 0;
 
@@ -98,6 +98,7 @@ class Note extends FlxUISprite
 	public var inCharter:Bool = false; // JOELwindows7: globalize inCharter for all charting state detection
 	public var noteTypeCheck:String; // JOELwindows7: globalize noteTypeCheck for all noteSkin detection
 
+	public var hitsoundUseIt:Bool = false; // JOELwindows7: because there is BOLO here, now we have to prioritze default. flag up to override.
 	public var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound audio file to play when hit & hitsound option enabled.
 	public var hitlinePath:String = "HitLineParticle"; // JOELwindows7: hitline particle to emit when hit & hitline option enabled. idk this always on?
 	public var vowelType:Int = 0; // JOELwindows7: vowel type. radpas12131's mod. a i u e o.
@@ -166,7 +167,8 @@ class Note extends FlxUISprite
 			noteData = Std.int(Math.abs(3 - noteData));
 		}
 
-		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.Optimize) ? PlayState.Stage.curStage : 'stage');
+		// JOELwindows7: consistenize capitalization for `optimize` pls.
+		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.optimize) ? PlayState.Stage.curStage : 'stage');
 
 		// defaults if no noteStyle was found in chart
 		noteTypeCheck = 'normal';
@@ -401,8 +403,8 @@ class Note extends FlxUISprite
 
 		if (isSustainNote && prevNote != null)
 		{
-			noteYOff = Math.round(-stepHeight + swagWidth * 0.5) + FlxG.save.data.offset + PlayState.songOffset;
-			// noteYOff = -stepHeight + swagWidth * 0.5; // JOELwindows7: hey, BOLO got this instead...
+			// noteYOff = Math.round(-stepHeight + swagWidth * 0.5) + FlxG.save.data.offset + PlayState.songOffset;
+			noteYOff = -stepHeight + swagWidth * 0.5; // JOELwindows7: hey, BOLO got this instead...
 
 			noteScore * 0.2;
 			alpha = 0.6;
@@ -431,7 +433,17 @@ class Note extends FlxUISprite
 				prevNote.updateHitbox();
 
 				if (antialiasing)
-					prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
+				{
+					// prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
+					// JOELwindows7: BOLO note offseting antialiasing
+					switch (FlxG.save.data.noteskin)
+					{
+						case 0:
+							prevNote.scale.y *= 1.0064 + (1.0 / prevNote.frameHeight);
+						default:
+							prevNote.scale.y *= 0.995 + (1.0 / prevNote.frameHeight);
+					}
+				}
 
 				// JOELwindows7: BOLO update all hitbox one last time
 				prevNote.updateHitbox();
@@ -455,8 +467,8 @@ class Note extends FlxUISprite
 			stepHeight = newStepHeight;
 			if (isSustainNote)
 			{
-				// noteYOff = -stepHeight + swagWidth * 0.5;
-				noteYOff = Math.round(-stepHeight + swagWidth * 0.5) + FlxG.save.data.offset + PlayState.songOffset;
+				// noteYOff = Math.round(-stepHeight + swagWidth * 0.5) + FlxG.save.data.offset + PlayState.songOffset;
+				noteYOff = -stepHeight + swagWidth * 0.5;
 			}
 		}
 
@@ -466,23 +478,27 @@ class Note extends FlxUISprite
 		{ // JOELwindows7: here total override, if on forget special parameter!
 			if (noteType == 0)
 			{
+				// JOELwindows7: This is normal mote!
 				if (!modifiedByLua)
 					angle = modAngle + localAngle;
 				else
 					angle = modAngle;
 
-				// JOELwindows7: sneaky little punk! you can't get away from this!
+				// JOELwindows7: sneaky little punk! you can't get away from this! with BOLO tooLate
 				if (!modifiedByLua)
 				{
-					if (!sustainActive)
+					if (!sustainActive && tooLate)
 					{
 						alpha = 0.3;
+						// IDEA: JOELwindows7: tween alpha or animate the sustain bar, like
+						// cell died creepily, deflatingly, something something turns dark & rot
+						// instantly idk..
 					}
 				}
 			}
 			else
 			{
-				// JOELwindows7: spin mine!!! and other deadly notes
+				// JOELwindows7: spin mine!!! and other deadly & useful notes
 				angularVelocity = switch (noteType)
 				{
 					case 1: // powerup
@@ -509,9 +525,9 @@ class Note extends FlxUISprite
 				// JOELwindows7: sneaky little punk! you can't get away from this!
 				if (!modifiedByLua)
 				{
-					if (!sustainActive)
+					if (!sustainActive && tooLate)
 					{
-						alpha = 1;
+						alpha = .3; // JOELwindows7: was 1
 					}
 				}
 			}
@@ -583,17 +599,24 @@ class Note extends FlxUISprite
 		}
 		else
 		{
-			if (PlayState.SONG.noteStyle == null)
+			if (PlayState.SONG != null)
 			{
-				switch (PlayState.storyWeek)
+				if (PlayState.SONG.noteStyle == null)
 				{
-					case 6:
-						noteTypeCheck = 'pixel';
+					switch (PlayState.storyWeek)
+					{
+						case 6:
+							noteTypeCheck = 'pixel';
+					}
+				}
+				else
+				{
+					noteTypeCheck = PlayState.SONG.noteStyle;
 				}
 			}
 			else
 			{
-				noteTypeCheck = PlayState.SONG.noteStyle;
+				noteTypeCheck = 'normal';
 			}
 
 			switch (noteTypeCheck)

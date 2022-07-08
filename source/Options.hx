@@ -1641,6 +1641,7 @@ class CamZoomOption extends Option
 			return false;
 		FlxG.save.data.camzoom = !FlxG.save.data.camzoom;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong();
 		return true;
 	}
 
@@ -3601,6 +3602,40 @@ class HitsoundOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Hitsound < " + (FlxG.save.data.hitsound ? "ON" : "OFF") + " >";
+	}
+}
+
+// JOELwindows7: BOLO select hitsound
+// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Options.hx
+class HitsoundSelect extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.hitSoundSelect--;
+		if (FlxG.save.data.hitSoundSelect < 0)
+			FlxG.save.data.hitSoundSelect = HitSounds.getSound().length - 1;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		FlxG.save.data.hitSoundSelect++;
+		if (FlxG.save.data.hitSoundSelect > HitSounds.getSound().length - 1)
+			FlxG.save.data.hitSoundSelect = 0;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function getValue():String
+	{
+		return "Hitsound Style: < " + HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect) + " >";
 	}
 }
 

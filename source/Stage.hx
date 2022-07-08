@@ -151,6 +151,15 @@ class Stage extends MusicBeatState
 			'NULL-gf' => [310, -25],
 			'NULL-dad' => [20, 380],
 		],
+		// JOELwindows7: BOLO's tank stage yoink
+		'tank' => [
+			'picoSpeaker' => [307, 97],
+			'pico-speaker' => [307, 97],
+			'bf' => [810, 500],
+			'bf-holding-gf' => [807, 479],
+			'gf-tankmen' => [200, 85],
+			'tankman' => [20, 100]
+		],
 		'theShift' => [
 			// JOELwindows7: sky bbpanzu
 			// no, I swear, he directly set it to exact position!
@@ -2113,7 +2122,7 @@ class Stage extends MusicBeatState
 
 	function moveTank()
 	{
-		tankAngle += FlxG.elapsed * tankSpeed;
+		tankAngle += FlxG.elapsed * tankSpeed * PlayState.songMultiplier; // JOELwindows7: BOLO here songMultiplier
 
 		if (tankRolling != null)
 		{

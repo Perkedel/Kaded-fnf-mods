@@ -9,10 +9,13 @@
     "forceIcon": false,
     "deathCharacter": "bf",
     "deathCharacterIsSameAsThis": true,
+    "isDeathCharacter": false,
     "font": "Pixel Arial 11 Bold",
     "fontDrop": "Pixel Arial 11 Bold",
     "fontColor": "0xFF3F2021",
     "fontColorDrop": "0xFFD89494",
+    "camPos": [0,0],
+    "charPos": [0,0],
     "dialogueChatSoundPaths": [
         "pixelText"
     ],

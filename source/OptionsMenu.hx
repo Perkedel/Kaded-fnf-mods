@@ -27,6 +27,8 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 // JOELwindows7: FlxUI fy!!!
+// JOELwindows7: ome component yoink from
+// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/OptionsMenu.hx
 
 class OptionCata extends FlxUISprite
 {
@@ -169,7 +171,7 @@ class OptionsMenu extends CoreSubState
 			]),
 			new OptionCata(345, 40, "Appearance", [
 				new NoteskinOption("Change your current noteskin"),
-				new NoteSplashOption("Have your note press splash"),
+				new NoteSplashOption("Have your note press splash for every SICK! kyaaa!"),
 				new RotateSpritesOption("Should the game rotate the sprites to do color quantization (turn off for bar skins)"),
 				new EditorRes("Not showing the editor grid will greatly increase editor performance"),
 				// new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
@@ -195,6 +197,7 @@ class OptionsMenu extends CoreSubState
 				// new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."), //JOELwindows7: how about move it here?
 				new AccidentVolumeKeysOption("Enable / Disable volume shortcut key all time beyond pause menu (- decrease, + increase, 0 mute)"),
 				new HitsoundOption("Enable / Disable Gameplay Hitsound everytime note got hit in Gameplay (not in Editor)"),
+				new HitsoundSelect("Choose your hitsound"), // JOELwindows7: BOLO's choose hitsound
 				new HitSoundVolume("Set hitsound volume."), // JOELwindows7: BOLO's hitsound volume
 				// JOELwindows7: IDEA: only enable volume keys on pause menu?
 				new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
@@ -396,6 +399,7 @@ class OptionsMenu extends CoreSubState
 			{
 				var opt = selectedCat.optionObjects.members[i];
 				opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+				// opt.y = options[4].titleObject.y + 54 + (46 * i); // JOELwindows7: pls figure this one out
 			}
 
 			while (shownStuff.members.length != 0)
@@ -426,6 +430,7 @@ class OptionsMenu extends CoreSubState
 					var opt = selectedCat.optionObjects.members[i];
 					opt.ID = i; // JOELwindows7: assign ID to each option member.
 					opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+					// opt.y = options[4].titleObject.y + 54 + (46 * i); // JOELwindows7: I think figurely, 4 is `up to how many`?
 				}
 			}
 
@@ -459,7 +464,7 @@ class OptionsMenu extends CoreSubState
 
 		Debug.logTrace("Changed cat: " + selectedCatIndex);
 
-		// updateOptColors(); // JOELwindows7: Change color based on things. wait, don't do now. there's alot of illelegancies.
+		updateOptColors(); // JOELwindows7: Change color based on things. wait, don't do now. there's alot of illelegancies.
 
 		haveClicked = false; // JOELwindows7 idk..
 	}

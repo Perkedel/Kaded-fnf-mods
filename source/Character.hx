@@ -42,6 +42,10 @@ class Character extends FlxUISprite
 	public var camPos:Array<Int>;
 	public var camFollow:Array<Int>;
 
+	// JOELwindows7: death character
+	public var deathCharacter:String = 'bf';
+	public var deathCharacterIsSameAsThis:Bool = true;
+
 	public var heartOrgans:Array<SwagHeart>; // JOELwindows7: for the 🫀 hearts. yep, Shinon51788 Doki Doki dance thingy. turns out either:
 	public var deathSoundPaths:Array<DeathSoundPath>; // JOELwindows7: play these death sounds defined in this list on the asset sound folders.
 	public var randomizedDeathSoundPaths:Array<RandomizedDeathSoundPath>; // JOELwindows7: same but each bit plays one of the random variations
@@ -141,13 +145,14 @@ class Character extends FlxUISprite
 				var flipX = anim.flipX == null ? false : anim.flipX;
 				var flipY = anim.flipY == null ? false : anim.flipY;
 
+				// JOELwindows7: BOLO. frameRate times song multiplier right now.
 				if (anim.frameIndices != null)
 				{
-					animation.addByIndices(anim.name, anim.prefix, anim.frameIndices, "", frameRate, looped, flipX, flipY);
+					animation.addByIndices(anim.name, anim.prefix, anim.frameIndices, "", Std.int(frameRate * PlayState.songMultiplier), looped, flipX, flipY);
 				}
 				else
 				{
-					animation.addByPrefix(anim.name, anim.prefix, frameRate, looped, flipX, flipY);
+					animation.addByPrefix(anim.name, anim.prefix, Std.int(frameRate * PlayState.songMultiplier), looped, flipX, flipY);
 				}
 
 				animOffsets[anim.name] = anim.offsets == null ? [0, 0] : anim.offsets;
@@ -168,6 +173,9 @@ class Character extends FlxUISprite
 		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
 		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
 		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
+		// JOELwindows7: chec death is same with this or not.
+		this.deathCharacterIsSameAsThis = data.deathCharacterIsSameAsThis == null ? Perkedel.NULL_DEATH_CHARACTER_IS_AS_SAME_AS_THIS : data.deathCharacterIsSameAsThis;
+		this.deathCharacter = data.deathCharacter == null ? Perkedel.NULL_DEATH_CHARACTER : data.deathCharacter;
 		this.deathSoundPaths = data.deathSoundPaths == null ? Perkedel.NULL_DEATH_SOUND_PATHS : data.deathSoundPaths;
 		this.randomizedDeathSoundPaths = data.randomizedDeathSoundPaths == null ? Perkedel.NULL_RANDOMIZED_DEATH_SOUND_PATHS : data.randomizedDeathSoundPaths;
 		this.riseUpAgainSoundPaths = data.riseUpAgainSoundPaths == null ? Perkedel.NULL_RISE_UP_AGAIN_SOUND_PATHS : data.riseUpAgainSoundPaths;
@@ -204,38 +212,76 @@ class Character extends FlxUISprite
 
 	override function update(elapsed:Float)
 	{
-		if (!isPlayer)
+		// JOELwindows7: BOLO's safety bruh!
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/Character.hx
+		if (animation.curAnim != null)
 		{
-			if (animation.curAnim.name.startsWith('sing'))
-				holdTimer += elapsed;
-
-			if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
+			if (!isPlayer)
 			{
-				if (isDancing)
-					playAnim('danceLeft'); // overridden by dance correctly later
-				dance();
-				holdTimer = 0;
+				if (animation.curAnim.name.startsWith('sing'))
+					holdTimer += elapsed;
+
+				if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
+				{
+					// JOELwindows7: BOLO's opponent mode check. if not opponent mode then dance
+					if (!PlayStateChangeables.opponentMode)
+					{
+						/*
+							if (isDancing)
+								playAnim('danceLeft'); // overridden by dance correctly later
+						 */
+						dance();
+					}
+					holdTimer = 0;
+				}
+
+				// JOELwindows7: BOLO's return back to idle when not player.
+				if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+				{
+					// playAnim('idle', true, false, 10); // perhaps no, don't, I guess..
+				}
+			}
+
+			if (!debugMode)
+			{
+				var nextAnim = animNext.get(animation.curAnim.name);
+				var forceDanced = animDanced.get(animation.curAnim.name);
+
+				// case 'gf' | 'gf-ht' | 'gf-covid' | 'gf-placeholder':
+				// JOELwindows7: okay idk how to make this work at all!
+				if (nextAnim != null && animation.curAnim.finished)
+				{
+					if (isDancing && forceDanced != null)
+						danced = forceDanced;
+					playAnim(nextAnim); // JOELwindows7: BOLO play next anim!
+				}
+				else
+				{
+					// if (isDancing || animation.curAnim.finished)
+					// 	dance();
+					// animation.curAnim
+				}
+			}
+
+			// JOELwindows7: BOLO additional special
+			switch (curCharacter)
+			{
+				case 'pico-speaker':
+					if (animationNotes.length > 0 && Conductor.songPosition >= animationNotes[0].strumTime)
+					{
+						var noteData:Int = 1;
+						if (2 <= animationNotes[0].noteData)
+							noteData = 3;
+
+						noteData += FlxG.random.int(0, 1);
+						playAnim('shoot' + noteData, true);
+						animationNotes.shift();
+					}
 			}
 		}
-
-		if (!debugMode)
+		else
 		{
-			var nextAnim = animNext.get(animation.curAnim.name);
-			var forceDanced = animDanced.get(animation.curAnim.name);
-
-			// case 'gf' | 'gf-ht' | 'gf-covid' | 'gf-placeholder':
-			// JOELwindows7: okay idk how to make this work at all!
-			if (nextAnim != null && animation.curAnim.finished)
-			{
-				if (isDancing && forceDanced != null)
-					danced = forceDanced;
-			}
-			else
-			{
-				// if (isDancing || animation.curAnim.finished)
-				// 	dance();
-				// animation.curAnim
-			}
+			// JOELwindows7: curAnim is null bruh
 		}
 
 		super.update(elapsed);
@@ -292,49 +338,56 @@ class Character extends FlxUISprite
 	{
 		if (!debugMode)
 		{
-			// trace('${curCharacter} Dancening force ${forced}, alt ${altAnim}');
-			// JOELwindows7: looks like interupt is defaultly true looks like!
-			// crash if animation frame reference in the name is missing
-			// Debug.logTrace('${animation.curAnim.name} here,');
-			// Debug.logTrace('${animation.curAnim.name} can interupt? ${animInterrupt.get(animation.curAnim.name)}');
-			var canInterrupt = animInterrupt.get(animation.curAnim.name);
-			if (canInterrupt == null)
+			// JOELwindows7: BOLO nested safety pls!
+			if (!PlayStateChangeables.optimize)
 			{
-				canInterrupt = true;
-			} // JOELwindows7: prevent gf goes dead silent after train hair fall.
-
-			if (canInterrupt)
-			{
-				// case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-covid' | 'gf-placeholder' | 'gf-ht':
-				if (isDancing)
+				if (animation.curAnim != null)
 				{
-					// JOELwindows7: copy this if from above case
-					// well we can just add OR to this.
-					// if (!animation.curAnim.name.startsWith('hair') && !animation.curAnim.name.startsWith('sing'))
-					//
-					danced = !danced;
+					// trace('${curCharacter} Dancening force ${forced}, alt ${altAnim}');
+					// JOELwindows7: looks like interupt is defaultly true looks like!
+					// crash if animation frame reference in the name is missing
+					// Debug.logTrace('${animation.curAnim.name} here,');
+					// Debug.logTrace('${animation.curAnim.name} can interupt? ${animInterrupt.get(animation.curAnim.name)}');
+					var canInterrupt = animInterrupt.get(animation.curAnim.name);
+					if (canInterrupt == null)
+					{
+						canInterrupt = true;
+					} // JOELwindows7: prevent gf goes dead silent after train hair fall.
 
-					if (altAnim && animation.getByName('danceRight-alt') != null && animation.getByName('danceLeft-alt') != null)
+					if (canInterrupt)
 					{
-						if (danced)
-							playAnim('danceRight-alt');
+						// case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-covid' | 'gf-placeholder' | 'gf-ht':
+						if (isDancing)
+						{
+							// JOELwindows7: copy this if from above case
+							// well we can just add OR to this.
+							// if (!animation.curAnim.name.startsWith('hair') && !animation.curAnim.name.startsWith('sing'))
+							//
+							danced = !danced;
+
+							if (altAnim && animation.getByName('danceRight-alt') != null && animation.getByName('danceLeft-alt') != null)
+							{
+								if (danced)
+									playAnim('danceRight-alt');
+								else
+									playAnim('danceLeft-alt');
+							}
+							else
+							{
+								if (danced)
+									playAnim('danceRight');
+								else
+									playAnim('danceLeft');
+							}
+						}
 						else
-							playAnim('danceLeft-alt');
+						{
+							if (altAnim && animation.getByName('idle-alt') != null)
+								playAnim('idle-alt', forced);
+							else
+								playAnim('idle', forced);
+						}
 					}
-					else
-					{
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-				}
-				else
-				{
-					if (altAnim && animation.getByName('idle-alt') != null)
-						playAnim('idle-alt', forced);
-					else
-						playAnim('idle', forced);
 				}
 			}
 		}
@@ -342,38 +395,42 @@ class Character extends FlxUISprite
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		if (AnimName.endsWith('alt') && animation.getByName(AnimName) == null)
+		// JOELwindows7: BOLO optimizeoid
+		if (!PlayStateChangeables.optimize)
 		{
-			#if debug
-			FlxG.log.warn(['Such alt animation doesnt exist: ' + AnimName]);
-			#end
-			AnimName = AnimName.split('-')[0];
-		}
-
-		animation.play(AnimName, Force, Reversed, Frame);
-
-		var daOffset = animOffsets.get(AnimName);
-		if (animOffsets.exists(AnimName))
-		{
-			offset.set(daOffset[0], daOffset[1]);
-		}
-		else
-			offset.set(0, 0);
-
-		if (curCharacter == 'gf' || curCharacter == 'gf-ht' || curCharacter == 'gf-placeholder')
-		{
-			if (AnimName == 'singLEFT')
+			if (AnimName.endsWith('alt') && animation.getByName(AnimName) == null)
 			{
-				danced = true;
-			}
-			else if (AnimName == 'singRIGHT')
-			{
-				danced = false;
+				#if debug
+				FlxG.log.warn(['Such alt animation doesnt exist: ' + AnimName]);
+				#end
+				AnimName = AnimName.split('-')[0];
 			}
 
-			if (AnimName == 'singUP' || AnimName == 'singDOWN')
+			animation.play(AnimName, Force, Reversed, Frame);
+
+			var daOffset = animOffsets.get(AnimName);
+			if (animOffsets.exists(AnimName))
 			{
-				danced = !danced;
+				offset.set(daOffset[0], daOffset[1]);
+			}
+			else
+				offset.set(0, 0);
+
+			if (curCharacter == 'gf' || curCharacter == 'gf-ht' || curCharacter == 'gf-placeholder')
+			{
+				if (AnimName == 'singLEFT')
+				{
+					danced = true;
+				}
+				else if (AnimName == 'singRIGHT')
+				{
+					danced = false;
+				}
+
+				if (AnimName == 'singUP' || AnimName == 'singDOWN')
+				{
+					danced = !danced;
+				}
 			}
 		}
 	}
@@ -649,6 +706,16 @@ typedef CharacterData =
 	 * Paths of sounds to play all at the same time in event of death / blueball
 	 */
 	var ?deathSoundPaths:Array<DeathSoundPath>; // JOELwindows7: sounds to play when death. plays these all at the same time.
+
+	/**
+		Character ID for the Game Over screen.
+	**/
+	var ?deathCharacter:String; // JOELwindows7: if the death char is different, then which character is it
+
+	/**
+		Would you like to use this same character or different character ID defined in `deathCharacter`?
+	**/
+	var ?deathCharacterIsSameAsThis:Bool; // JOELwindows7: whether the death character is same or use above path idk.
 
 	/**
 	 * Paths of sounds to play all at the same time in event of death / blueball

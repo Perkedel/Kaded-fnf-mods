@@ -60,10 +60,10 @@ import openfl.utils.ByteArray;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+
 #if (systools)
 // import systools.Dialogs;
 #end
-
 using StringTools;
 
 // JOELwindows7: Yo! for things that meant for UI stuffs, whyn't use FlxUI addon classes instead?!
@@ -1925,6 +1925,7 @@ class ChartingState extends MusicBeatState
 	}
 
 	public var check_naltAnim:FlxUICheckBox;
+	public var check_hitsoundUseIt:FlxUICheckBox; // JOELwindows7: override hitsound checkbox
 
 	function addNoteUI():Void
 	{
@@ -1943,11 +1944,34 @@ class ChartingState extends MusicBeatState
 		stepperNoteType.value = 0;
 		stepperNoteType.name = 'note_noteType';
 
+		// JOELwindows7: checkbox for hitsound use override path bellow
+		check_hitsoundUseIt = new FlxUICheckBox(10, 65, null, null, "Use Hitsound:", 100);
+		check_hitsoundUseIt.callback = function()
+		{
+			// copy from toggle alt anim naltanim
+			if (curSelectedNote != null)
+			{
+				for (i in selectedBoxes)
+				{
+					i.connectedNoteData[8] = check_hitsoundUseIt.checked;
+
+					for (ii in _song.notes)
+					{
+						for (n in ii.sectionNotes)
+							if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
+								n[8] = i.connectedNoteData[8];
+					}
+				}
+				updateGrid();
+			}
+		}
+
 		// JOELwindows7: text field for note hitsound audio file to play
 		hitsoundNotePath = new FlxUIInputText(10, 70, 80, "SNAP");
 		hitsoundNotePath.callback = function(text:String, action:String)
 		{
 			// JOELwindows7: the hitsound audio file to play which one yess
+			// no wait, I wan't mass edit!!! change this!
 			if (curSelectedNote == null)
 				return;
 
@@ -1955,7 +1979,22 @@ class ChartingState extends MusicBeatState
 			if (toxt == '' || toxt == null)
 				toxt = 'SNAP';
 
-			curSelectedNote[6] = toxt;
+			// curSelectedNote[6] = toxt;
+			if (curSelectedNote != null)
+			{
+				// yess!!!
+				for (i in selectedBoxes)
+				{
+					i.connectedNoteData[6] = text;
+
+					for (ii in _song.notes)
+					{
+						for (n in ii.sectionNotes)
+							if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
+								n[6] = i.connectedNoteData[6];
+					}
+				}
+			}
 			updateGrid();
 		}
 		hitsoundNotePath.name = 'note_hitsoundPath';
@@ -2000,6 +2039,7 @@ class ChartingState extends MusicBeatState
 
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(stepperSusLengthLabel);
+		tab_group_note.add(check_hitsoundUseIt); // JOELwindows7: add the hitsound override checkbox
 		tab_group_note.add(hitsoundNotePathLabel); // JOELwindows7: add the hitsound path label
 		tab_group_note.add(stepperNoteType); // JOELwindows7: now add it this note type numberer
 		tab_group_note.add(stepperNoteTypeLabel); // JOELwindows7: and also that label.
@@ -2045,6 +2085,7 @@ class ChartingState extends MusicBeatState
 					var note:Note = new Note(strum, Math.floor(i[1] % 4), null, false, true, i[3], i[4], i[5]); // JOELwindows7: here notetype I hope
 					note.rawNoteData = i[1];
 					note.sustainLength = i[2];
+					note.hitsoundUseIt = i[8]; // JOELwindows7: the hitsound override enable / disable
 					note.hitsoundPath = i[6]; // JOELwindows7: here hitsound path I hope
 					note.vowelType = i[7];
 					note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -2108,8 +2149,9 @@ class ChartingState extends MusicBeatState
 						originalNote.isAlt,
 						originalNote.beat,
 						originalNote.noteType,
-						originalNote.hitsoundPath,
-						originalNote.vowelType,
+						originalNote.hitsoundPath, // JOElwindows7: woo
+						originalNote.vowelType, // JOELwindows7: wow
+						originalNote.hitsoundUseIt, // JOElwindows7: ye
 					];
 					ii.sectionNotes.push(newData);
 
@@ -2119,6 +2161,7 @@ class ChartingState extends MusicBeatState
 						originalNote.beat, originalNote.noteType); // JOELwindows7: put notetype woohoo
 					note.rawNoteData = originalNote.rawNoteData;
 					note.sustainLength = originalNote.sustainLength;
+					note.hitsoundUseIt = originalNote.hitsoundUseIt; // JOElwindows7: here hitsound override switch
 					note.hitsoundPath = originalNote.hitsoundPath; // JOELwindows7: here hitsound path woohoo
 					note.vowelType = originalNote.vowelType; // JOELwindows7: a i u e o from radpas13121 yess
 					note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -3651,7 +3694,7 @@ class ChartingState extends MusicBeatState
 
 				var sustainVis:FlxUISprite = cast new FlxUISprite(curSelectedNoteObject.x + (GRID_SIZE / 2),
 					curSelectedNoteObject.y + GRID_SIZE).makeGraphic(8,
-					Math.floor((getYfromStrum(curSelectedNoteObject.strumTime + curSelectedNote[2]) * zoomFactor) - curSelectedNoteObject.y));
+						Math.floor((getYfromStrum(curSelectedNoteObject.strumTime + curSelectedNote[2]) * zoomFactor) - curSelectedNoteObject.y));
 				curSelectedNoteObject.sustainLength = curSelectedNote[2];
 				Debug.logTrace("new sustain " + curSelectedNoteObject.sustainLength);
 				curSelectedNoteObject.noteCharterObject = sustainVis;
@@ -3835,6 +3878,14 @@ class ChartingState extends MusicBeatState
 				curSelectedNote[3] = false;
 				check_naltAnim.checked = false;
 			}
+			// JOELwindows7: o hitsound use it
+			if (curSelectedNote[8] != null)
+				check_hitsoundUseIt.checked = curSelectedNote[8];
+			else
+			{
+				curSelectedNote[8] = false;
+				check_hitsoundUseIt.checked = false;
+			}
 
 			// JOELwindows7: also the note type too as well.
 			stepperNoteType.value = curSelectedNote[5];
@@ -3891,6 +3942,7 @@ class ChartingState extends MusicBeatState
 				var daStrumTime = i[0];
 				var daSus = i[2];
 				var daType = i[5]; // JOELwindows7: da type yeahhhh
+				var hitsoundUseIt = i[8]; // JOELwindows7: the hitsound override. whether or not use bellow path or keep your prefered option idk.
 				var hitsoundPath = i[6]; // JOELwindows7: hitsound path yeahhhh
 				var vowelType = i[7]; // JOELwindows7: vowel type radpas13121 yeahhhh
 				if (daType == 2)
@@ -3900,6 +3952,7 @@ class ChartingState extends MusicBeatState
 					Debug.logTrace("Mine placered");
 				note.rawNoteData = daNoteInfo;
 				note.sustainLength = daSus;
+				note.hitsoundUseIt = hitsoundUseIt; // JOELwindows7: yeyeyyeyey
 				note.hitsoundPath = hitsoundPath; // JOELwindows7: just directly change value
 				note.vowelType = vowelType; // JOELwindows7: just directly change value woahow
 				note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -4226,6 +4279,7 @@ class ChartingState extends MusicBeatState
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
 		var noteType = 0; // JOELwindows7: press hold? alt + add note (1 2 3 4 or click collumn to add) to add mine.
+		var hitsoundUseIt:Bool = false; // JOELwindows7: hitsound override
 		var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound file sound.
 		var vowelType:Int = 0; // JOELwindows7: radpas13121 vowel a i u e o choosen. defaults to 'a'. lol gawr gura!
 		// if (FlxG.keys.pressed.ONE)
@@ -4247,6 +4301,7 @@ class ChartingState extends MusicBeatState
 				n.noteType,
 				n.hitsoundPath,
 				n.vowelType,
+				n.hitsoundUseIt,
 			]);
 		else
 			section.sectionNotes.push([
@@ -4258,6 +4313,7 @@ class ChartingState extends MusicBeatState
 				noteType,
 				hitsoundPath,
 				vowelType,
+				hitsoundUseIt,
 			]);
 
 		// Debug.logTrace("MROGIN");
@@ -4278,6 +4334,7 @@ class ChartingState extends MusicBeatState
 				Debug.logTrace("add mine n null success");
 			note.rawNoteData = noteData;
 			note.sustainLength = noteSus;
+			note.hitsoundUseIt = hitsoundUseIt; // JOELwindows7: directly value ye
 			note.hitsoundPath = hitsoundPath; // JOELwindows7: directly value
 			note.vowelType = vowelType; // JOELwindows7: directly value wow
 			note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -4316,6 +4373,7 @@ class ChartingState extends MusicBeatState
 			note.beat = TimingStruct.getBeatFromTime(n.strumTime);
 			note.rawNoteData = n.noteData;
 			note.sustainLength = noteSus;
+			note.hitsoundUseIt = hitsoundUseIt; // JOELwindows7: directly value ye
 			note.hitsoundPath = n.hitsoundPath; // JOELwindows7: directly value
 			note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 			note.updateHitbox();
@@ -4575,6 +4633,7 @@ class ChartingState extends MusicBeatState
 					noteTypeId: stringedNoteType,
 					hitsoundPath: i.sectionNotes[j][6],
 					vowelType: i.sectionNotes[j][7],
+					hitsoundUseIt: i.sectionNotes[j][8],
 				}
 			}
 		}

@@ -96,6 +96,8 @@ class Perkedel
 			volume: 1.0,
 		},
 	];
+	public static final NULL_DEATH_CHARACTER:String = 'bf'; // use this char if bellow is false
+	public static final NULL_DEATH_CHARACTER_IS_AS_SAME_AS_THIS:Bool = true; // this thing. is the death frame is in the same char or other file?
 	public static final NULL_RANDOMIZED_DEATH_SOUND_PATHS:Array<RandomizedDeathSoundPath> = [];
 	public static final NULL_RISE_UP_AGAIN_SOUND_PATHS:Array<DeathSoundPath> = [];
 	public static final NULL_RANDOMIZED_RISE_UP_AGAIN_SOUND_PATHS:Array<RandomizedDeathSoundPath> = [];

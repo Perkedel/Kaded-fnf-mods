@@ -272,6 +272,15 @@ class Main extends Sprite
 		// Gotta run this before any assets get loaded.
 		// ModCore.initialize();
 
+		// JOELwindows7: BOLO Discord init & shutdowner
+		#if FEATURE_DISCORD
+		Discord.DiscordClient.initialize();
+		Application.current.onExit.add(function(exitCode)
+		{
+			DiscordClient.shutdown();
+		});
+		#end
+
 		trace("init FPS counter");
 		#if FEATURE_DISPLAY_FPS_CHANGE
 		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);

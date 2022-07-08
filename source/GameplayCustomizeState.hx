@@ -70,7 +70,7 @@ class GameplayCustomizeState extends MusicBeatState
 	{
 		super.create();
 
-		PlayStateChangeables.Optimize = false;
+		PlayStateChangeables.optimize = false; // JOELwindows7: reconsistenized capitalization from `O` to `o`.
 
 		#if FEATURE_DISCORD
 		// Updating Discord Rich Presence

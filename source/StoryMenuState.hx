@@ -625,7 +625,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			PlayState.SONG = Song.conversionChecks(Song.loadFromJson(PlayState.storyPlaylist[0], diff));
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
-			PlayStateChangeables.howManySongThisWeek = PlayState.storyPlayList.length(); // JOELwindows7: set to how many song we have this week yess.
+			PlayStateChangeables.howManySongThisWeek = PlayState.storyPlaylist.length; // JOELwindows7: set to how many songs we have this week yess.
 			PlayStateChangeables.weekColor = FlxColor.fromString(weekColor[curWeek]); // JOELwindows7: the obvious week color for any references.
 			PlayStateChangeables.songPosBarColor = FlxColor.fromString(weekColor[curWeek]); // JOELwindows7: here change color for song bar pls.
 			PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.songPosBarColor.brightness,

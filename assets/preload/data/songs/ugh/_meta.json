@@ -1,5 +1,5 @@
 {
-    "name": "Ugh",
+  "name": "Ugh",
     "offset": 0,
     "artist": "Kawai Sprite",
     "isCreditRoll": false,
@@ -10,7 +10,7 @@
     "videoPath": "",
     "hasEpilogueVideo": false,
     "epilogueVideoPath": "",
-    "hasTankmanVideo": true,
+    "hasTankmanVideo": false,
     "tankmanVideoPath": "ughcutscene",
     "hasEpilogueTankmanVideo": false,
     "epilogueTankmanVideoPath": "",

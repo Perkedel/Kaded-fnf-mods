@@ -445,9 +445,11 @@ class KadeEngineData
 		Main.perkedelMark = FlxG.save.data.perkedelMark;
 		FlxG.fullscreen = FlxG.save.data.fullscreen;
 
+		#if FEATURE_DISPLAY_FPS_CHANGE
 		Debug.logInfo("set FPS stuff from setting"); // JOELwindows7: trace this for android crashsures
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		Debug.logInfo("successfully set FPS settings"); // JOELwindows7: see if Android version crash!
+		#end
 	}
 
 	// JOELwindows7: BOLO's reset modifier

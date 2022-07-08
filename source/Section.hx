@@ -58,6 +58,7 @@ typedef NoteInSection =
 	var beat:Float;
 	var noteType:Int; // IDEA: make noteType string. becomes ID such as `default`, `powerUp`, `mine`, etc.
 	var noteTypeId:String; // okay fine let's just do it now.
+	var hitsoundUseIt:Bool; // whether or not to override the hitsound with bellow path. BOLO yeah
 	var hitsoundPath:String;
 	var ?vowelType:Int; // radpas1231's a i u e o vowel classification. this choses mouth type in the animation for lip-sync effect.
 }

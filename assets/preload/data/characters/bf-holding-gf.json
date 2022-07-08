@@ -1,12 +1,17 @@
 {
-    "name": "Boyfriend Holding Girlfriend",
-    "displayName": "Boyfriend & Girlfriend",
-    "asset": "tankman/bfAndGF",
-    "barColor": "#5000E6",
-    "forceIcon": true,
-    "flipX": true,
-    "startingAnim": "idle",
-    "heartOrgans": [{
+	"name": "Boyfriend holding GF",
+	"displayName": "Boyfriend & Girlfriend",
+	"asset": "characters/bfAndGF",
+	"flipX": true,
+	"forceIcon": true,
+	"barColor": "#31B0D1",
+	"camPos": [0,0],
+	"holdLength": 4,
+	"scale": 1,
+	"startingAnim": "idle",
+	"deathCharacter": "bf-holding-gf-dead",
+    "deathCharacterIsSameAsThis": false,
+	"heartOrgans": [{
         "character": "bf",
         "initHR": 70,
         "maxHR": 220,
@@ -30,70 +35,77 @@
         "lightningStorm": true,
         "cancelCulture": false
     },
-    "animations": [{
-            "name": "idle",
-            "prefix": "BF idle dance w gf0",
-            "offsets": [0, 0]
-        },
-        {
-            "name": "singUP",
-            "prefix": "BF NOTE UP0",
-            "offsets": [-29, 10]
-        },
-        {
-            "name": "singLEFT",
-            "prefix": "BF NOTE LEFT0",
-            "offsets": [12, 7]
-        },
-        {
-            "name": "singRIGHT",
-            "prefix": "BF NOTE RIGHT0",
-            "offsets": [-41, 23]
-        },
-        {
-            "name": "singDOWN",
-            "prefix": "BF NOTE DOWN0",
-            "offsets": [-10, -10]
-        },
-        {
-            "name": "singUP-alt",
-            "prefix": "BF NOTE UP0",
-            "offsets": [-29, 10]
-        },
-        {
-            "name": "singLEFT-alt",
-            "prefix": "BF NOTE LEFT0",
-            "offsets": [12, 7]
-        },
-        {
-            "name": "singRIGHT-alt",
-            "prefix": "BF NOTE RIGHT0",
-            "offsets": [-41, 23]
-        },
-        {
-            "name": "singDOWN-alt",
-            "prefix": "BF NOTE DOWN0",
-            "offsets": [-10, -10]
-        },
-        {
-            "name": "singUPmiss",
-            "prefix": "BF NOTE UP MISS",
-            "offsets": [-29, 10]
-        },
-        {
-            "name": "singLEFTmiss",
-            "prefix": "BF NOTE LEFT MISS",
-            "offsets": [12, 7]
-        },
-        {
-            "name": "singRIGHTmiss",
-            "prefix": "BF NOTE RIGHT MISS",
-            "offsets": [-41, 23]
-        },
-        {
-            "name": "singDOWNmiss",
-            "prefix": "BF NOTE DOWN MISS",
-            "offsets": [-10, -10]
-        }
-    ]
+	"animations": [
+		{
+			"offsets": [-5,0],
+			"loop": false,
+			"frameRate": 24,
+			"name": "idle",
+			"prefix": "BF idle dance"
+		},
+		{
+			"offsets": [12,7],
+			"loop": false,
+			"frameRate": 24,
+			"name": "singLEFT",
+			"prefix": "BF NOTE LEFT0"
+		},
+		{
+			"offsets": [-10,-10],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singDOWN",
+			"prefix": "BF NOTE DOWN0"
+		},
+		{
+			"offsets": [-29,10],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singUP",
+			"prefix": "BF NOTE UP0"
+		},
+		{
+			"offsets": [-41,23],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singRIGHT",
+			"prefix": "BF NOTE RIGHT0"
+		},
+		{
+			"offsets": [12,7],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singLEFTmiss",
+			"prefix": "BF NOTE LEFT MISS"
+		},
+		{
+			"offsets": [-10,-10],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singDOWNmiss",
+			"prefix": "BF NOTE DOWN MISS"
+		},
+		{
+			"offsets": [-29,10],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singUPmiss",
+			"prefix": "BF NOTE UP MISS"
+		},
+		{
+			"offsets": [-41,33],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singRIGHTmiss",
+			"prefix": "BF NOTE RIGHT MISS"
+		},
+		{
+			"looped": false,
+			"offsets": [0,90],
+			"name": "bfCatch",
+			"frameRate": 24,
+			"prefix": "BF catches GF"
+		}
+	]
+
 }

@@ -74,19 +74,35 @@ function playerTwoTurn()
 
 end
 
-function playerOneSing(note, position)
+function playerOneSing(note, position, beatOf, stepOf)
+    -- note:Int => left 0, down 1, up 2, right 3
+    -- position:Float => Song position where pressed
+end
+
+function playerTwoSing(note, position, beatOf, stepOf)
 
 end
 
-function playerTwoSing(note, position)
+function playerOneMiss(note, position, beatOf, stepOf)
 
 end
 
-function playerOneMiss(note, position)
+function playerTwoMiss(note, position, beatOf, stepOf)
 
 end
 
-function playerTwoMiss(note, position)
+function characterSing(whichTurn, absoluteCharId, note, position, beatOf, stepOf)
+    -- whichTurn:Int => 0 your turn (bf if not opponent, dad if opponent), 1 opponent turn
+    -- absoluteCharId:Int => bf 0, dad 1
+end
+    
+function characterTurn(whichTurn, absoluteCharId)
+
+
+end
+    
+function characterMiss(whichTurn, absoluteCharId, note, position, beatOf, stepOf)
+
 
 end
 

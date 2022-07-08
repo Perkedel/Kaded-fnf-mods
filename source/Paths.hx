@@ -443,6 +443,7 @@ class Paths
 	}
 
 	// JOELwindows7: BOLO has exclude asset!!!
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/Paths.hx
 	public static function excludeAsset(key:String)
 	{
 		if (!dumpExclusions.contains(key))
