@@ -124,7 +124,8 @@ class SplashScreen extends MusicBeatState
 		_cachedBgColor = FlxG.cameras.bgColor;
 		FlxG.cameras.bgColor = FlxColor.BLACK;
 
-		installTemporaryDiamondTransition();
+		// installTemporaryDiamondTransition(); // No need. already psyched it.
+		FlxTransitionableState.skipNextTransOut = true; // & skip transition
 
 		FlxG.mouse.visible = false;
 

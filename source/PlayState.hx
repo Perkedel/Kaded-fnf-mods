@@ -1,5 +1,6 @@
 package;
 
+import flixel.effects.FlxFlicker;
 import LuaClass;
 import openfl.filters.BitmapFilter;
 import CoolUtil;
@@ -135,6 +136,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	public static var tweenManager:FlxTweenManager;
 	public static var timerManager:FlxTimerManager;
 
+	// JOELwindows7: also do you have Flicker manager here pls?
+	// public static var flickerManager:FlxFlickerManager; // aw shuck, they don't have it.
 	// end of that
 	// public static var curStage:String = ''; // to be removed
 	public static var SONG:SongData;
@@ -499,6 +502,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		var timer:FlxTimer = new FlxTimer();
 		timer.manager = timerManager;
 		return timer.start(Time, OnComplete, Loops);
+	}
+
+	// JOELwindows7: Okay how about you have flicker too?
+	public function createFlicker(Object:FlxObject, Duration:Float = 1, Interval:Float = 0.04, EndVisibility:Bool = true, ForceRestart:Bool = true,
+			?CompletionCallback:FlxFlicker->Void, ?ProgressCallback:FlxFlicker->Void):FlxFlicker
+	{
+		var flicker:FlxFlicker = FlxFlicker.flicker(Object, Duration, Interval, EndVisibility, ForceRestart, CompletionCallback, ProgressCallback);
+		// NO FLICKER MANAGER
+		return flicker;
 	}
 
 	// end BOLO lotsa stuff
@@ -1301,18 +1313,21 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		Conductor.rawPosition = Conductor.songPosition;
 
 		// JOELwindows7: Really bruh!
-		strumLine = cast new FlxUISprite(0, 50).makeGraphic(FlxG.width, 10);
+		strumLine = new FlxUISprite(0, 50);
+		strumLine.makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
 
 		if (PlayStateChangeables.useDownscroll)
 			strumLine.y = FlxG.height - 165;
 
-		laneunderlayOpponent = cast new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		laneunderlayOpponent = new FlxUISprite(0, 0);
+		laneunderlayOpponent.makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlayOpponent.alpha = FlxG.save.data.laneTransparency;
 		laneunderlayOpponent.color = FlxColor.BLACK;
 		laneunderlayOpponent.scrollFactor.set();
 
-		laneunderlay = cast new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		laneunderlay = new FlxUISprite(0, 0);
+		laneunderlay.makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlay.alpha = FlxG.save.data.laneTransparency;
 		laneunderlay.color = FlxColor.BLACK;
 		laneunderlay.scrollFactor.set();
@@ -1387,6 +1402,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: Hold, there's advanced BOLO's opponent mode check
 		if (!FlxG.save.data.middleScroll || (((executeModchart || executeModHscript) || sourceModchart) && PlayStateChangeables.modchart))
 		{
+			trace('TREKNOQ');
 			Debug.logTrace("Now for static arrows");
 			generateStaticArrows(0);
 			Debug.logTrace("and other player static arrows");
@@ -1395,6 +1411,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 		else
 		{
+			trace('TRUUUG');
 			if (#if FEATURE_LUAMODCHART !(executeModchart || executeModHscript) #else !(sourceModchart || executeModHscript) #end
 				|| !PlayStateChangeables.modchart)
 			{
@@ -1404,6 +1421,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					generateStaticArrows(0);
 			}
 		}
+		// temp error
+		// generateStaticArrows(0);
+		// generateStaticArrows(1);
+		// end temp error
 
 		// JOELwindows7: PSST! BOLO's CPU strum modification
 		if (sourceModchart && PlayStateChangeables.modchart)
@@ -3169,7 +3190,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 
-		// FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false); // JOELwindows7: idk why, BOLO..
+		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false); // JOELwindows7: idk why, BOLO..
 		FlxG.sound.music.play();
 		vocals.play();
 		if (vocals2 != null)
@@ -3790,7 +3811,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// JOELwindows7: BOLO opponent mode advanced check!
 			switch (player)
 			{
-				case 0:
+				case 0: // CPU dad
 					if (!PlayStateChangeables.opponentMode)
 					{
 						babyArrow.x += 20;
@@ -3802,7 +3823,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						babyArrow.x += 20;
 						playerStrums.add(babyArrow);
 					}
-				case 1:
+				case 1: // Player bf
 					if (!PlayStateChangeables.opponentMode)
 					{
 						playerStrums.add(babyArrow);
@@ -3817,7 +3838,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			}
 
 			babyArrow.playAnim('static');
-			babyArrow.x += 98.5; // JOELwindows7: BOLO push left a bit. was 110
+			babyArrow.x += 98.5; // JOELwindows7: BOLO push right a bit. was 110
 			babyArrow.x += ((FlxG.width / 2) * player);
 
 			// JOELwindows7: filtere Haxe script. also BOLO new stuffs!!!
@@ -3825,7 +3846,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (FlxG.save.data.middleScroll && (!(executeModchart || executeModHscript) || !sourceModchart))
 			{
 				if (!PlayStateChangeables.opponentMode)
-					babyArrow.x -= 303.5; // JOELwindows7: was 320.
+					babyArrow.x -= 320; // JOELwindows7: was 320. BOLO 303.5
 
 				// JOELwindows7: interupt now! We got Psyched cpu static arrow positionings in middle scroll mode. watch this!
 				if (player == 0)
@@ -6976,7 +6997,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						health -= 1;
 					else
 						health += 1;
-					playSoundEffect("mine-duar", 1, 'shared');
+					// playSoundEffect("mine-duar", 1, 'shared'); // no need, I guess..
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -7009,7 +7030,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						health -= 1;
 					else
 						health += 1;
-					playSoundEffect("mine-duar", 1, 'shared');
+					// playSoundEffect("mine-duar", 1, 'shared'); // there's already being hitsound
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -7033,7 +7054,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						health -= 1;
 					else
 						health += 1;
-					playSoundEffect("mine-duar", 1, 'shared');
+					// playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -7051,7 +7072,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						health -= 1;
 					else
 						health += 1;
-					playSoundEffect("mine-duar", 1, 'shared');
+					// playSoundEffect("mine-duar", 1, 'shared');
 				}
 				if (daNote.noteType == 1 || daNote.noteType == 0)
 				{
@@ -9650,20 +9671,36 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// 	'shared'));
 				try
 				{
-					// JOELwindows7: Okay, let's try to equip BOLO's way of Hitsound choice.
-					playSoundEffect(((handoverNote.hitsoundPath != null
-						&& handoverNote.hitsoundPath != ""
-						&& handoverNote.hitsoundPath != '0'
-						&& (handoverNote.hitsoundUseIt != null ? handoverNote.hitsoundUseIt : false)) ? // JOELwindows7: yeah.
-						handoverNote.hitsoundPath : 'hitsounds/${HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase()}'), 1, 'shared');
+					// JOELwindows7: Okay, let's try to equip BOLO's way of Hitsound choice & volume.
+					playSoundEffect(((handoverNote.hitsoundPath != null && handoverNote.hitsoundPath != "" && handoverNote.hitsoundPath != '0'
+						&& handoverNote.hitsoundUseIt) ? // JOELwindows7: yeah.
+						handoverNote.hitsoundPath : 'hitsounds/${HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase()}'),
+						FlxG.save.data.hitVolume, 'shared');
 					if (handoverNote.noteType == 2)
 					{
-						playSoundEffect("mine-duar", 1, 'shared'); // duar! you stepped on mine!
+						playSoundEffect("mine-duar", FlxG.save.data.hitVolume, 'shared'); // duar! you stepped on mine!
 					}
 				}
 				catch (e)
 				{
 					// null object reference
+				}
+			}
+		}
+		else
+		{
+			// still sound the mine if note type is 2 (mine) idk
+			if (handoverNote != null)
+			{
+				try
+				{
+					if (handoverNote.noteType == 2)
+					{
+						playSoundEffect("mine-duar", FlxG.save.data.hitVolume, 'shared'); // duar! you stepped on mine!
+					}
+				}
+				catch (e)
+				{
 				}
 			}
 		}
@@ -11159,32 +11196,37 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// JOELwindows7: hey, there's a new advanced way of doing this with BOLO's figure outs!
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx#L2614
+			// add safety too pls!
 			#if cpp
 			#if (lime >= "8.0.0")
-			FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
-			if (vocals.playing)
+			if (FlxG.sound.music != null)
+				FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals != null && vocals.playing)
 				vocals._channel.__source.__backend.setPitch(songMultiplier);
-			if (vocals2.playing)
-				vocals._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals2 != null && vocals2.playing)
+				vocals2._channel.__source.__backend.setPitch(songMultiplier);
 			#else
-			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals.playing)
+			if (FlxG.sound.music != null)
+				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			if (vocals != null && vocals.playing)
 				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals2.playing)
-				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			if (vocals2 != null && vocals2.playing)
+				lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
 			#end
 			#elseif web
 			#if (lime >= "8.0.0" && lime_howlerjs)
-			FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
-			if (vocals.playing)
+			if (FlxG.sound.music != null)
+				FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals != null && vocals.playing)
 				vocals._channel.__source.__backend.setPitch(songMultiplier);
 			if (vocals2.playing)
 				vocals2._channel.__source.__backend.setPitch(songMultiplier);
 			#else
-			FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
-			if (vocals.playing)
+			if (FlxG.sound.music != null)
+				FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			if (vocals != null && vocals.playing)
 				vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
-			if (vocals2.playing)
+			if (vocals2 != null && vocals2.playing)
 				vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
 			#end
 			#end

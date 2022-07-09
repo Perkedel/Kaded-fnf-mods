@@ -23,10 +23,12 @@ import GameJolt;
 #if FEATURE_MULTITHREADING
 import sys.thread.Mutex;
 #end
+import openfl.utils.Assets as OpenFlAssets;
 
 class Initializations
 {
 	static public var initialized = false; // JOELwindows7: to wait initializations
+
 	/**
 	 * Initialize save datas & stuffs
 	 */
@@ -37,6 +39,9 @@ class Initializations
 		#if FEATURE_MULTITHREADING
 		MasterObjectLoader.mutex = new Mutex(); // JOELwindows7: you must first initialize the mutex.
 		#end
+
+		// JOELwindows7: clear unused memory first. BOLO
+		Paths.clearUnusedMemory();
 
 		// JOELwindows7: here init first!
 		// JOELwindows7: TentaRJ GameJolter
@@ -53,20 +58,26 @@ class Initializations
 
 		PlayerSettings.init();
 
+		OpenFlAssets.cache.enabled = true; // JOELwindows7: BOLO enable caching OpenFl Assets
+
 		KadeEngineData.initSave();
 
 		// It doesn't reupdate the list before u restart rn lmao
 		KeyBinds.keyCheck();
 		NoteskinHelpers.updateNoteskins();
 
-		// JOELwindows7: this should be nulled because these buttons can accident volkeys
+		// JOELwindows7: this should be nulled because these buttons can accident volkeys.
+		// BOLO now moves these buttons into Numpad `+` & `-` now.
+		// but still, accident can still happens despite that so. so no.
+		// still disable by default!
 		if (FlxG.save.data.volDownBind == null)
-			FlxG.save.data.volDownBind = "MINUS";
+			FlxG.save.data.volDownBind = "NUMPADMINUS";
 		// FlxG.save.data.volDownBind = "";
 		if (FlxG.save.data.volUpBind == null)
-			FlxG.save.data.volUpBind = "PLUS";
+			FlxG.save.data.volUpBind = "NUMPADPLUS";
 		// FlxG.save.data.volUpBind = "";
 
+		FlxG.game.focusLostFramerate = 60; // JOELwindows7: BOLO. Now there is auto reduce framerate when lost focus!
 		// JOELwindows7: now depending on what happened, there you can have the accident volume keys null if you don't want it.
 		FlxG.sound.muteKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.muteBind)] : null;
 		FlxG.sound.volumeDownKeys = FlxG.save.data.accidentVolumeKeys ? [FlxKey.fromString(FlxG.save.data.volDownBind)] : null;

@@ -240,6 +240,7 @@ class Song
 						noteTypeId: stringedNoteType,
 						hitsoundPath: i.sectionNotes[j][6],
 						vowelType: i.sectionNotes[j][7],
+						hitsoundUseIt: i.sectionNotes[j][8],
 					}
 				}
 			}

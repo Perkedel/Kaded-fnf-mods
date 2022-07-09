@@ -399,7 +399,7 @@ class MusicBeatState extends CoreState
 
 				FlxG.watch.addQuick("Current Conductor Timing Seg", data.bpm);
 
-				Conductor.crochet = ((60 / data.bpm) * 1000);
+				Conductor.crochet = ((60 / data.bpm) * 1000) / PlayState.songMultiplier; // JOELwindows7: BOLO. do not forget, div songMultiplier.
 
 				var step = ((60 / data.bpm) * 1000) / 4;
 				var startInMS = (data.startTime * 1000);

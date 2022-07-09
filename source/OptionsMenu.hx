@@ -998,13 +998,14 @@ class OptionsMenu extends CoreSubState
 	// JOELwindows7: well, second row..
 	function tidySecondRowCats()
 	{
-		for (i in 0...upToHowManyCatsOnSecond)
+		for (i in 0...upToHowManyCatsOnSecond - 1)
 		{
 			var prakstend = i + upToHowManyCatsOnScreen;
 			// options[i].width = background.width / upToHowManyCatsOnScreen; //Unfortunately this only adjust the hitbox, not the graphic.
 			options[prakstend].setGraphicSize(Std.int(Math.max(background.width / upToHowManyCatsOnSecond, options[prakstend].width)),
 				Std.int(options[prakstend].height));
 			options[prakstend].x = (background.width / upToHowManyCatsOnSecond) * i;
+			options[prakstend].y = options[0].height; // JOELwindows7: maybe like this?
 			// I guess..
 			// oh almost forgot!
 			options[prakstend].titleObject.x = options[prakstend].x + (options[prakstend].width / 2) - (options[prakstend].titleObject.width / 2);

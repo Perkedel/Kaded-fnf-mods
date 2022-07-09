@@ -44,6 +44,8 @@ import sys.thread.Mutex;
 
 using StringTools;
 
+// JOELwindows7: people, looks like we're gonna drastically redecorate this place here.
+// BOLO https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/TitleState.hx
 // JOELwindows7: here another one. FlxUI things yeah
 class TitleState extends MusicBeatState
 {
@@ -152,7 +154,7 @@ class TitleState extends MusicBeatState
 		// FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
 		// FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
 
-		FlxG.mouse.visible = false;
+		FlxG.mouse.visible = false; // JOELwindows7: BOLO makes this visible. but maybe I should stay not, idk..
 
 		// FlxG.worldBounds.set(0, 0);
 
@@ -315,14 +317,18 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		else
 		{
-			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
-			diamond.persist = true;
-			diamond.destroyOnNoUse = false;
+			// JOELwindows7: BOLO no longer need. we already had Psyched transition everywhere!
+			/*
+				var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
+				diamond.persist = true;
+				diamond.destroyOnNoUse = false;
 
-			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
-				new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1),
-				{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+				FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
+					new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+				FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1),
+					{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+
+			 */
 
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
@@ -602,8 +608,7 @@ class TitleState extends MusicBeatState
 				if (!alreadyDecideOutdated)
 					OutdatedSubState.whichAreaOutdated = 1; // mark that LFM one is outdated
 				alreadyDecideOutdated = true;
-				trace('LFM ${comparinglyOutdated ? 'outdated lmao!' : cuttingEdge ? 'LEAKED UPDATE!!! whoah!!!' : ''} ${returnedData[0]} !=  ${MainMenuState.lastFunkinMomentVer}\n'
-					);
+				trace('LFM ${comparinglyOutdated ? 'outdated lmao!' : cuttingEdged ? 'LEAKED UPDATE!!! whoah!!!' : ''} ${returnedData[0]} !=  ${MainMenuState.lastFunkinMomentVer}\n');
 				// Disclaimer: Perkedel is fine with cutting edge leak & JOELwindows7 even personal fine with it. as long it does not harm reputation of course.
 				OutdatedSubState.needVerLast = returnedData[0];
 				OutdatedSubState.perubahanApaSaja = returnedData[1];

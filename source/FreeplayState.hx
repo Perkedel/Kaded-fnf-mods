@@ -236,6 +236,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	// JOELwindows7: globalize button variables.
 	var accepted:Bool;
 	var charting:Bool;
+	var previewed:Bool; // JOELwindows7: BOLO press space to preview
 
 	override function create()
 	{ // JOELwindows7: first, BOLO clears memory!
@@ -253,7 +254,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		if (!FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			// MainMenuState.freakyPlaying = true;
+			MainMenuState.freakyPlaying = true;
 		}
 
 		// JOELwindows7: okey how about attempt to have sys multithreading?
@@ -1182,6 +1183,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		var upP = FlxG.keys.justPressed.UP || FlxG.mouse.wheel == 1;
 		var downP = FlxG.keys.justPressed.DOWN || FlxG.mouse.wheel == -1;
 		accepted = FlxG.keys.justPressed.ENTER || haveClicked; // JOELwindows7: pls globalize
+		previewed = FlxG.keys.justPressed.SPACE;
 		var dadDebug = FlxG.keys.justPressed.SIX;
 		charting = FlxG.keys.justPressed.SEVEN || haveDebugSevened; // JOELwindows7: pls globalize
 		var bfDebug = FlxG.keys.justPressed.ZERO;
@@ -1283,6 +1285,16 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				}
 			}
 		}
+
+		// JOELwindows7: BOLO press space preview
+		// #if desktop
+		#if !PRELOAD_ALL
+		if (previewed)
+		{
+			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0, true); // volume was start from .7
+			MainMenuState.freakyPlaying = false;
+		}
+		#end
 
 		// JOELwindows7: BOLO's modifier menu and stuff
 		previewtext.text = "Rate: " + FlxMath.roundDecimal(rate, 2) + "x";
@@ -1616,11 +1628,16 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
 			var sound = new Sound();
 			sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
-			FlxG.sound.playMusic(sound);
+			FlxG.sound.playMusic(sound, 0); // JOELwindows7: heh bruh, forgot fade in!
+			MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
 			#end
 		}
 		else
+		{
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+			MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
+		}
+		#else
 		#end
 
 		var hmm;
@@ -2026,19 +2043,24 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		{
 			// JOELwindows7: hey, there's a new advanced way of doing this with BOLO's figure outs!
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
+			// add safety too!
 			if (FlxG.sound.music.playing)
 			{
 				#if web
 				#if (lime >= "8.0.0" && lime_howlerjs)
-				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				if (FlxG.sound.music != null)
+					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
 				#else
-				FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+				if (FlxG.sound.music != null)
+					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
 				#end
 				#elseif cpp
 				#if (lime >= "8.0.0")
-				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				if (FlxG.sound.music != null)
+					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
 				#else
-				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
+				if (FlxG.sound.music != null)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
 				#end
 				#end
 			}

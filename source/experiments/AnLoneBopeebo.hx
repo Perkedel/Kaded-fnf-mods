@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package experiments;
 
 class AnLoneBopeebo extends AbstractTestMenu
@@ -26,10 +27,10 @@ class AnLoneBopeebo extends AbstractTestMenu
 	{
 		super.create();
 		addInfoText("Bopeebo Inst Test\n\nENTER = Play Bopeebo from Song folder\nUP or DOWN = Change Rate");
-        // var thing = new Note(0, 0, null, false);
-        // thing.x = FlxG.width / 2;
-        // thing.y = FlxG.height / 2;
-        // add(thing);
+		// var thing = new Note(0, 0, null, false);
+		// thing.x = FlxG.width / 2;
+		// thing.y = FlxG.height / 2;
+		// add(thing);
 	}
 
 	override function update(elapsed)
@@ -40,6 +41,7 @@ class AnLoneBopeebo extends AbstractTestMenu
 			Conductor.changeBPM(100);
 			FlxG.sound.playMusic(Paths.inst("bopeebo"), 1, false);
 			haveClicked = false;
+			MainMenuState.freakyPlaying = false;
 		}
 		else if (FlxG.keys.justPressed.UP || haveUpped)
 		{

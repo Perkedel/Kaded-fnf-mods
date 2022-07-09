@@ -24,9 +24,11 @@ import lime.app.Application;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+import PlayState;
 
 using StringTools;
 
+// JOELwindows7: add BOLO https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/MainMenuState.hx
 // JOELwindows7: FlxUI fy!
 class MainMenuState extends MusicBeatState
 {
@@ -60,8 +62,13 @@ class MainMenuState extends MusicBeatState
 
 	public static var finishedFunnyMove:Bool = false;
 
+	public static var freakyPlaying:Bool; // JOELwindows7: Marker if the Freaky is playing da right now!
+
 	override function create()
 	{
+		// JOELwindows7: BOLO clear memory!
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
 		trace(0 / 2);
 		clean();
 		PlayState.inDaPlay = false;
@@ -70,6 +77,8 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
+		PlayState.isStoryMode = false; // JOELwindows7: BOLO. reset flag down
+
 		if (!FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -77,8 +86,9 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		// JOELwindows7: cast
-		var bg:FlxUISprite = cast new FlxUISprite(-100).loadGraphic(Paths.loadImage('MenuBGAlt')); // JOELwindows7: was menuBG
+		// JOELwindows7: cast. no nvm.
+		var bg:FlxUISprite = new FlxUISprite(-100);
+		bg.loadGraphic(Paths.loadImage('MenuBGAlt')); // JOELwindows7: was menuBG
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.10;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
@@ -90,8 +100,9 @@ class MainMenuState extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
-		// JOELwindows7: cast
-		magenta = cast new FlxUISprite(-80).loadGraphic(Paths.loadImage('MenuBGDesatAlt')); // JOELwindows7: was menuDesat
+		// JOELwindows7: cast. no nvm
+		magenta = new FlxUISprite(-80);
+		magenta.loadGraphic(Paths.loadImage('MenuBGDesatAlt')); // JOELwindows7: was menuDesat
 		magenta.scrollFactor.x = 0;
 		magenta.scrollFactor.y = 0.10;
 		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
@@ -195,6 +206,9 @@ class MainMenuState extends MusicBeatState
 	}
 
 	var selectedSomethin:Bool = false;
+
+	// JOELwindows7: HOW BOLO mouse position
+	// var oldPos = FlxG.mouse.getScreenPosition();
 
 	override function update(elapsed:Float)
 	{
@@ -338,6 +352,7 @@ class MainMenuState extends MusicBeatState
 
 		// JOELwindows7: not my code, but this one is important!
 		// do this all time to center the spr every single time!
+		// all I did here, is to add the mouse touch support yey
 		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			// JOELwindows7: itterate sprite menu items overlaps and click functions
@@ -417,7 +432,10 @@ class MainMenuState extends MusicBeatState
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 
-			spr.animation.curAnim.frameRate = 24 * (60 / FlxG.save.data.fpsCap);
+			// spr.animation.curAnim.frameRate = 24 * (60 / FlxG.save.data.fpsCap);
+			spr.animation.curAnim.frameRate = 15; // JOELwindows7: BOLO. maybe we should keep it 15 fps for these menu animation
+			// all time. idk.
+			// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/MainMenuState.hx
 
 			spr.updateHitbox();
 		});
@@ -445,6 +463,10 @@ class MainMenuState extends MusicBeatState
 				spr.animation.play('selected');
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
+
+			// JOELwindows7: bring it here too!
+			spr.animation.curAnim.frameRate = 15; // JOELwindows7: BOLO. maybe we should keep it 15 fps for these menu animation
+			// all time. idk.
 
 			spr.updateHitbox();
 		});

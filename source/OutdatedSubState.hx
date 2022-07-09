@@ -34,7 +34,8 @@ class OutdatedSubState extends MusicBeatState
 
 	override function create()
 	{
-		super.create();
+		trace('Welcome to outdated or leaked');
+		// super.create();
 		// JOELwindows7: put bekgrondes yesh
 		installStarfield2D(0, 0, FlxG.width, FlxG.height);
 		installDefaultBekgron();
@@ -211,6 +212,7 @@ class OutdatedSubState extends MusicBeatState
 
 		addBackButton();
 		addAcceptButton();
+		super.create(); // JOELwindows7: maybe do it last?
 	}
 
 	override function update(elapsed:Float)
