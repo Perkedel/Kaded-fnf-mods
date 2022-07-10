@@ -42,7 +42,8 @@ class NoteskinHelpers
 			noteskinArray.push(i.replace(".png", ""));
 		}
 		#else
-		noteskinArray = ["Arrows", "Circles", "Saubo"]; // JOELwindows7: lemme pecking try this. ugh so confusing!
+		// noteskinArray = ["Arrows", "Circles", "Saubo"]; // JOELwindows7: lemme pecking try this. ugh so confusing!
+		noteskinArray = CoolUtil.coolTextFile(Paths.txt('data/noteskinSettingList')); // JOElwindows7: right, let's just manual filing instead, shall we?
 		#end
 
 		return noteskinArray;

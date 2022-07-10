@@ -67,7 +67,7 @@ class KadeEngineData
 			FlxG.save.data.fpsRain = false;
 
 		if (FlxG.save.data.memoryDisplay == null)
-			FlxG.save.data.memoryDisplay = false;
+			FlxG.save.data.memoryDisplay = true; // JOELwindows7: bro wtf? false by default?! BOLO
 
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 120;

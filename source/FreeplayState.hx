@@ -239,7 +239,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	var previewed:Bool; // JOELwindows7: BOLO press space to preview
 
 	override function create()
-	{ // JOELwindows7: first, BOLO clears memory!
+	{trace('Welcome to Freeplay State');
+		// JOELwindows7: first, BOLO clears memory!
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 
@@ -365,6 +366,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		trace("Pls pull stolen song list");
 		#end
 
+		trace("trakuoyet");
+
 		#if FEATURE_DISCORD
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Freeplay Menu", null);
@@ -396,6 +399,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		addLeftButton(FlxG.width - 350, -100);
 		addRightButton(FlxG.width - 100, -100);
 
+		trace('Button dez');
+
 		if (legacySynchronousLoading)
 		{
 			for (i in 0...songs.length)
@@ -420,10 +425,14 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			}
 		}
 
+		trace('occupied song & icon');
+
 		scoreText = new FlxText(FlxG.width * 0.65, 5, 0, "", 32);
 		// scoreText.autoSize = false;
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		// scoreText.alignment = RIGHT;
+
+		trace('moar intruction text');
 
 		// JOELwindows7: there are additional BOLO's notes
 		var bottomBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(Std.int(FlxG.width), 26, 0xFF000000);
@@ -444,6 +453,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		downText.scrollFactor.set();
 		add(downText);
 		// end additional
+
+		trace('moar intstruction text doned');
 
 		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.4), 337, 0xFF000000); // JOELwindows7: height was 135.
 		scoreBG.alpha = 0.6;
@@ -476,14 +487,17 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		add(previewtext);
 
 		// JOELwindows7: was combo
+		trace(' was combo');
 
 		// JOELwindows7: & here are BOLO's stuffs to be thought about.
+		trace('help text');
 		helpText = new FlxText(scoreText.x, scoreText.y + 211, 0, "", 20);
 		helpText.text = "LEFT-RIGHT to change Difficulty\n\n" + "SHIFT + LEFT-RIGHT to change Rate\n" + "if it's possible\n\n"
 			+ "CTRL to open Gameplay Modifiers\n" + "";
 		helpText.font = scoreText.font;
 		helpText.color = 0xFFfaff96;
 		add(helpText);
+		trace('add help text');
 
 		add(scoreText);
 

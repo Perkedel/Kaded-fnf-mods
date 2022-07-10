@@ -56,6 +56,8 @@ class Initializations
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
+		HitSounds.init(); // JOELwindows7: initialize BOLO's hitsound sound list yey!
+
 		PlayerSettings.init();
 
 		OpenFlAssets.cache.enabled = true; // JOELwindows7: BOLO enable caching OpenFl Assets
@@ -89,6 +91,7 @@ class Initializations
 
 		MusicBeatState.initSave = true;
 		initialized = true;
+		trace('Things Initialized yey');
 	}
 
 	public static function isInitialized():Bool

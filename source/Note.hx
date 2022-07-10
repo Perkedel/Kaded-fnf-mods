@@ -513,6 +513,9 @@ class Note extends FlxUISprite
 						360;
 				};
 
+				// TODO: JOELwindows7: thing
+				// lift note. note breaths in & out
+
 				if (!modifiedByLua)
 				{
 					// angle += (modAngle + localAngle);

@@ -118,7 +118,7 @@ class OutdatedSubState extends MusicBeatState
 				+ '\n\nReport all bugs to the bug report place at: \n${Perkedel.ENGINE_BUGREPORT_URL}'
 				+ '\n\nPress Space to visit the bug report place and report bugs\nor ESCAPE to ignore this'
 				+
-				'And remember folks, only Perkedel Technologies will be fine with software leaks like this.\nDon\'t leak other people\'s project UNLESS they are also CONFIRMED fine with it, people!';
+				'\nAnd remember folks, only Perkedel Technologies will be fine with software leaks like this.\nDO NOT leak other people\'s project UNLESS they are also CONFIRMED fine with it, people!';
 
 		teks.setFormat("VCR OSD Mono", 32, FlxColor.fromRGB(200, 200, 200), CENTER);
 		teks.borderColor = FlxColor.BLACK;

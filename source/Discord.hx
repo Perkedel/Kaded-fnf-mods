@@ -6,8 +6,10 @@ import discord_rpc.DiscordRpc;
 
 using StringTools;
 
+// JOELwindows7: time to yoink BOLO https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/Discord.hx
 class DiscordClient
 {
+	public static var modesArray:Array<String> = ['Simplified', 'Detailed']; // JOELwindows7: BOLO discord mode yey
 	public static var instance:DiscordClient; // JOELwindows7: not sure if this secure or not. I mean, this only do presence that's it. idk..
 
 	// nah, everything here are static. maybe one day there're more non-static things, I guess?? yeah.
@@ -16,7 +18,8 @@ class DiscordClient
 	{
 		trace("Discord Client starting...");
 		DiscordRpc.start({
-			clientID: "557069829501091850", // change this to what ever the fuck you want lol
+			// JOELwindows7: move Client ID to constants
+			clientID: Perkedel.API_DISCORD_CLIENT_ID, // change this to what ever the fuck you want lol
 			onReady: onReady,
 			onError: onError,
 			onDisconnected: onDisconnected
@@ -66,6 +69,18 @@ class DiscordClient
 			instance = new DiscordClient();
 		});
 		trace("Discord Client initialized");
+	}
+
+	// JOELwindows7: BOLO get rich presence mode
+	public static function getRCPmode()
+	{
+		return modesArray;
+	}
+
+	// JOELwindows7: & by ID integer
+	public static function getRCPmodeByID(id:Int)
+	{
+		return modesArray[id];
 	}
 
 	public static function changePresence(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)

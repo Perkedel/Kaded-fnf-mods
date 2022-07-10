@@ -24,6 +24,9 @@ import Controls.KeyboardScheme;
 import flixel.FlxG;
 import openfl.display.FPS;
 import openfl.Lib;
+#if FEATURE_DISCORD
+import Discord.DiscordClient;
+#end
 import const.Perkedel;
 
 using StringTools;
@@ -3633,6 +3636,13 @@ class HitsoundSelect extends Option
 		return true;
 	}
 
+	public override function press():Bool
+	{
+		// JOELwindows7: PRESS ENTER / A / X / LONCAT TO PREVIEW!!!
+		FlxG.sound.play(Paths.sound('hitsounds/${HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase()}', 'shared'), FlxG.save.data.hitVolume);
+		return true;
+	}
+
 	public override function getValue():String
 	{
 		return "Hitsound Style: < " + HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect) + " >";
@@ -3652,7 +3662,9 @@ class HitSoundVolume extends Option
 
 	public override function press():Bool
 	{
-		return false;
+		// JOELwindows7: PRESS ENTER / A / X / LONCAT TO PREVIEW!!!
+		FlxG.sound.play(Paths.sound('hitsounds/${HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase()}', 'shared'));
+		return true;
 	}
 
 	private override function updateDisplay():String
@@ -3676,6 +3688,7 @@ class HitSoundVolume extends Option
 		{
 			shoomSays += ' '; // was `U` before. now space supported so yeah.
 		}
+		// FlxG.sound.play(Paths.sound('hitsounds/${HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase()}', 'shared'), FlxG.save.data.hitVolume);
 		return "Hitsound Volume < " + shoomSays + " (" + Std.string(Std.int(FlxG.save.data.hitVolume * 100)) + "%)" + " >";
 		// return "Hitsound Volume: < " + HelperFunctions.truncateFloat(FlxG.save.data.hitVolume, 1) + " >";
 	}
@@ -3689,6 +3702,8 @@ class HitSoundVolume extends Option
 
 		if (FlxG.save.data.hitVolume > 1)
 			FlxG.save.data.hitVolume = 1;
+
+		FlxG.sound.play(Paths.sound('hitsounds/${HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase()}', 'shared'), FlxG.save.data.hitVolume);
 		return true;
 	}
 
@@ -3708,6 +3723,7 @@ class HitSoundVolume extends Option
 		if (FlxG.save.data.hitVolume > 1)
 			FlxG.save.data.hitVolume = 1;
 
+		FlxG.sound.play(Paths.sound('hitsounds/${HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase()}', 'shared'), FlxG.save.data.hitVolume);
 		return true;
 	}
 }
@@ -3971,3 +3987,38 @@ class Background extends Option
 		return "Background Stage: < " + (FlxG.save.data.background ? "Enabled" : "Disabled") + " >";
 	}
 }
+
+// JOELwindows7: BOLO discord detail option
+#if FEATURE_DISCORD
+class DiscordOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.discordMode--;
+		if (FlxG.save.data.discordMode < 0)
+			FlxG.save.data.discordMode = DiscordClient.getRCPmode().length - 1;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		FlxG.save.data.discordMode++;
+		if (FlxG.save.data.discordMode > DiscordClient.getRCPmode().length - 1)
+			FlxG.save.data.discordMode = 0;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function getValue():String
+	{
+		return "Discord RCP mode: < " + DiscordClient.getRCPmodeByID(FlxG.save.data.discordMode) + " >";
+	}
+}
+#end

@@ -385,7 +385,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	var funneEffect:FlxUISprite;
 	var inCutscene:Bool = false;
-	var inCinematic:Bool = true; // JOELwindows7: BOLO's inCinematic flag
+	var inCinematic:Bool = false; // JOELwindows7: BOLO's inCinematic flag
 	var usedTimeTravel:Bool = false;
 
 	public static var stageTesting:Bool = false;
@@ -1932,11 +1932,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					schoolIntro(doof);
 				// JOELwindows7: BOLO do this!
 				case 'ugh', 'guns', 'stress':
-					if (!FlxG.save.data.optimize && FlxG.save.data.background)
+					if (!PlayStateChangeables.optimize && FlxG.save.data.background)
 						tankIntro();
 					else
 					{
-						removeStaticArrows();
+						// removeStaticArrows();
+						setVisibleStaticArrows(false, true);
 						// #if FEATURE_MP4VIDEOS
 						// startVideo('cutscenes/${SONG.songId}_cutscene');
 						// #else
@@ -2225,6 +2226,116 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (destroy)
 				babyArrow.destroy();
 		});
+	}
+
+	// JOELwindows7: & readd everything
+	function readdStaticArrows()
+	{
+	}
+
+	// JOELwindows7: I got an idea. flag prev variable so you don't have to respectacular what it had right now.
+	var wereVisible:Bool = false; // so only change if the toggle set to is different.
+
+	// JOELwindows7: You know what, why not hide arrows instead? with optional no spectacular
+	function setVisibleStaticArrows(visible:Bool = true, noSpectacular:Bool = false, forceSet:Bool = false)
+	{
+		var index:Int = 0;
+		if (wereVisible != visible || forceSet)
+		{
+			playerStrums.forEach(function(babyArrow:StaticArrow)
+			{
+				// if visible, then reshow spectacular appearance!
+				// copy from generate static arrow tweene
+				if (!noSpectacular)
+				{
+					if (visible)
+					{
+						babyArrow.visible = visible;
+						// JOELwindows7: execute stage script & hscript
+						// if (!FlxG.save.data.middleScroll || (executeModchart || executeModHscript))
+						// {
+						babyArrow.y -= 10;
+						babyArrow.alpha = 0;
+						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
+							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index)}); // JOELwindows7: managed BOLO tween.
+						// }
+					}
+					else
+					{
+						createTween(babyArrow, {y: babyArrow.y - 10, alpha: 0}, 1, {
+							ease: FlxEase.circOut,
+							startDelay: 0.5 + (0.2 * index),
+							onComplete: function(twn:FlxTween)
+							{
+								babyArrow.y += 10;
+								babyArrow.alpha = 1;
+								babyArrow.visible = visible;
+							}
+						}); // JOELwindows7: managed BOLO tween.
+					}
+				}
+				else
+				{
+					babyArrow.visible = visible;
+				}
+				index++;
+			});
+			index = 0;
+			cpuStrums.forEach(function(babyArrow:StaticArrow)
+			{
+				// if visible, then reshow spectacular appearance!
+				// copy from generate static arrow tweene
+				if (!noSpectacular)
+				{
+					if (visible)
+					{
+						babyArrow.visible = visible;
+						// JOELwindows7: execute stage script & hscript
+						// if (!FlxG.save.data.middleScroll || (executeModchart || executeModHscript))
+						// {
+						babyArrow.y -= 10;
+						babyArrow.alpha = 0;
+						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
+							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index)}); // JOELwindows7: managed BOLO tween.
+						// }
+					}
+					else
+					{
+						createTween(babyArrow, {y: babyArrow.y - 10, alpha: 0}, 1, {
+							ease: FlxEase.circOut,
+							startDelay: 0.5 + (0.2 * index),
+							onComplete: function(twn:FlxTween)
+							{
+								babyArrow.y += 10;
+								babyArrow.alpha = 1;
+								babyArrow.visible = visible;
+							}
+						}); // JOELwindows7: managed BOLO tween.
+					}
+				}
+				else
+				{
+					babyArrow.visible = visible;
+				}
+				index++;
+			});
+			/*
+				strumLineNotes.forEach(function(babyArrow:StaticArrow)
+				{
+					babyArrow.visible = visible;
+
+					// if visible, then reshow spectacular appearance!
+					// copy from generate static arrow tweene
+					babyArrow.y -= 10;
+					babyArrow.alpha = 0;
+					// JOELwindows7: execute stage script & hscript
+					if (!FlxG.save.data.middleScroll || (executeModchart || executeModHscript))
+						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
+							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)}); // JOELwindows7: managed BOLO tween.
+				});
+			 */
+		}
+		wereVisible = true;
 	}
 
 	// JOELwindows7: BOLO's add shader to cameras!!!
@@ -2757,46 +2868,49 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		var reversed:Bool = SONG.reversedCountdown;
 
 		// JOELwindows7: Looks like we've got BOLO complicated incutscene checks here.
-		if (inCinematic || inCutscene)
-		{
-			createTween(laneunderlay, {alpha: FlxG.save.data.laneTransparency}, 0.75, {ease: FlxEase.bounceOut});
-			if (!FlxG.save.data.middleScroll || executeModchart || sourceModchart)
+		/*
+			if (inCinematic || inCutscene)
 			{
-				createTween(laneunderlayOpponent, {alpha: FlxG.save.data.laneTransparency}, 0.75, {ease: FlxEase.bounceOut});
-				generateStaticArrows(0);
-				generateStaticArrows(1);
-			}
-			else
-			{
-				// JOELwindows7: we have haxe script too
-				if (#if FEATURE_LUAMODCHART !(executeModchart || executeModHscript)
-					|| !sourceModchart #else !executeModHscript
-					|| !sourceModchart #end)
+				createTween(laneunderlay, {alpha: FlxG.save.data.laneTransparency}, 0.75, {ease: FlxEase.bounceOut});
+				if (!FlxG.save.data.middleScroll || executeModchart || sourceModchart)
 				{
-					if (!PlayStateChangeables.opponentMode)
-						generateStaticArrows(1);
-					else
-						generateStaticArrows(0);
+					createTween(laneunderlayOpponent, {alpha: FlxG.save.data.laneTransparency}, 0.75, {ease: FlxEase.bounceOut});
+					generateStaticArrows(0);
+					generateStaticArrows(1);
 				}
-			}
+				else
+				{
+					// JOELwindows7: we have haxe script too
+					if (#if FEATURE_LUAMODCHART !(executeModchart || executeModHscript)
+						|| !sourceModchart #else !executeModHscript
+						|| !sourceModchart #end)
+					{
+						if (!PlayStateChangeables.opponentMode)
+							generateStaticArrows(1);
+						else
+							generateStaticArrows(0);
+					}
+				}
 
-			if (sourceModchart && PlayStateChangeables.modchart)
-			{
-				if (FlxG.save.data.middleScroll)
+				if (sourceModchart && PlayStateChangeables.modchart)
 				{
-					if (PlayStateChangeables.opponentMode)
+					if (FlxG.save.data.middleScroll)
 					{
-						for (i in 4...strumLineNotes.members.length)
-							strumLineNotes.members[i].x += 900;
-					}
-					else
-					{
-						for (i in 0...strumLineNotes.members.length - 4)
-							strumLineNotes.members[i].x -= 900;
+						if (PlayStateChangeables.opponentMode)
+						{
+							for (i in 4...strumLineNotes.members.length)
+								strumLineNotes.members[i].x += 900;
+						}
+						else
+						{
+							for (i in 0...strumLineNotes.members.length - 4)
+								strumLineNotes.members[i].x -= 900;
+						}
 					}
 				}
 			}
-		}
+		 */
+
 		inCinematic = false;
 		inCutscene = false;
 
@@ -2816,6 +2930,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// trace("Generate Static arrows");
 		// appearStaticArrows(); // JOELwindows7: BOLO removed this.
+		setVisibleStaticArrows(true);
 		// generateStaticArrows(0);
 		// generateStaticArrows(1);
 
@@ -3190,7 +3305,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 
-		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false); // JOELwindows7: idk why, BOLO..
+		// FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false); // JOELwindows7: idk why, BOLO..
 		FlxG.sound.music.play();
 		vocals.play();
 		if (vocals2 != null)
@@ -3416,12 +3531,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// Otherwise the end of the song is spasm since the end music signal does not trigger with loop ON.
 			}
 			// JOELwindows7: BOLO disables these
-			/*
-				else
-					FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
-				#else
+			else
 				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
-			 */
+			#else
+			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
 			#end
 		}
 
@@ -3814,7 +3927,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				case 0: // CPU dad
 					if (!PlayStateChangeables.opponentMode)
 					{
-						babyArrow.x += 20;
+						babyArrow.x += 20; // was 20
 						cpuStrums.add(babyArrow);
 					}
 					else
@@ -3826,8 +3939,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				case 1: // Player bf
 					if (!PlayStateChangeables.opponentMode)
 					{
-						playerStrums.add(babyArrow);
 						babyArrow.x -= 5; // JOELwindows7: vice versa!!! BOLO yeye
+						playerStrums.add(babyArrow);
 					}
 					else
 					{
@@ -3838,7 +3951,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			}
 
 			babyArrow.playAnim('static');
-			babyArrow.x += 98.5; // JOELwindows7: BOLO push right a bit. was 110
+			babyArrow.x += 110; // JOELwindows7: BOLO push right a bit 98.5 . was 110
 			babyArrow.x += ((FlxG.width / 2) * player);
 
 			// JOELwindows7: filtere Haxe script. also BOLO new stuffs!!!
@@ -3846,7 +3959,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (FlxG.save.data.middleScroll && (!(executeModchart || executeModHscript) || !sourceModchart))
 			{
 				if (!PlayStateChangeables.opponentMode)
-					babyArrow.x -= 320; // JOELwindows7: was 320. BOLO 303.5
+					babyArrow.x -= 303.5; // JOELwindows7: was 320. BOLO 303.5
+				// JOELwindows7: & BOLO
+				else
+					babyArrow.x += 311.5;
 
 				// JOELwindows7: interupt now! We got Psyched cpu static arrow positionings in middle scroll mode. watch this!
 				if (player == 0)
@@ -3864,21 +3980,23 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			}
 			else
 			{
-				babyArrow.x += 311.5;
+				// babyArrow.x += 311.5;
 
 				// JOELwindows7: repeat for opponent mode
-				if (player == 1)
-				{
-					babyArrow.x += 320; // JOELwindows7: hey push the position back for the CPU okay.
-					if (i >= 4 && i <= 5) // JOELwindows7: here 1st two of CPU arrow
+				/*
+					if (player == 1)
 					{
-						babyArrow.x += 20; // TODO: optimize pls
+						babyArrow.x += 320; // JOELwindows7: hey push the position back for the CPU okay.
+						if (i >= 4 && i <= 5) // JOELwindows7: here 1st two of CPU arrow
+						{
+							babyArrow.x += 20; // TODO: optimize pls
+						}
+						else if (i >= 6 && i <= 7) // JOELwindows7: and then rest 2 of the CPU arrow.
+						{
+							babyArrow.x += 600; // TODO: optimize pls
+						}
 					}
-					else if (i >= 6 && i <= 7) // JOELwindows7: and then rest 2 of the CPU arrow.
-					{
-						babyArrow.x += 600; // TODO: optimize pls
-					}
-				}
+				 */
 			}
 
 			cpuStrums.forEach(function(spr:FlxUISprite)
@@ -3893,6 +4011,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// JOELwindows7: BOLO! do not comment this function!!!
 	private function appearStaticArrows():Void
 	{
+		setVisibleStaticArrows(true, true);
 		var index = 0;
 		strumLineNotes.forEach(function(babyArrow:FlxUISprite)
 		{
@@ -4396,7 +4515,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 					// JOELwindows7: Here BOLO's song end checks
 					// if (FlxG.save.data.endSongEarly ? ((FlxG.sound.music.time / songMultiplier) > (songLength - 0)) : musicCompleted)
-					if (FlxG.save.data.endSongEarly ? ((FlxG.sound.music.length / songMultiplier) - Conductor.songPosition <= 0) : musicCompleted)
+					// if (FlxG.save.data.endSongEarly ? ((FlxG.sound.music.length / songMultiplier) - Conductor.songPosition <= 0) : musicCompleted)
+					if (((FlxG.sound.music.length / songMultiplier) - Conductor.songPosition <= 0) || musicCompleted)
 						// WELL THAT WAS EASY
 						// JOELwindows7: was:
 						// if (unspawnNotes.length == 0 && notes.length == 0 && FlxG.sound.music.time / songMultiplier > (songLength - 100))
@@ -8724,7 +8844,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		if (!endingSong && currentSection != null)
 		{
 			// JOELwindows7: BOLO wraparound optimize
-			if (PlayStateChangeables.optimize)
+			if (!PlayStateChangeables.optimize)
 			{
 				if (allowedToHeadbang)
 				{
@@ -9037,6 +9157,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// JOELwindows7: BOLO comprehensive tankIntro!!!
 	function tankIntro()
 	{
+		inCinematic = true; // JOELwindows7: screw this. you should've set only when needed.
+		inCutscene = true;
 		dad.visible = false;
 		precacheList.set('DISTORTO', 'music');
 		var tankManEnd:Void->Void = function()
@@ -9067,7 +9189,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		switch (SONG.songId)
 		{
 			case 'ugh':
-				removeStaticArrows();
+				// removeStaticArrows();
+				setVisibleStaticArrows(false, true);
 				camHUD.visible = false;
 				precacheList.set('wellWellWell', 'sound');
 				precacheList.set('killYou', 'sound');
@@ -9147,7 +9270,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							camHUD.alpha = 1;
 							camStrums.visible = false;
 							camStrums.alpha = 1;
-							removeStaticArrows();
+							// removeStaticArrows();
+							setVisibleStaticArrows(false, true);
 							laneunderlayOpponent.alpha = 0;
 							laneunderlay.alpha = 0;
 						}
@@ -9219,7 +9343,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							camHUD.alpha = 1;
 							camStrums.visible = false;
 							camStrums.alpha = 1;
-							removeStaticArrows();
+							// removeStaticArrows();
+							setVisibleStaticArrows(false, true);
 							laneunderlayOpponent.alpha = 0;
 							laneunderlay.alpha = 0;
 						}
@@ -10168,11 +10293,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				schoolIntro(doof);
 			// JOELwindows7: BOLO do this!
 			case 'ugh', 'guns', 'stress':
-				if (!FlxG.save.data.optimize && FlxG.save.data.background)
+				if (!PlayStateChangeables.optimize && FlxG.save.data.background)
 					tankIntro();
 				else
 				{
-					removeStaticArrows();
+					// removeStaticArrows();
+					setVisibleStaticArrows(false, true);
 					// #if FEATURE_MP4VIDEOS
 					// startVideo('cutscenes/${SONG.songId}_cutscene');
 					// #else

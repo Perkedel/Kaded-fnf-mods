@@ -287,8 +287,8 @@ class KadeEngineFPS extends TextField
 			text += (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "");
 			text += (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "");
 			// JOELwindows7: OH COOL!! GREAT IDEA, BOLO. Debug mode indicator, yess!!!
-			text += (#if debug "DEBUG MODE" #else "" #end);
-			text += extraInfo; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
+			text += '${(#if debug "DEBUG MODE" #else "" #end)}\n';
+			text += '$extraInfo\n'; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
 			// remember to have \n at the beginning of the line at available if case.
 			// No, at the end of line at available if case. + "\n" one.
 

@@ -41,6 +41,8 @@ class OptionCata extends FlxUISprite
 
 	public var middle:Bool = false;
 
+	public var text:FlxUIText; // JOELwindows7: BOLO have globalized this
+
 	public function new(x:Float, y:Float, _title:String, _options:Array<Option>, middleType:Bool = false)
 	{
 		super(x, y);
@@ -72,7 +74,7 @@ class OptionCata extends FlxUISprite
 		for (i in 0...options.length)
 		{
 			var opt = options[i];
-			var text:FlxUIText = new FlxUIText((middleType ? 1180 / 2 : 72), titleObject.y + 54 + (46 * i), 0, opt.getValue());
+			text = new FlxUIText((middleType ? 1180 / 2 : 72), titleObject.y + 54 + (46 * i), 0, opt.getValue());
 			if (middleType)
 			{
 				text.screenCenter(X);
@@ -155,7 +157,7 @@ class OptionsMenu extends CoreSubState
 				// #if desktop // JOELwindows7: BOLO no longer do this.
 				new FPSCapOption("Change your FPS Cap."),
 				// #end
-				new ResetButtonOption("Toggle pressing R to gameover."),
+				new ResetButtonOption("Toggle pressing R to gameover. (Use it with caution!)"), // JOELwindows7: BOLO warned
 				new InstantRespawn("Toggle if you instantly respawn after dying."),
 				new CamZoomOption("Toggle the camera zoom in-game."),
 				// new OffsetMenu("Get a note offset based off of your inputs!"),
@@ -197,8 +199,8 @@ class OptionsMenu extends CoreSubState
 				// new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."), //JOELwindows7: how about move it here?
 				new AccidentVolumeKeysOption("Enable / Disable volume shortcut key all time beyond pause menu (- decrease, + increase, 0 mute)"),
 				new HitsoundOption("Enable / Disable Gameplay Hitsound everytime note got hit in Gameplay (not in Editor)"),
-				new HitsoundSelect("Choose your hitsound"), // JOELwindows7: BOLO's choose hitsound
-				new HitSoundVolume("Set hitsound volume."), // JOELwindows7: BOLO's hitsound volume
+				new HitsoundSelect("Choose your hitsound. [ENTER] / (A) to preview"), // JOELwindows7: BOLO's choose hitsound
+				new HitSoundVolume("Set hitsound volume. [ENTER] / (A) to preview"), // JOELwindows7: BOLO's hitsound volume
 				// JOELwindows7: IDEA: only enable volume keys on pause menu?
 				new SurroundTestOption("EXPERIMENTAL! Open 7.1 surround sound tester with Lime AudioSource"),
 				// new AnMIDITestOption("EXPERIMENTAL! Open MIDI output test room"),
@@ -212,6 +214,10 @@ class OptionsMenu extends CoreSubState
 			// JOELwindows7: was 640, 40
 			new OptionCata(1040, 40, "Misc", [
 				new FPSOption("Toggle the FPS Counter"),
+				new DisplayMemory("Toggle the Memory Usage"), // JOELwindows7: BOLO show memory usages
+				#if FEATURE_DISCORD
+				new DiscordOption("Change your Discord Rich Presence update interval."), // JOELwindows7: BOLO discordant
+				#end
 				new PreUnlockAllWeeksOption("Toggle to Pre-unlock all weeks"),
 				new CardiophileOption("Toggle heartbeat features that contains doki-doki stuffs"),
 				new NaughtinessOption("Toggle naughtiness in game which may contains inappropriate contents"), // JOELwindows7: make this Odysee exclusive pls. how!
@@ -282,15 +288,17 @@ class OptionsMenu extends CoreSubState
 
 		shownStuff = new FlxTypedGroup<FlxUIText>();
 
-		// JOELwindows7: pinpoint, this is inner square. also the cast
-		background = cast new FlxUISprite(50, 40).makeGraphic(1180, 640, FlxColor.BLACK);
+		// JOELwindows7: pinpoint, this is inner square. also the cast, nvm
+		background = new FlxUISprite(50, 40);
+		background.makeGraphic(1180, 640, FlxColor.BLACK);
 		background.alpha = 0.5;
 		background.scrollFactor.set();
 		menu.add(background);
 
-		// JOELwindows7: was 50, 640.
+		// JOELwindows7: was 50, 640. no cast pls
 		// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/OptionsMenu.hx
-		descBack = cast new FlxUISprite(50, 642).makeGraphic(1180, 38, FlxColor.BLACK);
+		descBack = new FlxUISprite(50, 642);
+		descBack.makeGraphic(1180, 38, FlxColor.BLACK);
 		descBack.alpha = 0.3;
 		descBack.scrollFactor.set();
 		menu.add(descBack);
@@ -298,7 +306,8 @@ class OptionsMenu extends CoreSubState
 		if (isInPause)
 		{
 			// JOELwindows7: pinpoint, this is outer square that fill entire game screen when in Pause.
-			var bg:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+			var bg:FlxUISprite = new FlxUISprite();
+			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 			bg.alpha = 0;
 			bg.scrollFactor.set();
 			menu.add(bg);
@@ -347,7 +356,6 @@ class OptionsMenu extends CoreSubState
 
 		// JOELwindows7: now tidy the category
 		tidyThoseCats();
-		tidySecondRowCats();
 
 		// JOELwindows7: now add these all up
 		addBackButton(1, FlxG.height, .3);
@@ -993,6 +1001,7 @@ class OptionsMenu extends CoreSubState
 			options[i].titleObject.y = options[i].y + 10;
 			// Wow, GitHub Copilot sentience yeay!
 		}
+		tidySecondRowCats();
 	}
 
 	// JOELwindows7: well, second row..
@@ -1005,7 +1014,7 @@ class OptionsMenu extends CoreSubState
 			options[prakstend].setGraphicSize(Std.int(Math.max(background.width / upToHowManyCatsOnSecond, options[prakstend].width)),
 				Std.int(options[prakstend].height));
 			options[prakstend].x = (background.width / upToHowManyCatsOnSecond) * i;
-			options[prakstend].y = options[0].height; // JOELwindows7: maybe like this?
+			options[prakstend].y = background.y + options[0].height; // JOELwindows7: maybe like this?
 			// I guess..
 			// oh almost forgot!
 			options[prakstend].titleObject.x = options[prakstend].x + (options[prakstend].width / 2) - (options[prakstend].titleObject.width / 2);
