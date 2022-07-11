@@ -54,13 +54,20 @@ class TankmenBG extends FlxUISprite
 	var runAnimPlayedTimes:Int = 0;
 	var runAnimPlayedTimesMax:Int = 1;
 
-	//JOELwindows7: choose which implementation between luckydog7's yoink or BOLO's yoink
-	var useDifferentImplementation:Bool = false;
+	// JOELwindows7: choose which implementation between luckydog7's yoink or BOLO's yoink
+	public static var useDifferentImplementation:Bool = true;
 
-	override public function new()
+	// JOELwindows7: BOLO thingy
+	override public function new(x:Float = 0, y:Float = 0, facingRight:Bool = false)
 	{
-		super();
-		frames = Paths.getSparrowAtlas("tankmanKilled1");
+		// JOELwindows7: BOLO constructoid
+		tankSpeed = 0.7 * 1000;
+		goingRight = false;
+		strumTime = 0;
+		goingRight = facingRight;
+		super(x, y);
+
+		frames = Paths.getSparrowAtlas("tankmanKilled1", 'week7');
 		antialiasing = FlxG.save.data.antialiasing; // JOELwindows7: Don't forget antialiasing!!! BOLO yeah
 		// JOELwindows7: BOLO's add frameh by song multiplier
 		animation.addByPrefix('run', 'tankman running', Std.int(24 * PlayState.songMultiplier), true);
@@ -76,48 +83,55 @@ class TankmenBG extends FlxUISprite
 
 	public function resetShit(xPos:Float, yPos:Float, right:Bool, ?stepsMax:Int, ?speedModifier:Float = 1)
 	{
-		x = xPos;
-		y = yPos;
+		this.x = xPos;
+		this.y = yPos;
 		reset(xPos, yPos); // JOELwindows7: you must reset so Tankman running goes active again.
-		goingRight = right;
+		this.goingRight = right;
 		endingOffset = FlxG.random.float(50, 200); // JOELwindows7: BOLO's endding offset
-		if (stepsMax == null)
-		{
-			stepsMax = 1;
-		}
-		if (speedModifier == null)
-		{
-			speedModifier = 1;
-		}
-		runAnimPlayedTimesMax = stepsMax;
+		tankSpeed = FlxG.random.float(0.6, 1); // JOELwindows7: was random .6 to 1 times 170
+		// JOELwindows7: that fixes it. don't times 170, just keep it 1 idk.
 
-		var newSpeedModifier:Float = speedModifier * 2;
-
-		tankSpeed = FlxG.random.float(0.6, 1) * 170;
-		if (goingRight)
+		if (!useDifferentImplementation)
 		{
-			velocity.x = tankSpeed * newSpeedModifier;
-			if (animation.curAnim.name == "shot")
+			if (stepsMax == null)
 			{
-				offset.x = 300;
-				velocity.x = 0;
+				stepsMax = 1;
 			}
-		}
-		else
-		{
-			velocity.x = tankSpeed * (newSpeedModifier * -1);
-			if (animation.curAnim.name == "shot")
+			if (speedModifier == null)
 			{
-				velocity.x = 0;
+				speedModifier = 1;
+			}
+			runAnimPlayedTimesMax = stepsMax;
+
+			var newSpeedModifier:Float = speedModifier * 2;
+
+			if (goingRight)
+			{
+				velocity.x = tankSpeed * newSpeedModifier;
+				if (animation.curAnim.name == "shot")
+				{
+					offset.x = 300;
+					velocity.x = 0;
+				}
+			}
+			else
+			{
+				velocity.x = tankSpeed * (newSpeedModifier * -1);
+				if (animation.curAnim.name == "shot")
+				{
+					velocity.x = 0;
+				}
 			}
 		}
 
 		flipX = goingRight; // JOELwindows7: BOLO had flipX thingy!
+		animation.play("run"); // JOELwindows7: try play again?
 	}
 
 	override public function update(elapsed:Float)
 	{
-		if(!useDifferentImplementation){
+		if (!useDifferentImplementation)
+		{
 			// JOELwindows7: Buddy, what was that code bellow? lemme fix it
 			if (goingRight)
 			{
@@ -156,8 +170,9 @@ class TankmenBG extends FlxUISprite
 				// destroy(); // JOELwindows7: do not destroy! it will null object reference!
 				kill(); // nvm. the recycled tankman kept killed, not alive anymore.
 			}
-		} else {
-
+		}
+		else
+		{
 			// JOELwindows7: New BOLO tankmen updatoid
 			visible = (x > -0.5 * FlxG.width && x < 1.2 * FlxG.width);
 

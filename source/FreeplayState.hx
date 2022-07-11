@@ -74,6 +74,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	var lerpaccuracy:Float = 0.00;
 
 	public static var openMod:Bool = false;
+	public static var wereOpenMod:Bool = false; // JOELwindows7: & flag for the openMod for aesthetic tween
 
 	// end BOLO thingy
 	private var grpSongs:FlxTypedGroup<Alphabet>;
@@ -91,6 +92,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	// JOELwindows7: aesthetic
 	var bgColorTween:ColorTween; // FlxTween change bg color.
 	var intendedColor:Int; // and BOLO's intended coloring
+	var songItemTween:Array<FlxTween> = [];
+	var songIconTween:Array<FlxTween> = [];
 
 	// JOELwindows7: week data here
 	var weekInfo:SwagWeeks;
@@ -396,8 +399,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: back button
 		addBackButton(20, FlxG.height);
 		// JOELwindows7: and difficulty button
-		addLeftButton(FlxG.width - 350, -100);
-		addRightButton(FlxG.width - 100, -100);
+		addLeftButton(FlxG.width - 350, FlxG.height); // was -100
+		addRightButton(FlxG.width - 100, FlxG.height); // was -100
 
 		trace('Button dez');
 
@@ -460,31 +463,45 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
+		trace('score BG will ya');
+
 		// JOELwindows7: Folks, everything here going to be rearraged here by BOLO.
 		// So we apologize if the looks on here seems way too different than original here.
 
 		// comboText = new FlxText(diffText.x + 100, diffText.y, 0, "", 24); // was width 0
 		comboText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
-		comboText.font = diffText.font;
+		// comboText.font = diffText.font; // JOELwindows7: bruh, diff text was not made until there bellow man.
 		add(comboText);
+
+		trace('combo texa');
 
 		// JOELwindows7: oh man, BOLO's opponent text slid here!
 		opponentText = new FlxText(scoreText.x, scoreText.y + 66, 0, "", 24);
 		opponentText.font = scoreText.font;
 		add(opponentText);
 
+		trace('opponent texa');
+
 		// JOELwindows7: back to diffs
 		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		diffText.font = scoreText.font;
 		add(diffText);
 
+		comboText.font = diffText.font; // JOELwindows7: do it here bruh.
+
+		trace('diff texa');
+
 		diffCalcText = new FlxText(scoreText.x, scoreText.y + 66, 0, "", 24);
 		diffCalcText.font = scoreText.font;
 		add(diffCalcText);
 
+		trace('diff calc texa');
+
 		previewtext = new FlxText(scoreText.x, scoreText.y + 96, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24);
 		previewtext.font = scoreText.font;
 		add(previewtext);
+
+		trace('preview texa');
 
 		// JOELwindows7: was combo
 		trace(' was combo');
@@ -538,8 +555,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		super.create();
 
 		FlxTween.tween(backButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
-		FlxTween.tween(leftButton, {y: 90}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left button!
-		FlxTween.tween(rightButton, {y: 90}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween right button!
+		FlxTween.tween(leftButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left button! was 90 y
+		FlxTween.tween(rightButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween right button! was 90 y
 
 		if (legacySynchronousLoading)
 		{
@@ -1379,11 +1396,88 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: one last BOLO thingy
 		if (openMod)
 		{
-			for (i in 0...iconArray.length)
-				iconArray[i].alpha = 0;
+			if (!wereOpenMod)
+			{
+				if (songItemTween != null)
+				{
+					for (i in songItemTween)
+						if (i != null)
+							i.cancel();
 
-			for (item in grpSongs.members)
-				item.alpha = 0;
+					songItemTween = [];
+				}
+
+				if (songIconTween != null)
+				{
+					for (i in songIconTween)
+						if (i != null)
+							i.cancel();
+					songIconTween = [];
+				}
+
+				for (i in 0...iconArray.length)
+				{
+					// iconArray[i].alpha = 0;
+					var tweenMe:FlxTween;
+					tweenMe = FlxTween.tween(iconArray[i], {alpha: 0}, 1, {
+						ease: FlxEase.linear,
+						onComplete: function(twn:FlxTween)
+						{
+							songIconTween.remove(tweenMe);
+						}
+					});
+					songIconTween.push(tweenMe);
+				}
+
+				for (item in grpSongs.members)
+				{
+					// item.alpha = 0;
+
+					var tweenMe:FlxTween;
+					tweenMe = FlxTween.tween(item, {alpha: 0}, 1, {
+						ease: FlxEase.linear,
+						onComplete: function(twn:FlxTween)
+						{
+							songItemTween.remove(tweenMe);
+						}
+					});
+					songItemTween.push(tweenMe);
+				}
+
+				backButton.visible = backButton.alive = false;
+				leftButton.visible = leftButton.alive = false;
+				rightButton.visible = rightButton.alive = false;
+
+				wereOpenMod = true;
+			}
+		}
+		else
+		{
+			if (wereOpenMod)
+			{
+				if (songItemTween != null)
+				{
+					for (i in songItemTween)
+						if (i != null)
+							i.cancel();
+
+					songItemTween = [];
+				}
+
+				if (songIconTween != null)
+				{
+					for (i in songIconTween)
+						if (i != null)
+							i.cancel();
+					songIconTween = [];
+				}
+
+				backButton.visible = backButton.alive = true;
+				leftButton.visible = leftButton.alive = true;
+				rightButton.visible = rightButton.alive = true;
+
+				wereOpenMod = false;
+			}
 		}
 	}
 
@@ -1696,6 +1790,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		for (item in grpSongs.members)
 		{
 			// JOELwindows7: entire BOLO's check
+			// TODO: JOELwindows7: flx tween pls
 			if (!openMod && !MusicBeatState.switchingState)
 			{
 				item.targetY = bullShit - curSelected;
@@ -1849,6 +1944,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		for (item in grpSongs.members)
 		{
 			// JOELwindows7: entire BOLO's check
+			// TODO: flx tween pls
 			if (!openMod && !MusicBeatState.switchingState)
 			{
 				item.targetY = bullShit - curSelected;
@@ -1960,7 +2056,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		// if Mouse mode is active (detecting by when it's visible now)
 		// do something for mouse
-		if (FlxG.mouse.visible)
+		// also only if not openning mod
+		if (FlxG.mouse.visible && !openMod)
 		{
 			var givThing:Bool = false;
 			var givIcon:Bool = false;

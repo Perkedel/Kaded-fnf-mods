@@ -576,6 +576,9 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/mods/329405 (Permissioned) DemonOfRazgriz. Silver mommy mearest skin
 - https://gamebanana.com/mods/385202 Cool Leaf. Pixel note but non-week 6 classic. Inspired from normal noteskin
 - https://gamebanana.com/mods/384783 https://github.com/BoloVEVO/Kade-Engine-Public BoloVEVO / Boloxd. Continued Kade Engine development & added week 7. also added serveral stuffs too as well!
+- https://ubuntu.com Canonical. take every asset possible from that Ubuntu installation
+- https://archlinux.org Arch Linux. take every asset possible from that Arch installation btw, as well as AUR which those asset are royalty free if there is.
+- https://www.gnome.org/ GNOME. take every asset too!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

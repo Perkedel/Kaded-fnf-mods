@@ -241,6 +241,8 @@ class Song
 						hitsoundPath: i.sectionNotes[j][6],
 						vowelType: i.sectionNotes[j][7],
 						hitsoundUseIt: i.sectionNotes[j][8],
+						// IDEA: hitsoundLibrary. where folder. default is shared. can be week7 e.g. idk. no don't do this.
+						// why would we use different library folderations?
 					}
 				}
 			}

@@ -1,5 +1,6 @@
 {
   "name": "tankman",
+  "displayName": "Captain Tankman",
   "asset": "characters/tankmanCaptain",
   "barColor": "#e1e1e1",
   "startingAnim": "idle",

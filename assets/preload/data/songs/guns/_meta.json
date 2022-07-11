@@ -12,6 +12,7 @@
   "epilogueVideoPath": "",
   "hasTankmanVideo": false,
   "tankmanVideoPath": "gunscutscene",
+  "hasTankmanSub":true,
   "hasEpilogueTankmanVideo": false,
   "epilogueTankmanVideoPath": "",
   "hasDialogueChat": false,
@@ -28,7 +29,7 @@
   "noteStyle": "normal",
   "player1": "bf",
   "player2": "tankman",
-  "gfVersion": "gf-tankman",
+  "gfVersion": "gf-tankmen",
   "introCutSceneDoneManually": false,
   "outroCutSceneDoneManually": false,
   "eventObjects": [{

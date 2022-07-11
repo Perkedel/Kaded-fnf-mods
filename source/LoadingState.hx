@@ -30,7 +30,7 @@ class LoadingState extends MusicBeatState
 {
 	inline static var MIN_TIME = 1.0;
 
-	var loadingText:FlxText; // JOELwindows7: BOLO's loading text
+	var loadingText:FlxUIText; // JOELwindows7: BOLO's loading text
 	var target:FlxState;
 	var previously:FlxState; // JOELwindows7: to store previous state.
 	var stopMusic = false;
@@ -114,10 +114,12 @@ class LoadingState extends MusicBeatState
 		// add(logo); // JOELwindows7: week 7 has already made new screen of it instead.
 
 		// JOELwindows7: BOLO's loading text stuffs
-		loadingText = new FlxText(FlxG.width * 8, FlxG.height * 0.07, 0, "Loading", 42);
+		loadingText = new FlxUIText(FlxG.width * 8, FlxG.height * 0.07, 0, "Loading", 42);
 		loadingText.antialiasing = false;
 		loadingText.setFormat(Paths.font('pixel.otf'), 42, 0xFFFFFF, CENTER);
 		loadingText.screenCenter();
+		loadingText.alpha = .4; // JOELwindows7: YOU GOTTA ALPHA THIS, MAN.
+		// We want to see our beautiful artworks over there.
 
 		loadingText.x -= 425;
 		loadingText.y += 125;

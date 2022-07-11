@@ -1,6 +1,8 @@
 package;
 
 // JOELwindows7: YOINK FROM https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplaySubState.hx
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIText;
 import flixel.util.FlxTimer;
 import flixel.FlxCamera;
 import flixel.FlxSubState;
@@ -23,11 +25,11 @@ import flixel.util.FlxColor;
 import flixel.ui.FlxBar;
 
 // Uuh... Direct copy of OptionsMenu.hx xD
-class ModMenu extends FlxSubState
+class ModMenu extends CoreSubState
 {
 	public static var instance:ModMenu;
 
-	public var background:FlxSprite;
+	public var background:FlxUISprite;
 
 	public var selectedModifier:Modifier;
 
@@ -35,21 +37,21 @@ class ModMenu extends FlxSubState
 
 	public var modifiers:Array<Modifier>;
 
-	public var shownStuff:FlxTypedGroup<FlxText>;
+	public var shownStuff:FlxTypedGroup<FlxUIText>; // JOELwindows7: head
 
 	public static var visibleRange = [114, 640];
 
-	public var menu:FlxTypedGroup<FlxSprite>;
+	public var menu:FlxTypedGroup<FlxUISprite>;
 
-	public var descText:FlxText;
-	public var descBack:FlxSprite;
-	public var descTop:FlxSprite;
+	public var descText:FlxUIText;
+	public var descBack:FlxUISprite;
+	public var descTop:FlxUISprite;
 
-	public var modObjects:FlxTypedGroup<FlxText>;
+	public var modObjects:FlxTypedGroup<FlxUIText>;
 
-	public var titleObject:FlxText;
+	public var titleObject:FlxUIText;
 
-	public var text:FlxText;
+	public var text:FlxUIText;
 
 	var changedMod = false;
 
@@ -69,42 +71,46 @@ class ModMenu extends FlxSubState
 			new HealthLoss("Toggle how many health you want to loss.")
 		];
 
-		titleObject = new FlxText(176, 49, 0, 'GAMEPLAY MODIFIERS');
+		titleObject = new FlxUIText(176, 49, 0, 'GAMEPLAY MODIFIERS');
 		titleObject.setFormat(Paths.font("vcr.ttf"), 35, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		titleObject.borderSize = 3;
 
 		for (i in 0...modifiers.length)
 		{
 			var mod = modifiers[i];
-			text = new FlxText(72, titleObject.y + 72 + (46 * i), 0, mod.getValue());
+			text = new FlxUIText(72, titleObject.y + 72 + (46 * i), 0, mod.getValue());
 			text.setFormat(Paths.font("vcr.ttf"), 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			text.borderSize = 3;
 			text.borderQuality = 1;
 			text.scrollFactor.set();
 			text.alpha = 0.4;
 			text.visible = true;
+			text.ID = i; // JOELwindows7: don't forget ID them!
 			modObjects.add(text);
 		}
 
 		instance = this;
 
-		menu = new FlxTypedGroup<FlxSprite>();
+		menu = new FlxTypedGroup<FlxUISprite>();
 
-		shownStuff = new FlxTypedGroup<FlxText>();
+		shownStuff = new FlxTypedGroup<FlxUIText>();
 
 		selectedModifier = modifiers[0];
 
-		background = new FlxSprite(30, 40).makeGraphic(690, 640, FlxColor.BLACK);
+		background = new FlxUISprite(30, 40);
+		background.makeGraphic(690, 640, FlxColor.BLACK);
 		background.alpha = 0.5;
 		background.scrollFactor.set();
 		menu.add(background);
 
-		descTop = new FlxSprite(30, 39).makeGraphic(690, 55, FlxColor.BLACK);
+		descTop = new FlxUISprite(30, 39);
+		descTop.makeGraphic(690, 55, FlxColor.BLACK);
 		descTop.alpha = 0.3;
 		descTop.scrollFactor.set();
 		menu.add(descTop);
 
-		descBack = new FlxSprite(30, 642).makeGraphic(690, 38, FlxColor.BLACK);
+		descBack = new FlxUISprite(30, 642);
+		descBack.makeGraphic(690, 38, FlxColor.BLACK);
 		descBack.alpha = 0.3;
 		descBack.scrollFactor.set();
 		menu.add(descBack);
@@ -112,7 +118,7 @@ class ModMenu extends FlxSubState
 		add(menu);
 		add(shownStuff);
 
-		descText = new FlxText(62, 648);
+		descText = new FlxUIText(62, 648);
 		descText.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		descText.borderSize = 2;
 
@@ -124,6 +130,14 @@ class ModMenu extends FlxSubState
 		selectedModifier = modifiers[0];
 
 		selectModifier(selectedModifier);
+
+		// JOELwindows7: do not forget the mouse!
+		addBackButton(20, FlxG.height - 100);
+		addLeftButton(FlxG.width - 350, FlxG.height - 100);
+		addRightButton(FlxG.width - 100, FlxG.height - 100);
+		addUpButton(FlxG.width - 100, Std.int(FlxG.height / 2) - 200, .4);
+		addAcceptButton(FlxG.width - 100, Std.int(FlxG.height / 2), .4);
+		addDownButton(FlxG.width - 100, Std.int(FlxG.height / 2) + 200, .4);
 
 		super.create();
 	}
@@ -197,14 +211,15 @@ class ModMenu extends FlxSubState
 
 		changedMod = false;
 
-		accept = FlxG.keys.justPressed.ENTER || (gamepad != null ? gamepad.justPressed.A : false);
-		right = FlxG.keys.justPressed.RIGHT || (gamepad != null ? gamepad.justPressed.DPAD_RIGHT : false);
-		left = FlxG.keys.justPressed.LEFT || (gamepad != null ? gamepad.justPressed.DPAD_LEFT : false);
-		up = FlxG.keys.justPressed.UP || (gamepad != null ? gamepad.justPressed.DPAD_UP : false);
-		down = FlxG.keys.justPressed.DOWN || (gamepad != null ? gamepad.justPressed.DPAD_DOWN : false);
+		// JOELwindows7: mouse pls
+		accept = FlxG.keys.justPressed.ENTER || (gamepad != null ? gamepad.justPressed.A : false) || haveClicked;
+		right = FlxG.keys.justPressed.RIGHT || (gamepad != null ? gamepad.justPressed.DPAD_RIGHT : false) || haveRighted;
+		left = FlxG.keys.justPressed.LEFT || (gamepad != null ? gamepad.justPressed.DPAD_LEFT : false) || haveLefted;
+		up = FlxG.keys.justPressed.UP || (gamepad != null ? gamepad.justPressed.DPAD_UP : false) || haveUpped;
+		down = FlxG.keys.justPressed.DOWN || (gamepad != null ? gamepad.justPressed.DPAD_DOWN : false) || haveDowned;
 
 		any = FlxG.keys.justPressed.ANY || (gamepad != null ? gamepad.justPressed.ANY : false);
-		escape = FlxG.keys.justPressed.ESCAPE || (gamepad != null ? gamepad.justPressed.B : false);
+		escape = FlxG.keys.justPressed.ESCAPE || (gamepad != null ? gamepad.justPressed.B : false) || haveBacked;
 
 		#if !mobile
 		if (FlxG.mouse.wheel != 0)
@@ -251,6 +266,8 @@ class ModMenu extends FlxSubState
 
 					object.text = "> " + selectedModifier.getValue();
 				}
+
+				haveClicked = true;
 			}
 
 			if (down)
@@ -283,6 +300,8 @@ class ModMenu extends FlxSubState
 				}
 
 				selectModifier(modifiers[selectedModifierIndex]);
+
+				haveDowned = false;
 			}
 			else if (up)
 			{
@@ -324,6 +343,8 @@ class ModMenu extends FlxSubState
 				}
 
 				selectModifier(modifiers[selectedModifierIndex]);
+
+				haveUpped = false;
 			}
 
 			if (right)
@@ -336,6 +357,8 @@ class ModMenu extends FlxSubState
 				changedMod = true;
 				object.text = "> " + selectedModifier.getValue();
 				Debug.logTrace("New text: " + object.text);
+
+				haveRighted = false;
 			}
 			else if (left)
 			{
@@ -347,6 +370,8 @@ class ModMenu extends FlxSubState
 
 				object.text = "> " + selectedModifier.getValue();
 				Debug.logTrace("New text: " + object.text);
+
+				haveLefted = false;
 			}
 			if (escape)
 			{
@@ -381,10 +406,207 @@ class ModMenu extends FlxSubState
 							}
 						}
 					}
+				haveBacked = false;
 			}
 
 			if (changedMod)
 				FreeplayState.instance.updateDiffCalc();
 		}
+	}
+
+	// JOELwindows7: go to selectionoid
+	function goToSelection(into:Int)
+	{
+		if (selectedModifier.acceptType)
+			selectedModifier.waitingType = false;
+		FlxG.sound.play(Paths.sound('scrollMenu'));
+		modObjects.members[selectedModifierIndex].text = selectedModifier.getValue();
+		selectedModifierIndex = into;
+
+		if (selectedModifierIndex > modifiers.length - 1)
+		{
+			for (i in 0...modifiers.length)
+			{
+				var opt = modObjects.members[i];
+				opt.y = titleObject.y + 54 + (46 * i);
+			}
+			selectedModifierIndex = 0;
+		}
+
+		if (selectedModifierIndex != 0 && selectedModifierIndex != modifiers.length - 1 && modifiers.length > 6)
+		{
+			if (selectedModifierIndex >= (modifiers.length - 1) / 2)
+				for (i in modObjects.members)
+				{
+					i.y -= 46;
+				}
+		}
+		if (selectedModifierIndex < 0)
+		{
+			selectedModifierIndex = modifiers.length - 1;
+
+			if (modifiers.length > 6)
+				for (i in modObjects.members)
+				{
+					i.y -= (46 * ((modifiers.length - 1) / 2));
+				}
+		}
+
+		if (selectedModifierIndex != 0 && modifiers.length > 6)
+		{
+			if (selectedModifierIndex >= (modifiers.length - 1) / 2)
+				for (i in modObjects.members)
+				{
+					i.y += 46;
+				}
+		}
+
+		selectModifier(modifiers[selectedModifierIndex]);
+	}
+
+	// JOELwindows7: copy manage mouse ovveride from that option menu too.
+	override function manageMouse()
+	{
+		// JOELwindows7: make mouse visible when moved.
+		if (FlxG.mouse.justMoved)
+		{
+			// trace("mouse moved");
+			FlxG.mouse.visible = true;
+		}
+		// JOELwindows7: detect any keypresses or any button presses
+		if (FlxG.keys.justPressed.ANY)
+		{
+			// lmao! inspire from GameOverState.hx!
+			FlxG.mouse.visible = false;
+		}
+		if (FlxG.gamepads.lastActive != null)
+		{
+			if (FlxG.gamepads.lastActive.justPressed.ANY)
+			{
+				FlxG.mouse.visible = false;
+			}
+			// peck this I'm tired! plns work lol
+		}
+
+		// JOELwindows7: query every single menu category and each items
+		// inspire this from MainMenuState like before!
+
+		// JOELwindows7: check if you have clicked on a category. whoah, GitHub Copilot sentience finally kicks in!
+		/*
+			for (i in 0...modifiers.length - 1)
+			{
+				if (FlxG.mouse.overlaps(modifiers[i]) && !FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(leftButton)
+					&& !FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(upButton) && !FlxG.mouse.overlaps(downButton))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (modifiers[i].ID == selectedCatIndex)
+						{
+							haveClicked = true;
+						}
+						else
+						{
+							goToCategory(options[i].ID);
+						}
+					}
+				}
+			}
+		 */
+
+		// JOELwindows7: check if you have clicked on an item.
+		shownStuff.forEach(function(stuff:FlxUIText)
+		{
+			if (stuff != null)
+			{
+				if (FlxG.mouse.overlaps(stuff))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						if (stuff.ID == selectedModifierIndex)
+						{
+							haveClicked = true;
+						}
+						else
+						{
+							goToSelection(stuff.ID);
+							haveClicked = false;
+						}
+
+						// JOELwindows7: but it's not perfect.
+					}
+					else
+					{
+						haveClicked = false;
+					}
+				}
+				else
+				{
+					// JOELwindows7: back button for no keyboard
+					if (backButton != null)
+						if (FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(stuff))
+						{
+							if (FlxG.mouse.justPressed)
+							{
+								haveBacked = true;
+							}
+							else
+							{
+								// haveBacked = false;
+							}
+						}
+
+					if (leftButton != null)
+						if (FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(stuff))
+						{
+							if (FlxG.mouse.justPressed)
+							{
+								haveLefted = true;
+							}
+							else
+							{
+								haveLefted = false;
+							}
+						}
+					if (rightButton != null)
+						if (FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(stuff))
+						{
+							if (FlxG.mouse.justPressed)
+							{
+								haveRighted = true;
+							}
+							else
+							{
+								haveRighted = false;
+							}
+						}
+
+					if (upButton != null)
+						if (FlxG.mouse.overlaps(upButton) && !FlxG.mouse.overlaps(stuff))
+						{
+							if (FlxG.mouse.justPressed)
+							{
+								haveUpped = true;
+							}
+							else
+							{
+								haveUpped = false;
+							}
+						}
+
+					if (downButton != null)
+						if (FlxG.mouse.overlaps(downButton) && !FlxG.mouse.overlaps(stuff))
+						{
+							if (FlxG.mouse.justPressed)
+							{
+								haveDowned = true;
+							}
+							else
+							{
+								haveDowned = false;
+							}
+						}
+				}
+			}
+		});
 	}
 }

@@ -12,6 +12,7 @@
   "epilogueVideoPath": "kickstartertrailer",
   "hasTankmanVideo": false,
   "tankmanVideoPath": "stresscutscene",
+  "hasTankmanSub":true,
   "hasEpilogueTankmanVideo": false,
   "epilogueTankmanVideoPath": "",
   "hasDialogueChat": false,

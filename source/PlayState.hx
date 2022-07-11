@@ -1425,6 +1425,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// generateStaticArrows(0);
 		// generateStaticArrows(1);
 		// end temp error
+		setVisibleStaticArrows(false, true, true); // JOELwindows7: make it invisible so let the count down do it instead.
 
 		// JOELwindows7: PSST! BOLO's CPU strum modification
 		if (sourceModchart && PlayStateChangeables.modchart)
@@ -2096,35 +2097,35 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		trace('BOLO more stuffs');
 
 		// JOELwindows7: BOLO tank stage check
-		/*
-			if (FlxG.save.data.distractions && FlxG.save.data.background && !FlxG.save.data.optimize)
+		if (FlxG.save.data.distractions && FlxG.save.data.background && !PlayStateChangeables.optimize)
+		{
+			if (gfCheck == 'pico-speaker' && Stage.curStage == 'tank')
 			{
-				if (gfCheck == 'pico-speaker' && Stage.curStage == 'tank')
+				if (FlxG.save.data.distractions)
 				{
-					if (FlxG.save.data.distractions)
+					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
+					firstTank.resetShit(20, 600, true);
+					firstTank.strumTime = 10;
+					if (Stage.swagBacks['tankmanRun'] != null)
 					{
-						var firstTank:TankmenBG = new TankmenBG(20, 500, true);
-						firstTank.resetShit(20, 600, true);
-						firstTank.strumTime = 10;
-						if (Stage.swagBacks['tankmanRun'] != null)
-						{
-							Stage.swagBacks['tankmanRun'].add(firstTank);
+						Stage.swagBacks['tankmanRun'].add(firstTank);
 
-							for (i in 0...TankmenBG.animationNotes.length)
+						for (i in 0...TankmenBG.animationNotes.length)
+						{
+							if (FlxG.random.bool(16))
 							{
-								if (FlxG.random.bool(16))
-								{
-									var tankBih = Stage.swagBacks['tankmanRun'].recycle(TankmenBG);
-									tankBih.strumTime = TankmenBG.animationNotes[i].strumTime;
-									tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i].noteData < 2);
-									Stage.swagBacks['tankmanRun'].add(tankBih);
-								}
+								var tankBih = Stage.swagBacks['tankmanRun'].recycle(TankmenBG);
+								tankBih.strumTime = TankmenBG.animationNotes[i].strumTime;
+								tankBih.resetShit(20, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i].noteData < 2); // JOELwindows7: x 500
+								// JOELwindows7: oh wow, that fixed it. don't 500, 20 like above instead.
+								// also maybe don't tankspeed too fast.
+								Stage.swagBacks['tankmanRun'].add(tankBih);
 							}
 						}
 					}
 				}
 			}
-		 */
+		}
 
 		// JOELwindows7: idk BOLO. Immediately raise tankIntroEnd flag if not in story mode (a.k.a. Freeplay)
 		if (!isStoryMode)
@@ -2335,7 +2336,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				});
 			 */
 		}
-		wereVisible = true;
+		wereVisible = visible;
 	}
 
 	// JOELwindows7: BOLO's add shader to cameras!!!
@@ -2664,6 +2665,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
+		// JOELwindows7: hey, hide the thing first!
+		setVisibleStaticArrows(false, true, true);
 		// JOELwindows7: WHAT?! `makeGraphic` is not overridden!!! hence it returns to regular `FlxSprite` of itself instead of `FlxUISprite`!!!
 		// trace("has school intro " + Std.string(dialogueBox));
 		var black:FlxUISprite = cast new FlxUISprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
@@ -3305,8 +3308,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 
-		// FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false); // JOELwindows7: idk why, BOLO..
-		FlxG.sound.music.play();
+		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false); // JOELwindows7: idk why, BOLO..
+		// FlxG.sound.music.play();
 		vocals.play();
 		if (vocals2 != null)
 			vocals2.play(); // JOELwindows7: ye
@@ -5172,6 +5175,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		if (FlxG.keys.justPressed.SPACE && skipActive)
 		{
+			// JOELwindows7: add osu! skip button confirm sound
+			playSoundEffect(Paths.sound('confirmMenu'));
+
 			FlxG.sound.music.pause();
 			vocals.pause();
 			vocals2.pause(); // JOELwindows7: ye
@@ -8468,7 +8474,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: incoming, week 7 yoink yey! luckydog7
 		// picoSpeaker and running tankmen
 
-		if (SONG.songId == 'stress')
+		if (SONG.songId == 'stress-legacy')
 		{
 			if (Stage.picoStep != null && Stage.tankStep != null)
 			{ // JOELwindows7: make sure null safety. the songId changed before loading next song looks like.
@@ -8516,7 +8522,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			}
 		}
 
-		if (dad.curCharacter == 'tankman' && SONG.songId == 'stress')
+		if (dad.curCharacter == 'tankman-legacy' && SONG.songId == 'stress-legacy')
 		{
 			if (curStep == 735)
 			{
@@ -8539,7 +8545,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			}
 		}
 
-		if (dad.curCharacter == 'tankman' && SONG.songId == 'ugh')
+		if (dad.curCharacter == 'tankman-legacy' && SONG.songId == 'ugh-legacy')
 		{
 			if (curStep == 59 || curStep == 443 || curStep == 523 || curStep == 827)
 			{
@@ -9154,15 +9160,31 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// JOELwindows7: BOLO tankIntro
 	public var tankIntroEnd:Bool = false;
 
-	// JOELwindows7: BOLO comprehensive tankIntro!!!
+	// JOELwindows7: BOLO comprehensive week 7 tankIntro!!!
 	function tankIntro()
 	{
 		inCinematic = true; // JOELwindows7: screw this. you should've set only when needed.
 		inCutscene = true;
 		dad.visible = false;
+
+		// JOELwindows7: Kludge subtitle, sorry, it's kludge, I'll make proper sub bottom later.
+		var tankKludgeText:FlxUIText = new FlxUIText(FlxG.width / 2, FlxG.height - 120, 500, '\n', 24); // JOELwindows7: install a text!
+		tankKludgeText.size = 24;
+		tankKludgeText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		tankKludgeText.screenCenter(X);
+		tankKludgeText.scrollFactor.set();
+
 		precacheList.set('DISTORTO', 'music');
 		var tankManEnd:Void->Void = function()
 		{
+			createTween(tankKludgeText, {alpha: 0}, 1, {
+				ease: FlxEase.quadInOut,
+				onComplete: function(twn:FlxTween)
+				{
+					tankKludgeText.text = '';
+					tankKludgeText.kill();
+				}
+			});
 			tankIntroEnd = true;
 			var timeForStuff:Float = Conductor.crochet / 1000 * 5;
 			createTween(FlxG.camera, {zoom: Stage.camZoom}, timeForStuff, {ease: FlxEase.quadInOut});
@@ -9212,6 +9234,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				createTimer(0.1, function(tmr:FlxTimer)
 				{
 					WellWellWell.play(true);
+
+					tankKludgeText.text = "Well well well, what do we got here?";
+					tankKludgeText.screenCenter(X);
 				});
 
 				// Move camera to BF
@@ -9224,6 +9249,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					{
 						boyfriend.playAnim('singUP', true);
 						FlxG.sound.play(Paths.sound('bfBeep'));
+
+						tankKludgeText.text = 'BEEP!';
+						tankKludgeText.screenCenter(X);
 					});
 
 					// Move camera to Tankman
@@ -9234,6 +9262,19 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						boyfriend.dance();
 						Stage.swagBacks['tankman'].animation.play('killYou', true);
 						FlxG.sound.play(Paths.sound('killYou'));
+
+						tankKludgeText.text = 'We should just KILL YOU but...';
+						tankKludgeText.screenCenter(X);
+						createTimer(2, function(tmr:FlxTimer)
+						{
+							tankKludgeText.text = 'what the hell, it\'s been a boring day...';
+							tankKludgeText.screenCenter(X);
+							createTimer(2, function(tmr:FlxTimer)
+							{
+								tankKludgeText.text = 'let\'s see what you\'ve got!';
+								tankKludgeText.screenCenter(X);
+							});
+						});
 
 						// We should just kill you but... what the hell, it's been a boring day... let's see what you've got!
 						createTimer(6.1, function(tmr:FlxTimer)
@@ -9257,6 +9298,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				createTimer(0.01, function(tmr:FlxTimer)
 				{
 					tightBars.play(true);
+					tankKludgeText.text = 'Heh, pretty tight bars';
+					tankKludgeText.screenCenter(X);
+					createTimer(2, function(tmr:FlxTimer)
+					{
+						tankKludgeText.text = 'for a little dude simping over an..';
+						tankKludgeText.screenCenter(X);
+					});
 				});
 
 				createTimer(0.5, function(tmr:FlxTimer)
@@ -9308,6 +9356,18 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					{
 						gf.playAnim('sad', true);
 					};
+					tankKludgeText.text = 'UGLY BORING little teenager';
+					tankKludgeText.screenCenter(X);
+					createTimer(2, function(tmr:FlxTimer)
+					{
+						tankKludgeText.text = 'that wears her mom\'s clothes,';
+						tankKludgeText.screenCenter(X);
+						createTimer(2, function(tmr:FlxTimer)
+						{
+							tankKludgeText.text = 'Haah. XD......';
+							tankKludgeText.screenCenter(X);
+						});
+					});
 				});
 
 				createTimer(11.6, function(tmr:FlxTimer)
@@ -9328,9 +9388,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				precacheList.set('cutscenes/stress2', 'frame');
 
-				#if html5
+				// JOELwindows7: still lag again on my Linux, let's keep trigger loading for all anyway.
+				// #if html5
 				Paths.getSparrowAtlas('cutscenes/stress2', 'week7');
-				#end
+				// #end
 
 				createTimer(0.5, function(tmr:FlxTimer)
 				{
@@ -9379,6 +9440,32 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				createTimer(0.01, function(tmr:FlxTimer) // Fixes sync????
 				{
 					cutsceneSnd.play(true);
+					tankKludgeText.text = 'God.. eFfing.. Damnit.., tsk!';
+					tankKludgeText.screenCenter(X);
+					createTimer(2, function(tmr:FlxTimer)
+					{
+						tankKludgeText.text = 'Well played, you little sh88..';
+						tankKludgeText.screenCenter(X);
+						createTimer(2.5, function(tmr:FlxTimer)
+						{
+							tankKludgeText.text = 'but this is WAR, & in war,';
+							tankKludgeText.screenCenter(X);
+							createTimer(1.3, function(tmr:FlxTimer)
+							{
+								tankKludgeText.text = 'PEOPLE DIE!!';
+								createTimer(1, function(tmr:FlxTimer)
+								{
+									tankKludgeText.text = 'Command, get ready to fire!';
+									tankKludgeText.screenCenter(X);
+									createTimer(1.2, function(tmr:FlxTimer)
+									{
+										tankKludgeText.text = 'Sorry no prom for you this year, HAHAHAA!';
+										tankKludgeText.screenCenter(X);
+									});
+								});
+							});
+						});
+					});
 				});
 
 				createTimer(14.2, function(tmr:FlxTimer)
@@ -9389,6 +9476,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				createTimer(15.2, function(tmr:FlxTimer)
 				{
+					tankKludgeText.text = '';
+					tankKludgeText.screenCenter(X);
 					createTween(camFollow, {x: 650, y: 300}, 1, {ease: FlxEase.sineOut});
 					createTween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 2.25, {ease: FlxEase.quadInOut});
 					createTimer(2.3, function(tmr:FlxTimer)
@@ -9401,6 +9490,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					Stage.swagBacks['dummyGf'].visible = false;
 					Stage.swagBacks['gfCutscene'].visible = true;
 					Stage.swagBacks['gfCutscene'].animation.play('dieBitch', true);
+					createTimer(2.3, function(tmr:FlxTimer)
+					{
+						Controls.vibrate(0, 1000, 0, 65535, 65535); // JOELwindows7: vibrate da controller
+					});
 					Stage.swagBacks['gfCutscene'].animation.finishCallback = function(name:String)
 					{
 						if (name == 'dieBitch') // Next part
@@ -9413,6 +9506,19 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							Stage.swagBacks['gfCutscene'].visible = false;
 							Stage.swagBacks['picoCutscene'].visible = true;
 							Stage.swagBacks['picoCutscene'].animation.play('anim', true);
+							Controls.vibrate(0, 90); // JOELwindows7: bang! pico shoots tankmen!
+							createTimer(2, function(tmr:FlxTimer)
+							{
+								tankKludgeText.text = 'WHAAAAA!!!!';
+								tankKludgeText.screenCenter(X);
+							});
+							// JOELwindows7: & then the other
+							createTimer(3, function(tmr:FlxTimer)
+							{
+								Controls.vibrate(0, 95);
+								tankKludgeText.text = '(eik serkat!)';
+								tankKludgeText.screenCenter(X);
+							});
 
 							boyfriend.visible = true;
 							Stage.swagBacks['bfCutscene'].visible = false;
@@ -9444,6 +9550,28 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					Stage.swagBacks['tankman'].animation.play('lookWhoItIs', true);
 					Stage.swagBacks['tankman'].x += 90;
 					Stage.swagBacks['tankman'].y += 6;
+					tankKludgeText.text = 'Aah, look who it is,';
+					tankKludgeText.screenCenter(X);
+					createTimer(1.2, function(tmr:FlxTimer)
+					{
+						tankKludgeText.text = 'your sexually-ambiguous-angry-little-friend';
+						tankKludgeText.screenCenter(X);
+						createTimer(1.2, function(tmr:FlxTimer)
+						{
+							tankKludgeText.text = 'Don\'t you have a school to shoot up?';
+							tankKludgeText.screenCenter(X);
+							createTimer(2, function(tmr:FlxTimer)
+							{
+								tankKludgeText.text = 'there\'s one way to settle this.';
+								tankKludgeText.screenCenter(X);
+								createTimer(1.1, function(tmr:FlxTimer)
+								{
+									tankKludgeText.text = 'let\'s ROCK, you little C8NT!';
+									tankKludgeText.screenCenter(X);
+								});
+							});
+						});
+					});
 
 					createTimer(0.5, function(tmr:FlxTimer)
 					{
@@ -9465,6 +9593,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					};
 					FlxG.camera.follow(camFollow, LOCKON, 1);
 
+					tankKludgeText.text = 'XD!!!!!';
+					tankKludgeText.screenCenter(X);
+					createTimer(2.4, function(tmr:FlxTimer)
+					{
+						tankKludgeText.text = '..you little C8NT!';
+						tankKludgeText.screenCenter(X);
+					});
+
 					camFollow.setPosition(1100, 625);
 					FlxG.camera.zoom = 1.3;
 
@@ -9480,6 +9616,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					boyfriend.animation.finishCallback = null;
 				});
 		}
+		add(tankKludgeText);
 	}
 
 	// LUA MODCHART TO SOURCE FOR HTML5 TUTORIAL MODCHART :)
@@ -9954,7 +10091,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					add(ready);
 					if (invisible)
 						ready.visible = false;
-					FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					createTween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
 						{
@@ -9975,7 +10112,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					add(set);
 					if (invisible)
 						set.visible = false;
-					FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					createTween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
 						{
@@ -9998,7 +10135,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					add(go);
 					if (invisible)
 						go.visible = false;
-					FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					createTween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
 						{
@@ -10153,7 +10290,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	{
 		if (botPlayState != null)
 		{
-			FlxTween.tween(botPlayState, {alpha: 0}, 1, {
+			createTween(botPlayState, {alpha: 0}, 1, {
 				ease: FlxEase.linear,
 				onComplete: function(twn:FlxTween)
 				{
@@ -10167,7 +10304,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	{
 		if (botPlayState != null)
 		{
-			FlxTween.tween(botPlayState, {alpha: 1}, 1, {
+			createTween(botPlayState, {alpha: 1}, 1, {
 				ease: FlxEase.linear,
 				onComplete: function(twn:FlxTween)
 				{
@@ -10223,7 +10360,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		else
 		{
 			// inCutscene = false;
-			new FlxTimer().start(1, function(timer)
+			createTimer(1, function(timer)
 			{
 				startCountdown();
 			});
@@ -10253,7 +10390,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// JOELwindows7: hide the lemon guy character icon!
 				iconP2.changeIcon('placeholder');
 
-				new FlxTimer().start(0.1, function(tmr:FlxTimer)
+				createTimer(0.1, function(tmr:FlxTimer)
 				{
 					remove(blackScreen);
 					FlxG.sound.play(Paths.sound('Lights_Turn_On'));
@@ -10264,11 +10401,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					FlxG.camera.focusOn(camFollow.getPosition());
 					FlxG.camera.zoom = 1.5;
 
-					new FlxTimer().start(1, function(tmr:FlxTimer)
+					createTimer(1, function(tmr:FlxTimer)
 					{
 						camHUD.visible = true;
 						remove(blackScreen);
-						FlxTween.tween(FlxG.camera, {zoom: Stage.camZoom}, 2.5, {
+						createTween(FlxG.camera, {zoom: Stage.camZoom}, 2.5, {
 							ease: FlxEase.quadInOut,
 							onComplete: function(twn:FlxTween)
 							{
@@ -10355,10 +10492,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	function introSceneIsDone()
 	{
 		introDoneCalled = true;
-		new FlxTimer().start(SONG.delayBeforeStart, function(timer:FlxTimer)
-		{
-			checkSongStartAfterTankman(); // I know, this is spaghetti code. because I believe there's more somebody uses the method.
-		});
+		// createTimer(SONG.delayBeforeStart, function(timer:FlxTimer)
+		// {
+		checkSongStartAfterTankman(); // I know, this is spaghetti code. because I believe there's more somebody uses the method.
+		// });
 	}
 
 	// JOELwindows7: Outro Done fillout vars
@@ -10380,8 +10517,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// JOELwindows7: better! use camera fade
 				FlxG.camera.fade(FlxColor.BLACK, 5);
 
+				// JOELwindows7: now don't forget to hide the static arrow
+				setVisibleStaticArrows(false);
+
 				// camHUD.alpha = 0;
-				FlxTween.tween(camHUD, {alpha: 0}, 5, {
+				createTween(camHUD, {alpha: 0}, 5, {
 					ease: FlxEase.linear,
 					onComplete: function(twn:FlxTween)
 					{
@@ -10394,7 +10534,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// 	}
 				// });
 
-				new FlxTimer().start(10, function(tmr:FlxTimer)
+				createTimer(10, function(tmr:FlxTimer)
 				{
 					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
@@ -10411,40 +10551,40 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				FlxG.sound.play(Paths.sound('Lights_Shut_off'));
 				Controls.vibrate(0, 100);
 
-				new FlxTimer().start(3, function(tmr:FlxTimer)
+				createTimer(3, function(tmr:FlxTimer)
 				{
 					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 				});
 			case 'sky':
 				// da bbpanzu sky `theManifestCutscene`
-				new FlxTimer().start(1, function(e:FlxTimer)
+				createTimer(1, function(e:FlxTimer)
 				{
 					dad.playAnim('manifest');
 					FlxG.sound.play(Paths.sound("skyManifest", 'shared'));
-					FlxTween.tween(FlxG.camera, {zoom: 1.2}, 1, {ease: FlxEase.quadInOut});
+					createTween(FlxG.camera, {zoom: 1.2}, 1, {ease: FlxEase.quadInOut});
 
-					new FlxTimer().start(1, function(e:FlxTimer)
+					createTimer(1, function(e:FlxTimer)
 					{
 						if (Stage.shiftbg != null)
 						{
 							Stage.shiftbg.scrollFactor.set(1, 1);
 							Stage.shiftbg.animation.play('manifest');
 						}
-						FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.quadInOut});
+						createTween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.quadInOut});
 						FlxG.camera.shake(0.05, 5);
 						Controls.vibrate(0, 5000);
 					});
-					new FlxTimer().start(2, function(e:FlxTimer)
+					createTimer(2, function(e:FlxTimer)
 					{
 						FlxG.camera.fade(FlxColor.WHITE, 2, false);
-						FlxTween.tween(FlxG.camera, {zoom: 1.1}, 2, {ease: FlxEase.quadInOut});
+						createTween(FlxG.camera, {zoom: 1.1}, 2, {ease: FlxEase.quadInOut});
 					});
-					new FlxTimer().start(4.5, function(e:FlxTimer)
+					createTimer(4.5, function(e:FlxTimer)
 					{
 						FlxG.camera.fade(FlxColor.BLACK, 0.1, false);
 					});
-					new FlxTimer().start(5, function(e:FlxTimer)
+					createTimer(5, function(e:FlxTimer)
 					{
 						// LoadingState.loadAndSwitchState(new PlayState());
 						outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
@@ -10458,7 +10598,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				FlxG.camera.fade(FlxColor.BLACK, .8);
 
 				// camHUD.alpha = 0;
-				FlxTween.tween(camHUD, {alpha: 0}, .8, {
+				createTween(camHUD, {alpha: 0}, .8, {
 					ease: FlxEase.linear,
 					onComplete: function(twn:FlxTween)
 					{
@@ -10490,7 +10630,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				add(whichEndingImage);
 				FlxG.sound.list.add(endingSound);
 				endingSound.play();
-				new FlxTimer().start(8, function(e:FlxTimer)
+				createTimer(8, function(e:FlxTimer)
 				{
 					// FlxG.sound.music.stop();
 					endingSound.stop();
@@ -11323,37 +11463,51 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx#L2614
 			// add safety too pls!
+			// hmm, perhaps it should be really nested. confirm really if it's not null FIRST,
+			// if not null, then yess evaluate in it.
 			#if cpp
 			#if (lime >= "8.0.0")
 			if (FlxG.sound.music != null)
-				FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
-			if (vocals != null && vocals.playing)
-				vocals._channel.__source.__backend.setPitch(songMultiplier);
-			if (vocals2 != null && vocals2.playing)
-				vocals2._channel.__source.__backend.setPitch(songMultiplier);
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals != null)
+				if (vocals.playing)
+					vocals._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals2 != null)
+				if (vocals2.playing)
+					vocals2._channel.__source.__backend.setPitch(songMultiplier);
 			#else
 			if (FlxG.sound.music != null)
-				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals != null && vocals.playing)
-				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals2 != null && vocals2.playing)
-				lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+				if (FlxG.sound.music.playing)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			if (vocals != null)
+				if (vocals.playing)
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			if (vocals2 != null)
+				if (vocals2.playing)
+					lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
 			#end
 			#elseif web
 			#if (lime >= "8.0.0" && lime_howlerjs)
 			if (FlxG.sound.music != null)
-				FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
-			if (vocals != null && vocals.playing)
-				vocals._channel.__source.__backend.setPitch(songMultiplier);
-			if (vocals2.playing)
-				vocals2._channel.__source.__backend.setPitch(songMultiplier);
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals != null)
+				if (vocals.playing)
+					vocals._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals2 != null)
+				if (vocals2.playing)
+					vocals2._channel.__source.__backend.setPitch(songMultiplier);
 			#else
 			if (FlxG.sound.music != null)
-				FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
-			if (vocals != null && vocals.playing)
-				vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
-			if (vocals2 != null && vocals2.playing)
-				vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			if (vocals != null)
+				if (vocals.playing)
+					vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			if (vocals2 != null)
+				if (vocals2.playing)
+					vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
 			#end
 			#end
 		}

@@ -1167,83 +1167,86 @@ class OptionsMenu extends CoreSubState
 		// JOELwindows7: check if you have clicked on an item.
 		shownStuff.forEach(function(stuff:FlxUIText)
 		{
-			if (FlxG.mouse.overlaps(stuff))
+			if (stuff != null)
 			{
-				if (FlxG.mouse.justPressed)
+				if (FlxG.mouse.overlaps(stuff))
 				{
-					if (stuff.ID == selectedOptionIndex)
+					if (FlxG.mouse.justPressed)
 					{
-						haveClicked = true;
+						if (stuff.ID == selectedOptionIndex)
+						{
+							haveClicked = true;
+						}
+						else
+						{
+							goToSelection(stuff.ID);
+							haveClicked = false;
+						}
+
+						// JOELwindows7: but it's not perfect.
 					}
 					else
 					{
-						goToSelection(stuff.ID);
 						haveClicked = false;
 					}
-
-					// JOELwindows7: but it's not perfect.
 				}
 				else
 				{
-					haveClicked = false;
-				}
-			}
-			else
-			{
-				// JOELwindows7: back button for no keyboard
-				if (FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(stuff))
-				{
-					if (FlxG.mouse.justPressed)
+					// JOELwindows7: back button for no keyboard
+					if (FlxG.mouse.overlaps(backButton) && !FlxG.mouse.overlaps(stuff))
 					{
-						haveBacked = true;
+						if (FlxG.mouse.justPressed)
+						{
+							haveBacked = true;
+						}
+						else
+						{
+							// haveBacked = false;
+						}
 					}
-					else
+					if (FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(stuff))
 					{
-						// haveBacked = false;
+						if (FlxG.mouse.justPressed)
+						{
+							haveLefted = true;
+						}
+						else
+						{
+							haveLefted = false;
+						}
 					}
-				}
-				if (FlxG.mouse.overlaps(leftButton) && !FlxG.mouse.overlaps(stuff))
-				{
-					if (FlxG.mouse.justPressed)
+					if (FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(stuff))
 					{
-						haveLefted = true;
+						if (FlxG.mouse.justPressed)
+						{
+							haveRighted = true;
+						}
+						else
+						{
+							haveRighted = false;
+						}
 					}
-					else
+					if (FlxG.mouse.overlaps(upButton) && !FlxG.mouse.overlaps(stuff))
 					{
-						haveLefted = false;
+						if (FlxG.mouse.justPressed)
+						{
+							haveUpped = true;
+						}
+						else
+						{
+							haveUpped = false;
+						}
 					}
-				}
-				if (FlxG.mouse.overlaps(rightButton) && !FlxG.mouse.overlaps(stuff))
-				{
-					if (FlxG.mouse.justPressed)
+					if (FlxG.mouse.overlaps(downButton) && !FlxG.mouse.overlaps(stuff))
 					{
-						haveRighted = true;
-					}
-					else
-					{
-						haveRighted = false;
-					}
-				}
-				if (FlxG.mouse.overlaps(upButton) && !FlxG.mouse.overlaps(stuff))
-				{
-					if (FlxG.mouse.justPressed)
-					{
-						haveUpped = true;
-					}
-					else
-					{
-						haveUpped = false;
-					}
-				}
-				if (FlxG.mouse.overlaps(downButton) && !FlxG.mouse.overlaps(stuff))
-				{
-					if (FlxG.mouse.justPressed)
-					{
-						haveDowned = true;
-					}
-					else
-					{
-						haveDowned = false;
+						if (FlxG.mouse.justPressed)
+						{
+							haveDowned = true;
+						}
+						else
+						{
+							haveDowned = false;
+						}
 					}
 				}
 			}

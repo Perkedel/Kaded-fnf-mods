@@ -118,6 +118,7 @@ class VideoSelfContained extends MusicBeatState
 		// FlxG.sound.music.stop();
 		peckingVolume = FlxG.sound.music.volume;
 		FlxG.sound.music.volume = 0;
+		// FlxG.sound.music.pause();
 
 		// cancel breakpoint
 		if (FlxG.save.data.disableVideoCutscener)
@@ -181,7 +182,9 @@ class VideoSelfContained extends MusicBeatState
 	function donedCallback()
 	{
 		FlxG.sound.music.volume = peckingVolume;
-		FlxG.switchState(toTrans);
+		// FlxG.sound.music.play();
+		// FlxG.switchState(toTrans);
+		switchState(toTrans);
 	}
 }
 
@@ -230,6 +233,7 @@ class VLCState extends MusicBeatState
 
 		FlxG.sound.music.stop();
 		peckingVolume = FlxG.sound.music.volume;
+		// FlxG.sound.music.pause();
 
 		// cancel breakpoint
 		if (FlxG.save.data.disableVideoCutscener)
@@ -318,7 +322,8 @@ class VLCState extends MusicBeatState
 	{
 		// FlxG.autoPause = true; //No longer necessary because the gameplay pauses on lost focus
 		FlxG.sound.music.volume = peckingVolume;
-		FlxG.switchState(toTrans);
+		// FlxG.switchState(toTrans);
+		switchState(toTrans);
 		// LoadingState.loadAndSwitchState(toTrans);
 	}
 
