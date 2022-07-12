@@ -38,8 +38,8 @@ class Perkedel
 	public static final ENGINE_NAME:String = "Last Funkin Moments"; // oh yeah LFM baby!
 	public static final ENGINE_ID:String = "Last-Funkin-Moments"; // oh yeah LFM baby!
 	public static final ENGINE_ABBREVIATE:String = "LFM"; // oh yeah LFM baby!
-	public static final ENGINE_VERSION:String = "2022.06.0"; // current version number yeah!
-	public static final ENGINE_VERSION_NUMBER:Array<Int> = [2022, 6, 0]; // and numbered version
+	public static final ENGINE_VERSION:String = "2022.07.0"; // current version number yeah!
+	public static final ENGINE_VERSION_NUMBER:Array<Int> = [2022, 7, 0]; // and numbered version
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
 	public static final ENGINE_VERSION_URL:String = 'https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe'; // here URL check
 	public static final ENGINE_REPO_URL:String = 'https://github.com/Perkedel/kaded-fnf-mods/issues';

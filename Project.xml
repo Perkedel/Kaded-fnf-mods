@@ -258,7 +258,7 @@
 	<!-- JOELwindows7: VVV Danger -->
 	<!-- <haxelib name="faxe"/>  -->
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
-	<haxelib name="polymod" if="cpp" unless="linux"/>
+	<haxelib name="polymod" if="cpp" />
 	<haxelib name="discord_rpc" if="cpp desktop" unless="neko || hl"/>
 	<haxelib name="linc_luajit" if="desktop"/>
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
@@ -550,7 +550,7 @@
 	<echo value="we have stolen mods in it" if="thief"/>
 
 	<!-- Defines whether the Mods menu will display before launching. -->
-	<haxedef name="FEATURE_MODCORE" if="desktop" unless = "linux"/>
+	<haxedef name="FEATURE_MODCORE" if="desktop"/>
 
 	<!-- JOELwindows7: Defines whether the HTTP query possible. -->
 	<haxedef name="FEATURE_HTTP" unless="mobile"/>

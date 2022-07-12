@@ -1945,7 +1945,7 @@ class ChartingState extends MusicBeatState
 		stepperNoteType.name = 'note_noteType';
 
 		// JOELwindows7: checkbox for hitsound use override path bellow
-		check_hitsoundUseIt = new FlxUICheckBox(10, 65, null, null, "Use Hitsound:", 100);
+		check_hitsoundUseIt = new FlxUICheckBox(10, 70, null, null, '', 100); // was had say `Use Hitsound:`
 		check_hitsoundUseIt.callback = function()
 		{
 			// copy from toggle alt anim naltanim
@@ -1967,7 +1967,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		// JOELwindows7: text field for note hitsound audio file to play
-		hitsoundNotePath = new FlxUIInputText(10, 70, 80, "SNAP");
+		hitsoundNotePath = new FlxUIInputText(15, 70, 80, "SNAP"); // was x 10
 		hitsoundNotePath.callback = function(text:String, action:String)
 		{
 			// JOELwindows7: the hitsound audio file to play which one yess
@@ -2027,7 +2027,7 @@ class ChartingState extends MusicBeatState
 
 		var stepperNoteTypeLabel = new FlxUIText(74, 40, 'Note Type'); // JOELwindows7: note type label
 
-		var hitsoundNotePathLabel = new FlxUIText(95, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label
+		var hitsoundNotePathLabel = new FlxUIText(100, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label. was x 95
 
 		var stepperVowelTypeLabel = new FlxUIText(74, 100, 'Vowel Type'); // JOELwindows7: vowel type label
 

@@ -49,7 +49,7 @@ class HitSounds
 
 			// okay, there is audio file named `null`, for fallback, safety, & anti crash thingy.
 			// not supposed to be loaded at all.
-			if (i == 'null')
+			if (i == 'null.${Paths.SOUND_EXT}' || i == 'null')
 				continue;
 			// it's basically same as `none` which you already have.
 			// btw, I just generate silence for 1 second & then export it both formats, with Audacity

@@ -121,8 +121,8 @@ class OptionsMenu extends CoreSubState
 
 	public static var visibleRange = [114, 640]; // JOELwindows7: was 640
 
-	public var upToHowManyCatsOnScreen:Int = 6; // JOELwindows7: by default there was 4 categories. Now we have 6 on first row, 1 on second row.
-	public var upToHowManyCatsOnSecond:Int = 1;
+	public var upToHowManyCatsOnScreen:Int = 5; // JOELwindows7: by default there was 4 categories. Now we have 6 on first row, 1 on second row.
+	public var upToHowManyCatsOnSecond:Int = 2;
 
 	public static var markForGameplayRestart:Bool = false; // JOELwindows7: mark this true to tell that you have to restart song.
 
@@ -332,7 +332,7 @@ class OptionsMenu extends CoreSubState
 		for (i in 0...options.length - 1)
 		{
 			// JOELwindows7: what is this thing doing? skip adding it that after 4th?
-			if (i >= upToHowManyCatsOnScreen)
+			if (i >= maxCatIndex)
 				continue;
 			var cat = options[i];
 			add(cat);
@@ -865,7 +865,7 @@ class OptionsMenu extends CoreSubState
 		catch (e)
 		{
 			cancelTweenSo(); // JOELwindows7: clear tween immediately
-			Debug.logError("wtf we actually did something wrong, but we dont crash bois.\n" + e + ": " + e.message);
+			Debug.logError('wtf we actually did something wrong, but we dont crash bois.\n$e: ${e.message}\n${e.details()}');
 			selectedCatIndex = 0;
 			selectedOptionIndex = 0;
 			FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -1009,12 +1009,12 @@ class OptionsMenu extends CoreSubState
 	{
 		for (i in 0...upToHowManyCatsOnSecond - 1)
 		{
-			var prakstend = i + upToHowManyCatsOnScreen;
+			var prakstend = i + upToHowManyCatsOnScreen - 1;
 			// options[i].width = background.width / upToHowManyCatsOnScreen; //Unfortunately this only adjust the hitbox, not the graphic.
 			options[prakstend].setGraphicSize(Std.int(Math.max(background.width / upToHowManyCatsOnSecond, options[prakstend].width)),
 				Std.int(options[prakstend].height));
 			options[prakstend].x = (background.width / upToHowManyCatsOnSecond) * i;
-			options[prakstend].y = background.y + options[0].height; // JOELwindows7: maybe like this?
+			options[prakstend].y = 10; // JOELwindows7: maybe like this?
 			// I guess..
 			// oh almost forgot!
 			options[prakstend].titleObject.x = options[prakstend].x + (options[prakstend].width / 2) - (options[prakstend].titleObject.width / 2);

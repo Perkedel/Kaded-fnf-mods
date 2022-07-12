@@ -53,6 +53,8 @@ class WerrorForceMajeurState extends CoreState
 		// bg.scrollFactor.set(0, 0);
 		// add(bg);
 
+		// TODO: add gameover 8 bit sound
+
 		var bottomText = new FlxUIText(0, 0, 0, "C to copy exception | ESC to send to menu");
 		bottomText.scrollFactor.set(0, 0);
 		bottomText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE);
@@ -80,7 +82,8 @@ class WerrorForceMajeurState extends CoreState
 
 		gf = new Character(0, 0, "gf", false);
 		gf.scrollFactor.set(0, 0);
-		gf.animation.play("sad");
+		// gf.animation.play("sad");
+		gf.playAnim('sad', true); // JOELwindows7: bruh! there's looper
 		add(gf);
 
 		gf.setGraphicSize(Std.int(gf.frameWidth * 0.3));
