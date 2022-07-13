@@ -494,11 +494,17 @@ class MusicBeatState extends CoreState
 	public function fancyOpenURL(schmancy:String)
 	{
 		// JOELwindows7: Ahem, turns out `FlxG.openURL` already `xdg-open` on itself. System open URL thingy! open File yeah.
-		// #if linux
+		#if linux
 		// Sys.command('/usr/bin/xdg-open', [schmancy, "&"]);
-		// #else
+		Sys.command('/usr/bin/xdg-open', [schmancy]); // this also got the same issue. how about you forget the `&` (put as bg process)?
+
+		/**
+			xdg-open: unexpected argument '&'
+			Try 'xdg-open --help' for more information.
+		**/
+		#else
 		FlxG.openURL(schmancy);
-		// #end
+		#end
 	}
 
 	// JOELwindows7: everything I add has been moved to CoreState.hx

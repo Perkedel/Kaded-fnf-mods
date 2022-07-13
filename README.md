@@ -10,7 +10,7 @@
 
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
-also a **Friday Night Funkin modding engine** yey!!!
+also a **Friday Night Funkin modding engine** (LFMengine) yey!!!
 
 ## Kontraktua Majoris
 
@@ -20,6 +20,9 @@ also a **Friday Night Funkin modding engine** yey!!!
 > *are safe & sound, away from any disaster particularly made by a group of bad actors in the world of cyber.*
 > *You will also will be given pledge card in form of this game itself in which hereby you are certified members of*
 > *the Last Funkin Moment campaign, for you will do the activism, telling worlds about what is happening around us.*
+
+<!-- I don't care!!! BRING THE PECK THAT BAAAAAAAAACK!!! I DO NOT MOVE ON!!!! -->
+<!-- calm down sir, I know, we gotta hold on tight! -->
 
 ## Download NOW
 - Odysee
@@ -272,6 +275,38 @@ edit: goned the day. we lack more than 1 person after 1 week.
             "isDanced": false
 ```
 
+<!-- end of LFM description -->
+<!-- 
+LOREM IPSUM DOLOR SIT AMET
+
+aaaaaaaaaaa
+
+aaaaaaaaaa
+
+aaaaaaaaaaa
+
+aaaaaaaaaaa
+
+aaaaaaaaaaa
+
+aaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaa
+ -->
 <!-- Kade Descriptions -->
 # Kade Engine Descriptions
 

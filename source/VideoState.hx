@@ -87,6 +87,7 @@ class VideoState extends MusicBeatState
 
 	override function create()
 	{
+		trace('welcome to Video state');
 		super.create();
 
 		// JOELwindows7: cancel breakpoint

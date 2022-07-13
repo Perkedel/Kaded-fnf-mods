@@ -195,6 +195,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	var numOfMissNoteSfx:Int = 3;
 
 	var songLength:Float = 0;
+	var songLengthMs:Float = 0; // JOELwindows7: miliseconds too pls bruh!
 	var kadeEngineWatermark:FlxUIText;
 	var reuploadWatermark:FlxUIText; // JOELwindows7: reupload & no credit protection.
 
@@ -296,6 +297,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	private var healthBarBG:FlxUISprite;
 	private var healthBar:FlxBar;
 	private var songPositionBar:Float = 0;
+	private var songPositionBarMs:Float = 0; // JOELwindows7: idk, maybe this could be useful?
 
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
@@ -1471,6 +1473,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			luaModchart = ModchartState.createModchartState(isStoryMode);
 			// luaModchart.executeState('start', [PlayState.SONG.songId]);
 			luaModchart.setVar('songLength', songLength);
+			luaModchart.setVar('songLengthMs', songLengthMs);
 			luaModchart.setVar('variables', SONG.variables);
 			luaModchart.setVar('diffVariables', SONG.diffVariables);
 		}
@@ -1478,6 +1481,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		{
 			// stageScript.executeState('start', [PlayState.SONG.songId]);
 			stageScript.setVar('songLength', songLength);
+			stageScript.setVar('songLengthMs', songLengthMs);
 			stageScript.setVar('variables', SONG.variables);
 			stageScript.setVar('diffVariables', SONG.diffVariables);
 		}
@@ -1491,6 +1495,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			hscriptModchart.setVar('executeStageHscript', executeStageHscript);
 			hscriptModchart.setVar('executeStageScript', executeStageScript);
 			hscriptModchart.setVar('songLength', songLength);
+			hscriptModchart.setVar('songLengthMs', songLengthMs);
 			hscriptModchart.setVar('variables', SONG.variables);
 			hscriptModchart.setVar('diffVariables', SONG.diffVariables);
 			// hscriptModchart.executeState('start', [PlayState.SONG.songId]);
@@ -1502,6 +1507,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			stageHscript.setVar('executeStageHscript', executeStageHscript);
 			stageHscript.setVar('executeStageScript', executeStageScript);
 			stageHscript.setVar('songLength', songLength);
+			stageHscript.setVar('songLengthMs', songLengthMs);
 			stageHscript.setVar('variables', SONG.variables);
 			stageHscript.setVar('diffVariables', SONG.diffVariables);
 			// stageHscript.executeState('start', [PlayState.SONG.songId]);
@@ -2249,13 +2255,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	}
 
 	// JOELwindows7: I got an idea. flag prev variable so you don't have to respectacular what it had right now.
-	var wereVisible:Bool = false; // so only change if the toggle set to is different.
+	var wereVisibleStaticArrows:Bool = false; // so only change if the toggle set to is different.
+
+	public var doNotHideStaticArrowsOnFinish:Bool = false; // for modchart to set. turn on to prevent autohide upon all note finished.
 
 	// JOELwindows7: You know what, why not hide arrows instead? with optional no spectacular
 	function setVisibleStaticArrows(visible:Bool = true, noSpectacular:Bool = false, forceSet:Bool = false)
 	{
 		var index:Int = 0;
-		if (wereVisible != visible || forceSet)
+		if (wereVisibleStaticArrows != visible || forceSet)
 		{
 			playerStrums.forEach(function(babyArrow:StaticArrow)
 			{
@@ -2350,7 +2358,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				});
 			 */
 		}
-		wereVisible = visible;
+		wereVisibleStaticArrows = visible;
 	}
 
 	// JOELwindows7: BOLO's add shader to cameras!!!
@@ -3345,6 +3353,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			vocals2.play(); // JOELwindows7: ye
 
 		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000); // JOELwindows7: BOLO refresh song length one last time!
+		songLengthMs = (FlxG.sound.music.length / songMultiplier); // JOELwindows7: brehp
 
 		// have them all dance when the song starts
 		if (!PlayStateChangeables.optimize) // JOELwindows7: BOLO check optimize
@@ -3593,6 +3602,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// Song duration in a float, useful for the time left feature
 		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000); // JOELwindows7: pinpoint song length set
+		songLengthMs = (FlxG.sound.music.length / songMultiplier); // JOELwindows7: okay, milisecond version..
 
 		Conductor.crochet = ((60 / (SONG.bpm) * 1000));
 		Conductor.stepCrochet = Conductor.crochet / 4;
@@ -3950,6 +3960,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				if (!FlxG.save.data.middleScroll || (executeModchart || executeModHscript) || player == 1)
 					createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
 						{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)}); // JOELwindows7: managed BOLO tween.
+
+				wereVisibleStaticArrows = true;
 			}
 
 			babyArrow.ID = i;
@@ -4531,7 +4543,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						cartoonCornerDot();
 
 						// JOELwindows7: & spectacularly hide the static arrow pls yess!!!
-						setVisibleStaticArrows(false);
+						if (!doNotHideStaticArrowsOnFinish)
+							if ((isStoryMode && storyPlaylist.length <= 1) || !isStoryMode)
+								// okeh only autohide when this is the last song in week
+								// or freeplay
+								setVisibleStaticArrows(false);
 
 						// JOELwindows7: reset blue ball because yey we succeed
 						if (isStoryMode)
@@ -5257,6 +5273,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					FlxG.sound.music._channel.
 			}*/
 			songPositionBar = (Conductor.songPosition - songLength) / 1000;
+			songPositionBarMs = (Conductor.songPosition - songLength); // JOELwindows7: milisecond
 
 			currentSection = getSectionByTime(Conductor.songPosition);
 
@@ -5282,10 +5299,22 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				if (secondsTotal < 0)
 					secondsTotal = 0;
 
-				// JOELwindows7: sneaky sneaky songName thingy. HEY milisecond
+				// JOELwindows7: bruh! milisecond pls!
+				var milisecondsTotal:Int = Math.floor((curTime - songLengthMs));
+				if (milisecondsTotal < 0)
+					milisecondsTotal = 0;
+
+				// JOELwindows7: on second thought I'd just
+				var secondsTotalPrecise:Float = ((curTime - songLength) / 1000);
+				if (secondsTotalPrecise < 0)
+					secondsTotalPrecise = 0;
+
+				// JOELwindows7: sneaky sneaky songName thingy. HEY milisecond, damn it why not ms!?!??!
+				// was `(songLength - secondsTotal)`, now use ms!
+				// nvm `(songLengthMs - milisecondsTotal)`. just use the same but no floor.
 				if (FlxG.save.data.songPosition)
 				{
-					songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime((songLength - secondsTotal), true) + ')';
+					songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime((songLength - secondsTotalPrecise), true) + ')';
 					tempoBar.text = 'TEMPO: ${Conductor.bpm} BPM';
 					// metronomeBar.text = 'MEASURES: ${Ratings.judgeMetronome(curBeat, 4)} ${Std.int(curBeat / 4)}/${SONG.notes.length - 1} | BEAT: ${curBeat} | STEP: ${curStep}';
 					metronomeBar.applyMarkup('MEASURES: ${Ratings.judgeMetronome(curBeat, 4, true)} ${Std.int(curBeat / 4)}/${SONG.notes.length - 1} | BEAT: ${curBeat} | STEP: ${curStep}',
@@ -9248,6 +9277,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	var tankKludgeText:FlxUIText; // & the sub text too. that's mine.
 	var ughImage:FlxUISprite; // oh yess, also the `UGH` image lol!
 	var distortoMusic:FlxSound; // & this distorto sound thingy.
+	var curTankTime:Float; // position bar for cutscener. this adds by elapsed update when inCutscene or inCinematic is on. idk
 
 	// JOELwindows7: on 2nd thought, why not just build the initializers at here instead?
 	function buildFunneehThingie()
@@ -9281,6 +9311,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// JOELwindows7: BOLO comprehensive week 7 tankIntro!!!
 	function tankIntro()
 	{
+		// TODO: JOELwindows7: use time stamp point system rather than create time. the stamp point is based
+		// on the current cutscene audio in which animation element triggers at certain position of the audio
+		// just the rhythm game part of this!
+		// e.g. when the position reaches this second, then launch this animation etc etc.
+		// but no wait. uh.. there is position bar, audio syncs to it, & the animation too.
+		// if there's lag, the audio repositions to it & making sure no desync.
 		inCinematic = true; // JOELwindows7: screw this. you should've set only when needed.
 		inCutscene = true;
 		dad.visible = false;
@@ -9712,6 +9748,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				createTimer(19.5, function(tmr:FlxTimer)
 				{
+					trace('ah look who it is');
 					Stage.swagBacks['tankman'].frames = Paths.getSparrowAtlas('cutscenes/stress2', 'week7');
 					Stage.swagBacks['tankman'].animation.addByPrefix('lookWhoItIs', 'TANK TALK 3', 24, false);
 					Stage.swagBacks['tankman'].animation.play('lookWhoItIs', true);
@@ -9719,6 +9756,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					Stage.swagBacks['tankman'].y += 6;
 					tankKludgeText.text = 'Aah, look who it is,';
 					tankKludgeText.screenCenter(X);
+					trace('affa');
 					createTimer(2.4, function(tmr:FlxTimer)
 					{
 						tankKludgeText.text = 'your sexually-ambiguous-angry-little-friend';
@@ -9739,6 +9777,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							});
 						});
 					});
+					// JOELwindows7: This stress cutscene right here spikes the memory alot!
 
 					createTimer(0.5, function(tmr:FlxTimer)
 					{
@@ -9839,6 +9878,61 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// #end
 	// https://github.com/ShadowMario/FNF-PsychEngine/pull/9015
 	// Seems like a good pull request. Credits: Raltyro.
+	// JOELwindows7: okay, more modchart specialties!
+	// change icon
+	public function changePlayerIcon(which:Int = 0, intoChar:String)
+	{
+		switch (which)
+		{
+			case -1:
+				// all of them!
+				changePlayerIcon(0, intoChar);
+				changePlayerIcon(1, intoChar);
+				changePlayerIcon(3, intoChar);
+			case 0:
+				// bf
+				if (iconP1 != null)
+					iconP1.changeIcon(intoChar);
+			case 1:
+				// dad
+				if (iconP2 != null)
+					iconP2.changeIcon(intoChar);
+			case 3:
+			// gf
+			// no such yet.
+			default:
+				// idk
+		}
+	}
+
+	// reset icon
+	public function resetPlayerIcon(which:Int = -1)
+	{
+		switch (which)
+		{
+			case -1:
+				// all of them!
+				resetPlayerIcon(0);
+				resetPlayerIcon(1);
+				resetPlayerIcon(3);
+			case 0:
+				// bf
+				if (iconP1 != null)
+					iconP1.resetIcon();
+			case 1:
+				// dad
+				if (iconP2 != null)
+					iconP2.resetIcon();
+			case 3:
+			// gf
+			// no such yet.
+			default:
+				// idk
+		}
+	}
+
+	// end specialties
+
 	private function cachePopUpScore()
 	{
 		var pixelShitPart1:String = '';
@@ -10447,6 +10541,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		{
 			stageHscript.setVar('songLength', songLength);
 		}
+
+		// miliseconds too pls!!!
+		setModchartVar('songLengthMs', songLengthMs);
 	}
 
 	// JOELwindows7: Psyched Botplay text fade in out
@@ -10675,161 +10772,171 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	function outroScene(handoverName:String, isNextSong:Bool = false, handoverDelayFirst:Float = 0, handoverHasEpilogueVid:Bool = false,
 			handoverEpilogueVidPath:String = "", handoverHasTankmanEpilogueVid:Bool = false, handoverTankmanEpilogueVidPath:String = "")
 	{
-		outroSceneCalled = true;
-		switch (handoverName.toLowerCase())
+		if (!outroSceneCalled)
 		{
-			case 'mayday': // blacken the screen like going to Winter Horrorland but slowed and sadder
-				// to contemplate in memory of those 3 taken down mods. and more.
-				// var blackShit:FlxUISprite = new FlxUISprite(-FlxG.width * FlxG.camera.zoom,
-				// 	-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
-				// blackShit.scrollFactor.set();
-				// blackShit.alpha = 0;
-				// add(blackShit);
+			outroSceneCalled = true;
+			switch (handoverName.toLowerCase())
+			{
+				case 'mayday': // blacken the screen like going to Winter Horrorland but slowed and sadder
+					// to contemplate in memory of those 3 taken down mods. and more.
+					// var blackShit:FlxUISprite = new FlxUISprite(-FlxG.width * FlxG.camera.zoom,
+					// 	-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+					// blackShit.scrollFactor.set();
+					// blackShit.alpha = 0;
+					// add(blackShit);
 
-				// JOELwindows7: better! use camera fade
-				FlxG.camera.fade(FlxColor.BLACK, 5);
+					// JOELwindows7: better! use camera fade
+					FlxG.camera.fade(FlxColor.BLACK, 5);
 
-				// JOELwindows7: now don't forget to hide the static arrow
-				setVisibleStaticArrows(false);
+					// JOELwindows7: now don't forget to hide the static arrow
+					setVisibleStaticArrows(false);
 
-				// camHUD.alpha = 0;
-				createTween(camHUD, {alpha: 0}, 5, {
-					ease: FlxEase.linear,
-					onComplete: function(twn:FlxTween)
-					{
-					}
-				});
-				// FlxTween.tween(blackShit, {alpha: 1}, 5, {
-				// 	ease: FlxEase.linear,
-				// 	onComplete: function(twn:FlxTween)
-				// 	{
-				// 	}
-				// });
-
-				createTimer(10, function(tmr:FlxTimer)
-				{
-					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
-						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
-				});
-			case 'eggnog':
-				// JOELwindows7: right, we've migrated those here yey. add more things if necessary.
-				// Oh yeah, also I cast, hopefully safe because this just adds insignificant things. idk..
-				var blackShit:FlxUISprite = cast new FlxUISprite(-FlxG.width * FlxG.camera.zoom,
-					-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
-				blackShit.scrollFactor.set();
-				add(blackShit);
-				camHUD.visible = false;
-
-				FlxG.sound.play(Paths.sound('Lights_Shut_off'));
-				Controls.vibrate(0, 100);
-
-				createTimer(3, function(tmr:FlxTimer)
-				{
-					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
-						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
-				});
-			case 'sky':
-				// da bbpanzu sky `theManifestCutscene`
-				createTimer(1, function(e:FlxTimer)
-				{
-					dad.playAnim('manifest');
-					FlxG.sound.play(Paths.sound("skyManifest", 'shared'));
-					createTween(FlxG.camera, {zoom: 1.2}, 1, {ease: FlxEase.quadInOut});
-
-					createTimer(1, function(e:FlxTimer)
-					{
-						if (Stage.shiftbg != null)
+					// camHUD.alpha = 0;
+					createTween(camHUD, {alpha: 0}, 5, {
+						ease: FlxEase.linear,
+						onComplete: function(twn:FlxTween)
 						{
-							Stage.shiftbg.scrollFactor.set(1, 1);
-							Stage.shiftbg.animation.play('manifest');
 						}
-						createTween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.quadInOut});
-						FlxG.camera.shake(0.05, 5);
-						Controls.vibrate(0, 5000);
 					});
-					createTimer(2, function(e:FlxTimer)
+					// FlxTween.tween(blackShit, {alpha: 1}, 5, {
+					// 	ease: FlxEase.linear,
+					// 	onComplete: function(twn:FlxTween)
+					// 	{
+					// 	}
+					// });
+
+					createTimer(10, function(tmr:FlxTimer)
 					{
-						FlxG.camera.fade(FlxColor.WHITE, 2, false);
-						createTween(FlxG.camera, {zoom: 1.1}, 2, {ease: FlxEase.quadInOut});
-					});
-					createTimer(4.5, function(e:FlxTimer)
-					{
-						FlxG.camera.fade(FlxColor.BLACK, 0.1, false);
-					});
-					createTimer(5, function(e:FlxTimer)
-					{
-						// LoadingState.loadAndSwitchState(new PlayState());
 						outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 					});
-				});
-			case 'manifest':
-				// JOELwindows7: bbpanzu's vs. Sky. ending here is based on how accurate you play.
-				// also see ending state
-				// https://github.com/Perkedel/bb-fnf-mods/blob/GitHackeh/source_sky/EndingState.hx
-				FlxG.camera.fade(FlxColor.BLACK, .8);
+				case 'eggnog':
+					// JOELwindows7: right, we've migrated those here yey. add more things if necessary.
+					// Oh yeah, also I cast, hopefully safe because this just adds insignificant things. idk..
+					var blackShit:FlxUISprite = cast new FlxUISprite(-FlxG.width * FlxG.camera.zoom,
+						-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+					blackShit.scrollFactor.set();
+					add(blackShit);
+					camHUD.visible = false;
 
-				// camHUD.alpha = 0;
-				createTween(camHUD, {alpha: 0}, .8, {
-					ease: FlxEase.linear,
-					onComplete: function(twn:FlxTween)
+					setVisibleStaticArrows(false, true, true); // forcened.
+
+					FlxG.sound.play(Paths.sound('Lights_Shut_off'));
+					Controls.vibrate(0, 100);
+
+					createTimer(3, function(tmr:FlxTimer)
 					{
-					}
-				});
-				var whichEndingImage:FlxUISprite = new FlxUISprite(0, 0);
-				var endingSound:FlxSound;
-				if (accuracy >= 70)
-				{
-					whichEndingImage.loadGraphic(Paths.image("sky/ending0002"));
-					// FlxG.sound.playMusic(Paths.music("skyGoodEnding",'shared'),1,false);
-					endingSound = new FlxSound().loadEmbedded(Paths.music("skyGoodEnding", 'shared'), false);
-				}
-				else
-				{
-					if (FlxG.random.bool(70))
+						outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+					});
+				case 'sky':
+					// da bbpanzu sky `theManifestCutscene`
+					createTimer(1, function(e:FlxTimer)
 					{
-						whichEndingImage.loadGraphic(Paths.image("sky/ending0001"));
-						// FlxG.sound.playMusic(Paths.music("skyBadEnding",'shared'),1,false);
-						endingSound = new FlxSound().loadEmbedded(Paths.music("skyBadEnding", 'shared'), false);
+						dad.playAnim('manifest');
+						FlxG.sound.play(Paths.sound("skyManifest", 'shared'));
+						createTween(FlxG.camera, {zoom: 1.2}, 1, {ease: FlxEase.quadInOut});
+
+						createTimer(1, function(e:FlxTimer)
+						{
+							if (Stage.shiftbg != null)
+							{
+								Stage.shiftbg.scrollFactor.set(1, 1);
+								Stage.shiftbg.animation.play('manifest');
+							}
+							createTween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.quadInOut});
+							FlxG.camera.shake(0.05, 5);
+							Controls.vibrate(0, 5000);
+						});
+						createTimer(2, function(e:FlxTimer)
+						{
+							FlxG.camera.fade(FlxColor.WHITE, 2, false);
+							createTween(FlxG.camera, {zoom: 1.1}, 2, {ease: FlxEase.quadInOut});
+						});
+						createTimer(4.5, function(e:FlxTimer)
+						{
+							FlxG.camera.fade(FlxColor.BLACK, 0.1, false);
+						});
+						createTimer(5, function(e:FlxTimer)
+						{
+							// LoadingState.loadAndSwitchState(new PlayState());
+							outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+								handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						});
+					});
+				case 'manifest':
+					// JOELwindows7: bbpanzu's vs. Sky. ending here is based on how accurate you play.
+					// also see ending state
+					// https://github.com/Perkedel/bb-fnf-mods/blob/GitHackeh/source_sky/EndingState.hx
+					FlxG.camera.fade(FlxColor.BLACK, .8);
+
+					// camHUD.alpha = 0;
+					createTween(camHUD, {alpha: 0}, .8, {
+						ease: FlxEase.linear,
+						onComplete: function(twn:FlxTween)
+						{
+						}
+					});
+					var whichEndingImage:FlxUISprite = new FlxUISprite(0, 0);
+					var endingSound:FlxSound;
+					if (accuracy >= 70)
+					{
+						whichEndingImage.loadGraphic(Paths.image("sky/ending0002"));
+						// FlxG.sound.playMusic(Paths.music("skyGoodEnding",'shared'),1,false);
+						endingSound = new FlxSound().loadEmbedded(Paths.music("skyGoodEnding", 'shared'), false);
 					}
 					else
 					{
-						whichEndingImage.loadGraphic(Paths.image("sky/ending0003"));
-						// FlxG.sound.playMusic(Paths.music("skyPeanutEnding",'shared'), 1, false);
-						endingSound = new FlxSound().loadEmbedded(Paths.music("skyPeanutEnding", 'shared'), false);
+						if (FlxG.random.bool(70))
+						{
+							whichEndingImage.loadGraphic(Paths.image("sky/ending0001"));
+							// FlxG.sound.playMusic(Paths.music("skyBadEnding",'shared'),1,false);
+							endingSound = new FlxSound().loadEmbedded(Paths.music("skyBadEnding", 'shared'), false);
+						}
+						else
+						{
+							whichEndingImage.loadGraphic(Paths.image("sky/ending0003"));
+							// FlxG.sound.playMusic(Paths.music("skyPeanutEnding",'shared'), 1, false);
+							endingSound = new FlxSound().loadEmbedded(Paths.music("skyPeanutEnding", 'shared'), false);
+						}
 					}
-				}
-				add(whichEndingImage);
-				FlxG.sound.list.add(endingSound);
-				endingSound.play();
-				createTimer(8, function(e:FlxTimer)
-				{
-					// FlxG.sound.music.stop();
-					endingSound.stop();
-					outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
-						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
-				});
-			default:
-				#if FEATURE_LUAMODCHART
-				if (luaModchart != null)
-				{
-					luaModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
-				}
-				if (stageScript != null)
-				{
-					stageScript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
-				}
-				#end
-				if (hscriptModchart != null)
-				{
-					hscriptModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
-				}
-				if (stageHscript != null)
-				{
-					stageHscript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
-				}
-				decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
-					handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath, SONG.outroCutSceneDoneManually);
+					add(whichEndingImage);
+					FlxG.sound.list.add(endingSound);
+					endingSound.play();
+					createTimer(8, function(e:FlxTimer)
+					{
+						// FlxG.sound.music.stop();
+						endingSound.stop();
+						outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+					});
+				default:
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+					{
+						luaModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+					}
+					if (stageScript != null)
+					{
+						stageScript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+					}
+					#end
+					if (hscriptModchart != null)
+					{
+						hscriptModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+					}
+					if (stageHscript != null)
+					{
+						stageHscript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+					}
+					decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath, SONG.outroCutSceneDoneManually);
+			}
+		}
+		else
+		{
+			decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid,
+				handoverTankmanEpilogueVidPath, SONG.outroCutSceneDoneManually);
 		}
 	}
 

@@ -397,6 +397,14 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://wiki.archlinux.org/title/VCS_package_guidelines#The_pkgver()_function VCS Package
 - https://wiki.archlinux.org/title/AUR_helpers AUR Helper
 - https://linuxhint.com/aur_arch_linux/ How to AUR
+- https://twitter.com/Hideki_Naganuma/status/1546937991641579520?s=20&t=cghsUZh9tZ3AhboqiXjOHg Hideki litterally said BUBI PUT OL IN MA MOUT. say copy: 
+    > BIG TITTI..
+    > SMALL TITTI..
+    >
+    > WHO CARES..
+    > PUT IT ALL IN MY MOUT.
+- tebarek
+
 
 # in event of git merge conflict
 use VScode and Github desktop!

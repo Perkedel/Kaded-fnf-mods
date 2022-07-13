@@ -252,10 +252,36 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 	 * @author JOELwindows7
 	 */
 	public static var advertiseWords:Array<String> = [
-		"Vs. King", "Last Funkin Moments", "Lullaby", "bbpanzu's mods", "Vs. Tricky", "BrightFyre's mods", "banbuds' mods", "vanilla",
-		"Vs. Taeyai, Cyber Sensation", "Subwoofer Showdown", "Vs. Cassette girl", "Cval", "Vs. Shaggy", "Matt Wiik", "UniqueGeese", "BlueFrok", "Unity Party",
-		"KadeDev's mods", "Gi Gooble's mods", "Vs. Nonsense", "Clay mod", "Vs. Impostor amogus", "SeaNothing's MIDI cover mod",
-		"Psych Engine by Shadow Mario & friends", "BETADCIU", "Vs. Sky", "Vs. Zardy", "... what? I forgot."
+		"Vs. King",
+		"Last Funkin Moments",
+		"Lullaby",
+		"bbpanzu's mods",
+		"Vs. Tricky",
+		"BrightFyre's mods",
+		"banbuds' mods",
+		"vanilla",
+		"Vs. Taeyai, Cyber Sensation",
+		"Subwoofer Showdown",
+		"Vs. Cassette girl",
+		"Cval",
+		"Vs. Shaggy",
+		"Matt Wiik",
+		"UniqueGeese",
+		"BlueFrok",
+		"Unity Party",
+		"KadeDev's mods",
+		"Gi Gooble's mods",
+		"Vs. Nonsense",
+		"Clay mod",
+		"Vs. Impostor amogus",
+		"SeaNothing's MIDI cover mod",
+		"Psych Engine by Shadow Mario & friends",
+		"BETADCIU",
+		"Vs. Sky",
+		"Vs. Zardy",
+		"Mid Fight Masses",
+		"uh i can't say that dot cc",
+		"... what? I forgot."
 	];
 
 	/**
@@ -745,6 +771,8 @@ class GJToastManager extends Sprite
 		FlxG.signals.gameResized.add(onWindowResized);
 	}
 
+	// JOELwindows7: I gotta say soundpath!!
+
 	/**
 	 * Create a toast!
 	 * 
@@ -753,11 +781,12 @@ class GJToastManager extends Sprite
 	 * @param title Title for the toast
 	 * @param description Description for the toast
 	 * @param sound Want to have an alert sound? Set this to **true**! Defaults to **false**.
+	 * @param soundPath Which alert sound file to play? Defaults to **confirmMenu**.
 	 */
-	public function createToast(iconPath:String, title:String, description:String, ?sound:Bool = false):Void
+	public function createToast(iconPath:String, title:String, description:String, ?sound:Bool = false, ?soundPath:String = 'confirmMenu'):Void
 	{
 		if (sound)
-			FlxG.sound.play(Paths.sound('confirmMenu'));
+			FlxG.sound.play(Paths.sound(soundPath == null ? 'confirmMenu' : soundPath));
 
 		var toast = new Toast(iconPath, title, description);
 		addChild(toast);

@@ -112,6 +112,7 @@ class VideoSelfContained extends MusicBeatState
 
 	override function create()
 	{
+		trace('welcome to video self contained state');
 		super.create();
 		// FlxG.autoPause = false;
 
@@ -223,6 +224,7 @@ class VLCState extends MusicBeatState
 
 	override function create()
 	{
+		trace('welcome to VLC state');
 		super.create();
 		// FlxG.autoPause = false;
 
@@ -230,6 +232,8 @@ class VLCState extends MusicBeatState
 		theVLC = new MP4Handler();
 		theVLC.finishCallback = donedCallback;
 		#end
+
+		trace('manufactured the VLC');
 
 		FlxG.sound.music.stop();
 		peckingVolume = FlxG.sound.music.volume;
@@ -271,6 +275,7 @@ class VLCState extends MusicBeatState
 
 			new FlxTimer().start(0.1, function(tmr:FlxTimer)
 			{
+				trace('try play VLC');
 				// theVLC.playMP4(source);
 				theVLC.playVideo(source);
 			});

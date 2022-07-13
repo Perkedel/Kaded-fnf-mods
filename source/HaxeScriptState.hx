@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.keyboard.FlxKey;
 import Shader;
 import flixel.addons.ui.FlxUISprite;
 import flixel.util.FlxAxes;
@@ -418,7 +419,8 @@ class HaxeScriptState
 		// end mirror variables
 
 		// init just in case
-		setVar("songLength", 0);
+		setVar("songLength", 0.0);
+		setVar("songLengthMs", 0.0);
 		setVar('variables', PlayState.SONG.variables);
 		setVar('diffVariables', PlayState.SONG.diffVariables);
 		setVar("accuracy", PlayState.instance.accuracy);
@@ -2544,10 +2546,33 @@ class HscriptSoundFrontEndWrapper
 	public var defaultSoundGroup(get, set):FlxSoundGroup;
 	public var list(get, never):FlxTypedGroup<FlxSound>;
 	public var music(get, set):FlxSound;
+	public var muteKeys(get, never):Array<FlxKey>; // JOELwindows7: get only
+	public var muted(get, never):Bool; // JOELwindows7: get only
+	public var soundTrayEnabled(get, set):Bool;
 
-	// no mute keys because why do you need that
-	// no muted because i don't trust you guys
-	// no soundtray enabled because i'm lazy
+	// no mute keys because why do you need that. JOELwindows7: maybe just try the get, no set?
+	function get_muteKeys()
+	{
+		return wrapping.muteKeys;
+	}
+
+	// no muted because i don't trust you guys. JOELwindows7: just get, no set pls
+	function get_muted()
+	{
+		return wrapping.muted;
+	}
+
+	// no soundtray enabled because i'm lazy. JOELwindows7:NO!! DO NOT!!!
+	function get_soundTrayEnabled()
+	{
+		return wrapping.soundTrayEnabled;
+	}
+
+	function set_soundTrayEnabled(a)
+	{
+		return wrapping.soundTrayEnabled = a;
+	}
+
 	// no volume because i don't trust you guys
 	function get_defaultMusicGroup()
 	{
@@ -2584,12 +2609,14 @@ class HscriptSoundFrontEndWrapper
 		return wrapping.music = a;
 	}
 
-	public function load(?EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = false, AutoPlay = false, ?URL, ?OnComplete)
+	// JOELwindows7: now don't forget library
+	public function load(?EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = false, AutoPlay = false, ?URL, ?OnComplete,
+			?library:String)
 	{
 		if ((EmbeddedSound is String))
 		{
 			// var sound = FNFAssets.getSound(EmbeddedSound);
-			var sound = Paths.sound(EmbeddedSound);
+			var sound = Paths.sound(EmbeddedSound, library);
 			return wrapping.load(sound, Volume, Looped, Group, AutoDestroy, AutoPlay, URL, OnComplete);
 		}
 		return wrapping.load(EmbeddedSound, Volume, Looped, Group, AutoDestroy, AutoPlay, URL, OnComplete);
@@ -2600,23 +2627,23 @@ class HscriptSoundFrontEndWrapper
 		wrapping.pause();
 	}
 
-	public function play(EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = true, ?OnComplete)
+	public function play(EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = true, ?OnComplete, ?library:String)
 	{
 		if ((EmbeddedSound is String))
 		{
 			// var sound = FNFAssets.getSound(EmbeddedSound);
-			var sound = Paths.sound(EmbeddedSound);
+			var sound = Paths.sound(EmbeddedSound, library);
 			return wrapping.play(sound, Volume, Looped, Group, AutoDestroy, OnComplete);
 		}
 		return wrapping.play(EmbeddedSound, Volume, Looped, Group, AutoDestroy, OnComplete);
 	}
 
-	public function playMusic(Music:FlxSoundAsset, Volume = 1.0, Looped = true, ?Group)
+	public function playMusic(Music:FlxSoundAsset, Volume = 1.0, Looped = true, ?Group, ?library:String)
 	{
 		if ((Music is String))
 		{
 			// var sound = FNFAssets.getSound(Music);
-			var sound = Paths.music(Music);
+			var sound = Paths.music(Music, library);
 			wrapping.playMusic(sound, Volume, Looped, Group);
 			return;
 		}
