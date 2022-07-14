@@ -145,7 +145,7 @@ class PauseSubState extends MusicBeatSubstate
 		add(bg);
 
 		var levelInfo:FlxUIText = new FlxUIText(20, 15, 0, "", 32);
-		levelInfo.text += PlayState.SONG.songName;
+		levelInfo.text += '${PlayState.SONG.artist} - ${PlayState.SONG.songName}';
 		levelInfo.scrollFactor.set();
 		// levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
 		levelInfo.setFormat(Paths.font("UbuntuMono-R.ttf"), 32); // JOELwindows7: use universal language font

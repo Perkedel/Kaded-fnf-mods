@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUIBar;
 import flixel.effects.FlxFlicker;
 import LuaClass;
 import openfl.filters.BitmapFilter;
@@ -1742,6 +1743,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: move this up a bit due to elongated texts.
 		// Y was 50px beneath health bar BG
 		// oh this had Kaded already?
+		// TODO: make new FlxUIText dedicated for EKG ECG
 		scoreTxt.screenCenter(X);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -3655,9 +3657,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// 	PlayStateChangeables.songPosBarColor == Perkedel.SONG_POS_BAR_COLOR;
 			// 	PlayStateChangeables.songPosBarColorBg == FlxColor.BLACK;
 			// }
-
-			songPosBar = new FlxBar(640 - (Std.int(songPosBG.width - 100) / 2), songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 100),
-				Std.int(songPosBG.height + 6), this, 'songPositionBar', 0, songLength);
+			
+			// JOELwindows7: BUG!!! The meter bar is not precise & pixelated! say you have decimal float point. 12.5 is treated as 12 or 13 somehow.
+			// UGH!!!!
+			// was refer `songPositionBar` min 0 max `songLength`. now use ms version of it!
+			// oh try FlxUIBar instead of FlxBar, sir.
+			songPosBar = new FlxUIBar(640 - (Std.int(songPosBG.width - 100) / 2), songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 100),
+				Std.int(songPosBG.height + 6), this, 'songPositionBarMs', 0, songLengthMs);
 			songPosBar.scrollFactor.set();
 			// songPosBar.createFilledBar(FlxColor.BLACK, FlxColor.fromRGB(0, 255, 128));
 			songPosBar.createFilledBar(PlayStateChangeables.songPosBarColorBg, PlayStateChangeables.songPosBarColor); // JOELwindows7: here with custom color!
@@ -5743,6 +5749,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: add more watches too
 		FlxG.watch.addQuick("shinzouRateShit", [dad.getHeartRate(-1), gf.getHeartRate(-1), boyfriend.getHeartRate(-1)]);
 		FlxG.watch.addQuick("songPositionShit", Conductor.songPosition);
+		FlxG.watch.addQuick("songPositionBarShit", songPositionBar);
+		FlxG.watch.addQuick("songPositionBarMsShit", songPositionBarMs);
 		FlxG.watch.addQuick("Ending Song", endingSong);
 		FlxG.watch.addQuick("Cam Follow", [camFollow.x, camFollow.y]);
 		FlxG.watch.addQuick("In Cutscene", inCutscene);

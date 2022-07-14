@@ -415,6 +415,9 @@ class Stage extends MusicBeatState
 							swagBacks['fastCar'] = fastCar;
 							layInFront[2].push(fastCar);
 							resetFastCar();
+
+							// IDEA: JOELwindows7: add Hyundai IONIQ 5, 6, 7, 3, 9 whatever but only for last 2022, not at the time this
+							// week here!
 						}
 
 						var overlayShit:FlxUISprite = cast new FlxUISprite(-500, -600).loadGraphic(Paths.loadImage('limo/limoOverlay', 'week4'));

@@ -61,9 +61,34 @@ class Game extends FlxGame
 				// JOELwindows7: first, here things to do with crash.
 				if (!hasCrashed)
 				{
+					hasCrashed = true; // redundancy to make sure it indeed tripped & doesn't loop before these finished.
 					Debug.displayAlert('Fatal WError: ${exc.message}', 'The game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
 					Debug.logError('Fatal Werror: ${exc.message}\n${exc.details()}');
 					stopPauseMusic();
+
+					// JOELwindows7: it's notify send time!
+					try
+					{
+						#if linux
+						Sys.command('/usr/bin/notify-send', [
+							'-u critical',
+							'-t 0',
+							'-a \'${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\'',
+							'Fatal WError: ${exc.message}',
+							'The game has crashed. Oh peck!!!\n\n${exc.details()}'
+						]);
+						#elseif web
+						// use https://www.w3schools.com/js/js_popup.asp
+						Browser.alert('Fatal WError: ${exc.message}', 'The game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
+						#else
+						Debug.logTrace('no notification command available, sadd');
+						#end
+					}
+					catch (wer)
+					{
+						Debug.logTrace('& I can\'t even send notification wtf?! ${wer.message}\n${wer.details()}');
+					}
+
 					FlxG.switchState(new WerrorForceMajeurState(exc));
 					hasCrashed = true;
 				}

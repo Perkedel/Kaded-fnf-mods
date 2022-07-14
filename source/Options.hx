@@ -4022,3 +4022,32 @@ class DiscordOption extends Option
 	}
 }
 #end
+
+// JOELwindows7: BOLO score smoothing
+class ScoreSmoothing extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.lerpScore = !FlxG.save.data.lerpScore;
+
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Smooth Score PopUp: < " + (FlxG.save.data.lerpScore ? "on" : "off") + " >";
+	}
+}

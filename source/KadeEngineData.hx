@@ -69,6 +69,10 @@ class KadeEngineData
 		if (FlxG.save.data.memoryDisplay == null)
 			FlxG.save.data.memoryDisplay = true; // JOELwindows7: bro wtf? false by default?! BOLO
 
+		// JOELwindows7: BOLO lerp score
+		if (FlxG.save.data.lerpScore == null)
+			FlxG.save.data.lerpScore = true;
+
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 120;
 

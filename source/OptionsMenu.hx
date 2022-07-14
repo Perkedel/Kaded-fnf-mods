@@ -175,6 +175,7 @@ class OptionsMenu extends CoreSubState
 				new NoteskinOption("Change your current noteskin"),
 				new NoteSplashOption("Have your note press splash for every SICK! kyaaa!"),
 				new RotateSpritesOption("Should the game rotate the sprites to do color quantization (turn off for bar skins)"),
+				new ScoreSmoothing("Toggle smoother poping score for Score Text (High CPU usage)."), // JOELwindows7: BOLO
 				new EditorRes("Not showing the editor grid will greatly increase editor performance"),
 				// new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
 				new MiddleScrollOption("Put your lane in the center or on the right."),
@@ -211,6 +212,12 @@ class OptionsMenu extends CoreSubState
 				new LogGameJoltIn(#if gamejolt "(" + GameJoltAPI.getUserInfo(true) +
 					") Log your GameJolt account in & manage" #else "GameJolt not supported. SADD!" #end)
 			]),
+			// JOELwindows7: BOLO had this category of Performance
+			new OptionCata(1100, 40, "Performance", [
+				new OptimizeOption("Disable Background and Characters to save memory. Useful to low-end computers."),
+				new Background("Disable Stage Background to save memory (Only characters are visible)."),
+				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay and save memory.")
+			]),
 			// JOELwindows7: was 640, 40
 			new OptionCata(1040, 40, "Misc", [
 				new FPSOption("Toggle the FPS Counter"),
@@ -246,12 +253,6 @@ class OptionsMenu extends CoreSubState
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
 				new PrintAnnoyingDebugWarnOption("Toggle whether should frequent warns appears (is annoying)"),
 				new ModConfigurationsOption("Configure which Polymod Kade-LFM mods to be loaded"),
-			]),
-			// JOELwindows7: BOLO had this category of Performance
-			new OptionCata(1100, 40, "Performance", [
-				new OptimizeOption("Disable Background and Characters to save memory. Useful to low-end computers."),
-				new Background("Disable Stage Background to save memory (Only characters are visible)."),
-				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay and save memory.")
 			]),
 			// JOELwindows7: was 935, 40. was 1100, 40
 			new OptionCata(50, 140, "Saves", [
@@ -1028,7 +1029,10 @@ class OptionsMenu extends CoreSubState
 	{
 		for (i in 0...selectedCat.optionObjects.length)
 		{
-			selectedCat.optionObjects.members[i].color = FlxColor.WHITE;
+			// JOELwindows7: okay new way!
+			var ref = selectedCat.optionObjects.members[i];
+			var ruf = selectedCat.options[i];
+			ref.color = ruf.cannotInPause ? FlxColor.YELLOW : FlxColor.WHITE;
 		}
 		if (selectedCatIndex == 0)
 		{
