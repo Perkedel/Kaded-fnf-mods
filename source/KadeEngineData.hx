@@ -196,7 +196,8 @@ class KadeEngineData
 		// JOELwindows7: enable legacy lua modchart supports
 		if (FlxG.save.data.legacyLuaScript == null)
 		{
-			FlxG.save.data.legacyLuaScript = false;
+			FlxG.save.data.legacyLuaScript = true; // from now on, let's make it true because
+			// let's be honest. How many of you still made modchart for older Kade Engine?
 		}
 
 		// JOELwindows7: enigma init mod data

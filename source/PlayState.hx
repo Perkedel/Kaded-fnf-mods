@@ -1475,16 +1475,24 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// luaModchart.executeState('start', [PlayState.SONG.songId]);
 			luaModchart.setVar('songLength', songLength);
 			luaModchart.setVar('songLengthMs', songLengthMs);
-			luaModchart.setVar('variables', SONG.variables);
+			luaModchart.setVar('songVariables', SONG.variables); // JOELwindows7: now variables are playstate variables.
 			luaModchart.setVar('diffVariables', SONG.diffVariables);
+			luaModchart.setVar('variables', variables);
+
+			// JOELwindows7: for compatibility reason just in case, I'm going to syndicate things
+			// for(thing in SONG.variables){
+			// 	variables.set()
+			// }
+			// so hard.
 		}
 		if (executeStageScript && stageScript != null)
 		{
 			// stageScript.executeState('start', [PlayState.SONG.songId]);
 			stageScript.setVar('songLength', songLength);
 			stageScript.setVar('songLengthMs', songLengthMs);
-			stageScript.setVar('variables', SONG.variables);
+			stageScript.setVar('songVariables', SONG.variables);
 			stageScript.setVar('diffVariables', SONG.diffVariables);
+			stageScript.setVar('variables', variables);
 		}
 		#end
 		// JOELwindows7: now for the hscript init
@@ -1497,8 +1505,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			hscriptModchart.setVar('executeStageScript', executeStageScript);
 			hscriptModchart.setVar('songLength', songLength);
 			hscriptModchart.setVar('songLengthMs', songLengthMs);
-			hscriptModchart.setVar('variables', SONG.variables);
+			hscriptModchart.setVar('songVariables', SONG.variables); // JOELwindows7: now variables are playstate variables.
 			hscriptModchart.setVar('diffVariables', SONG.diffVariables);
+			hscriptModchart.setVar('variables', variables);
 			// hscriptModchart.executeState('start', [PlayState.SONG.songId]);
 		}
 		if (executeStageHscript && stageHscript != null)
@@ -1509,8 +1518,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			stageHscript.setVar('executeStageScript', executeStageScript);
 			stageHscript.setVar('songLength', songLength);
 			stageHscript.setVar('songLengthMs', songLengthMs);
-			stageHscript.setVar('variables', SONG.variables);
+			stageHscript.setVar('songVariables', SONG.variables);
 			stageHscript.setVar('diffVariables', SONG.diffVariables);
+			hscriptModchart.setVar('variables', variables);
 			// stageHscript.executeState('start', [PlayState.SONG.songId]);
 		}
 		// JOELwindows7: end of hscript init
@@ -1523,6 +1533,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			luaModchart.setVar('executeModHscript', executeModHscript);
 			luaModchart.setVar('executeStageHscript', executeStageHscript);
 			luaModchart.setVar('executeStageScript', executeStageScript);
+
+			// JOELwindows7: register interp to this here!
+			@:privateAccess {
+				if (hscriptModchart != null)
+					ModchartState.haxeInterp = hscriptModchart.interp;
+			}
 		}
 		if (executeStageScript && stageScript != null)
 		{
@@ -1530,11 +1546,17 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			stageScript.setVar('executeModHscript', executeModHscript);
 			stageScript.setVar('executeStageHscript', executeStageHscript);
 			stageScript.setVar('executeStageScript', executeStageScript);
+
+			// JOELwindows7: register interp to this here!
+			@:privateAccess {
+				if (hscriptModchart != null)
+					ModchartState.haxeInterp = hscriptModchart.interp;
+			}
 		}
 		#end
 
 		#if FEATURE_LUAMODCHART
-		if (executeModchart)
+		if (executeModchart || executeStageScript)
 		{
 			new LuaCamera(camGame, "camGame").Register(ModchartState.lua);
 			new LuaCamera(camHUD, "camHUD").Register(ModchartState.lua);
@@ -3657,7 +3679,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// 	PlayStateChangeables.songPosBarColor == Perkedel.SONG_POS_BAR_COLOR;
 			// 	PlayStateChangeables.songPosBarColorBg == FlxColor.BLACK;
 			// }
-			
+
 			// JOELwindows7: BUG!!! The meter bar is not precise & pixelated! say you have decimal float point. 12.5 is treated as 12 or 13 somehow.
 			// UGH!!!!
 			// was refer `songPositionBar` min 0 max `songLength`. now use ms version of it!
@@ -9595,7 +9617,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				Stage.swagBacks['tankman'].setPosition(-77, 307);
 				laneunderlayOpponent.alpha = FlxG.save.data.laneTransparency;
 				laneunderlay.alpha = FlxG.save.data.laneTransparency;
-				precacheList.set('stressCutscene', 'sound');
+				precacheList.set('stressCutscene${FlxG.save.data.naughtiness ? '' : 'CensorEdit'}', 'sound');
 
 				precacheList.set('cutscenes/stress2', 'frame');
 
@@ -9642,7 +9664,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					Stage.swagBacks['dummyGf'].animation.play('idle');
 				}
 
-				var cutsceneSnd:FlxSound = new FlxSound().loadEmbedded(Paths.sound('stressCutscene'));
+				var cutsceneSnd:FlxSound = new FlxSound().loadEmbedded(Paths.sound('stressCutscene${FlxG.save.data.naughtiness ? '' : 'CensorEdit'}'));
 				FlxG.sound.list.add(cutsceneSnd);
 
 				Stage.swagBacks['tankman'].animation.addByPrefix('godEffingDamnIt', 'TANK TALK 3', 24, false);
@@ -9703,7 +9725,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					Stage.swagBacks['gfCutscene'].animation.play('dieBitch', true);
 					createTimer(2.3, function(tmr:FlxTimer)
 					{
-						Controls.vibrate(0, 1000, 0, 65535, 65535); // JOELwindows7: vibrate da controller
+						Controls.vibrate(0, 1300, 0, 65535, 65535); // JOELwindows7: vibrate da controller
 					});
 					Stage.swagBacks['gfCutscene'].animation.finishCallback = function(name:String)
 					{

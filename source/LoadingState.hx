@@ -230,12 +230,13 @@ class LoadingState extends MusicBeatState
 		if (callbacks != null)
 		{
 			// loadBar.scale.x = callbacks.getFired().length / callbacks.getUnfired().length; // JOELwindows7: was used
-			// _loadingBar.setPercentage((callbacks.getFired().length / callbacks.getUnfired().length)*100);
+			// _loadingBar.setPercentage((callbacks.getFired().length / callbacks.getUnfired().length) * 100); // already onProgress
 
 			// JOELwindows7: here new BOLO's way
 			loadingText.text = 'Loading [${callbacks.length - callbacks.numRemaining}/${callbacks.length}]';
 			targetShit = FlxMath.remapToRange(callbacks.numRemaining / callbacks.length, 1, 0, 0, 1);
-			loadBar.scale.x += 0.5 * (targetShit - loadBar.scale.x);
+			// loadBar.scale.x += 0.5 * (targetShit - loadBar.scale.x);
+			loadBar.scale.x += (targetShit - loadBar.scale.x); // JOELwindows7: I mean, why do you halve half it?
 		}
 
 		#if debug
@@ -421,6 +422,7 @@ class LoadingState extends MusicBeatState
 	// JOELwindows7: sometimes there's a bug or accident. like hang, or whatever, you just want to skip or go back.
 	function onTooLongDidntLoad(tmr:FlxTimer)
 	{
+		Debug.logInfo(Perkedel.LOADING_TOO_LONG_SAY);
 		addBackButton();
 		addAcceptButton();
 		backButton.alpha = 0;

@@ -4,6 +4,8 @@
 // LuaJit only works for C++; JOELwindows7: wtf Linux not working?
 // https://lib.haxe.org/p/linc_luajit/
 // Lua
+import hscript.ParserEx;
+import hscript.InterpEx;
 import Shader;
 import hscript.Interp;
 import flixel.addons.ui.FlxUISprite;
@@ -50,8 +52,8 @@ class ModchartState
 {
 	// public static var shaders:Array<LuaShader> = null; // JOELwindows7: uncomment now!!! nvm
 	public static var lua:State = null;
-	// JOELwindows7: NEW BOLO stuffs
-	public static var haxeInterp:Interp = null;
+	// JOELwindows7: NEW BOLO stuffs. use EX man!
+	public static var haxeInterp:InterpEx = null;
 	public static var shownNotes:Array<LuaNote> = [];
 
 	var lastCalledFunction:String = '';
@@ -2091,39 +2093,56 @@ class ModchartState
 			}
 		});
 
+		// JOELwindows7: HOLD! before we go, let's just bring our HaxeScriptState interp to here first. shall we?
+		if (PlayState.hscriptModchart != null)
+		{
+			// uh, useless, because according to your PlayState, the lua script loads first!
+			@:privateAccess {
+				haxeInterp = PlayState.hscriptModchart.interp;
+			}
+		}
+
 		// JOELwindows7: INCOMING BOLO HAXE SCRIPT THINGIES
 		Lua_helper.add_callback(lua, "runHaxeCode", function(codeToRun:String)
 		{
+			// you insert entire haxe code to the function.
 			if (haxeInterp == null)
 			{
-				haxeInterp = new Interp();
-				haxeInterp.variables.set('FlxG', FlxG);
-				haxeInterp.variables.set('FlxSprite', FlxSprite);
-				haxeInterp.variables.set('FlxCamera', FlxCamera);
-				haxeInterp.variables.set('FlxTween', FlxTween);
-				haxeInterp.variables.set('FlxEase', FlxEase);
-				haxeInterp.variables.set('PlayState', PlayState);
-				haxeInterp.variables.set('game', PlayState.instance);
-				haxeInterp.variables.set('Paths', Paths);
-				haxeInterp.variables.set('Conductor', Conductor);
-				haxeInterp.variables.set('Character', Character);
-				haxeInterp.variables.set('Alphabet', Alphabet);
-				haxeInterp.variables.set('StringTools', StringTools);
-				haxeInterp.variables.set('setVar', function(name:String, value:Dynamic)
-				{
-					PlayState.instance.variables.set(name, value);
-				});
-				haxeInterp.variables.set('getVar', function(name:String)
-				{
-					if (!PlayState.instance.variables.exists(name))
-						return null;
-					return PlayState.instance.variables.get(name);
-				});
+				// haxeInterp = new InterpEx(); // JOELwindows7: use EX man!
+				haxeInterp = HaxeScriptState.createInterp(); // how about this instead?
+				// haxeInterp.variables.set('FlxG', HscriptGlobals); // JOELwindows7: DO NOT DIRECTLY FlxG!!! UNSAFE!!! save data manipulation e.g.
+				// JOELwindows7: also pls modify so it uses BulbyVR filters.
+				/*
+						haxeInterp.variables.set('FlxSprite', FlxSprite);
+						haxeInterp.variables.set('FlxCamera', FlxCamera);
+						haxeInterp.variables.set('FlxTween', FlxTween);
+						haxeInterp.variables.set('FlxEase', FlxEase);
+						haxeInterp.variables.set('PlayState', PlayState);
+						haxeInterp.variables.set('game', PlayState.instance);
+						haxeInterp.variables.set('currentPlayState', PlayState.instance); // JOELwindows7: mirror
+						haxeInterp.variables.set('Paths', Paths);
+						haxeInterp.variables.set('Conductor', Conductor);
+						haxeInterp.variables.set('Character', Character);
+						haxeInterp.variables.set('Alphabet', Alphabet);
+						haxeInterp.variables.set('StringTools', StringTools);
+					 
+					haxeInterp.variables.set('setVar', function(name:String, value:Dynamic)
+					{
+						PlayState.instance.variables.set(name, value);
+					});
+					haxeInterp.variables.set('getVar', function(name:String)
+					{
+						if (!PlayState.instance.variables.exists(name))
+							return null;
+						return PlayState.instance.variables.get(name);
+					});
+				 */
 			}
 
 			try
 			{
-				var myFunction:Dynamic = haxeInterp.expr(new Parser().parseString(codeToRun));
+				// JOELwindows7: use ParserEx man!
+				var myFunction:Dynamic = haxeInterp.expr(new ParserEx().parseString(codeToRun));
 				myFunction();
 			}
 			catch (e:Dynamic)
@@ -2133,8 +2152,10 @@ class ModchartState
 					case 'Null Function Pointer', 'SReturn':
 					// nothing
 					default:
+						// JOELwindows7: there is details!
+						// was `path + ":" + lastCalledFunction + " - " + e`
 						Debug.logError(path + ":" + lastCalledFunction + " - " + e);
-						Application.current.window.alert(path + ":" + lastCalledFunction + " - " + e, "Kade Engine Modcharts");
+						Application.current.window.alert('$path : $lastCalledFunction - $e\n${e.details()}', "Kade Engine Modcharts");
 				}
 			}
 		});
@@ -2143,29 +2164,33 @@ class ModchartState
 		{
 			if (haxeInterp == null)
 			{
-				haxeInterp = new Interp();
-				haxeInterp.variables.set('FlxG', FlxG);
-				haxeInterp.variables.set('FlxSprite', FlxSprite);
-				haxeInterp.variables.set('FlxCamera', FlxCamera);
-				haxeInterp.variables.set('FlxTween', FlxTween);
-				haxeInterp.variables.set('FlxEase', FlxEase);
-				haxeInterp.variables.set('PlayState', PlayState);
-				haxeInterp.variables.set('game', PlayState.instance);
-				haxeInterp.variables.set('Paths', Paths);
-				haxeInterp.variables.set('Conductor', Conductor);
-				haxeInterp.variables.set('Character', Character);
-				haxeInterp.variables.set('Alphabet', Alphabet);
-				haxeInterp.variables.set('StringTools', StringTools);
-				haxeInterp.variables.set('setVar', function(name:String, value:Dynamic)
-				{
-					PlayState.instance.variables.set(name, value);
-				});
-				haxeInterp.variables.set('getVar', function(name:String)
-				{
-					if (!PlayState.instance.variables.exists(name))
-						return null;
-					return PlayState.instance.variables.get(name);
-				});
+				// haxeInterp = new InterpEx(); // JOELwindows7: use EX man
+				haxeInterp = HaxeScriptState.createInterp(); // JOELwindows7: use this instead, I guess.
+				/*
+					haxeInterp.variables.set('FlxG', FlxG);
+					haxeInterp.variables.set('FlxSprite', FlxSprite);
+					haxeInterp.variables.set('FlxCamera', FlxCamera);
+					haxeInterp.variables.set('FlxTween', FlxTween);
+					haxeInterp.variables.set('FlxEase', FlxEase);
+					haxeInterp.variables.set('PlayState', PlayState);
+					haxeInterp.variables.set('game', PlayState.instance);
+					haxeInterp.variables.set('currentPlayState', PlayState.instance); // JOELwindows7: mirror
+					haxeInterp.variables.set('Paths', Paths);
+					haxeInterp.variables.set('Conductor', Conductor);
+					haxeInterp.variables.set('Character', Character);
+					haxeInterp.variables.set('Alphabet', Alphabet);
+					haxeInterp.variables.set('StringTools', StringTools);
+					haxeInterp.variables.set('setVar', function(name:String, value:Dynamic)
+					{
+						PlayState.instance.variables.set(name, value);
+					});
+					haxeInterp.variables.set('getVar', function(name:String)
+					{
+						if (!PlayState.instance.variables.exists(name))
+							return null;
+						return PlayState.instance.variables.get(name);
+					});
+				 */
 			}
 
 			try
@@ -2178,8 +2203,10 @@ class ModchartState
 			}
 			catch (e:Dynamic)
 			{
-				Debug.logError(path + ":" + lastCalledFunction + " - " + e);
-				Application.current.window.alert(path + ":" + lastCalledFunction + " - " + e, "Kade Engine Modcharts");
+				// JOELwindows7: there is detail!
+				// was `path + ":" + lastCalledFunction + " - " + e`
+				Debug.logError('$path : $lastCalledFunction - $e\n${e.details()}');
+				Application.current.window.alert('$path : $lastCalledFunction - $e\n${e.details()}', "Kade Engine Modcharts");
 			}
 		});
 		// end BOLO HAXE SCRIPT THINGIES

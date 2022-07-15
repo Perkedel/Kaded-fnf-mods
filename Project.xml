@@ -27,6 +27,9 @@
 	<define name="mobileC" if="mobile" />
 	<!-- hey why do we need this? Touchscreen supposed to be supported on all platforms man. -->
 
+	<!-- JOELwindows7: hscript position pls! -->
+	<haxedef name="hscriptPos"/>
+
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->

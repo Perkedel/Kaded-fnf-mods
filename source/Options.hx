@@ -2144,12 +2144,15 @@ class NoMidClickOption extends Option
 
 // JOELwindows7: idk, that on the original game newgrounds week 7
 // it had this. apparently this doesn't do anything yet.
+// EDIT: NOW IT DOES!! I CAN USE THIS E.G. TO CENSOR STRESS CUTSCENE IF THIS IS OFF,
+// you naive angel christian syndrome people sacred but 🤓!
 class NaughtinessOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		// JOELwindows7: add some insult if this is OFF, & vice versa the appreciation if ON.
+		description = desc + ' (${FlxG.save.data.naughtiness ? 'ON! PEOPLE OF CULTURE, BASED, CHAD' : 'OFF! NAIVE ANGEL, SACRED BUT, VIRGIN'})';
 	}
 
 	public override function press():Bool
@@ -2161,7 +2164,13 @@ class NaughtinessOption extends Option
 	}
 
 	private override function updateDisplay():String
-		return "Naughtiness < " + (FlxG.save.data.naughtiness ? "on" : "off") + " >";
+	{
+		// JOELwindows7: reference bayonetta lmao
+		// https://twitter.com/GoNintendoTweet/status/1547222159503802373?s=20&t=GYvuOZJtG5qDylL4os06Uw
+		// https://gonintendo.com/contents/6337-bayonetta-3-will-include-a-special-mode-to-censor-lewd-scenes-so-you-can-play-in-the
+		// https://www.youtube.com/watch?v=aACdP5sNW94 rev says desu
+		return 'Naughtiness < ${(FlxG.save.data.naughtiness ? 'on' : 'off (Hah! Naive Angel, you sacred but!)')} >';
+	}
 }
 
 // JOELwindows7: export setting data to JSON
@@ -2223,7 +2232,7 @@ class ExportSaveToJson extends Option
 		_file = null;
 		// JOELwindows7: trace cancel
 		trace("nvm! save canceled");
-		FlxG.sound.play(Paths.sound('cancelMenu'));
+		FlxG.sound.play(Paths.sound(' cancelMenu '));
 	}
 
 	/**
@@ -2238,7 +2247,7 @@ class ExportSaveToJson extends Option
 		FlxG.log.error("Problem saving backup data");
 		// JOELwindows7: also trace the error
 		trace("Weror! problem saving backup data");
-		FlxG.sound.play(Paths.sound('cancelMenu'));
+		FlxG.sound.play(Paths.sound(' cancelMenu '));
 	}
 }
 
@@ -2306,7 +2315,7 @@ class ImportSaveFromJSON extends Option
 		_file = null;
 		// JOELwindows7: trace cancel
 		trace("nvm! load canceled");
-		FlxG.sound.play(Paths.sound('cancelMenu'));
+		FlxG.sound.play(Paths.sound(' cancelMenu '));
 	}
 
 	/**
@@ -2321,12 +2330,11 @@ class ImportSaveFromJSON extends Option
 		FlxG.log.error("Problem loading backup data");
 		// JOELwindows7: also trace the error
 		trace("Weror! problem loading backup data");
-		FlxG.sound.play(Paths.sound('cancelMenu'));
+		FlxG.sound.play(Paths.sound(' cancelMenu '));
 	}
 }
 
-// JOELwindows7: pls don't forget full screen mode!
-// Rediscovered press F in title state to toggle full screen?!?!
+// JOELwindows7: pls don' t forget full screen mode! // Rediscovered press F in title state to toggle full screen?!?!
 class FullScreenOption extends Option
 {
 	public function new(desc:String)
@@ -2436,7 +2444,6 @@ class ChooseWatermark extends Option
 
 	// Hey, add your watermark id here
 	var availableWatermark = ['odysee', 'pekedel',];
-
 	// Then add the path where it goes
 	var watermarkPath = [];
 
@@ -2489,7 +2496,6 @@ class CardiophileOption extends Option
 	}
 
 	// sentient GitHub Copilot
-
 	public override function press():Bool
 	{
 		FlxG.save.data.cardiophile = !FlxG.save.data.cardiophile;

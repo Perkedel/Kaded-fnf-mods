@@ -1,5 +1,7 @@
 package;
 
+import flixel.effects.FlxFlicker;
+import CoolUtil;
 import flixel.input.keyboard.FlxKey;
 import Shader;
 import flixel.addons.ui.FlxUISprite;
@@ -121,6 +123,8 @@ class HaxeScriptState
 	var hscriptState:Map<String, InterpEx>;
 	var defaultUseHaxe:String = "modchart";
 
+	// JOELwindows7: BOLO haxe mini interp
+	// var miniInterp:InterpEx;
 	// JOELwindows7: NEW BOLO
 	var lastCalledFunction:String = '';
 
@@ -484,7 +488,7 @@ class HaxeScriptState
 		});
 		// JOELwindows7: & even more!!!
 		setVar("thisStage", PlayState.Stage); // JOELwindows7: Stage class is already FlxG.stage I think..
-		setVar("Paths", Paths);
+		// setVar("Paths", Paths); // JOELwindows7: already done
 
 		trace("setVar BulbyVR stuffs");
 
@@ -1869,6 +1873,51 @@ class HaxeScriptState
 			}
 		});
 
+		// JOELwindows7: let BOLO it out haxe script
+		addCallback('runHaxeCode', function(codeToRun:String)
+		{
+			// you insert entire haxe code to the function.
+			try
+			{
+				// JOELwindows7: use ParserEx man!
+				var myFunction:Dynamic = interp.expr(parser.parseString(codeToRun));
+				myFunction();
+			}
+			catch (e:Dynamic)
+			{
+				switch (e)
+				{
+					case 'Null Function Pointer', 'SReturn':
+					// nothing
+					default:
+						// JOELwindows7: there is details!
+						// was `path + ":" + lastCalledFunction + " - " + e`
+						Debug.logError('$path : $lastCalledFunction - $e\n${e.details()}');
+						Application.current.window.alert('$path : $lastCalledFunction - $e\n${e.details()}', "Kade Engine Haxe Script Modcharts");
+				}
+			}
+		});
+		addCallback('addHaxeLibrary', function(libName:String, ?libFolder:String = '')
+		{
+			try
+			{
+				// JOELwindows7: just add it right inside our current interp!
+				var str:String = '';
+				if (libFolder.length > 0)
+					str = libFolder + '.';
+
+				interp.variables.set(libName, Type.resolveClass(str + libName));
+			}
+			catch (e:Dynamic)
+			{
+				// JOELwindows7: there is detail!
+				// was `path + ":" + lastCalledFunction + " - " + e`
+				Debug.logError('$path : $lastCalledFunction - $e\n${e.details()}');
+				Application.current.window.alert('$path : $lastCalledFunction - $e\n${e.details()}', "Kade Engine Haxe Script Modcharts");
+			}
+		});
+		// end BOLO
+
 		// JOELwindows7: okay, now here
 		fillInScripts(rawMode, path);
 		trace("Filled Script");
@@ -1911,23 +1960,61 @@ class HaxeScriptState
 	 * @see https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PluginManager.hx
 	 * @return InterpEx() the prebuilt InterpEx instance
 	 */
-	function createInterp():InterpEx
+	public static function createInterp():InterpEx // JOELwindows7: now is public static yey!
 	{
 		var reterp:InterpEx = new InterpEx();
 
+		// JOELwindows7: please remove exact import reference such as flixel.util bla bla!
+		// just let the top import do their job!
 		reterp.variables.set("Conductor", Conductor);
 		reterp.variables.set("FlxSprite", DynamicSprite);
 		reterp.variables.set("FlxSound", DynamicSound);
 		reterp.variables.set("FlxAtlasFrames", DynamicSprite.DynamicAtlasFrames);
-		reterp.variables.set("FlxGroup", flixel.group.FlxGroup);
-		reterp.variables.set("FlxAngle", flixel.math.FlxAngle);
-		reterp.variables.set("FlxMath", flixel.math.FlxMath);
+		reterp.variables.set("FlxGroup", FlxGroup);
+		reterp.variables.set("FlxAngle", FlxAngle);
+		reterp.variables.set("FlxMath", FlxMath);
 		reterp.variables.set("TitleState", TitleState);
 		reterp.variables.set("makeRangeArray", CoolUtil.numberArray);
 
+		// JOELwindows7: just coolutil?
+		reterp.variables.set('CoolUtil', CoolUtil);
+		reterp.variables.set('difficultyFromInt', CoolUtil.difficultyFromInt);
+		reterp.variables.set('coolTextFile', CoolUtil.coolTextFile);
+		reterp.variables.set('coolStringFile', CoolUtil.coolStringFile);
+		reterp.variables.set('boundTo', CoolUtil.boundTo);
+		reterp.variables.set("numberArray", CoolUtil.numberArray);
+		reterp.variables.set('dashToSpace', CoolUtil.dashToSpace);
+		reterp.variables.set('spaceToDash', CoolUtil.spaceToDash);
+		reterp.variables.set('swapSpaceDash', CoolUtil.swapSpaceDash);
+		reterp.variables.set('mRoundSmul', CoolUtil.mRoundSmul);
+		reterp.variables.set('stepModulo', CoolUtil.stepModulo);
+		reterp.variables.set('stepCompare', CoolUtil.stepCompare);
+		reterp.variables.set('stepCompareInt', CoolUtil.stepCompareInt);
+		reterp.variables.set('stepCompareStr', CoolUtil.stepCompareStr);
+		reterp.variables.set('stepBetween', CoolUtil.stepBetween);
+		reterp.variables.set('toCompatCase', CoolUtil.toCompatCase);
+		reterp.variables.set('clamp', CoolUtil.clamp);
+		reterp.variables.set('parseJson', CoolUtil.parseJson);
+		reterp.variables.set('stringifyJson', CoolUtil.stringifyJson);
+
+		// JOELwindows7: helper functions pls
+		reterp.variables.set('HelperFunction', HelperFunctions);
+		reterp.variables.set('buildArrayFromRange', HelperFunctions.buildArrayFromRange);
+		reterp.variables.set('truncateFloat', HelperFunctions.truncateFloat);
+		reterp.variables.set('GCD', HelperFunctions.GCD);
+		reterp.variables.set('durationToString', HelperFunctions.durationToString);
+		reterp.variables.set('getTypeName', HelperFunctions.getTypeName);
+		reterp.variables.set('getFlxEaseByString', HelperFunctions.getFlxEaseByString);
+		reterp.variables.set('parseARGB', HelperFunctions.parseARGB);
+		reterp.variables.set('toHexString', HelperFunctions.toHexString);
+
+		// JOELwindows7: enum works?
+		reterp.variables.set('CompareTypes', CompareTypes); // oh wow it works. hope not crash
+
 		reterp.variables.set("FlxG", HscriptGlobals);
-		reterp.variables.set("FlxTimer", flixel.util.FlxTimer);
-		reterp.variables.set("FlxTween", flixel.tweens.FlxTween);
+		reterp.variables.set("FlxTimer", FlxTimer);
+		reterp.variables.set("FlxTween", FlxTween);
+		reterp.variables.set("FlxFlicker", FlxFlicker); // JOELwindow7: there is this, people!
 		reterp.variables.set("Std", Std);
 		reterp.variables.set("StringTools", StringTools);
 		reterp.variables.set("MetroSprite", MetroSprite);
@@ -1936,6 +2023,22 @@ class HaxeScriptState
 		reterp.variables.set("Reflect", Reflect);
 		reterp.variables.set("Character", Character);
 		reterp.variables.set("OptionsHandler", OptionsHandler);
+
+		// JOELwindows7: BOLO's interp
+		reterp.variables.set('game', PlayState.instance);
+		reterp.variables.set('Paths', Paths);
+		reterp.variables.set('Alphabet', Alphabet);
+		reterp.variables.set('setVar', function(name:String, value:Dynamic)
+		{
+			PlayState.instance.variables.set(name, value);
+		});
+		reterp.variables.set('getVar', function(name:String)
+		{
+			if (!PlayState.instance.variables.exists(name))
+				return null;
+			return PlayState.instance.variables.get(name);
+		});
+		// end BOLO
 
 		#if debug
 		reterp.variables.set("debug", true);
