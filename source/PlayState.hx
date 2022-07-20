@@ -3478,17 +3478,18 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}*/
 
 		// JOELwindows7: this Haxedef marks if audio manipulation is available. cpp only
-		#if FEATURE_AUDIO_MANIPULATE
-		@:privateAccess
-		{
-			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals.playing)
-				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals2.playing) // JOELwindows7: oh yea
-				lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-		}
+		// #if FEATURE_AUDIO_MANIPULATE
+		// @:privateAccess
+		// {
+		// 	lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+		// 	if (vocals.playing)
+		// 		lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+		// 	if (vocals2.playing) // JOELwindows7: oh yea
+		// 		lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+		// }
+		// #end
+		manipulateTheAudio();
 		trace("pitched inst and vocals to " + songMultiplier);
-		#end
 
 		for (i in 0...unspawnNotes.length)
 			if (unspawnNotes[i].strumTime < startTime)
@@ -4732,6 +4733,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			}
 		}
 		// JOELwindows7: VLC version
+		#if FEATURE_VLC
 		if (useVLC && vlcHandler != null && !stopUpdate)
 		{
 			if (vlcHandlerHasFinished && !removedVideo)
@@ -4742,6 +4744,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				removedVideo = true;
 			}
 		}
+		#else
+		// removedVideo = true;
+		#end
 
 		#if FEATURE_LUAMODCHART
 		if (executeModchart && luaModchart != null && songStarted)

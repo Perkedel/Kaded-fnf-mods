@@ -1418,7 +1418,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				for (i in 0...iconArray.length)
 				{
 					// iconArray[i].alpha = 0;
-					var tweenMe:FlxTween;
+					var tweenMe:FlxTween; // JOELwindows7: pls suppress warning
 					tweenMe = FlxTween.tween(iconArray[i], {alpha: 0}, 1, {
 						ease: FlxEase.linear,
 						onComplete: function(twn:FlxTween)

@@ -18,7 +18,9 @@
 
 package experiments;
 
-class AnLoneBopeebo extends AbstractTestMenu
+import behavior.audio.IManipulateAudio;
+
+class AnLoneBopeebo extends AbstractTestMenu implements IManipulateAudio
 {
 	var rate:Float = 1;
 	var channel:Float = 0;
@@ -66,14 +68,40 @@ class AnLoneBopeebo extends AbstractTestMenu
 		}
 
 		// JOELwindows7: there you are, audio manipulate lol
+		manipulateTheAudio();
+	}
+
+	function manipulateTheAudio()
+	{
 		#if FEATURE_AUDIO_MANIPULATE
 		@:privateAccess
 		{
-			if (FlxG.sound.music.playing)
-			{
-				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
-				// lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.CHANNELS, channel);
-			}
+			// if (FlxG.sound.music.playing)
+			// {
+			// 	lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
+			// 	// lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.CHANNELS, channel);
+			// }
+			#if cpp
+			#if (lime >= "8.0.0")
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+			#else
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
+			#end
+			#elseif web
+			#if (lime >= "8.0.0" && lime_howlerjs)
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+			#else
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+			#end
+			#end
 		}
 		#end
 	}

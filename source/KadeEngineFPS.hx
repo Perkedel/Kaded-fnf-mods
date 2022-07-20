@@ -260,6 +260,7 @@ class KadeEngineFPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
+
 			// JOELwindows7: here comes the Psyched memory RAM megas!
 			// https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/openfl/display/FPS.hx
 			// var memoryMegas:Float = 0; // already globalized!
@@ -287,7 +288,7 @@ class KadeEngineFPS extends TextField
 			text += (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "");
 			text += (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "");
 			// JOELwindows7: OH COOL!! GREAT IDEA, BOLO. Debug mode indicator, yess!!!
-			text += '${(#if debug "DEBUG MODE" #else "" #end)}\n';
+			text += '${(#if debug "DEBUG MODE\n" #elseif release "RELEASE MODE\n" #else "" #end)}';
 			text += '$extraInfo\n'; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
 			// remember to have \n at the beginning of the line at available if case.
 			// No, at the end of line at available if case. + "\n" one.

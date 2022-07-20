@@ -558,6 +558,14 @@ class ChartingState extends MusicBeatState
 		Debug.logTrace("create");
 
 		// super.create(); //JOELwindows7: moved to top
+
+		// JOELwindows7: install event like on KadeEngineFPS. the Enter frame!
+		// addEventListener(Event.ENTER_FRAME, function(e)
+		// {
+		// 	var time = Lib.getTimer();
+		// 	__enterFrame(time - currentTime);
+		// });
+		// are you kidding me? not exist?!??!?!?!??!?!?
 	}
 
 	public var texts:FlxTypedGroup<FlxUIText>;
@@ -1967,7 +1975,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		// JOELwindows7: text field for note hitsound audio file to play
-		hitsoundNotePath = new FlxUIInputText(15, 70, 80, "SNAP"); // was x 10
+		hitsoundNotePath = new FlxUIInputText(30, 70, 80, "SNAP"); // was x 10
 		hitsoundNotePath.callback = function(text:String, action:String)
 		{
 			// JOELwindows7: the hitsound audio file to play which one yess
@@ -2027,7 +2035,7 @@ class ChartingState extends MusicBeatState
 
 		var stepperNoteTypeLabel = new FlxUIText(74, 40, 'Note Type'); // JOELwindows7: note type label
 
-		var hitsoundNotePathLabel = new FlxUIText(100, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label. was x 95
+		var hitsoundNotePathLabel = new FlxUIText(120, 70, 'Hitsound Audio FileName'); // JOELwindows7: hitsound audio file label. was x 95
 
 		var stepperVowelTypeLabel = new FlxUIText(74, 100, 'Vowel Type'); // JOELwindows7: vowel type label
 
@@ -3607,6 +3615,16 @@ class ChartingState extends MusicBeatState
 			Debug.logError('Error on this shit???\n$e: ${e.message}\n${e.details()}'); // JOELwindows7: error title & description
 		}
 		super.update(elapsed);
+	}
+
+	// JOELwindows7: Okay, do you have Enter frame here like it does on base OpenFl?
+	// Event Handlers
+	// private #if !flash override #end function __enterFrame(deltaTime:Float):Void
+
+	@:noCompletion
+	private function __enterFrame(deltaTime:Float):Void
+	{
+		// SHuck! you don't have it here.
 	}
 
 	// JOELwindows7: make press Enter to play song a function method

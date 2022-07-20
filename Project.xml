@@ -50,12 +50,17 @@
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
+	<!-- TODO: JOELwindows7: make Linux console more canon than just canon due to other console archaicly proprietary nature -->
+	<!-- hence you should not hope for console release, just linux it out! AUR or PPA it out! idk.. thancc, GabeN yey! -->
+
 	<!-- _____________________________ Path Settings ____________________________ -->
 
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
 	<set name="BUILD_DIR" value="export/arm64" if="arm64" />
+	<!-- JOELwindows7: please, RISC V yess!!!! -->
+	<set name="BUILD_DIR" value="export/riscv" if="riscv" />
 
 	<classpath name="source" />
 
@@ -365,8 +370,8 @@
 
 	<!-- JOELwindows7: GIF image support that should've been there since we are not from SparrowAtlas XML days -->
 	<!-- GrowtopiaFli / GwebDev too -->
-	<!-- <haxelib name="yagp" unless = "web"/> -->
-	<haxelib name="yagp"/>
+	<haxelib name="yagp" unless = "web"/>
+	<!-- <haxelib name="yagp"/> -->
 	<!-- ah peck, i can't believe not work on web -->
 	<!-- 
 	```
@@ -391,6 +396,11 @@
 	/opt/hostedtoolcache/haxe/4.2.4/x64/lib/haxe-concurrent/3,0,2/src/hx/concurrent/internal/Macros.hx:38: [INFO] NOT setting compiler define 'threads'.
 	/opt/hostedtoolcache/haxe/4.2.4/x64/lib/yagp/1,1,4/com/yagp/GifDecoder.hx:82: characters 46-54 : openfl.utils.ByteArray has no field byteView
 	Error: Process completed with exit code 1.
+	```
+
+	another
+	```
+	/home/joelwindows7/haxe/lib/yagp/1,1,4/com/yagp/GifDecoder.hx:82: characters 46-54 : openfl.utils.ByteArray has no field byteView
 	```
 	 -->
 	<!-- Hey, try this fix!: https://github.com/Paidyy/haxe-yaml.git -->
@@ -474,7 +484,7 @@
 
 	<!-- Never disable debug message, especially on Mobile -->
 	<haxeflag name="--no-traces" unless="debug || mobile" />
-	<haxeflag name="--dce full" if="release" />
+	<haxeflag name="--dce full" if="release || final" />
 
 	<!-- wtf -->
 	<!-- 

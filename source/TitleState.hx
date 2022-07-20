@@ -526,9 +526,24 @@ class TitleState extends MusicBeatState
 		#if FEATURE_HTTP
 		var http = new haxe.Http(Perkedel.ENGINE_VERSION_URL);
 		var returnedData:Array<String> = [];
-		var versionNumbering:Array<Int> = []; // watch this.
+		var versionNumbering:Array<Int> = []; // watch this. version available over there
+		var versionNumberRightNow:Array<Int> = [];
 		var comparinglyOutdated:Bool = false; // First, check year, month, patchoid.
 		var cuttingEdged:Bool = true; // if this is cutting edge, then tell them.
+
+		// JOELwindows7: seamlessly parse the version yey
+		var cutVersionRightNowSay:Array<String> = Perkedel.ENGINE_VERSION.split('.');
+		for (i in 0...cutVersionRightNowSay.length)
+		{
+			versionNumberRightNow[i] = Std.parseInt(cutVersionRightNowSay[i]);
+		}
+		// make sure has semantic correct
+		if (cutVersionRightNowSay[0] == '')
+			versionNumberRightNow[0] = 0;
+		if (cutVersionRightNowSay[1] == '')
+			versionNumberRightNow[1] = 0;
+		if (cutVersionRightNowSay[2] == '')
+			versionNumberRightNow[2] = 0;
 
 		http.onData = function(data:String)
 		{
@@ -539,25 +554,34 @@ class TitleState extends MusicBeatState
 				// tada separating version number for more detailed positional.
 				versionNumbering[i] = Std.parseInt(pisah[i]);
 			};
+			// make sure semantic correct
+			if (pisah[0] == '')
+				versionNumbering[0] = 0;
+			if (pisah[1] == '')
+				versionNumbering[1] = 0;
+			if (pisah[2] == '')
+				versionNumbering[2] = 0;
+
 			returnedData[1] = data.substring(data.indexOf('-'), data.length);
-			if (versionNumbering[0] == Perkedel.ENGINE_VERSION_NUMBER[0])
+			// no more Perkdel.ENGINE_VERSION_NUMBER array!!
+			if (versionNumbering[0] == versionNumberRightNow[0])
 			{
 				// up to date, right? check month
-				if (versionNumbering[1] == Perkedel.ENGINE_VERSION_NUMBER[1])
+				if (versionNumbering[1] == versionNumberRightNow[1])
 				{
 					// up to date?, okay, check patchoid!
-					if (versionNumbering[2] == Perkedel.ENGINE_VERSION_NUMBER[2])
+					if (versionNumbering[2] == versionNumberRightNow[2])
 					{
 						// Okay, confirmed up to date.
 						trace('patch version up to date');
 					}
-					else if (versionNumbering[2] > Perkedel.ENGINE_VERSION_NUMBER[2])
+					else if (versionNumbering[2] > versionNumberRightNow[2])
 					{
 						// naahp, still out of date.
 						comparinglyOutdated = true;
 						trace('patch version out of date');
 					}
-					else if (versionNumbering[2] < Perkedel.ENGINE_VERSION_NUMBER[2])
+					else if (versionNumbering[2] < versionNumberRightNow[2])
 					{
 						// cutting edge patch
 						MainMenuState.larutMalam = 'LARUT_MALAM';
@@ -566,13 +590,13 @@ class TitleState extends MusicBeatState
 					}
 					trace('month version up to date');
 				}
-				else if (versionNumbering[1] > Perkedel.ENGINE_VERSION_NUMBER[1])
+				else if (versionNumbering[1] > versionNumberRightNow[1])
 				{
 					// welp outdated.
 					comparinglyOutdated = true;
 					trace('month version out of date');
 				}
-				else if (versionNumbering[1] < Perkedel.ENGINE_VERSION_NUMBER[1])
+				else if (versionNumbering[1] < versionNumberRightNow[1])
 				{
 					// cutting edge month
 					MainMenuState.larutMalam = 'LARUT_MALAM';
@@ -581,13 +605,13 @@ class TitleState extends MusicBeatState
 				}
 				trace('year version up to date');
 			}
-			else if (versionNumbering[0] > Perkedel.ENGINE_VERSION_NUMBER[0])
+			else if (versionNumbering[0] > versionNumberRightNow[0])
 			{
 				// outdated
 				comparinglyOutdated = true;
 				trace('year version out of date');
 			}
-			else if (versionNumbering[0] < Perkedel.ENGINE_VERSION_NUMBER[0])
+			else if (versionNumbering[0] < versionNumberRightNow[0])
 			{
 				// cutting edge year
 				MainMenuState.larutMalam = 'LARUT_MALAM';
@@ -612,6 +636,7 @@ class TitleState extends MusicBeatState
 				// Disclaimer: Perkedel is fine with cutting edge leak & JOELwindows7 even personal fine with it. as long it does not harm reputation of course.
 				OutdatedSubState.needVerLast = returnedData[0];
 				OutdatedSubState.perubahanApaSaja = returnedData[1];
+
 				// FlxG.switchState(new OutdatedSubState());
 				switchState(new OutdatedSubState()); // JOELwindows7: get here hex switch state yeah
 				clean();
@@ -638,6 +663,11 @@ class TitleState extends MusicBeatState
 		switchState(new MainMenuState()); // Just pecking go to menu already! JOELwindows7: get here hex switch state yeah
 		clean();
 		#end
+
+		// now refresh both version says
+		MainMenuState.lastFunkinMomentVer += '${MainMenuState.larutMalam}';
+		MainMenuState.kadeEngineVer += '${MainMenuState.nightly}';
+
 		collapseToasts(); // JOELwindows7: collapse all toasts!
 	}
 

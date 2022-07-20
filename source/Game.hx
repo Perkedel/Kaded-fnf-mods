@@ -26,6 +26,16 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.misc.VarTween;
 import flixel.system.FlxSound;
 import flixel.FlxGame;
+#if air
+import flash.desktop.NativeApplication;
+#end
+#if ((js && html5) || electron)
+import js.html.Element;
+import js.Browser;
+#end
+#if sys
+import sys.io.Process;
+#end
 
 // Core of all things
 class Game extends FlxGame
@@ -79,7 +89,7 @@ class Game extends FlxGame
 						]);
 						#elseif web
 						// use https://www.w3schools.com/js/js_popup.asp
-						Browser.alert('Fatal WError: ${exc.message}', 'The game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
+						Browser.alert('Fatal WError: ${exc.message}\n\nThe game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
 						#else
 						Debug.logTrace('no notification command available, sadd');
 						#end
