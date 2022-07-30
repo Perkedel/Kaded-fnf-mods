@@ -832,7 +832,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		var diffs = [];
 		var diffsThatExist = [];
 
-		#if FEATURE_FILESYSTEM
+		// JOELwindows7: we used OpenFl path exists nowadays! look at BOLO yess.
+		// #if FEATURE_FILESYSTEM
 		if (Paths.doesTextAssetExist(Paths.json('songs/$songName/$songName-hard')))
 			diffsThatExist.push("Hard");
 		if (Paths.doesTextAssetExist(Paths.json('songs/$songName/$songName')))
@@ -843,9 +844,29 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		{
 			Debug.displayAlert(meta.songName + " Chart", "No difficulties found for chart, skipping.");
 		}
-		#else
-		diffsThatExist = ["Easy", "Normal", "Hard"];
-		#end
+
+		// JOELwindows7: Custom diffs Support!!! thancc BOLO
+		var customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songName/customDiffs'));
+
+		if (customDiffs != null)
+		{
+			for (i in 0...customDiffs.length)
+			{
+				var cDiff = customDiffs[i];
+				if (Paths.doesTextAssetExist(Paths.json('songs/$songName/$songName-${cDiff.toLowerCase()}')))
+				{
+					Debug.logInfo('New Difficulties detected for $songName: $cDiff');
+					diffsThatExist.push(cDiff);
+					CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
+					CoolUtil.difficultyArray.push(cDiff);
+				}
+			}
+		}
+		// end custom diff
+
+		// #else
+		// diffsThatExist = ["Easy", "Normal", "Hard"];
+		// #end
 
 		if (diffsThatExist.contains("Easy"))
 			FreeplayState.loadDiff(0, songName, diffs);
@@ -856,7 +877,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		meta.diffs = diffsThatExist;
 
-		if (diffsThatExist.length != 5)
+		// if (diffsThatExist.length != 5)
+		if (diffsThatExist.length < 3) // JOELwindows7: Bruh, did you mean less than 3? BOLO fixeh
 			trace("I ONLY FOUND " + diffsThatExist);
 
 		songData.set(songName, diffs);
