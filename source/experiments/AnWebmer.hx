@@ -26,7 +26,7 @@ import flixel.text.FlxText;
 #if FEATURE_VLC
 import VideoHandler as MP4Handler; // JOELwindows7: newe
 
-// import vlc.MP4Handler; // wait what?!
+// import vlc.MP4Handler as MP4Handler; // wait what?!
 #end
 // import extension.android.*;
 class AnWebmer extends MusicBeatState

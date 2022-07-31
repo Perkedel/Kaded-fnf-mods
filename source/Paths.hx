@@ -162,6 +162,8 @@ class Paths
 			rawJson = rawJson.substr(0, rawJson.length - 1);
 		}
 
+		// TODO: JOELwindows7: also cleanup at the beginning too!
+
 		try
 		{
 			// Attempt to parse and return the JSON data.

@@ -8,6 +8,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.graphics.frames.FlxFramesCollection;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
@@ -112,15 +113,37 @@ class Character extends FlxUISprite
 	{
 		Debug.logInfo('Generating character (${curCharacter}) from JSON data...');
 
+		// JOELwindows7: INCOMING BOLO RETHOUGHT STUFFS
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/Character.hx
 		// Load the data from JSON and cast it to a struct we can easily read.
 		var jsonData = Paths.loadJSON('characters/${curCharacter}');
 		if (jsonData == null)
 		{
 			Debug.logError('Failed to parse JSON data for character ${curCharacter}');
-			return;
+			// JOELwindows7: BOLO has habbit to unfullscreen for alert window. idk why tho..
+			// if (FlxG.fullscreen)
+			// 	FlxG.fullscreen = !FlxG.fullscreen;
+			if (isPlayer)
+			{
+				Debug.displayAlert('Kade Engine JSON Parser', 'Failed to parse JSON data for character  ${curCharacter}. Loading default boyfriend...');
+				jsonData = Paths.loadJSON('characters/bf');
+			}
+			else if (replacesGF)
+			{
+				Debug.displayAlert('Kade Engine JSON Parser', 'Failed to parse JSON data for character  ${curCharacter}. Loading default girlfriend...');
+				jsonData = Paths.loadJSON('characters/gf');
+			}
+			else
+			{
+				Debug.displayAlert('Kade Engine JSON Parser', 'Failed to parse JSON data for character  ${curCharacter}. Loading default opponent...');
+				jsonData = Paths.loadJSON('characters/dad');
+			}
+			// return; // JOELwindows7: no longer needed! we already just loaded emergency fallbacks!!
 		}
 
 		var data:CharacterData = cast jsonData;
+
+		// JOELwindows7: BOLO optimizener. uuhh, idk, why.. we have heart organ things here!
 		var tex:FlxAtlasFrames;
 
 		// to be deleted
@@ -198,9 +221,10 @@ class Character extends FlxUISprite
 
 		antialiasing = data.antialiasing == null ? FlxG.save.data.antialiasing : data.antialiasing;
 
-		barColor = FlxColor.fromString(data.barColor);
-
 		playAnim(data.startingAnim);
+		// end optimize
+
+		barColor = FlxColor.fromString(data.barColor);
 
 		// JOELwindows7: fill out heart organs!
 		for (thisSpec in heartOrgans)
@@ -792,6 +816,14 @@ typedef CharacterData =
 	 * @default true
 	 */
 	var ?antialiasing:Bool;
+
+	// JOELwindows7: BOLO
+
+	/**
+	 * What type of Atlas the character uses.
+	 * @default SparrowAtlas
+	 */
+	var ?AtlasType:String;
 
 	/**
 	 * Whether this character uses PackerAtlas.
