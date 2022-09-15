@@ -404,7 +404,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
     > WHO CARES..
     > PUT IT ALL IN MY MOUT.
 - tebarek
-- https://gamebanana.com/tools/10566 Modchart editor yey methewhenmethe. Godot app. WIP atm
+
 
 
 # in event of git merge conflict
@@ -576,6 +576,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://github.com/Paidyy/Funkin-PEngine Paidyy. PEngine (not Psych Engine). easy mod FNF engine no touch code. Let's install & refer the new libraries used.
 - https://github.com/Paidyy/haxe-yaml Paidyy. YAML interpreter.
 - https://github.com/jigsaw-4277821/extension-androidtools https://github.com/jigsaw-4277821/extension-videoview jigsaw-4277821. Android tools & java native video view for haxe flixel
+- https://github.com/MAJigsaw77/extension-androidtools Jigsaw renamed a bit!
 - https://github.com/josuigoa/linc_clipboard josuigoa. Clipboard manager. set & get system clipboard!. interacts with OS / Desktop Environment clipboard!
 - https://gamebanana.com/members/submissions/mods/1881129 (Permissioned) DemonOfRazgriz. All mods from this.
 - https://gamebanana.com/mods/287311 (Permissioned) DemonOfRazgriz. Niko fnf mod playable
@@ -589,6 +590,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://archlinux.org Arch Linux. take every asset possible from that Arch installation btw, as well as AUR which those asset are royalty free if there is.
 - https://www.gnome.org/ GNOME. take every asset too!
 - https://youtu.be/hr7GyFM7pX4 (WARNING: Unknown license) Dairy Orange. Fart reverb
+- https://gamebanana.com/tools/10566 (WARNING: NO SOURCE CODE AVAILABLE AS OF 2022-09-16) Lua Modchart editor yey methewhenmethe. Godot app. WIP atm
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

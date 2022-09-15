@@ -97,7 +97,7 @@ jobs:
           haxelib install yagp
           haxelib git crashdumper http://github.com/larsiusprime/crashdumper
           haxelib run lime rebuild yagp linux
-          haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
+          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
           haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
           haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
           haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
