@@ -1,5 +1,6 @@
 package;
 
+import flixel.graphics.frames.FlxFramesCollection;
 import flash.media.Sound;
 import openfl.display.BitmapData;
 import openfl.media.Video;
@@ -10,6 +11,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.system.System;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+import openfl.display3D.textures.Texture;
 import haxe.Json;
 import tjson.TJSON;
 
@@ -52,23 +54,31 @@ class Paths
 	// JOELwindows7: BOLO stuffs!
 	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Paths.hx
 	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
-
+	public static var currentTrackedBitmapData:Map<String, BitmapData> = [];
+	public static var currentTrackedTextures:Map<String, Texture> = [];
 	public static var currentTrackedSounds:Map<String, Sound> = [];
 
 	public static function loadSound(path:String, key:String, ?library:String)
 	{
 		// I hate this so god damn much
 		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
+		// JOELwindows7: BOLO move addedin here
+		var folder:String = '';
+		if (path == 'songs')
+			folder = 'songs:';
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
 		// trace(gottenPath);
-		if (!currentTrackedSounds.exists(gottenPath))
+		// JOELwindows7: BOLO safety!!!
+		if (OpenFlAssets.exists(folder + gottenPath, SOUND))
 		{
-			var folder:String = '';
-
-			if (path == 'songs')
-				folder = 'songs:';
-
-			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+			if (!currentTrackedSounds.exists(gottenPath))
+			{
+				currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+			}
+		}
+		else
+		{
+			Debug.logWarn('Could not find sound at ${folder + gottenPath}');
 		}
 
 		localTrackedAssets.push(gottenPath);
@@ -88,6 +98,8 @@ class Paths
 		return Assets.getText('assets/data/$string/modchart.hscript');
 	}
 
+	// JOELwindows7: BOLO GPU render
+
 	/**
 	 * For a given key and library for an image, returns the corresponding BitmapData.
 	 		* We can probably move the cache handling here.
@@ -95,9 +107,15 @@ class Paths
 	 * @param library 
 	 * @return BitmapData
 	 */
-	static public function loadImage(key:String, ?library:String):FlxGraphic
+	static public function loadImage(key:String, ?library:String, ?gpuRender:Bool):FlxGraphic
 	{
-		var path = image(key, library);
+		// var path = image(key, library);
+		// JOELwindows7: NEW BOLO
+		var path = '';
+
+		path = getPath('images/$key.png', IMAGE, library);
+
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
 
 		#if FEATURE_FILESYSTEM
 		if (Caching.bitmapData != null)
@@ -113,20 +131,60 @@ class Paths
 
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
-			var bitmap = OpenFlAssets.getBitmapData(path);
-			return FlxGraphic.fromBitmapData(bitmap);
+			// var bitmap = OpenFlAssets.getBitmapData(path);
+			// return FlxGraphic.fromBitmapData(bitmap);
+
+			// JOELwindows7: NEW BOLO OBJECT
+			if (!currentTrackedAssets.exists(key))
+			{
+				var bitmap:BitmapData = OpenFlAssets.getBitmapData(path, false);
+				var graphic:FlxGraphic = null;
+
+				var graphic:FlxGraphic = null;
+				if (gpuRender)
+				{
+					var texture = FlxG.stage.context3D.createTexture(bitmap.width, bitmap.height, BGRA, false, 0);
+					texture.uploadFromBitmapData(bitmap);
+					currentTrackedTextures.set(key, texture);
+					bitmap.dispose();
+					bitmap.disposeImage();
+					bitmap = null;
+					graphic = FlxGraphic.fromBitmapData(BitmapData.fromTexture(texture), false, key);
+					Debug.logTrace('Adding new texture to cache: $key');
+				}
+				else
+				{
+					graphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
+					Debug.logTrace('Adding new bitmap to cache: $key');
+				}
+				graphic.persist = true;
+				currentTrackedAssets.set(key, graphic);
+			}
+			else
+			{
+				// Get data from cache.
+				// Debug.logTrace('Loading existing image from cache: $key');
+			}
+			localTrackedAssets.push(key);
+			return currentTrackedAssets.get(key);
 		}
-		else
-		{
-			Debug.logWarn('Could not find image at path $path');
-			return null;
-		}
+		// else
+		// {
+		Debug.logWarn('Could not find image at path $path');
+		return null;
+		// }
 	}
 
-	// JOELwindows7: okay, raw load just bitmap pls..
-	static public function loadBitmap(key:String, ?library:String):BitmapData
+	// JOELwindows7: okay, raw load just bitmap pls.. + BOLO GPU render
+	static public function loadBitmap(key:String, ?library:String, ?gpuRender:Bool):BitmapData
 	{
-		var path = image(key, library);
+		// var path = image(key, library);
+		// JOELwindows7: BOLO NEW
+		var path = '';
+
+		path = getPath('images/$key.png', IMAGE, library);
+
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
 
 		#if FEATURE_FILESYSTEM
 		if (Caching.bitmapData != null)
@@ -142,24 +200,73 @@ class Paths
 
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
-			var bitmap = OpenFlAssets.getBitmapData(path);
-			return bitmap;
+			// var bitmap = OpenFlAssets.getBitmapData(path);
+			// return bitmap;
+
+			// JOELwindows7: NEW BOLO OBJECT
+			if (!currentTrackedBitmapData.exists(key))
+			{
+				var bitmap:BitmapData = OpenFlAssets.getBitmapData(path, false);
+				currentTrackedBitmapData.set(key, bitmap);
+				var graphic:FlxGraphic = null;
+
+				var graphic:FlxGraphic = null;
+				if (gpuRender)
+				{
+					var texture = FlxG.stage.context3D.createTexture(bitmap.width, bitmap.height, BGRA, false, 0);
+					texture.uploadFromBitmapData(bitmap);
+					currentTrackedTextures.set(key, texture);
+					bitmap.dispose();
+					bitmap.disposeImage();
+					bitmap = null;
+					graphic = FlxGraphic.fromBitmapData(BitmapData.fromTexture(texture), false, key);
+					Debug.logTrace('Adding new texture to cache: $key');
+				}
+				else
+				{
+					graphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
+					Debug.logTrace('Adding new bitmap to cache: $key');
+				}
+				graphic.persist = true;
+				currentTrackedAssets.set(key, graphic);
+			}
+			else
+			{
+				// Get data from cache.
+				// Debug.logTrace('Loading existing image from cache: $key');
+			}
+			localTrackedAssets.push(key);
+			return currentTrackedBitmapData.get(key);
 		}
-		else
-		{
-			Debug.logWarn('Could not find bitmap at path $path');
-			return null;
-		}
+		// else
+		// {
+		Debug.logWarn('Could not find bitmap at path $path');
+		return null;
+		// }
 	}
 
 	static public function loadJSON(key:String, ?library:String):Dynamic
 	{
-		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
+		var rawJson:String = '';
+		// var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
+
+		// JOELwindows7: use safe trick instead like BOLO
+		try
+		{
+			rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
+		}
+		catch (e)
+		{
+			rawJson = null;
+		}
 
 		// Perform cleanup on files that have bad data at the end.
-		while (!rawJson.endsWith("}"))
+		if (rawJson != null) // JOELwindows7: BOLO make sure not null
 		{
-			rawJson = rawJson.substr(0, rawJson.length - 1);
+			while (!rawJson.endsWith("}"))
+			{
+				rawJson = rawJson.substr(0, rawJson.length - 1);
+			}
 		}
 
 		// TODO: JOELwindows7: also cleanup at the beginning too!
@@ -168,12 +275,15 @@ class Paths
 		{
 			// Attempt to parse and return the JSON data.
 			// return Json.parse(rawJson);
-			return TJSON.parse(rawJson); // JOELwindows7: let's use TJSON rather than regular Haxe JSON instead.
+			if (rawJson != null) // JOELwindows7: BOLO make sure not null
+				return TJSON.parse(rawJson); // JOELwindows7: let's use TJSON rather than regular Haxe JSON instead.
+
+			return null; // JOELwindows7: if all failed
 		}
 		catch (e)
 		{
 			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-			Debug.logError(e + ": " + e.message); // JOELwindows7: error title & description
+			Debug.logError(e + ": " + e.message + "\n" + e.details()); // JOELwindows7: error title & description
 
 			// Return null.
 			return null;
@@ -276,7 +386,8 @@ class Paths
 
 	inline static public function voices(song:String, count:Int = 0)
 	{
-		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		// var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase() + '/Voices${count > 0 ? Std.string(count) : ""}'; // JOELwindows7: BOLO
 		switch (songLowercase)
 		{
 			case 'dad-battle':
@@ -288,15 +399,25 @@ class Paths
 		}
 		// var result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
 		// JOELwindows7 : hey, use multi voice now!
-		var result = 'songs:assets/songs/${songLowercase}/Voices${count > 0 ? Std.string(count) : ""}.$SOUND_EXT';
+		// var result = 'songs:assets/songs/${songLowercase}/Voices${count > 0 ? Std.string(count) : ""}.$SOUND_EXT';
 		// Return null if the file does not exist.
-		return doesSoundAssetExist(result) ? result : null;
+		// return doesSoundAssetExist(result) ? result : null;
+
+		// JOElwindows7: BOLO rawly file
+		var file;
+		#if PRELOAD_ALL
+		file = loadSound('songs', songLowercase);
+		#else
+		file = 'songs:assets/songs/$songLowercase.$SOUND_EXT';
+		#end
+		return file;
 	}
 
-	// JOELwindows7: okay, other audio tracks what should it be.
+	// JOELwindows7: okay, other audio tracks what should it be. + BOLO
 	inline static public function multiTracks(song:String, count:Int = 0)
 	{
-		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		// var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase() + '/MultiTracks${Std.string(count)}';
 		switch (songLowercase)
 		{
 			case 'dad-battle':
@@ -308,14 +429,24 @@ class Paths
 		}
 		// var result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
 		// JOELwindows7 : hey, use multi voice now!
-		var result = 'songs:assets/songs/${songLowercase}/MultiTracks${Std.string(count)}.$SOUND_EXT';
+		// var result = 'songs:assets/songs/${songLowercase}/MultiTracks${Std.string(count)}.$SOUND_EXT';
 		// Return null if the file does not exist.
-		return doesSoundAssetExist(result) ? result : null;
+		// return doesSoundAssetExist(result) ? result : null;
+
+		// JOElwindows7: BOLO rawly file
+		var file;
+		#if PRELOAD_ALL
+		file = loadSound('songs', songLowercase);
+		#else
+		file = 'songs:assets/songs/$songLowercase.$SOUND_EXT';
+		#end
+		return file;
 	}
 
 	inline static public function inst(song:String)
 	{
-		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		// var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase() + '/Inst'; // JOELwindows7: BOLO
 		switch (songLowercase)
 		{
 			case 'dad-battle':
@@ -325,7 +456,17 @@ class Paths
 			case 'm.i.l.f':
 				songLowercase = 'milf';
 		}
-		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
+		// return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
+
+		// JOELwindows7: BOLO
+		var file;
+		#if PRELOAD_ALL
+		file = loadSound('songs', songLowercase);
+		#else
+		file = 'songs:assets/songs/$songLowercase.$SOUND_EXT';
+		#end
+
+		return file;
 	}
 
 	// JOELwindows7: copy inst but for MIDI
@@ -433,6 +574,14 @@ class Paths
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
+	// JOElwindows7: COnfusingly image BOLO functions are
+	inline static public function imageGraphic(key:String, ?library:String, ?gpuRender:Bool):FlxGraphic
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		var image:FlxGraphic = loadImage(key, library, gpuRender);
+		return image;
+	}
+
 	// JOELwindows7: xml SparrowAtlas path
 	inline static public function sparrowXml(key:String, ?library:String)
 	{
@@ -526,6 +675,18 @@ class Paths
 				Debug.logTrace('Cleared and removed $counterSound cached sounds.');
 			}
 		}
+
+		// Clear everything everything that's left
+		var counterLeft:Int = 0;
+		for (key in OpenFlAssets.cache.getKeys())
+		{
+			if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key) && key != null)
+			{
+				OpenFlAssets.cache.clear(key);
+				counterLeft++;
+				Debug.logTrace('Cleared and removed $counterLeft cached leftover assets.');
+			}
+		}
 		// flags everything to be cleared out next unused memory clear
 		localTrackedAssets = [];
 		openfl.Assets.cache.clear("songs");
@@ -540,25 +701,53 @@ class Paths
 		return false;
 	}
 
-	static public function getSparrowAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
+	// JOELwindows7: BOLO changes
+	static public function getSparrowAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
 	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
 		if (isCharacter)
 		{
-			return FlxAtlasFrames.fromSparrow(loadImage('characters/$key', library), file('images/characters/$key.xml', library));
+			// return FlxAtlasFrames.fromSparrow(loadImage('characters/$key', library), file('images/characters/$key.xml', library));
+			return FlxAtlasFrames.fromSparrow(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.xml', library));
 		}
-		return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
+		// return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
+		return FlxAtlasFrames.fromSparrow(imageGraphic(key, library, gpuRender), file('images/$key.xml', library));
 	}
+
+	// JOELwindows7: BOLO add GPU Render
 
 	/**
 	 * Senpai in Thorns uses this instead of Sparrow and IDK why.
 	 */
-	inline static public function getPackerAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
+	inline static public function getPackerAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
 	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
 		if (isCharacter)
 		{
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage('characters/$key', library), file('images/characters/$key.txt', library));
+			// return FlxAtlasFrames.fromSpriteSheetPacker(loadImage('characters/$key', library), file('images/characters/$key.txt', library));
+			return FlxAtlasFrames.fromSpriteSheetPacker(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.txt', library));
 		}
-		return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
+		// return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
+		return FlxAtlasFrames.fromSpriteSheetPacker(imageGraphic(key, library, gpuRender), file('images/$key.txt', library));
+	}
+
+	// JOELwindows7: BOLO texture atlas
+	inline static public function getTextureAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?excludeArray:Array<String>):FlxFramesCollection
+	{
+		if (isCharacter)
+			return AtlasFrameMaker.construct('characters/$key', library, excludeArray);
+
+		return AtlasFrameMaker.construct(key, library, excludeArray);
+	}
+
+	// JOELwindows7: BOLO Json atlas
+	inline static public function getJSONAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		if (isCharacter)
+			return FlxAtlasFrames.fromTexturePackerJson(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.json', library));
+
+		return FlxAtlasFrames.fromTexturePackerJson(imageGraphic(key, library), file('images/$key.json', library));
 	}
 
 	// JOELwindows7: the get bitmap sprite sheet for pixel e.g.
@@ -587,6 +776,12 @@ class Paths
 	{
 		trace('assets/videos/$key.mp4');
 		return getPath('videos/$key.mp4', BINARY, library);
+	}
+
+	// JOELwindows7: BOLO webm video too
+	static public function webmVideo(key:String)
+	{
+		return 'assets/videos/$key.webm';
 	}
 
 	// JOELwindows7: kem0x shader fragment path https://github.com/kem0x/FNF-ModShaders

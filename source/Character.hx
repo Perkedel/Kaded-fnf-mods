@@ -242,27 +242,44 @@ class Character extends FlxUISprite
 		{
 			if (!isPlayer)
 			{
-				if (animation.curAnim.name.startsWith('sing'))
-					holdTimer += elapsed;
-
-				if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
+				if (!PlayStateChangeables.opponentMode) // JOELwindows7: BOLO opponent mode check moved out here
 				{
-					// JOELwindows7: BOLO's opponent mode check. if not opponent mode then dance
-					if (!PlayStateChangeables.opponentMode)
+					if (animation.curAnim.name.startsWith('sing'))
+						holdTimer += elapsed;
+
+					if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001 * PlayState.songMultiplier)
 					{
+						// JOELwindows7: BOLO's opponent mode check. if not opponent mode then dance
+						// if (!PlayStateChangeables.opponentMode)
+						// {
 						/*
 							if (isDancing)
 								playAnim('danceLeft'); // overridden by dance correctly later
 						 */
 						dance();
+						// }
+						holdTimer = 0;
 					}
-					holdTimer = 0;
-				}
 
-				// JOELwindows7: BOLO's return back to idle when not player.
-				if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+					// JOELwindows7: BOLO's return back to idle when not player.
+					if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+					{
+						// playAnim('idle', true, false, 10); // perhaps no, don't, I guess..
+					}
+				}
+				else
 				{
-					// playAnim('idle', true, false, 10); // perhaps no, don't, I guess..
+					// JOELwindows7: BOLO opponent mode
+					if (animation.curAnim.name.startsWith('sing'))
+						holdTimer += elapsed;
+					else
+						holdTimer = 0;
+
+					if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+						dance();
+
+					if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)
+						playAnim('deathLoop');
 				}
 			}
 
