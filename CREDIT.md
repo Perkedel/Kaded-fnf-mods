@@ -404,6 +404,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
     > WHO CARES..
     > PUT IT ALL IN MY MOUT.
 - tebarek
+- https://gamebanana.com/tools/10566 Modchart editor yey methewhenmethe. Godot app. WIP atm
 
 
 # in event of git merge conflict
