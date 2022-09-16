@@ -1829,7 +1829,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		add(scoreTxt);
 
 		// judgementCounter = new FlxUIText(20, 0, 0, "", 20);
-		judgementCounter = new FlxText(-FlxG.width + (1300 * Math.pow(FlxG.save.data.zoom, 0.5)), 0, FlxG.width, "", 20); // JOELwindows7: BOLO new placement
+		judgementCounter = new FlxUIText(-FlxG.width + (1300 * Math.pow(FlxG.save.data.zoom, 0.5)), 0, FlxG.width, "", 20); // JOELwindows7: BOLO new placement
 		// JOELwindows7: I think this should be placed on right as where your player strum is at.
 		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		judgementCounter.alpha = .5; // JOELwindows7: also bit opaque pls!
@@ -2097,7 +2097,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		{
 			if (boyfriend.curCharacter == 'bf-holding-gf')
 				// precacheList.set('tankman/bfHoldingGF-DEAD', 'frame');
-				precacheThing('characters/bfHoldingGF-DEAD', 'image', 'shared')
+				precacheThing('characters/bfHoldingGF-DEAD', 'image', 'shared');
 		}
 
 		if (!loadRep)
@@ -3093,7 +3093,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			{
 				if (boyfriend != null && boyfriend.isDancing && !boyfriend.animation.curAnim.name.endsWith("miss"))
 					boyfriend.dance();
-				if (dad != null & dad.isDancing)
+				if (dad != null && dad.isDancing)
 					dad.dance();
 			}
 
@@ -4681,8 +4681,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		#end
 		//JOELwindows7: BOLO thringy
 		var shit:Float = 14000;
-		if (SONG.speed < 1 || scrollSpeed < 1)
-			shit /= scrollSpeed == 1 ? SONG.speed : scrollSpeed;
+		if (SONG.speed < 1 || PlayStateChangeables.scrollSpeed < 1)
+			shit /= PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed;
 		// JOELwindows7: BOLO moved unspawn note here
 		if (unspawnNotes[0] != null)
 		{
@@ -4948,13 +4948,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						// JOELwindows7: BOLO fades the song positioner
 						if (FlxG.save.data.songPosition)
 						{
-							createTween(accText, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
-							createTween(judgementCounter, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
+							createTween(accText, {alpha: 0}, 1, {ease: FlxEase.circIn});
+							createTween(judgementCounter, {alpha: 0}, 1, {ease: FlxEase.circIn});
 							createTween(scoreTxt, {alpha: 0}, 1, {ease: FlxEase.circIn});
-							createTween(kadeEngineWatermark, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
-							createTween(songName, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
-							createTween(songPosBar, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
-							createTween(bar, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
+							createTween(kadeEngineWatermark, {alpha: 0}, 1, {ease: FlxEase.circIn});
+							createTween(songName, {alpha: 0}, 1, {ease: FlxEase.circIn});
+							createTween(songPosBar, {alpha: 0}, 1, {ease: FlxEase.circIn});
+							createTween(bar, {alpha: 0}, 1, {ease: FlxEase.circIn});
 						}
 
 						endingSong = true;
@@ -4995,6 +4995,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						data.endBeat = beat;
 						data.length = ((data.endBeat - data.startBeat) / (data.bpm / 60)) / songMultiplier;
 						var step = (((60 / data.bpm) * 1000) / songMultiplier) / 4; // JOELwindows7: BOLO not forget per songMultiplier yess.
+
 						TimingStruct.AllTimings[currentIndex].startStep = Math.floor((((data.endBeat / (data.bpm / 60)) * 1000) / step) / songMultiplier);
 						TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length / songMultiplier;
 					}
