@@ -32,6 +32,9 @@ class Perkedel
 {
 	public static final OPTION_SAY_NEED_RESTART_SONG:String = "(Restart Song Required) ";
 	public static final OPTION_SAY_CANNOT_ACCESS_IN_PAUSE:String = "(Can't access / toggle! in pause rn) "; // In kade it was "This option cannot be toggled in the pause menu."
+	public static final OPTION_SAY_REQUIRES_RESTART:String = "(Requires restart!!!)"; // REQUIRES system restart
+	public static final MAX_SCROLL_SPEED:Float = 6; // JOELwindows7: BOLO set max to 6 yeah
+	public static final TYPICAL_REFRESH_RATE:Int = 144; // JOELwindows7: to check if someone is tremendously tech illiterate
 	public static final MAX_FPS_CAP:Int = 3000; // JOELwindows7: usually 290
 	public static final MIN_FPS_CAP:Int = 60; // JOELwindows7: usually 60
 	public static final OPTION_CATEGORY_LENGTH:Int = 6; // How many categories on option menu? was 4, now we got 6. no wait that's DFJK.
@@ -159,4 +162,22 @@ class Perkedel
 	public static final VIDEO_DISABLED_DESCRIPTION:String = 'You have setting that disabled video.\nTo reenable, go to Setting, Misc, uncheck ${VIDEO_DISABLED_OPTION_NAME}';
 
 	public static final API_DISCORD_CLIENT_ID:String = "557069829501091850"; // change to whatever the peck you want lol
+
+	// Here image misc
+	public static final CRASH_TEXT_BANNER:String = "
+	████████████████████████████████████████████████████████████████████████████████\n
+	█      ░▒▒▒▒▒▒▒░                                                               █\n
+	█    ░░░░▒▒▒░░░░░    ███████         █        █  ██    █   ███       ███       █\n
+	█   ░▒░░░░░░▒▒▒░░░   █               █        █ █  █   █   █  █        █       █\n
+	█  ░░▒░░▒▒░░░▒░░▒░░  ███████ █ █ ███ █  ███ ███ ████ ███   █  █ █  █ ███ ████  █\n
+	█         ░▒         █        █  █ █ █  █ █ █ █ █    █ █   █  █ █  █ █ █ █     █\n
+	█    ░▓█████████▒    ███████ █ █ ███ ██ ███ ███  ██  ███   ███  ███  ███ █     █\n
+	█         ░░                     █                                             █\n
+	█         ▒▒                       M E D I T A T I O N ! ! !                   █\n
+	█      ░░▒░▒░▓░                                                                █\n
+	████████████████████████████████████████████████████████████████████████████████\n
+	\n
+	(image by JOELwindows7. CC4.0-BY-SA)\n
+	\n
+	";
 }

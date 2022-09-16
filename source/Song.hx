@@ -12,13 +12,14 @@ class Event
 {
 	public var name:String;
 	public var position:Float;
-	public var value:Float;
-	public var value2:Float; // JOELwindows7: another one
-	public var value3:Float; // JOELwindows7: aanother one
+	// JOELwindows7: now these are string
+	public var value:String;
+	public var value2:String; // JOELwindows7: another one
+	public var value3:String; // JOELwindows7: aanother one
 	public var type:String;
 
 	// JOELwindows7: extra
-	public function new(name:String, pos:Float, value:Float, type:String, value2:Float, value3:Float)
+	public function new(name:String, pos:Float, value:String, type:String, value2:String, value3:String)
 	{
 		this.name = name;
 		this.position = pos;
@@ -191,7 +192,9 @@ class Song
 		var convertedStuff:Array<Song.Event> = [];
 
 		if (song.eventObjects == null)
-			song.eventObjects = [new Song.Event("Init BPM", 0, song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: oh banana
+			song.eventObjects = [
+				new Song.Event("Init BPM", 0, Std.string(song.bpm), "BPM Change", Std.string(0.0), Std.string(0.0))
+			]; // JOELwindows7: oh banana
 
 		for (i in song.eventObjects)
 		{
@@ -202,7 +205,7 @@ class Song
 			var value2 = Reflect.field(i, "value2");
 			var value3 = Reflect.field(i, "value3");
 
-			convertedStuff.push(new Song.Event(name, pos, value, type, value2, value3)); // JOELwindows7: super idol
+			convertedStuff.push(new Song.Event(name, pos, Std.string(value), type, Std.string(value2), Std.string(value3))); // JOELwindows7: super idol
 		}
 
 		// JOELwindows7: also stringify stuffs like note type
@@ -268,7 +271,7 @@ class Song
 
 				var endBeat:Float = Math.POSITIVE_INFINITY;
 
-				TimingStruct.addTiming(beat, i.value, endBeat, 0); // offset in this case = start time since we don't have a offset
+				TimingStruct.addTiming(beat, Std.parseFloat(i.value), endBeat, 0); // offset in this case = start time since we don't have a offset
 
 				if (currentIndex != 0)
 				{
@@ -302,7 +305,8 @@ class Song
 			{
 				Debug.logTrace("converting changebpm for section " + index);
 				ba = i.bpm;
-				song.eventObjects.push(new Song.Event("FNF BPM Change " + index, beat, i.bpm, "BPM Change", 0, 0)); // JOELwindows7: bep
+				song.eventObjects.push(new Song.Event("FNF BPM Change " + index, beat, Std.string(i.bpm), "BPM Change", Std.string(0.0),
+					Std.string(0.0))); // JOELwindows7: bep
 			}
 
 			for (ii in i.sectionNotes)

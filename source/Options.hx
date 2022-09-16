@@ -27,6 +27,7 @@ import openfl.Lib;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+import flixel.input.gamepad.FlxGamepad;
 import const.Perkedel;
 
 using StringTools;
@@ -40,6 +41,8 @@ class Option
 		// this.cannotInPause = cantInPause;
 		// this.requiresRestartSong = needsRestartSong;
 	}
+
+	var gamepad:FlxGamepad = FlxG.gamepads.lastActive; // JOELwindows7: BOLO
 
 	// JOELwindows7: incoming! Master Eric Enigma!
 	// yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/behavior/options/Options.hx
@@ -65,13 +68,29 @@ class Option
 
 	private var acceptValues:Bool = false;
 
+	public static var valuechanged:Bool = false; // JOELwindows7: BOLO flag for value just changed
+
 	public var acceptType:Bool = false;
 
 	public var waitingType:Bool = false;
 
 	// JOELwindows7: special marker
 	public var cannotInPause:Bool = false; // mark this option inaccessible in pause menu
+
 	public var requiresRestartSong:Bool = false; // mark this option, changing will require you to restart song to apply.
+
+	// JOELwindows7: Oh! got an idea! how about this?
+	function varCannotInPause():Bool
+	{
+		return false;
+	}
+
+	function varRequiresRestartSong():Bool
+	{
+		return false;
+	}
+
+	// yeah! now you can override these above wow yay!
 
 	public final function getDisplay():String
 	{
@@ -161,7 +180,12 @@ class UpKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.upBind = text;
+			// JOELwindows7: BOLO now has Gamepad binder too, so all these keybind will have these too as well.
+			// FlxG.save.data.upBind = text;
+			if (gamepad != null)
+				FlxG.save.data.gpupBind = text;
+			else
+				FlxG.save.data.upBind = text;
 			waitingType = false;
 		}
 	}
@@ -193,7 +217,12 @@ class DownKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.downBind = text;
+			// JOELwindows7: BOLOfy
+			// FlxG.save.data.downBind = text;
+			if (gamepad != null)
+				FlxG.save.data.gpdownBind = text;
+			else
+				FlxG.save.data.downBind = text;
 			waitingType = false;
 		}
 	}
@@ -225,7 +254,12 @@ class RightKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.rightBind = text;
+			// JOELwindows7: BOLOfy
+			// FlxG.save.data.rightBind = text;
+			if (gamepad != null)
+				FlxG.save.data.gprightBind = text;
+			else
+				FlxG.save.data.rightBind = text;
 			waitingType = false;
 		}
 	}
@@ -257,7 +291,12 @@ class LeftKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.leftBind = text;
+			// JOELwindows7: BOLOfy
+			// FlxG.save.data.leftBind = text;
+			if (gamepad != null)
+				FlxG.save.data.gplefttBind = text;
+			else
+				FlxG.save.data.leftBind = text;
 			waitingType = false;
 		}
 	}
@@ -289,7 +328,12 @@ class PauseKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.pauseBind = text;
+			// JOELwindows7: BOLOfy. Pause keybind too aswell!!!!!
+			// FlxG.save.data.pauseBind = text;
+			if (gamepad != null)
+				FlxG.save.data.gppauseBind = text;
+			else
+				FlxG.save.data.pauseBind = text;
 			waitingType = false;
 		}
 	}
@@ -321,7 +365,12 @@ class ResetBind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.resetBind = text;
+			// JOELwindows7: BOLOfy
+			// FlxG.save.data.resetBind = text;
+			if (gamepad != null)
+				FlxG.save.data.gpresetBind = text;
+			else
+				FlxG.save.data.resetBind = text;
 			waitingType = false;
 		}
 	}
@@ -729,15 +778,18 @@ class DownscrollOption extends Option
 		super();
 		if (OptionsMenu.isInPause)
 			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc;
 		else
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// JOELwindows7: BOLO destroy limiter
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.downscroll = !FlxG.save.data.downscroll;
 		display = updateDisplay();
 		return true;
@@ -787,17 +839,17 @@ class AccuracyOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
-		else
-			description = desc;
+		// if (OptionsMenu.isInPause)
+		// 	// description = "This option cannot be toggled in the pause menu.";
+		// 	description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		// else
+		description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.accuracyDisplay = !FlxG.save.data.accuracyDisplay;
 		display = updateDisplay();
 		return true;
@@ -820,17 +872,17 @@ class SongPositionOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
-		else
-			description = desc;
+		// if (OptionsMenu.isInPause)
+		// 	// description = "This option cannot be toggled in the pause menu.";
+		// 	description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		// else
+		description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.songPosition = !FlxG.save.data.songPosition;
 		display = updateDisplay();
 		return true;
@@ -886,17 +938,17 @@ class Colour extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
-		else
-			description = desc;
+		// if (OptionsMenu.isInPause)
+		// 	// description = "This option cannot be toggled in the pause menu.";
+		// 	description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		// else
+		description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.colour = !FlxG.save.data.colour;
 		display = updateDisplay();
 		return true;
@@ -919,11 +971,12 @@ class StepManiaOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		// if (OptionsMenu.isInPause)
-		// 	// description = "This option cannot be toggled in the pause menu.";
-		// 	description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
-		// else
-		description = desc;
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
 	}
 
 	public override function left():Bool
@@ -977,10 +1030,17 @@ class InstantRespawn extends Option
 		description = desc;
 	}
 
-	public override function press():Bool
+	// JOELwindows7: BRUH, this is selection, not enter! BOLO fix
+	public override function left():Bool
 	{
 		FlxG.save.data.InstantRespawn = !FlxG.save.data.InstantRespawn;
 		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
 		return true;
 	}
 
@@ -997,15 +1057,17 @@ class FlashingLightsOption extends Option
 		super();
 		if (OptionsMenu.isInPause)
 			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.flashing = !FlxG.save.data.flashing;
 		display = updateDisplay();
 		return true;
@@ -1040,15 +1102,17 @@ class AntialiasingOption extends Option
 		super();
 		if (OptionsMenu.isInPause)
 			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_REQUIRES_RESTART + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.antialiasing = !FlxG.save.data.antialiasing;
 		display = updateDisplay();
 		return true;
@@ -1073,15 +1137,18 @@ class MissSoundsOption extends Option
 		super();
 		if (OptionsMenu.isInPause)
 			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// JOELwindows7: basically BOLO let some of these option changeable now, just restart song required.
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.missSounds = !FlxG.save.data.missSounds;
 		display = updateDisplay();
 		return true;
@@ -1133,7 +1200,8 @@ class Judgement extends Option
 		super();
 		if (OptionsMenu.isInPause)
 			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 		acceptValues = true;
@@ -1141,8 +1209,9 @@ class Judgement extends Option
 
 	public override function press():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		OptionsMenu.instance.selectedCatIndex = 7; // JOELwindows7: was 5. don't use order!!!!
 		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[7], false); // JOELwindows7: don't forget this too
 		return true;
@@ -1224,6 +1293,10 @@ class FPSCapOption extends Option
 
 	override function right():Bool
 	{
+		// JOELwindows7: BOLO prevent change in HTML5
+		// #if html5
+		// return false;
+		// #end
 		if (FlxG.save.data.fpsCap >= Perkedel.MAX_FPS_CAP) // JOELwindows7: was 290
 		{
 			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; // JOELwindows7: yeah.
@@ -1238,6 +1311,10 @@ class FPSCapOption extends Option
 
 	override function left():Bool
 	{
+		// JOELwindows7: BOLO prevent change in HTML5
+		// #if html5
+		// return false;
+		// #end
 		if (FlxG.save.data.fpsCap > Perkedel.MAX_FPS_CAP) // JOELwindows7: was 290
 			FlxG.save.data.fpsCap = Perkedel.MAX_FPS_CAP; // JOELwindows7: yeye
 		else if (FlxG.save.data.fpsCap < Perkedel.MIN_FPS_CAP) // JOELwindows7: was 60
@@ -1280,8 +1357,8 @@ class ScrollSpeedOption extends Option
 		if (FlxG.save.data.scrollSpeed < 1)
 			FlxG.save.data.scrollSpeed = 1;
 
-		if (FlxG.save.data.scrollSpeed > 4)
-			FlxG.save.data.scrollSpeed = 4;
+		if (FlxG.save.data.scrollSpeed > Perkedel.MAX_SCROLL_SPEED) // JOELwindows7: BOLO. was 4
+			FlxG.save.data.scrollSpeed = Perkedel.MAX_SCROLL_SPEED;
 		return true;
 	}
 
@@ -1297,8 +1374,8 @@ class ScrollSpeedOption extends Option
 		if (FlxG.save.data.scrollSpeed < 1)
 			FlxG.save.data.scrollSpeed = 1;
 
-		if (FlxG.save.data.scrollSpeed > 4)
-			FlxG.save.data.scrollSpeed = 4;
+		if (FlxG.save.data.scrollSpeed > Perkedel.MAX_SCROLL_SPEED) // JOELwindows7: BOLO. was 4
+			FlxG.save.data.scrollSpeed = Perkedel.MAX_SCROLL_SPEED;
 
 		return true;
 	}
@@ -1363,7 +1440,11 @@ class ReplayOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
 	}
 
 	public override function press():Bool
@@ -1446,17 +1527,17 @@ class WatermarkOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
-		else
-			description = desc;
+		// if (OptionsMenu.isInPause)
+		// 	// description = "This option cannot be toggled in the pause menu.";
+		// 	description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		// else
+		description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		Main.watermarks = !Main.watermarks;
 		FlxG.save.data.watermark = Main.watermarks;
 		display = updateDisplay();
@@ -1480,7 +1561,11 @@ class OffsetMenu extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
 	}
 
 	public override function press():Bool
@@ -1565,15 +1650,17 @@ class OffsetThing extends Option
 		super();
 		if (OptionsMenu.isInPause)
 			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.offset--;
 		display = updateDisplay();
 		return true;
@@ -1581,8 +1668,9 @@ class OffsetThing extends Option
 
 	public override function right():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.offset++;
 		display = updateDisplay();
 		return true;
@@ -1605,11 +1693,17 @@ class BotPlay extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
 	}
 
 	public override function left():Bool
 	{
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.botplay = !FlxG.save.data.botplay;
 		trace('BotPlay : ' + FlxG.save.data.botplay);
 		display = updateDisplay();
@@ -1633,18 +1727,19 @@ class CamZoomOption extends Option
 		super();
 		if (OptionsMenu.isInPause)
 			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.camzoom = !FlxG.save.data.camzoom;
 		display = updateDisplay();
-		OptionsMenu.markRestartSong();
 		return true;
 	}
 
@@ -1665,17 +1760,17 @@ class JudgementCounter extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
-		else
-			description = desc;
+		// if (OptionsMenu.isInPause)
+		// 	// description = "This option cannot be toggled in the pause menu.";
+		// 	description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		// else
+		description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
 		FlxG.save.data.judgementCounter = !FlxG.save.data.judgementCounter;
 		display = updateDisplay();
 		return true;
@@ -1700,15 +1795,17 @@ class MiddleScrollOption extends Option
 		super();
 		if (OptionsMenu.isInPause)
 			// description = "This option cannot be toggled in the pause menu.";
-			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.middleScroll = !FlxG.save.data.middleScroll;
 		display = updateDisplay();
 		return true;
@@ -1732,15 +1829,18 @@ class RotateSpritesOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			description = "This option cannot be toggled in the pause menu.";
+			// description = "This option cannot be toggled in the pause menu.";
+			// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+			description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
 		else
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		OptionsMenu.markRestartSong();
 		FlxG.save.data.rotateSprites = !FlxG.save.data.rotateSprites;
 		display = updateDisplay();
 		return true;
@@ -1908,9 +2008,9 @@ class DebugMode extends Option
 
 	public override function press():Bool
 	{
-		FlxG.switchState(new AnimationDebug()); // JOELwindows7: now you can. idk.
+		// FlxG.switchState(new AnimationDebug()); // JOELwindows7: now you can. idk.
 		// JOELwindows7: whoa easy baby! we're in gameplay!
-		// OptionsMenu.goToState(new AnimationDebug());
+		OptionsMenu.goToState(new AnimationDebug(), true, true, false, true);
 		return false;
 	}
 
@@ -1991,6 +2091,12 @@ class ResetScoreOption extends Option
 		for (key in Highscore.songCombos.keys())
 		{
 			Highscore.songCombos[key] = '';
+		}
+		// JOELwindows7: & BOLO
+		FlxG.save.data.songAcc = null;
+		for (key in Highscore.songAcc.keys())
+		{
+			Highscore.songAcc[key] = 0.00;
 		}
 		confirm = false;
 		trace('Highscores Wiped');
@@ -2095,7 +2201,9 @@ class ResetSettings extends Option
 		FlxG.save.data.cpuSplash = null;
 		FlxG.save.data.forceStepmania = null;
 		FlxG.save.data.unpausePreparation = 1;
+		FlxG.save.data.lerpScore = null;
 		FlxG.save.data.hitsound = null;
+		FlxG.save.data.hitVolume = null;
 		// FlxG.save.data.leftAWeek = null;
 		// FlxG.save.data.leftStoryWeek = 0;
 		// FlxG.save.data.leftWeekSongAt = '';
@@ -2105,7 +2213,11 @@ class ResetSettings extends Option
 		FlxG.save.data.blueballWeek = null;
 		FlxG.save.data.disableVideoCutscener = null;
 		// JOELwindows7: MORE BOLO RESETS
-		FlxG.save.data.hitVolume = null;
+		FlxG.save.data.strumHit = null;
+		FlxG.save.data.volume = null;
+		FlxG.save.data.mute = null;
+		FlxG.save.data.showCombo = null;
+		FlxG.save.data.showComboNum = null;
 		// end BOLO RESET
 
 		KadeEngineData.initSave();
@@ -3457,7 +3569,7 @@ class ScoreTxtZoomOption extends Option
 	}
 }
 
-// JOELwindows7: enable/disable note splash
+// JOELwindows7: enable/disable note splash. in BOLO it's `NoteCock` like it's cumming
 class NoteSplashOption extends Option
 {
 	public function new(desc:String)
@@ -3652,6 +3764,35 @@ class HitsoundSelect extends Option
 	public override function getValue():String
 	{
 		return "Hitsound Style: < " + HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect) + " >";
+	}
+}
+
+// JOELwindows7: BOLO hitsound when
+class HitSoundMode extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.strumHit = !FlxG.save.data.strumHit;
+
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Hitsound Mode: < " + (FlxG.save.data.strumHit ? "On Key Hit" : "On Note Hit") + " >";
 	}
 }
 
@@ -4055,5 +4196,125 @@ class ScoreSmoothing extends Option
 	private override function updateDisplay():String
 	{
 		return "Smooth Score PopUp: < " + (FlxG.save.data.lerpScore ? "on" : "off") + " >";
+	}
+}
+
+// JOELwindows7: BOLO autosave chart!!!!!!!
+class AutoSaveChart extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+
+		FlxG.save.data.autoSaveChart = !FlxG.save.data.autoSaveChart;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Auto Saving Chart: < " + (!FlxG.save.data.autoSaveChart ? "off" : "on") + " >";
+	}
+}
+
+// JOELwindows7: BOLO GPU render NEW
+class GPURendering extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			description = "This option cannot be toggled in the pause menu.";
+		else
+			description = desc;
+
+		#if html5
+		description = "This option is handled automaticly by browser.";
+		#end
+	}
+
+	public override function left():Bool
+	{
+		#if !html5
+		if (OptionsMenu.isInPause)
+			return false;
+
+		FlxG.save.data.gpuRender = !FlxG.save.data.gpuRender;
+		display = updateDisplay();
+		return true;
+		#else
+		return false;
+		#end
+	}
+
+	public override function right():Bool
+	{
+		#if !html5
+		if (OptionsMenu.isInPause)
+			return false;
+		left();
+		return true;
+		#else
+		return false;
+		#end
+	}
+
+	private override function updateDisplay():String
+	{
+		#if !html5
+		return "GPU Rendering: < " + (!FlxG.save.data.gpuRender ? "off" : "on") + " >";
+		#else
+		return "GPU Rendering: < " + "Auto" + " >";
+		#end
+	}
+}
+
+// JOELwindows7: BOLO Shader
+class Shader extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+
+		FlxG.save.data.shaders = !FlxG.save.data.shaders;
+
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Shaders: < " + (FlxG.save.data.shaders ? "On" : "Off") + " >";
 	}
 }

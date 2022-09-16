@@ -209,8 +209,10 @@ class NoteskinHelpers
 		// 	.result() : BitmapData.loadFromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared"))).result();
 		// return Paths.getSparrowAtlas('noteskins/' + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin), "shared");
 
-		return Paths.doesImageAssetExist(Paths.image(path,
-			'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
+		// return Paths.doesImageAssetExist(Paths.image(path,
+		// 'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
+		// JOELwindows7: NEW BOLO way
+		return Paths.doesImageAssetExist(Paths.image(path, 'shared')) ? Paths.imageGraphic(path, 'shared') : Paths.imageGraphic('noteskins/Arrows-pixel', "shared");
 		// #else
 		// // return BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
 		// // JOELwindows7:here because Android requires Asset2File
@@ -262,8 +264,11 @@ class NoteskinHelpers
 		// 	'shared')) ? BitmapData.loadFromFile(Asset2File.getPath(Paths.image(path, 'shared')))
 		// 	.result() : BitmapData.loadFromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared"))).result();
 
+		// return Paths.doesImageAssetExist(Paths.image(path,
+		// 	'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
+		// JOELwindows7: NEW BOLO way
 		return Paths.doesImageAssetExist(Paths.image(path,
-			'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
+			'shared')) ? Paths.imageGraphic(path, 'shared') : Paths.imageGraphic('noteskins/Arrows-pixel', "shared");
 		// #else
 		// return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel$typetypeSuffix', "shared")));
 		// #end

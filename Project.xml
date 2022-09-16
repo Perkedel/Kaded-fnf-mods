@@ -192,6 +192,9 @@
 	<!--if you want stack traces-->
 	<!-- <haxedef name="HXCPP_STACK_TRACE" if="crashdumper"/>   -->
 
+	<!-- JOELwindows7: BOLO final crash handler -->
+	<haxedef name="FEATURE_CRASH_BOLO" if="sys" unless="html5"/>
+
 	<!-- JOELwindows7: yoinkoid-->
 	<!-- from https://github.com/luckydog7/Funkin-android/blob/master/Project.xml -->
 	<!-- <assets path="assets" include="*.txt"/> -->

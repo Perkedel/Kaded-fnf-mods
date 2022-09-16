@@ -214,6 +214,7 @@ class OptionsMenu extends CoreSubState
 			]),
 			// JOELwindows7: BOLO had this category of Performance
 			new OptionCata(1100, 40, "Performance", [
+				new GPURendering("Toggle GPU rendering to push Graphics textures to GPU, reducing CPU memory usage. "), // JOELwindows7: BOLO NEW GPU RENDERING
 				new OptimizeOption("Disable Background and Characters to save memory. Useful to low-end computers."),
 				new Background("Disable Stage Background to save memory (Only characters are visible)."),
 				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay and save memory.")
@@ -258,6 +259,7 @@ class OptionsMenu extends CoreSubState
 			new OptionCata(50, 140, "Saves", [
 				#if desktop // new ReplayOption("View saved song replays."),
 				#end
+				new AutoSaveChart("Toggle if in 5mins within chart it autosaves."), // JOELwindows7: Autosave chart BOLO
 				new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
 				new LockWeeksOption("Reset your story mode progress. This is irreversible!"),
 				new ResetSettings("Reset ALL your settings. This is irreversible!")
@@ -603,7 +605,7 @@ class OptionsMenu extends CoreSubState
 						PauseSubState.goBack = true;
 						PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * PlayState.songMultiplier;
 						// JOELwindows7: heurestic to see if a marker has raised
-						if (markForGameplayRestart)
+						if (markForGameplayRestart && isInPause)
 						{
 							createToast(null, "Please Restart Song",
 								"You have changed options that needs reloading. Please restart the song to apply the changes.");
@@ -631,7 +633,7 @@ class OptionsMenu extends CoreSubState
 							Debug.logTrace("New text: " + object.text);
 
 							// JOELwindows7: heurestic to see if a marker has raised
-							if (markForGameplayRestart)
+							if (markForGameplayRestart && isInPause)
 							{
 								createToast(null, "Please Restart Song",
 									"You have changed options that needs reloading. Please restart the song to apply the changes.");
@@ -945,9 +947,9 @@ class OptionsMenu extends CoreSubState
 	}
 
 	// JOELwindows7: go to flxState. prevent go to there if you are in gameplay.
-	public static function goToState(ofHere, goToLoading:Bool = false, transition:Bool = true, isSong:Bool = false)
+	public static function goToState(ofHere, goToLoading:Bool = false, transition:Bool = true, isSong:Bool = false, dangerouslyForce:Bool = true)
 	{
-		if (isInPause)
+		if (isInPause && !dangerouslyForce)
 		{
 			// JOELwindows7: it's static method, you cannot access any instance method of this class.
 			// playSoundEffect("cancelMenu",.4);

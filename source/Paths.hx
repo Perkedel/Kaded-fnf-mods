@@ -403,13 +403,14 @@ class Paths
 		// Return null if the file does not exist.
 		// return doesSoundAssetExist(result) ? result : null;
 
-		// JOElwindows7: BOLO rawly file
+		// JOElwindows7: BOLO rawly file & I add exist check.. nvm.
 		var file;
 		#if PRELOAD_ALL
 		file = loadSound('songs', songLowercase);
 		#else
 		file = 'songs:assets/songs/$songLowercase.$SOUND_EXT';
 		#end
+		// return doesSoundAssetExist(file) ? file : file;
 		return file;
 	}
 

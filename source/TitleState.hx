@@ -435,6 +435,15 @@ class TitleState extends MusicBeatState
 				}
 			}
 
+			// JOELwindows7: Gaptek check. here refresh rate lower than usual check
+			if (Application.current.window.displayMode.refreshRate < Perkedel.TYPICAL_REFRESH_RATE)
+			{
+				createToast(null, "Low Refresh Rate!!!",
+					// 'Your monitor refresh rate is ${Application.current.window.displayMode.refreshRate}Hz which is extremely under typical spec!\nPlease adjust refresh rate higher or\nelse you will be mocked as tech illiterate!!!');
+					'Your monitor refresh rate is ${Application.current.window.displayMode.refreshRate}Hz which is very low!\nPlease set to maximum your setting has!');
+				// shuck! no way to find maximum refresh rate! pls help!
+			}
+
 			if (FlxG.save.data.flashing)
 				titleText.animation.play('press');
 

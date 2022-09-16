@@ -392,6 +392,24 @@ class KadeEngineData
 		if (FlxG.save.data.overrideNoteskins == null)
 			FlxG.save.data.overrideNoteskins = false;
 
+		// JOELwindows7: NEW BOLO GPU render
+		if (FlxG.save.data.gpuRender == null)
+		{
+			#if html5
+			FlxG.save.data.gpuRender = false;
+			#else
+			FlxG.save.data.gpuRender = true;
+			#end
+		}
+
+		// JOELwindows7: (BOLO) The volume level should now be saved.
+		if (FlxG.save.data.volume == null)
+			FlxG.save.data.volume = 1;
+
+		// JOELwindows7: & mute too.
+		if (FlxG.save.data.mute == null)
+			FlxG.save.data.mute = false;
+
 		// JOELwindows7: Toby-Fox tale character name. not to be confused with your own / player name
 		if (FlxG.save.data.radiationName == null)
 			FlxG.save.data.radiationName = "Ioniq";
@@ -427,6 +445,27 @@ class KadeEngineData
 		if (FlxG.save.data.mirror == null)
 			FlxG.save.data.mirror = false;
 		// end BOLO's modifier init!!!
+
+		// JOELwindows7: BOLO again
+		if (FlxG.save.data.strumHit == null)
+			FlxG.save.data.strumHit = true;
+
+		if (FlxG.save.data.showCombo == null)
+			FlxG.save.data.showCombo = true;
+
+		if (FlxG.save.data.showComboNum == null)
+			FlxG.save.data.showComboNum = true;
+
+		if (FlxG.save.data.showMs == null)
+			FlxG.save.data.showMs = true;
+
+		// JOELwindows7: BOLO autosave modchart
+		if (FlxG.save.data.autoSaveChart == null)
+			FlxG.save.data.autoSaveChart = false;
+
+		// JOELwindows7: BOLO discord rich Presence
+		if (FlxG.save.data.discordMode == null)
+			FlxG.save.data.discordMode = 1;
 
 		// JOELwindows7: workarounds!
 

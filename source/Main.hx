@@ -352,6 +352,11 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
+
+		// JOELwindows7: BOLO crash handler. Just in case PEngine crash handle still break also.
+		#if !html5
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		#end
 	}
 
 	var game:FlxGame;
@@ -363,6 +368,7 @@ class Main extends Sprite
 	public static function dumpCache()
 	{
 		///* SPECIAL THANKS TO HAYA
+		#if PRELOAD_ALL // JOELwindows7: BOLO restrict to preload all only
 		@:privateAccess
 		for (key in FlxG.bitmap._cache.keys())
 		{
@@ -375,6 +381,8 @@ class Main extends Sprite
 			}
 		}
 		Assets.cache.clear("songs");
+		Assets.cache.clear("images"); // JOELwindows7: BOLO also clear images cache
+		#end
 		// */
 	}
 
@@ -499,6 +507,61 @@ class Main extends Sprite
 	// JOELwindows7: maybe also add pre-werror dump too?
 	function werrorCrashPre(crashDumpener:Dynamic)
 	{
+	}
+	#end
+
+	// JOELwindows7: new BOLO crash detect
+	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
+	// very cool person for real they don't get enough credit for their work
+	// #if !html5 // because of how it show up on desktop
+	#if FEATURE_CRASH_BOLO // JOELwindows7: no, let's make it definable anytime.
+	function onCrash(e:UncaughtErrorEvent):Void
+	{
+		if (FlxG.fullscreen)
+			FlxG.fullscreen = !FlxG.fullscreen;
+
+		var errMsg:String = "";
+		var path:String;
+		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var dateNow:String = Date.now().toString();
+
+		dateNow = StringTools.replace(dateNow, " ", "_");
+		dateNow = StringTools.replace(dateNow, ":", "'");
+
+		path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
+
+		for (stackItem in callStack)
+		{
+			switch (stackItem)
+			{
+				case FilePos(s, file, line, column):
+					errMsg += file + " (line " + line + ")\n";
+				default:
+					Sys.println(stackItem);
+			}
+		}
+
+		errMsg += Perkedel.CRASH_TEXT_BANNER
+			+ "\nFATAL Uncaught WError: "
+			+ e.error
+			+ ": "
+			+ e.message
+			+ "\n"
+			+ e.details()
+			+ "\n\n"
+			+ "\nPlease report this error to our Github page: https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: sqirra-rng";
+
+		if (!FileSystem.exists("./crash/"))
+			FileSystem.createDirectory("./crash/");
+
+		File.saveContent(path, errMsg + "\n");
+
+		Sys.println(errMsg);
+		Sys.println("Crash dump saved in " + Path.normalize(path));
+
+		Application.current.window.alert(errMsg, "Error!");
+		DiscordClient.shutdown();
+		Sys.exit(1);
 	}
 	#end
 }

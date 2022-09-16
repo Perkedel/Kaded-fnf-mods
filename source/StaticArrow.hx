@@ -21,6 +21,9 @@ class StaticArrow extends FlxUISprite
 	public var modAngle:Float = 0; // The angle set by modcharts
 	public var totalOverride:Bool = false; // JOELwindows7: enable to disable special parametering & leave its original parametering.
 	public var localAngle:Float = 0; // The angle to be edited inside here
+	// JOELwindows7: + another more BOLO
+	public var direction:Float = 90;
+	public var downScroll:Bool = false;
 
 	public function new(xx:Float, yy:Float)
 	{

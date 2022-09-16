@@ -171,10 +171,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	public static var noteskinSprite:FlxAtlasFrames;
 	public static var noteskinSpriteMine:FlxAtlasFrames; // JOElwindows7: the mine, don't step on it
-	public static var noteskinPixelSprite:BitmapData;
-	public static var noteskinPixelSpriteEnds:BitmapData;
-	public static var noteskinPixelSpriteMine:BitmapData; // JOElwindows7: the mine, don't step on it
-	public static var noteskinPixelSpriteEndsMine:BitmapData; // JOElwindows7: the mine, don't step on it
+	public static var noteskinPixelSprite:FlxGraphic; // JOELwindows7: BOLO change to FlxGraphic. was BitmapData
+	public static var noteskinPixelSpriteEnds:FlxGraphic;
+	public static var noteskinPixelSpriteMine:FlxGraphic; // JOElwindows7: the mine, don't step on it
+	public static var noteskinPixelSpriteEndsMine:FlxGraphic; // JOElwindows7: the mine, don't step on it
 
 	public static var rep:Replay;
 	public static var loadRep:Bool = false;
@@ -321,6 +321,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	public var camNotesShaders:Array<ShaderEffect> = [];
 	public var camSustainsShaders:Array<ShaderEffect> = [];
 	public var camStrumsShaders:Array<ShaderEffect> = [];
+	public var camVideo:FlxCamera; // JOELwindows7: NEW BOLO camera for video case.
 	public var shaderUpdates:Array<Float->Void> = []; // JOELwindows7: BOLO also has shader too!
 
 	public var cannotDie = false;
@@ -382,13 +383,17 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	public static var campaignScore:Int = 0;
 
+	public static var campaignAccuracy:Float = 0.00; // JOELwindows7: & accuracy for story mode. BOLO
+
 	var newLerp:Float = 0; // JOELwindows7: BOLO new lerp!
 
 	public static var theFunne:Bool = true;
 
 	var funneEffect:FlxUISprite;
-	var inCutscene:Bool = false;
-	var inCinematic:Bool = false; // JOELwindows7: BOLO's inCinematic flag
+
+	public var inCutscene:Bool = false; // JOELwindows7: BOLO made public this
+
+	var inCinematic:Bool = false; // JOELwindows7: BOLO's inCinematic flag (DEPRECATED)
 	var usedTimeTravel:Bool = false;
 
 	public static var stageTesting:Bool = false;
@@ -480,6 +485,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	public static var fakeNoteStepCrochet:Float;
 
+	public var initStoryLength:Int = 0;
+
+	public var arrowsGenerated:Bool = false;
+
 	// Precache List for some stuff (Like frames, sounds and that kinda of shit) // Yoinked from Psych Engine.
 	public var precacheList:Map<String, String> = new Map<String, String>();
 
@@ -527,6 +536,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		add(object);
 	}
 
+	public function destroyObj(object:FlxBasic)
+	{
+		// JOElwindows7: BRUH don't forget. BOLO
+		object.destroy();
+	}
+
 	public function removeObject(object:FlxBasic)
 	{
 		remove(object);
@@ -560,7 +575,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		{
 			// JOELwindows7: android issue. cast lib current technic crash
 			#if FEATURE_DISPLAY_FPS_CHANGE
-			// (cast(Lib.current.getChildAt(0), Main)).setFPSCap(800);
+			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Perkedel.MAX_FPS_CAP);
 			#end
 		}
 
@@ -574,6 +589,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			currentSong = SONG.songName;
 			Main.dumpCache();
 			Paths.clearStoredMemory(); // JOELwindows7: & BOLO Clear memory again!
+			if (!FlxG.save.data.gpuRender)
+				Main.dumpCache(); // & GPU render stuff check
 		}
 
 		sicks = 0;
@@ -860,7 +877,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		if (SONG.eventObjects == null)
 		{
-			SONG.eventObjects = [new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change", 0, 0)]; // JOELwindows7: houv
+			SONG.eventObjects = [
+				new Song.Event("Init BPM", 0, Std.string(SONG.bpm), "BPM Change", Std.string(0.0), Std.string(0.0))
+			]; // JOELwindows7: houv
 		}
 
 		TimingStruct.clearTimings();
@@ -874,7 +893,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				var endBeat:Float = Math.POSITIVE_INFINITY;
 
-				var bpm = i.value * songMultiplier;
+				var bpm = Std.parseFloat(i.value) * songMultiplier;
 
 				TimingStruct.addTiming(beat, bpm, endBeat, 0); // offset in this case = start time since we don't have a offset
 
@@ -1404,6 +1423,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		Debug.logTrace("Go the pixel hold end mine");
 		noteskinPixelSpriteEndsMine = SONG.useCustomNoteStyle ? NoteskinHelpers.generatePixelSpriteFromSay(SONG.noteStyle, true, 2,
 			SONG.loadNoteStyleOtherWayAround) : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true, 2);
+		
+		
 
 		// JOELwindows7: Hold, there's advanced BOLO's opponent mode check
 		if (!FlxG.save.data.middleScroll || (((executeModchart || executeModHscript) || sourceModchart) && PlayStateChangeables.modchart))
@@ -1458,6 +1479,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		laneunderlay.screenCenter(Y);
 		laneunderlayOpponent.screenCenter(Y);
+
+		// JOELwindows7: weird BOLO addition
+		// var tweenBoolshit = !isStoryMode || storyPlaylist.length >= 3 || SONG.songId == 'tutorial';
+
+		// generateStaticArrows(0, tweenBoolshit);
+		// generateStaticArrows(1, tweenBoolshit);
 
 		// startCountdown();
 
@@ -1636,10 +1663,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		FlxG.fixedTimestep = false;
 
-		// JOELwindows7: This sucks!! the extenderin did not return the same type.
-		healthBarBG = cast new FlxUISprite(0, FlxG.height * 0.9).loadGraphic(Paths.loadImage('healthBar'));
-		if (PlayStateChangeables.useDownscroll)
-			healthBarBG.y = 50;
+		// JOELwindows7: This sucks!! the extenderin did not return the same type. BOLO newesten
+		healthBarBG = cast new FlxUISprite(0, FlxG.height * 0.9).loadGraphic(Paths.imageGraphic('healthBar','shared'));
+		if (PlayStateChangeables.useDownscroll){
+			// healthBarBG.y = 50;
+			healthBarBG.y = -FlxG.height + (770 * Math.pow(FlxG.save.data.zoom, 0.4)); // JOELwindows7: BOLO better placement for downscroll
+		}
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
 
@@ -1736,8 +1765,23 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// JOELwindows7: I add watermark Perkedel Mod
 		// Add Kade Engine watermark
+		// was
+		/*
+		```
 		kadeEngineWatermark = new FlxUIText(4, healthBarBG.y
 			+ 50, 0, // SONG.songName
+			SONG.songId // JOELwindows7: damn, you should've used Song ID instead. the top bar already covered the name for us!
+			+ (FlxMath.roundDecimal(songMultiplier, 2) != 1.00 ? " (" + FlxMath.roundDecimal(songMultiplier, 2) + "x)" : "")
+			+ " - "
+			+ CoolUtil.difficultyFromInt(storyDifficulty) // + (Main.watermarks ? " | KE " + MainMenuState.kadeEngineVer : "")
+				// + (Main.perkedelMark ? " | LFM " + MainMenuState.lastFunkinMomentVer : "")
+			, 16);
+		```
+		*/
+		kadeEngineWatermark = new FlxUIText(-FlxG.width
+			+ (1284 * Math.pow(FlxG.save.data.zoom, 0.475)),
+			-FlxG.height
+			+ (1415 / Math.pow(FlxG.save.data.zoom, 0.25)), 0, // SONG.songName
 			SONG.songId // JOELwindows7: damn, you should've used Song ID instead. the top bar already covered the name for us!
 			+ (FlxMath.roundDecimal(songMultiplier, 2) != 1.00 ? " (" + FlxMath.roundDecimal(songMultiplier, 2) + "x)" : "")
 			+ " - "
@@ -1754,10 +1798,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: BOLO's accurac watermark?!!?!?
 		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx
 		// ACCURACY WATERMARK
-		accText = new FlxText(4, FlxG.height * 0.9 + 45 - 20, 0, "Accuracy Mode: " + accMode, 16);
+		// accText = new FlxText(4, FlxG.height * 0.9 + 45 - 20, 0, "Accuracy Mode: " + accMode, 16);
+		accText = new FlxText(-FlxG.width+ (1284 * Math.pow(FlxG.save.data.zoom, 0.475)),
+			-FlxG.height
+			+ (1395 / Math.pow(FlxG.save.data.zoom, 0.25)), 0, "Accuracy Mode: " + accMode, 16);
 		accText.scrollFactor.set();
 		accText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		// add(accText);
+		add(accText);
 
 		// TODO: JOELwindows7: This maybe can be the Korean pop tv show lyric bottom left corner?
 
@@ -1781,7 +1828,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		#end
 		add(scoreTxt);
 
-		judgementCounter = new FlxUIText(20, 0, 0, "", 20);
+		// judgementCounter = new FlxUIText(20, 0, 0, "", 20);
+		judgementCounter = new FlxText(-FlxG.width + (1300 * Math.pow(FlxG.save.data.zoom, 0.5)), 0, FlxG.width, "", 20); // JOELwindows7: BOLO new placement
 		// JOELwindows7: I think this should be placed on right as where your player strum is at.
 		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		judgementCounter.alpha = .5; // JOELwindows7: also bit opaque pls!
@@ -1885,6 +1933,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		kadeEngineWatermark.cameras = [camHUD];
 		reuploadWatermark.cameras = [camHUD]; // JOELwindows7: stick the reupload watermark to camera
 		// creditRollout.cameras = [camHUD]; //JOELwindows7: da credit must be stuck to the HUD field
+		accText.cameras = [camHUD]; // JOELwindows7: BOLO accuracy text too!
 		creditRollout.textTitle.cameras = [camHUD]; // JOELwindows7: pls whynt work wtf
 		creditRollout.textName.cameras = [camHUD]; // JOELwindows7: cmon man
 		creditRollout.textRole.cameras = [camHUD]; // JOELwindows7: aaaaaaa man
@@ -1914,7 +1963,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		if (isStoryMode)
 		{
-			// JOELwindows7: This portion is going to be angle grinded!
+			// JOELwindows7: This portion is going to be angle grinded! go to introScene()
 			/*
 				switch (StringTools.replace(curSong, " ", "-").toLowerCase())
 				{
@@ -2031,17 +2080,24 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			});
 		}
 
+		// JOELwindows7: BOLO new precachenings
+		// precacheThing('missnote1', 'sound', 'shared');
+		// precacheThing('missnote2', 'sound', 'shared');
+		// precacheThing('missnote3', 'sound', 'shared');
+
 		// JOELwindows7: BOLO precache missnote sounds!
 		for (i in 1...numOfMissNoteSfx)
 		{
-			precacheList.set('missnote${i}', 'sound');
+			// precacheList.set('missnote${i}', 'sound');
+			precacheThing('missnote${i}', 'sound', 'shared');
 		}
 
 		// JOELwindows7: BOLO precache bf holding gf
 		if (!FlxG.save.data.optimize)
 		{
 			if (boyfriend.curCharacter == 'bf-holding-gf')
-				precacheList.set('tankman/bfHoldingGF-DEAD', 'frame');
+				// precacheList.set('tankman/bfHoldingGF-DEAD', 'frame');
+				precacheThing('characters/bfHoldingGF-DEAD', 'image', 'shared')
 		}
 
 		if (!loadRep)
@@ -2059,7 +2115,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// JOELwindows7: BOLO destroy everything in optimize
 		// AFTER EVERYTHING LOAD DESTROY EVERYTHING TO SAVE MEMORY IN OPTIMIZED MOD
-		if (FlxG.save.data.optimize)
+		if (PlayStateChangeables.optimize)
 		{
 			boyfriend.kill();
 			gf.destroy();
@@ -2176,16 +2232,24 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			tankIntroEnd = true;
 
 		// JOELwindows7: BOLO precache pause song & alphabets
-		precacheList.set('alphabet', 'frame');
-		precacheList.set('breakfast', 'music');
+		// precacheList.set('alphabet', 'frame');
+		// precacheList.set('breakfast', 'music');
+		precacheThing('alphabet', 'image', null);
+		precacheThing('breakfast', 'music', 'shared');
 
 		// JOELwindows7: BOLO hitsound cacher
 		if (FlxG.save.data.hitSound != 0)
-			precacheList.set("hitsounds/" + HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase(), 'sound');
+			// precacheList.set("hitsounds/" + HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase(), 'sound');
+			precacheThing("hitsounds/" + HitSounds.getSoundByID(FlxG.save.data.hitSoundSelect).toLowerCase(), 'sound','shared');
 
 		cachePopUpScore(); // JOELwindows7: BOLO cache popup score
 
-		// JOELwindows7: BOLO *holy grail* of precache interpretations.
+		if (isStoryMode)
+			initStoryLength = StoryMenuState.weekData()[storyWeek].length;
+
+		
+
+		// JOELwindows7: BOLO *holy grail* of precache interpretations. (DEPRECATED)
 		// scour everything in that precacheList & then trigger loading each & everyone of them!
 		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx#L1459
 		for (key => type in precacheList)
@@ -2239,6 +2303,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: unpop loading bar!
 		_loadingBar.unPopNow();
 
+		// JOELwindows7: BOLO destroy stage in optimize
+		if (PlayStateChangeables.optimize)
+			Stage.destroy();
+
 		// JOELwindows7: BOLO clear unused memory one last time
 		Paths.clearUnusedMemory();
 
@@ -2253,6 +2321,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// remove static arrow from the gameplay with optional whether want to destroy afterward.
 	function removeStaticArrows(?destroy:Bool = false)
 	{
+		if (arrowsGenerated)
+		{
 		playerStrums.forEach(function(babyArrow:StaticArrow)
 		{
 			playerStrums.remove(babyArrow);
@@ -2271,6 +2341,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (destroy)
 				babyArrow.destroy();
 		});
+		arrowsGenerated = false;
+	}
 	}
 
 	// JOELwindows7: & readd everything
@@ -2723,7 +2795,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		red.scrollFactor.set();
 
 		var senpaiEvil:FlxUISprite = new FlxUISprite();
-		senpaiEvil.frames = Paths.getSparrowAtlas('weeb/senpaiCrazy');
+		senpaiEvil.frames = Paths.getSparrowAtlas('weeb/senpaiCrazy', 'week6');
 		senpaiEvil.animation.addByPrefix('idle', 'Senpai Pre Explosion', 24, false);
 		senpaiEvil.setGraphicSize(Std.int(senpaiEvil.width * 6));
 		senpaiEvil.scrollFactor.set();
@@ -2739,6 +2811,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			if (PlayState.SONG.songId == 'thorns' || PlayState.SONG.songId == 'thorns-midi')
 			{
+				camHUD.visible = false; // JOELwindows7: BOLO inviblize HUD!
 				add(red);
 			}
 		}
@@ -2782,15 +2855,16 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 									FlxG.camera.fade(FlxColor.WHITE, 0.01, true, function()
 									{
 										add(dialogueBox);
+										camHUD.visible = true; // JOELwindows7: BOLO revisiblize!!!
 									}, true);
 								});
-								new FlxTimer().start(3.2, function(deadTime:FlxTimer)
+								createTimer(3.2, function(deadTime:FlxTimer)
 								{
 									FlxG.camera.fade(FlxColor.WHITE, 1.6, false);
 								});
 								// JOELwindows7: I hope this is asynchronous here.
 								// vibrate device in this seconden
-								new FlxTimer().start(2.4, function(deadTime:FlxTimer)
+								createTimer(2.4, function(deadTime:FlxTimer)
 								{
 									if (FlxG.save.data.vibration)
 									{
@@ -3003,20 +3077,23 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		startTimer = createTimer((Conductor.crochet / 1000), function(tmr:FlxTimer) // JOELwindows7: BOLO's managed create timer
 		{
 			// this just based on beatHit stuff but compact
-			if (allowedToHeadbang && swagCounter % gfSpeed == 0)
+			// JOELwindows7: BOLO improve + more
+			if (gf != null && allowedToHeadbang && swagCounter % gfSpeed == 0 && gf.curCharacter != 'pico-speaker')
 				gf.dance();
-			if (swagCounter % idleBeat == 0)
+			// if (swagCounter % idleBeat == 0)
+			if (swagCounter % Math.floor(idleBeat * songMultiplier) == 0)
 			{
-				if (idleToBeat && !boyfriend.animation.curAnim.name.endsWith("miss"))
+				if (boyfriend != null && idleToBeat && !boyfriend.animation.curAnim.name.endsWith("miss"))
 					boyfriend.dance(forcedToIdle);
-				if (idleToBeat)
+				if (dad != null && idleToBeat)
 					dad.dance(forcedToIdle);
 			}
-			else if (swagCounter % idleBeat != 0)
+			// else if (swagCounter % idleBeat != 0)
+			else if (swagCounter % Math.floor(idleBeat * songMultiplier) != 0)
 			{
-				if (boyfriend.isDancing && !boyfriend.animation.curAnim.name.endsWith("miss"))
+				if (boyfriend != null && boyfriend.isDancing && !boyfriend.animation.curAnim.name.endsWith("miss"))
 					boyfriend.dance();
-				if (dad.isDancing)
+				if (dad != null & dad.isDancing)
 					dad.dance();
 			}
 
@@ -3056,7 +3133,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						FlxG.sound.play(Paths.sound((reversed ? 'intro1' : 'intro3') + altSuffix + midiSuffix), 0.6);
 				case 1:
 					// JOELwindows7: idk if this gonna work.
-					var ready:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(introAlts[0], week6Bullshit));
+					var ready:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.imageGraphic(introAlts[0], week6Bullshit));
 					ready.scrollFactor.set();
 					ready.scale.set(0.7, 0.7); // JOELwindows7: BOLO shrink this little bit
 					ready.cameras = [camHUD]; // JOELwindows7: BOLO put this on camHUD
@@ -3081,7 +3158,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						FlxG.sound.play(Paths.sound('intro2' + altSuffix + midiSuffix), 0.6);
 				case 2:
 					// JOELwindows7: we'll see
-					var set:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(introAlts[1], week6Bullshit));
+					var set:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.imageGraphic(introAlts[1], week6Bullshit));
 					set.scrollFactor.set();
 					// JOELwindows7: do the BOLO same
 					set.scale.set(0.7, 0.7);
@@ -3105,7 +3182,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						FlxG.sound.play(Paths.sound((reversed ? 'intro3' : 'intro1') + altSuffix + midiSuffix), 0.6);
 				case 3:
 					// JOELwindows7: idk if this decision is good.. idk...
-					var go:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(introAlts[2], week6Bullshit));
+					var go:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.imageGraphic(introAlts[2], week6Bullshit));
 					go.scrollFactor.set();
 					// JOELwindows7: do the same BOLO
 					go.scale.set(0.7, 0.7);
@@ -3312,7 +3389,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			else
 				dad.holdTimer = 0;
 			goodNoteHit(coolNote);
-			var noteDiff:Float = -(coolNote.strumTime - Conductor.songPosition);
+			var noteDiff:Float = (coolNote.strumTime - Conductor.songPosition); // JOELwindows7: BOLO remove minus out of `-()` so becomes `()`
 			ana.hit = true;
 			ana.hitJudge = Ratings.judgeNote(noteDiff);
 			ana.nearestNote = [coolNote.strumTime, coolNote.noteData, coolNote.sustainLength];
@@ -3383,7 +3460,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		if (!PlayStateChangeables.optimize) // JOELwindows7: BOLO check optimize
 		{
 			if (allowedToHeadbang)
-				gf.dance();
+				if (gf.curCharacter != 'pico-speaker') // JOElwindows7: BOLO. only dance if not `pico-speaker`, you shoot the tankmen!!!
+					gf.dance();
 			if (idleToBeat && !boyfriend.animation.curAnim.name.startsWith("sing"))
 				boyfriend.dance(forcedToIdle);
 			if (idleToBeat && !dad.animation.curAnim.name.startsWith("sing"))
@@ -3519,6 +3597,22 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			FlxTween.tween(skipText, {alpha: 1}, 0.2);
 			add(skipText);
 		}
+
+		// JOELwindows7: TODO BOLO new video iding
+		#if FEATURE_VLC
+		// if (daVideoGroup != null)
+		// {
+		// 	for (vid in daVideoGroup)
+		// 	{
+		// 		var perecentSupposed = (vid.bitmap.getTime() / songMultiplier) / (vid.bitmap.getDuration() / songMultiplier);
+		// 		vid.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+		// 	}
+		// }
+		if(vlcHandler != null){
+			var perecentSupposed = (vlcHandler.bitmap.getTime() / songMultiplier) / (vlcHandler.bitmap.getDuration() / songMultiplier);
+			vlcHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+		}
+		#end
 	}
 
 	var debugNum:Int = 0;
@@ -3597,7 +3691,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				FlxG.sound.playMusic(sound, 1, false); // JOELwindows7: DO NOT PECKING FORGET TO DESTROY THE LOOP
 				// Otherwise the end of the song is spasm since the end music signal does not trigger with loop ON.
 			}
-			// JOELwindows7: BOLO disables these
+			// JOELwindows7: BOLO disables these. no, we still use this to kinda uh.. heads up.
 			else
 				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
 			#else
@@ -3646,13 +3740,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			fakeNoteStepCrochet = fakeCrochet / 4;
 		}
 
-		if (FlxG.save.data.songPosition)
-		{
+		// if (FlxG.save.data.songPosition)
+		// {
 			Debug.logInfo("Install Song Position bar!");
 			// JOELwindows7: bruh
-			songPosBG = cast new FlxUISprite(0, 10).loadGraphic(Paths.loadImage('healthBar'));
+			songPosBG = new FlxUISprite(0, 10);
+			songPosBG.loadGraphic(Paths.loadImage('healthBar')); // JOELwindows7: do separately, because loadGraphic returns regular FlxSprite instead bruh
 			if (PlayStateChangeables.useDownscroll)
-				songPosBG.y = FlxG.height * 0.9 + 35;
+				// songPosBG.y = FlxG.height * 0.9 + 35;
+				songPosBG.y = -FlxG.height + (1403 / Math.pow(FlxG.save.data.zoom, 0.25)); // JOELwindows7: BOLO new positioner
 			songPosBG.screenCenter(X);
 			songPosBG.alpha = 0; // JOELwindows7: Inviblize first
 			songPosBG.scrollFactor.set();
@@ -3694,12 +3790,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			add(songPosBar);
 
 			// JOELwindows7: idk anymore
-			bar = cast new FlxUISprite(songPosBar.x,
-				songPosBar.y).makeGraphic(Math.floor(songPosBar.width), Math.floor(songPosBar.height), FlxColor.TRANSPARENT);
+			bar = new FlxUISprite(songPosBar.x,
+				songPosBar.y);
+			bar.makeGraphic(Math.floor(songPosBar.width), Math.floor(songPosBar.height), FlxColor.TRANSPARENT); // JOELwindows7: this too. makeGraphic returns regular FlxSprite bruuuuuh
 			bar.alpha = 0; // JOELwindows7: inviblize first
 			add(bar);
 
-			FlxSpriteUtil.drawRect(bar, 0, 0, songPosBar.width, songPosBar.height, FlxColor.TRANSPARENT, {thickness: 4, color: FlxColor.BLACK});
+			// FlxSpriteUtil.drawRect(bar, 0, 0, songPosBar.width, songPosBar.height, FlxColor.TRANSPARENT, {thickness: 4, color: FlxColor.BLACK});
+			// JOELwindows7: BOLO optimize coloring. if optimize, the color is lightest possible compensating the void.
+			FlxSpriteUtil.drawRect(bar, 0, 0, songPosBar.width, songPosBar.height, FlxColor.TRANSPARENT, {thickness: 4, color: (PlayStateChangeables.optimize ? FlxColor.WHITE : FlxColor.BLACK)});
 
 			songPosBG.width = songPosBar.width;
 
@@ -3752,7 +3851,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			songName.cameras = [camHUD];
 			tempoBar.cameras = [camHUD]; // JOELwindows7: heff
 			metronomeBar.cameras = [camHUD]; // JOELwindows7: tee
-		}
+
+			// JOELwindows7: Additional BOLO adjustments
+			songName.screenCenter(X);
+			
+			songName.visible = FlxG.save.data.songPosition;
+		songPosBar.visible = FlxG.save.data.songPosition;
+		bar.visible = FlxG.save.data.songPosition;
+		// }
 
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
@@ -3910,6 +4016,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					continue;
 			 */
 
+			babyArrow.downScroll = FlxG.save.data.downscroll; // JOELwindows7: BOLO mark downscrole
+
 			if (SONG.noteStyle == null && FlxG.save.data.overrideNoteskins)
 			{
 				switch (storyWeek)
@@ -3974,6 +4082,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			babyArrow.updateHitbox();
 			babyArrow.scrollFactor.set();
 
+			/*
 			if (storyPlaylist.length < PlayStateChangeables.howManySongThisWeek) // JOELwindows7: BOLO. Change to 4 if your week has more than 3 songs.
 				// thancc but I just rather count this automatically instead.
 				babyArrow.alpha = 1;
@@ -3992,6 +4101,18 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				wereVisibleStaticArrows = true;
 			}
+			*/
+
+			// JOELwindows7: newer BOLO simpler approach
+			if (tween)
+			{
+				babyArrow.y -= 10;
+				babyArrow.alpha = 0;
+				createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+				wereVisibleStaticArrows = true;
+			}
+			else
+				babyArrow.alpha = 1;
 
 			babyArrow.ID = i;
 
@@ -4030,7 +4151,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			// JOELwindows7: filtere Haxe script. also BOLO new stuffs!!!
 			// if (PlayStateChangeables.optimize || (FlxG.save.data.middleScroll && !(executeModchart || executeModHscript)))
-			if (FlxG.save.data.middleScroll && (!(executeModchart || executeModHscript) || !sourceModchart))
+			// if (FlxG.save.data.middleScroll && (!(executeModchart || executeModHscript) || !sourceModchart))
+			if (FlxG.save.data.middleScroll) // JOELwindows7: BOLO no longer care about modchart check .
 			{
 				if (!PlayStateChangeables.opponentMode)
 					babyArrow.x -= 303.5; // JOELwindows7: was 320. BOLO 303.5
@@ -4073,13 +4195,17 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				 */
 			}
 
+			// JOELwindows7: BOLO disable
+			/*
 			cpuStrums.forEach(function(spr:FlxUISprite)
 			{
 				spr.centerOffsets(); // CPU arrows start out slightly off-center
 			});
+			*/
 
 			strumLineNotes.add(babyArrow);
 		}
+		arrowsGenerated = true;
 	}
 
 	// JOELwindows7: BOLO! do not comment this function!!!
@@ -4109,8 +4235,43 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	override function openSubState(SubState:FlxSubState)
 	{
+		// JOElwindows7: open mouse on all platform!!!
+		FlxG.mouse.visible = true; // bruh, BOLO only if not mobile.
 		if (paused)
 		{
+			// JOELwindows7: BOLO video iding
+			/*
+			#if FEATURE_WEBM
+			if (daWebmGroup != null)
+			{
+				for (vid in daWebmGroup)
+				{
+					if (vid.webmHandler.initialized && !vid.webmHandler.ended)
+						vid.webmHandler.pause();
+				}
+			}
+			#end
+
+			#if (FEATURE_MP4VIDEOS && !html5)
+			if (daVideoGroup != null)
+			{
+				for (vid in daVideoGroup.members)
+				{
+					if (vid.alive)
+						vid.bitmap.pause();
+				}
+			}
+			#end
+			*/
+			// JOELwindows7: BOLO pauses video. pls bring that our function here!
+			#if FEATURE_VLC
+			if (useVLC && vlcHandler != null)
+				vlcHandler.bitmap.pause();
+			#elseif (FEATURE_WEBM && !FEATURE_VLC)
+			if (useVideo && webmHandler != null)
+				webmHandler.pause();
+			#end
+
 			// JOELwindows7: pause credit rollout
 			if (creditRollout != null)
 			{
@@ -4217,13 +4378,44 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 		else if (paused)
 		{
+			// JOELwindows7: BOLO new video resume iding
+			/*
+			#if FEATURE_WEBM
+			if (daWebmGroup != null)
+			{
+				for (vid in daWebmGroup)
+				{
+					if (vid.webmHandler.initialized && !vid.webmHandler.ended)
+						vid.webmHandler.resume();
+				}
+			}
+			#end
+
+			#if (FEATURE_MP4VIDEOS && !html5)
+			if (daVideoGroup != null)
+			{
+				for (vid in daVideoGroup.members)
+				{
+					if (vid.alive && vid.visible)
+					{
+						var perecentSupposed = (vid.bitmap.getTime() / songMultiplier) / (vid.bitmap.getDuration() / songMultiplier);
+						vid.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
+						vid.bitmap.resume();
+					}
+				}
+			}
+			#end
+			*/
 			// JOELwindows7: BOLO resumes video. pls bring that our function here!
 			#if FEATURE_VLC
 			if (useVLC && vlcHandler != null)
+				var perecentSupposed = (vlcHandler.bitmap.getTime() / songMultiplier) / (vlcHandler.bitmap.getDuration() / songMultiplier);
+						vlcHandler.bitmap.seek(perecentSupposed); // I laughed my ass off so hard when I found out this was a fuckin PERCENTAGE
 				vlcHandler.bitmap.resume();
 			#elseif (FEATURE_WEBM && !FEATURE_VLC)
 			if (useVideo && webmHandler != null)
-				webmHandler.resume();
+				if (webmHandler.initialized && !webmHandler.ended)
+					webmHandler.resume();
 			#end
 
 			// JOELwindows7: okay make mouse invisible again
@@ -4256,7 +4448,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			#if FEATURE_DISCORD
 			// if (startTimer.finished)
-			if (FlxG.save.data.discordMode != 0) // JOELwindows7: BOLO discord mode
+			if (FlxG.save.data.discordMode == 1) // JOELwindows7: BOLO discord mode
 			{
 				DiscordClient.changePresence(detailsText
 					+ " "
@@ -4355,6 +4547,115 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		return (Conductor.songPosition / songLength) * 100;
 	}
 
+	//JOELwindows7: TODO BOLO new video iding
+	/*
+	var vidIndex:Int = 0;
+
+	public function backgroundOverlayVideo(vidSource:String, type:String, layInFront:Bool = false)
+	{
+		switch (type)
+		{
+			case 'webm':
+				#if FEATURE_WEBM
+				var vid = new WebmSprite();
+
+				vid.antialiasing = true;
+				if (!layInFront)
+				{
+					vid.scrollFactor.set(0, 0);
+					vid.scale.set(1 + (Stage.camZoom / 8), 1 + (Stage.camZoom / 8));
+				}
+				else
+					vid.scrollFactor.set();
+
+				vid.updateHitbox();
+				vid.visible = false;
+				reserveWebmVids.push(vid);
+				if (!layInFront)
+				{
+					remove(gf);
+					remove(dad);
+					remove(boyfriend);
+					daWebmGroup = new FlxTypedGroup<WebmSprite>();
+					add(daWebmGroup);
+					for (vid in reserveWebmVids)
+						daWebmGroup.add(vid);
+					add(gf);
+					add(boyfriend);
+					add(dad);
+				}
+				else
+				{
+					daWebmGroup = new FlxTypedGroup<WebmSprite>();
+					add(daWebmGroup);
+					for (vid in reserveWebmVids)
+					{
+						vid.camera = camGame;
+						daWebmGroup.add(vid);
+					}
+				}
+
+				reserveWebmVids = [];
+				daWebmGroup.members[vidIndex].loadVideo(Paths.webmVideo('${PlayState.SONG.songId}/${vidSource}'));
+				daWebmGroup.members[vidIndex].visible = true;
+				vidIndex++;
+				#end
+			case 'mp4':
+				#if (FEATURE_MP4VIDEOS && !html5)
+				var vid = new VideoSprite(-320, -180);
+
+				vid.antialiasing = true;
+				if (!layInFront)
+				{
+					vid.scrollFactor.set(0, 0);
+					vid.scale.set((2 / 3) + (Stage.camZoom / 8), (2 / 3) + (Stage.camZoom / 8));
+				}
+				else
+				{
+					vid.scale.set(2 / 3, 2 / 3);
+					vid.scrollFactor.set();
+				}
+				vid.updateHitbox();
+				vid.visible = false;
+				vid.bitmap.canSkip = false;
+				reserveVids.push(vid);
+				if (!layInFront)
+				{
+					remove(gf);
+					remove(dad);
+					remove(boyfriend);
+					daVideoGroup = new FlxTypedGroup<VideoSprite>();
+					add(daVideoGroup);
+					for (vid in reserveVids)
+						daVideoGroup.add(vid);
+					add(gf);
+					add(boyfriend);
+					add(dad);
+				}
+				else
+				{
+					daVideoGroup = new FlxTypedGroup<VideoSprite>();
+					add(daWebmGroup);
+					for (vid in reserveVids)
+					{
+						vid.camera = camGame;
+						daVideoGroup.add(vid);
+					}
+				}
+
+				reserveVids = [];
+				daVideoGroup.members[vidIndex].playVideo(Paths.video('${PlayState.SONG.songId}/${vidSource}'));
+				var perecentSupposed = (daVideoGroup.members[vidIndex].bitmap.getTime() / songMultiplier) / (daVideoGroup.members[vidIndex].bitmap.getDuration() / songMultiplier);
+
+				daVideoGroup.members[vidIndex].bitmap.seek(perecentSupposed);
+				daVideoGroup.members[vidIndex].bitmap.resume();
+				daVideoGroup.members[vidIndex].visible = true;
+				vidIndex++;
+				#end
+		}
+	}
+	*/
+
 	public var paused:Bool = false;
 	public var waitLemmePrepareUnpauseFirst:Bool = false; // JOELwindows7: to appear substate after unpause which counts down before actually play again.
 
@@ -4378,6 +4679,43 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		#if !debug
 		perfectMode = false;
 		#end
+		//JOELwindows7: BOLO thringy
+		var shit:Float = 14000;
+		if (SONG.speed < 1 || scrollSpeed < 1)
+			shit /= scrollSpeed == 1 ? SONG.speed : scrollSpeed;
+		// JOELwindows7: BOLO moved unspawn note here
+		if (unspawnNotes[0] != null)
+		{
+			if (unspawnNotes[0].strumTime - Conductor.songPosition < shit)
+			{
+				var dunceNote:Note = unspawnNotes[0];
+				notes.insert(0, dunceNote);
+
+				#if FEATURE_LUAMODCHART
+				if (executeModchart)
+				{
+					new LuaNote(dunceNote, currentLuaIndex);
+					dunceNote.luaID = currentLuaIndex;
+				}
+				#end
+				#end
+				// JOELwindows7: help, this is complicated. idk what's going on this here.
+				if (executeModHscript)
+				{
+					dunceNote.luaID = currentLuaIndex;
+				}
+
+				if (!dunceNote.isSustainNote)
+					dunceNote.cameras = [camNotes];
+				else
+					dunceNote.cameras = [camSustains];
+
+				var index:Int = unspawnNotes.indexOf(dunceNote);
+				unspawnNotes.splice(index, 1);
+				currentLuaIndex++;
+			}
+		}
+
 		if (!PlayStateChangeables.optimize)
 			Stage.update(elapsed);
 
@@ -4481,6 +4819,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			add(botPlayState);
 		}
 
+		// JOELwindows7: Moved to top
+		/*
 		if (unspawnNotes[0] != null)
 		{
 			if (unspawnNotes[0].strumTime - Conductor.songPosition < 14000) // was there a `* songMultiplier`
@@ -4508,12 +4848,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// if (executeModchart || executeModHscript) // JOELwindows7: hey, hscript too pls
 				// {
 				// #if FEATURE_LUAMODCHART //JOELwindows7: why tho? there is also hscript too.
-				/*
+				// ////ii
 					if (!dunceNote.isSustainNote)
 						dunceNote.cameras = [camNotes];
 					else
 						dunceNote.cameras = [camSustains];
-				 */
+				// ///aa
 				// #end
 				// }
 				// else
@@ -4530,6 +4870,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				currentLuaIndex++;
 			}
 		}
+		*/
 
 		// JOELwindows7: audio manipulate haxedef
 		/*
@@ -4607,13 +4948,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						// JOELwindows7: BOLO fades the song positioner
 						if (FlxG.save.data.songPosition)
 						{
-							createTween(accText, {alpha: 0}, 1, {ease: FlxEase.circIn});
-							createTween(judgementCounter, {alpha: 0}, 1, {ease: FlxEase.circIn});
+							createTween(accText, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
+							createTween(judgementCounter, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
 							createTween(scoreTxt, {alpha: 0}, 1, {ease: FlxEase.circIn});
-							createTween(kadeEngineWatermark, {alpha: 0}, 1, {ease: FlxEase.circIn});
-							createTween(songName, {alpha: 0}, 1, {ease: FlxEase.circIn});
-							createTween(songPosBar, {alpha: 0}, 1, {ease: FlxEase.circIn});
-							createTween(bar, {alpha: 0}, 1, {ease: FlxEase.circIn});
+							createTween(kadeEngineWatermark, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
+							createTween(songName, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
+							createTween(songPosBar, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
+							createTween(bar, {alpha: 0}, 0.5, {ease: FlxEase.circIn});
 						}
 
 						endingSong = true;
@@ -4644,7 +4985,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 					var endBeat:Float = Math.POSITIVE_INFINITY;
 
-					var bpm = i.value * songMultiplier;
+					var bpm = Std.parseFloat(i.value) * songMultiplier;
 
 					TimingStruct.addTiming(beat, bpm, endBeat, 0); // offset in this case = start time since we don't have a offset
 
@@ -4698,7 +5039,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						{
 							pastScrollChanges.push(i);
 							trace("SCROLL SPEED CHANGE to " + i.value);
-							newScroll = i.value;
+							newScroll = Std.parseFloat(i.value);
 						}
 						// JOELwindows7: PAIN IS TEMPORARY, GLORY IS FOREVER. lol wintergatan
 				}
@@ -8812,38 +9153,38 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						case "Hey Now":
 							justHey(true);
 						case "Cheer Hey Now":
-							if (i.value == 0 || i.value == 1 || i.value > 2 || i.value < 0)
+							if (Std.parseInt(i.value) == 0 || Std.parseInt(i.value) == 1 || Std.parseInt(i.value) > 2 || Std.parseInt(i.value) < 0)
 								justCheer(true);
-							if (i.value == 0 || i.value == 2 || i.value > 2 || i.value < 0)
+							if (Std.parseInt(i.value) == 0 || Std.parseInt(i.value) == 2 || Std.parseInt(i.value) > 2 || Std.parseInt(i.value) < 0)
 								justHey(true);
 						case "Lightning Strike":
 							Stage.lightningStrikeShit();
 						case "Blammed Lights":
-							Stage.blammedLights(Std.int(i.value));
+							Stage.blammedLights(Std.parseInt(i.value));
 						case "Appear Blackbar":
 							// Debug.logTrace("appear blackbar");
-							Stage.appearBlackBar(i.value);
+							Stage.appearBlackBar(Std.parseFloat(i.value));
 						case "Disappear Blackbar":
 							// Debug.logTrace("disappear blackbar");
-							Stage.disappearBlackBar(i.value);
+							Stage.disappearBlackBar(Std.parseFloat(i.value));
 
 						case "Camera Zoom in":
-							camZoomNow(i.value, i.value2, i.value3);
+							camZoomNow(Std.parseFloat(i.value), Std.parseFloat(i.value2), Std.parseFloat(i.value3));
 						case "Shake camera":
-							FlxG.camera.shake(i.value, i.value2, function()
+							FlxG.camera.shake(Std.parseFloat(i.value), Std.parseFloat(i.value2), function()
 							{
 							}, true);
-							Controls.vibrate(0, i.value);
+							Controls.vibrate(0, Std.parseFloat(i.value));
 
 						case "HUD Zoom in":
-							camZoomNow(0, i.value);
+							camZoomNow(0, Std.parseFloat(i.value));
 						case "Both Zoom in":
-							camZoomNow(i.value, i.value);
+							camZoomNow(Std.parseFloat(i.value), Std.parseFloat(i.value));
 						case "LED ON for":
 						// JOELwindows7: turn LED on for how long second i.value
 
 						case "Vibrate for":
-							Controls.vibrate(0, i.value, i.value2);
+							Controls.vibrate(0, Std.parseFloat(i.value), Std.parseFloat(i.value2));
 					}
 				}
 			}
@@ -10685,6 +11026,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					add(blackScreen);
 					blackScreen.scrollFactor.set();
 					camHUD.visible = false;
+					camStrums.visible = false;
 					// JOELwindows7: hide the lemon guy character icon!
 					iconP2.changeIcon('placeholder');
 
@@ -10701,7 +11043,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 						createTimer(1, function(tmr:FlxTimer)
 						{
-							camHUD.visible = true;
+							
 							remove(blackScreen);
 							createTween(FlxG.camera, {zoom: Stage.camZoom}, 2.5, {
 								ease: FlxEase.quadInOut,
@@ -10709,6 +11051,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 								{
 									// startCountdown();
 									introSceneIsDone(); // JOELwindows7: try my heurestic instead?
+									// JOELwindows7: move the tringy here. BOLO
+									camHUD.visible = true;
+									camStrums.visible = true;
 								}
 							});
 						});
@@ -10753,6 +11098,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		{
 			decideIntroSceneDone(SONG.introCutSceneDoneManually);
 		}
+
+		
 	}
 
 	// JOELwindows7: decide if intro must be done manually through modchart.
@@ -11882,6 +12229,22 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	function getStepModulo(stepWhich:Int, equalsWhat:Float = 0):Bool
 	{
 		return CoolUtil.stepModulo(curStep, stepWhich, songMultiplier, equalsWhat);
+	}
+
+	// JOELwindows7: BOLO precacher!
+	// Precache List for some stuff (Like frames, sounds and that kinda of shit)
+
+	public function precacheThing(target:String, type:String, ?library:String = null)
+	{
+		switch (type)
+		{
+			case 'image':
+				Paths.image(target, library);
+			case 'sound':
+				Paths.sound(target, library);
+			case 'music':
+				Paths.music(target, library);
+		}
 	}
 } // u looked :O -ides
 
