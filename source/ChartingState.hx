@@ -334,10 +334,14 @@ class ChartingState extends MusicBeatState
 		var index = 0;
 
 		if (_song.eventObjects == null)
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: ouh
+			_song.eventObjects = [
+				new Song.Event("Init BPM", 0, Std.string(_song.bpm), "BPM Change", Std.string(0), Std.string(0))
+			]; // JOELwindows7: ouh
 
 		if (_song.eventObjects.length == 0)
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: ha!
+			_song.eventObjects = [
+				new Song.Event("Init BPM", 0, Std.string(_song.bpm), "BPM Change", Std.string(0), Std.string(0))
+			]; // JOELwindows7: ha!
 
 		Debug.logTrace("goin");
 
@@ -714,7 +718,9 @@ class ChartingState extends MusicBeatState
 	{
 		if (_song.eventObjects == null)
 		{
-			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: oh
+			_song.eventObjects = [
+				new Song.Event("Init BPM", 0, Std.string(_song.bpm), "BPM Change", Std.string(0), Std.string(0))
+			]; // JOELwindows7: oh
 		}
 
 		var firstEvent = "";
@@ -762,8 +768,10 @@ class ChartingState extends MusicBeatState
 		var eventValue3 = new FlxUIInputText(310, 60, 80, "");
 		var eventSave = new FlxUIButton(10, 155, "Save Event", function()
 		{
-			var pog:Song.Event = new Song.Event(currentSelectedEventName, currentEventPosition, HelperFunctions.truncateFloat(Std.parseFloat(savedValue), 3),
-				savedType, HelperFunctions.truncateFloat(Std.parseFloat(savedValue2), 3), HelperFunctions.truncateFloat(Std.parseFloat(savedValue3), 3));
+			var pog:Song.Event = new Song.Event(currentSelectedEventName, currentEventPosition,
+				Std.string(HelperFunctions.truncateFloat(Std.parseFloat(savedValue), 3)), savedType,
+				Std.string(HelperFunctions.truncateFloat(Std.parseFloat(savedValue2), 3)),
+				Std.string(HelperFunctions.truncateFloat(Std.parseFloat(savedValue3), 3)));
 
 			Debug.logTrace("trying to save " + currentSelectedEventName);
 
@@ -854,7 +862,7 @@ class ChartingState extends MusicBeatState
 		{
 			// JOELwindows7: O poggers
 			var pog:Song.Event = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3),
-				HelperFunctions.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change", 0, 0);
+				HelperFunctions.truncateFloat(curDecimalBeat, 3), Std.string(_song.bpm), "BPM Change", Std.string(0), Std.string(0));
 
 			Debug.logTrace("adding " + pog.name);
 
@@ -965,7 +973,8 @@ class ChartingState extends MusicBeatState
 
 			if (firstEvent == null)
 			{
-				_song.eventObjects.push(new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)); // JOELwindows7: initda
+				_song.eventObjects.push(new Song.Event("Init BPM", 0, Std.string(_song.bpm), "BPM Change", Std.string(0),
+					Std.string(0))); // JOELwindows7: initda
 				firstEvent = _song.eventObjects[0];
 			}
 
@@ -2352,7 +2361,7 @@ class ChartingState extends MusicBeatState
 						Application.current.window.alert("i'm crying, first event isn't a bpm change. fuck you");
 					else
 					{
-						_song.eventObjects[0].value = nums.value;
+						_song.eventObjects[0].value = Std.string(nums.value);
 						regenerateLines();
 					}
 
@@ -3074,7 +3083,7 @@ class ChartingState extends MusicBeatState
 
 						var endBeat:Float = Math.POSITIVE_INFINITY;
 
-						TimingStruct.addTiming(beat, i.value, endBeat, 0); // offset in this case = start time since we don't have a offset
+						TimingStruct.addTiming(beat, Std.parseFloat(i.value), endBeat, 0); // offset in this case = start time since we don't have a offset
 
 						if (currentIndex != 0)
 						{

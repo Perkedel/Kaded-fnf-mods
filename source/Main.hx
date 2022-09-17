@@ -354,7 +354,7 @@ class Main extends Sprite
 		Debug.onGameStart();
 
 		// JOELwindows7: BOLO crash handler. Just in case PEngine crash handle still break also.
-		#if !html5
+		#if FEATURE_CRASH_BOLO
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
 	}

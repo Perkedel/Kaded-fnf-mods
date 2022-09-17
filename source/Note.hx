@@ -47,6 +47,7 @@ class Note extends FlxUISprite
 	public var totalOverride:Bool = false; // JOELwindows7: enable to disable special parametering & leave its original parametering.
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
+	public var isSustainEnd:Bool = false; // JOELwindows7: BOLO mark also
 	public var originColor:Int = 0; // The sustain note's original note's color
 	public var noteSection:Int = 0;
 	public var noteType:Int = 0; // JOELwindows7: type of note.
@@ -113,6 +114,13 @@ class Note extends FlxUISprite
 
 	var leBpm:Float = 0;
 
+	// JOELwindows7: BOLO distance
+	public var distance:Float = 2000;
+
+	// JOELwindows7: & early late hits. BOLO
+	public var lateHitMult:Float = 0.5;
+	public var earlyHitMult:Float = 1.0;
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
 			?bet:Float = 0, ?noteType:Int = 0) // JOELwindows7: edge long noteType
 	{
@@ -127,8 +135,10 @@ class Note extends FlxUISprite
 		this.noteType = noteType; // JOELwindows7: oh yeah noteType
 		this.prevNote = prevNote;
 		this.inCharter = inCharter;
-		isSustainNote = sustainNote;
+		this.isSustainNote = sustainNote;
 		// hitsoundPath = hitsoundId; // yeah the note hitsound
+
+		lateHitMult = isSustainNote ? 0.5 : 1; // JOELwindows7: BOLO late hits multiplier
 
 		x += 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
@@ -357,9 +367,10 @@ class Note extends FlxUISprite
 		// and rotates it which dislodge the supposed original angle. idk just saying.
 		// Okay, now I have installed force option. idk this still not recommended because again, pre-rotate messes up your rotation
 		// craze calculations!
-		if (FlxG.save.data.stepMania
-			&& !isSustainNote
-			&& !(PlayState.instance != null ? (PlayState.instance.executeModchart || PlayState.instance.executeModHscript) : false))
+		// if (FlxG.save.data.stepMania
+		// 	&& !isSustainNote
+		// 	&& !(PlayState.instance != null ? (PlayState.instance.executeModchart || PlayState.instance.executeModHscript) : false))
+		if (FlxG.save.data.stepMania && !isSustainNote) // JOELwindows7: BOLO now allow anything
 		{
 			var col:Int = 0;
 
@@ -395,7 +406,8 @@ class Note extends FlxUISprite
 		// THIS DOESN'T FUCKING FLIP THE NOTE, CONTRIBUTERS DON'T JUST COMMENT THIS OUT JESUS
 		// then what is this lol
 		// BRO IT LITERALLY SAYS IT FLIPS IF ITS A TRAIL AND ITS DOWNSCROLL
-		if (FlxG.save.data.downscroll && sustainNote)
+		// if (FlxG.save.data.downscroll && sustainNote)
+		if (FlxG.save.data.downscroll) // JOELwindows7: BOLO hevye
 			flipY = true;
 
 		var stepHeight = (((0.45 * Conductor.stepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
@@ -536,33 +548,48 @@ class Note extends FlxUISprite
 			}
 		}
 
+		// JOELwindows7: BOLOfy
 		if (mustPress)
 		{
+			// PLAYER NOTES
 			if (isSustainNote)
 			{
-				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1) * 0.5))
-					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))))
+				if (strumTime
+					- Conductor.songPosition <= (((Ratings.timingWindows[0] * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1) * 0.5)) && strumTime
+					- Conductor.songPosition >= (((-Ratings.timingWindows[0] * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))))
 					canBeHit = true;
 				else
 					canBeHit = false;
 			}
 			else
 			{
-				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1)))
-					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))))
+				if (strumTime
+					- Conductor.songPosition <= (((Ratings.timingWindows[0] * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))) && strumTime
+					- Conductor.songPosition >= (((-Ratings.timingWindows[0] * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))))
 					canBeHit = true;
 				else
 					canBeHit = false;
 			}
-			/*if (strumTime - Conductor.songPosition < (-166 * Conductor.timeScale) && !wasGoodHit)
-				tooLate = true; */
+			if (strumTime - Conductor.songPosition < (-Ratings.timingWindows[0] * Conductor.timeScale) && !wasGoodHit)
+				tooLate = true;
 		}
 		else
 		{
+			// CPU NOTES
 			canBeHit = false;
 			// if (strumTime <= Conductor.songPosition)
 			//	wasGoodHit = true;
+
+			if (strumTime - Conductor.songPosition < (Ratings.timingWindows[0] * Conductor.timeScale) * earlyHitMult)
+			{
+				if ((isSustainNote && prevNote.wasGoodHit) || strumTime <= Conductor.songPosition)
+					wasGoodHit = true;
+			}
 		}
+
+		// JOELwindows7: BOLO
+		if (isSustainNote)
+			isSustainEnd = spotInLine == parent.children.length - 1;
 
 		if (tooLate && !wasGoodHit)
 		{

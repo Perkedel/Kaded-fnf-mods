@@ -181,10 +181,16 @@ class Ratings
 			}
 		}
 
-		if (accuracy == 0)
-			ranking = "N/A";
-		else if (FlxG.save.data.botplay && !PlayState.loadRep)
+		// if (accuracy == 0)
+		// 	ranking = "N/A";
+		// else if (FlxG.save.data.botplay && !PlayState.loadRep)
+		// 	ranking = "BotPlay";
+		if (accuracy == 0 && !PlayStateChangeables.practiceMode)
+			ranking = "You suck lmao";
+		else if (PlayStateChangeables.botPlay && !PlayState.loadRep)
 			ranking = "BotPlay";
+		else if (PlayStateChangeables.practiceMode)
+			ranking = "PRACTICE";
 
 		return ranking;
 	}

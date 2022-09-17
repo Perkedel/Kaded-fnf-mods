@@ -51,8 +51,8 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	// wait. it's already covered?
 	static var weekDatas:Array<Dynamic>; // nope. only week names. they also borked weekData variable.
 
-	// non-gamer move lol! you supposed to let it be filed procedural!!!
-	static function weekData(hardcoded:Bool = false):Array<Dynamic>
+	// non-gamer move lol! you supposed to let it be filed procedural!!! also pls make this public.
+	public static function weekData(hardcoded:Bool = false):Array<Dynamic>
 	{
 		if (hardcoded)
 			return [

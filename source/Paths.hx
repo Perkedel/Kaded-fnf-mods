@@ -66,14 +66,15 @@ class Paths
 		var folder:String = '';
 		if (path == 'songs')
 			folder = 'songs:';
-		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
+		// gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
 		// trace(gottenPath);
 		// JOELwindows7: BOLO safety!!!
 		if (OpenFlAssets.exists(folder + gottenPath, SOUND))
 		{
 			if (!currentTrackedSounds.exists(gottenPath))
 			{
-				currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+				// currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+				currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + gottenPath));
 			}
 		}
 		else
@@ -117,17 +118,19 @@ class Paths
 
 		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
 
-		#if FEATURE_FILESYSTEM
-		if (Caching.bitmapData != null)
-		{
-			if (Caching.bitmapData.exists(key))
+		/*
+			#if FEATURE_FILESYSTEM
+			if (Caching.bitmapData != null)
 			{
-				Debug.logTrace('Loading image from bitmap cache: $key');
-				// Get data from cache.
-				return Caching.bitmapData.get(key);
+				if (Caching.bitmapData.exists(key))
+				{
+					Debug.logTrace('Loading image from bitmap cache: $key');
+					// Get data from cache.
+					return Caching.bitmapData.get(key);
+				}
 			}
-		}
-		#end
+			#end
+		 */
 
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
@@ -363,9 +366,18 @@ class Paths
 		return getPath('data/$key.json', TEXT, library);
 	}
 
-	static public function sound(key:String, ?library:String)
+	static public function sound(key:String, ?library:String):Any
 	{
-		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
+		// JOELwindows7: BOLO any
+		// return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
+		var sound:Sound = loadSound('sounds', key, library);
+		return sound;
+	}
+
+	static public function soundThing(key:String, ?library:String):Any
+	{
+		var sound:Sound = loadSound('sounds', key, library);
+		return sound;
 	}
 
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
@@ -373,18 +385,20 @@ class Paths
 		return sound(key + FlxG.random.int(min, max), library);
 	}
 
-	inline static public function music(key:String, ?library:String)
+	inline static public function music(key:String, ?library:String):Any
 	{
-		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
+		// return getPath('music/$key.$SOUND_EXT', MUSIC, library);
+		var file:Sound = loadSound('music', key, library);
+		return file;
 	}
 
 	// JOELwindows7: MIDI file in music folder, menu music MIDI
-	inline static public function midiMeta(key:String, ?library:String)
+	inline static public function midiMeta(key:String, ?library:String):Any
 	{
 		return getPath('music/$key.mid', BINARY, library);
 	}
 
-	inline static public function voices(song:String, count:Int = 0)
+	inline static public function voices(song:String, count:Int = 0):Any
 	{
 		// var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase() + '/Voices${count > 0 ? Std.string(count) : ""}'; // JOELwindows7: BOLO
@@ -444,7 +458,7 @@ class Paths
 		return file;
 	}
 
-	inline static public function inst(song:String)
+	inline static public function inst(song:String):Any
 	{
 		// var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase() + '/Inst'; // JOELwindows7: BOLO
@@ -466,12 +480,11 @@ class Paths
 		#else
 		file = 'songs:assets/songs/$songLowercase.$SOUND_EXT';
 		#end
-
 		return file;
 	}
 
 	// JOELwindows7: copy inst but for MIDI
-	inline static public function midiInst(song:String)
+	inline static public function midiInst(song:String):Any
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 		switch (songLowercase)

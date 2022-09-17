@@ -75,9 +75,38 @@ class MusicBeatState extends CoreState
 
 	override function destroy()
 	{
+		clean(); // JOELwindows7: never forget this!!!! thancc BOLO
 		Application.current.window.onFocusIn.remove(onWindowFocusOut);
 		Application.current.window.onFocusIn.remove(onWindowFocusIn);
 		super.destroy();
+	}
+
+	// JOELwindows7: NEW BOLO destroy object!!!
+	public function destroyObject(Object:Dynamic):Void
+	{
+		if (Std.isOfType(Object, FlxSprite))
+		{
+			var spr:FlxSprite = cast(Object, FlxSprite);
+			spr.kill();
+			remove(spr, true);
+			spr.destroy();
+			spr = null;
+		}
+		else if (Std.isOfType(Object, FlxTypedGroup))
+		{
+			var grp:FlxTypedGroup<Dynamic> = cast(Object, FlxTypedGroup<Dynamic>);
+			for (ObjectGroup in grp.members)
+			{
+				if (Std.isOfType(ObjectGroup, FlxSprite))
+				{
+					var spr:FlxSprite = cast(ObjectGroup, FlxSprite);
+					spr.kill();
+					remove(spr, true);
+					spr.destroy();
+					spr = null;
+				}
+			}
+		}
 	}
 
 	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
@@ -94,7 +123,9 @@ class MusicBeatState extends CoreState
 			{
 				if (spr.graphic.bitmap.image == null)
 					if (FlxG.save.data.annoyingWarns)
+					{
 						Debug.logWarn("you are adding a fuckin null texture (THIS WILL CRASH YOUR GAME!)");
+					}
 			}
 		}
 		// JOELwindows7: FlxUISprite version!
@@ -105,7 +136,9 @@ class MusicBeatState extends CoreState
 			{
 				if (spr.graphic.bitmap.image == null)
 					if (FlxG.save.data.annoyingWarns)
+					{
 						Debug.logWarn("you are adding a fuckin null texture (THIS WILL CRASH YOUR GAME!)");
+					}
 			}
 		}
 		// Debug.logTrace(Object);
@@ -129,7 +162,7 @@ class MusicBeatState extends CoreState
 			assets.push(Object);
 		#end
 		// var result = super.add(Object);
-		// return result;
+		// return result; // JOELwindows7: nvm, just have it, just in case idk..
 
 		// JOELwindows7: hey pls functional!
 		return super.add(Object); // yeah that's better.
@@ -451,7 +484,7 @@ class MusicBeatState extends CoreState
 						stepHit();
 					}
 				}
-				Conductor.crochet = ((60 / Conductor.bpm) * 1000);
+				Conductor.crochet = ((60 / Conductor.bpm) * 1000) / PlayState.songMultiplier; // JOELwindows7: woops forgor, thancc BOLO
 			}
 		}
 
@@ -515,12 +548,25 @@ class MusicBeatState extends CoreState
 		#if FEATURE_DISPLAY_FPS_CHANGE // JOELwindows7: ooo, sneaky!
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		#end
+		// JOELwindows7: BOLO. unstun player after refocus
+		if (PlayState.inDaPlay)
+		{
+			if (PlayState.boyfriend.stunned)
+				PlayState.boyfriend.stunned = false;
+		}
 	}
 
 	function onWindowFocusOut():Void
 	{
 		if (PlayState.inDaPlay)
 		{
+			// JOELwindows7: further BOLO fix because the song often fail to get caught into cage somehow.
+			if (PlayState.instance.vocals != null)
+				PlayState.instance.vocals.pause();
+			if (PlayState.instance.vocals2 != null)
+				PlayState.instance.vocals2.pause();
+			if (FlxG.sound.music != null)
+				FlxG.sound.music.pause();
 			if (!PlayState.instance.paused && !PlayState.instance.endingSong && PlayState.instance.songStarted)
 			{
 				Debug.logTrace("Lost Focus");
@@ -535,10 +581,15 @@ class MusicBeatState extends CoreState
 				// FlxG.sound.music.stop();
 
 				// JOELwindows7: that ain't gonna work I think. let's pause instead! like in PlayState really.
-				PlayState.instance.vocals.pause();
-				PlayState.instance.vocals2.pause();
-				FlxG.sound.music.pause();
+				if (PlayState.instance.vocals != null)
+					PlayState.instance.vocals.pause();
+				if (PlayState.instance.vocals2 != null)
+					PlayState.instance.vocals2.pause();
+				if (FlxG.sound.music != null)
+					FlxG.sound.music.pause();
 			}
 		}
 	}
+
+	
 }
