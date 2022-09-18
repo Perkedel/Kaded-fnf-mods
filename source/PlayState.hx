@@ -883,7 +883,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		if (SONG.eventObjects == null)
 		{
 			SONG.eventObjects = [
-				new Song.Event("Init BPM", 0, Std.string(SONG.bpm), "BPM Change", Std.string(0.0), Std.string(0.0))
+				new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change", 0, 0)
 			]; // JOELwindows7: houv
 		}
 

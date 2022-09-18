@@ -1,11 +1,12 @@
 package;
 
-import flixel.graphics.frames.FlxFramesCollection;
 import flash.media.Sound;
 import openfl.display.BitmapData;
 import openfl.media.Video;
 import openfl.utils.Assets;
 import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxFramesCollection;
+import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.system.System;
@@ -376,8 +377,9 @@ class Paths
 
 	static public function soundThing(key:String, ?library:String):Any
 	{
-		var sound:Sound = loadSound('sounds', key, library);
-		return sound;
+		// var sound:Sound = loadSound('sounds', key, library);
+		// return sound;
+		return sound(key, library);
 	}
 
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
@@ -486,7 +488,8 @@ class Paths
 	// JOELwindows7: copy inst but for MIDI
 	inline static public function midiInst(song:String):Any
 	{
-		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		// var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase() + '/Inst'; // JOELwindows7: BOLO
 		switch (songLowercase)
 		{
 			case 'dad-battle':
@@ -496,7 +499,14 @@ class Paths
 			case 'm.i.l.f':
 				songLowercase = 'milf';
 		}
-		return 'songs:assets/songs/${songLowercase}/Inst.mid';
+		// return 'songs:assets/songs/${songLowercase}/Inst.mid';
+		var file;
+		// #if PRELOAD_ALL
+		// file = loadSound('songs', songLowercase);
+		// #else
+		file = 'songs:assets/songs/$songLowercase.mid';
+		// #end
+		return file;
 	}
 
 	static public function listSongsToCache()
@@ -660,7 +670,6 @@ class Paths
 
 		// clear anything not in the tracked assets list
 		var counterAssets:Int = 0;
-		var counterSound:Int = 0;
 		@:privateAccess
 		for (key in FlxG.bitmap._cache.keys())
 		{
@@ -678,12 +687,14 @@ class Paths
 
 		#if PRELOAD_ALL
 		// clear all sounds that are cached
+		var counterSound:Int = 0;
 		for (key in currentTrackedSounds.keys())
 		{
 			if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key) && key != null)
 			{
 				// trace('test: ' + dumpExclusions, key);
-				Assets.cache.clear(key);
+				OpenFlAssets.cache.removeSound(key);
+				OpenFlAssets.cache.clearSounds(key);
 				currentTrackedSounds.remove(key);
 				counterSound++;
 				Debug.logTrace('Cleared and removed $counterSound cached sounds.');
@@ -691,6 +702,7 @@ class Paths
 		}
 
 		// Clear everything everything that's left
+		/*
 		var counterLeft:Int = 0;
 		for (key in OpenFlAssets.cache.getKeys())
 		{
@@ -701,6 +713,9 @@ class Paths
 				Debug.logTrace('Cleared and removed $counterLeft cached leftover assets.');
 			}
 		}
+		*/
+
+		
 		// flags everything to be cleared out next unused memory clear
 		localTrackedAssets = [];
 		openfl.Assets.cache.clear("songs");

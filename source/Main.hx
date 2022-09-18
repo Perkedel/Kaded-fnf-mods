@@ -1,6 +1,5 @@
 package;
 
-import openfl.events.UncaughtErrorEvent;
 import ui.states.debug.WerrorCrashState;
 import openfl.system.System;
 import utils.Initializations;
@@ -47,9 +46,18 @@ import plugins.systems.ScanPlatform;
 import haxe.ui.Toolkit;
 #if EXPERIMENTAL_OPENFL_XINPUT
 import com.furusystems.openfl.input.xinput.*;
-
 // import com.furusystems.openfl.input.xinput.XBox360Controller;
 #end
+// crash handler stuff
+import openfl.events.UncaughtErrorEvent;
+import haxe.CallStack;
+import haxe.io.Path;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.Process;
+#end
+
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -544,10 +552,8 @@ class Main extends Sprite
 		errMsg += Perkedel.CRASH_TEXT_BANNER
 			+ "\nFATAL Uncaught WError: "
 			+ e.error
-			+ ": "
-			+ e.message
 			+ "\n"
-			+ e.details()
+			+ e.error.getStackTrace()
 			+ "\n\n"
 			+ "\nPlease report this error to our Github page: https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: sqirra-rng";
 

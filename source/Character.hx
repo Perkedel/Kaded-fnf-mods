@@ -144,7 +144,7 @@ class Character extends FlxUISprite
 		var data:CharacterData = cast jsonData;
 
 		// JOELwindows7: BOLO optimizener. uuhh, idk, why.. we have heart organ things here!
-		var tex:FlxAtlasFrames;
+		var tex:FlxFramesCollection;
 
 		// to be deleted
 		name = data.name; // JOELwindows7: name it. wow, Kade and friends prepared that already lol! thancc Eric Millyoja yey cool and good!
@@ -154,8 +154,19 @@ class Character extends FlxUISprite
 		// tex:FlxAtlasFrames = Paths.getSparrowAtlas(data.asset, 'shared');
 		// end to be deleted
 
-		if (data.usePackerAtlas)
+		/*
+			if (data.usePackerAtlas)
+				tex = Paths.getPackerAtlas(data.asset, 'shared');
+			else
+				tex = Paths.getSparrowAtlas(data.asset, 'shared');
+		 */
+		// JOELwindows7: NEW BOLO types of atlas!
+		if (data.AtlasType == 'PackerAtlas')
 			tex = Paths.getPackerAtlas(data.asset, 'shared');
+		else if (data.AtlasType == 'TextureAtlas')
+			tex = Paths.getTextureAtlas(data.asset, 'shared');
+		else if (data.AtlasType == 'JsonAtlas')
+			tex = Paths.getJSONAtlas(data.asset, 'shared');
 		else
 			tex = Paths.getSparrowAtlas(data.asset, 'shared');
 

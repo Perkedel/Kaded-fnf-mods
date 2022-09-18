@@ -2064,6 +2064,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
 		updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
 
+		var hmm = songData.get(songs[curSelected].songName)[curDifficulty]; // JOELwindows7: help BOLO pls
+
 		// JOELwindows7: DO NOT DELETE AUTOMATIC PREVIEW SONG!!!
 		try
 		{
@@ -2110,7 +2112,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			Debug.logError("WERROR auto-preview song!: " + e + ": " + e.message + "\n" + e.details() + "\n");
 		}
 
-		var hmm;
+		// var hmm; // JOELwindows7: redeclared on top
 		try
 		{
 			hmm = songData.get(songs[curSelected].songName)[curDifficulty];
@@ -2251,6 +2253,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
 		updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
 
+		var hmm = songData.get(songs[curSelected].songName)[curDifficulty]; // JOELwindows7: help BOLO pls
+
 		// JOELwindows7: DO NOT DELETE AUTOMATIC PREVIEW SONG!!!
 		try
 		{
@@ -2297,7 +2301,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			Debug.logError("WERROR auto-preview song!: " + e + ": " + e.message + "\n" + e.details() + "\n");
 		}
 
-		var hmm;
+		// var hmm; // JOELwindows7: redeclared on top
 		try
 		{
 			hmm = songData.get(songs[curSelected].songName)[curDifficulty];

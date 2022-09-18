@@ -30,6 +30,7 @@ import DokiDoki;
 
 class Perkedel
 {
+	public static final MAIN_FONT_FORMAT = "VCR OSD MONO";
 	public static final OPTION_SAY_NEED_RESTART_SONG:String = "(Restart Song Required) ";
 	public static final OPTION_SAY_CANNOT_ACCESS_IN_PAUSE:String = "(Can't access / toggle! in pause rn) "; // In kade it was "This option cannot be toggled in the pause menu."
 	public static final OPTION_SAY_REQUIRES_RESTART:String = "(Requires restart!!!)"; // REQUIRES system restart

@@ -12,6 +12,7 @@ using StringTools;
 class CoolUtil
 {
 	public static var difficultyArray:Array<String> = ['Easy', "Normal", "Hard"];
+	public static var difficultyArrayId:Array<String> = ['easy', "normal", "hard"]; // JOELwindows7: for ID purpose
 
 	public static var suffixDiffsArray:Array<String> = ['-easy', "", "-hard"]; // JOELwindows7: BOLO
 

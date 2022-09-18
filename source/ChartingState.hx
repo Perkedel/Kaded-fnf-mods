@@ -57,15 +57,29 @@ import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
+import openfl.Lib;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+// JOELwindows7: new used for BOLO
+import flixel.util.FlxSort;
+import flixel.addons.ui.FlxUI9SliceSprite;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import lime.media.AudioBuffer;
+import haxe.io.Bytes;
+import flash.geom.Rectangle;
 
 #if (systools)
 // import systools.Dialogs;
 #end
 using StringTools;
 
+// JOELwindows7: YO! new thing that BOLO uses!!!
+@:access(flixel.system.FlxSound._sound)
+@:access(openfl.media.Sound.__buffer)
 // JOELwindows7: Yo! for things that meant for UI stuffs, whyn't use FlxUI addon classes instead?!
 // you should use e.g. `FlxUISprite` instead of regular `FlxSprite` bruh!!!
 class ChartingState extends MusicBeatState
@@ -188,10 +202,27 @@ class ChartingState extends MusicBeatState
 
 	var reloadOnInit = false;
 
+	// JOELwindows7: BOLO new
+	public var ignoreWarnings = false;
+
+	var autosaveIndicator:FlxSprite;
+
 	override function create()
 	{
 		// JOELwindows7: move super create here
 		super.create();
+
+		// JOELwindows7: BG BG BG BG BOLO
+		var bg:FlxUISprite = new FlxUISprite();
+		bg.loadGraphic(Paths.image('menuBGDesatAlt'));
+		bg.scrollFactor.set();
+		bg.color = 0xFF222222;
+		add(bg);
+
+		// JOELwindows7: BOLO ignore warnings
+		ignoreWarnings = FlxG.save.data.ignoreWarnings;
+		if (FlxG.save.data.autoSaveChart)
+			Lib.setInterval(autosaveSong2, 5 * 60 * 1000); // <arubz> * 60 * 1000
 
 		// JOELwindows7: init the sound
 		snapSound = new FlxSound().loadEmbedded(Paths.sound(Perkedel.NOTE_SNAP_SOUND_PATH), false);
@@ -209,7 +240,9 @@ class ChartingState extends MusicBeatState
 		#if FEATURE_DISCORD
 		DiscordClient.changePresence("Chart Editor", null, null, true);
 		#end
-
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+		speed = PlayState.songMultiplier;
 		curSection = lastSection;
 
 		Debug.logTrace(1 > Math.POSITIVE_INFINITY);
@@ -334,14 +367,10 @@ class ChartingState extends MusicBeatState
 		var index = 0;
 
 		if (_song.eventObjects == null)
-			_song.eventObjects = [
-				new Song.Event("Init BPM", 0, Std.string(_song.bpm), "BPM Change", Std.string(0), Std.string(0))
-			]; // JOELwindows7: ouh
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: ouh
 
 		if (_song.eventObjects.length == 0)
-			_song.eventObjects = [
-				new Song.Event("Init BPM", 0, Std.string(_song.bpm), "BPM Change", Std.string(0), Std.string(0))
-			]; // JOELwindows7: ha!
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: ha!
 
 		Debug.logTrace("goin");
 
@@ -487,14 +516,17 @@ class ChartingState extends MusicBeatState
 		installWaveform();
 
 		// JOELwindows7: cast it up buddy!
-		strumLine = cast new FlxUISprite(0, 0).makeGraphic(Std.int(GRID_SIZE * 8), 4);
+		strumLine = new FlxUISprite(0, 0);
+		strumLine.makeGraphic(Std.int(GRID_SIZE * 8), 4);
 
-		dummyArrow = cast new FlxUISprite().makeGraphic(GRID_SIZE, GRID_SIZE);
+		dummyArrow = new FlxUISprite();
+		dummyArrow.makeGraphic(GRID_SIZE, GRID_SIZE);
 		var tabs = [
 			{name: "Song", label: 'Song Data'},
 			{name: "Section", label: 'Section Data'},
 			{name: "Note", label: 'Note Data'},
-			{name: "Assets", label: 'Assets'}
+			{name: "Assets", label: 'Assets'},
+			{name: "Charting", label: 'Charting'} // JOELwindows7: plesiren. BOLO. sorry what is plesiren had this reserved, sorry if offensive idk.
 		];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
@@ -521,11 +553,22 @@ class ChartingState extends MusicBeatState
 		add(UI_options);
 		add(UI_box);
 
+		// JOELwindows7: BOLO's autosave indicator
+		autosaveIndicator = new FlxUISprite(-30, FlxG.height - 90);
+		autosaveIndicator.loadGraphic(Paths.image('autosaveIndicator'));
+		autosaveIndicator.setGraphicSize(200, 70);
+		autosaveIndicator.alpha = 0;
+		autosaveIndicator.scrollFactor.set();
+		autosaveIndicator.antialiasing = FlxG.save.data.antialiasing;
+		if (FlxG.save.data.autoSaveChart)
+			add(autosaveIndicator);
+
 		// JOELwindows7: all buttons has been changed into FlxUIButton instead of classic FlxButton
 		addSongUI();
 		addSectionUI();
 		addNoteUI();
 
+		addChartingUI(); // JOELwindows7: BOLO
 		addOptionsUI();
 		addEventsUI();
 		addControlUI(); // JOELwindows7: here the touchscreen control
@@ -615,7 +658,8 @@ class ChartingState extends MusicBeatState
 
 					// JOELwindows7: gruing gruing guring
 					var text:FlxUIText = new FlxUIText(-190, pos, 0, i.name + "\n" + type + "\n" + i.value, 12);
-					var line:FlxSprite = new FlxSprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLUE); // JOELwindows7: FlxUI fy trouble
+					var line:FlxSprite = new FlxUISprite(0, pos);
+					line.makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLUE); // JOELwindows7: FlxUI fy trouble
 
 					line.alpha = 0.2;
 
@@ -718,9 +762,7 @@ class ChartingState extends MusicBeatState
 	{
 		if (_song.eventObjects == null)
 		{
-			_song.eventObjects = [
-				new Song.Event("Init BPM", 0, Std.string(_song.bpm), "BPM Change", Std.string(0), Std.string(0))
-			]; // JOELwindows7: oh
+			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: oh
 		}
 
 		var firstEvent = "";
@@ -769,9 +811,8 @@ class ChartingState extends MusicBeatState
 		var eventSave = new FlxUIButton(10, 155, "Save Event", function()
 		{
 			var pog:Song.Event = new Song.Event(currentSelectedEventName, currentEventPosition,
-				Std.string(HelperFunctions.truncateFloat(Std.parseFloat(savedValue), 3)), savedType,
-				Std.string(HelperFunctions.truncateFloat(Std.parseFloat(savedValue2), 3)),
-				Std.string(HelperFunctions.truncateFloat(Std.parseFloat(savedValue3), 3)));
+				(HelperFunctions.truncateFloat(Std.parseFloat(savedValue), 3)), savedType, (HelperFunctions.truncateFloat(Std.parseFloat(savedValue2), 3)),
+				(HelperFunctions.truncateFloat(Std.parseFloat(savedValue3), 3)));
 
 			Debug.logTrace("trying to save " + currentSelectedEventName);
 
@@ -862,7 +903,7 @@ class ChartingState extends MusicBeatState
 		{
 			// JOELwindows7: O poggers
 			var pog:Song.Event = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3),
-				HelperFunctions.truncateFloat(curDecimalBeat, 3), Std.string(_song.bpm), "BPM Change", Std.string(0), Std.string(0));
+				HelperFunctions.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change", 0, 0);
 
 			Debug.logTrace("adding " + pog.name);
 
@@ -922,6 +963,8 @@ class ChartingState extends MusicBeatState
 				var type = Reflect.field(i, "type");
 				var pos = Reflect.field(i, "position");
 				var value = Reflect.field(i, "value");
+				var value2 = Reflect.field(i, "value2");
+				var value3 = Reflect.field(i, "value3");
 
 				Debug.logTrace(i.type);
 				if (type == "BPM Change")
@@ -973,8 +1016,7 @@ class ChartingState extends MusicBeatState
 
 			if (firstEvent == null)
 			{
-				_song.eventObjects.push(new Song.Event("Init BPM", 0, Std.string(_song.bpm), "BPM Change", Std.string(0),
-					Std.string(0))); // JOELwindows7: initda
+				_song.eventObjects.push(new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)); // JOELwindows7: initda
 				firstEvent = _song.eventObjects[0];
 			}
 
@@ -1024,6 +1066,8 @@ class ChartingState extends MusicBeatState
 				var type = Reflect.field(i, "type");
 				var pos = Reflect.field(i, "position");
 				var value = Reflect.field(i, "value");
+				var value2 = Reflect.field(i, "value2");
+				var value3 = Reflect.field(i, "value3");
 
 				Debug.logTrace(i.type);
 				if (type == "BPM Change")
@@ -1264,11 +1308,11 @@ class ChartingState extends MusicBeatState
 			playClaps = hitsounds.checked;
 		};
 		// JOELwindows7: and here metronome!
-		var metronomes = new FlxUICheckBox(10, 80, null, null, "Play metronomes", 100);
-		metronomes.checked = false;
-		metronomes.callback = function()
+		var metronomesLocaCheck = new FlxUICheckBox(10, 80, null, null, "Play metronomes", 100);
+		metronomesLocaCheck.checked = false;
+		metronomesLocaCheck.callback = function()
 		{
-			playMetronome = metronomes.checked;
+			playMetronome = FlxG.save.data.chart_metronome = metronomesLocaCheck.checked;
 		};
 
 		check_snap = new FlxUICheckBox(80, 25, null, null, "Snap to grid", 100);
@@ -1283,7 +1327,7 @@ class ChartingState extends MusicBeatState
 		var tab_options = new FlxUI(null, UI_options);
 		tab_options.name = "Options";
 		tab_options.add(hitsounds);
-		tab_options.add(metronomes); // JOELwindows7: metronome checkbox
+		tab_options.add(metronomesLocaCheck); // JOELwindows7: metronome checkbox
 		UI_options.addGroup(tab_options);
 	}
 
@@ -1506,6 +1550,12 @@ class ChartingState extends MusicBeatState
 		UI_options.addGroup(tab_control);
 	}
 
+	// JOELwindows7: oh boy/girl, BOLO's global metronome checkbox
+	var metronomeCheck:FlxUICheckBox;
+	var metronomeStepper:FlxUINumericStepper;
+	var metronomeOffsetStepper:FlxUINumericStepper;
+	var check_warnings:FlxUICheckBox = null;
+
 	function addSongUI():Void
 	{
 		// JOELwindows7: here I add tooltip yeye
@@ -1612,7 +1662,7 @@ class ChartingState extends MusicBeatState
 		// JOELwindows7: tootipsed
 		// see https://github.com/HaxeFlixel/flixel-demos/blob/master/UserInterface/Tooltips/source/State_DemoCode.hx
 		tooltips.add(shiftNoteButton, {
-			title: "Shift Notes",
+			title: "Shift All Notes",
 			body: "Commence shifting notes according to the values above you've set.\nNot to be confused with SHIFT on your keyboard or bottom left.",
 		});
 
@@ -1712,6 +1762,66 @@ class ChartingState extends MusicBeatState
 		add(camFollow);
 
 		FlxG.camera.follow(camFollow);
+	}
+
+	// JOELwindows7: & BOLO charter UI at some point in time
+	function addChartingUI()
+	{
+		var tab_group_chart = new FlxUI(null, UI_box);
+		tab_group_chart.name = 'Charting';
+
+		metronomeCheck = new FlxUICheckBox(10, 15, null, null, "Metronome Enabled", 100, function()
+		{
+			playMetronome = FlxG.save.data.chart_metronome = metronomeCheck.checked;
+		});
+		if (FlxG.save.data.chart_metronome == null)
+			FlxG.save.data.chart_metronome = false;
+		playMetronome = metronomeCheck.checked = FlxG.save.data.chart_metronome;
+
+		metronomeStepper = new FlxUINumericStepper(15, 55, 5, _song.bpm, 1, 1500, 1);
+		metronomeOffsetStepper = new FlxUINumericStepper(metronomeStepper.x + 100, metronomeStepper.y, 25, 0, 0, 1000, 1);
+
+		check_warnings = new FlxUICheckBox(10, 120, null, null, "Ignore Progress Warnings", 100);
+		if (FlxG.save.data.ignoreWarnings == null)
+			FlxG.save.data.ignoreWarnings = false;
+		check_warnings.checked = FlxG.save.data.ignoreWarnings;
+
+		check_warnings.callback = function()
+		{
+			FlxG.save.data.ignoreWarnings = check_warnings.checked;
+			ignoreWarnings = FlxG.save.data.ignoreWarnings;
+		};
+
+		var randomizeNotes:FlxUIButton = new FlxUIButton(metronomeOffsetStepper.x + 100, metronomeOffsetStepper.y, "Randomize Notes", function()
+		{
+			for (i in _song.notes)
+			{
+				for (e in i.sectionNotes)
+				{
+					if (e[1] >= 4 && e[1] <= 7)
+					{
+						e[1] = FlxG.random.int(4, 7);
+					}
+					else
+					{
+						e[1] = FlxG.random.int(0, 3);
+					}
+				}
+			}
+			updateGrid();
+			updateNoteUI();
+		});
+		// random was added because (I glowsoony liked it)
+
+		tab_group_chart.add(new FlxUIText(metronomeStepper.x, metronomeStepper.y - 15, 0, 'BPM:'));
+		tab_group_chart.add(new FlxUIText(metronomeOffsetStepper.x, metronomeOffsetStepper.y - 15, 0, 'Offset (ms):'));
+		tab_group_chart.add(metronomeCheck);
+		tab_group_chart.add(randomizeNotes);
+		tab_group_chart.add(metronomeStepper);
+		tab_group_chart.add(metronomeOffsetStepper);
+		tab_group_chart.add(check_warnings);
+
+		UI_box.addGroup(tab_group_chart);
 	}
 
 	var stepperLength:FlxUINumericStepper;
@@ -1859,6 +1969,12 @@ class ChartingState extends MusicBeatState
 
 		var startSection:FlxUIButton = new FlxUIButton(10, 85, "Play Here", function()
 		{
+			// JOELwindows7: BOLO autosave song first
+			/*
+				if (FlxG.save.data.autoSaveChart)
+					autosaveSong2();
+			 */
+
 			PlayState.SONG = _song;
 			FlxG.sound.music.stop();
 			if (!PlayState.isSM)
@@ -1895,6 +2011,66 @@ class ChartingState extends MusicBeatState
 			switchState(new PlayState(), true, true, true, true); // JOELwindows7: yea
 		});
 
+		// JOELwindows7: BOLO's duet note button. copy note each other
+		var duetButton:FlxUIButton = new FlxUIButton(10, copyButton.y + 95, "Duet Notes", function()
+		{
+			var duetNotes:Array<Array<Dynamic>> = [];
+			for (note in _song.notes[curSection].sectionNotes)
+			{
+				var boob = note[1];
+				if (boob > 3)
+				{
+					boob -= 4;
+				}
+				else
+				{
+					boob += 4;
+				}
+
+				var copiedNote:Array<Dynamic> = [note[0], boob, note[2], note[3]];
+				duetNotes.push(copiedNote);
+			}
+
+			for (i in duetNotes)
+			{
+				_song.notes[curSection].sectionNotes.push(i);
+			}
+
+			updateGrid();
+		});
+		tooltips.add(duetButton, {
+			title: "Copy Notes each other",
+			body: "(undocumented) Duplicate all notes from selected section to second player in this section",
+		});
+
+		// JOELwindows7: BOLO's mirror notes button. copy note each other in mirror
+		var mirrorButton:FlxUIButton = new FlxUIButton(duetButton.x + 100, duetButton.y, "Mirror Notes", function()
+		{
+			var duetNotes:Array<Array<Dynamic>> = [];
+			for (note in _song.notes[curSection].sectionNotes)
+			{
+				var boob = note[1] % 4;
+				boob = 3 - boob;
+				if (note[1] > 3)
+					boob += 4;
+
+				note[1] = boob;
+				var copiedNote:Array<Dynamic> = [note[0], boob, note[2], note[3]];
+				// duetNotes.push(copiedNote);
+			}
+
+			for (i in duetNotes)
+			{
+				// _song.notes[curSec].sectionNotes.push(i);
+			}
+
+			updateGrid();
+		});
+		tooltips.add(mirrorButton, {
+			title: "Mirror",
+			body: "(undocumented) Mirror all notes in selected section",
+		});
+
 		tab_group_section.add(refresh);
 		tab_group_section.add(startSection);
 		// tab_group_section.add(stepperCopy);
@@ -1905,6 +2081,8 @@ class ChartingState extends MusicBeatState
 		// tab_group_section.add(copyButton);
 		tab_group_section.add(clearSectionButton);
 		tab_group_section.add(swapSection);
+		tab_group_section.add(duetButton); // JOELwindows7: BOLO
+		tab_group_section.add(mirrorButton); // JOELwindows7: BOLO
 
 		UI_box.addGroup(tab_group_section);
 	}
@@ -1943,6 +2121,9 @@ class ChartingState extends MusicBeatState
 
 	public var check_naltAnim:FlxUICheckBox;
 	public var check_hitsoundUseIt:FlxUICheckBox; // JOELwindows7: override hitsound checkbox
+
+	// JOELwindows7: input strum time BOLO
+	var strumTimeInputText:FlxUIInputText;
 
 	function addNoteUI():Void
 	{
@@ -2040,6 +2221,8 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
+		strumTimeInputText = new FlxUIInputText(10, 65, 180, "0");
+
 		var stepperSusLengthLabel = new FlxUIText(74, 10, 'Note Sustain Length');
 
 		var stepperNoteTypeLabel = new FlxUIText(74, 40, 'Note Type'); // JOELwindows7: note type label
@@ -2055,6 +2238,7 @@ class ChartingState extends MusicBeatState
 			}); // JOELwindows7: push this down because 100 is already vowel type. okay no 130. lowest!
 
 		tab_group_note.add(stepperSusLength);
+		tab_group_note.add(strumTimeInputText); // JOELwindows7: BOLO
 		tab_group_note.add(stepperSusLengthLabel);
 		tab_group_note.add(check_hitsoundUseIt); // JOELwindows7: add the hitsound override checkbox
 		tab_group_note.add(hitsoundNotePathLabel); // JOELwindows7: add the hitsound path label
@@ -2201,8 +2385,8 @@ class ChartingState extends MusicBeatState
 					if (note.sustainLength > 0)
 					{
 						// JOELwindows7: okey yea
-						var sustainVis:FlxUISprite = cast new FlxUISprite(note.x + (GRID_SIZE / 2),
-							note.y + GRID_SIZE).makeGraphic(8, Math.floor((getYfromStrum(note.strumTime + note.sustainLength) * zoomFactor) - note.y));
+						var sustainVis:FlxUISprite = new FlxUISprite(note.x + (GRID_SIZE / 2), note.y + GRID_SIZE);
+						sustainVis.makeGraphic(8, Math.floor((getYfromStrum(note.strumTime + note.sustainLength) * zoomFactor) - note.y));
 
 						note.noteCharterObject = sustainVis;
 
@@ -2358,7 +2542,7 @@ class ChartingState extends MusicBeatState
 					_song.bpm = nums.value;
 
 					if (_song.eventObjects[0].type != "BPM Change")
-						Application.current.window.alert("i'm crying, first event isn't a bpm change. fuck you");
+						Application.current.window.alert("i'm crying, first event isn't a bpm change. fuck you, SELEKETEP!!!!");
 					else
 					{
 						_song.eventObjects[0].value = Std.string(nums.value);
@@ -2374,6 +2558,8 @@ class ChartingState extends MusicBeatState
 						var type = Reflect.field(i, "type");
 						var pos = Reflect.field(i, "position");
 						var value = Reflect.field(i, "value");
+						var value2 = Reflect.field(i, "value2");
+						var value3 = Reflect.field(i, "value3");
 
 						Debug.logTrace(i.type);
 						if (type == "BPM Change")
@@ -2468,6 +2654,21 @@ class ChartingState extends MusicBeatState
 				case 'divisions':
 					subDivisions = nums.value;
 					updateGrid();
+			}
+		}
+		// JOELwindows7: BOLO's input texteh
+		else if (id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText))
+		{
+			if (curSelectedNote != null)
+			{
+				if (sender == strumTimeInputText)
+				{
+					var value:Float = Std.parseFloat(strumTimeInputText.text);
+					if (Math.isNaN(value))
+						value = 0;
+					curSelectedNote[0] = value;
+					updateGrid();
+				}
 			}
 		}
 
@@ -2719,16 +2920,52 @@ class ChartingState extends MusicBeatState
 				{
 					@:privateAccess
 					{
+						// TODO: JOELwindows7: Pls wrap into `manipulateTheAudio();`!!!!!
+						// JOELwindows7: new BOLO compatibility ways
 						#if desktop // JOELwindows7: must be cpp
+						#if (lime >= "8.0.0")
+						FlxG.sound.music._channel.__source.__backend.setPitch(speed);
+						#else
 						// The __backend.handle attribute is only available on native.
 						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
+						#end
 						try
 						{
 							// We need to make CERTAIN vocals exist and are non-empty
 							// before we try to play them. Otherwise the game crashes.
 							if (vocals != null && vocals.length > 0)
 							{
+								#if (lime >= "8.0.0")
+								vocals._channel.__source.__backend.setPitch(speed);
+								#else
 								lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
+								#end
+							}
+						}
+						catch (e)
+						{
+							// Debug.logTrace("failed to pitch vocals (probably cuz they don't exist)");
+						}
+						#elseif html5
+						#if (lime >= "8.0.0" && lime_howlerjs)
+						FlxG.sound.music._channel.__source.__backend.setPitch(speed);
+						#else
+						#if lime_howlerjs
+						FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
+						#end
+						#end
+
+						try
+						{
+							// We need to make CERTAIN vocals exist and are non-empty
+							// before we try to play them. Otherwise the game crashes.
+							if (vocals != null && vocals.length > 0)
+							{
+								#if (lime >= "8.0.0")
+								vocals._channel.__source.__backend.setPitch(speed);
+								#else
+								vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
+								#end
 							}
 						}
 						catch (e)
@@ -3431,6 +3668,10 @@ class ChartingState extends MusicBeatState
 				// JOELwindows7: press back on Android to exit this chart editor lol. nvm, back Android to open menu.
 				if (FlxG.keys.justPressed.ENTER /*#if android || FlxG.android.justReleased.BACK #end*/)
 				{
+					// JOELwindows7: BOLO autosave song first
+					if (FlxG.save.data.autoSaveChart)
+						autosaveSong2();
+
 					PauseSubState.inCharter = false; // JOELwindows7: make sure the mode is turned back to normal.
 					lastSection = curSection;
 
@@ -3639,6 +3880,10 @@ class ChartingState extends MusicBeatState
 	// JOELwindows7: make press Enter to play song a function method
 	public function playDaSongNow():Void
 	{
+		// JOELwindows7: BOLO autosave the song first
+		if (FlxG.save.data.autoSaveChart)
+			autosaveSong2();
+
 		PauseSubState.inCharter = false; // JOELwindows7: make sure the mode is turned back to normal.
 		lastSection = curSection;
 
@@ -3870,6 +4115,13 @@ class ChartingState extends MusicBeatState
 		if (!Paths.doesImageAssetExist(Paths.image('icons/icon-' + head.split("-")[0]))
 			&& !Paths.doesImageAssetExist(Paths.image('icons/icon-' + head))
 			&& !Paths.doesImageAssetExist(Paths.image('icons/icon-' + headGf))) // JOELwindows7: all 3 must check!
+			// JOElwindows7: BOLO's ifs
+			/*
+				if (!Paths.fileExists("images/icons/icon-" + head.split("-")[0] + ".png", IMAGE)
+					&& !Paths.fileExists("images/icons/icon-" + head + ".png", IMAGE)
+							&& !Paths.fileExists("images/icons/icon-" + headGf + ".png", IMAGE)
+					)
+			 */
 		{
 			if (i.icon.animation.curAnim == null)
 				iconUpdate(true);
@@ -3929,6 +4181,8 @@ class ChartingState extends MusicBeatState
 
 			// JOELwindows7: oh yeah vowel type radpas13121
 			stepperVowelType.value = curSelectedNote[7];
+
+			strumTimeInputText.text = '' + curSelectedNote[0];
 		}
 	}
 
@@ -3999,8 +4253,8 @@ class ChartingState extends MusicBeatState
 				if (daSus > 0)
 				{
 					// JOELwindows7: yey
-					var sustainVis:FlxUISprite = cast new FlxUISprite(note.x + (GRID_SIZE / 2),
-						note.y + GRID_SIZE).makeGraphic(8, Math.floor((getYfromStrum(note.strumTime + note.sustainLength) * zoomFactor) - note.y));
+					var sustainVis:FlxUISprite = new FlxUISprite(note.x + (GRID_SIZE / 2), note.y + GRID_SIZE);
+					sustainVis.makeGraphic(8, Math.floor((getYfromStrum(note.strumTime + note.sustainLength) * zoomFactor) - note.y));
 
 					note.noteCharterObject = sustainVis;
 
@@ -4491,9 +4745,12 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(songId:String):Void
 	{
-		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+		// var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+		// JOELwindows7: here BOLO's difficulty list suffix
+		// var difficultyArray:Array<String> = CoolUtil.suffixDiffsArray;
 
-		PlayState.SONG = Song.loadFromJson(songId, difficultyArray[PlayState.storyDifficulty]);
+		// PlayState.SONG = Song.loadFromJson(songId, difficultyArray[PlayState.storyDifficulty]);
+		PlayState.SONG = Song.loadFromJson(songId, CoolUtil.suffixDiffsArray[PlayState.storyDifficulty]);
 
 		while (curRenderedNotes.members.length > 0)
 		{
@@ -4526,7 +4783,7 @@ class ChartingState extends MusicBeatState
 			_song.notes.remove(i);
 
 		toRemove = []; // clear memory
-		LoadingState.loadAndSwitchState(new ChartingState());
+		LoadingState.loadAndSwitchState(new ChartingState()); // JOELwindows7: pls change
 	}
 
 	function loadAutosave():Void
@@ -4541,7 +4798,7 @@ class ChartingState extends MusicBeatState
 			curRenderedSustains.remove(curRenderedSustains.members[0], true);
 		}
 
-		var autoSaveData = Json.parse(FlxG.save.data.autosave);
+		var autoSaveData = TJSON.parse(FlxG.save.data.autosave);
 
 		var data:SongData = cast autoSaveData.song;
 		var meta:SongMeta = {};
@@ -4582,6 +4839,30 @@ class ChartingState extends MusicBeatState
 		LoadingState.loadAndSwitchState(new ChartingState());
 	}
 
+	// JOELwindows7: BOLO's autosavesong 2 yey
+	function autosaveSong2():Void
+	{
+		FlxG.save.data.autosave = TJSON.encode({
+			"ProgramUsed": Perkedel.ENGINE_NAME,
+			"generatedBy": 'charting',
+			"charter": _song.charter,
+			"song": _song,
+			"songMeta": {
+				"name": _song.songId,
+				"artist": _song.artist,
+				"offset": 0,
+			}
+		});
+		trace('Chart saved!');
+		FlxTween.tween(autosaveIndicator, {alpha: 1}, 1, {ease: FlxEase.backInOut, type: ONESHOT});
+
+		new FlxTimer().start(3, function(tmr:FlxTimer)
+		{
+			FlxTween.tween(autosaveIndicator, {alpha: 0}, 1, {ease: FlxEase.backInOut, type: ONESHOT});
+		});
+		FlxG.save.flush();
+	}
+
 	function autosaveSong():Void
 	{
 		// JOELwindows7: whoaho here more data
@@ -4595,6 +4876,9 @@ class ChartingState extends MusicBeatState
 		// });
 		// JOELwindows7: okay uh,, TJSON pls
 		FlxG.save.data.autosave = TJSON.encode({
+			"ProgramUsed": Perkedel.ENGINE_NAME,
+			"generatedBy": 'charting',
+			"charter": _song.charter,
 			"song": _song,
 			"songMeta": {
 				"name": _song.songName,
@@ -4607,7 +4891,9 @@ class ChartingState extends MusicBeatState
 
 	public function saveLevel() // JOELwindows7: make this public for others to tell idk.
 	{
-		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+		// var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+		// JOELwindows7: here BOLO's difficulty list suffix
+		// var difficultyArray:Array<String> = CoolUtil.suffixDiffsArray[PlayState.storyDifficulty];
 
 		var toRemove = [];
 
@@ -4700,13 +4986,15 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
+			_file.save(data.trim(), _song.songId.toLowerCase() + CoolUtil.suffixDiffsArray[PlayState.storyDifficulty] + ".json");
 			// #end
 		}
 	}
 
 	// JOELwindows7: the just save function. if you already saved as before like above, here save just save without dialog box
 	public var alreadySavedBefore:Bool = false;
+
+	public var lastFileNameSavedAs:String = '';
 
 	public function justSaveNow():Void
 	{
@@ -4728,8 +5016,8 @@ class ChartingState extends MusicBeatState
 	// JOELwindows7: modificates before save
 	function _modificatesBeforeSave()
 	{
-		var difficultyArray = ["easy", "normal", "hard"]; // note, this is different than above's array! this is for ID, not file namer.
-		_song.difficultyId = difficultyArray[PlayState.storyDifficulty];
+		// var difficultyArray = ["easy", "normal", "hard"]; // note, this is different than above's array! this is for ID, not file namer.
+		_song.difficultyId = CoolUtil.difficultyArrayId[PlayState.storyDifficulty];
 		_song.difficultyStrength = DiffCalc.CalculateDiff(_song, .93, true);
 	}
 
@@ -4775,6 +5063,14 @@ class ChartingState extends MusicBeatState
 	 */
 	function onSaveComplete(_):Void
 	{
+		// JOELwindows7: store filename it saved as pls
+		try
+		{
+			lastFileNameSavedAs = _file.name;
+		}
+		catch (e)
+		{
+		}
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
@@ -4825,6 +5121,10 @@ class ChartingState extends MusicBeatState
 	{
 		if (paused)
 		{
+			// JOELwindows7: BOLO autosave song first
+			if (FlxG.save.data.autoSaveChart)
+				autosaveSong2();
+
 			if (FlxG.sound.music.playing)
 			{
 				FlxG.sound.music.pause();

@@ -1,5 +1,6 @@
 package;
 
+import flixel.graphics.FlxGraphic;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.ui.FlxUISprite;
 import ui.states.IBGColorTweening;
@@ -122,6 +123,8 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	var sprDifficulty:FlxUISprite;
 	var leftArrow:FlxUISprite;
 	var rightArrow:FlxUISprite;
+	var diffsThatExists:Array<String>; // JOELwindows7: BOLO diff cleanup check
+	var diffList:Array<String> = []; // JOELwindows7: & the diff list too.
 
 	var yellowBG:FlxUISprite; // JOELwindows7: globalize this bg so we can colorize it.
 	var underlayBG:FlxUISprite; // JOELwindows7: for Underlay. the image appear between character & yellowBG.
@@ -199,9 +202,53 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	}
 
 	// TODO: JOELwindows7: use better week loading JSON granular from Master Eric's Enigma or whatever.
+	// JOELwindows7: BOLO clean difficulties pls
+	function cleanDifficulties()
+	{
+		diffsThatExists = [];
+		diffList = CoolUtil.coolTextFile(Paths.txt('data/weeksDifficulties'));
+
+		try
+		{
+			var splitDiffs:Array<String> = diffList[curWeek].split(':');
+
+			// WTF Epic YandereDev moment 😭
+
+			if (splitDiffs[0].contains('easy'))
+				diffsThatExists.push('easy');
+			else if (splitDiffs[0].contains('normal'))
+				diffsThatExists.push('normal');
+			else if (splitDiffs[0].contains('hard'))
+				diffsThatExists.push('hard');
+
+			if (splitDiffs[1].contains('easy'))
+				diffsThatExists.push('easy');
+			else if (splitDiffs[1].contains('normal'))
+				diffsThatExists.push('normal');
+			else if (splitDiffs[1].contains('hard'))
+				diffsThatExists.push('hard');
+
+			if (splitDiffs[2].contains('easy'))
+				diffsThatExists.push('easy');
+			else if (splitDiffs[2].contains('normal'))
+				diffsThatExists.push('normal');
+			else if (splitDiffs[2].contains('hard'))
+				diffsThatExists.push('hard');
+		}
+		catch (e)
+		{
+			Debug.logWarn('WERROR diff cleanup: $e\n${e.details()}');
+		}
+
+		if (diffsThatExists.length == 0)
+			diffsThatExists = ["easy", "normal", "hard"];
+	}
 
 	override function create()
 	{
+		// JOELwindows7: first, clear memory. BOLO
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
 		// JOELwindows7: Do the work for the weeklist pls!
 		// JOELwindows7: Okay, why not weeklist also procedural? just asking?
 		// not all people are into coding.
@@ -235,18 +282,21 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		{
 			if (!FlxG.sound.music.playing)
 			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				// JOELwindows7: BOLO KE special menu song
+				FlxG.sound.playMusic(Paths.music(FlxG.save.data.watermark ? "ke_freakyMenu" : "freakyMenu"));
+				MainMenuState.freakyPlaying = true;
 				Conductor.changeBPM(102);
 			}
 		}
 
 		persistentUpdate = persistentDraw = true;
 
+		// JOELwindows7: from now on, use our constant font say name definable later for all at once.
 		scoreText = new FlxUIText(10, 10, 0, "SCORE: 49324858", 36);
-		scoreText.setFormat("VCR OSD Mono", 32);
+		scoreText.setFormat(Perkedel.MAIN_FONT_FORMAT, 32);
 
 		txtWeekTitle = new FlxUIText(FlxG.width * 0.7, 10, 0, "", 32);
-		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
+		txtWeekTitle.setFormat(Perkedel.MAIN_FONT_FORMAT, 32, FlxColor.WHITE, RIGHT);
 		txtWeekTitle.alpha = 0.7;
 
 		var rankText:FlxUIText = new FlxUIText(0, 10);
@@ -258,13 +308,15 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		// JOELwindows7: yeah
 		// Mark selection for campaign menu ui assets
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		yellowBG = cast new FlxUISprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE); // JOELwindows7: globalized lol
+		yellowBG = new FlxUISprite(0, 56);
+		yellowBG.makeGraphic(FlxG.width, 400, FlxColor.WHITE); // JOELwindows7: globalized lol
 		// original color was 0xFFF9CF51
 		// You must be white as a base colorable.
 
 		trace("Line smothing");
 		// JOELwindows7: add Underlay image first. also the cast
-		underlayBG = cast new FlxUISprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+		underlayBG = new FlxUISprite(0, 56);
+		underlayBG.makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
 		underlayBG.alpha = .3; // Just like the LCD watch game toy.
 		// 64 bit, 32 bit, 16 bit. 8 bit, 4 Bit, 2 BIt, 1 BiT, HALF bIT, QUARTER BIT, THE WRIST GAAAAAAAAAME!!!
 		// lmao angry game review lololol
@@ -276,7 +328,8 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		add(grpLocks);
 
 		// JOELwindows7: yo! sup!
-		var blackBarThingie:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
+		var blackBarThingie:FlxUISprite = new FlxUISprite();
+		blackBarThingie.makeGraphic(FlxG.width, 56, FlxColor.BLACK);
 		add(blackBarThingie);
 
 		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();
@@ -362,13 +415,18 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		leftArrow.antialiasing = FlxG.save.data.antialiasing;
 		difficultySelectors.add(leftArrow);
 
-		sprDifficulty = new FlxUISprite(leftArrow.x + 130, leftArrow.y);
-		sprDifficulty.frames = ui_tex;
-		sprDifficulty.animation.addByPrefix('easy', 'EASY');
-		sprDifficulty.animation.addByPrefix('normal', 'NORMAL');
-		sprDifficulty.animation.addByPrefix('hard', 'HARD');
-		sprDifficulty.animation.play('easy');
+		// JOELwindows7: newer BOLO way to difficulty
+		// sprDifficulty = new FlxUISprite(leftArrow.x + 130, leftArrow.y);
+		sprDifficulty = new FlxUISprite(0, leftArrow.y);
+		/*
+			sprDifficulty.frames = ui_tex;
+			sprDifficulty.animation.addByPrefix('easy', 'EASY');
+			sprDifficulty.animation.addByPrefix('normal', 'NORMAL');
+			sprDifficulty.animation.addByPrefix('hard', 'HARD');
+			sprDifficulty.animation.play('easy');
+		 */
 		sprDifficulty.antialiasing = FlxG.save.data.antialiasing;
+		cleanDifficulties();
 		changeDifficulty();
 
 		difficultySelectors.add(sprDifficulty);
@@ -409,6 +467,18 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 				item.alpha = 0.6;
 			bullShit++;
 		}
+
+		// JOELwindows7: BOLO's modifiers pls
+		PlayStateChangeables.modchart = true;
+		PlayStateChangeables.botPlay = false;
+		PlayStateChangeables.opponentMode = false;
+		PlayStateChangeables.mirrorMode = false;
+		PlayStateChangeables.holds = true;
+		PlayStateChangeables.healthDrain = false;
+		PlayStateChangeables.healthGain = 1;
+		PlayStateChangeables.healthLoss = 1;
+		PlayStateChangeables.practiceMode = false;
+		PlayStateChangeables.skillIssue = false;
 
 		trace("Line 165");
 
@@ -476,32 +546,50 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 					}
 				}
 
+				// JOELwindows7: BOLO scroll wheele
+				if (FlxG.mouse.wheel != 0)
+				{
+					#if desktop
+					changeWeek(-FlxG.mouse.wheel);
+					#else
+					if (FlxG.mouse.wheel < 0) // HTML5 BRAIN'T
+						changeWeek(1);
+					else if (FlxG.mouse.wheel > 0)
+						changeWeek(-1);
+					#end
+				}
+				// pls also support Samsung with Dex support. Mouse Android yeay!
+
 				// JOELwindows7: add the mouse support here too as well
-				if (FlxG.keys.justPressed.UP || FlxG.mouse.wheel == 1)
+				if (FlxG.keys.justPressed.UP)
 				{
 					changeWeek(-1);
 				}
 
-				if (FlxG.keys.justPressed.DOWN || FlxG.mouse.wheel == -1)
+				if (FlxG.keys.justPressed.DOWN)
 				{
 					changeWeek(1);
 				}
 
+				// JOELwindows7: BOLO easier readibility mouse press arrow difficulty
+				var mouseRight = (FlxG.mouse.overlaps(rightArrow, FlxG.camera) && FlxG.mouse.justPressed) || FlxG.mouse.pressedMiddle;
+				var mouseLeft = (FlxG.mouse.overlaps(leftArrow, FlxG.camera) && FlxG.mouse.justPressed);
+
 				// JOELwindows7: regular mouse overlaps click sprite
 				// https://gamefromscratch.com/haxeflixel-tutorial-mouse-input/
-				if (controls.RIGHT || (FlxG.mouse.overlaps(rightArrow) && FlxG.mouse.pressed) || FlxG.mouse.pressedMiddle)
+				if (controls.RIGHT || mouseRight)
 					rightArrow.animation.play('press')
 				else
 					rightArrow.animation.play('idle');
 
-				if (controls.LEFT || (FlxG.mouse.overlaps(leftArrow) && FlxG.mouse.pressed))
+				if (controls.LEFT || mouseLeft)
 					leftArrow.animation.play('press');
 				else
 					leftArrow.animation.play('idle');
 
-				if (controls.RIGHT_P || (FlxG.mouse.overlaps(rightArrow) && FlxG.mouse.justPressed) || FlxG.mouse.justPressedMiddle)
+				if (controls.RIGHT_P || mouseRight)
 					changeDifficulty(1);
-				if (controls.LEFT_P || (FlxG.mouse.overlaps(leftArrow) && FlxG.mouse.justPressed))
+				if (controls.LEFT_P || mouseLeft)
 					changeDifficulty(-1);
 
 				// manage mouse visibility
@@ -532,7 +620,9 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 				FlxG.mouse.visible = false;
 			}
 
-			if (controls.ACCEPT || haveClicked)
+			// JOELwindows7: BOLO's clicked. but uh, we already have one..
+			var weekClicked = (FlxG.mouse.overlaps(grpWeekText.members[curWeek]) && FlxG.mouse.pressed && !stopspamming);
+			if ((controls.ACCEPT && !FlxG.keys.pressed.ALT) || (haveClicked && !stopspamming))
 			{
 				selectWeek();
 				haveClicked = false;
@@ -616,7 +706,8 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 			PlayState.storyDifficulty = curDifficulty;
 
-			var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
+			// var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
+			var diff:String = '-${diffsThatExists[PlayState.storyDifficulty]}'; // JOELwindows7: NEW BOLO
 			PlayState.sicks = 0;
 			PlayState.bads = 0;
 			PlayState.shits = 0;
@@ -631,7 +722,9 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.songPosBarColor.brightness,
 				PlayStateChangeables.songPosBarColor.brightness, PlayStateChangeables.songPosBarColor.brightness)
 				.getInverted();
-			new FlxTimer().start(1, function(tmr:FlxTimer)
+			// JOELwindows7: Let's go fade the music
+			// new FlxTimer().start(1, function(tmr:FlxTimer)
+			FlxG.sound.music.fadeOut(1, 0, function(twn:FlxTween)
 			{
 				// JOELwindows7: check if the song has video files
 				// #if !mobile
@@ -646,6 +739,8 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		}
 	}
 
+	var tweenDifficulty:FlxTween; // JOELwindows7: BOLO say hello
+
 	function changeDifficulty(change:Int = 0):Void
 	{
 		curDifficulty += change;
@@ -655,19 +750,40 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		if (curDifficulty > 2)
 			curDifficulty = 0;
 
-		sprDifficulty.offset.x = 0;
+		// JOELwindows7: Pls BOLO new way
+		var newImage:FlxGraphic = Paths.imageGraphic('menuDifficulties/${diffsThatExists[curDifficulty]}');
+		// sprDifficulty.offset.x = 0;
 
-		switch (curDifficulty)
+		/*
+			switch (curDifficulty)
+			{
+				case 0:
+					sprDifficulty.animation.play('easy');
+					sprDifficulty.offset.x = 20;
+				case 1:
+					sprDifficulty.animation.play('normal');
+					sprDifficulty.offset.x = 70;
+				case 2:
+					sprDifficulty.animation.play('hard');
+					sprDifficulty.offset.x = 20;
+			}
+		 */
+		if (sprDifficulty.graphic != newImage)
 		{
-			case 0:
-				sprDifficulty.animation.play('easy');
-				sprDifficulty.offset.x = 20;
-			case 1:
-				sprDifficulty.animation.play('normal');
-				sprDifficulty.offset.x = 70;
-			case 2:
-				sprDifficulty.animation.play('hard');
-				sprDifficulty.offset.x = 20;
+			sprDifficulty.loadGraphic(newImage);
+			sprDifficulty.x = leftArrow.x + 60;
+			sprDifficulty.x += (308 - sprDifficulty.width) / 3;
+			sprDifficulty.alpha = 0;
+			sprDifficulty.y = leftArrow.y - 15;
+
+			if (tweenDifficulty != null)
+				tweenDifficulty.cancel();
+			tweenDifficulty = FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07, {
+				onComplete: function(twn:FlxTween)
+				{
+					tweenDifficulty = null;
+				}
+			});
 		}
 
 		sprDifficulty.alpha = 0;
@@ -689,6 +805,10 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	function changeWeek(change:Int = 0):Void
 	{
 		curWeek += change;
+
+		// JOELwindows7: BOLO refresh difficulty everytime change week. oh, there is something.
+		cleanDifficulties();
+		changeDifficulty();
 
 		if (curWeek >= weekData().length)
 			curWeek = 0;
@@ -716,6 +836,10 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	function goToWeek(change:Int = 0)
 	{
 		curWeek = change;
+
+		// JOELwindows7: BOLO refresh difficulty everytime change week. oh, there is something.
+		cleanDifficulties();
+		changeDifficulty();
 
 		if (curWeek >= weekData().length)
 			curWeek = 0;
