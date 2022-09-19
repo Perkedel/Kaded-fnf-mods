@@ -178,7 +178,7 @@ class ModMenu extends CoreSubState
 		}
 		catch (e)
 		{
-			Debug.logError("oops\n" + e);
+			Debug.logError('oops: $e\n${e.details()}');
 			selectedModifierIndex = 0;
 		}
 
@@ -408,9 +408,10 @@ class ModMenu extends CoreSubState
 					}
 				haveBacked = false;
 			}
-
+			#if !html5
 			if (changedMod)
 				FreeplayState.instance.updateDiffCalc();
+			#end
 		}
 	}
 
