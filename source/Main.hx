@@ -1,5 +1,6 @@
 package;
 
+import ui.states.debug.WerrorForceMajeurState;
 import ui.states.debug.WerrorCrashState;
 import openfl.system.System;
 import utils.Initializations;
