@@ -73,8 +73,8 @@
 	<haxedef name="FEATURE_DISCORD" if="desktop || cpp" unless="mobile || neko || hl" />
 	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
 	<haxedef name="FEATURE_FILESYSTEM" if="desktop || sys" />
-	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
-	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile"/>
+	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. wtf bruh! linux troubled.-->
+	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile || linux"/>
 	<!-- JOELwindows7: okay fam, we've got libraries for most of the platform here yey, mobile still broken tho, Android yess. -->
 	<!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
 	<haxedef name="FEATURE_WEBM" if="desktop" unless = "neko || hl"/>

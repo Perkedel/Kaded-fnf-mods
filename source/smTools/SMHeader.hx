@@ -75,8 +75,7 @@ class SMHeader
 					TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
 				}
 
-				changeEvents.push(new Song.Event(HelperFunctions.truncateFloat(beat, 0) + "SM", beat, Std.string(bpm), "BPM Change", Std.string(0),
-					Std.string(0))); // JOELwindows7: now this
+				changeEvents.push(new Song.Event(HelperFunctions.truncateFloat(beat, 0) + "SM", beat, bpm, "BPM Change", 0, 0)); // JOELwindows7: now this
 
 				if (bpmSplit.length == 1)
 					break;

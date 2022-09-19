@@ -26,6 +26,14 @@ import haxe.Exception;
 import clipboard.Clipboard;
 #end
 import flixel.text.FlxText;
+import openfl.events.UncaughtErrorEvent;
+import haxe.CallStack;
+import haxe.io.Path;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.Process;
+#end
 
 // CrashHandler class
 class WerrorForceMajeurState extends CoreState
@@ -103,6 +111,9 @@ class WerrorForceMajeurState extends CoreState
 		addLeftButton(Std.int(acceptButton.x - 150), FlxG.height - 100);
 		addUpButton();
 		addDownButton();
+
+		// JOELwindows7: finally, write the error log like BOLO had here
+		writeErrorLog(exception);
 	}
 
 	override function update(elapsed)
@@ -205,5 +216,46 @@ class WerrorForceMajeurState extends CoreState
 				FlxG.camera.scroll.x += 20;
 			}
 		}
+	}
+
+	function writeErrorLog(exc:Exception)
+	{
+		var errMsg:String = "";
+		var path:String;
+		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var dateNow:String = Date.now().toString();
+
+		dateNow = StringTools.replace(dateNow, " ", "_");
+		dateNow = StringTools.replace(dateNow, ":", "'");
+
+		path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
+
+		for (stackItem in callStack)
+		{
+			switch (stackItem)
+			{
+				case FilePos(s, file, line, column):
+					errMsg += file + " (line " + line + ")\n";
+				default:
+					#if sys
+					Sys.println(stackItem);
+					#end
+			}
+		}
+
+		errMsg += Perkedel.CRASH_TEXT_BANNER
+			+ "\nFATAL Uncaught WError: "
+			+ exc
+			+ "\n"
+			+ exc.details()
+			+ "\n\n"
+			+ "\nPlease report this error to our Github page: https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: sqirra-rng";
+
+		#if FEATURE_FILESYSTEM
+		if (!FileSystem.exists("./crash/"))
+			FileSystem.createDirectory("./crash/");
+
+		File.saveContent(path, errMsg + "\n");
+		#end
 	}
 }
