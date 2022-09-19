@@ -19,7 +19,7 @@ import flixel.util.FlxTimer;
 #if (!debug && android6permission)
 import com.player03.android6.Permissions;
 #end
-import android.AndroidTools;
+import android.Permissions as AndroidPermissions;
 import android.Hardware;
 #end
 #if FEATURE_WEBM_NATIVE
@@ -160,7 +160,10 @@ class Main extends Sprite
 			#end
 			// JOELwindows7: from https://github.com/jigsaw-4277821/extension-androidtools
 			// #if (extension-androidtools)
-			AndroidTools.requestPermissions([Permissions.READ_EXTERNAL_STORAGE, Permissions.WRITE_EXTERNAL_STORAGE]);
+			AndroidPermissions.requestPermissions([
+				AndroidPermissions.READ_EXTERNAL_STORAGE,
+				AndroidPermissions.WRITE_EXTERNAL_STORAGE
+			]);
 			// #end
 			#end
 			// wtf, it doesn't work if Debug situation?! I don't get it!
