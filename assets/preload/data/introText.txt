@@ -39,6 +39,7 @@ pico funny--pico funny
 updates each friday--on time every time
 shoutouts to mason--for da homies
 bonk--get in the discord call
+github exclusive intro text--open source forever
 carpal tunnel--game design
 downscroll--i dont know what that is
 warning--choking hazard
@@ -1734,3 +1735,4 @@ low refresh rate--check setting
 voltaren--cramp cream
 contract disturbed--ewoq job
 sorry guys--mod disturbed
+lfm exclusive intro--power up your funkin
