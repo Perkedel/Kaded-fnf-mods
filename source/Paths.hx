@@ -694,7 +694,7 @@ class Paths
 			{
 				// trace('test: ' + dumpExclusions, key);
 				OpenFlAssets.cache.removeSound(key);
-				OpenFlAssets.cache.clearSounds(key);
+				// OpenFlAssets.cache.clearSounds(key);
 				currentTrackedSounds.remove(key);
 				counterSound++;
 				Debug.logTrace('Cleared and removed $counterSound cached sounds.');
@@ -703,19 +703,18 @@ class Paths
 
 		// Clear everything everything that's left
 		/*
-		var counterLeft:Int = 0;
-		for (key in OpenFlAssets.cache.getKeys())
-		{
-			if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key) && key != null)
+			var counterLeft:Int = 0;
+			for (key in OpenFlAssets.cache.getKeys())
 			{
-				OpenFlAssets.cache.clear(key);
-				counterLeft++;
-				Debug.logTrace('Cleared and removed $counterLeft cached leftover assets.');
+				if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key) && key != null)
+				{
+					OpenFlAssets.cache.clear(key);
+					counterLeft++;
+					Debug.logTrace('Cleared and removed $counterLeft cached leftover assets.');
+				}
 			}
-		}
-		*/
+		 */
 
-		
 		// flags everything to be cleared out next unused memory clear
 		localTrackedAssets = [];
 		openfl.Assets.cache.clear("songs");
