@@ -70,7 +70,7 @@
 	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
 
 	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
-	<haxedef name="FEATURE_DISCORD" if="cpp" unless="mobile || neko || hl" />
+	<haxedef name="FEATURE_DISCORD" if="cpp" unless="mobile || neko || hl || linux" />
 	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
 	<haxedef name="FEATURE_FILESYSTEM" if="desktop || sys" />
 	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. wtf bruh! linux troubled.-->
@@ -91,7 +91,7 @@
 	<haxedef name="FEATURE_WEBM_JS" if="web"/>
 	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
 	<!-- <haxedef name="FEATURE_VLC" if="cpp desktop || mobile" unless="neko || hl"/> -->
-	<haxedef name="FEATURE_VLC" unless="neko || hl || web || 32bits || 32bit"/>
+	<haxedef name="FEATURE_VLC" unless="neko || hl || web || 32bits || 32bit || linux"/>
 	<haxedef name="FEATURE_GIF" unless="web"/>
 	<!-- JOELwindows7: additional howl for LIME project xml here -->
 	<echo value="This is Odysee build" if="odysee"/>
@@ -399,7 +399,7 @@
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
 	<!-- JOELwindows7: nvm, library if can't be defined seemingly. -->
 	<haxelib name="polymod" />
-	<haxelib name="discord_rpc" if="cpp" unless="mobile || neko || hl"/>
+	<haxelib name="discord_rpc" if="cpp" unless="mobile || neko || hl || linux"/>
 	<haxelib name="linc_luajit" if="cpp"/>
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
 	<haxelib name="hxvm-luajit" />
@@ -464,7 +464,7 @@
 	<!-- NEW BrightFyre VLC MP4 support (now handed over to PolybiusProxy, as hxCodec) -->
 	<!-- <haxelib name="hxCodec" if="cpp desktop || mobile" unless="neko || hl"/> -->
 	<!-- <haxelib name="hxCodec" if="FEATURE_VLC" unless="web"/> -->
-	<haxelib name="hxCodec" unless="neko || hl || web || 32bits || 32bit"/>
+	<haxelib name="hxCodec" unless="neko || hl || web || 32bits || 32bit || linux"/>
 
 	<!-- JOELwindows7: try Android Media extension thingy -->
 	<!-- <haxelib name="extension-android-media"/> -->
