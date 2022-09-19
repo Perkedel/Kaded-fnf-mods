@@ -228,7 +228,7 @@ class WerrorForceMajeurState extends CoreState
 		dateNow = StringTools.replace(dateNow, " ", "_");
 		dateNow = StringTools.replace(dateNow, ":", "'");
 
-		path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
+		path = "./crash/" + "KadeEngine_" + dateNow + "_SemiCaught.txt";
 
 		for (stackItem in callStack)
 		{
@@ -243,13 +243,19 @@ class WerrorForceMajeurState extends CoreState
 			}
 		}
 
-		errMsg += Perkedel.CRASH_TEXT_BANNER
-			+ "\nFATAL Uncaught WError: "
+		errMsg += "```\n"
+			+ Perkedel.CRASH_TEXT_BANNER
+			+ "```\n"
+			+ "\n# SEMI-FATAL WhewCaught WError: `"
 			+ exc
-			+ "\n"
+			+ "`\n"
+			+ "```"
 			+ exc.details()
-			+ "\n\n"
-			+ "\nPlease report this error to our Github page: https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: sqirra-rng";
+			+ "\n```\n"
+			+ "# Firmware name & version:\n"
+			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}'
+			+
+			"\n# Please report this error to our Github page:\n https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: Paidyy, sqirra-rng";
 
 		#if FEATURE_FILESYSTEM
 		if (!FileSystem.exists("./crash/"))

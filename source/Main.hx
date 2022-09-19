@@ -549,13 +549,18 @@ class Main extends Sprite
 			}
 		}
 
-		errMsg += Perkedel.CRASH_TEXT_BANNER
-			+ "\nFATAL Uncaught WError: "
+		errMsg += "```\n"
+			+ Perkedel.CRASH_TEXT_BANNER
+			+ "```\n"
+			+ "\n# FATAL Uncaught WError: `"
 			+ e.error
-			+ "\n"
+			+ "`\n"
+			+ "```"
 			+ e.error.getStackTrace()
-			+ "\n\n"
-			+ "\nPlease report this error to our Github page: https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: sqirra-rng";
+			+ "\n```\n"
+			+ "# Firmware name & version:\n"
+			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}'
+			+ "\n# Please report this error to our Github page:\n https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: sqirra-rng";
 
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");
