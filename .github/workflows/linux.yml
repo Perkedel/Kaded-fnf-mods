@@ -18,7 +18,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+      - name: Uname pls
+        run: |
+          uname -a
       - name: first, begin caching stuffs
         uses: actions/cache@v2.1.7
         id: cache-stuff
@@ -45,7 +47,7 @@ jobs:
           sudo apt-get install libvlc-dev
           sudo apt-get install libvlccore-dev
           sudo apt-get install vlc-bin
-          sudo apt-get -y install libidn2-0 libidn-dev libidn12 libidn11 libidn2-dev
+          sudo apt-get -y install libidn2-0  libidn11 libidn2-dev
 
       - name: script run line haha
         # if: steps.cache-stuff.outputs.cache-hit != 'true'

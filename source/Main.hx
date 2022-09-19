@@ -536,7 +536,8 @@ class Main extends Sprite
 		dateNow = StringTools.replace(dateNow, " ", "_");
 		dateNow = StringTools.replace(dateNow, ":", "'");
 
-		path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
+		// path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
+		path = './crash/${Perkedel.ENGINE_ID}${dateNow}.txt"';
 
 		for (stackItem in callStack)
 		{

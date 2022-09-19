@@ -228,7 +228,8 @@ class WerrorForceMajeurState extends CoreState
 		dateNow = StringTools.replace(dateNow, " ", "_");
 		dateNow = StringTools.replace(dateNow, ":", "'");
 
-		path = "./crash/" + "KadeEngine_" + dateNow + "_SemiCaught.txt";
+		// path = "./crash/" + "KadeEngine_" + dateNow + "_SemiCaught.txt";
+		path = './crash/${Perkedel.ENGINE_ID}${dateNow}_SemiCaught.txt"';
 
 		for (stackItem in callStack)
 		{
