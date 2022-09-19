@@ -70,7 +70,7 @@
 	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
 
 	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
-	<haxedef name="FEATURE_DISCORD" if="desktop || cpp" unless="mobile || neko || hl" />
+	<haxedef name="FEATURE_DISCORD" if="cpp" unless="mobile || neko || hl" />
 	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
 	<haxedef name="FEATURE_FILESYSTEM" if="desktop || sys" />
 	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. wtf bruh! linux troubled.-->
