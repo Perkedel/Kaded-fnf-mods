@@ -399,7 +399,7 @@
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
 	<!-- JOELwindows7: nvm, library if can't be defined seemingly. -->
 	<haxelib name="polymod" />
-	<haxelib name="discord_rpc" if="cpp desktop" unless="mobile || neko || hl || android || ios"/>
+	<haxelib name="discord_rpc" if="cpp desktop" unless="mobile || neko || hl || android || ios "/>
 	<haxelib name="linc_luajit" if="cpp"/>
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
 	<haxelib name="hxvm-luajit" />
