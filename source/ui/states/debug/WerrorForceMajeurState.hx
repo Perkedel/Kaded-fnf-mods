@@ -113,7 +113,7 @@ class WerrorForceMajeurState extends CoreState
 		addDownButton();
 
 		// JOELwindows7: finally, write the error log like BOLO had here
-		writeErrorLog(exception);
+		writeErrorLog(exception, 'SEMI-FATAL WhewCaught WError', 'SemiCaught');
 	}
 
 	override function update(elapsed)
@@ -218,7 +218,7 @@ class WerrorForceMajeurState extends CoreState
 		}
 	}
 
-	function writeErrorLog(exc:Exception)
+	public static function writeErrorLog(exc:Exception, errorTitle:String = 'FATAL UnCaught WError', errorDiffFileName = 'Uncaught')
 	{
 		var errMsg:String = "";
 		var path:String;
@@ -229,7 +229,7 @@ class WerrorForceMajeurState extends CoreState
 		dateNow = StringTools.replace(dateNow, ":", "'");
 
 		// path = "./crash/" + "KadeEngine_" + dateNow + "_SemiCaught.txt";
-		path = './crash/${Perkedel.ENGINE_ID}${dateNow}_SemiCaught.txt"';
+		path = './crash/${Perkedel.ENGINE_ID}${dateNow}_${errorDiffFileName}.txt"';
 
 		for (stackItem in callStack)
 		{
@@ -247,7 +247,7 @@ class WerrorForceMajeurState extends CoreState
 		errMsg += "```\n"
 			+ Perkedel.CRASH_TEXT_BANNER
 			+ "```\n"
-			+ "\n# SEMI-FATAL WhewCaught WError: `"
+			+ '\n# ${errorTitle}: `'
 			+ exc
 			+ "`\n"
 			+ "```"

@@ -117,7 +117,8 @@ class Main extends Sprite
 		}
 		catch (e)
 		{
-			throw 'STATIC MAIN UNCAUGHT WERROR!!!: $e:\n${e.message}';
+			WerrorForceMajeurState.writeErrorLog(e, 'STATIC MAIN UNCAUGHT WERROR!!!', 'StaticMainUncaught');
+			throw 'STATIC MAIN UNCAUGHT WERROR!!!: $e:\n${e.message}\n${e.details()}';
 		}
 	}
 
@@ -179,7 +180,8 @@ class Main extends Sprite
 		}
 		catch (e)
 		{
-			throw 'NEW INSTANCE UNCAUGHT WERROR!!!: $e:\n${e.message}';
+			WerrorForceMajeurState.writeErrorLog(e, 'NEW INSTANCE UNCAUGHT WERROR!!!', 'NewInstanceUncaught');
+			throw 'NEW INSTANCE UNCAUGHT WERROR!!!: $e:\n${e.message}\n${e.details()}';
 		}
 	}
 
@@ -202,7 +204,8 @@ class Main extends Sprite
 		}
 		catch (e)
 		{
-			throw 'PRIVATE INIT UNCAUGHT WERROR: $e:\n${e.message}';
+			WerrorForceMajeurState.writeErrorLog(e, 'PRIVATE INIT UNCAUGHT WERROR', 'PrivateInitUncaught');
+			throw 'PRIVATE INIT UNCAUGHT WERROR: $e:\n${e.message}\n${e.details()}';
 		}
 	}
 
