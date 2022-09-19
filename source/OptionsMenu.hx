@@ -126,6 +126,8 @@ class OptionsMenu extends CoreSubState
 
 	public static var markForGameplayRestart:Bool = false; // JOELwindows7: mark this true to tell that you have to restart song.
 
+	var changedOption = false; // JOELwindows7: change option flag BOLO
+
 	public function new(pauseMenu:Bool = false)
 	{
 		super();
@@ -557,6 +559,7 @@ class OptionsMenu extends CoreSubState
 			if (isInCat)
 			{
 				descText.text = "Please select a category";
+				descText.color = FlxColor.WHITE; // JOELwindows7: BOLO color that white
 				if (right)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -598,11 +601,42 @@ class OptionsMenu extends CoreSubState
 				if (escape)
 				{
 					if (!isInPause)
+					{
 						// FlxG.switchState(new MainMenuState());
-						OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+						// OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+						// JOELwindows7: BOLO new complex wway
+						if (!FlxG.save.data.optimize)
+						{
+							FlxTween.tween(background, {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+							for (i in 0...selectedCat.optionObjects.length)
+							{
+								FlxTween.tween(selectedCat.optionObjects.members[i], {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+							}
+							for (i in 0...options.length - 1)
+							{
+								FlxTween.tween(options[i].titleObject, {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+								FlxTween.tween(options[i], {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+							}
+							FlxTween.tween(descText, {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+							FlxTween.tween(descBack, {alpha: 0}, 0.5, {
+								ease: FlxEase.smootherStepInOut,
+								onComplete: function(twn:FlxTween)
+								{
+									// MusicBeatState.switchState(new MainMenuState());
+									OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+								}
+							});
+						}
+						else
+						{
+							// MusicBeatState.switchState(new MainMenuState());
+							OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+						}
+					}
 					else
 					{
 						PauseSubState.goBack = true;
+						PlayState.instance.updateSettings();
 						PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * PlayState.songMultiplier;
 						// JOELwindows7: heurestic to see if a marker has raised
 						if (markForGameplayRestart && isInPause)
@@ -742,6 +776,11 @@ class OptionsMenu extends CoreSubState
 									menuTweenSo[1][andex] = FlxTween.tween(i, {y: i.y - (46 * ((options[selectedCatIndex].options.length - 1) / 2))},
 										menuTweenTime, {ease: FlxEase.quadInOut});
 									andex++;
+									// JOELwindows7: BOLO's
+									/*
+										var opt = selectedCat.optionObjects.members[i];
+										opt.y = options[4].titleObject.y + 54 -(options[selectedCatIndex].options.length*(16+options[selectedCatIndex].options.length)) + (46 * i);
+									 */
 								}
 						}
 
@@ -806,6 +845,10 @@ class OptionsMenu extends CoreSubState
 						haveLefted = false; // JOELwindows7: ok
 						left = false; // JOELwindows7: update this too
 					}
+
+					// JOELwindows7: update option color BOLO
+					if (changedOption)
+						updateOptColors();
 
 					if (escape)
 					{
@@ -1032,9 +1075,10 @@ class OptionsMenu extends CoreSubState
 		for (i in 0...selectedCat.optionObjects.length)
 		{
 			// JOELwindows7: okay new way!
-			var ref = selectedCat.optionObjects.members[i];
-			var ruf = selectedCat.options[i];
-			ref.color = ruf.cannotInPause ? FlxColor.YELLOW : FlxColor.WHITE;
+			// var ref = selectedCat.optionObjects.members[i];
+			// var ruf = selectedCat.options[i];
+			// ref.color = ruf.cannotInPause ? FlxColor.YELLOW : FlxColor.WHITE;
+			selectedCat.optionObjects.members[i].color = FlxColor.WHITE;
 		}
 		if (selectedCatIndex == 0)
 		{
@@ -1049,7 +1093,7 @@ class OptionsMenu extends CoreSubState
 			selectedCat.optionObjects.members[1].color = FlxColor.YELLOW;
 			selectedCat.optionObjects.members[2].color = FlxColor.YELLOW;
 		}
-		if (!FlxG.save.data.background && selectedCatIndex == 3)
+		if ((!FlxG.save.data.background || FlxG.save.data.optimize) && selectedCatIndex == 3)
 		{
 			selectedCat.optionObjects.members[2].color = FlxColor.YELLOW;
 		}
@@ -1058,6 +1102,10 @@ class OptionsMenu extends CoreSubState
 			if (!FlxG.save.data.healthBar)
 				selectedCat.optionObjects.members[12].color = FlxColor.YELLOW;
 		}
+		#if html5
+		if (selectedCatIndex == 3)
+			selectedCat.optionObjects.members[0].color = FlxColor.YELLOW;
+		#end
 
 		if (isInPause) // DUPLICATED CUZ MEMORY LEAK OR SMTH IDK
 		{

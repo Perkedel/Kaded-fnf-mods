@@ -411,6 +411,8 @@ class HaxeScriptState
 		trace("mustHit setVar");
 
 		setVar("strumLineY", PlayState.instance.strumLine.y);
+
+
 		trace("Camera target & Strumline height setVar");
 
 		// JOELwindows7: Statusoid
@@ -493,9 +495,9 @@ class HaxeScriptState
 		trace("setVar BulbyVR stuffs");
 
 		// JOELwindows7: BOLO precache
-		addCallback("precache", function(asset:String, type:String)
+		addCallback("precache", function(asset:String, type:String, ?library:String)
 		{
-			PlayState.instance.precacheList.set(asset, type);
+			PlayState.instance.precacheThing(asset, type, library);
 		});
 
 		// You must init the function callbacks first before even considered existed.
@@ -652,6 +654,14 @@ class HaxeScriptState
 			trace('playing assets/videos/' + videoName + '.webm');
 			PlayState.instance.backgroundVideo("assets/videos/" + videoName + ".webm");
 		});
+
+		// BOLO's video
+		/*
+		addCallback("initBackgroundOverlayVideo", function(vidPath:String, type:String, layInFront:Bool)
+		{
+			PlayState.instance.backgroundOverlayVideo(vidPath, type, layInFront);
+		});
+		*/
 		addCallback("pauseVideo", function()
 		{
 			if (PlayState.instance.useVLC)

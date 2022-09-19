@@ -398,9 +398,9 @@
 	<!-- <haxelib name="faxe"/>  -->
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
 	<!-- JOELwindows7: nvm, library if can't be defined seemingly. -->
-	<haxelib name="polymod" />
-	<haxelib name="discord_rpc" if="cpp desktop" unless="mobile || neko || hl"/>
-	<haxelib name="linc_luajit" if="cpp"/>
+	<haxelib name="polymod" if="FEATURE_MODCORE"/>
+	<haxelib name="discord_rpc" if="FEATURE_DISCORD"/>
+	<haxelib name="linc_luajit" if="FEATURE_LUAMODCHART"/>
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
 	<haxelib name="hxvm-luajit" />
 	<haxelib name="hxcpp-debug-server" if="cpp"/>
@@ -593,11 +593,19 @@
 	<!-- JOELwindows7: BOLO! Show debug traces for hxCodec -->
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
 
+	<!-- JOELwindows7: BOLO's using it now. -->
+	<!-- This Is For Crashing ERRORS! Used for Izzy Engine's crash handler -->
+	<haxedef name="HXCPP_STACK_TRACE" if="desktop"/>  <!--if you want stack traces--> 
+	<haxedef name="HXCPP_CHECK_POINTER" if="desktop" />
+	<haxedef name="HXCPP_STACK_LINE" if="desktop" />
+
 	<!-- JOELwindows7: the ARM64 definition for ARM PC. for that BrightFyre VLC thingy -->
 	<haxedef name="HXCPP_ARM64" if="arm64" unless="mobile"/>
 
 	<!-- JOELwindows7: RISC V pls? -->
 	<haxedef name="HXCPP_RISCV" if="riscv"/>
+
+
 
 	<!-- _________________________________ Custom _______________________________ -->
 
@@ -625,6 +633,8 @@
 	<!-- Never disable debug message, especially on Mobile -->
 	<haxeflag name="--no-traces" unless="debug || mobile" />
 	<haxeflag name="--dce full" if="release || final" />
+	<!-- BOLO removes DCE entirely, but uh isn't this deoptimize the game? let's just disable dce on debug, idk. -->
+	<haxeflag name="-dce no" if="debug"/>
 
 	<!-- wtf -->
 	<!-- 
