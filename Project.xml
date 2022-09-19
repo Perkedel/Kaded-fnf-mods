@@ -91,14 +91,14 @@
 	<haxedef name="FEATURE_WEBM_JS" if="web"/>
 	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
 	<!-- <haxedef name="FEATURE_VLC" if="cpp desktop || mobile" unless="neko || hl"/> -->
-	<haxedef name="FEATURE_VLC" unless="neko || hl || web || 32bits || 32bit"/>
+	<haxedef name="FEATURE_VLC" if="cpp" unless="neko || hl || web || 32bits || 32bit"/>
 	<haxedef name="FEATURE_GIF" unless="web"/>
 	<!-- JOELwindows7: additional howl for LIME project xml here -->
 	<echo value="This is Odysee build" if="odysee"/>
 	<echo value="we have stolen mods in it" if="thief"/>
 
 	<!-- Defines whether the Mods menu will display before launching. -->
-	<haxedef name="FEATURE_MODCORE" if="cpp desktop"/>
+	<haxedef name="FEATURE_MODCORE" if="cpp"/>
 
 	<!-- JOELwindows7: Defines whether the HTTP query possible. -->
 	<haxedef name="FEATURE_HTTP" unless="mobile"/>
@@ -398,9 +398,9 @@
 	<!-- <haxelib name="faxe"/>  -->
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
 	<!-- JOELwindows7: nvm, library if can't be defined seemingly. -->
-	<haxelib name="polymod" if="FEATURE_MODCORE"/>
-	<haxelib name="discord_rpc" if="FEATURE_DISCORD"/>
-	<haxelib name="linc_luajit" if="FEATURE_LUAMODCHART"/>
+	<haxelib name="polymod" if="cpp"/>
+	<haxelib name="discord_rpc" if="cpp desktop" unless="mobile || neko || hl"/>
+	<haxelib name="linc_luajit" if="cpp"/>
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
 	<haxelib name="hxvm-luajit" />
 	<haxelib name="hxcpp-debug-server" if="cpp"/>
@@ -464,7 +464,7 @@
 	<!-- NEW BrightFyre VLC MP4 support (now handed over to PolybiusProxy, as hxCodec) -->
 	<!-- <haxelib name="hxCodec" if="cpp desktop || mobile" unless="neko || hl"/> -->
 	<!-- <haxelib name="hxCodec" if="FEATURE_VLC" unless="web"/> -->
-	<haxelib name="hxCodec" if="FEATURE_VLC"/>
+	<haxelib name="hxCodec" if="cpp" unless="neko || hl || web || 32bits || 32bit"/>
 
 	<!-- JOELwindows7: try Android Media extension thingy -->
 	<!-- <haxelib name="extension-android-media"/> -->
