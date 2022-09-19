@@ -98,7 +98,7 @@
 	<echo value="we have stolen mods in it" if="thief"/>
 
 	<!-- Defines whether the Mods menu will display before launching. -->
-	<haxedef name="FEATURE_MODCORE" if="desktop"/>
+	<haxedef name="FEATURE_MODCORE" if="cpp desktop"/>
 
 	<!-- JOELwindows7: Defines whether the HTTP query possible. -->
 	<haxedef name="FEATURE_HTTP" unless="mobile"/>
