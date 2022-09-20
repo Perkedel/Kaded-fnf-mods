@@ -34,6 +34,7 @@ class Initializations
 	 */
 	static public function begin()
 	{
+		// getBuildVer(); // JOELwindows7: BOLO thingy
 		// JOELwindows7: Yoinkered Kade + YinYang48 Hex
 		// https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/TitleState.hx
 		#if FEATURE_MULTITHREADING
@@ -42,7 +43,7 @@ class Initializations
 
 		// JOELwindows7: clear unused memory first. BOLO
 		Paths.clearUnusedMemory();
-
+		Paths.clearUnusedMemory();
 		// JOELwindows7: here init first!
 		// JOELwindows7: TentaRJ GameJolter
 		#if gamejolt
@@ -90,6 +91,10 @@ class Initializations
 		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
 		MusicBeatState.initSave = true;
+
+		FlxG.sound.volume = FlxG.save.data.volume;
+		FlxG.sound.muted = FlxG.save.data.mute;
+
 		initialized = true;
 		trace('Things Initialized yey');
 	}
@@ -97,5 +102,58 @@ class Initializations
 	public static function isInitialized():Bool
 	{
 		return initialized;
+	}
+
+	public static function getBuildVer(forWhich:Int = 0):Void
+	{
+		// JOELwindows7: hey lemme just copy that from here.
+		// Kade
+		// Get current version of Kade Engine
+
+		// JOELwindows7: do this if not mobile since in there this doesn't work
+		// according to the luckydog7 and mods that don't care update
+		#if FEATURE_HTTP
+		var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/master/version.downloadMe");
+		var returnedData:Array<String> = [];
+
+		http.onData = function(data:String)
+		{
+			returnedData[0] = data.substring(0, data.indexOf(';'));
+			returnedData[1] = data.substring(data.indexOf('-'), data.length);
+			if (!MainMenuState.kadeEngineVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState)
+			{
+				OutdatedSubState.outdatedList[0] = true;
+				trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.kadeEngineVer);
+				OutdatedSubState.needVer = returnedData[0];
+				OutdatedSubState.currChanges = returnedData[1];
+				// clean();
+			}
+			else
+			{
+				// FlxG.switchState(new MainMenuState());
+				// switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+				// clean();
+				// JOELwindows7: hey, now step by step to this one
+				checkLFMUpdateNow();
+			}
+		}
+
+		http.onError = function(error)
+		{
+			trace('error: $error');
+			// FlxG.switchState(new MainMenuState()); // fail but we go anyway
+			// switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: hex switch state lol
+			// clean();
+			// JOELwindows7: hey, now step by step to this one
+			checkLFMUpdateNow();
+		}
+
+		http.request();
+		#else
+		#end
+	}
+
+	public static function checkLFMUpdateNow():Void
+	{
 	}
 }

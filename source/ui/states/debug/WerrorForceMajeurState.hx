@@ -232,10 +232,14 @@ class WerrorForceMajeurState extends CoreState
 
 		dateNow = StringTools.replace(dateNow, " ", "_");
 		dateNow = StringTools.replace(dateNow, ":", "'");
-		firmwareName = StringTools.replace(firmwareName, "-", "");
+		// firmwareName = StringTools.replace(firmwareName, "-", "");
 
 		// path = "./crash/" + "KadeEngine_" + dateNow + "_SemiCaught.txt";
 		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+
+		#if sys
+		path = '${Sys.getCwd()}crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+		#end
 
 		for (stackItem in callStack)
 		{
@@ -259,21 +263,39 @@ class WerrorForceMajeurState extends CoreState
 			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\n\n'
 			+ '# Please report this error to our Github page:\n ${Perkedel.ENGINE_BUGREPORT_URL}\n\n> Crash Handler written by: Paidyy, sqirra-rng';
 
-		#if FEATURE_FILESYSTEM
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
+		try
+		{
+			#if FEATURE_FILESYSTEM
+			if (!FileSystem.exists("./crash/"))
+				FileSystem.createDirectory("./crash/");
 
-		File.saveContent(path, errHdr + errMsg + "\n");
-		#end
+			File.saveContent(path, errHdr + errMsg + "\n");
+			#end
 
-		#if sys
-		Sys.println(errHdr + errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
-		#else
-		trace(errHdr + errMsg);
-		trace('error');
-		#end
-
+			#if sys
+			Sys.println('===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('===============');
+			Sys.println("Crash dump saved in " + Path.normalize(path));
+			#else
+			trace(errHdr + errMsg);
+			trace('error');
+			#end
+		}
+		catch (e)
+		{
+			#if sys
+			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			Sys.println('Anyway pls detail!:\n===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('================\nThere, clipboard pls');
+			#else
+			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			trace('Anyway pls detail!:\n===============');
+			trace(errHdr + errMsg);
+			trace('================\nThere, clipboard pls');
+			#end
+		}
 		if (withWindowAlert)
 			Application.current.window.alert(errMsg, "Error!");
 	}

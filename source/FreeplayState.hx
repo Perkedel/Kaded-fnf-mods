@@ -497,7 +497,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		trace('opponent texa');
 
 		// JOELwindows7: back to diffs
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		// diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		diffText = new FlxText(scoreText.x, scoreText.y + 106, 0, "", 24); // JOELwindows7: BOLO
 		diffText.font = scoreText.font;
 		add(diffText);
 
@@ -505,13 +506,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		trace('diff texa');
 
-		diffCalcText = new FlxText(scoreText.x, scoreText.y + 66, 0, "", 24);
+		// diffCalcText = new FlxText(scoreText.x, scoreText.y + 66, 0, "", 24);
+		diffCalcText = new FlxText(scoreText.x, scoreText.y + 136, 0, "", 24); // JOELwindows7: BOLO
 		diffCalcText.font = scoreText.font;
 		add(diffCalcText);
 
 		trace('diff calc texa');
 
-		previewtext = new FlxText(scoreText.x, scoreText.y + 96, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24);
+		// previewtext = new FlxText(scoreText.x, scoreText.y + 96, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24);
+		previewtext = new FlxText(scoreText.x, scoreText.y + 166, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24); // JOELwindows7: BOLO
 		previewtext.font = scoreText.font;
 		add(previewtext);
 
@@ -591,7 +594,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			}
 			catch (e)
 			{
-				Debug.logError(e);
+				Debug.logError('WERROR init preview song: $e\n${e.details()}');
 			}
 		}
 		#end
@@ -702,7 +705,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				diffsThatExist.push("Normal");
 
 			// JOELwindows7: BOLO custom diff!
-			var customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songId/customDiffs'));
+			var customDiffs:Array<String> = [];
+			try
+			{
+				customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songId/customDiffs'));
+			}
+			catch (e)
+			{
+				Debug.logTrace('no custom diff file for $songId.');
+			}
 
 			if (customDiffs != null)
 			{
@@ -835,7 +846,16 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			diffsThatExist.push("Normal");
 
 		// JOELwindows7: BOLO custom diff!
-		var customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songId/customDiffs'));
+
+		var customDiffs:Array<String> = [];
+		try
+		{
+			customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songId/customDiffs'));
+		}
+		catch (e)
+		{
+			Debug.logTrace('No customdiff for $songId');
+		}
 
 		if (customDiffs != null)
 		{
@@ -950,7 +970,12 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			diffsThatExist.push("Easy");
 
 		// JOELwindows7: Custom diffs Support!!! thancc BOLO
-		var customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songName/customDiffs'));
+		var customDiffs:Array<String> = [];
+		try{
+		customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songName/customDiffs'));
+		} catch(e) {
+			Debug.logTrace('No custom diff to be added for $songName');
+		}
 
 		if (customDiffs != null)
 		{
@@ -1510,6 +1535,21 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		previewtext.alpha = 1;
 
+		// JOELwindows7: BOLO's icon beatz
+		if (!MainMenuState.freakyPlaying)
+		{
+			var bpmRatio = Conductor.bpm / 100;
+			if (FlxG.save.data.camzoom)
+			{
+				FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125 * bpmRatio * rate), 0, 1));
+			}
+
+			var mult:Float = FlxMath.lerp(1, iconArray[curSelected].scale.x, CoolUtil.boundTo(1 - (elapsed * 35 * rate), 0, 1));
+			iconArray[curSelected].scale.set(mult, mult);
+
+			iconArray[curSelected].updateHitbox();
+		}
+
 		if (FlxG.keys.justPressed.CONTROL && !openMod && !MusicBeatState.switchingState)
 		{
 			openMod = true;
@@ -1555,10 +1595,12 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			}
 			else
 			{
+				/*
 				if (FlxG.keys.justPressed.LEFT)
 					changeDiff(-1);
 				if (FlxG.keys.justPressed.RIGHT)
 					changeDiff(1);
+				*/
 			}
 
 			// JOELwindows7: BOLO's press space to preview song
@@ -1673,11 +1715,17 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				haveBacked = false;
 			}
 
-			if (accepted)
-				loadSong();
-			// JOELwindows7: NO, BOLO, ALWAYS ENABLE CHARTING ON ALL BUILD!!!
-			else if (charting)
-				loadSong(true);
+			// JOELwindows7: BOLO drastic
+			for (item in grpSongs.members)
+			{
+				if (accepted)
+				{
+					loadSong();
+				}
+				// JOELwindows7: NO, BOLO, ALWAYS ENABLE CHARTING ON ALL BUILD!!!
+				else if (charting)
+					loadSong(true);
+			}
 
 			// AnimationDebug and StageDebug are only enabled in debug builds.
 			// #if debug // JOELwindows7: NOT ANYMORE!!!
@@ -1947,8 +1995,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			return;
 
 		curDifficulty += change;
+		trace('change diff to $curDifficulty, song has ${songs[curSelected].diffs.length}'); // JOELwindows7: was up to ID 2. BOLO now has custom diffs, remember?
 
-		// JOELwindows7: was up to ID 2. BOLO now has custom diffs, remember?
 		if (curDifficulty < 0)
 			curDifficulty = songs[curSelected].diffs.length - 1;
 		if (curDifficulty > songs[curSelected].diffs.length - 1)

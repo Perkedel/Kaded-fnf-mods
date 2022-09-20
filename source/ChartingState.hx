@@ -214,7 +214,7 @@ class ChartingState extends MusicBeatState
 
 		// JOELwindows7: BG BG BG BG BOLO
 		var bg:FlxUISprite = new FlxUISprite();
-		bg.loadGraphic(Paths.image('menuBGDesatAlt'));
+		bg.loadGraphic(Paths.imageGraphic('menuBGDesatAlt'));
 		bg.scrollFactor.set();
 		bg.color = 0xFF222222;
 		add(bg);
@@ -555,7 +555,7 @@ class ChartingState extends MusicBeatState
 
 		// JOELwindows7: BOLO's autosave indicator
 		autosaveIndicator = new FlxUISprite(-30, FlxG.height - 90);
-		autosaveIndicator.loadGraphic(Paths.image('autosaveIndicator'));
+		autosaveIndicator.loadGraphic(Paths.imageGraphic('autosaveIndicator'));
 		autosaveIndicator.setGraphicSize(200, 70);
 		autosaveIndicator.alpha = 0;
 		autosaveIndicator.scrollFactor.set();

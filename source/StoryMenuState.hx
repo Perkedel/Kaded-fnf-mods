@@ -124,6 +124,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	var leftArrow:FlxUISprite;
 	var rightArrow:FlxUISprite;
 	var diffsThatExists:Array<String>; // JOELwindows7: BOLO diff cleanup check
+	var diffsThatExistsId:Array<String>; // JOELwindows7: bruh, `normal` diff has no suffix!
 	var diffList:Array<String> = []; // JOELwindows7: & the diff list too.
 
 	var yellowBG:FlxUISprite; // JOELwindows7: globalize this bg so we can colorize it.
@@ -206,6 +207,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	function cleanDifficulties()
 	{
 		diffsThatExists = [];
+		diffsThatExistsId = [];
 		diffList = CoolUtil.coolTextFile(Paths.txt('data/weeksDifficulties'));
 
 		try
@@ -214,34 +216,54 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 			// WTF Epic YandereDev moment 😭
 
-			if (splitDiffs[0].contains('easy'))
+			if (splitDiffs[0].contains('easy')){
 				diffsThatExists.push('easy');
-			else if (splitDiffs[0].contains('normal'))
+				diffsThatExistsId.push('-easy');
+			}
+			else if (splitDiffs[0].contains('normal')){
 				diffsThatExists.push('normal');
-			else if (splitDiffs[0].contains('hard'))
+				diffsThatExistsId.push('');
+			}
+			else if (splitDiffs[0].contains('hard')){
 				diffsThatExists.push('hard');
+				diffsThatExistsId.push('-hard');
+			}
 
-			if (splitDiffs[1].contains('easy'))
+			if (splitDiffs[1].contains('easy')){
 				diffsThatExists.push('easy');
-			else if (splitDiffs[1].contains('normal'))
+				diffsThatExistsId.push('-easy');
+			}
+			else if (splitDiffs[1].contains('normal')){
 				diffsThatExists.push('normal');
-			else if (splitDiffs[1].contains('hard'))
+				diffsThatExistsId.push('');
+			}
+			else if (splitDiffs[1].contains('hard')){
 				diffsThatExists.push('hard');
+				diffsThatExistsId.push('-hard');
+			}
 
-			if (splitDiffs[2].contains('easy'))
+			if (splitDiffs[2].contains('easy')){
 				diffsThatExists.push('easy');
-			else if (splitDiffs[2].contains('normal'))
+			diffsThatExistsId.push('-easy');
+			}
+			else if (splitDiffs[2].contains('normal')){
 				diffsThatExists.push('normal');
-			else if (splitDiffs[2].contains('hard'))
+				diffsThatExistsId.push('');
+			}
+			else if (splitDiffs[2].contains('hard')){
 				diffsThatExists.push('hard');
+				diffsThatExistsId.push('-hard');
+			}
 		}
 		catch (e)
 		{
 			Debug.logWarn('WERROR diff cleanup: $e\n${e.details()}');
 		}
 
-		if (diffsThatExists.length == 0)
+		if (diffsThatExists.length == 0){
 			diffsThatExists = ["easy", "normal", "hard"];
+			diffsThatExistsId = ["-easy", "", "-hard"];
+		}
 	}
 
 	override function create()
@@ -431,7 +453,8 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 		difficultySelectors.add(sprDifficulty);
 
-		rightArrow = new FlxUISprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
+		// rightArrow = new FlxUISprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
+		rightArrow = new FlxUISprite(leftArrow.x + sprDifficulty.width + 68, leftArrow.y);
 		rightArrow.frames = ui_tex;
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
@@ -708,12 +731,16 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 			// var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
 			var diff:String = '-${diffsThatExists[PlayState.storyDifficulty]}'; // JOELwindows7: NEW BOLO
+			var diffId:String = '${diffsThatExistsId[PlayState.storyDifficulty]}';
+			Debug.logInfo('Play week $curWeek in ${diff}:\n${PlayState.storyPlaylist}');
 			PlayState.sicks = 0;
 			PlayState.bads = 0;
 			PlayState.shits = 0;
 			PlayState.goods = 0;
 			PlayState.campaignMisses = 0;
-			PlayState.SONG = Song.conversionChecks(Song.loadFromJson(PlayState.storyPlaylist[0], diff));
+			// PlayState.SONG = Song.conversionChecks(Song.loadFromJson(PlayState.storyPlaylist[0], diff));
+			// PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
+			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diffId);
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			PlayStateChangeables.howManySongThisWeek = PlayState.storyPlaylist.length; // JOELwindows7: set to how many songs we have this week yess.

@@ -54,7 +54,17 @@ class HealthIcon extends FlxUISprite
 		if (!OpenFlAssets.exists(Paths.image('icons/icon-' + char)))
 			char = 'face';
 
-		loadGraphic(Paths.loadImage('icons/icon-' + char), true, 150, 150);
+		trace('Try load graphic for $char');
+		try
+		{
+			// loadGraphic(Paths.loadImage('icons/icon-' + char), true, 150, 150);
+			loadGraphic(Paths.imageGraphic('icons/icon-' + char), true, 150, 150); // JOELwindows7: BOLO now
+		}
+		catch (e)
+		{
+			Debug.logError('FAILE LOADING GRAPHIC HP ICON of $char: $e\n${e.details()}');
+			// char = 'face';
+		}
 
 		if (char.endsWith('-pixel') || char.startsWith('senpai') || char.startsWith('spirit'))
 			antialiasing = false

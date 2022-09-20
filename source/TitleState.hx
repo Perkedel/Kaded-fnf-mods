@@ -171,40 +171,7 @@ class TitleState extends MusicBeatState
 
 		trace('hello');
 
-		// DEBUG BULLSHIT
-
-		super.create();
-
-		#if FREEPLAY
-		// FlxG.switchState(new FreeplayState());
-		switchState(new FreeplayState()); // JOELwindows7: switch to freeplay state hexly.
-		clean();
-		#elseif CHARTING
-		// FlxG.switchState(new ChartingState());
-		switchState(new ChartingState()); // JOELwindows7: switch to charting state hexly.
-		clean();
-		#else
-		#if !cpp
-		new FlxTimer().start(1, function(tmr:FlxTimer)
-		{
-			startIntro();
-		});
-		#else
-		startIntro();
-		#end
-		#end
-	}
-
-	var logoBl:FlxUISprite;
-	var gfDance:FlxUISprite;
-	var danceLeft:Bool = false;
-	var titleText:FlxUISprite;
-
-	// JOELwindows7: globalize button
-	var pressedEnter:Bool = false;
-
-	function startIntro()
-	{
+		// JOELwindows7: move all creating stuff here instead of start intro. BOLO
 		persistentUpdate = true;
 
 		// JOELwindows7: the default background pls
@@ -267,56 +234,114 @@ class TitleState extends MusicBeatState
 		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
 		// FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
 
-		credGroup = new FlxGroup();
-		add(credGroup);
-		textGroup = new FlxGroup();
+		// JOELwindows7: BOLO maff
+		// if (!initialized)
+		// {
+			credGroup = new FlxGroup();
+			add(credGroup);
+			textGroup = new FlxGroup();
 
-		// JOELwindows7: yeah
-		blackScreen = cast new FlxUISprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		credGroup.add(blackScreen);
+			// JOELwindows7: yeah
+			blackScreen = new FlxUISprite();
+			blackScreen.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+			credGroup.add(blackScreen);
 
-		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
-		credTextShit.screenCenter();
+			credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
+			credTextShit.screenCenter();
 
-		// credTextShit.alignment = CENTER;
+			// credTextShit.alignment = CENTER;
 
-		credTextShit.visible = false;
+			// credTextShit.visible = false;
 
-		// JOELwindows7: all these logos
-		ngSpr = cast new FlxUISprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('newgrounds_logo'));
-		add(ngSpr);
-		ngSpr.visible = false;
-		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
-		ngSpr.updateHitbox();
-		ngSpr.screenCenter(X);
-		ngSpr.antialiasing = FlxG.save.data.antialiasing;
+			// JOELwindows7: all these logos
+			ngSpr = new FlxUISprite(0, FlxG.height * 0.52);
+			ngSpr.loadGraphic(Paths.loadImage('newgrounds_logo'));
+			add(ngSpr);
+			ngSpr.visible = false;
+			ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
+			ngSpr.updateHitbox();
+			ngSpr.screenCenter(X);
+			ngSpr.antialiasing = FlxG.save.data.antialiasing;
 
-		// JOELwindows7: odysee spriter
-		odyseeSpr = cast new FlxUISprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('odysee_Logo_Transparent_White_Text'));
-		add(odyseeSpr);
-		odyseeSpr.visible = false;
-		odyseeSpr.setGraphicSize(Std.int(odyseeSpr.width * .5), Std.int(odyseeSpr.height * .5));
-		odyseeSpr.updateHitbox();
-		odyseeSpr.screenCenter(X);
-		odyseeSpr.antialiasing = FlxG.save.data.antialiasing;
+			// JOELwindows7: odysee spriter
+			odyseeSpr = new FlxUISprite(0, FlxG.height * 0.52);
+			odyseeSpr.loadGraphic(Paths.loadImage('odysee_Logo_Transparent_White_Text'));
+			add(odyseeSpr);
+			odyseeSpr.visible = false;
+			odyseeSpr.setGraphicSize(Std.int(odyseeSpr.width * .5), Std.int(odyseeSpr.height * .5));
+			odyseeSpr.updateHitbox();
+			odyseeSpr.screenCenter(X);
+			odyseeSpr.antialiasing = FlxG.save.data.antialiasing;
 
-		// JOELwindows7: Perkedel spriter
-		perkedelSpr = cast new FlxUISprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('Perkedel_Logo_Typeborder'));
-		add(perkedelSpr);
-		perkedelSpr.visible = false;
-		perkedelSpr.setGraphicSize(Std.int(perkedelSpr.width * .2), Std.int(perkedelSpr.height * .2));
-		perkedelSpr.updateHitbox();
-		perkedelSpr.screenCenter(X);
-		perkedelSpr.antialiasing = FlxG.save.data.antialiasing;
+			// JOELwindows7: Perkedel spriter
+			perkedelSpr = new FlxUISprite(0, FlxG.height * 0.52);
+			perkedelSpr.loadGraphic(Paths.loadImage('Perkedel_Logo_Typeborder'));
+			add(perkedelSpr);
+			perkedelSpr.visible = false;
+			perkedelSpr.setGraphicSize(Std.int(perkedelSpr.width * .2), Std.int(perkedelSpr.height * .2));
+			perkedelSpr.updateHitbox();
+			perkedelSpr.screenCenter(X);
+			perkedelSpr.antialiasing = FlxG.save.data.antialiasing;
+		// }
+		// DEBUG BULLSHIT
 
-		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
+		super.create();
+
+		#if FREEPLAY
+		// FlxG.switchState(new FreeplayState());
+		switchState(new FreeplayState()); // JOELwindows7: switch to freeplay state hexly.
+		clean();
+		#elseif CHARTING
+		// FlxG.switchState(new ChartingState());
+		switchState(new ChartingState()); // JOELwindows7: switch to charting state hexly.
+		clean();
+		#else
+		#if !cpp
+		if (!initialized)
+			new FlxTimer().start(1, function(tmr:FlxTimer)
+			{
+				startIntro();
+			});
+		else
+			startIntro();
+		#else
+		startIntro();
+		#end
+		#end
+	}
+
+	var logoBl:FlxUISprite;
+	var gfDance:FlxUISprite;
+	var danceLeft:Bool = false;
+	var titleText:FlxUISprite;
+
+	// JOELwindows7: globalize button
+	var pressedEnter:Bool = false;
+
+	function startIntro()
+	{
+		/*
+			if(credTextShit != null)
+				FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
+		 */
 
 		FlxG.mouse.visible = false;
+
+		add(gfDance);
+		add(logoBl);
+		add(titleText);
 
 		if (initialized)
 			skipIntro();
 		else
 		{
+			// JOELwindows7: BOLOfy
+			credTextShit.visible = true;
+			FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
+			// add(credGroup);
+			// add(ngSpr);
+			// add(odyseeSpr);
+			// add(perkedelSpr);
 			// JOELwindows7: BOLO no longer need. we already had Psyched transition everywhere!
 			/*
 				var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
@@ -341,7 +366,9 @@ class TitleState extends MusicBeatState
 			// music.loadStream(Paths.music('freakyMenu'));
 			// FlxG.sound.list.add(music);
 			// music.play();
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			// FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			FlxG.sound.playMusic(Paths.music(FlxG.save.data.watermark ? "ke_freakyMenu" : "freakyMenu"));
+			MainMenuState.freakyPlaying = true;
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);
@@ -383,8 +410,9 @@ class TitleState extends MusicBeatState
 			FlxG.save.flush(); // JOELwindows7: from OptionMenu.hx it constantly save data.
 		}
 
-		// JOELwindows7: globalize this
-		pressedEnter = controls.ACCEPT;
+		// JOELwindows7: globalize this + BOLO
+		// pressedEnter = controls.ACCEPT;
+		pressedEnter = FlxG.keys.justPressed.ENTER || controls.ACCEPT || FlxG.mouse.justPressed;
 
 		#if mobile
 		for (touch in FlxG.touches.list)
@@ -397,10 +425,12 @@ class TitleState extends MusicBeatState
 		#end
 
 		// JOELwindows7: add mouse click to press enter
-		if (FlxG.mouse.justPressed)
-		{
-			pressedEnter = true;
-		}
+		/*
+			if (FlxG.mouse.justPressed)
+			{
+				pressedEnter = true;
+			}
+		 */
 		// Well sure enough guys. on my Samsung Galaxy S since Dex support
 		// the mouse and touch is different. you need this ON all the time in case
 		// somebody uses mouse in Android device.
@@ -506,6 +536,19 @@ class TitleState extends MusicBeatState
 				// it already done go to menu for me.
 				checkLFMUpdate();
 				#end
+
+				// TODO: BOLO simplify this
+				/*
+					// Get current version of Kade Engine
+						if (MainMenuState.updateShit)
+						{
+							MusicBeatState.switchState(new OutdatedSubState());
+						}
+						else
+						{
+							MusicBeatState.switchState(new MainMenuState());
+						}
+				 */
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 
@@ -518,7 +561,8 @@ class TitleState extends MusicBeatState
 			// PAIN IS TEMPORARY, GLORY IS FOREVER
 		}
 
-		if (pressedEnter && !skippedIntro && initialized)
+		// if (pressedEnter && !skippedIntro && initialized)
+		if (pressedEnter && !skippedIntro) // JOELwindos7: no need to check initialized anymore. BOLO
 		{
 			skipIntro();
 		}
@@ -526,6 +570,38 @@ class TitleState extends MusicBeatState
 		super.update(elapsed);
 	}
 
+	// JOELwindows7: BOLO's check update function
+	/*
+		function getBuildVer():Void
+		{
+			http.request();
+
+			http.onData = function(data:String)
+			{
+				returnedData[0] = data.substring(0, data.indexOf(';'));
+				returnedData[1] = data.substring(data.indexOf('-'), data.length);
+				if (!MainMenuState.buildVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState)
+				{
+					Debug.logInfo('New version detected: ' + returnedData[0]);
+					MainMenuState.updateShit = true;
+					Debug.logInfo('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.kadeEngineVer);
+					OutdatedSubState.needVer = returnedData[0];
+					OutdatedSubState.currChanges = returnedData[1];
+				}
+				else
+				{
+					Debug.logInfo('Build is up to date bois.');
+				}
+			}
+
+			http.onError = function(error)
+			{
+				Debug.logError('error: $error');
+			}
+
+			http.request();
+		}
+	 */
 	// JOELwindows7: oh race condition! don't start 2 timer at the same time. do it step by step! check update this, and then ours.
 	function checkLFMUpdate()
 	{
@@ -684,30 +760,40 @@ class TitleState extends MusicBeatState
 	{
 		for (i in 0...textArray.length)
 		{
-			var money:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
-			money.screenCenter(X);
-			money.y += (i * 60) + 200;
-			credGroup.add(money);
-			textGroup.add(money);
+			// JOELwindows7: BOLO initialized-not check
+			// if (!initialized)
+			// {
+				var money:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
+				money.screenCenter(X);
+				money.y += (i * 60) + 200;
+				credGroup.add(money);
+				textGroup.add(money);
+			// }
 		}
 	}
 
 	function addMoreText(text:String)
 	{
-		var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
-		coolText.screenCenter(X);
-		coolText.y += (textGroup.length * 60) + 200;
-		credGroup.add(coolText);
-		textGroup.add(coolText);
+		// if (!initialized)
+		// {
+			var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
+			coolText.screenCenter(X);
+			coolText.y += (textGroup.length * 60) + 200;
+			credGroup.add(coolText);
+			textGroup.add(coolText);
+		// } // JOELwindows7: idk why, BOLO
 	}
 
 	function deleteCoolText()
 	{
-		while (textGroup.members.length > 0)
-		{
-			credGroup.remove(textGroup.members[0], true);
-			textGroup.remove(textGroup.members[0], true);
-		}
+		// if (!initialized)
+		// {
+			while (textGroup.members.length > 0)
+			{
+				credGroup.remove(textGroup.members[0], true);
+				textGroup.remove(textGroup.members[0], true);
+			}
+		// }
 	}
 
 	override function beatHit()
@@ -757,26 +843,33 @@ class TitleState extends MusicBeatState
 					if (Main.odyseeMark)
 					{
 						// addMoreText('Odysee');
-						odyseeSpr.visible = true;
+						// if (!initialized) // JOELwindows7: BOLO idk why
+							odyseeSpr.visible = true;
 					}
 					else if (!Main.odyseeMark && Main.perkedelMark)
 					{
 						// JOELwindows7: uuhhh, can we be more efficient here? uh, is there enum?
-						perkedelSpr.visible = true;
+						// if (!initialized) // JOELwindows7: BOLO idk why
+							perkedelSpr.visible = true;
 					}
 					else
 						addMoreText('KadeDeveloper');
 				else
 				{
 					addMoreText('Newgrounds');
-					ngSpr.visible = true;
+					// if (!initialized) // JOELwindows7: BOLO idk why
+						ngSpr.visible = true;
 				}
 			// credTextShit.text += '\nNewgrounds';
 			case 8:
 				deleteCoolText();
-				ngSpr.visible = false;
-				perkedelSpr.visible = false;
-				odyseeSpr.visible = false;
+				// if (!initialized)
+				// {
+					// JOELwindows7: idk why BOLO
+					ngSpr.visible = false;
+					perkedelSpr.visible = false;
+					odyseeSpr.visible = false;
+				// }
 			// credTextShit.visible = false;
 
 			// credTextShit.text = 'Shoutouts Tom Fulp';
@@ -805,6 +898,7 @@ class TitleState extends MusicBeatState
 				addMoreText(Main.perkedelMark ? 'Moments' : 'Funkin');
 			case 16:
 				skipIntro();
+				initialized = true;
 		}
 	}
 
@@ -838,7 +932,8 @@ class TitleState extends MusicBeatState
 
 			// It always bugged me that it didn't do this before.
 			// Skip ahead in the song to the drop.
-			FlxG.sound.music.time = 9400; // 9.4 seconds
+			if (!initialized) // JOELwindows7: heyfewf BOLO
+				FlxG.sound.music.time = 9400; // 9.4 seconds
 
 			skippedIntro = true;
 		}

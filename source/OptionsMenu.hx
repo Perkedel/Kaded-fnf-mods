@@ -176,6 +176,7 @@ class OptionsMenu extends CoreSubState
 			new OptionCata(345, 40, "Appearance", [
 				new NoteskinOption("Change your current noteskin"),
 				new NoteSplashOption("Have your note press splash for every SICK! kyaaa!"),
+				new AnLoneNoteOption('Test your chosen noteskin'),
 				new RotateSpritesOption("Should the game rotate the sprites to do color quantization (turn off for bar skins)"),
 				new ScoreSmoothing("Toggle smoother poping score for Score Text (High CPU usage)."), // JOELwindows7: BOLO
 				new EditorRes("Not showing the editor grid will greatly increase editor performance"),

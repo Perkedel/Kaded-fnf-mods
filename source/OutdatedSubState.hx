@@ -32,6 +32,8 @@ class OutdatedSubState extends MusicBeatState
 	private var bgColors:Array<String> = ['#314d7f', '#4e7093', '#70526e', '#594465'];
 	private var colorRotation:Int = 1;
 
+	public static var outdatedList:Array<Bool> = [false, false];
+
 	override function create()
 	{
 		trace('Welcome to outdated or leaked');

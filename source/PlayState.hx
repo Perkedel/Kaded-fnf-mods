@@ -882,9 +882,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		if (SONG.eventObjects == null)
 		{
-			SONG.eventObjects = [
-				new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change", 0, 0)
-			]; // JOELwindows7: houv
+			SONG.eventObjects = [new Song.Event("Init BPM", 0, SONG.bpm, "BPM Change", 0, 0)]; // JOELwindows7: houv
 		}
 
 		TimingStruct.clearTimings();
@@ -1896,6 +1894,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		iconPlayers.add(iconP1);
 
+		trace('HP Icon bf = ${boyfriend.curCharacter}, dad = ${dad.curCharacter}');
 		iconP2 = new HealthIcon(dad.curCharacter, false, dad.forceIcon);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		iconPlayers.add(iconP2);
@@ -3732,10 +3731,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: now instead pls check the epilogue chat!
 		FlxG.sound.music.pause();
 
-		if (SONG.needsVoices && !PlayState.isSM){
+		if (SONG.needsVoices && !PlayState.isSM)
+		{
 			// FlxG.sound.cache(Paths.voices(PlayState.SONG.songId));
 		}
-		if (!PlayState.isSM){
+		if (!PlayState.isSM)
+		{
 			// FlxG.sound.cache(Paths.inst(PlayState.SONG.songId));
 		}
 
@@ -3908,7 +3909,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// JOELwindows7: was && must hit section. now BOLO is opponent mode & the must hit moved to inside.
 				if (songNotes[1] > 3 && !PlayStateChangeables.opponentMode) // was must hit
 					gottaHitNote = !section.mustHitSection;
-				else if (songNotes[1] < 4 && PlayStateChangeables.opponentMode) // was must hit not
+				else if (songNotes[1] < 3 && PlayStateChangeables.opponentMode) // was must hit not; was < 4
 					gottaHitNote = !section.mustHitSection;
 
 				var oldNote:Note;
@@ -3982,10 +3983,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 						sustainNote.mustPress = gottaHitNote;
 
-						if (sustainNote.mustPress)
-						{
-							sustainNote.x += FlxG.width / 2; // general offset
-						}
+						/*
+							if (sustainNote.mustPress)
+							{
+								sustainNote.x += FlxG.width / 2; // general offset
+							}
+						 */
 
 						sustainNote.parent = swagNote;
 						swagNote.children.push(sustainNote);
@@ -7375,8 +7378,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: BOLO if not sustain????
 		// TODO: enableable wife score just like Pump it up??
 		var wife:Float = 0;
-		if (!daNote.isSustainNote)
-			wife = EtternaFunctions.wife3(-noteDiff, Conductor.timeScale);
+		if (daNote != null)
+			if (!daNote.isSustainNote)
+				wife = EtternaFunctions.wife3(-noteDiff, Conductor.timeScale);
 		// boyfriend.playAnim('hey');
 		vocals.volume = 1;
 		vocals2.volume = 1; // JOELwindows7: ye
@@ -7401,6 +7405,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		switch (daRating)
 		{
 			case 'shit':
+				if(daNote != null){
 				// JOELwindows7: add da noteType effex
 				// wait sir, play the sound in successfully step instead!
 				if (daNote.noteType == 2) // hit mine duar
@@ -7435,7 +7440,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					if (FlxG.save.data.accuracyMod == 0)
 						totalNotesHit -= 1;
 				}
+			}
 			case 'bad':
+				if(daNote != null) {
 				if (daNote.noteType == 2)
 				{
 					if (!PlayStateChangeables.opponentMode)
@@ -7459,7 +7466,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					if (FlxG.save.data.accuracyMod == 0)
 						totalNotesHit += 0.50;
 				}
+			}
 			case 'good':
+				if(daNote != null){
 				if (daNote.noteType == 2)
 				{
 					if (!PlayStateChangeables.opponentMode)
@@ -7477,7 +7486,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					if (FlxG.save.data.accuracyMod == 0)
 						totalNotesHit += 0.75;
 				}
+			}
 			case 'sick':
+				if(daNote != null){
 				if (daNote.noteType == 2)
 				{
 					if (!PlayStateChangeables.opponentMode)
@@ -7505,8 +7516,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					sicks++;
 				}
 				// TODO: JOELwindows7: add more insane ratings!
+			}
 		}
 
+		if(daNote != null){
 		// JOELwindows7: yoink splash notes. idk where the peck suppose we get the asset from
 		// because these baa..... I mean.. whatever, did not license it royalty free / free culture compliant!!! I hate that!
 		// yoink from Psych https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
@@ -7520,6 +7533,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		spawnNoteHitlineOnNote(daNote, daNote.noteType, 0, daRatingInt); // JOELwindows7: Ragnarock hitline lol! lmao!!
 		// C'mon, Cam (ninjamuffin)!!! finish embargo rn!!! do not finish plot twistly as a demo for the full ass!!! that's rude!
 		// oh, embargo done??
+	}
 
 		// JOELwindows7: also here's BOLO notesplash in case you need it idk
 		/*
@@ -7534,8 +7548,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// trace('Wife accuracy loss: ' + wife + ' | Rating: ' + daRating + ' | Score: ' + score + ' | Weight: ' + (1 - wife));
 
+		// if(daNote != null){
 		if ((daRating != 'shit' || daRating != 'bad')
-			&& !(daNote.noteType == 2)) // JOELwindows7: do not count if note type is mine or powerup i guess.
+			&& !(daNote != null? daNote.noteType == 2:false)) // JOELwindows7: do not count if note type is mine or powerup i guess.
 		{
 			songScore += Math.round(score);
 
@@ -7601,8 +7616,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (PlayStateChangeables.botPlay && !loadRep)
 				msTiming = 0;
 
-			if (loadRep)
-				msTiming = HelperFunctions.truncateFloat(findByTime(daNote.strumTime)[3], 3);
+			if(daNote != null)
+				if (loadRep)
+					msTiming = HelperFunctions.truncateFloat(findByTime(daNote.strumTime)[3], 3);
 
 			if (currentTimingShown != null)
 				remove(currentTimingShown);
@@ -7816,6 +7832,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			curSection += 1;
 		}
+		// }
 	}
 
 	public function NearlyEquals(value1:Float, value2:Float, unimportantDifference:Float = 10):Bool

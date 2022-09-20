@@ -178,7 +178,7 @@ class Note extends FlxUISprite
 		}
 
 		// JOELwindows7: consistenize capitalization for `optimize` pls.
-		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.optimize) ? PlayState.Stage.curStage : 'stage');
+		// var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.optimize) ? PlayState.Stage.curStage : 'stage');
 
 		// defaults if no noteStyle was found in chart
 		noteTypeCheck = 'normal';
@@ -329,12 +329,16 @@ class Note extends FlxUISprite
 							// 	'-mine') : PlayState.noteskinSpriteMine;
 							// frames = PlayState.SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(PlayState.SONG.noteStyle, noteType,
 							// 	PlayState.SONG.loadNoteStyleOtherWayAround) : PlayState.noteskinSpriteMine;
-							frames = PlayState.noteskinSpriteMine; // JOELwindows7: smaller memory footprint
+							// frames = PlayState.noteskinSpriteMine; // JOELwindows7: smaller memory footprint
+							frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+								noteType); // NO! it can crash!
 						default:
 							// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(NoteSkinHelpers.giveMeNoteSkinPath(noteType)) : PlayState.noteskinSprite;
 							// frames = PlayState.SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(PlayState.SONG.noteStyle, noteType,
 							// 	PlayState.SONG.loadNoteStyleOtherWayAround) : PlayState.noteskinSprite;
-							frames = PlayState.noteskinSprite; // JOELwindows7: smaller memory footprint
+							// frames = PlayState.noteskinSprite; // JOELwindows7: smaller memory footprint
+							frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+						noteType); // No! it can crash!
 					}
 
 					for (i in 0...4)
@@ -724,13 +728,17 @@ class Note extends FlxUISprite
 					switch (noteType)
 					{
 						case 2:
-							frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle +
-								'-mine') : PlayState.noteskinSpriteMine;
-						// frames = PlayState.noteskinSpriteMine;
+							// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle +
+							// 	'-mine') : PlayState.noteskinSpriteMine;
+							// frames = PlayState.noteskinSpriteMine;
+							frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+								2);
 						default:
-							frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' +
-								PlayState.SONG.noteStyle) : PlayState.noteskinSprite;
+							// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' +
+							// 	PlayState.SONG.noteStyle) : PlayState.noteskinSprite;
 							// frames = PlayState.noteskinSprite;
+							frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
+								0);
 					}
 
 					for (i in 0...4)

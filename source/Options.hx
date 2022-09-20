@@ -3057,6 +3057,33 @@ class AnLoneBopeeboOption extends Option
 	}
 }
 
+// JOELwindows7: lonenote pls
+class AnLoneNoteOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		OptionsMenu.goToState(new AnLoneNote()); // open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		// FlxG.switchState(new AnMIDIyeay());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Test Noteskin";
+	}
+}
+
 // JOELwindows7: quick way testing change channel
 class AnChangeChannelOption extends Option
 {

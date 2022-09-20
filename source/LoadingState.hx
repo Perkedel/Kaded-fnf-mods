@@ -89,9 +89,8 @@ class LoadingState extends MusicBeatState
 		// JOELwindows7: oh also luckydog7's reverse engineering I think loading bar & stuff?
 		// https://github.com/luckydog7/Funkin-android/blob/master/source/LoadingState.hx
 		// cast too!
-		loadBar = cast new FlxUISprite(0,
-			FlxG.height - 20).makeGraphic(FlxG.width, 10,
-				0xffff00ff); // JOELwindows7: was -59694, now use BOLO's proper hex 0xfffffab8! nvm. use same magenta!
+		loadBar = new FlxUISprite(0, FlxG.height - 20);
+		loadBar.makeGraphic(FlxG.width, 10, 0xffff00ff); // JOELwindows7: was -59694, now use BOLO's proper hex 0xfffffab8! nvm. use same magenta!
 		loadBar.screenCenter(FlxAxes.X);
 		loadBar.antialiasing = FlxG.save.data.antialiasing; // JOELwindows7: BOLO antialias the loading bar too!
 		add(loadBar);
@@ -146,6 +145,7 @@ class LoadingState extends MusicBeatState
 
 			// Essential libraries (characters,notes,gameplay elements) (JOELwindows7: BOLO's said)
 			// JOELwindows7: also here comes more optimize!
+			checkLibrary("videos");
 			checkLibrary("shared");
 			if (!FlxG.save.data.optimize && FlxG.save.data.background)
 			{
@@ -153,6 +153,12 @@ class LoadingState extends MusicBeatState
 					checkLibrary("week" + PlayState.storyWeek);
 				else
 					checkLibrary("tutorial");
+			}
+			else
+			{
+				if (OpenFlAssets.hasLibrary("week" + PlayState.storyWeek))
+					OpenFlAssets.unloadLibrary("week" +
+						PlayState.storyWeek); // Unloading the week library in case it's loaded to save memory in optimization mode or with no background.
 			}
 
 			// JOELwindows7: also BOLO check if pixel
@@ -172,16 +178,16 @@ class LoadingState extends MusicBeatState
 	{
 		if (path != null)
 		{ // JOELwindows7: BOLO added safety!!!
-			if (!OpenFlAssets.cache.hasSound(path))
+			if (!OpenFlAssets.cache.hasSound(path.toString()))
 			{
-				var library = OpenFlAssets.getLibrary("songs");
-				final symbolPath = path.split(":").pop();
+				// var library = OpenFlAssets.getLibrary("songs");
+				// final symbolPath = path.split(":").pop();
 				// @:privateAccess
 				// library.types.set(symbolPath, SOUND);
 				// @:privateAccess
 				// library.pathGroups.set(symbolPath, [library.__cacheBreak(symbolPath)]);
-				var callback = callbacks.add("song:" + path);
-				OpenFlAssets.loadSound(path).onComplete(function(_)
+				var callback = callbacks.add("song:" + path.toString());
+				OpenFlAssets.loadSound(path.toString()).onComplete(function(_)
 				{
 					callback();
 				});
@@ -303,19 +309,26 @@ class LoadingState extends MusicBeatState
 	static function getNextState(target:FlxState, stopMusic = false, ?previously:FlxState):FlxState // JOELwindows7: here previously
 	{
 		Paths.setCurrentLevel("week" + PlayState.storyWeek);
-		// #if NO_PRELOAD_ALL // JOELwindows7: This should be no longer necessary even on cpp right?
-		if (!PlayState.isSM)
+		#if NO_PRELOAD_ALL // JOELwindows7: This should be no longer necessary even on cpp right?
+		var loaded:Bool = false; // JOELwindows7: BOLO full
+		// if (!PlayState.isSM)
+		if (PlayState.SONG != null) // not anymore! full BOLO thing!
 		{ // JOELwindows7: folks, unfortunately it cannot load stepmania this way. there is different instruction!
-			var loaded = isSoundLoaded(getSongPath())
+			loaded = isSoundLoaded(getSongPath())
 				&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
 				&& isLibraryLoaded("shared")
 				&& isLibraryLoaded("week" + PlayState.storyWeek) // JOELwindows7: and BOLO's week checks!
-				;
+			;
 
-			if (!loaded)
-				return new LoadingState(target, stopMusic, previously); // JOELwindows7: here previously
+			// if (!loaded)
+			// 	return new LoadingState(target, stopMusic, previously); // JOELwindows7: here previously
 		}
-		// #end
+		if (!loaded)
+		{
+			FlxTransitionableState.skipNextTransIn = false;
+			return new LoadingState(target, stopMusic);
+		}
+		#end
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -345,6 +358,7 @@ class LoadingState extends MusicBeatState
 
 	static function initSongsManifest()
 	{
+		Debug.logTrace('Initing Song Manifest');
 		// TODO: Hey, wait, does this break ModCore?
 
 		var id = "songs";
