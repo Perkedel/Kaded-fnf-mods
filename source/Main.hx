@@ -112,9 +112,13 @@ class Main extends Sprite
 		try
 		{
 			// JOELwindows7: here haxeUI
+			trace('init HaxeUI');
 			Toolkit.init();
+			trace('HaxeUI success');
 
+			trace('init main game');
 			Lib.current.addChild(new Main());
+			trace('main game success');
 		}
 		catch (e)
 		{
@@ -535,50 +539,57 @@ class Main extends Sprite
 		if (FlxG.fullscreen)
 			FlxG.fullscreen = !FlxG.fullscreen;
 
-		var errMsg:String = "";
-		var path:String;
-		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-		var dateNow:String = Date.now().toString();
+		/*
+			var errMsg:String = "";
+			var path:String;
+			var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+			var dateNow:String = Date.now().toString();
 
-		dateNow = StringTools.replace(dateNow, " ", "_");
-		dateNow = StringTools.replace(dateNow, ":", "'");
+			dateNow = StringTools.replace(dateNow, " ", "_");
+			dateNow = StringTools.replace(dateNow, ":", "'");
 
-		// path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
-		path = './crash/${Perkedel.ENGINE_ID}${dateNow}.txt"';
+			// path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
+			path = './crash/${Perkedel.ENGINE_ID}${dateNow}.txt"';
 
-		for (stackItem in callStack)
-		{
-			switch (stackItem)
+			for (stackItem in callStack)
 			{
-				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
-				default:
-					Sys.println(stackItem);
+				switch (stackItem)
+				{
+					case FilePos(s, file, line, column):
+						errMsg += file + " (line " + line + ")\n";
+					default:
+						Sys.println(stackItem);
+				}
 			}
-		}
 
-		errMsg += "```\n"
-			+ Perkedel.CRASH_TEXT_BANNER
-			+ "```\n"
-			+ "\n# FATAL Uncaught WError: `"
-			+ e.error
-			+ "`\n"
-			+ "```"
-			+ e.error.getStackTrace()
-			+ "\n```\n"
-			+ "# Firmware name & version:\n"
-			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}'
-			+ "\n# Please report this error to our Github page:\n https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: sqirra-rng";
+			errMsg += "```\n"
+				+ Perkedel.CRASH_TEXT_BANNER
+				+ "```\n"
+				+ "\n# FATAL Uncaught WError: `"
+				+ e.error
+				+ "`\n"
+				+ "```"
+				+ e.error.getStackTrace()
+				+ "\n```\n"
+				+ "# Firmware name & version:\n"
+				+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}'
+				+ "\n# Please report this error to our Github page:\n https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: sqirra-rng";
 
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
+			if (!FileSystem.exists("./crash/"))
+				FileSystem.createDirectory("./crash/");
 
-		File.saveContent(path, errMsg + "\n");
+			File.saveContent(path, errMsg + "\n");
+		 
 
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
+		 
 
 		Application.current.window.alert(errMsg, "Error!");
+		 */
+
+		// JOELwindows7: just use that guy there
+		WerrorForceMajeurState.writeErrorLog(e.error, 'FATAL Uncaught WError', 'Uncaught');
 		#if FEATURE_DISCORD
 		DiscordClient.shutdown();
 		#end

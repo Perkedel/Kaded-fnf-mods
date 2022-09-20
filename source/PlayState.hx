@@ -9901,7 +9901,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 		else
 		{
-			scrollTween = createTween(this, {scrollSpeed: newSpeed}, time, {
+			// scrollTween = createTween(this, {scrollSpeed: newSpeed}, time, {
+			scrollTween = createTweenNum(PlayStateChangeables.scrollSpeed, newSpeed, time, {
 				ease: ease,
 				onComplete: function(twn:FlxTween)
 				{

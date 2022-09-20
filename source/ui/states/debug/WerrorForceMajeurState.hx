@@ -34,6 +34,7 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 #end
+import lime.app.Application;
 
 // CrashHandler class
 class WerrorForceMajeurState extends CoreState
@@ -49,6 +50,9 @@ class WerrorForceMajeurState extends CoreState
 		super();
 
 		exception = exc;
+
+		// JOELwindows7: finally, write the error log like BOLO had here
+		writeErrorLog(exception, 'SEMI-FATAL WhewCaught WError', 'SemiCaught');
 	}
 
 	override function create()
@@ -111,9 +115,6 @@ class WerrorForceMajeurState extends CoreState
 		addLeftButton(Std.int(acceptButton.x - 150), FlxG.height - 100);
 		addUpButton();
 		addDownButton();
-
-		// JOELwindows7: finally, write the error log like BOLO had here
-		writeErrorLog(exception, 'SEMI-FATAL WhewCaught WError', 'SemiCaught');
 	}
 
 	override function update(elapsed)
@@ -218,18 +219,23 @@ class WerrorForceMajeurState extends CoreState
 		}
 	}
 
-	public static function writeErrorLog(exc:Exception, errorTitle:String = 'FATAL UnCaught WError', errorDiffFileName = 'Uncaught')
+	// Copy from BOLO's onCrash
+	public static function writeErrorLog(exc:Exception, errorTitle:String = 'FATAL UnCaught WError', errorDiffFileName = 'Uncaught',
+			withWindowAlert:Bool = true)
 	{
 		var errMsg:String = "";
+		var errHdr:String = ""; // da header
 		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
 		var dateNow:String = Date.now().toString();
+		var firmwareName:String = Perkedel.ENGINE_ID;
 
 		dateNow = StringTools.replace(dateNow, " ", "_");
 		dateNow = StringTools.replace(dateNow, ":", "'");
+		firmwareName = StringTools.replace(firmwareName, "-", "");
 
 		// path = "./crash/" + "KadeEngine_" + dateNow + "_SemiCaught.txt";
-		path = './crash/${Perkedel.ENGINE_ID}${dateNow}_${errorDiffFileName}.txt"';
+		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
 
 		for (stackItem in callStack)
 		{
@@ -244,25 +250,31 @@ class WerrorForceMajeurState extends CoreState
 			}
 		}
 
-		errMsg += "```\n"
-			+ Perkedel.CRASH_TEXT_BANNER
-			+ "```\n"
-			+ '\n# ${errorTitle}: `'
-			+ exc
-			+ "`\n"
-			+ "```"
-			+ exc.details()
-			+ "\n```\n"
-			+ "# Firmware name & version:\n"
-			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}'
-			+
-			"\n# Please report this error to our Github page:\n https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: Paidyy, sqirra-rng";
+		errHdr += '```\n' + '${Perkedel.CRASH_TEXT_BANNER}' + '\n```\n';
+		errMsg += '# ${errorTitle}: `$exc`\n'
+			+ '\n```\n'
+			+ '${exc.details()}'
+			+ '\n```\n'
+			+ '# Firmware name & version:\n'
+			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\n\n'
+			+ '# Please report this error to our Github page:\n ${Perkedel.ENGINE_BUGREPORT_URL}\n\n> Crash Handler written by: Paidyy, sqirra-rng';
 
 		#if FEATURE_FILESYSTEM
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");
 
-		File.saveContent(path, errMsg + "\n");
+		File.saveContent(path, errHdr + errMsg + "\n");
 		#end
+
+		#if sys
+		Sys.println(errHdr + errMsg);
+		Sys.println("Crash dump saved in " + Path.normalize(path));
+		#else
+		trace(errHdr + errMsg);
+		trace('error');
+		#end
+
+		if (withWindowAlert)
+			Application.current.window.alert(errMsg, "Error!");
 	}
 }

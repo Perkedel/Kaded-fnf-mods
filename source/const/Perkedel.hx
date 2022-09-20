@@ -46,7 +46,7 @@ class Perkedel
 	public static final ENGINE_VERSION_NUMBER:Array<Int> = [2022, 9, 0]; // and numbered version
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
 	public static final ENGINE_VERSION_URL:String = 'https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe'; // here URL check
-	public static final ENGINE_REPO_URL:String = 'https://github.com/Perkedel/kaded-fnf-mods/issues';
+	public static final ENGINE_REPO_URL:String = 'https://github.com/Perkedel/kaded-fnf-mods';
 	public static final ENGINE_BUGREPORT_URL:String = 'https://github.com/Perkedel/kaded-fnf-mods/issues';
 	public static final ENGINE_CHANGELOG_PREFIX_URL:String = 'https://odysee.com/@JOELwindows7/LFM-changelog-'; // here URL of change log prefix, appened by what version needed there.
 	public static final ENGINE_CORE_HANDLE_CRASH:Bool = true; // if true, engine will handle crash and restart. if false, engine will not handle crash and restart.
