@@ -213,8 +213,8 @@ class CoreState extends FlxUIState implements ICoreStating
 		// dedicated touchscreen button container
 
 		// JOELwindows7: manage Stuffs first
-		manageMouse();
-		manageJoypad();
+		// manageMouse();
+		// manageJoypad();
 	}
 
 	override function update(elapsed:Float)

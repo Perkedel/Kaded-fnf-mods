@@ -536,60 +536,95 @@ class Main extends Sprite
 	#if FEATURE_CRASH_BOLO // JOELwindows7: no, let's make it definable anytime.
 	function onCrash(e:UncaughtErrorEvent):Void
 	{
+		// JOELwindows7: argument more unavailable. we could bind manually but eh, tedious. idk..
+		var errorTitle:String = 'FATAL UnCaught WError';
+		var errorDiffFileName:String = 'Uncaught';
+		var withWindowAlert:Bool = true;
+
 		if (FlxG.fullscreen)
 			FlxG.fullscreen = !FlxG.fullscreen;
 
-		/*
-			var errMsg:String = "";
-			var path:String;
-			var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-			var dateNow:String = Date.now().toString();
+		var errMsg:String = "";
+		var errHdr:String = ""; // JOELwindows7: da header
+		var path:String;
+		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var dateNow:String = Date.now().toString();
+		var firmwareName:String = Perkedel.ENGINE_ID;
 
-			dateNow = StringTools.replace(dateNow, " ", "_");
-			dateNow = StringTools.replace(dateNow, ":", "'");
+		dateNow = StringTools.replace(dateNow, " ", "_");
+		dateNow = StringTools.replace(dateNow, ":", "'");
 
-			// path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
-			path = './crash/${Perkedel.ENGINE_ID}${dateNow}.txt"';
+		// path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
+		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
 
-			for (stackItem in callStack)
+		for (stackItem in callStack)
+		{
+			switch (stackItem)
 			{
-				switch (stackItem)
-				{
-					case FilePos(s, file, line, column):
-						errMsg += file + " (line " + line + ")\n";
-					default:
-						Sys.println(stackItem);
-				}
+				case FilePos(s, file, line, column):
+					errMsg += file + " (line " + line + ")\n";
+				default:
+					Sys.println(stackItem);
 			}
+		}
 
-			errMsg += "```\n"
-				+ Perkedel.CRASH_TEXT_BANNER
-				+ "```\n"
-				+ "\n# FATAL Uncaught WError: `"
-				+ e.error
-				+ "`\n"
-				+ "```"
-				+ e.error.getStackTrace()
-				+ "\n```\n"
-				+ "# Firmware name & version:\n"
-				+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}'
-				+ "\n# Please report this error to our Github page:\n https://github.com/Perkedel/Kaded-fnf-mods/issues\n\n> Crash Handler written by: sqirra-rng";
+		errHdr += '```\n' + '${Perkedel.CRASH_TEXT_BANNER}' + '\n```\n';
 
+		errMsg += '# ${errorTitle}: `${e.error}`\n'
+			+ '\n```\n'
+			+ e.error.getStackTrace()
+			+ '\n```\n'
+			+ '# Firmware name & version:\n'
+			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\n\n'
+			+ '# Please report this error to our Github page:\n ${Perkedel.ENGINE_BUGREPORT_URL}\n\n> Crash Handler written by: Paidyy, sqirra-rng';
+
+		// if (!FileSystem.exists("./crash/"))
+		// 	FileSystem.createDirectory("./crash/");
+
+		// File.saveContent(path, errMsg + "\n");
+
+		// Sys.println(errMsg);
+		// Sys.println("Crash dump saved in " + Path.normalize(path));
+		// JOELwindows7: add safety
+		try
+		{
+			#if FEATURE_FILESYSTEM
 			if (!FileSystem.exists("./crash/"))
 				FileSystem.createDirectory("./crash/");
 
-			File.saveContent(path, errMsg + "\n");
-		 
+			File.saveContent(path, errHdr + errMsg + "\n");
+			#end
 
-		Sys.println(errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
-		 
+			#if sys
+			Sys.println('===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('===============');
+			Sys.println("Crash dump saved in " + Path.normalize(path));
+			#else
+			trace(errHdr + errMsg);
+			trace('error');
+			#end
+		}
+		catch (e)
+		{
+			#if sys
+			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			Sys.println('Anyway pls detail!:\n===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('================\nThere, clipboard pls');
+			#else
+			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			trace('Anyway pls detail!:\n===============');
+			trace(errHdr + errMsg);
+			trace('================\nThere, clipboard pls');
+			#end
+		}
 
-		Application.current.window.alert(errMsg, "Error!");
-		 */
+		if (withWindowAlert)
+			Application.current.window.alert(errMsg, "Error!");
 
 		// JOELwindows7: just use that guy there
-		WerrorForceMajeurState.writeErrorLog(e.error, 'FATAL Uncaught WError', 'Uncaught');
+		// WerrorForceMajeurState.writeErrorLog(e.error, 'FATAL Uncaught WError', 'Uncaught');
 		#if FEATURE_DISCORD
 		DiscordClient.shutdown();
 		#end

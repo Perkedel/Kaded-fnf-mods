@@ -220,7 +220,7 @@ class WerrorForceMajeurState extends CoreState
 	}
 
 	// Copy from BOLO's onCrash
-	public static function writeErrorLog(exc:Exception, errorTitle:String = 'FATAL UnCaught WError', errorDiffFileName = 'Uncaught',
+	public static function writeErrorLog(exc:Exception, errorTitle:String = 'FATAL UnCaught WError', errorDiffFileName:String = 'Uncaught',
 			withWindowAlert:Bool = true)
 	{
 		var errMsg:String = "";

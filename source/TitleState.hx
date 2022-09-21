@@ -237,51 +237,51 @@ class TitleState extends MusicBeatState
 		// JOELwindows7: BOLO maff
 		// if (!initialized)
 		// {
-			credGroup = new FlxGroup();
-			add(credGroup);
-			textGroup = new FlxGroup();
+		credGroup = new FlxGroup();
+		add(credGroup);
+		textGroup = new FlxGroup();
 
-			// JOELwindows7: yeah
-			blackScreen = new FlxUISprite();
-			blackScreen.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-			credGroup.add(blackScreen);
+		// JOELwindows7: yeah
+		blackScreen = new FlxUISprite();
+		blackScreen.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		credGroup.add(blackScreen);
 
-			credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
-			credTextShit.screenCenter();
+		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
+		credTextShit.screenCenter();
 
-			// credTextShit.alignment = CENTER;
+		// credTextShit.alignment = CENTER;
 
-			// credTextShit.visible = false;
+		// credTextShit.visible = false;
 
-			// JOELwindows7: all these logos
-			ngSpr = new FlxUISprite(0, FlxG.height * 0.52);
-			ngSpr.loadGraphic(Paths.loadImage('newgrounds_logo'));
-			add(ngSpr);
-			ngSpr.visible = false;
-			ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
-			ngSpr.updateHitbox();
-			ngSpr.screenCenter(X);
-			ngSpr.antialiasing = FlxG.save.data.antialiasing;
+		// JOELwindows7: all these logos
+		ngSpr = new FlxUISprite(0, FlxG.height * 0.52);
+		ngSpr.loadGraphic(Paths.loadImage('newgrounds_logo'));
+		add(ngSpr);
+		ngSpr.visible = false;
+		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
+		ngSpr.updateHitbox();
+		ngSpr.screenCenter(X);
+		ngSpr.antialiasing = FlxG.save.data.antialiasing;
 
-			// JOELwindows7: odysee spriter
-			odyseeSpr = new FlxUISprite(0, FlxG.height * 0.52);
-			odyseeSpr.loadGraphic(Paths.loadImage('odysee_Logo_Transparent_White_Text'));
-			add(odyseeSpr);
-			odyseeSpr.visible = false;
-			odyseeSpr.setGraphicSize(Std.int(odyseeSpr.width * .5), Std.int(odyseeSpr.height * .5));
-			odyseeSpr.updateHitbox();
-			odyseeSpr.screenCenter(X);
-			odyseeSpr.antialiasing = FlxG.save.data.antialiasing;
+		// JOELwindows7: odysee spriter
+		odyseeSpr = new FlxUISprite(0, FlxG.height * 0.52);
+		odyseeSpr.loadGraphic(Paths.loadImage('odysee_Logo_Transparent_White_Text'));
+		add(odyseeSpr);
+		odyseeSpr.visible = false;
+		odyseeSpr.setGraphicSize(Std.int(odyseeSpr.width * .5), Std.int(odyseeSpr.height * .5));
+		odyseeSpr.updateHitbox();
+		odyseeSpr.screenCenter(X);
+		odyseeSpr.antialiasing = FlxG.save.data.antialiasing;
 
-			// JOELwindows7: Perkedel spriter
-			perkedelSpr = new FlxUISprite(0, FlxG.height * 0.52);
-			perkedelSpr.loadGraphic(Paths.loadImage('Perkedel_Logo_Typeborder'));
-			add(perkedelSpr);
-			perkedelSpr.visible = false;
-			perkedelSpr.setGraphicSize(Std.int(perkedelSpr.width * .2), Std.int(perkedelSpr.height * .2));
-			perkedelSpr.updateHitbox();
-			perkedelSpr.screenCenter(X);
-			perkedelSpr.antialiasing = FlxG.save.data.antialiasing;
+		// JOELwindows7: Perkedel spriter
+		perkedelSpr = new FlxUISprite(0, FlxG.height * 0.52);
+		perkedelSpr.loadGraphic(Paths.loadImage('Perkedel_Logo_Typeborder'));
+		add(perkedelSpr);
+		perkedelSpr.visible = false;
+		perkedelSpr.setGraphicSize(Std.int(perkedelSpr.width * .2), Std.int(perkedelSpr.height * .2));
+		perkedelSpr.updateHitbox();
+		perkedelSpr.screenCenter(X);
+		perkedelSpr.antialiasing = FlxG.save.data.antialiasing;
 		// }
 		// DEBUG BULLSHIT
 
@@ -763,11 +763,11 @@ class TitleState extends MusicBeatState
 			// JOELwindows7: BOLO initialized-not check
 			// if (!initialized)
 			// {
-				var money:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
-				money.screenCenter(X);
-				money.y += (i * 60) + 200;
-				credGroup.add(money);
-				textGroup.add(money);
+			var money:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
+			money.screenCenter(X);
+			money.y += (i * 60) + 200;
+			credGroup.add(money);
+			textGroup.add(money);
 			// }
 		}
 	}
@@ -776,11 +776,11 @@ class TitleState extends MusicBeatState
 	{
 		// if (!initialized)
 		// {
-			var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
-			coolText.screenCenter(X);
-			coolText.y += (textGroup.length * 60) + 200;
-			credGroup.add(coolText);
-			textGroup.add(coolText);
+		var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
+		coolText.screenCenter(X);
+		coolText.y += (textGroup.length * 60) + 200;
+		credGroup.add(coolText);
+		textGroup.add(coolText);
 		// } // JOELwindows7: idk why, BOLO
 	}
 
@@ -788,11 +788,11 @@ class TitleState extends MusicBeatState
 	{
 		// if (!initialized)
 		// {
-			while (textGroup.members.length > 0)
-			{
-				credGroup.remove(textGroup.members[0], true);
-				textGroup.remove(textGroup.members[0], true);
-			}
+		while (textGroup.members.length > 0)
+		{
+			credGroup.remove(textGroup.members[0], true);
+			textGroup.remove(textGroup.members[0], true);
+		}
 		// }
 	}
 
@@ -844,13 +844,13 @@ class TitleState extends MusicBeatState
 					{
 						// addMoreText('Odysee');
 						// if (!initialized) // JOELwindows7: BOLO idk why
-							odyseeSpr.visible = true;
+						odyseeSpr.visible = true;
 					}
 					else if (!Main.odyseeMark && Main.perkedelMark)
 					{
 						// JOELwindows7: uuhhh, can we be more efficient here? uh, is there enum?
 						// if (!initialized) // JOELwindows7: BOLO idk why
-							perkedelSpr.visible = true;
+						perkedelSpr.visible = true;
 					}
 					else
 						addMoreText('KadeDeveloper');
@@ -858,18 +858,18 @@ class TitleState extends MusicBeatState
 				{
 					addMoreText('Newgrounds');
 					// if (!initialized) // JOELwindows7: BOLO idk why
-						ngSpr.visible = true;
+					ngSpr.visible = true;
 				}
 			// credTextShit.text += '\nNewgrounds';
 			case 8:
 				deleteCoolText();
 				// if (!initialized)
 				// {
-					// JOELwindows7: idk why BOLO
-					ngSpr.visible = false;
-					perkedelSpr.visible = false;
-					odyseeSpr.visible = false;
-				// }
+				// JOELwindows7: idk why BOLO
+				ngSpr.visible = false;
+				perkedelSpr.visible = false;
+				odyseeSpr.visible = false;
+			// }
 			// credTextShit.visible = false;
 
 			// credTextShit.text = 'Shoutouts Tom Fulp';
@@ -898,7 +898,7 @@ class TitleState extends MusicBeatState
 				addMoreText(Main.perkedelMark ? 'Moments' : 'Funkin');
 			case 16:
 				skipIntro();
-				initialized = true;
+				// initialized = true;
 		}
 	}
 
@@ -932,10 +932,11 @@ class TitleState extends MusicBeatState
 
 			// It always bugged me that it didn't do this before.
 			// Skip ahead in the song to the drop.
-			if (!initialized) // JOELwindows7: heyfewf BOLO
+			if (!skippedIntro) // JOELwindows7: heyfewf BOLO
 				FlxG.sound.music.time = 9400; // 9.4 seconds
 
 			skippedIntro = true;
+			initialized = true;
 		}
 	}
 

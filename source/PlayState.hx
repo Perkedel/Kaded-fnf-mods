@@ -3610,7 +3610,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			skipText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
 			skipText.cameras = [camHUD];
 			skipText.alpha = 0;
-			FlxTween.tween(skipText, {alpha: 1}, 0.2);
+			createTween(skipText, {alpha: 1}, 0.2);
 			add(skipText);
 		}
 
@@ -3983,12 +3983,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 						sustainNote.mustPress = gottaHitNote;
 
+						//JOELwindows7: BOLO removed this
 						/*
 							if (sustainNote.mustPress)
 							{
 								sustainNote.x += FlxG.width / 2; // general offset
 							}
-						 */
+						*/
 
 						sustainNote.parent = swagNote;
 						swagNote.children.push(sustainNote);
@@ -6201,6 +6202,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		FlxG.watch.addQuick("stepShit", curStep);
 
 		// JOELwindows7: add more watches too
+		Debug.quickWatch([debugHitlineLastX, debugHitlineLastY],'Hitline Last positions');
 		FlxG.watch.addQuick("shinzouRateShit", [dad.getHeartRate(-1), gf.getHeartRate(-1), boyfriend.getHeartRate(-1)]);
 		FlxG.watch.addQuick("songPositionShit", Conductor.songPosition);
 		FlxG.watch.addQuick("songPositionBarShit", songPositionBar);
@@ -8779,6 +8781,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						executeModchartState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
 					else
 						executeModchartState('playerOneSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+					// JOELwindows7: welp, gotta do this then! PLAYER TWO 2
+								executeModchartState('characterSing', [
+									!PlayStateChangeables.opponentMode ? 1 : 0,
+									1,
+									Math.abs(daNote.noteData),
+									Conductor.songPosition,
+									curBeat,
+									curStep
+								]);
 
 					if (SONG.needsVoices)
 						vocals.volume = 1;
@@ -8825,6 +8836,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					executeModchartState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
 				else
 					executeModchartState('playerOneSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
+				// JOELwindows7: welp, gotta do this then! PLAYER TWO 2
+							executeModchartState('characterSing', [
+								!PlayStateChangeables.opponentMode ? 1 : 0,
+								1,
+								Math.abs(daNote.noteData),
+								Conductor.songPosition,
+								curBeat,
+								curStep
+							]);
 
 				if (!PlayStateChangeables.opponentMode)
 					dad.holdTimer = 0;
@@ -8833,6 +8853,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				if (SONG.needsVoices)
 					vocals.volume = 1;
 			}
+			if (!daNote.isSustainNote)
+						{
+							successfullyStep(1, daNote); // JOELwindows7:successfully step for p2
+						}
+
 			daNote.active = false;
 			daNote.kill();
 			notes.remove(daNote, true);
@@ -9705,7 +9730,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	function poggers(?cleanTheSong = false)
 	{
-		var notes = [];
+		var notesPog = [];
 
 		if (cleanTheSong)
 		{
@@ -9721,12 +9746,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					var old = note[0];
 					if (note[0] < section.startTime)
 					{
-						notes.push(note);
+						notesPog.push(note);
 						removed.push(note);
 					}
 					if (note[0] > section.endTime)
 					{
-						notes.push(note);
+						notesPog.push(note);
 						removed.push(note);
 					}
 				}
@@ -9741,7 +9766,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			{
 				var saveRemove = [];
 
-				for (i in notes)
+				for (i in notesPog)
 				{
 					if (i[0] >= section.startTime && i[0] < section.endTime)
 					{
@@ -9751,7 +9776,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				}
 
 				for (i in saveRemove)
-					notes.remove(i);
+					notesPog.remove(i);
 			}
 
 			trace("FUCK YOU BITCH FUCKER CUCK SUCK BITCH " + cleanedSong.notes.length);
@@ -9770,12 +9795,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					var old = note[0];
 					if (note[0] < section.startTime)
 					{
-						notes.push(note);
+						notesPog.push(note);
 						removed.push(note);
 					}
 					if (note[0] > section.endTime)
 					{
-						notes.push(note);
+						notesPog.push(note);
 						removed.push(note);
 					}
 				}
@@ -9790,7 +9815,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			{
 				var saveRemove = [];
 
-				for (i in notes)
+				for (i in notesPog)
 				{
 					if (i[0] >= section.startTime && i[0] < section.endTime)
 					{
@@ -9800,7 +9825,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				}
 
 				for (i in saveRemove)
-					notes.remove(i);
+					notesPog.remove(i);
 			}
 
 			trace("FUCK YOU BITCH FUCKER CUCK SUCK BITCH " + cleanedSong.notes.length);
@@ -12018,11 +12043,16 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		grpNoteSplashes.add(splash);
 	}
 
+	var debugHitlineLastX:Float;
+	var debugHitlineLastY:Float;
+
 	// JOELwindows7: spawn hitline particle like splash but it's line to determine how late, early, or perfect you hit it.
 	public function spawnHitlineParticle(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0, rating:Int = 0)
 	{
+		debugHitlineLastX = x;
+		debugHitlineLastY = y;
 		var hitline:FlxUISprite = grpNoteHitlineParticles.recycle(FlxUISprite);
-		hitline.loadGraphic(Paths.loadImage((note != null ? note.hitlinePath : "HitLineParticle"), 'shared'));
+		hitline.loadGraphic(Paths.imageGraphic((note != null ? note.hitlinePath : "HitLineParticle"), 'shared'));
 		// hitline.setGraphicSize(Std.int(.5)); // why integer, HaxeFlixel?!
 		hitline.scale.x = .6;
 		hitline.scale.y = .6;

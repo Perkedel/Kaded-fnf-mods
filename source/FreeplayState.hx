@@ -971,9 +971,12 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		// JOELwindows7: Custom diffs Support!!! thancc BOLO
 		var customDiffs:Array<String> = [];
-		try{
-		customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songName/customDiffs'));
-		} catch(e) {
+		try
+		{
+			customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songName/customDiffs'));
+		}
+		catch (e)
+		{
 			Debug.logTrace('No custom diff to be added for $songName');
 		}
 
@@ -1596,11 +1599,11 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			else
 			{
 				/*
-				if (FlxG.keys.justPressed.LEFT)
-					changeDiff(-1);
-				if (FlxG.keys.justPressed.RIGHT)
-					changeDiff(1);
-				*/
+					if (FlxG.keys.justPressed.LEFT)
+						changeDiff(-1);
+					if (FlxG.keys.justPressed.RIGHT)
+						changeDiff(1);
+				 */
 			}
 
 			// JOELwindows7: BOLO's press space to preview song
@@ -1976,6 +1979,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		PlayState.songMultiplier = rate;
 
+		Debug.logInfo('Switch to state now. is charting? ${isCharting}');
 		if (isCharting)
 			// LoadingState.loadAndSwitchState(new ChartingState(reloadSong));
 			FreeplayState.instance.switchState(new ChartingState(reloadSong), true, true, true, true,
@@ -1983,6 +1987,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		else
 			// LoadingState.loadAndSwitchState(new PlayState());
 			FreeplayState.instance.switchState(new PlayState(), true, true, true, true, new FreeplayState()); // JOELwindows7: hex switch state lol
+		Debug.logInfo('Enjoy Freeplay');
 	}
 
 	function changeDiff(change:Int = 0)

@@ -18,6 +18,7 @@
 
 package experiments;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.addons.ui.FlxUIText;
 import flixel.FlxState;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
@@ -38,6 +39,13 @@ class AbstractTestMenu extends MusicBeatState
 	{
 		super.create();
 
+		// JOELwindows7: BG BG BG BG BOLO
+		var bg:FlxUISprite = new FlxUISprite();
+		bg.loadGraphic(Paths.imageGraphic('MenuBGDesatAlt'));
+		bg.scrollFactor.set();
+		bg.color = 0xFF111111;
+		add(bg);
+
 		infoText = new FlxUIText();
 		infoText.text = "ESCAPE = Go back\n" + "";
 		infoText.size = 32;
@@ -56,6 +64,8 @@ class AbstractTestMenu extends MusicBeatState
 		var wext = text;
 		wext = wext + "\n" + "ESCAPE = Go back\n";
 		infoText.text = wext;
+		infoText.y = 0;
+		infoText.screenCenter(X);
 	}
 
 	override function update(elapsed)

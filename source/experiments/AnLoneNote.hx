@@ -18,14 +18,18 @@
 
 package experiments;
 
+import flixel.addons.ui.FlxUISprite;
+
 class AnLoneNote extends AbstractTestMenu
 {
 	override function create()
 	{
 		super.create();
-		addInfoText("Lone Note\n\n\n");
+		addInfoText("Lone Note\n\n\nHow does your chosen Noteskin looks like.");
 		Debug.logInfo('test note');
 		var thing = new Note(0, 0, null, false, true, null, null, 0);
+		// var thing = new FlxUISprite();
+		// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
 		// thing.x = FlxG.width / 2;
 		// thing.y = FlxG.height / 2;
 		thing.screenCenter();

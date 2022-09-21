@@ -991,7 +991,7 @@ class OptionsMenu extends CoreSubState
 	}
 
 	// JOELwindows7: go to flxState. prevent go to there if you are in gameplay.
-	public static function goToState(ofHere, goToLoading:Bool = false, transition:Bool = true, isSong:Bool = false, dangerouslyForce:Bool = true)
+	public static function goToState(ofHere, goToLoading:Bool = false, transition:Bool = true, isSong:Bool = false, dangerouslyForce:Bool = false)
 	{
 		if (isInPause && !dangerouslyForce)
 		{

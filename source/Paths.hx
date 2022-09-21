@@ -144,7 +144,7 @@ class Paths
 				var bitmap:BitmapData = OpenFlAssets.getBitmapData(path, false);
 				var graphic:FlxGraphic = null;
 
-				var graphic:FlxGraphic = null;
+				// var graphic:FlxGraphic = null;
 				if (gpuRender)
 				{
 					var texture = FlxG.stage.context3D.createTexture(bitmap.width, bitmap.height, BGRA, false, 0);

@@ -194,6 +194,7 @@ class ChartingState extends MusicBeatState
 
 	public function new(reloadOnInit:Bool = false)
 	{
+		Debug.logInfo('New Charting State');
 		super();
 		// If we're loading the charter from an arbitrary state, we need to reload the song on init,
 		// but if we're not, then reloading the song is a performance drop.
@@ -209,15 +210,18 @@ class ChartingState extends MusicBeatState
 
 	override function create()
 	{
+		Debug.logInfo('Welcome to charting state');
 		// JOELwindows7: move super create here
 		super.create();
 
 		// JOELwindows7: BG BG BG BG BOLO
 		var bg:FlxUISprite = new FlxUISprite();
-		bg.loadGraphic(Paths.imageGraphic('menuBGDesatAlt'));
+		bg.loadGraphic(Paths.imageGraphic('MenuBGDesatAlt'));
 		bg.scrollFactor.set();
 		bg.color = 0xFF222222;
 		add(bg);
+
+		Debug.logInfo('BG now ed');
 
 		// JOELwindows7: BOLO ignore warnings
 		ignoreWarnings = FlxG.save.data.ignoreWarnings;
@@ -274,6 +278,7 @@ class ChartingState extends MusicBeatState
 
 		TimingStruct.clearTimings();
 
+		Debug.logInfo('Begin loading the song pls');
 		if (PlayState.SONG != null)
 		{
 			if (PlayState.isSM)
@@ -284,7 +289,8 @@ class ChartingState extends MusicBeatState
 			}
 			else
 			{
-				var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
+				// var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
+				var diff:String = CoolUtil.suffixDiffsArray[PlayState.storyDifficulty]; // JOELwindows7: BOLO pls
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
 			} // JOELwindows7: so it has to be anything supported by sys
 		}
@@ -329,6 +335,8 @@ class ChartingState extends MusicBeatState
 			};
 		}
 
+		Debug.logInfo('Song empty prepared');
+
 		// JOELwindows7: damn, how do I supposed to use Waveform to add here?!?!??!
 
 		addGrid(1);
@@ -356,16 +364,19 @@ class ChartingState extends MusicBeatState
 
 		// sections = _song.notes;
 
+		Debug.logInfo('Going to load song');
 		loadSong(_song.songId, reloadOnInit);
 		Conductor.changeBPM(_song.bpm);
 		Conductor.mapBPMChanges(_song);
 
+		Debug.logInfo('Health Icon pls');
 		leftIcon = new HealthIcon(_song.player1);
 		rightIcon = new HealthIcon(_song.player2);
 		middleIcon = new HealthIcon(_song.gfVersion);
 
 		var index = 0;
 
+		Debug.logInfo('Checking song Events');
 		if (_song.eventObjects == null)
 			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change", 0, 0)]; // JOELwindows7: ouh
 
@@ -374,6 +385,7 @@ class ChartingState extends MusicBeatState
 
 		Debug.logTrace("goin");
 
+		Debug.logInfo("reflect the song events");
 		var currentIndex = 0;
 		for (i in _song.eventObjects)
 		{
@@ -406,6 +418,7 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
+		Debug.logInfo('Handle the time struct');
 		var lastSeg = TimingStruct.AllTimings[TimingStruct.AllTimings.length - 1];
 
 		for (i in 0...TimingStruct.AllTimings.length)
@@ -437,7 +450,7 @@ class ChartingState extends MusicBeatState
 
 		lengthInSteps = lengthInBeats * 4;
 
-		Debug.logTrace('LENGTH IN STEPS '
+		Debug.logInfo('LENGTH IN STEPS '
 			+ lengthInSteps
 			+ ' | LENGTH IN BEATS '
 			+ lengthInBeats
@@ -491,7 +504,7 @@ class ChartingState extends MusicBeatState
 
 		// leftIcon.scrollFactor.set();
 		// rightIcon.scrollFactor.set();
-
+		Debug.logInfo('UI pls');
 		leftIcon.setGraphicSize(0, 45);
 		rightIcon.setGraphicSize(0, 45);
 		middleIcon.setGraphicSize(0, 45); // JOELwindows7: here
@@ -513,7 +526,7 @@ class ChartingState extends MusicBeatState
 		add(bpmTxt);
 
 		// JOELwindows7: idk, maybe just start instantiate waveform first ah man
-		installWaveform();
+		// installWaveform();
 
 		// JOELwindows7: cast it up buddy!
 		strumLine = new FlxUISprite(0, 0);
@@ -543,6 +556,7 @@ class ChartingState extends MusicBeatState
 			{name: "Controls", label: 'Play Controls'}, // JOELwindows7: yeah transport control!
 		];
 
+		Debug.logInfo('UI OPTION YEYEYEYEYYEYEYEYE');
 		UI_options = new FlxUITabMenu(null, opt_tabs, true);
 
 		UI_options.scrollFactor.set();
@@ -563,6 +577,7 @@ class ChartingState extends MusicBeatState
 		if (FlxG.save.data.autoSaveChart)
 			add(autosaveIndicator);
 
+		Debug.logInfo('Installing the UI menu options');
 		// JOELwindows7: all buttons has been changed into FlxUIButton instead of classic FlxButton
 		addSongUI();
 		addSectionUI();
@@ -577,7 +592,7 @@ class ChartingState extends MusicBeatState
 
 		updateGrid();
 
-		Debug.logTrace("bruh");
+		Debug.logInfo("bruh");
 
 		add(sectionRenderes);
 		add(dummyArrow);
@@ -585,7 +600,7 @@ class ChartingState extends MusicBeatState
 		add(lines);
 		add(texts);
 		add(gridBlackLine);
-		addWaveforms(); // JOELwindows7: & here it is.
+		// addWaveforms(); // JOELwindows7: & here it is.
 		add(curRenderedNotes);
 		add(curRenderedSustains);
 		selectedBoxes = new FlxTypedGroup();
@@ -613,6 +628,7 @@ class ChartingState extends MusicBeatState
 		// 	__enterFrame(time - currentTime);
 		// });
 		// are you kidding me? not exist?!??!?!?!??!?!?
+		Debug.logInfo('Enjoy Charting state');
 	}
 
 	public var texts:FlxTypedGroup<FlxUIText>;
@@ -2409,6 +2425,7 @@ class ChartingState extends MusicBeatState
 
 	function loadSong(daSong:String, reloadFromFile:Bool = false):Void
 	{
+		Debug.logInfo('Load Song here we go');
 		if (FlxG.sound.music != null)
 		{
 			FlxG.sound.music.stop();
@@ -2440,7 +2457,8 @@ class ChartingState extends MusicBeatState
 			}
 			else
 			{
-				var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
+				// var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
+				var diff:String = CoolUtil.suffixDiffsArray[PlayState.storyDifficulty]; // JOELwindows7: YOID use BOLO ye.
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
 			} // JOELwindows7: must be sys compatible
 		}
@@ -2448,16 +2466,27 @@ class ChartingState extends MusicBeatState
 		{
 			_song = PlayState.SONG;
 		}
+		Debug.logInfo('Checked the reload');
 		// WONT WORK FOR TUTORIAL OR TEST SONG!!! REDO LATER
-		#if FEATURE_STEPMANIA
-		if (PlayState.isSM)
-			vocals = null;
-		else
+		// JOELwindows7: then let's add safety here.
+		try
+		{
+			#if FEATURE_STEPMANIA
+			if (PlayState.isSM)
+				vocals = new FlxSound();
+			else
+				vocals = new FlxSound().loadEmbedded(Paths.voices(daSong));
+			#else
 			vocals = new FlxSound().loadEmbedded(Paths.voices(daSong));
-		#else
-		vocals = new FlxSound().loadEmbedded(Paths.voices(daSong));
-		#end
+			#end
+		}
+		catch (e)
+		{
+			Debug.logWarn('Failed vocals: $e\n${e.details()}');
+			vocals = new FlxSound();
+		}
 		FlxG.sound.list.add(vocals);
+		Debug.logInfo('Vocal Prepared');
 
 		FlxG.sound.music.pause();
 		if (!PlayState.isSM)
@@ -2477,6 +2506,8 @@ class ChartingState extends MusicBeatState
 			// JOELwindows7: reset delayton
 			engageDelaytonClaps(true);
 		};
+
+		Debug.logInfo('Enjoy Loaded song');
 	}
 
 	function generateUI():Void
@@ -4745,6 +4776,7 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(songId:String):Void
 	{
+		Debug.logInfo('Load da JSON song pls');
 		// var difficultyArray:Array<String> = ["-easy", "", "-hard"];
 		// JOELwindows7: here BOLO's difficulty list suffix
 		// var difficultyArray:Array<String> = CoolUtil.suffixDiffsArray;
