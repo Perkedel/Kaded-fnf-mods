@@ -26,6 +26,15 @@ import haxe.Exception;
 import clipboard.Clipboard;
 #end
 import flixel.text.FlxText;
+import openfl.events.UncaughtErrorEvent;
+import haxe.CallStack;
+import haxe.io.Path;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.Process;
+#end
+import lime.app.Application;
 
 // CrashHandler class
 class WerrorForceMajeurState extends CoreState
@@ -41,6 +50,9 @@ class WerrorForceMajeurState extends CoreState
 		super();
 
 		exception = exc;
+
+		// JOELwindows7: finally, write the error log like BOLO had here
+		writeErrorLog(exception, 'SEMI-FATAL WhewCaught WError', 'SemiCaught');
 	}
 
 	override function create()
@@ -205,5 +217,86 @@ class WerrorForceMajeurState extends CoreState
 				FlxG.camera.scroll.x += 20;
 			}
 		}
+	}
+
+	// Copy from BOLO's onCrash
+	public static function writeErrorLog(exc:Exception, errorTitle:String = 'FATAL UnCaught WError', errorDiffFileName:String = 'Uncaught',
+			withWindowAlert:Bool = true)
+	{
+		var errMsg:String = "";
+		var errHdr:String = ""; // da header
+		var path:String;
+		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var dateNow:String = Date.now().toString();
+		var firmwareName:String = Perkedel.ENGINE_ID;
+
+		dateNow = StringTools.replace(dateNow, " ", "_");
+		dateNow = StringTools.replace(dateNow, ":", "'");
+		// firmwareName = StringTools.replace(firmwareName, "-", "");
+
+		// path = "./crash/" + "KadeEngine_" + dateNow + "_SemiCaught.txt";
+		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+
+		#if sys
+		path = '${Sys.getCwd()}crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+		#end
+
+		for (stackItem in callStack)
+		{
+			switch (stackItem)
+			{
+				case FilePos(s, file, line, column):
+					errMsg += file + " (line " + line + ")\n";
+				default:
+					#if sys
+					Sys.println(stackItem);
+					#end
+			}
+		}
+
+		errHdr += '```\n' + '${Perkedel.CRASH_TEXT_BANNER}' + '\n```\n';
+		errMsg += '# ${errorTitle}: `$exc`\n'
+			+ '\n```\n'
+			+ '${exc.details()}'
+			+ '\n```\n'
+			+ '# Firmware name & version:\n'
+			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\n\n'
+			+ '# Please report this error to our Github page:\n ${Perkedel.ENGINE_BUGREPORT_URL}\n\n> Crash Handler written by: Paidyy, sqirra-rng';
+
+		try
+		{
+			#if FEATURE_FILESYSTEM
+			if (!FileSystem.exists("./crash/"))
+				FileSystem.createDirectory("./crash/");
+
+			File.saveContent(path, errHdr + errMsg + "\n");
+			#end
+
+			#if sys
+			Sys.println('===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('===============');
+			Sys.println("Crash dump saved in " + Path.normalize(path));
+			#else
+			trace(errHdr + errMsg);
+			trace('error');
+			#end
+		}
+		catch (e)
+		{
+			#if sys
+			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			Sys.println('Anyway pls detail!:\n===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('================\nThere, clipboard pls');
+			#else
+			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			trace('Anyway pls detail!:\n===============');
+			trace(errHdr + errMsg);
+			trace('================\nThere, clipboard pls');
+			#end
+		}
+		if (withWindowAlert)
+			Application.current.window.alert(errMsg, "Error!");
 	}
 }

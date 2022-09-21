@@ -1,6 +1,6 @@
 package;
 
-import openfl.events.UncaughtErrorEvent;
+import ui.states.debug.WerrorForceMajeurState;
 import ui.states.debug.WerrorCrashState;
 import openfl.system.System;
 import utils.Initializations;
@@ -20,7 +20,7 @@ import flixel.util.FlxTimer;
 #if (!debug && android6permission)
 import com.player03.android6.Permissions;
 #end
-import android.AndroidTools;
+import android.Permissions as AndroidPermissions;
 import android.Hardware;
 #end
 #if FEATURE_WEBM_NATIVE
@@ -47,9 +47,18 @@ import plugins.systems.ScanPlatform;
 import haxe.ui.Toolkit;
 #if EXPERIMENTAL_OPENFL_XINPUT
 import com.furusystems.openfl.input.xinput.*;
-
 // import com.furusystems.openfl.input.xinput.XBox360Controller;
 #end
+// crash handler stuff
+import openfl.events.UncaughtErrorEvent;
+import haxe.CallStack;
+import haxe.io.Path;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.Process;
+#end
+
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -103,13 +112,18 @@ class Main extends Sprite
 		try
 		{
 			// JOELwindows7: here haxeUI
+			trace('init HaxeUI');
 			Toolkit.init();
+			trace('HaxeUI success');
 
+			trace('init main game');
 			Lib.current.addChild(new Main());
+			trace('main game success');
 		}
 		catch (e)
 		{
-			throw 'STATIC MAIN UNCAUGHT WERROR!!!: $e:\n${e.message}';
+			WerrorForceMajeurState.writeErrorLog(e, 'STATIC MAIN UNCAUGHT WERROR!!!', 'StaticMainUncaught');
+			throw 'STATIC MAIN UNCAUGHT WERROR!!!: $e:\n${e.message}\n${e.details()}';
 		}
 	}
 
@@ -137,22 +151,25 @@ class Main extends Sprite
 			var askPermNum:Int = 0;
 			var timeoutPermNum:Int = 10;
 			#if android6permission
-			while (!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE)
-				|| !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE))
-			{
-				Permissions.requestPermissions([Permissions.WRITE_EXTERNAL_STORAGE, Permissions.READ_EXTERNAL_STORAGE,]);
+			// while (!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE)
+			// 	|| !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE))
+			// {
+			// 	Permissions.requestPermissions([Permissions.WRITE_EXTERNAL_STORAGE, Permissions.READ_EXTERNAL_STORAGE,]);
 
-				// count how many attempts. if after timeout num still not work, peck this poop
-				// I gave up!
-				trace("Num of Attempt ask permissions: " + Std.string(askPermNum));
-				askPermNum++;
-				if (askPermNum > timeoutPermNum)
-					break;
-			}
+			// 	// count how many attempts. if after timeout num still not work, peck this poop
+			// 	// I gave up!
+			// 	trace("Num of Attempt ask permissions: " + Std.string(askPermNum));
+			// 	askPermNum++;
+			// 	if (askPermNum > timeoutPermNum)
+			// 		break;
+			// }
 			#end
 			// JOELwindows7: from https://github.com/jigsaw-4277821/extension-androidtools
 			// #if (extension-androidtools)
-			AndroidTools.requestPermissions([Permissions.READ_EXTERNAL_STORAGE, Permissions.WRITE_EXTERNAL_STORAGE]);
+			AndroidPermissions.requestPermissions([
+				AndroidPermissions.READ_EXTERNAL_STORAGE,
+				AndroidPermissions.WRITE_EXTERNAL_STORAGE
+			]);
 			// #end
 			#end
 			// wtf, it doesn't work if Debug situation?! I don't get it!
@@ -168,7 +185,8 @@ class Main extends Sprite
 		}
 		catch (e)
 		{
-			throw 'NEW INSTANCE UNCAUGHT WERROR!!!: $e:\n${e.message}';
+			WerrorForceMajeurState.writeErrorLog(e, 'NEW INSTANCE UNCAUGHT WERROR!!!', 'NewInstanceUncaught');
+			throw 'NEW INSTANCE UNCAUGHT WERROR!!!: $e:\n${e.message}\n${e.details()}';
 		}
 	}
 
@@ -191,7 +209,8 @@ class Main extends Sprite
 		}
 		catch (e)
 		{
-			throw 'PRIVATE INIT UNCAUGHT WERROR: $e:\n${e.message}';
+			WerrorForceMajeurState.writeErrorLog(e, 'PRIVATE INIT UNCAUGHT WERROR', 'PrivateInitUncaught');
+			throw 'PRIVATE INIT UNCAUGHT WERROR: $e:\n${e.message}\n${e.details()}';
 		}
 	}
 
@@ -352,6 +371,11 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
+
+		// JOELwindows7: BOLO crash handler. Just in case PEngine crash handle still break also.
+		#if FEATURE_CRASH_BOLO
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		#end
 	}
 
 	var game:FlxGame;
@@ -363,6 +387,7 @@ class Main extends Sprite
 	public static function dumpCache()
 	{
 		///* SPECIAL THANKS TO HAYA
+		#if PRELOAD_ALL // JOELwindows7: BOLO restrict to preload all only
 		@:privateAccess
 		for (key in FlxG.bitmap._cache.keys())
 		{
@@ -375,6 +400,8 @@ class Main extends Sprite
 			}
 		}
 		Assets.cache.clear("songs");
+		Assets.cache.clear("images"); // JOELwindows7: BOLO also clear images cache
+		#end
 		// */
 	}
 
@@ -499,6 +526,109 @@ class Main extends Sprite
 	// JOELwindows7: maybe also add pre-werror dump too?
 	function werrorCrashPre(crashDumpener:Dynamic)
 	{
+	}
+	#end
+
+	// JOELwindows7: new BOLO crash detect
+	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
+	// very cool person for real they don't get enough credit for their work
+	// #if !html5 // because of how it show up on desktop
+	#if FEATURE_CRASH_BOLO // JOELwindows7: no, let's make it definable anytime.
+	function onCrash(e:UncaughtErrorEvent):Void
+	{
+		// JOELwindows7: argument more unavailable. we could bind manually but eh, tedious. idk..
+		var errorTitle:String = 'FATAL UnCaught WError';
+		var errorDiffFileName:String = 'Uncaught';
+		var withWindowAlert:Bool = true;
+
+		if (FlxG.fullscreen)
+			FlxG.fullscreen = !FlxG.fullscreen;
+
+		var errMsg:String = "";
+		var errHdr:String = ""; // JOELwindows7: da header
+		var path:String;
+		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var dateNow:String = Date.now().toString();
+		var firmwareName:String = Perkedel.ENGINE_ID;
+
+		dateNow = StringTools.replace(dateNow, " ", "_");
+		dateNow = StringTools.replace(dateNow, ":", "'");
+
+		// path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
+		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+
+		for (stackItem in callStack)
+		{
+			switch (stackItem)
+			{
+				case FilePos(s, file, line, column):
+					errMsg += file + " (line " + line + ")\n";
+				default:
+					Sys.println(stackItem);
+			}
+		}
+
+		errHdr += '```\n' + '${Perkedel.CRASH_TEXT_BANNER}' + '\n```\n';
+
+		errMsg += '# ${errorTitle}: `${e.error}`\n'
+			+ '\n```\n'
+			+ e.error.getStackTrace()
+			+ '\n```\n'
+			+ '# Firmware name & version:\n'
+			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\n\n'
+			+ '# Please report this error to our Github page:\n ${Perkedel.ENGINE_BUGREPORT_URL}\n\n> Crash Handler written by: Paidyy, sqirra-rng';
+
+		// if (!FileSystem.exists("./crash/"))
+		// 	FileSystem.createDirectory("./crash/");
+
+		// File.saveContent(path, errMsg + "\n");
+
+		// Sys.println(errMsg);
+		// Sys.println("Crash dump saved in " + Path.normalize(path));
+		// JOELwindows7: add safety
+		try
+		{
+			#if FEATURE_FILESYSTEM
+			if (!FileSystem.exists("./crash/"))
+				FileSystem.createDirectory("./crash/");
+
+			File.saveContent(path, errHdr + errMsg + "\n");
+			#end
+
+			#if sys
+			Sys.println('===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('===============');
+			Sys.println("Crash dump saved in " + Path.normalize(path));
+			#else
+			trace(errHdr + errMsg);
+			trace('error');
+			#end
+		}
+		catch (e)
+		{
+			#if sys
+			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			Sys.println('Anyway pls detail!:\n===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('================\nThere, clipboard pls');
+			#else
+			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			trace('Anyway pls detail!:\n===============');
+			trace(errHdr + errMsg);
+			trace('================\nThere, clipboard pls');
+			#end
+		}
+
+		if (withWindowAlert)
+			Application.current.window.alert(errMsg, "Error!");
+
+		// JOELwindows7: just use that guy there
+		// WerrorForceMajeurState.writeErrorLog(e.error, 'FATAL Uncaught WError', 'Uncaught');
+		#if FEATURE_DISCORD
+		DiscordClient.shutdown();
+		#end
+		Sys.exit(1);
 	}
 	#end
 }

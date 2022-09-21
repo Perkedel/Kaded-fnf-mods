@@ -30,8 +30,12 @@ import DokiDoki;
 
 class Perkedel
 {
+	public static final MAIN_FONT_FORMAT = "VCR OSD MONO";
 	public static final OPTION_SAY_NEED_RESTART_SONG:String = "(Restart Song Required) ";
 	public static final OPTION_SAY_CANNOT_ACCESS_IN_PAUSE:String = "(Can't access / toggle! in pause rn) "; // In kade it was "This option cannot be toggled in the pause menu."
+	public static final OPTION_SAY_REQUIRES_RESTART:String = "(Requires restart!!!)"; // REQUIRES system restart
+	public static final MAX_SCROLL_SPEED:Float = 6; // JOELwindows7: BOLO set max to 6 yeah
+	public static final TYPICAL_REFRESH_RATE:Int = 144; // JOELwindows7: to check if someone is tremendously tech illiterate
 	public static final MAX_FPS_CAP:Int = 3000; // JOELwindows7: usually 290
 	public static final MIN_FPS_CAP:Int = 60; // JOELwindows7: usually 60
 	public static final OPTION_CATEGORY_LENGTH:Int = 6; // How many categories on option menu? was 4, now we got 6. no wait that's DFJK.
@@ -42,7 +46,7 @@ class Perkedel
 	public static final ENGINE_VERSION_NUMBER:Array<Int> = [2022, 9, 0]; // and numbered version
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
 	public static final ENGINE_VERSION_URL:String = 'https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe'; // here URL check
-	public static final ENGINE_REPO_URL:String = 'https://github.com/Perkedel/kaded-fnf-mods/issues';
+	public static final ENGINE_REPO_URL:String = 'https://github.com/Perkedel/kaded-fnf-mods';
 	public static final ENGINE_BUGREPORT_URL:String = 'https://github.com/Perkedel/kaded-fnf-mods/issues';
 	public static final ENGINE_CHANGELOG_PREFIX_URL:String = 'https://odysee.com/@JOELwindows7/LFM-changelog-'; // here URL of change log prefix, appened by what version needed there.
 	public static final ENGINE_CORE_HANDLE_CRASH:Bool = true; // if true, engine will handle crash and restart. if false, engine will not handle crash and restart.
@@ -159,4 +163,22 @@ class Perkedel
 	public static final VIDEO_DISABLED_DESCRIPTION:String = 'You have setting that disabled video.\nTo reenable, go to Setting, Misc, uncheck ${VIDEO_DISABLED_OPTION_NAME}';
 
 	public static final API_DISCORD_CLIENT_ID:String = "557069829501091850"; // change to whatever the peck you want lol
+
+	// Here image misc
+	public static final CRASH_TEXT_BANNER:String = "
+	████████████████████████████████████████████████████████████████████████████████\n
+	█      ░▒▒▒▒▒▒▒░                                                               █\n
+	█    ░░░░▒▒▒░░░░░    ███████         █        █  ██    █   ███       ███       █\n
+	█   ░▒░░░░░░▒▒▒░░░   █               █        █ █  █   █   █  █        █       █\n
+	█  ░░▒░░▒▒░░░▒░░▒░░  ███████ █ █ ███ █  ███ ███ ████ ███   █  █ █  █ ███ ████  █\n
+	█         ░▒         █        █  █ █ █  █ █ █ █ █    █ █   █  █ █  █ █ █ █     █\n
+	█    ░▓█████████▒    ███████ █ █ ███ ██ ███ ███  ██  ███   ███  ███  ███ █     █\n
+	█         ░░                     █                                             █\n
+	█         ▒▒                       M E D I T A T I O N ! ! !                   █\n
+	█      ░░▒░▒░▓░                                                                █\n
+	████████████████████████████████████████████████████████████████████████████████\n
+	\n
+	(image by JOELwindows7. CC4.0-BY-SA)\n
+	\n
+	";
 }
