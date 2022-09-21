@@ -591,6 +591,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.gnome.org/ GNOME. take every asset too!
 - https://youtu.be/hr7GyFM7pX4 (WARNING: Unknown license) Dairy Orange. Fart reverb
 - https://gamebanana.com/tools/10566 (WARNING: NO SOURCE CODE AVAILABLE AS OF 2022-09-16) Lua Modchart editor yey methewhenmethe. Godot app. WIP atm
+- https://github.com/ryanoasis/nerd-fonts https://nerdfonts.com Nerd Fonts (ryanoasis). Collection of Patched famous developer fonts with icons for everything that wants icon!!!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!

@@ -70,11 +70,11 @@
 	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
 
 	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
-	<haxedef name="FEATURE_DISCORD" if="desktop || cpp" unless="mobile || neko || hl" />
+	<haxedef name="FEATURE_DISCORD" if="cpp desktop" unless="mobile || neko || hl" />
 	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
 	<haxedef name="FEATURE_FILESYSTEM" if="desktop || sys" />
-	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
-	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile"/>
+	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. wtf bruh! linux troubled.-->
+	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile || linux"/>
 	<!-- JOELwindows7: okay fam, we've got libraries for most of the platform here yey, mobile still broken tho, Android yess. -->
 	<!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
 	<haxedef name="FEATURE_WEBM" if="desktop" unless = "neko || hl"/>
@@ -91,14 +91,14 @@
 	<haxedef name="FEATURE_WEBM_JS" if="web"/>
 	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
 	<!-- <haxedef name="FEATURE_VLC" if="cpp desktop || mobile" unless="neko || hl"/> -->
-	<haxedef name="FEATURE_VLC" unless="neko || hl || web || 32bits || 32bit"/>
+	<haxedef name="FEATURE_VLC" if="cpp" unless="neko || hl || web || 32bits || 32bit"/>
 	<haxedef name="FEATURE_GIF" unless="web"/>
 	<!-- JOELwindows7: additional howl for LIME project xml here -->
 	<echo value="This is Odysee build" if="odysee"/>
 	<echo value="we have stolen mods in it" if="thief"/>
 
 	<!-- Defines whether the Mods menu will display before launching. -->
-	<haxedef name="FEATURE_MODCORE" if="desktop"/>
+	<haxedef name="FEATURE_MODCORE" if="cpp"/>
 
 	<!-- JOELwindows7: Defines whether the HTTP query possible. -->
 	<haxedef name="FEATURE_HTTP" unless="mobile"/>
@@ -191,6 +191,9 @@
 	<!-- <haxedef name="HXCPP_STACK_LINE" if="crashdumper"/>   -->
 	<!--if you want stack traces-->
 	<!-- <haxedef name="HXCPP_STACK_TRACE" if="crashdumper"/>   -->
+
+	<!-- JOELwindows7: BOLO final crash handler -->
+	<haxedef name="FEATURE_CRASH_BOLO" unless="html5"/>
 
 	<!-- JOELwindows7: yoinkoid-->
 	<!-- from https://github.com/luckydog7/Funkin-android/blob/master/Project.xml -->
@@ -395,11 +398,11 @@
 	<!-- <haxelib name="faxe"/>  -->
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
 	<!-- JOELwindows7: nvm, library if can't be defined seemingly. -->
-	<haxelib name="polymod" />
-	<haxelib name="discord_rpc" if="cpp"/>
-	<haxelib name="linc_luajit" if="desktop || cpp" unless="mobile || neko || hl"/>
+	<haxelib name="polymod" if="cpp"/>
+	<haxelib name="discord_rpc" if="cpp desktop" unless="mobile || neko || hl"/>
+	<haxelib name="linc_luajit" if="cpp"/>
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
-	<haxelib name="hxvm-luajit" if="desktop"/>
+	<haxelib name="hxvm-luajit" />
 	<haxelib name="hxcpp-debug-server" if="cpp"/>
 
 	<!-- <haxelib name="markdown" /> -->
@@ -461,7 +464,7 @@
 	<!-- NEW BrightFyre VLC MP4 support (now handed over to PolybiusProxy, as hxCodec) -->
 	<!-- <haxelib name="hxCodec" if="cpp desktop || mobile" unless="neko || hl"/> -->
 	<!-- <haxelib name="hxCodec" if="FEATURE_VLC" unless="web"/> -->
-	<haxelib name="hxCodec" unless="neko || hl || web || 32bits || 32bit"/>
+	<haxelib name="hxCodec" if="cpp" unless="neko || hl || web || 32bits || 32bit"/>
 
 	<!-- JOELwindows7: try Android Media extension thingy -->
 	<!-- <haxelib name="extension-android-media"/> -->
@@ -590,11 +593,19 @@
 	<!-- JOELwindows7: BOLO! Show debug traces for hxCodec -->
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
 
+	<!-- JOELwindows7: BOLO's using it now. -->
+	<!-- This Is For Crashing ERRORS! Used for Izzy Engine's crash handler -->
+	<haxedef name="HXCPP_STACK_TRACE" if="desktop"/>  <!--if you want stack traces--> 
+	<haxedef name="HXCPP_CHECK_POINTER" if="desktop" />
+	<haxedef name="HXCPP_STACK_LINE" if="desktop" />
+
 	<!-- JOELwindows7: the ARM64 definition for ARM PC. for that BrightFyre VLC thingy -->
 	<haxedef name="HXCPP_ARM64" if="arm64" unless="mobile"/>
 
 	<!-- JOELwindows7: RISC V pls? -->
 	<haxedef name="HXCPP_RISCV" if="riscv"/>
+
+
 
 	<!-- _________________________________ Custom _______________________________ -->
 
@@ -622,6 +633,8 @@
 	<!-- Never disable debug message, especially on Mobile -->
 	<haxeflag name="--no-traces" unless="debug || mobile" />
 	<haxeflag name="--dce full" if="release || final" />
+	<!-- BOLO removes DCE entirely, but uh isn't this deoptimize the game? let's just disable dce on debug, idk. -->
+	<haxeflag name="-dce no" if="debug"/>
 
 	<!-- wtf -->
 	<!-- 
