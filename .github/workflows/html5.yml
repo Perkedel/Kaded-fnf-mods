@@ -63,7 +63,8 @@ jobs:
           haxelib run lime rebuild extension-webm linux
           haxelib run lime rebuild extension-webm html5
           # haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
-          haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
+          # haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
+          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
           haxelib install actuate 
           haxelib install android6permissions

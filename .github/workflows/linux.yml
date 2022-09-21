@@ -12,13 +12,16 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    # bruh, that's it? thancc BOLO, I didn't see that up. anyway, how to cutting edge for it anyway?
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+      - name: Uname pls
+        run: |
+          uname -a
       - name: first, begin caching stuffs
         uses: actions/cache@v2.1.7
         id: cache-stuff
@@ -45,7 +48,7 @@ jobs:
           sudo apt-get install libvlc-dev
           sudo apt-get install libvlccore-dev
           sudo apt-get install vlc-bin
-          sudo apt-get -y install libidn2-0
+          sudo apt-get -y install libidn2-0 libidn12 libidn2-dev
 
       - name: script run line haha
         # if: steps.cache-stuff.outputs.cache-hit != 'true'
@@ -69,7 +72,8 @@ jobs:
           haxelib git faxe https://github.com/uhrobots/faxe
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           # haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
-          haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
+          # haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
+          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
           haxelib install actuate 
           haxelib install android6permissions
