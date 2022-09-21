@@ -71,9 +71,12 @@ class AnimationDebug extends MusicBeatState
 		FlxG.mouse.visible = true;
 
 		// JOELwindows7: triple cast badum tss
-		background = cast new FlxUISprite(-600, -525).loadGraphic(Paths.loadImage('stageback', 'shared'));
-		front = cast new FlxUISprite(-650, 325).loadGraphic(Paths.loadImage('stagefront', 'shared'));
-		curt = cast new FlxUISprite(-500, -625).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
+		background = new FlxUISprite(-600, -525);
+		background.loadGraphic(Paths.loadImage('stageback', 'shared'));
+		front = new FlxUISprite(-650, 325);
+		front.loadGraphic(Paths.loadImage('stagefront', 'shared'));
+		curt = new FlxUISprite(-500, -625);
+		curt.loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
 		background.antialiasing = FlxG.save.data.antialiasing;
 		front.antialiasing = FlxG.save.data.antialiasing;
 		curt.antialiasing = FlxG.save.data.antialiasing;
@@ -342,7 +345,8 @@ class AnimationDebug extends MusicBeatState
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
 			FlxG.mouse.visible = false;
-			FlxG.switchState(new PlayState());
+			// FlxG.switchState(new PlayState());
+			switchState(new PlayState());
 		}
 
 		if (FlxG.keys.justPressed.E)

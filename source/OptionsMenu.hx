@@ -126,6 +126,8 @@ class OptionsMenu extends CoreSubState
 
 	public static var markForGameplayRestart:Bool = false; // JOELwindows7: mark this true to tell that you have to restart song.
 
+	var changedOption = false; // JOELwindows7: change option flag BOLO
+
 	public function new(pauseMenu:Bool = false)
 	{
 		super();
@@ -174,6 +176,7 @@ class OptionsMenu extends CoreSubState
 			new OptionCata(345, 40, "Appearance", [
 				new NoteskinOption("Change your current noteskin"),
 				new NoteSplashOption("Have your note press splash for every SICK! kyaaa!"),
+				new AnLoneNoteOption('Test your chosen noteskin'),
 				new RotateSpritesOption("Should the game rotate the sprites to do color quantization (turn off for bar skins)"),
 				new ScoreSmoothing("Toggle smoother poping score for Score Text (High CPU usage)."), // JOELwindows7: BOLO
 				new EditorRes("Not showing the editor grid will greatly increase editor performance"),
@@ -214,6 +217,7 @@ class OptionsMenu extends CoreSubState
 			]),
 			// JOELwindows7: BOLO had this category of Performance
 			new OptionCata(1100, 40, "Performance", [
+				new GPURendering("Toggle GPU rendering to push Graphics textures to GPU, reducing CPU memory usage. "), // JOELwindows7: BOLO NEW GPU RENDERING
 				new OptimizeOption("Disable Background and Characters to save memory. Useful to low-end computers."),
 				new Background("Disable Stage Background to save memory (Only characters are visible)."),
 				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay and save memory.")
@@ -258,6 +262,7 @@ class OptionsMenu extends CoreSubState
 			new OptionCata(50, 140, "Saves", [
 				#if desktop // new ReplayOption("View saved song replays."),
 				#end
+				new AutoSaveChart("Toggle if in 5mins within chart it autosaves."), // JOELwindows7: Autosave chart BOLO
 				new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
 				new LockWeeksOption("Reset your story mode progress. This is irreversible!"),
 				new ResetSettings("Reset ALL your settings. This is irreversible!")
@@ -555,6 +560,7 @@ class OptionsMenu extends CoreSubState
 			if (isInCat)
 			{
 				descText.text = "Please select a category";
+				descText.color = FlxColor.WHITE; // JOELwindows7: BOLO color that white
 				if (right)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -596,14 +602,45 @@ class OptionsMenu extends CoreSubState
 				if (escape)
 				{
 					if (!isInPause)
+					{
 						// FlxG.switchState(new MainMenuState());
-						OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+						// OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+						// JOELwindows7: BOLO new complex wway
+						if (!FlxG.save.data.optimize)
+						{
+							FlxTween.tween(background, {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+							for (i in 0...selectedCat.optionObjects.length)
+							{
+								FlxTween.tween(selectedCat.optionObjects.members[i], {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+							}
+							for (i in 0...options.length - 1)
+							{
+								FlxTween.tween(options[i].titleObject, {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+								FlxTween.tween(options[i], {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+							}
+							FlxTween.tween(descText, {alpha: 0}, 0.5, {ease: FlxEase.smootherStepInOut});
+							FlxTween.tween(descBack, {alpha: 0}, 0.5, {
+								ease: FlxEase.smootherStepInOut,
+								onComplete: function(twn:FlxTween)
+								{
+									// MusicBeatState.switchState(new MainMenuState());
+									OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+								}
+							});
+						}
+						else
+						{
+							// MusicBeatState.switchState(new MainMenuState());
+							OptionsDirect.instance.switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+						}
+					}
 					else
 					{
 						PauseSubState.goBack = true;
+						PlayState.instance.updateSettings();
 						PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * PlayState.songMultiplier;
 						// JOELwindows7: heurestic to see if a marker has raised
-						if (markForGameplayRestart)
+						if (markForGameplayRestart && isInPause)
 						{
 							createToast(null, "Please Restart Song",
 								"You have changed options that needs reloading. Please restart the song to apply the changes.");
@@ -631,7 +668,7 @@ class OptionsMenu extends CoreSubState
 							Debug.logTrace("New text: " + object.text);
 
 							// JOELwindows7: heurestic to see if a marker has raised
-							if (markForGameplayRestart)
+							if (markForGameplayRestart && isInPause)
 							{
 								createToast(null, "Please Restart Song",
 									"You have changed options that needs reloading. Please restart the song to apply the changes.");
@@ -740,6 +777,11 @@ class OptionsMenu extends CoreSubState
 									menuTweenSo[1][andex] = FlxTween.tween(i, {y: i.y - (46 * ((options[selectedCatIndex].options.length - 1) / 2))},
 										menuTweenTime, {ease: FlxEase.quadInOut});
 									andex++;
+									// JOELwindows7: BOLO's
+									/*
+										var opt = selectedCat.optionObjects.members[i];
+										opt.y = options[4].titleObject.y + 54 -(options[selectedCatIndex].options.length*(16+options[selectedCatIndex].options.length)) + (46 * i);
+									 */
 								}
 						}
 
@@ -804,6 +846,10 @@ class OptionsMenu extends CoreSubState
 						haveLefted = false; // JOELwindows7: ok
 						left = false; // JOELwindows7: update this too
 					}
+
+					// JOELwindows7: update option color BOLO
+					if (changedOption)
+						updateOptColors();
 
 					if (escape)
 					{
@@ -945,9 +991,9 @@ class OptionsMenu extends CoreSubState
 	}
 
 	// JOELwindows7: go to flxState. prevent go to there if you are in gameplay.
-	public static function goToState(ofHere, goToLoading:Bool = false, transition:Bool = true, isSong:Bool = false)
+	public static function goToState(ofHere, goToLoading:Bool = false, transition:Bool = true, isSong:Bool = false, dangerouslyForce:Bool = false)
 	{
-		if (isInPause)
+		if (isInPause && !dangerouslyForce)
 		{
 			// JOELwindows7: it's static method, you cannot access any instance method of this class.
 			// playSoundEffect("cancelMenu",.4);
@@ -1030,9 +1076,10 @@ class OptionsMenu extends CoreSubState
 		for (i in 0...selectedCat.optionObjects.length)
 		{
 			// JOELwindows7: okay new way!
-			var ref = selectedCat.optionObjects.members[i];
-			var ruf = selectedCat.options[i];
-			ref.color = ruf.cannotInPause ? FlxColor.YELLOW : FlxColor.WHITE;
+			// var ref = selectedCat.optionObjects.members[i];
+			// var ruf = selectedCat.options[i];
+			// ref.color = ruf.cannotInPause ? FlxColor.YELLOW : FlxColor.WHITE;
+			selectedCat.optionObjects.members[i].color = FlxColor.WHITE;
 		}
 		if (selectedCatIndex == 0)
 		{
@@ -1047,7 +1094,7 @@ class OptionsMenu extends CoreSubState
 			selectedCat.optionObjects.members[1].color = FlxColor.YELLOW;
 			selectedCat.optionObjects.members[2].color = FlxColor.YELLOW;
 		}
-		if (!FlxG.save.data.background && selectedCatIndex == 3)
+		if ((!FlxG.save.data.background || FlxG.save.data.optimize) && selectedCatIndex == 3)
 		{
 			selectedCat.optionObjects.members[2].color = FlxColor.YELLOW;
 		}
@@ -1056,6 +1103,10 @@ class OptionsMenu extends CoreSubState
 			if (!FlxG.save.data.healthBar)
 				selectedCat.optionObjects.members[12].color = FlxColor.YELLOW;
 		}
+		#if html5
+		if (selectedCatIndex == 3)
+			selectedCat.optionObjects.members[0].color = FlxColor.YELLOW;
+		#end
 
 		if (isInPause) // DUPLICATED CUZ MEMORY LEAK OR SMTH IDK
 		{
