@@ -24,6 +24,7 @@ class StaticArrow extends FlxUISprite
 	// JOELwindows7: + another more BOLO
 	public var direction:Float = 90;
 	public var downScroll:Bool = false;
+	public var finalPos:Array<Float> = [0, 0];
 
 	public function new(xx:Float, yy:Float)
 	{
@@ -65,5 +66,18 @@ class StaticArrow extends FlxUISprite
 		offset.y -= 56;
 
 		angle = localAngle + modAngle;
+	}
+
+	// JOELwindows7: set the final position checkpoint in case the baby arrow peyangs all
+	// over the floor due to terrible tween glitch somehow.
+	public function setCheckpointPosition()
+	{
+		finalPos = [x, y];
+	}
+
+	public function resetPosToCheckpoint()
+	{
+		x = finalPos[0];
+		y = finalPos[1];
 	}
 }

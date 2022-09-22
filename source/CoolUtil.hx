@@ -205,6 +205,21 @@ class CoolUtil
 		var style:String = if (fancy) 'fancy' else null;
 		return TJSON.encode(json, style);
 	}
+
+	// JOELwindows7: BOLO's way of selecting & playing main menu song based on watermark situation
+	public static function playMainMenuSong()
+	{
+		// if (MainMenuState.freakyPlaying)
+		// {
+		if (FlxG.sound.music != null)
+		{
+			// TODO: if there is menu with different BPM, get this handled! maybe use table list of BPM with its event of BPM change idk..
+			if (!FlxG.sound.music.playing)
+				FlxG.sound.playMusic(Paths.music(FlxG.save.data.watermark ? "ke_freakyMenu" : "freakyMenu"));
+			Conductor.changeBPM(102);
+		}
+		// }
+	}
 }
 
 // JOELwindows7: another more things like compare type

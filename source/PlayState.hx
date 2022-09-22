@@ -378,7 +378,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	var skipText:FlxUIText;
 	var skipTo:Float;
 
-	var accText:FlxText; // JOELwindows7: BOLO's accuracy watermark
+	var accText:FlxUIText; // JOELwindows7: BOLO's accuracy watermark
 
 	public static var campaignScore:Int = 0;
 
@@ -1730,7 +1730,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// right, let's just work this all around anyway.
 		// there I got it. hopefully it's centered.
 		reuploadWatermark.scrollFactor.set();
-		reuploadWatermark.setFormat(Paths.font("UbuntuMono-R.ttf"), 14, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // was vcr.ttf
+		reuploadWatermark.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 14, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // was vcr.ttf
 		reuploadWatermark.screenCenter(XY); // JOELwindows7: turns out everything solves just with this thing right here whoahow!!!
 		add(reuploadWatermark);
 		reuploadWatermark.visible = false;
@@ -1757,10 +1757,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: BOLO's accurac watermark?!!?!?
 		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx
 		// ACCURACY WATERMARK
-		accText = new FlxText(4, FlxG.height * 0.9 + 45 - 20, 0, "Accuracy Mode: " + accMode, 16);
+		accText = new FlxUIText(4, FlxG.height * 0.9 + 45 - 20, 0, "Accuracy Mode: " + accMode, 16);
 		accText.scrollFactor.set();
 		accText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		// add(accText);
+		accText.cameras = [camHUD];
+		add(accText);
 
 		// TODO: JOELwindows7: This maybe can be the Korean pop tv show lyric bottom left corner?
 
@@ -2307,7 +2308,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						babyArrow.y -= 10;
 						babyArrow.alpha = 0;
 						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
-							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index)}); // JOELwindows7: managed BOLO tween.
+							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index), onComplete: function(twn:FlxTween){
+								babyArrow.resetToCheckpoint();
+							}}); // JOELwindows7: managed BOLO tween.
 						// }
 					}
 					else
@@ -2327,6 +2330,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				else
 				{
 					babyArrow.visible = visible;
+					babyArrow.resetToCheckpoint();
 				}
 				index++;
 			});
@@ -2346,7 +2350,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						babyArrow.y -= 10;
 						babyArrow.alpha = 0;
 						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
-							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index)}); // JOELwindows7: managed BOLO tween.
+							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index),onComplete: function(twn:FlxTween){
+								babyArrow.resetToCheckpoint();
+							}}); // JOELwindows7: managed BOLO tween.
 						// }
 					}
 					else
@@ -2366,6 +2372,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				else
 				{
 					babyArrow.visible = visible;
+					babyArrow.resetToCheckpoint();
 				}
 				index++;
 			});
@@ -3718,7 +3725,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				+ " - "
 				+ SONG.songName, 16);
 			// songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			songName.setFormat(Paths.font("UbuntuMono-R.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,
+			songName.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,
 				FlxColor.BLACK); // JOELwindows7: I want international support!
 			songName.scrollFactor.set();
 			// JOELwindows7: YOU SNEAKY LITTLE PUNK!!! WHY TEXT CHANGE AGAIN HERE?!??! hey how about milisecond?
@@ -3731,7 +3738,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			// JOELwindows7: here tempo bar
 			tempoBar = new FlxUIText(songPosBar.x - 50, songPosBar.y, 0, 'TEMPO: ${SONG.bpm} BPM', 16);
-			tempoBar.setFormat(Paths.font("UbuntuMono-R.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			tempoBar.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			tempoBar.scrollFactor.set();
 			tempoBar.text = 'TEMPO: ${SONG.bpm} BPM';
 			tempoBar.x = songPosBG.x - tempoBar.width - 2;
@@ -3742,7 +3749,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// JOELwindows7: here metronome bar
 			metronomeBar = new FlxUIText(songPosBar.x + songPosBar.width + 10, songPosBar.y, 0, 'MEASURES: Oooo 0/0 | BEAT: ${curBeat} | STEP: ${curStep}',
 				16);
-			metronomeBar.setFormat(Paths.font("UbuntuMono-R.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			metronomeBar.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			metronomeBar.scrollFactor.set();
 			// metronomeBar.text = 'MEASURES: ${Ratings.judgeMetronome(curBeat, 4)} ${Std.int(curBeat / 4)}/${SONG.notes.length - 1} | BEAT: ${curBeat} | STEP: ${curStep}';
 			metronomeBar.applyMarkup('MEASURES: ${Ratings.judgeMetronome(curBeat, 4, true)} ${Std.int(curBeat / 4)}/${SONG.notes.length - 1} | BEAT: ${curBeat} | STEP: ${curStep}',
@@ -4083,6 +4090,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				spr.centerOffsets(); // CPU arrows start out slightly off-center
 			});
 
+			babyArrow.setCheckpointPosition(); // JOELwindows7: & finally check oid!
 			strumLineNotes.add(babyArrow);
 		}
 	}
@@ -9332,7 +9340,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: Kludge subtitle, sorry, it's kludge, I'll make proper sub bottom later.
 		tankKludgeText = new FlxUIText(FlxG.width / 2, FlxG.height - 120, 500, '\n', 24); // JOELwindows7: install a text!
 		tankKludgeText.size = 24;
-		tankKludgeText.setFormat(Paths.font("UbuntuMono-R.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		tankKludgeText.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		tankKludgeText.screenCenter(X);
 		tankKludgeText.scrollFactor.set();
 

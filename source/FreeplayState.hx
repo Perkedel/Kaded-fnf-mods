@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 import behavior.audio.IManipulateAudio;
 import ui.states.IBGColorTweening;
 import flixel.tweens.misc.ColorTween;
@@ -55,6 +57,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	public static var rate:Float = 1.0;
 
 	public static var curSelected:Int = 0;
+	public static var curPlayed:Int = 0; // JOELwindows7: BOLO new ways
 	public static var curDifficulty:Int = 1;
 	public static var curColor:FlxColor = FlxColor.YELLOW; // JOELwindows7: here for static access purpose
 
@@ -79,6 +82,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	// end BOLO thingy
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
+
+	public static var songText:Alphabet; // JOELwindows7: BOLO globalize
 
 	private var iconArray:Array<HealthIcon> = [];
 
@@ -109,17 +114,19 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
-		var diffName:String = "";
+		// var diffName:String = "";
 
-		switch (diff)
-		{
-			case 0:
-				diffName = "-easy";
-			case 2:
-				diffName = "-hard";
-		}
+		// switch (diff)
+		// {
+		// 	case 0:
+		// 		diffName = "-easy";
+		// 	case 2:
+		// 		diffName = "-hard";
+		// }
 
-		array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
+		// array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
+		// JOELwindows7: Brand new BOLO way
+		array.push(Song.conversionChecks(Song.loadFromJson(songId, CoolUtil.suffixDiffsArray[diff])));
 	}
 
 	// JOELwindows7: Load week datas
@@ -244,8 +251,11 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	override function create()
 	{trace('Welcome to Freeplay State');
 		// JOELwindows7: first, BOLO clears memory!
+		Main.dumpCache();
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+
+		PlayState.wentToChartEditor = false;
 
 		FlxG.mouse.visible = true; // JOELwindows7: don't forget mouse!!! thancc BOLO.
 		instance = this; // JOELwindows7: ugung.
@@ -382,14 +392,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		isDebug = true;
 		#end
 
-		persistentUpdate = true;
+		persistentUpdate = persistentDraw = true; // JOELwindows7: BOLO also set persistent draw yess!
 
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS
 
 		// var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('menuBGBlue'));
-		bg = new FlxSprite().loadGraphic(Paths.image('MenuBGDesatAlt')); // JOELwindows7: here global. was menuDesat
+		bg = new FlxUISprite();
+		bg.loadGraphic(Paths.image('MenuBGDesatAlt')); // JOELwindows7: here global. was menuDesat
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
@@ -408,7 +419,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		{
 			for (i in 0...songs.length)
 			{
-				var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
+				var songFixedName = StringTools.replace(songs[i].songName, "-", " "); // JOELwindows7: BOLO
+				// var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
+				songText = new Alphabet(0, (70 * i) + 30, songFixedName, true, false, true); // JOELwindows7: BOLO globalize
 				songText.isMenuItem = true;
 				songText.targetY = i;
 				songText.ID = i; // ID the song text to compare curSelected song.
@@ -483,7 +496,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		trace('opponent texa');
 
 		// JOELwindows7: back to diffs
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		// diffText = new FlxUIText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		diffText = new FlxUIText(scoreText.x, scoreText.y + 106, 0, "", 24); // JOELwindows7: BOLO
 		diffText.font = scoreText.font;
 		add(diffText);
 
@@ -491,13 +505,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		trace('diff texa');
 
-		diffCalcText = new FlxText(scoreText.x, scoreText.y + 66, 0, "", 24);
+		// diffCalcText = new FlxUIText(scoreText.x, scoreText.y + 66, 0, "", 24);
+		diffCalcText = new FlxUIText(scoreText.x, scoreText.y + 136, 0, "", 24); // JOELwindows7: BOLO
 		diffCalcText.font = scoreText.font;
 		add(diffCalcText);
 
 		trace('diff calc texa');
 
-		previewtext = new FlxText(scoreText.x, scoreText.y + 96, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24);
+		// previewtext = new FlxUIText(scoreText.x, scoreText.y + 96, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24);
+		previewtext = new FlxUIText(scoreText.x, scoreText.y + 166, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24); // JOELwindows7: BOLO
 		previewtext.font = scoreText.font;
 		add(previewtext);
 
@@ -551,6 +567,34 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		PlayStateChangeables.healthLoss = FlxG.save.data.hloss;
 		PlayStateChangeables.practiceMode = FlxG.save.data.practice;
 		PlayStateChangeables.skillIssue = FlxG.save.data.noMisses;
+
+		// JOELwindows7: BOLO thingy
+		if (MainMenuState.freakyPlaying)
+		{
+			CoolUtil.playMainMenuSong();
+		}
+
+		// and another..
+		#if desktop
+		if (!FlxG.sound.music.playing && !MainMenuState.freakyPlaying)
+		{
+			try
+			{
+				rate = 1;
+				var hmm = songData.get(songs[curSelected].songName)[curDifficulty];
+				FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0.7, true);
+				curPlayed = curSelected;
+				FlxG.sound.music.fadeIn(0.75, 0, 0.8);
+				MainMenuState.freakyPlaying = false;
+
+				Paths.clearUnusedMemory();
+			}
+			catch (e)
+			{
+				Debug.logError('WERROR init preview song: $e\n${e.details()}');
+			}
+		}
+		#end
 
 		super.create();
 
@@ -649,7 +693,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 			var diffs = [];
 			var diffsThatExist = [];
-			#if FEATURE_FILESYSTEM
+			// #if FEATURE_FILESYSTEM
 			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hard')))
 				diffsThatExist.push("Hard");
 			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-easy')))
@@ -657,13 +701,42 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId')))
 				diffsThatExist.push("Normal");
 
+			// JOELwindows7: BOLO custom diff!
+			var customDiffs:Array<String> = [];
+			if (Paths.doesTextAssetExist(Paths.txt('data/songs/$songId/customDiffs')))
+			{
+				try
+				{
+					customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songId/customDiffs'));
+				}
+				catch (e)
+				{
+					Debug.logTrace('no custom diff file for $songId.');
+				}
+			}
+
+			if (customDiffs != null && customDiffs.length > 0)
+			{
+				for (i in 0...customDiffs.length)
+				{
+					var cDiff = customDiffs[i];
+					if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-${cDiff.toLowerCase()}')))
+					{
+						Debug.logInfo('New Difficulties detected for $songId: $cDiff');
+						diffsThatExist.push(cDiff);
+						CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
+						CoolUtil.difficultyArray.push(cDiff);
+					}
+				}
+			}
+
 			if (diffsThatExist.length == 0)
 			{
 				Debug.displayAlert(meta.songName + " Chart", "No difficulties found for chart, skipping.");
 			}
-			#else
-			diffsThatExist = ["Easy", "Normal", "Hard"];
-			#end
+			// #else
+			// diffsThatExist = ["Easy", "Normal", "Hard"];
+			// #end
 
 			if (diffsThatExist.contains("Easy"))
 				FreeplayState.loadDiff(0, songId, diffs);
@@ -672,19 +745,31 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			if (diffsThatExist.contains("Hard"))
 				FreeplayState.loadDiff(2, songId, diffs);
 
+			// JOELwindows7: BOLO load custom diffs into freeplay!!!
+			if (customDiffs != null && customDiffs.length > 0)
+			{
+				for (i in 0...customDiffs.length)
+				{
+					var cDiff = customDiffs[i];
+					if (diffsThatExist.contains(cDiff))
+						FreeplayState.loadDiff(CoolUtil.difficultyArray.indexOf(cDiff), songId, diffs);
+				}
+			}
+
 			meta.diffs = diffsThatExist;
 
 			if (diffsThatExist.length < 3) // JOELwindows7: was `!= 3`. yess.
 			{
 				trace("I ONLY FOUND " + diffsThatExist);
-				Debug.displayAlert(meta.songName + " Chart missing diff", "I ONLY FOUND " + diffsThatExist);
+				// Debug.displayAlert(meta.songName + " Chart missing diff", "I ONLY FOUND " + diffsThatExist);
 			}
 
 			FreeplayState.songData.set(songId, diffs);
 			trace('loaded diffs for ' + songId);
 			FreeplayState.songs.push(meta);
 
-			#if FEATURE_FILESYSTEM // JOELwindows7: mitsake fixed. wait, isn't this supposed to be FEATURE_MULTITHREADING instead?
+			// JOELwindows7: BOLO commented, no, don't! it lags per selections!!! better lag during open this menu, idk..
+			#if FEATURE_MULTITHREADING // JOELwindows7: mitsake fixed. wait, isn't this supposed to be FEATURE_MULTITHREADING instead?
 			sys.thread.Thread.create(() ->
 			{
 				FlxG.sound.cache(Paths.inst(songId));
@@ -750,7 +835,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		var diffs = [];
 		var diffsThatExist = [];
-		#if FEATURE_FILESYSTEM
+		// #if FEATURE_FILESYSTEM
 		if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hard')))
 			diffsThatExist.push("Hard");
 		if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-easy')))
@@ -758,13 +843,42 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId')))
 			diffsThatExist.push("Normal");
 
+		// JOELwindows7: BOLO custom diff!
+		var customDiffs:Array<String> = [];
+		if (Paths.doesTextAssetExist(Paths.txt('data/songs/$songId/customDiffs')))
+		{
+			try
+			{
+				customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songId/customDiffs'));
+			}
+			catch (e)
+			{
+				Debug.logTrace('no custom diff file for $songId.');
+			}
+		}
+
+		if (customDiffs != null && customDiffs.length > 0)
+		{
+			for (i in 0...customDiffs.length)
+			{
+				var cDiff = customDiffs[i];
+				if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-${cDiff.toLowerCase()}')))
+				{
+					Debug.logInfo('New Difficulties detected for $songId: $cDiff');
+					diffsThatExist.push(cDiff);
+					CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
+					CoolUtil.difficultyArray.push(cDiff);
+				}
+			}
+		}
+
 		if (diffsThatExist.length == 0)
 		{
 			Debug.displayAlert(meta.songName + " Chart", "No difficulties found for chart, skipping.");
 		}
-		#else
-		diffsThatExist = ["Easy", "Normal", "Hard"];
-		#end
+		// #else
+		// diffsThatExist = ["Easy", "Normal", "Hard"];
+		// #end
 
 		if (diffsThatExist.contains("Easy"))
 			FreeplayState.loadDiff(0, songId, diffs);
@@ -772,6 +886,17 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			FreeplayState.loadDiff(1, songId, diffs);
 		if (diffsThatExist.contains("Hard"))
 			FreeplayState.loadDiff(2, songId, diffs);
+
+		// JOELwindows7: BOLO load custom diffs into freeplay!!!
+		if (customDiffs != null && customDiffs.length > 0)
+		{
+			for (i in 0...customDiffs.length)
+			{
+				var cDiff = customDiffs[i];
+				if (diffsThatExist.contains(cDiff))
+					FreeplayState.loadDiff(CoolUtil.difficultyArray.indexOf(cDiff), songId, diffs);
+			}
+		}
 
 		meta.diffs = diffsThatExist;
 
@@ -785,6 +910,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		trace('loaded diffs for ' + songId);
 		FreeplayState.songs.push(meta);
 
+		// JOELwindows7: BOLO commented, no, don't! it lags per selections!!! better lag during open this menu, idk..
 		#if FEATURE_FILESYSTEM // JOELwindows7: mitsake fixed. wait, isn't this supposed to be FEATURE_MULTITHREADING instead?
 		sys.thread.Thread.create(() ->
 		{
@@ -846,19 +972,23 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		}
 
 		// JOELwindows7: Custom diffs Support!!! thancc BOLO
-		var customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songName/customDiffs'));
-
-		if (customDiffs != null)
+		var customDiffs:Array<String> = [];
+		if (Paths.doesTextAssetExist(Paths.txt('data/songs/$songName/customDiffs')))
 		{
-			for (i in 0...customDiffs.length)
+			customDiffs = CoolUtil.coolTextFile(Paths.txt('data/songs/$songName/customDiffs'));
+
+			if (customDiffs != null && customDiffs.length > 0)
 			{
-				var cDiff = customDiffs[i];
-				if (Paths.doesTextAssetExist(Paths.json('songs/$songName/$songName-${cDiff.toLowerCase()}')))
+				for (i in 0...customDiffs.length)
 				{
-					Debug.logInfo('New Difficulties detected for $songName: $cDiff');
-					diffsThatExist.push(cDiff);
-					CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
-					CoolUtil.difficultyArray.push(cDiff);
+					var cDiff = customDiffs[i];
+					if (Paths.doesTextAssetExist(Paths.json('songs/$songName/$songName-${cDiff.toLowerCase()}')))
+					{
+						Debug.logInfo('New Difficulties detected for $songName: $cDiff');
+						diffsThatExist.push(cDiff);
+						CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
+						CoolUtil.difficultyArray.push(cDiff);
+					}
 				}
 			}
 		}
@@ -874,6 +1004,17 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			FreeplayState.loadDiff(1, songName, diffs);
 		if (diffsThatExist.contains("Hard"))
 			FreeplayState.loadDiff(2, songName, diffs);
+
+		// JOELwindows7: BOLO load custom diff
+		if (customDiffs != null && customDiffs.length > 0)
+		{
+			for (i in 0...customDiffs.length)
+			{
+				var cDiff = customDiffs[i];
+				if (diffsThatExist.contains(cDiff))
+					FreeplayState.loadDiff(CoolUtil.difficultyArray.indexOf(cDiff), songName, diffs);
+			}
+		}
 
 		meta.diffs = diffsThatExist;
 
@@ -1155,9 +1296,13 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// loadedUp = true;
 	}
 
+	public var updateFrame = 0; // JOELwindows7: BOLO update frame counter
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		Conductor.songPosition = FlxG.sound.music.time * rate; // JOELwindows7: BOLO
 
 		// JOELwindows7: now, begin the async process
 		if (!legacySynchronousLoading)
@@ -1218,12 +1363,30 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		}
 
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));
+		lerpaccuracy = FlxMath.lerp(lerpaccuracy, intendedaccuracy,
+			CoolUtil.boundTo(1 - (elapsed * 9), 0, 1) / (openfl.Lib.current.stage.frameRate / 60)); // JOELwindows7: BOLO
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
 
+		if (Math.abs(lerpaccuracy - intendedaccuracy) <= 0.001)
+			lerpaccuracy = intendedaccuracy; // JOELwindows7: BOLO
+
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
-		comboText.text = combo + '\n';
+		// comboText.text = combo + '\n';
+		// JOELwindows7: BOLO new combo text
+		if (combo == "")
+		{
+			comboText.text = "RANK: N/A";
+			comboText.alpha = 0.5;
+		}
+		else
+		{
+			comboText.text = "RANK: " + letter + " | " + combo + " (" + HelperFunctions.truncateFloat(lerpaccuracy, 2) + "%)\n";
+			comboText.alpha = 1;
+		}
+		// JOELwindows7: & finally BOLO
+		opponentText.text = "OPPONENT MODE: " + (FlxG.save.data.opponent ? "ON" : "OFF");
 
 		if (FlxG.sound.music.volume > 0.8)
 		{
@@ -1233,8 +1396,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: add mouse support in here
 		// huh, how inconsistent. now the keypress bools are syndicated via
 		// each variable. interesting.
-		var upP = FlxG.keys.justPressed.UP || FlxG.mouse.wheel == 1;
-		var downP = FlxG.keys.justPressed.DOWN || FlxG.mouse.wheel == -1;
+		var upP = FlxG.keys.justPressed.UP;
+		var downP = FlxG.keys.justPressed.DOWN;
 		accepted = FlxG.keys.justPressed.ENTER || haveClicked; // JOELwindows7: pls globalize
 		previewed = FlxG.keys.justPressed.SPACE;
 		var dadDebug = FlxG.keys.justPressed.SIX;
@@ -1246,6 +1409,19 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: BOLO wraps these around!
 		if (!openMod && !MusicBeatState.switchingState)
 		{
+			// JOELwindows7: new BOLO scroll wheel selector
+			if (FlxG.mouse.wheel != 0 && !FlxG.keys.pressed.SHIFT)
+			{
+				#if !html5
+				changeSelection(-FlxG.mouse.wheel);
+				#else
+				if (FlxG.mouse.wheel < 0) // HTML5 BRAIN'T
+					changeSelection(1);
+				else if (FlxG.mouse.wheel > 0)
+					changeSelection(-1);
+				#end
+			}
+
 			if (gamepad != null)
 			{
 				if (gamepad.justPressed.DPAD_UP)
@@ -1353,6 +1529,21 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		previewtext.text = "Rate: " + FlxMath.roundDecimal(rate, 2) + "x";
 
 		previewtext.alpha = 1;
+
+		// JOELwindows7: BOLO's icon beatz
+		if (!MainMenuState.freakyPlaying)
+		{
+			var bpmRatio = Conductor.bpm / 100;
+			if (FlxG.save.data.camzoom)
+			{
+				FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125 * bpmRatio * rate), 0, 1));
+			}
+
+			var mult:Float = FlxMath.lerp(1, iconArray[curSelected].scale.x, CoolUtil.boundTo(1 - (elapsed * 35 * rate), 0, 1));
+			iconArray[curSelected].scale.set(mult, mult);
+
+			iconArray[curSelected].updateHitbox();
+		}
 
 		if (FlxG.keys.justPressed.CONTROL && !openMod && !MusicBeatState.switchingState)
 		{
@@ -1509,6 +1700,33 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		super.destroy();
 	}
 
+	// JOELwindows7: BOLO attempt at beat hits
+	override function beatHit()
+	{
+		super.beatHit();
+	}
+
+	// JOELwindows7: & step hit too. BOLO.
+	override function stepHit()
+	{
+		super.stepHit();
+
+		if (!MainMenuState.freakyPlaying)
+		{
+			if (FlxG.save.data.camzoom && FlxG.camera.zoom < 1.35 && curStep % Math.round(16 * rate) == 0)
+			{
+				FlxG.camera.zoom += 0.03 / rate;
+			}
+
+			if (curStep % Math.round(4 * rate) == 0)
+			{
+				iconArray[curSelected].scale.set(1.2, 1.2);
+
+				iconArray[curSelected].updateHitbox();
+			}
+		}
+	}
+
 	function loadAnimDebug(dad:Bool = true)
 	{
 		// First, get the song data.
@@ -1624,6 +1842,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		PlayState.songMultiplier = rate;
 
+		Debug.logInfo('Switch to state now. is charting? ${isCharting}');
 		if (isCharting)
 			// LoadingState.loadAndSwitchState(new ChartingState(reloadSong));
 			FreeplayState.instance.switchState(new ChartingState(reloadSong), true, true, true, true,
@@ -1631,6 +1850,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		else
 			// LoadingState.loadAndSwitchState(new PlayState());
 			FreeplayState.instance.switchState(new PlayState(), true, true, true, true, new FreeplayState()); // JOELwindows7: hex switch state lol
+		Debug.logInfo('Enjoy Freeplay');
 	}
 
 	function changeDiff(change:Int = 0)
@@ -1643,10 +1863,11 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			return;
 
 		curDifficulty += change;
+		trace('change diff to $curDifficulty, song has ${songs[curSelected].diffs.length}'); // JOELwindows7: was up to ID 2. BOLO now has custom diffs, remember?
 
 		if (curDifficulty < 0)
-			curDifficulty = 2;
-		if (curDifficulty > 2)
+			curDifficulty = songs[curSelected].diffs.length - 1;
+		if (curDifficulty > songs[curSelected].diffs.length - 1)
 			curDifficulty = 0;
 
 		// adjusting the highscore song name to be compatible (changeDiff)
@@ -1667,6 +1888,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		#if !switch
 		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
 		combo = Highscore.getCombo(songHighscore, curDifficulty);
+		// JOELwindows7: BOLO here new
+		letter = Highscore.getLetter(songHighscore, curDifficulty);
+		intendedaccuracy = Highscore.getAcc(songHighscore, curDifficulty);
 		#end
 		// diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
 		// diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
@@ -1692,18 +1916,21 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
-		if (songs[curSelected].diffs.length != 3)
-		{
-			switch (songs[curSelected].diffs[0])
+		/*
+			if (songs[curSelected].diffs.length != 3)
 			{
-				case "Easy":
-					curDifficulty = 0;
-				case "Normal":
-					curDifficulty = 1;
-				case "Hard":
-					curDifficulty = 2;
+				switch (songs[curSelected].diffs[0])
+				{
+					case "Easy":
+						curDifficulty = 0;
+					case "Normal":
+						curDifficulty = 1;
+					case "Hard":
+						curDifficulty = 2;
+				}
 			}
-		}
+		 */
+		changeDiff(); // JOELwindows7: BOLO fix
 
 		// JOELwindows7: BOLO's differentialized bg color based on song
 		var alreadyColored:Bool = false;
@@ -1742,6 +1969,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		#if !switch
 		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
 		combo = Highscore.getCombo(songHighscore, curDifficulty);
+		// JOELwindows7: BOLO new
+		letter = Highscore.getLetter(songHighscore, curDifficulty);
+		intendedaccuracy = Highscore.getAcc(songHighscore, curDifficulty);
 		// lerpScore = 0;
 		#end
 
@@ -1749,28 +1979,55 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
 		updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
 
-		#if PRELOAD_ALL
-		if (songs[curSelected].songCharacter == "sm")
+		var hmm = songData.get(songs[curSelected].songName)[curDifficulty]; // JOELwindows7: help BOLO pls
+
+		// JOELwindows7: DO NOT DELETE AUTOMATIC PREVIEW SONG!!!
+		try
 		{
-			#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
-			var data = songs[curSelected];
-			trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
-			var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
-			var sound = new Sound();
-			sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
-			FlxG.sound.playMusic(sound, 0); // JOELwindows7: heh bruh, forgot fade in!
-			MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
+			#if PRELOAD_ALL
+			if (songs[curSelected].songCharacter == "sm")
+			{
+				#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
+				var data = songs[curSelected];
+				trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
+				var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				var sound = new Sound();
+				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+				FlxG.sound.playMusic(sound, 0.7, true); // JOELwindows7: heh bruh, forgot fade in!
+				MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
+				curPlayed = curSelected;
+				FlxG.sound.music.fadeIn(0.75, 0, 0.8);
+
+				Conductor.changeBPM(hmm.bpm);
+				Conductor.mapBPMChanges(hmm);
+				Conductor.bpm = hmm.bpm;
+
+				Paths.clearUnusedMemory();
+				#end
+			}
+			else
+			{
+				// JOELwindows7: should copy function from BOLO's press space to preview
+				FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0.7, true);
+				MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
+				curPlayed = curSelected;
+				FlxG.sound.music.fadeIn(0.75, 0, 0.8);
+
+				Conductor.changeBPM(hmm.bpm);
+				Conductor.mapBPMChanges(hmm);
+				Conductor.bpm = hmm.bpm;
+
+				Paths.clearUnusedMemory();
+			}
+			#else
 			#end
 		}
-		else
+		catch (e)
 		{
-			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
-			MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
+			Debug.logError("WERROR auto-preview song!: " + e + ": " + e.message + "\n" + e.details() + "\n");
 		}
-		#else
-		#end
 
-		var hmm;
+		// var hmm; // JOELwindows7: redeclared on top
 		try
 		{
 			hmm = songData.get(songs[curSelected].songName)[curDifficulty];
@@ -1851,18 +2108,21 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
-		if (songs[curSelected].diffs.length != 3)
-		{
-			switch (songs[curSelected].diffs[0])
+		/*
+			if (songs[curSelected].diffs.length != 3)
 			{
-				case "Easy":
-					curDifficulty = 0;
-				case "Normal":
-					curDifficulty = 1;
-				case "Hard":
-					curDifficulty = 2;
+				switch (songs[curSelected].diffs[0])
+				{
+					case "Easy":
+						curDifficulty = 0;
+					case "Normal":
+						curDifficulty = 1;
+					case "Hard":
+						curDifficulty = 2;
+				}
 			}
-		}
+		 */
+		changeDiff(); // JOELwindows7: BOLO fix
 
 		// JOELwindows7: BOLO's differentialized bg color based on song
 		var alreadyColored:Bool = false;
@@ -1901,6 +2161,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		combo = Highscore.getCombo(songHighscore, curDifficulty);
+		// JOELwindows7: BOLO new
+		letter = Highscore.getLetter(songHighscore, curDifficulty);
+		intendedaccuracy = Highscore.getAcc(songHighscore, curDifficulty);
 		// lerpScore = 0;
 		#end
 
@@ -1908,23 +2171,55 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
 		updateDiffCalc(); // JOELwindows7: from now on, do this instead! BOLO's easined diff calc
 
-		#if PRELOAD_ALL
-		if (songs[curSelected].songCharacter == "sm")
+		var hmm = songData.get(songs[curSelected].songName)[curDifficulty]; // JOELwindows7: help BOLO pls
+
+		// JOELwindows7: DO NOT DELETE AUTOMATIC PREVIEW SONG!!!
+		try
 		{
-			#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
-			var data = songs[curSelected];
-			trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
-			var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
-			var sound = new Sound();
-			sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
-			FlxG.sound.playMusic(sound);
+			#if PRELOAD_ALL
+			if (songs[curSelected].songCharacter == "sm")
+			{
+				#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
+				var data = songs[curSelected];
+				trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
+				var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				var sound = new Sound();
+				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+				FlxG.sound.playMusic(sound, 0.7, true); // JOELwindows7: heh bruh, forgot fade in!
+				MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
+				curPlayed = curSelected;
+				FlxG.sound.music.fadeIn(0.75, 0, 0.8);
+
+				Conductor.changeBPM(hmm.bpm);
+				Conductor.mapBPMChanges(hmm);
+				Conductor.bpm = hmm.bpm;
+
+				Paths.clearUnusedMemory();
+				#end
+			}
+			else
+			{
+				// JOELwindows7: should copy function from BOLO's press space to preview
+				FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0.7, true);
+				MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
+				curPlayed = curSelected;
+				FlxG.sound.music.fadeIn(0.75, 0, 0.8);
+
+				Conductor.changeBPM(hmm.bpm);
+				Conductor.mapBPMChanges(hmm);
+				Conductor.bpm = hmm.bpm;
+
+				Paths.clearUnusedMemory();
+			}
+			#else
 			#end
 		}
-		else
-			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
-		#end
+		catch (e)
+		{
+			Debug.logError("WERROR auto-preview song!: " + e + ": " + e.message + "\n" + e.details() + "\n");
+		}
 
-		var hmm;
+		// var hmm; // JOELwindows7: redeclared on top
 		try
 		{
 			hmm = songData.get(songs[curSelected].songName)[curDifficulty];
@@ -2164,8 +2459,22 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	// JOELwindows7: BOLO has brought diffcalc to here!
 	public function updateDiffCalc():Void
 	{
-		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-		diffText.text = 'DIFFICULTY: < ' + CoolUtil.difficultyFromInt(curDifficulty).toUpperCase() + ' >'; // also let's add this too.
+		// JOELwindows7: BOLO safetye
+		if (songData.get(songs[curSelected].songName)[curDifficulty] != null)
+		{
+			diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
+			diffText.text = 'DIFFICULTY: < ' + CoolUtil.difficultyFromInt(curDifficulty).toUpperCase() + ' >'; // also let's add this too.
+			diffCalcText.alpha = 1;
+			diffText.alpha = 1;
+		}
+		else
+		{
+			Debug.logError('Error on calculating difficulty rate from song: ${songs[curSelected].songName}');
+			diffCalcText.alpha = 0.5;
+			diffText.alpha = 0.5;
+			diffCalcText.text = 'RATING: N/A';
+			diffText.text = 'DIFFICULTY: N/A';
+		}
 	}
 
 	// JOELwindows7: Okay, here's the new hack audio with BOLO's figure outs!
