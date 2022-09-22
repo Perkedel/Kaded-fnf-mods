@@ -553,6 +553,7 @@ class ModchartState
 
 	function new(?isStoryMode = true, rawMode:Bool = false, pathu:String = "") // JOELwindows7: make lua stageont. ? isStoryMode is upstream pls push away!
 	{
+		shownNotes = []; // JOELwindows7: init the shownNotes array. BOLO
 		trace('opening a lua state (because we are cool :))');
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
@@ -590,8 +591,10 @@ class ModchartState
 			Application.current.window.alert("LUA COMPILE ERROR:\n" + Lua.tostring(lua, result), "Kade Engine Modcharts");
 			FlxG.log.warn(["LUA COMPILE ERROR:\n" + Lua.tostring(lua, result)]);
 			lua = null; // JOELwindows7: Don't forget to clear Lua! thancc BOLO.
-			FlxG.switchState(new FreeplayState());
+			// FlxG.switchState(new FreeplayState());
 			// switchState(new FreeplayState());
+			MusicBeatState.switchStateStatic(new FreeplayState());
+			PlayState.instance.clean();
 			return;
 		}
 
@@ -687,9 +690,9 @@ class ModchartState
 		// callbacks
 
 		// JOELwindows7: BOLO precache
-		Lua_helper.add_callback(lua, "precache", function(asset:String, type:String)
+		Lua_helper.add_callback(lua, "precache", function(asset:String, type:String, ?library:String)
 		{
-			PlayState.instance.precacheList.set(asset, type);
+			PlayState.instance.precacheThing(asset, type, library);
 		});
 
 		Lua_helper.add_callback(lua, "makeSprite", makeLuaSprite);
@@ -810,6 +813,14 @@ class ModchartState
 				trace('playing assets/videos/' + videoName + '.webm');
 				PlayState.instance.backgroundVideo("assets/videos/" + videoName + ".webm");
 			});
+
+			// JOELwindows7: BOLO overlay video
+			/*
+				Lua_helper.add_callback(lua, "initBackgroundOverlayVideo", function(vidPath:String, type:String, layInFront:Bool)
+				{
+					PlayState.instance.backgroundOverlayVideo(vidPath, type, layInFront);
+				});
+			 */
 
 			Lua_helper.add_callback(lua, "pauseVideo", function()
 			{
@@ -1261,7 +1272,6 @@ class ModchartState
 			// JOELwindows7: old
 			if (PlayStateChangeables.legacyLuaModchartSupport)
 			{
-				var member = PlayState.strumLineNotes.members[i];
 				Debug.logTrace(PlayState.strumLineNotes.members[i].x
 					+ " "
 					+ PlayState.strumLineNotes.members[i].y + " " + PlayState.strumLineNotes.members[i].angle + " | strum" + i);
@@ -1271,6 +1281,7 @@ class ModchartState
 				setVar("defaultStrum" + i + "Y", Math.floor(member.y));
 				// setVar("strum" + i + "Angle", Math.floor(member.angle));
 				setVar("defaultStrum" + i + "Angle", Math.floor(member.angle));
+
 				Debug.logTrace("Adding strum" + i);
 			}
 			// end old

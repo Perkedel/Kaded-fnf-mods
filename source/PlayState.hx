@@ -459,7 +459,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	public var songFixedName:String = SONG.songName;
 
 	// SCROLL SPEED
-	// public var scrollSpeed(default, set):Float = 1.0; // already defined in PlayStateChangeables
+	public var scrollSpeed(default, set):Float = 1.0; // already defined in PlayStateChangeables
 	public var scrollTween:FlxTween;
 
 	// VARS FOR LUA DUE TO FUCKING BUGGED BOOLS
@@ -590,7 +590,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		PlayStateChangeables.useDownscroll = FlxG.save.data.downscroll;
 		PlayStateChangeables.safeFrames = FlxG.save.data.frames;
-		PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * songMultiplier;
+		// PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * songMultiplier;
+		scrollSpeed = FlxG.save.data.scrollSpeed * songMultiplier;
 		PlayStateChangeables.botPlay = FlxG.save.data.botplay;
 		PlayStateChangeables.optimize = FlxG.save.data.optimize;
 		PlayStateChangeables.zoom = FlxG.save.data.zoom;
@@ -598,9 +599,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// JOELwindows7: & BOLO scroll speeder
 		if (FlxG.save.data.scrollSpeed == 1)
-			PlayStateChangeables.scrollSpeed = SONG.speed * songMultiplier;
+			// PlayStateChangeables.scrollSpeed = SONG.speed * songMultiplier;
+			scrollSpeed = SONG.speed * songMultiplier;
 		else
-			PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * songMultiplier;
+			// PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * songMultiplier;
+			scrollSpeed = FlxG.save.data.scrollSpeed * songMultiplier;
 
 		// JOELwindows7: also BOLO modifiers!
 		if (!isStoryMode)
@@ -2508,6 +2511,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						GameplayCustomizeState.freeplayWeek = 1;
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
 						Conductor.changeBPM(102);
+						PsychTransition.nextCamera = mainCam;
 						// FlxG.switchState(new StoryMenuState());
 						// FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
 						switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath,
@@ -2890,6 +2894,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			}
 		}
 		PlayStateChangeables.scrollSpeed = value;
+		scrollSpeed = value;
 		return value;
 	}
 
@@ -4707,7 +4712,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (newScroll != 0)
 			{
 				// scrollSpeed *= newScroll; // JOELwindows7: BOLO's adds
-				PlayStateChangeables.scrollSpeed *= newScroll;
+				// PlayStateChangeables.scrollSpeed *= newScroll;
+				scrollSpeed *= newScroll;
 			}
 		}
 
@@ -6042,7 +6048,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						// JOELwindows7: & so BOLO already has newer system for that note y positionalizier
 						daNote.y = (strumY
 							+
-							0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+							// 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+							0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(scrollSpeed == 1 ? SONG.speed : scrollSpeed,
 								2)))
 							- daNote.noteYOff;
 						// and there you go. more still comes here bellow!!!
@@ -6099,7 +6106,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 									+ daNote.noteYOff;
 						 */
 						daNote.y = (strumY
-							- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+							// - 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+							- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(scrollSpeed == 1 ? SONG.speed : scrollSpeed,
 								2)))
 							+ daNote.noteYOff;
 						if (daNote.isSustainNote)
@@ -6462,7 +6470,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				// daNote.y = (strumLine.y - (songTime - daNote.strumTime) * (0.45 * PlayState.SONG.speed));
 
 				// JOELwindows7: BOLO
-				if (Conductor.songPosition > ((350 * songMultiplier) / (PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed))
+				// if (Conductor.songPosition > ((350 * songMultiplier) / (PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed))
+				if (Conductor.songPosition > ((350 * songMultiplier) / (scrollSpeed == 1 ? SONG.speed : scrollSpeed))
 					+ daNote.strumTime)
 				{
 					if (daNote.isSustainNote && daNote.wasGoodHit && Conductor.songPosition >= daNote.strumTime)
@@ -6773,7 +6782,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		else
 		{
 			PlayStateChangeables.botPlay = false;
-			PlayStateChangeables.scrollSpeed = 1 / songMultiplier;
+			// PlayStateChangeables.scrollSpeed = 1 / songMultiplier;
+			scrollSpeed = 1 / songMultiplier;
 			PlayStateChangeables.useDownscroll = false;
 		}
 
@@ -9291,11 +9301,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		var newSpeed = PlayStateChangeables.scrollSpeed * mult;
 		if (time <= 0)
 		{
-			PlayStateChangeables.scrollSpeed *= newSpeed;
+			// PlayStateChangeables.scrollSpeed *= newSpeed;
+			scrollSpeed *= newSpeed;
 		}
 		else
 		{
 			scrollTween = createTween(this, {scrollSpeed: newSpeed}, time, {
+			// scrollTween = createTweenNum(PlayStateChangeables.scrollSpeed, newSpeed, time, {
 				ease: ease,
 				onComplete: function(twn:FlxTween)
 				{
@@ -9891,8 +9903,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 	function speedBounce()
 	{
-		var scrollSpeedShit:Float = PlayStateChangeables.scrollSpeed;
-		PlayStateChangeables.scrollSpeed /= PlayStateChangeables.scrollSpeed;
+		// var scrollSpeedShit:Float = PlayStateChangeables.scrollSpeed;
+		var scrollSpeedShit:Float = scrollSpeed;
+		// PlayStateChangeables.scrollSpeed /= PlayStateChangeables.scrollSpeed;
+		scrollSpeed /= scrollSpeed;
 		changeScrollSpeed(scrollSpeedShit, 0.35 / songMultiplier, FlxEase.sineOut);
 	}
 
@@ -10685,6 +10699,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					add(blackScreen);
 					blackScreen.scrollFactor.set();
 					camHUD.visible = false;
+					camStrums.visible = false;
 					// JOELwindows7: hide the lemon guy character icon!
 					iconP2.changeIcon('placeholder');
 
@@ -10709,6 +10724,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 								{
 									// startCountdown();
 									introSceneIsDone(); // JOELwindows7: try my heurestic instead?
+									// JOELwindows7: move the tringy here. BOLO
+									camHUD.visible = true;
+									camStrums.visible = true;
 								}
 							});
 						});
@@ -11355,6 +11373,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		grpNoteSplashes.add(splash);
 	}
 
+	var debugHitlineLastX:Float;
+	var debugHitlineLastY:Float;
+
 	// JOELwindows7: spawn hitline particle like splash but it's line to determine how late, early, or perfect you hit it.
 	public function spawnHitlineParticle(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0, rating:Int = 0)
 	{
@@ -11882,6 +11903,49 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	function getStepModulo(stepWhich:Int, equalsWhat:Float = 0):Bool
 	{
 		return CoolUtil.stepModulo(curStep, stepWhich, songMultiplier, equalsWhat);
+	}
+
+	// JOELwindows7: BOLO cleanups
+	public function funniKill()
+	{
+		while (notes.length > 0)
+		{
+			var daNote:Note = notes.members[0];
+			daNote.active = false;
+			daNote.visible = false;
+
+			daNote.kill();
+			notes.remove(daNote, true);
+			daNote.destroy();
+		}
+
+		if (!PlayStateChangeables.optimize && FlxG.save.data.distractions)
+		{
+			while (Character.animationNotes.length > 0)
+			{
+				Character.animationNotes.pop();
+				Character.animationNotes = [];
+			}
+		}
+
+		unspawnNotes = [];
+		notes.clear();
+	}
+
+	// JOELwindows7: BOLO precacher!
+	// Precache List for some stuff (Like frames, sounds and that kinda of shit)
+
+	public function precacheThing(target:String, type:String, ?library:String = null)
+	{
+		switch (type)
+		{
+			case 'image':
+				Paths.image(target, library);
+			case 'sound':
+				Paths.sound(target, library);
+			case 'music':
+				Paths.music(target, library);
+		}
 	}
 } // u looked :O -ides
 
