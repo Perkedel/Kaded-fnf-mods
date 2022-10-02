@@ -2309,7 +2309,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						babyArrow.alpha = 0;
 						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
 							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index), onComplete: function(twn:FlxTween){
-								babyArrow.resetToCheckpoint();
+								babyArrow.resetPosToCheckpoint();
 							}}); // JOELwindows7: managed BOLO tween.
 						// }
 					}
@@ -2330,7 +2330,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				else
 				{
 					babyArrow.visible = visible;
-					babyArrow.resetToCheckpoint();
+					babyArrow.resetPosToCheckpoint();
 				}
 				index++;
 			});
@@ -2351,7 +2351,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						babyArrow.alpha = 0;
 						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
 							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index),onComplete: function(twn:FlxTween){
-								babyArrow.resetToCheckpoint();
+								babyArrow.resetPosToCheckpoint();
 							}}); // JOELwindows7: managed BOLO tween.
 						// }
 					}
@@ -2372,7 +2372,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				else
 				{
 					babyArrow.visible = visible;
-					babyArrow.resetToCheckpoint();
+					babyArrow.resetPosToCheckpoint();
 				}
 				index++;
 			});

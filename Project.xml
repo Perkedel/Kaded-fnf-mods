@@ -605,7 +605,8 @@
 	<!-- JOELwindows7: RISC V pls? -->
 	<haxedef name="HXCPP_RISCV" if="riscv"/>
 
-
+	<!-- JOELwindows7: BOLO disable deprecation warning pls. BOLO's commit d39409be823cc18d97912f570115ff8eb9ecafb2 -->
+	<haxedef name="no-deprecation-warnings" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 

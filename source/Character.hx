@@ -144,7 +144,8 @@ class Character extends FlxUISprite
 		var data:CharacterData = cast jsonData;
 
 		// JOELwindows7: BOLO optimizener. uuhh, idk, why.. we have heart organ things here!
-		var tex:FlxAtlasFrames;
+		// var tex:FlxAtlasFrames;
+		var tex:FlxFramesCollection;
 
 		// to be deleted
 		name = data.name; // JOELwindows7: name it. wow, Kade and friends prepared that already lol! thancc Eric Millyoja yey cool and good!
@@ -154,10 +155,24 @@ class Character extends FlxUISprite
 		// tex:FlxAtlasFrames = Paths.getSparrowAtlas(data.asset, 'shared');
 		// end to be deleted
 
-		if (data.usePackerAtlas)
-			tex = Paths.getPackerAtlas(data.asset, 'shared');
-		else
-			tex = Paths.getSparrowAtlas(data.asset, 'shared');
+		/*
+			if (data.usePackerAtlas)
+				tex = Paths.getPackerAtlas(data.asset, 'shared');
+			else
+				tex = Paths.getSparrowAtlas(data.asset, 'shared');
+		 */
+		// JOELwindows7: NEW BOLO types of atlas!
+		switch (data.AtlasType)
+		{
+			case 'PackerAtlas':
+				tex = Paths.getPackerAtlas(data.asset, 'shared');
+			case 'TextureAtlas':
+				tex = Paths.getTextureAtlas(data.asset, 'shared');
+			case 'JsonAtlas':
+				tex = Paths.getJSONAtlas(data.asset, 'shared');
+			default: // SparrowAtlas
+				tex = Paths.getSparrowAtlas(data.asset, 'shared');
+		}
 
 		frames = tex;
 		if (frames != null)
@@ -242,6 +257,8 @@ class Character extends FlxUISprite
 		{
 			if (!isPlayer)
 			{
+				if (!PlayStateChangeables.opponentMode) // JOELwindows7: BOLO opponent mode check moved out here
+				{
 				if (animation.curAnim.name.startsWith('sing'))
 					holdTimer += elapsed;
 
@@ -263,6 +280,19 @@ class Character extends FlxUISprite
 				if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
 				{
 					// playAnim('idle', true, false, 10); // perhaps no, don't, I guess..
+				}
+				} else {
+					// JOELwindows7: BOLO opponent mode
+					if (animation.curAnim.name.startsWith('sing'))
+						holdTimer += elapsed;
+					else
+						holdTimer = 0;
+
+					if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+						dance();
+
+					if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)
+						playAnim('deathLoop');
 				}
 			}
 

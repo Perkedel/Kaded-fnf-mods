@@ -45,10 +45,12 @@ class StaticArrow extends FlxUISprite
 		}
 		super.update(elapsed);
 
+		/*
 		if (FlxG.keys.justPressed.THREE)
 		{
 			localAngle += 10;
 		}
+		*/
 	}
 
 	public function playAnim(AnimName:String, ?force:Bool = false):Void

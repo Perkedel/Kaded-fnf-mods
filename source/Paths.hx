@@ -1,5 +1,6 @@
 package;
 
+import flixel.graphics.frames.FlxFramesCollection;
 import flash.media.Sound;
 import openfl.display.BitmapData;
 import openfl.media.Video;
@@ -95,9 +96,15 @@ class Paths
 	 * @param library 
 	 * @return BitmapData
 	 */
-	static public function loadImage(key:String, ?library:String):FlxGraphic
+	static public function loadImage(key:String, ?library:String, ?gpuRender:Bool):FlxGraphic
 	{
-		var path = image(key, library);
+		// var path = image(key, library);
+		// JOELwindows7: NEW BOLO
+		var path = '';
+
+		path = getPath('images/$key.png', IMAGE, library);
+
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
 
 		#if FEATURE_FILESYSTEM
 		if (Caching.bitmapData != null)
@@ -124,7 +131,7 @@ class Paths
 	}
 
 	// JOELwindows7: okay, raw load just bitmap pls..
-	static public function loadBitmap(key:String, ?library:String):BitmapData
+	static public function loadBitmap(key:String, ?library:String, ?gpuRender:Bool):BitmapData
 	{
 		var path = image(key, library);
 
@@ -433,6 +440,14 @@ class Paths
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
+	// JOElwindows7: COnfusingly image BOLO functions are
+	inline static public function imageGraphic(key:String, ?library:String, ?gpuRender:Bool):FlxGraphic
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		var image:FlxGraphic = loadImage(key, library, gpuRender);
+		return image;
+	}
+
 	// JOELwindows7: xml SparrowAtlas path
 	inline static public function sparrowXml(key:String, ?library:String)
 	{
@@ -521,11 +536,28 @@ class Paths
 			{
 				// trace('test: ' + dumpExclusions, key);
 				Assets.cache.clear(key);
+				// OpenFlAssets.cache.removeSound(key);
+				// OpenFlAssets.cache.clearSounds(key);
 				currentTrackedSounds.remove(key);
 				counterSound++;
 				Debug.logTrace('Cleared and removed $counterSound cached sounds.');
 			}
 		}
+
+		// Clear everything everything that's left
+		/*
+			var counterLeft:Int = 0;
+			for (key in OpenFlAssets.cache.getKeys())
+			{
+				if (!localTrackedAssets.contains(key) && !dumpExclusions.contains(key) && key != null)
+				{
+					OpenFlAssets.cache.clear(key);
+					counterLeft++;
+					Debug.logTrace('Cleared and removed $counterLeft cached leftover assets.');
+				}
+			}
+		 */
+
 		// flags everything to be cleared out next unused memory clear
 		localTrackedAssets = [];
 		openfl.Assets.cache.clear("songs");
@@ -540,25 +572,48 @@ class Paths
 		return false;
 	}
 
-	static public function getSparrowAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
+	static public function getSparrowAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
 	{
 		if (isCharacter)
 		{
-			return FlxAtlasFrames.fromSparrow(loadImage('characters/$key', library), file('images/characters/$key.xml', library));
+			// return FlxAtlasFrames.fromSparrow(loadImage('characters/$key', library), file('images/characters/$key.xml', library));
+			return FlxAtlasFrames.fromSparrow(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.xml', library));
 		}
-		return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
+		// return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
+		return FlxAtlasFrames.fromSparrow(imageGraphic(key, library, gpuRender), file('images/$key.xml', library));
 	}
 
 	/**
 	 * Senpai in Thorns uses this instead of Sparrow and IDK why.
 	 */
-	inline static public function getPackerAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
+	inline static public function getPackerAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
 	{
 		if (isCharacter)
 		{
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage('characters/$key', library), file('images/characters/$key.txt', library));
+			// return FlxAtlasFrames.fromSpriteSheetPacker(loadImage('characters/$key', library), file('images/characters/$key.txt', library));
+			return FlxAtlasFrames.fromSpriteSheetPacker(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.txt', library));
 		}
-		return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
+		// return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
+		return FlxAtlasFrames.fromSpriteSheetPacker(imageGraphic(key, library, gpuRender), file('images/$key.txt', library));
+	}
+
+	// JOELwindows7: BOLO texture atlas
+	inline static public function getTextureAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?excludeArray:Array<String>):FlxFramesCollection
+	{
+		if (isCharacter)
+			return AtlasFrameMaker.construct('characters/$key', library, excludeArray);
+
+		return AtlasFrameMaker.construct(key, library, excludeArray);
+	}
+
+	// JOELwindows7: BOLO Json atlas
+	inline static public function getJSONAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		if (isCharacter)
+			return FlxAtlasFrames.fromTexturePackerJson(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.json', library));
+
+		return FlxAtlasFrames.fromTexturePackerJson(imageGraphic(key, library), file('images/$key.json', library));
 	}
 
 	// JOELwindows7: the get bitmap sprite sheet for pixel e.g.
