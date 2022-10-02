@@ -259,29 +259,31 @@ class Character extends FlxUISprite
 			{
 				if (!PlayStateChangeables.opponentMode) // JOELwindows7: BOLO opponent mode check moved out here
 				{
-				if (animation.curAnim.name.startsWith('sing'))
-					holdTimer += elapsed;
+					if (animation.curAnim.name.startsWith('sing'))
+						holdTimer += elapsed;
 
-				if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
-				{
-					// JOELwindows7: BOLO's opponent mode check. if not opponent mode then dance
-					if (!PlayStateChangeables.opponentMode)
+					if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
 					{
-						/*
-							if (isDancing)
-								playAnim('danceLeft'); // overridden by dance correctly later
-						 */
-						dance();
+						// JOELwindows7: BOLO's opponent mode check. if not opponent mode then dance
+						if (!PlayStateChangeables.opponentMode)
+						{
+							/*
+								if (isDancing)
+									playAnim('danceLeft'); // overridden by dance correctly later
+							 */
+							dance();
+						}
+						holdTimer = 0;
 					}
-					holdTimer = 0;
-				}
 
-				// JOELwindows7: BOLO's return back to idle when not player.
-				if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
-				{
-					// playAnim('idle', true, false, 10); // perhaps no, don't, I guess..
+					// JOELwindows7: BOLO's return back to idle when not player.
+					if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+					{
+						// playAnim('idle', true, false, 10); // perhaps no, don't, I guess..
+					}
 				}
-				} else {
+				else
+				{
 					// JOELwindows7: BOLO opponent mode
 					if (animation.curAnim.name.startsWith('sing'))
 						holdTimer += elapsed;
@@ -551,12 +553,8 @@ class Character extends FlxUISprite
 			}
 			catch (e)
 			{
-				Debug.logError("WERROR! Heart organ No. "
-					+ Std.string(whichOne)
-					+ " not found while attempting to: Stimulate!\n"
-					+ e
-					+ ": "
-					+ e.message);
+				Debug.logError("WERROR! Heart organ No. " + Std.string(whichOne) + " not found while attempting to: Stimulate!\n" + e + ": " + e.message
+					+ "\n" + e.details());
 			}
 		}
 	}
@@ -581,7 +579,7 @@ class Character extends FlxUISprite
 			catch (e)
 			{
 				Debug.logError("WERROR 404! Heart organ No. " + Std.string(whichOne) + " not found while attempting to: Succesfully Step!\n" + e + ": "
-					+ e.message);
+					+ e.message + "\n" + e.details());
 			}
 		}
 	}
@@ -604,12 +602,8 @@ class Character extends FlxUISprite
 		}
 		catch (e)
 		{
-			Debug.logError("WERROR 404! Heart organ No. "
-				+ Std.string(which)
-				+ " not found while attempting to: Get heart rate!\n"
-				+ e
-				+ ": "
-				+ e.message);
+			Debug.logError("WERROR 404! Heart organ No. " + Std.string(which) + " not found while attempting to: Get heart rate!\n" + e + ": " + e.message
+				+ "\n" + e.details());
 		}
 		return -1;
 	}
@@ -637,7 +631,8 @@ class Character extends FlxUISprite
 				+ " not found while attempting to: Get heart tier!\n"
 				+ e
 				+ ": "
-				+ e.message);
+			+ e.message
+				+ "\n" + e.details());
 		}
 		return -3;
 	}
@@ -661,7 +656,7 @@ class Character extends FlxUISprite
 			catch (e)
 			{
 				Debug.logError("WERROR 404! Heart organ No. " + Std.string(which) + " not found while attempting to: set debug print!\n" + e + ": " +
-					e.message);
+					e.message + "\n" + e.details());
 			}
 		}
 	}
