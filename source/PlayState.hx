@@ -6553,7 +6553,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 												}
 												if (daNote.parent.wasGoodHit)
 												{
-													misses++;
+													// misses++;
 													totalNotesHit -= 1;
 												}
 												updateAccuracy();
@@ -6563,11 +6563,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 											{
 												noteMiss(daNote.noteData, daNote); // JOELwindows7: coz afterall we need 2B
 												// precisely correct which moment here idk.
-												misses++;
+												// misses++;
 												// updateAccuracy();
 												// health -= 0.15;
 												// JOELwindows7: BOLO opponent mode! BOLO's is .04 times health loss value. rawly is .15.
 												if (!PlayStateChangeables.opponentMode)
+													// JOELwindows7: was .04 all
 													health -= 0.04 * PlayStateChangeables.healthLoss;
 												else
 													health += 0.04 * PlayStateChangeables.healthLoss;
@@ -6601,7 +6602,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 									if (daNote.isParent && daNote.visible)
 									{
 										health -= 0.15; // give a health punishment for failing a LN
-										trace("hold fell over at the start");
+										// trace("hold fell over at the start");
+										Debug.logTrace("User released key while playing a sustain at: START");
 										for (i in daNote.children)
 										{
 											i.alpha = 0.3;
@@ -6617,20 +6619,21 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 											&& daNote.spotInLine != daNote.parent.children.length)
 										{
 											// health -= 0.05; // give a health punishment for failing a LN
-											trace("hold fell over at " + daNote.spotInLine);
+											// trace("hold fell over at " + daNote.spotInLine);
+											Debug.logTrace("User released key while playing a sustain at: " + daNote.spotInLine);
 											for (i in daNote.parent.children)
 											{
 												i.alpha = 0.3;
 												i.sustainActive = false;
-												// JOELwindows7: BOLO hp inflict
+												// JOELwindows7: BOLO hp inflict. was .04
 												if (!PlayStateChangeables.opponentMode)
-													health -= (0.04 * PlayStateChangeables.healthLoss) / daNote.parent.children.length;
+													health -= (0.08 * PlayStateChangeables.healthLoss) / daNote.parent.children.length;
 												else
-													health += (0.04 * PlayStateChangeables.healthLoss) / daNote.parent.children.length;
+													health += (0.08 * PlayStateChangeables.healthLoss) / daNote.parent.children.length;
 											}
 											if (daNote.parent.wasGoodHit)
 											{
-												misses++;
+												// misses++;
 												totalNotesHit -= 1;
 											}
 											noteMiss(daNote.noteData, daNote); // JOELwindows7: BOLO
@@ -6638,7 +6641,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 										}
 										else if (!daNote.wasGoodHit && !daNote.isSustainNote)
 										{
-											misses++;
+											// misses++;
 											// JOELwindows7: and BOLO
 											noteMiss(daNote.noteData, daNote);
 											// updateAccuracy();
@@ -7396,13 +7399,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			var pixelShitPart1:String = "";
 			var pixelShitPart2:String = '';
-			var pixelShitPart3:String = null;
+			var pixelShitPart3:String = 'shared'; // JOELwindows7: BOLO
+			var pixelShitPart4:String = null;
 
 			if (SONG.noteStyle == 'pixel')
 			{
 				pixelShitPart1 = 'weeb/pixelUI/';
 				pixelShitPart2 = '-pixel';
 				pixelShitPart3 = 'week6';
+				pixelShitPart4 = 'week6';
 			}
 
 			// TODO: JOELwindows7: marker of late & early. either of these:
@@ -7485,6 +7490,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			comboSpr.acceleration.y = 600;
 			comboSpr.velocity.y -= 150;
 			// JOELwindows7: BOLO add it now.
+			if (FlxG.save.data.showCombo)
 			if ((!PlayStateChangeables.botPlay || loadRep) && combo >= 5)
 				add(comboSpr);
 
@@ -8157,6 +8163,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	{
 		if (!boyfriend.stunned)
 		{
+			// vocals.volume = 0; // JOELwindows7: BOLO
 			// JOELwindows7: BOLO skill issue
 			if (PlayStateChangeables.skillIssue)
 				if (!PlayStateChangeables.opponentMode)
@@ -8189,7 +8196,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						daNote.strumTime,
 						0,
 						direction,
-						-(166 * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166)
+						// -(166 * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166)
+						-(Ratings.timingWindows[0] * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / Ratings.timingWindows[0]) // JOELwindows7: BOLO
 					]);
 					saveJudge.push("miss");
 				}
@@ -8200,7 +8208,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					Conductor.songPosition,
 					0,
 					direction,
-					-(166 * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166)
+					// -(166 * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166)
+					-(Ratings.timingWindows[0] * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / Ratings.timingWindows[0])
 				]);
 				saveJudge.push("miss");
 			}
@@ -10031,10 +10040,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		for (asset in introAlts)
 			Paths.image(asset, week6Bullshit);
 
-		Paths.sound('intro3' + altSuffix);
-		Paths.sound('intro2' + altSuffix);
-		Paths.sound('intro1' + altSuffix);
-		Paths.sound('introGo' + altSuffix);
+		var things:Array<String> = ['intro3', 'intro2', 'intro1', 'introGo'];
+		for (precaching in things)
+			Paths.sound(precaching + altSuffix);
 	}
 
 	function startAndEnd()
