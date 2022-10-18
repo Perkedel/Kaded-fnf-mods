@@ -202,7 +202,16 @@ jobs:
           pwd
           butler push D:\a\Kaded-fnf-mods\Kaded-fnf-mods\export\release\windows\bin joelwindows7/last-funkin-moments:windows-GHAction
       
-      - name: Yo, release now
-        uses: softprops/action-gh-release@v0.1.13
-        if: startsWith(github.ref, 'refs/tags/')
+       - name: Yo, release now
+        # uses: softprops/action-gh-release@v0.1.13
+        # if: startsWith(github.ref, 'refs/tags/')
+        #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+        uses: svenstaro/upload-release-action@2.3.0
+          with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            file: export/release/windows/bin
+            asset_name: Windows Build
+            tag: ${{ github.ref }}
+            overwrite: true
+            # body: "This is my release text"
 

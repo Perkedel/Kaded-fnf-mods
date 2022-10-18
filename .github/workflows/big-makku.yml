@@ -149,5 +149,14 @@ jobs:
           /Users/runner/work/butler push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-GHAction
       
       - name: Yo, release now
-        uses: softprops/action-gh-release@v0.1.13
-        if: startsWith(github.ref, 'refs/tags/')
+        # uses: softprops/action-gh-release@v0.1.13
+        # if: startsWith(github.ref, 'refs/tags/')
+        #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+        uses: svenstaro/upload-release-action@2.3.0
+          with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            file: export/release/macos/bin
+            asset_name: macOS Build
+            tag: ${{ github.ref }}
+            overwrite: true
+            # body: "This is my release text"
