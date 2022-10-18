@@ -2,6 +2,7 @@
 // https://github.com/luckydog7/Funkin-android/blob/master/source/VideoPlayer.hx
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import openfl.utils.Assets;
 // import utils.AndroidData;
 import flixel.FlxG;
@@ -17,6 +18,8 @@ import openfl.media.Video;
 #end
 import flixel.FlxSprite;
 
+// JOELwindows7: flxui fy?
+
 /**
 	usage:
 	var video = new VideoPlayer('videos/ughintro.webm');
@@ -26,7 +29,7 @@ import flixel.FlxSprite;
 	- Bitstream not supported by this decoder
 	maybe use vp8 (idk)
 **/
-class VideoPlayer extends FlxSprite
+class VideoPlayer extends FlxUISprite
 {
 	public static var SKIP_STEP_LIMIT:Int = 90;
 
@@ -58,6 +61,9 @@ class VideoPlayer extends FlxSprite
 		super(x, y);
 		paused = false;
 
+		// JOELwindows7: bafur
+		Debug.logInfo('Loading Video: $asset, as a sprite');
+
 		#if FEATURE_WEBM_NATIVE
 		// WebmPlayer.SKIP_STEP_LIMIT = SKIP_STEP_LIMIT;
 
@@ -84,12 +90,17 @@ class VideoPlayer extends FlxSprite
 		if (PLAYDUMBASS)
 		{
 			webm.play();
+			Debug.logInfo('& trying load sound of it ${Paths.videoSound(pathVideo)}');
 
 			if (Assets.exists(Paths.videoSound(pathVideo)))
+			{
 				// sound = FlxG.sound.play(Paths.file(pathVideo + '.ogg'))
-				sound = FlxG.sound.play(Paths.videoSound(pathVideo))
+				Debug.logInfo('It does exist, let\'s play!');
+				sound = FlxG.sound.play(Paths.videoSound(pathVideo));
+				// sound = FlxG.sound.play(Asset2File.getPath(Paths.videoSound(pathVideo)));
+			}
 			else
-				trace('sound dont exists');
+				Debug.logError('sound ${Paths.videoSound(pathVideo)} dont exists'); // JOELwindows7: with werror
 		}
 		else
 		{
@@ -170,6 +181,7 @@ class VideoPlayer extends FlxSprite
 		#if FEATURE_WEBM_NATIVE
 		// var path = Asset2File.getPath(Paths.file(pathVideo), ".webm"); // maybe use without paths
 		var path = Asset2File.getPath(Paths.video(pathVideo)); // maybe use without paths
+		// var path = Asset2File.getPath(pathVideo); // JOELwindows7: right, so here.
 
 		var io:WebmIo = new WebmIoFile(path);
 		webm.fuck(io);

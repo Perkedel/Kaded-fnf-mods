@@ -1,0 +1,111 @@
+{
+	"name": "Boyfriend holding GF",
+	"displayName": "Boyfriend & Girlfriend",
+	"asset": "characters/bfAndGF",
+	"flipX": true,
+	"forceIcon": true,
+	"barColor": "#31B0D1",
+	"camPos": [0,0],
+	"holdLength": 4,
+	"scale": 1,
+	"startingAnim": "idle",
+	"deathCharacter": "bf-holding-gf-dead",
+    "deathCharacterIsSameAsThis": false,
+	"heartOrgans": [{
+        "character": "bf",
+        "initHR": 70,
+        "maxHR": 220,
+        "minHR": 70,
+        "heartTierBoundaries": [90, 120, 150, 200],
+        "successionAdrenalAdd": [4, 3, 2, 1],
+        "fearShockAdd": [10, 8, 7, 5],
+        "relaxMinusPerBeat": [1, 2, 4, 7]
+    }, {
+        "character": "gf",
+        "initHR": 80,
+        "maxHR": 400,
+        "minHR": 80,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "containsHeartOrgans": ["bf", "gf"],
+    "phobia": {
+        "lightningStorm": true,
+        "cancelCulture": false
+    },
+	"animations": [
+		{
+			"offsets": [-5,0],
+			"loop": false,
+			"frameRate": 24,
+			"name": "idle",
+			"prefix": "BF idle dance"
+		},
+		{
+			"offsets": [12,7],
+			"loop": false,
+			"frameRate": 24,
+			"name": "singLEFT",
+			"prefix": "BF NOTE LEFT0"
+		},
+		{
+			"offsets": [-10,-10],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singDOWN",
+			"prefix": "BF NOTE DOWN0"
+		},
+		{
+			"offsets": [-29,10],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singUP",
+			"prefix": "BF NOTE UP0"
+		},
+		{
+			"offsets": [-41,23],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singRIGHT",
+			"prefix": "BF NOTE RIGHT0"
+		},
+		{
+			"offsets": [12,7],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singLEFTmiss",
+			"prefix": "BF NOTE LEFT MISS"
+		},
+		{
+			"offsets": [-10,-10],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singDOWNmiss",
+			"prefix": "BF NOTE DOWN MISS"
+		},
+		{
+			"offsets": [-29,10],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singUPmiss",
+			"prefix": "BF NOTE UP MISS"
+		},
+		{
+			"offsets": [-41,33],
+			"looped": false,
+			"frameRate": 24,
+			"name": "singRIGHTmiss",
+			"prefix": "BF NOTE RIGHT MISS"
+		},
+		{
+			"looped": false,
+			"offsets": [0,90],
+			"name": "bfCatch",
+			"frameRate": 24,
+			"prefix": "BF catches GF"
+		}
+	]
+
+}

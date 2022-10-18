@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import const.Perkedel;
 import CoreState;
 import GalleryAchievements;
@@ -23,16 +24,19 @@ import lime.app.Application;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+import PlayState;
 
 using StringTools;
 
+// JOELwindows7: add BOLO https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/MainMenuState.hx
+// JOELwindows7: FlxUI fy!
 class MainMenuState extends MusicBeatState
 {
 	var curSelected:Int = 0;
 	// JOELwindows7: which clicked & have they clicked.
 	var curClicked:Int = 0;
 
-	var menuItems:FlxTypedGroup<FlxSprite>;
+	var menuItems:FlxTypedGroup<FlxUISprite>;
 
 	#if !switch
 	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
@@ -48,18 +52,23 @@ class MainMenuState extends MusicBeatState
 	public static var nightly:String = "";
 	public static var larutMalam:String = Perkedel.ENGINE_NIGHTLY; // JOELwindows7: Last Funkin Nightly mark
 
-	public static var kadeEngineVer:String = "1.8" + nightly;
+	public static var kadeEngineVer:String = "1.8.1" + nightly;
 	public static var gameVer:String = "0.2.7.1";
 	public static var lastFunkinMomentVer:String = Perkedel.ENGINE_VERSION + larutMalam; // JOELwindows7: last funkin moments version
 	public static var yourModVer:String = "0.0.0.0"; // JOELwindows7: your own mod version
 
-	var magenta:FlxSprite;
+	var magenta:FlxUISprite;
 	var camFollow:FlxObject;
 
 	public static var finishedFunnyMove:Bool = false;
 
+	public static var freakyPlaying:Bool; // JOELwindows7: Marker if the Freaky is playing da right now!
+
 	override function create()
 	{
+		// JOELwindows7: BOLO clear memory!
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
 		trace(0 / 2);
 		clean();
 		PlayState.inDaPlay = false;
@@ -68,6 +77,8 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
+		PlayState.isStoryMode = false; // JOELwindows7: BOLO. reset flag down
+
 		if (!FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -75,7 +86,9 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('menuBG'));
+		// JOELwindows7: cast. no nvm.
+		var bg:FlxUISprite = new FlxUISprite(-100);
+		bg.loadGraphic(Paths.loadImage('MenuBGAlt')); // JOELwindows7: was menuBG
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.10;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
@@ -87,7 +100,9 @@ class MainMenuState extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
-		magenta = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuDesat'));
+		// JOELwindows7: cast. no nvm
+		magenta = new FlxUISprite(-80);
+		magenta.loadGraphic(Paths.loadImage('MenuBGDesatAlt')); // JOELwindows7: was menuDesat
 		magenta.scrollFactor.x = 0;
 		magenta.scrollFactor.y = 0.10;
 		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
@@ -99,7 +114,7 @@ class MainMenuState extends MusicBeatState
 		add(magenta);
 		// magenta.scrollFactor.set();
 
-		menuItems = new FlxTypedGroup<FlxSprite>();
+		menuItems = new FlxTypedGroup<FlxUISprite>();
 		add(menuItems);
 
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
@@ -111,10 +126,13 @@ class MainMenuState extends MusicBeatState
 
 		for (i in 0...optionShit.length)
 		{
-			var menuItem:FlxSprite = new FlxSprite(0, FlxG.height * 1.6);
+			var menuItem:FlxUISprite = new FlxUISprite(0, FlxG.height * 1.6);
 			menuItem.frames = tex;
-			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			// menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+			// menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			// JOELwindows7: let's use menu version we yoinked from week 7 which was yoinked by luckydog7 yeah!
+			menuItem.animation.addByPrefix('idle', optionShit[i] + " idle", 24);
+			menuItem.animation.addByPrefix('selected', optionShit[i] + " selected", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
@@ -188,6 +206,9 @@ class MainMenuState extends MusicBeatState
 	}
 
 	var selectedSomethin:Bool = false;
+
+	// JOELwindows7: HOW BOLO mouse position
+	// var oldPos = FlxG.mouse.getScreenPosition();
 
 	override function update(elapsed:Float)
 	{
@@ -280,7 +301,7 @@ class MainMenuState extends MusicBeatState
 					if (FlxG.save.data.flashing)
 						FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
-					menuItems.forEach(function(spr:FlxSprite)
+					menuItems.forEach(function(spr:FlxUISprite)
 					{
 						if (curSelected != spr.ID)
 						{
@@ -331,7 +352,8 @@ class MainMenuState extends MusicBeatState
 
 		// JOELwindows7: not my code, but this one is important!
 		// do this all time to center the spr every single time!
-		menuItems.forEach(function(spr:FlxSprite)
+		// all I did here, is to add the mouse touch support yey
+		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			// JOELwindows7: itterate sprite menu items overlaps and click functions
 			if (!selectedSomethin && FlxG.mouse.visible && finishedFunnyMove)
@@ -400,7 +422,7 @@ class MainMenuState extends MusicBeatState
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
 		}
-		menuItems.forEach(function(spr:FlxSprite)
+		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			spr.animation.play('idle');
 
@@ -410,7 +432,10 @@ class MainMenuState extends MusicBeatState
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 
-			spr.animation.curAnim.frameRate = 24 * (60 / FlxG.save.data.fpsCap);
+			// spr.animation.curAnim.frameRate = 24 * (60 / FlxG.save.data.fpsCap);
+			spr.animation.curAnim.frameRate = 15; // JOELwindows7: BOLO. maybe we should keep it 15 fps for these menu animation
+			// all time. idk.
+			// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/MainMenuState.hx
 
 			spr.updateHitbox();
 		});
@@ -429,7 +454,7 @@ class MainMenuState extends MusicBeatState
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
 		}
-		menuItems.forEach(function(spr:FlxSprite)
+		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			spr.animation.play('idle');
 
@@ -438,6 +463,10 @@ class MainMenuState extends MusicBeatState
 				spr.animation.play('selected');
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
+
+			// JOELwindows7: bring it here too!
+			spr.animation.curAnim.frameRate = 15; // JOELwindows7: BOLO. maybe we should keep it 15 fps for these menu animation
+			// all time. idk.
 
 			spr.updateHitbox();
 		});

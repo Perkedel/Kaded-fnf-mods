@@ -1,5 +1,7 @@
 package;
 
+import LuaClass;
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
@@ -7,12 +9,22 @@ import flixel.graphics.frames.FlxAtlasFrames;
 
 using StringTools;
 
-class StaticArrow extends FlxSprite
+// JOELwindows7: change the object to FlxUISprite, idk.
+class StaticArrow extends FlxUISprite
 {
+	// JOELwindows7: BOLO lua object reference
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/StaticArrow.hx
+	#if FEATURE_LUAMODCHART
+	public var luaObject:LuaReceptor;
+	#end
 	public var modifiedByLua:Bool = false;
 	public var modAngle:Float = 0; // The angle set by modcharts
-	public var totalOverride:Bool = false; //JOELwindows7: enable to disable special parametering & leave its original parametering.
+	public var totalOverride:Bool = false; // JOELwindows7: enable to disable special parametering & leave its original parametering.
 	public var localAngle:Float = 0; // The angle to be edited inside here
+	// JOELwindows7: + another more BOLO
+	public var direction:Float = 90;
+	public var downScroll:Bool = false;
+	public var finalPos:Array<Float> = [0, 0];
 
 	public function new(xx:Float, yy:Float)
 	{
@@ -24,7 +36,8 @@ class StaticArrow extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if(!totalOverride){ //JOELwindows7: here total overrider.
+		if (!totalOverride)
+		{ // JOELwindows7: here total overrider.
 			if (!modifiedByLua)
 				angle = localAngle + modAngle;
 			else
@@ -32,10 +45,12 @@ class StaticArrow extends FlxSprite
 		}
 		super.update(elapsed);
 
+		/*
 		if (FlxG.keys.justPressed.THREE)
 		{
 			localAngle += 10;
 		}
+		*/
 	}
 
 	public function playAnim(AnimName:String, ?force:Bool = false):Void
@@ -53,5 +68,18 @@ class StaticArrow extends FlxSprite
 		offset.y -= 56;
 
 		angle = localAngle + modAngle;
+	}
+
+	// JOELwindows7: set the final position checkpoint in case the baby arrow peyangs all
+	// over the floor due to terrible tween glitch somehow.
+	public function setCheckpointPosition()
+	{
+		finalPos = [x, y];
+	}
+
+	public function resetPosToCheckpoint()
+	{
+		x = finalPos[0];
+		y = finalPos[1];
 	}
 }

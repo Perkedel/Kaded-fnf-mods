@@ -1,4 +1,5 @@
 // JOELwindows7: yoink from https://github.com/KadeDev/Hex-The-Weekend-Update/blob/main/source/MasterObjectLoader.hx
+// also https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/MasterObjectLoader.hx
 // frankenstino frankenstein
 // uh, this involves sys stuff. lemme adapt this little bit.
 import flixel.addons.ui.FlxUI;
@@ -9,11 +10,15 @@ import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 
+/**
+	From: https://github.com/KadeDev/Hex-The-Weekend-Update
+	Credits: KadeDev the funni avg4k frogman 
+**/
 class MasterObjectLoader
 {
-    #if FEATURE_MULTITHREADING
+	#if FEATURE_MULTITHREADING
 	public static var mutex:Mutex;
-    #end
+	#end
 
 	public static var Objects:Array<Dynamic> = [];
 
@@ -58,16 +63,17 @@ class MasterObjectLoader
 
 	public static function resetAssets(removeLoadingScreen:Bool = false)
 	{
-        Debug.logTrace("resetting Asset");
+		Debug.logTrace("resetting Asset");
 		var keep:Array<Dynamic> = [];
 		#if FEATURE_MULTITHREADING
 		mutex.acquire();
 		#end
+		var counter:Int = 0; // JOELwindows7: BOLO has counter
 		for (object in Objects)
 		{
 			if (Std.isOfType(object, FlxSprite))
 			{
-                Debug.logTrace("resetting "+ Std.string(object) +" FlxSprite");
+				// Debug.logTrace("resetting " + Std.string(object) + " FlxSprite");
 				var sprite:FlxSprite = object;
 				if (sprite.ID >= 99999 && !removeLoadingScreen) // loading screen assets
 				{
@@ -76,15 +82,18 @@ class MasterObjectLoader
 				}
 				FlxG.bitmap.remove(sprite.graphic);
 				// sprite.destroy();
+				counter++; // JOELwindows7: BOLO
 			}
 			if (Std.isOfType(object, FlxGraphic))
 			{
-				Debug.logTrace("resetting " + Std.string(object) + " FlxGraphic");
+				// Debug.logTrace("resetting " + Std.string(object) + " FlxGraphic");
 				var graph:FlxGraphic = object;
 				FlxG.bitmap.remove(graph);
 				// graph.destroy();
+				counter++; // JOELwindows7: BOLO
 			}
 		}
+		Debug.logTrace('Removed ${counter} objects');
 		Objects = [];
 		for (k in keep)
 			Objects.push(k);

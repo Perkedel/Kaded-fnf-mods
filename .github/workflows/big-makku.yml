@@ -23,7 +23,7 @@ jobs:
       - name: Just do it
         uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.4
+          haxe-version: 4.2.5
       - name: Make your dreams come true
         # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
@@ -44,6 +44,7 @@ jobs:
           haxelib install polymod
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+          # haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib run lime rebuild linc_luajit mac
@@ -77,7 +78,17 @@ jobs:
           haxelib install haxeui-flixel
           haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
           haxelib install yagp
+          haxelib git crashdumper http://github.com/larsiusprime/crashdumper
           haxelib run lime rebuild yagp mac
+          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
+          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
+          haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
+          haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
+          haxelib install udprotean
+          haxelib install markdown
+          haxelib install openfl-webm
+          # haxelib install hxCodec
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib list
           ls
           pwd
@@ -101,8 +112,8 @@ jobs:
       - name: Obtain macOS binaries for stuffs like luajit
         run: |
           wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Mac/libluajit-5.1.a
-          mkdir -p /Users/runner/hostedtoolcache/haxe/4.2.4/x64/lib/linc_luajit/lib/lua/lib/Mac/
-          mv ./libluajit-5.1.a /Users/runner/hostedtoolcache/haxe/4.2.4/x64/lib/linc_luajit/lib/lua/lib/Mac/
+          mkdir -p /Users/runner/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Mac/
+          mv ./libluajit-5.1.a /Users/runner/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Mac/
       
       - name: Obtain GameJolt empty key
         run: |
@@ -138,5 +149,14 @@ jobs:
           /Users/runner/work/butler push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-GHAction
       
       - name: Yo, release now
-        uses: softprops/action-gh-release@v0.1.13
-        if: startsWith(github.ref, 'refs/tags/')
+        # uses: softprops/action-gh-release@v0.1.13
+        # if: startsWith(github.ref, 'refs/tags/')
+        #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+        uses: svenstaro/upload-release-action@2.3.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: export/release/macos/bin
+          asset_name: macOS Build
+          tag: ${{ github.ref }}
+          overwrite: true
+          # body: "This is my release text"

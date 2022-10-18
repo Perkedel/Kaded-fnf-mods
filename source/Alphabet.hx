@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUIGroup;
 import flixel.math.FlxPoint;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -13,10 +14,12 @@ import openfl.Lib;
 
 using StringTools;
 
+// JOELwindows7: There is FlxUIGroup which inherits from that FlxSpriteGroup. go try it!
+
 /**
  * Loosley based on FlxTypeText lolol
  */
-class Alphabet extends FlxSpriteGroup
+class Alphabet extends FlxUIGroup
 {
 	public var delay:Float = 0.05;
 	public var paused:Bool = false;
@@ -104,6 +107,8 @@ class Alphabet extends FlxSpriteGroup
 		addText();
 	}
 
+	var consecutiveSpaces:Int = 0; // JOELwindows7: BOLO
+
 	public function addText()
 	{
 		doSplitWords();
@@ -115,13 +120,29 @@ class Alphabet extends FlxSpriteGroup
 			// {
 			// }
 
-			if (character == " " || character == "-")
+			// JOELwindows7: BOLO now use consecutive space!
+			var spaceChar:Bool = (character == " " || (isBold && character == "_"));
+
+			/*
+				if (character == " " || character == "-")
+				{
+					lastWasSpace = true;
+				}
+			 */
+			if (spaceChar)
 			{
-				lastWasSpace = true;
+				consecutiveSpaces++;
 			}
 
-			if (AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1)
-				// if (AlphaCharacter.alphabet.contains(character.toLowerCase()))
+			// JOELwindows7: BOLO more
+			var isNumber:Bool = AlphaCharacter.numbers.indexOf(character) != -1;
+
+			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(character) != -1;
+			var isLetter:Bool = AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1;
+
+			// if (AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1)
+			// if (AlphaCharacter.alphabet.contains(character.toLowerCase()))
+			if ((isLetter || isNumber || isSymbol) && (!isBold || !spaceChar))
 			{
 				if (lastSprite != null)
 				{
@@ -129,12 +150,19 @@ class Alphabet extends FlxSpriteGroup
 					xPos = lastSprite.x - pastX + lastSprite.width;
 				}
 
-				if (lastWasSpace)
+				/*
+					if (lastWasSpace)
+					{
+						// ThatGuy: Also this line
+						xPos += 40 * xScale;
+						lastWasSpace = false;
+					}
+				 */
+				if (consecutiveSpaces > 0)
 				{
-					// ThatGuy: Also this line
-					xPos += 40 * xScale;
-					lastWasSpace = false;
+					xPos += 40 * consecutiveSpaces;
 				}
+				consecutiveSpaces = 0;
 
 				// var letter:AlphaCharacter = new AlphaCharacter(30 * loopNum, 0);
 				var letter:AlphaCharacter = new AlphaCharacter(xPos, 0);
@@ -145,11 +173,30 @@ class Alphabet extends FlxSpriteGroup
 
 				listOAlphabets.add(letter);
 
+				// JOELwindows7: BOLO isBold advanced now
 				if (isBold)
-					letter.createBold(character);
+				{
+					if (isLetter)
+						letter.createBold(character);
+					else if (isNumber)
+						letter.createBoldNumber(character);
+					else if (isSymbol)
+						letter.createBoldSymbol(character);
+				}
 				else
 				{
-					letter.createLetter(character);
+					if (isNumber)
+					{
+						letter.createNumber(character);
+					}
+					else if (isSymbol)
+					{
+						letter.createSymbol(character);
+					}
+					else if (isLetter)
+					{
+						letter.createLetter(character);
+					}
 				}
 
 				add(letter);
@@ -192,22 +239,33 @@ class Alphabet extends FlxSpriteGroup
 				curRow += 1;
 			}
 
-			if (splitWords[loopNum] == " ")
+			/*
+				if (splitWords[loopNum] == " ")
+				{
+					lastWasSpace = true;
+			}*/
+			// JOELwindows7: BOLO new consecutive space
+			var spaceChar:Bool = (splitWords[loopNum] == " " || (isBold && splitWords[loopNum] == "_"));
+
+			if (spaceChar)
 			{
-				lastWasSpace = true;
+				consecutiveSpaces++;
 			}
 
+			// JOELwindows7: & BOLO furthermore so on.
 			#if (haxe >= "4.0.0")
 			var isNumber:Bool = AlphaCharacter.numbers.contains(splitWords[loopNum]);
 			var isSymbol:Bool = AlphaCharacter.symbols.contains(splitWords[loopNum]);
+			var isLetter:Bool = AlphaCharacter.alphabet.contains(splitWords[loopNum].toLowerCase());
 			#else
 			var isNumber:Bool = AlphaCharacter.numbers.indexOf(splitWords[loopNum]) != -1;
 			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(splitWords[loopNum]) != -1;
+			var isLetter:Bool = AlphaCharacter.alphabet.indexOf(splitWords[loopNum].toLowerCase()) != -1;
 			#end
 
-			if (AlphaCharacter.alphabet.indexOf(splitWords[loopNum].toLowerCase()) != -1 || isNumber || isSymbol)
-				// if (AlphaCharacter.alphabet.contains(splitWords[loopNum].toLowerCase()) || isNumber || isSymbol)
-
+			// if (AlphaCharacter.alphabet.indexOf(splitWords[loopNum].toLowerCase()) != -1 || isNumber || isSymbol)
+			// if (AlphaCharacter.alphabet.contains(splitWords[loopNum].toLowerCase()) || isNumber || isSymbol)
+			if ((isLetter || isNumber || isSymbol) && (!isBold || !spaceChar))
 			{
 				if (lastSprite != null && !xPosResetted)
 				{
@@ -221,20 +279,34 @@ class Alphabet extends FlxSpriteGroup
 					xPosResetted = false;
 				}
 
-				if (lastWasSpace)
+				/*
+					if (lastWasSpace)
+					{
+						xPos += 20;
+						lastWasSpace = false;
+					}
+				 */
+				// JOELwindows7: BOLO yeah
+				if (consecutiveSpaces > 0)
 				{
-					xPos += 20;
-					lastWasSpace = false;
+					xPos += 20 * consecutiveSpaces;
 				}
+				consecutiveSpaces = 0;
 				// trace(_finalText.fastCodeAt(loopNum) + " " + _finalText.charAt(loopNum));
 
 				// var letter:AlphaCharacter = new AlphaCharacter(30 * loopNum, 0);
 				var letter:AlphaCharacter = new AlphaCharacter(xPos, 55 * yMulti);
 				listOAlphabets.add(letter);
 				letter.row = curRow;
+				// JOELwindows7: & These BOLO
 				if (isBold)
 				{
-					letter.createBold(splitWords[loopNum]);
+					if (isLetter)
+						letter.createBold(splitWords[loopNum]);
+					else if (isSymbol)
+						letter.createBoldSymbol(splitWords[loopNum]);
+					else if (isNumber)
+						letter.createBoldNumber(splitWords[loopNum]);
 				}
 				else
 				{
@@ -327,7 +399,7 @@ class AlphaCharacter extends FlxSprite
 
 	public static var numbers:String = "1234567890";
 
-	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!? ";
+	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!? び"; // JOELwindows7: BOLO, just that Japanese hiragana character.
 
 	public var row:Int = 0;
 
@@ -347,11 +419,74 @@ class AlphaCharacter extends FlxSprite
 		animation.addByPrefix(letter, letter.toUpperCase() + " bold", 24);
 		animation.play(letter);
 		// JOELwindows7: You sneaky little punk!
-		#if FEATURE_DISPLAY_FPS_CHANGE
-		animation.curAnim.frameRate = 24 * (60 / (cast(Lib.current.getChildAt(0), Main)).getFPS());
-		#else
-		animation.curAnim.frameRate = 24 * (60);
-		#end
+		/*
+			#if FEATURE_DISPLAY_FPS_CHANGE
+			animation.curAnim.frameRate = 24 * (60 / (cast(Lib.current.getChildAt(0), Main)).getFPS());
+			#else
+			animation.curAnim.frameRate = 24 * (60);
+			#end
+		 */
+		// JOELwindows7: BOlO no need change FPS on these alphabet things anymore????
+		updateHitbox();
+	}
+
+	// JOELwindows7: NEW bold symbol BOLO
+	public function createBoldSymbol(letter:String)
+	{
+		switch (letter)
+		{
+			case '.':
+				animation.addByPrefix(letter, 'PERIOD bold', 24);
+			case "'":
+				animation.addByPrefix(letter, 'APOSTRAPHIE bold', 24);
+			case "?":
+				animation.addByPrefix(letter, 'QUESTION MARK bold', 24);
+			case "!":
+				animation.addByPrefix(letter, 'EXCLAMATION POINT bold', 24);
+			case "(":
+				animation.addByPrefix(letter, 'bold (', 24);
+			case ")":
+				animation.addByPrefix(letter, 'bold )', 24);
+			case "び":
+				animation.addByPrefix(letter, 'BI_JPN bold', 24);
+			case ":":
+				animation.addByPrefix(letter, letter, 24);
+				y += 15;
+				x += 2;
+			case ' ':
+				animation.addByPrefix(letter, 'space', 24);
+			default:
+				animation.addByPrefix(letter, 'bold ' + letter, 24);
+		}
+		animation.play(letter);
+		updateHitbox();
+		switch (letter)
+		{
+			case "'":
+				y -= 20;
+			case '-':
+				// x -= 35 - (90 * (1.0 - textSize));
+				y += 20;
+			case '(':
+				x -= 65;
+				y -= 5;
+				offset.x = -58;
+			case ')':
+				x -= 20;
+				y -= 5;
+				offset.x = 12;
+			case '.':
+				y += 45;
+				x += 5;
+				offset.x += 3;
+		}
+	}
+
+	// JOELwindows7: & Number. BOLO
+	public function createBoldNumber(letter:String):Void
+	{
+		animation.addByPrefix(letter, "bold" + letter, 24);
+		animation.play(letter);
 		updateHitbox();
 	}
 
@@ -379,33 +514,34 @@ class AlphaCharacter extends FlxSprite
 		animation.play(letter);
 
 		updateHitbox();
+
+		// JOELwindows7: BOLO reposition
+		y = (110 - height);
+		y += row * 60;
 	}
 
 	public function createSymbol(letter:String)
 	{
 		switch (letter)
 		{
+			// JOELwindows7: some additional addition pls	
 			case '.':
 				animation.addByPrefix(letter, 'period', 24);
-				animation.play(letter);
 				y += 50;
 			case "'":
 				animation.addByPrefix(letter, 'apostraphie', 24);
-				animation.play(letter);
 				y -= 0;
 			case "?":
 				animation.addByPrefix(letter, 'question mark', 24);
-				animation.play(letter);
 			case "!":
 				animation.addByPrefix(letter, 'exclamation point', 24);
-				animation.play(letter);
 			case '_':
 				animation.addByPrefix(letter, '_', 24);
-				animation.play(letter);
 				y += 50;
 			case "#":
 				animation.addByPrefix(letter, '#', 24);
-				animation.play(letter);
+				// BOLO
+				animation.addByPrefix(letter, 'hashtag', 24);
 			case "$":
 				animation.addByPrefix(letter, '$', 24);
 				animation.play(letter);
@@ -438,11 +574,19 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, '^', 24);
 				animation.play(letter);
 				y -= 0;
+			case ",":
+				// BOLO
+				animation.addByPrefix(letter, 'comma', 24);
+			case "び":
+				// BOLO
+				animation.addByPrefix(letter, 'BI_JPN', 24);
 			case ' ':
 				animation.addByPrefix(letter, 'space', 24);
-				animation.play(letter);
+			default:
+				// BOLO. NO WAY, FALLBACKERS!!!
+				animation.addByPrefix(letter, letter, 24);
 		}
-
+		animation.play(letter); // JOELwindows7: BOLO don't forget play the animation
 		updateHitbox();
 	}
 }

@@ -1,7 +1,9 @@
+import flixel.addons.ui.FlxUISprite;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
-class ChartingBox extends FlxSprite
+// JOElwindows7: don't miss this one, I guess??
+class ChartingBox extends FlxUISprite
 {
 	public var connectedNote:Note;
 	public var connectedNoteData:Array<Dynamic>;

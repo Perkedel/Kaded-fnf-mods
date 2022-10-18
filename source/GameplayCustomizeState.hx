@@ -1,3 +1,6 @@
+import flixel.addons.ui.*;
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -17,22 +20,23 @@ import flixel.FlxG;
 
 using StringTools;
 
+// JOELwindows7: FlxUI fy!!!
 class GameplayCustomizeState extends MusicBeatState
 {
 	var defaultX:Float = FlxG.width * 0.55 - 135;
 	var defaultY:Float = FlxG.height / 2 - 50;
 
-	var sick:FlxSprite;
+	var sick:FlxUISprite;
 
-	var text:FlxText;
-	var blackBorder:FlxSprite;
+	var text:FlxUIText;
+	var blackBorder:FlxUISprite;
 
-	var laneunderlay:FlxSprite;
-	var laneunderlayOpponent:FlxSprite;
+	var laneunderlay:FlxUISprite;
+	var laneunderlayOpponent:FlxUISprite;
 
-	var strumLine:FlxSprite;
-	var strumLineNotes:FlxTypedGroup<FlxSprite>;
-	var playerStrums:FlxTypedGroup<FlxSprite>;
+	var strumLine:FlxUISprite;
+	var strumLineNotes:FlxTypedGroup<FlxUISprite>;
+	var playerStrums:FlxTypedGroup<FlxUISprite>;
 	var cpuStrums:FlxTypedGroup<StaticArrow>;
 
 	var camPos:FlxPoint;
@@ -60,11 +64,13 @@ class GameplayCustomizeState extends MusicBeatState
 	public static var freeplaySong:String = 'bopeebo';
 	public static var freeplayWeek:Int = 1;
 
+	var changedPos:Bool = false; // JOELwindows7: BOLO change check!
+
 	public override function create()
 	{
 		super.create();
 
-		PlayStateChangeables.Optimize = false;
+		PlayStateChangeables.optimize = false; // JOELwindows7: reconsistenized capitalization from `O` to `o`.
 
 		#if FEATURE_DISCORD
 		// Updating Discord Rich Presence
@@ -195,19 +201,32 @@ class GameplayCustomizeState extends MusicBeatState
 			}
 		}
 
-		camPos = new FlxPoint(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+		gf.x += gf.charPos[0];
+		gf.y += gf.charPos[1];
+		dad.x += dad.charPos[0];
+		dad.y += dad.charPos[1];
+		boyfriend.x += boyfriend.charPos[0];
+		boyfriend.y += boyfriend.charPos[1];
 
-		switch (dad.curCharacter)
+		camPos = new FlxPoint(dad.getGraphicMidpoint().x + dad.camPos[0], dad.getGraphicMidpoint().y + dad.camPos[1]);
+
+		if (dad.replacesGF)
 		{
-			case 'gf':
-				dad.setPosition(gf.x, gf.y);
-				gf.visible = false;
-			case 'spirit':
-				if (FlxG.save.data.distractions)
-				{
-					var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
-					add(evilTrail);
-				}
+			dad.setPosition(gf.x, gf.y);
+			gf.visible = false;
+		}
+
+		if (dad.hasTrail)
+		{
+			if (FlxG.save.data.distractions)
+			{
+				// trailArea.scrollFactor.set();
+				var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
+				// evilTrail.changeValuesEnabled(false, false, false, false);
+				// evilTrail.changeGraphic()
+				add(evilTrail);
+				// evilTrail.scrollFactor.set(1.1, 1.1);
+			}
 		}
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -221,8 +240,8 @@ class GameplayCustomizeState extends MusicBeatState
 			case 'mall':
 				camFollow.y = boyfriend.getMidpoint().y - 200;
 			case 'school' | 'schoolEvil':
-				camFollow.x = boyfriend.getMidpoint().x - 200;
-				camFollow.y = boyfriend.getMidpoint().y - 200;
+				camFollow.x = boyfriend.getMidpoint().x - 300;
+				camFollow.y = boyfriend.getMidpoint().y - 300;
 		}
 
 		add(camFollow);
@@ -233,7 +252,8 @@ class GameplayCustomizeState extends MusicBeatState
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
-		strumLine = new FlxSprite(0, FlxG.save.data.strumline).makeGraphic(FlxG.width, 14);
+		// JOELwindows7: "hey girl nch nch nch, suiuit! mwah mwah". Idk, why that's called `Cat Calling` lmao!
+		strumLine = cast new FlxUISprite(0, FlxG.save.data.strumline).makeGraphic(FlxG.width, 14);
 		strumLine.scrollFactor.set();
 		strumLine.alpha = 0.4;
 
@@ -241,14 +261,18 @@ class GameplayCustomizeState extends MusicBeatState
 
 		if (FlxG.save.data.downscroll)
 			strumLine.y = FlxG.height - 165;
+		else
+			strumLine.y += 60; // JOELwindows7: BOLO else if not downscroll apparently
 
-		laneunderlayOpponent = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		// JOELwindows7: Oh man. I guess I gotta lorecast lotsa things again
+		laneunderlayOpponent = cast new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlayOpponent.alpha = 1 - FlxG.save.data.laneTransparency;
 		laneunderlayOpponent.color = FlxColor.BLACK;
 		laneunderlayOpponent.scrollFactor.set();
 		laneunderlayOpponent.cameras = [camHUD];
 
-		laneunderlay = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		// JOELwindows7: Maybe I should cease marketing promo atm due to these expose. Be famous, and then exposed. wtf.
+		laneunderlay = cast new FlxUISprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlay.alpha = 1 - FlxG.save.data.laneTransparency;
 		laneunderlay.color = FlxColor.BLACK;
 		laneunderlay.scrollFactor.set();
@@ -263,10 +287,10 @@ class GameplayCustomizeState extends MusicBeatState
 			add(laneunderlay);
 		}
 
-		strumLineNotes = new FlxTypedGroup<FlxSprite>();
+		strumLineNotes = new FlxTypedGroup<FlxUISprite>();
 		add(strumLineNotes);
 
-		playerStrums = new FlxTypedGroup<FlxSprite>();
+		playerStrums = new FlxTypedGroup<FlxUISprite>();
 		cpuStrums = new FlxTypedGroup<StaticArrow>();
 
 		if (freeplayNoteStyle == 'pixel')
@@ -277,7 +301,8 @@ class GameplayCustomizeState extends MusicBeatState
 			pixelShitPart4 = 'week6';
 		}
 
-		sick = new FlxSprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'sick' + pixelShitPart2, pixelShitPart3));
+		// JOELwindows7: ayy
+		sick = cast new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'sick' + pixelShitPart2, pixelShitPart3));
 		sick.setGraphicSize(Std.int(sick.width * 0.7));
 		sick.scrollFactor.set();
 
@@ -305,13 +330,17 @@ class GameplayCustomizeState extends MusicBeatState
 		laneunderlay.screenCenter(Y);
 		laneunderlayOpponent.screenCenter(Y);
 
-		text = new FlxText(5, FlxG.height + 40, 0,
-			"Click and drag around gameplay elements to customize their positions. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.",
+		// JOELwindows7: There is BOLO's revision
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/GameplayCustomizeState.hx
+		text = new FlxUIText(5, FlxG.height + 40, 0,
+			// "Click and drag around gameplay elements to customize their positions. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.",
+			"Use Arrows or Mouse to move your elements around. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.", // JOELwindows7: yeah. uh just a little edit here.
 			12);
 		text.scrollFactor.set();
 		text.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
-		blackBorder = new FlxSprite(-30, FlxG.height + 40).makeGraphic((Std.int(text.width + 900)), Std.int(text.height + 600), FlxColor.BLACK);
+		// JOELwindows7: zocc
+		blackBorder = cast new FlxUISprite(-30, FlxG.height + 40).makeGraphic((Std.int(text.width + 900)), Std.int(text.height + 600), FlxColor.BLACK);
 		blackBorder.alpha = 0.5;
 
 		blackBorder.cameras = [camHUD];
@@ -357,10 +386,38 @@ class GameplayCustomizeState extends MusicBeatState
 		FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
 		camHUD.zoom = FlxMath.lerp(FlxG.save.data.zoom, camHUD.zoom, 0.95);
 
+		// JOELwindows7: & now, BOLO's arrow keys!!!
+		if (FlxG.keys.justPressed.LEFT || FlxG.keys.pressed.LEFT)
+		{
+			sick.x -= 2;
+			sick.y -= 0;
+			changedPos = true;
+		}
+		if (FlxG.keys.justPressed.RIGHT || FlxG.keys.pressed.RIGHT)
+		{
+			sick.x += 2;
+			sick.y -= 0;
+			changedPos = true;
+		}
+		if (FlxG.keys.justPressed.UP || FlxG.keys.pressed.UP)
+		{
+			sick.y -= 2;
+			sick.x += 0;
+			changedPos = true;
+		}
+		if (FlxG.keys.justPressed.DOWN || FlxG.keys.pressed.DOWN)
+		{
+			sick.y += 2;
+			sick.x += 0;
+			changedPos = true;
+		}
+		var mousePos:FlxPoint = FlxG.mouse.getScreenPosition(); // JOELwindows7: don't forget, mouse position! BOLO
+
 		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.pressed)
 		{
-			sick.x = (FlxG.mouse.x - (sick.width + 145));
-			sick.y = (FlxG.mouse.y - (sick.height + 145));
+			sick.x = (FlxG.mouse.screenX - (sick.width + 145));
+			sick.y = (FlxG.mouse.screenY - (sick.height + 145));
+			changedPos = true; // JOELwindows7: BOLO mark this alright
 		}
 
 		for (i in playerStrums)
@@ -380,7 +437,8 @@ class GameplayCustomizeState extends MusicBeatState
 			camHUD.zoom = FlxG.save.data.zoom;
 		}
 
-		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.justReleased)
+		// if (FlxG.mouse.overlaps(sick) && FlxG.mouse.justReleased)
+		if (changedPos) // JOELwindows7: use BOLO's check way!
 		{
 			FlxG.save.data.changedHitX = sick.x;
 			FlxG.save.data.changedHitY = sick.y;
@@ -389,11 +447,37 @@ class GameplayCustomizeState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.C)
 		{
-			var visibleCombos:Array<FlxSprite> = [];
+			var visibleCombos:Array<FlxUISprite> = [];
 
 			var seperatedScore:Array<Int> = [];
 
 			var comboSplit:Array<String> = (FlxG.random.int(10, 420) + "").split('');
+
+			// JOELwindows7: INCOMING BOLO COMBO SPR
+			var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2, pixelShitPart3));
+			comboSpr.screenCenter();
+			comboSpr.x = sick.x - 150;
+			comboSpr.y = sick.y + 125;
+			if (freeplayNoteStyle == 'pixel')
+			{
+				comboSpr.x += 142.5;
+				comboSpr.y += 65;
+			}
+			comboSpr.cameras = [camHUD];
+			comboSpr.acceleration.y = 600;
+			comboSpr.velocity.y -= 150;
+
+			if (freeplayNoteStyle != 'pixel')
+			{
+				comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.6));
+				comboSpr.antialiasing = FlxG.save.data.antialiasing;
+			}
+			else
+			{
+				comboSpr.setGraphicSize(Std.int(comboSpr.width * CoolUtil.daPixelZoom * 0.7));
+			}
+
+			add(comboSpr);
 
 			// make sure we have 3 digits to display (looks weird otherwise lol)
 			if (comboSplit.length == 1)
@@ -413,7 +497,9 @@ class GameplayCustomizeState extends MusicBeatState
 			var daLoop:Int = 0;
 			for (i in seperatedScore)
 			{
-				var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2, pixelShitPart4));
+				// JOELwindows7: bruh!
+				var numScore:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2,
+					pixelShitPart4));
 				numScore.screenCenter();
 				numScore.x = sick.x + (43 * daLoop) - 50;
 				numScore.y = sick.y + 100;
@@ -479,9 +565,10 @@ class GameplayCustomizeState extends MusicBeatState
 
 		if (controls.BACK || haveBacked)
 		{
-			FlxG.mouse.visible = false;
+			// FlxG.mouse.visible = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			FlxG.switchState(new OptionsDirect());
+			// FlxG.switchState(new OptionsDirect());
+			switchState(new OptionsDirect(), false, false, false, false, this); // JOELwindows7: bro, use this one instead!
 			haveBacked = false; // JOELwindows7: here yo!
 		}
 	}
@@ -495,13 +582,19 @@ class GameplayCustomizeState extends MusicBeatState
 			boyfriend.dance();
 			dad.dance();
 		}
-		else if (dad.curCharacter == 'spooky' || dad.curCharacter == 'gf')
-			dad.dance();
+		else if (curBeat % 2 != 0)
+		{
+			if (boyfriend.isDancing)
+				boyfriend.dance();
+			if (dad.isDancing)
+				dad.dance();
+		}
 
 		gf.dance();
 
 		if (!FlxG.keys.pressed.SPACE)
 		{
+			// JOELwindows7: BOLO why still `if curbeat % 4 == 0`?!
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.010;
 		}
@@ -595,7 +688,7 @@ class GameplayCustomizeState extends MusicBeatState
 			if (FlxG.save.data.middleScroll)
 				babyArrow.x -= 320;
 
-			cpuStrums.forEach(function(spr:FlxSprite)
+			cpuStrums.forEach(function(spr:FlxUISprite)
 			{
 				spr.centerOffsets(); // CPU arrows start out slightly off-center
 			});

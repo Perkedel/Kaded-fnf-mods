@@ -1,0 +1,69 @@
+{
+    "name": "Sky",
+    "displayName": "Sky",
+    "asset": "characters/sky_assets",
+    "barColor": "#5000E6",
+    "flipX": false,
+    "startingAnim": "danceRight",
+    "info": [
+        "get info from here:",
+        "https://github.com/Perkedel/bb-fnf-mods/blob/GitHackeh/source_sky/Character.hx",
+        "and asset from:",
+        "https://github.com/Perkedel/bb-fnf-mods/tree/GitHackeh/assetsSKY/shared/images/sky"
+    ],
+    "font": "Pixel Arial 11 Bold",
+    "fontDrop": "Pixel Arial 11 Bold",
+    "fontColor": "cyan",
+    "fontColorDrop": "0x00aaaa",
+    "dialogueChatSoundPaths": [
+        "pixelText"
+    ],
+    "heartOrgans": [{
+        "character": "sky",
+        "isEmulator": true,
+        "initHR": 70,
+        "maxHR": 400,
+        "minHR": 70,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "phobia": {
+        "lightningStorm": false,
+        "cancelCulture": true
+    },
+    "animations": [{
+            "name": "danceLeft",
+            "prefix": "sky idle",
+            "offsets": [0, 0],
+            "frameIndices": [8, 9, 10, 11, 12, 13, 14, 15]
+        },
+        {
+            "name": "danceRight",
+            "prefix": "sky idle",
+            "offsets": [0, 0],
+            "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7]
+        },
+        {
+            "name": "singUP",
+            "prefix": "sky up",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "sky left",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "sky right",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "sky down",
+            "offsets": [0, 0]
+        }
+    ]
+}

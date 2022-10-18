@@ -9,6 +9,7 @@ typedef SwagSection =
 	var lengthInSteps:Int;
 	var typeOfSection:Int;
 	var mustHitSection:Bool;
+	var ?gfSection:Bool; // JOELwindows7: here when GF plays instead. note, must hit section keeps accounted for turn. e.g. if must hit & gf = gf allied, otherwise gf is mad, etc.
 	var bpm:Float;
 	var changeBPM:Bool;
 	var altAnim:Bool;
@@ -21,12 +22,14 @@ class Section
 	public var startTime:Float = 0;
 	public var endTime:Float = 0;
 	public var sectionNotes:Array<Array<Dynamic>> = [];
+	public var betterSectionNotes:Array<NoteInSection> = []; // JOELwindows7: also joins here just in case
 	public var changeBPM:Bool = false;
 	public var bpm:Float = 0;
 
 	public var lengthInSteps:Int = 16;
 	public var typeOfSection:Int = 0;
 	public var mustHitSection:Bool = true;
+	public var gfSection:Bool = false; // JOELwindows7: here gf section.
 
 	/**
 	 *	Copies the first section into the second section!
@@ -40,6 +43,11 @@ class Section
 }
 
 // JOELwindows7: psst hey! also note in the section. YES!!! make it JSONed dictionary instead of Array<Dynamic> ugh confusing!
+
+/**
+ * Notes in the section
+ * @author JOELwindows7
+ */
 typedef NoteInSection =
 {
 	// inspire this from how note info array works in charting state and more.
@@ -50,6 +58,7 @@ typedef NoteInSection =
 	var beat:Float;
 	var noteType:Int; // IDEA: make noteType string. becomes ID such as `default`, `powerUp`, `mine`, etc.
 	var noteTypeId:String; // okay fine let's just do it now.
+	var hitsoundUseIt:Bool; // whether or not to override the hitsound with bellow path. BOLO yeah
 	var hitsoundPath:String;
 	var ?vowelType:Int; // radpas1231's a i u e o vowel classification. this choses mouth type in the animation for lip-sync effect.
 }

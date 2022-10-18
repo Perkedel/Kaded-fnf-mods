@@ -56,11 +56,13 @@ typedef SongData =
 	var eventObjects:Array<Event>;
 	var bpm:Float;
 	var needsVoices:Bool;
+	var ?needsVoices2:Bool; // JOELwindows7: player 2 voices
 	var speed:Float;
 	var player1:String;
 	var player2:String;
 	var gfVersion:String;
 	var noteStyle:String;
+	var ?arrowSkin:String; // JOELwindows7: psyched noteskin
 	var stage:String;
 	var ?hasVideo:Bool; // JOELwindows7: mark that this has video
 	var ?videoPath:String; // JOELwindows7: the video file path
@@ -102,6 +104,7 @@ typedef SongData =
 	var ?difficulty:Int; // JOELwindows7: the difficulty of the song. New way of defining rather than by name (unused, current system exist using name)
 	var ?difficultyId:String; // JOELwindows7: what's the difficulty ID? easy, medium, hard, or any other?
 	var ?difficultyStrength:Float; // JOELwindows7: how much number is the difficulty? just like Stepmania diff number.
+	var ?selectionColor:String; // JOELwindows7: color when song is selected. overrides total week color. also colors song position bar
 }
 
 typedef SongMeta =
@@ -146,6 +149,7 @@ typedef SongMeta =
 	var ?difficulty:Int; // JOELwindows7: the difficulty of the song. New way of defining rather than by name (unused, current system exist using name)
 	var ?difficultyId:String; // JOELwindows7: what's the difficulty ID? easy, medium, hard, or any other?
 	var ?difficultyStrength:Float; // JOELwindows7: how much number is the difficulty? just like Stepmania diff number.
+	var ?selectionColor:String; // JOELwindows7: color when song is selected. overrides total week color. also colors song position bar
 }
 
 class Song
@@ -201,10 +205,54 @@ class Song
 			convertedStuff.push(new Song.Event(name, pos, value, type, value2, value3)); // JOELwindows7: super idol
 		}
 
+		// JOELwindows7: also stringify stuffs like note type
+		for (i in song.notes)
+		{
+			if (i.betterSectionNotes == null || i.betterSectionNotes.length <= 0 || i.betterSectionNotes.length < i.sectionNotes.length)
+			{
+				i.betterSectionNotes = [];
+				for (j in 0...i.sectionNotes.length)
+				{
+					var stringedNoteType:String = switch (i.sectionNotes[j][5])
+					{
+						case 0:
+							'default'; // regular note
+						case 1:
+							'special'; // powerup
+						case 2:
+							'mine'; // decrease HP
+						case 3:
+							'important'; // critical do not miss or die
+						case 4:
+							'never'; // critical do not step or die
+						case _:
+							'default';
+					};
+
+					// i.betterSectionNotes
+					i.betterSectionNotes[j] = {
+						strumTime: i.sectionNotes[j][0],
+						noteData: i.sectionNotes[j][1],
+						sustainLength: i.sectionNotes[j][2],
+						isAlt: i.sectionNotes[j][3],
+						beat: i.sectionNotes[j][4],
+						noteType: i.sectionNotes[j][5],
+						noteTypeId: stringedNoteType,
+						hitsoundPath: i.sectionNotes[j][6],
+						vowelType: i.sectionNotes[j][7],
+						hitsoundUseIt: i.sectionNotes[j][8],
+						// IDEA: hitsoundLibrary. where folder. default is shared. can be week7 e.g. idk. no don't do this.
+						// why would we use different library folderations?
+					}
+				}
+			}
+		}
+
 		song.eventObjects = convertedStuff;
 
 		if (song.noteStyle == null)
-			song.noteStyle = "normal";
+			// JOELwindows7: then check maybe it's defined psychedly I guess..
+			song.noteStyle = song.arrowSkin != null ? song.arrowSkin : "normal";
 
 		if (song.gfVersion == null)
 			song.gfVersion = "gf";
@@ -296,7 +344,10 @@ class Song
 		}
 		else
 		{
-			songData.songName = songId.split('-').join(' ');
+			// var toCapDrop:String = String.capitalizeFirstLetter(songId.split('-').join(' '));
+			// songData.songName = songId.split('-').join(' ');
+			// JOELwindows7: extend classification.
+			songData.songName = songData.songName == null || songData.songName == '' ? songId.split('-').join(' ') : songData.songName;
 		}
 
 		// JOELwindows7: the artist too
@@ -314,16 +365,17 @@ class Song
 			songData.hasVideo = songMetaData.hasVideo != null ? songMetaData.hasVideo : false;
 
 		// JOELwindows7: Oh my God this is tiring already. btw, some are optional and can still be per difficulty basis.
-		if (songData.videoPath == null)
-			songData.videoPath = songMetaData.videoPath != null ? songMetaData.videoPath : "";
+		if (songData.videoPath == null || songData.videoPath == '')
+			songData.videoPath = songMetaData.videoPath != null && songMetaData.videoPath != '' ? songMetaData.videoPath : "";
 
 		// JOELwindows7: haaaaaaaaaaaaaaaa!!!!
 		if (songData.hasEpilogueVideo == null)
 			songData.hasEpilogueVideo = songMetaData.hasEpilogueVideo != null ? songMetaData.hasEpilogueVideo : false;
 
 		// JOELwindows7: boooooooof
-		if (songData.epilogueVideoPath == null)
-			songData.epilogueVideoPath = songMetaData.epilogueVideoPath != null ? songMetaData.epilogueVideoPath : "";
+		if (songData.epilogueVideoPath == null || songData.epilogueVideoPath == '')
+			songData.epilogueVideoPath = songMetaData.epilogueVideoPath != null
+				&& songMetaData.epilogueVideoPath != '' ? songMetaData.epilogueVideoPath : "";
 
 		// JOELwindows7: yay GitHub Copilot yey
 		if (songData.hasDialogueChat == null)
@@ -342,7 +394,7 @@ class Song
 
 		// JOELwindows7: right, these are all we have.
 		if (songData.allowedToHeadbang == null)
-			songData.allowedToHeadbang = songMetaData.allowedToHeadbang != null ? songMetaData.allowedToHeadbang : false;
+			songData.allowedToHeadbang = songMetaData.allowedToHeadbang != null ? songMetaData.allowedToHeadbang : true;
 
 		// JOELwindows7: lua & haxescript stuffs
 		if (songData.forceLuaModchartLegacy == null)
@@ -356,13 +408,13 @@ class Song
 
 		// JOELwindows7: fallbackers of the stuffs. the metadata should only overwrite if the variable is empty or null
 		if (songData.player1 == null || songData.player1 == "")
-			songData.player1 = songMetaData.player1 != null ? songMetaData.player1 : "bf";
+			songData.player1 = songMetaData.player1 != null && songMetaData.player1 != '' ? songMetaData.player1 : "bf";
 
 		if (songData.player2 == null || songData.player2 == "")
-			songData.player2 = songMetaData.player2 != null ? songMetaData.player2 : "dad";
+			songData.player2 = songMetaData.player2 != null && songMetaData.player2 != '' ? songMetaData.player2 : "dad";
 
 		if (songData.gfVersion == null || songData.gfVersion == "")
-			songData.gfVersion = songMetaData.gfVersion != null ? songMetaData.gfVersion : "gf";
+			songData.gfVersion = songMetaData.gfVersion != null && songMetaData.gfVersion != '' ? songMetaData.gfVersion : "gf";
 
 		if (songData.hasTankmanVideo == null)
 			songData.hasTankmanVideo = songMetaData.hasTankmanVideo != null ? songMetaData.hasTankmanVideo : false;
@@ -371,10 +423,12 @@ class Song
 			songData.hasEpilogueTankmanVideo = songMetaData.hasEpilogueTankmanVideo != null ? songMetaData.hasEpilogueTankmanVideo : false;
 
 		if (songData.tankmanVideoPath == null || songData.tankmanVideoPath == "")
-			songData.tankmanVideoPath = songMetaData.tankmanVideoPath != null ? songMetaData.tankmanVideoPath : "null";
+			songData.tankmanVideoPath = songMetaData.tankmanVideoPath != null
+				&& songMetaData.tankmanVideoPath != '' ? songMetaData.tankmanVideoPath : "null";
 
 		if (songData.epilogueTankmanVideoPath == null || songData.epilogueTankmanVideoPath == "")
-			songData.epilogueTankmanVideoPath = songMetaData.epilogueTankmanVideoPath != null ? songMetaData.epilogueTankmanVideoPath : "null";
+			songData.epilogueTankmanVideoPath = songMetaData.epilogueTankmanVideoPath != null
+				&& songMetaData.epilogueTankmanVideoPath != '' ? songMetaData.epilogueTankmanVideoPath : "null";
 
 		if (songMetaData.eventObjects != null && songMetaData.eventObjects != [] && songMetaData.eventObjects.length > 1)
 		{
@@ -420,6 +474,10 @@ class Song
 
 		if (songData.strumProfile == null)
 			songData.strumProfile = songMetaData.strumProfile != null ? songMetaData.strumProfile : "Dance-Single";
+
+		if (songData.selectionColor == null || songData.selectionColor == '')
+			songData.selectionColor = songMetaData.selectionColor != null
+				&& songMetaData.selectionColor != '' ? songMetaData.selectionColor : "";
 
 		// songData += cast(jsonMetaData); //JOELwindows7: how the peck I append this?!
 

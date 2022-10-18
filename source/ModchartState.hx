@@ -4,6 +4,11 @@
 // LuaJit only works for C++; JOELwindows7: wtf Linux not working?
 // https://lib.haxe.org/p/linc_luajit/
 // Lua
+import hscript.ParserEx;
+import hscript.InterpEx;
+import Shader;
+import hscript.Interp;
+import flixel.addons.ui.FlxUISprite;
 import LuaClass;
 #if FEATURE_GIF
 import flixel.FlxGifSprite;
@@ -15,6 +20,7 @@ import LuaClass.LuaWindow;
 import LuaClass.LuaSprite;
 import LuaClass.LuaCamera;
 import LuaClass.LuaReceptor;
+import LuaClass.LuaNote;
 import openfl.display3D.textures.VideoTexture;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -35,14 +41,22 @@ import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import openfl.Lib;
+import hscript.Parser;
+import hscript.Interp;
 import HaxeScriptState;
 
 using StringTools;
 
+// JOELwindows7: FlxUI fy!
 class ModchartState
 {
 	// public static var shaders:Array<LuaShader> = null; // JOELwindows7: uncomment now!!! nvm
 	public static var lua:State = null;
+	// JOELwindows7: NEW BOLO stuffs. use EX man!
+	public static var haxeInterp:InterpEx = null;
+	public static var shownNotes:Array<LuaNote> = [];
+
+	var lastCalledFunction:String = '';
 
 	// JOELwindows7: kem0x mod shader
 	#if EXPERIMENTAL_KEM0X_SHADERS
@@ -52,6 +66,7 @@ class ModchartState
 
 	function callLua(func_name:String, args:Array<Dynamic>, ?type:String):Dynamic
 	{
+		lastCalledFunction = func_name; // JOELwindows7: BOLO remember last called function
 		var result:Any = null;
 
 		Lua.getglobal(lua, func_name);
@@ -236,6 +251,10 @@ class ModchartState
 
 		Lua.pushnumber(lua, object);
 		Lua.setglobal(lua, var_name);
+
+		// JOELwindows7: extra tell variable change!
+		// executeState("variableChange", [var_name, object]);
+		// callLua("variableChange", [var_name, object]);
 	}
 
 	public function getVar(var_name:String, type:String):Dynamic
@@ -290,7 +309,7 @@ class ModchartState
 		return Reflect.field(PlayState.instance, id);
 	}
 
-	public static var luaSprites:Map<String, FlxSprite> = [];
+	public static var luaSprites:Map<String, FlxUISprite> = [];
 
 	function changeDadCharacter(id:String)
 	{
@@ -340,7 +359,7 @@ class ModchartState
 				+ spritePath
 				+ ".png") #end);
 
-		var sprite:FlxSprite = new FlxSprite(0, 0);
+		var sprite:FlxUISprite = new FlxUISprite(0, 0);
 
 		// JOELwindows7: heuristical
 		sprite.frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data),
@@ -404,7 +423,7 @@ class ModchartState
 		// var data:BitmapData = BitmapData.fromFile(path + spritePath + ".png");
 		var data:BitmapData = BitmapData.fromFile(#if !mobile path + "/" + spritePath + ".png" #else Asset2File.getPath(path + "/" + spritePath + ".png") #end);
 
-		var sprite:FlxSprite = new FlxSprite(0, 0);
+		var sprite:FlxUISprite = new FlxUISprite(0, 0);
 		var imgWidth:Float = FlxG.width / data.width;
 		var imgHeight:Float = FlxG.height / data.height;
 		var scale:Float = imgWidth <= imgHeight ? imgWidth : imgHeight;
@@ -442,7 +461,7 @@ class ModchartState
 				PlayState.instance.addObject(PlayState.dad);
 			}
 		}
-		
+
 		new LuaSprite(sprite, toBeCalled).Register(lua);
 		#end // JOELwindows7: do not register if there is no sprite! null object reference
 
@@ -515,7 +534,7 @@ class ModchartState
 				PlayState.instance.addObject(PlayState.dad);
 			}
 		}
-		
+
 		new LuaGifSprite(sprite, toBeCalled).Register(lua);
 		#end // JOELwindows7: do not register if there is no sprite! null object reference
 
@@ -534,6 +553,7 @@ class ModchartState
 
 	function new(?isStoryMode = true, rawMode:Bool = false, pathu:String = "") // JOELwindows7: make lua stageont. ? isStoryMode is upstream pls push away!
 	{
+		shownNotes = []; // JOELwindows7: init the shownNotes array. BOLO
 		trace('opening a lua state (because we are cool :))');
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
@@ -570,7 +590,11 @@ class ModchartState
 		{
 			Application.current.window.alert("LUA COMPILE ERROR:\n" + Lua.tostring(lua, result), "Kade Engine Modcharts");
 			FlxG.log.warn(["LUA COMPILE ERROR:\n" + Lua.tostring(lua, result)]);
-			FlxG.switchState(new FreeplayState());
+			lua = null; // JOELwindows7: Don't forget to clear Lua! thancc BOLO.
+			// FlxG.switchState(new FreeplayState());
+			// switchState(new FreeplayState());
+			MusicBeatState.switchStateStatic(new FreeplayState());
+			PlayState.instance.clean();
 			return;
 		}
 
@@ -578,12 +602,18 @@ class ModchartState
 
 		setVar("difficulty", PlayState.storyDifficulty);
 		setVar("bpm", Conductor.bpm);
-		setVar("scrollspeed", FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed : PlayState.SONG.speed);
+		// setVar("scrollspeed", FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed : PlayState.SONG.speed);
+		// JOELwindows7: complicated set of scroll speed BOLO yess.
+		setVar("scrollspeed",
+			FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed * PlayState.songMultiplier : PlayState.SONG.speed * PlayState.songMultiplier);
 		setVar("fpsCap", FlxG.save.data.fpsCap);
 		setVar("downscroll", FlxG.save.data.downscroll);
 		setVar("flashing", FlxG.save.data.flashing);
 		setVar("distractions", FlxG.save.data.distractions);
 		setVar("colour", FlxG.save.data.colour);
+		// JOELwindows7: BOLO things
+		setVar("middlescroll", FlxG.save.data.middleScroll);
+		setVar("rate", PlayState.songMultiplier); // Kinda XD since you can modify this through Lua and break the game.
 
 		setVar("curStep", 0);
 		setVar("curBeat", 0);
@@ -614,8 +644,8 @@ class ModchartState
 
 		setVar("strumLineY", PlayState.instance.strumLine.y);
 
-		//JOELwindows7: Statusoid
-		setVar("inGameOver", false); //psychedly
+		// JOELwindows7: Statusoid
+		setVar("inGameOver", false); // psychedly
 
 		// JOELwindows7: mirror the variables here!
 		// Colored bg
@@ -652,10 +682,18 @@ class ModchartState
 		setVar("window", Lib.application.window);
 		// end mirror variables
 
+		// JOELwindows7:
 		// init just in case
 		setVar("songLength", 0);
+		setVar("accuracy", PlayState.instance.accuracy);
 
 		// callbacks
+
+		// JOELwindows7: BOLO precache
+		Lua_helper.add_callback(lua, "precache", function(asset:String, type:String, ?library:String)
+		{
+			PlayState.instance.precacheThing(asset, type, library);
+		});
 
 		Lua_helper.add_callback(lua, "makeSprite", makeLuaSprite);
 		Lua_helper.add_callback(lua, "makeGifSprite", makeLuaGifSprite); // JOELwindows7: gifs are now supported. GWebDev gif sprite
@@ -703,7 +741,7 @@ class ModchartState
 			Lua_helper.add_callback(lua, "changeDadCharacter", changeDadCharacter);
 
 			Lua_helper.add_callback(lua, "changeBoyfriendCharacter", changeBoyfriendCharacter);
-			
+
 			Lua_helper.add_callback(lua, "changeGirlfriendCharacter", changeGirlfriendCharacter);
 
 			Lua_helper.add_callback(lua, "getProperty", getPropertyByName);
@@ -719,6 +757,12 @@ class ModchartState
 		Lua_helper.add_callback(lua, "setSustainWiggle", function(wiggleId)
 		{
 			PlayState.instance.camSustains.setFilters([new ShaderFilter(luaWiggles.get(wiggleId).shader)]);
+		});
+
+		// JOELwindows7: here wiggle for strum BOLO too
+		Lua_helper.add_callback(lua, "setStrumsWiggle", function(wiggleId)
+		{
+			PlayState.instance.camStrums.setFilters([new ShaderFilter(luaWiggles.get(wiggleId).shader)]);
 		});
 
 		Lua_helper.add_callback(lua, "createWiggle", function(freq:Float, amplitude:Float, speed:Float)
@@ -770,12 +814,20 @@ class ModchartState
 				PlayState.instance.backgroundVideo("assets/videos/" + videoName + ".webm");
 			});
 
+			// JOELwindows7: BOLO overlay video
+			/*
+				Lua_helper.add_callback(lua, "initBackgroundOverlayVideo", function(vidPath:String, type:String, layInFront:Bool)
+				{
+					PlayState.instance.backgroundOverlayVideo(vidPath, type, layInFront);
+				});
+			 */
+
 			Lua_helper.add_callback(lua, "pauseVideo", function()
 			{
 				if (PlayState.instance.useVLC)
 				{
 					#if FEATURE_VLC
-					PlayState.instance.vlcHandler.pause();
+					PlayState.instance.vlcHandler.bitmap.pause(); // JOELwindows7: FIXX!!!!
 					#end
 				}
 				else if (!GlobalVideo.get().paused)
@@ -787,7 +839,7 @@ class ModchartState
 				if (PlayState.instance.useVLC)
 				{
 					#if FEATURE_VLC
-					PlayState.instance.vlcHandler.resume();
+					PlayState.instance.vlcHandler.bitmap.resume(); // JOELwindows7: FORGOR
 					#end
 				}
 				else if (GlobalVideo.get().paused)
@@ -799,7 +851,10 @@ class ModchartState
 				if (PlayState.instance.useVLC)
 				{
 					#if FEATURE_VLC
-					// PlayState.instance.vlcHandler.restart();
+					// PlayState.instance.vlcHandler.bitmap.restart(); // JOELwindows7: Bumir
+					PlayState.instance.vlcHandler.bitmap.pause();
+					PlayState.instance.vlcHandler.bitmap.seek(0);
+					PlayState.instance.vlcHandler.bitmap.play();
 					#end
 				}
 				else
@@ -824,6 +879,30 @@ class ModchartState
 			Lua_helper.add_callback(lua, "setVideoSpriteScale", function(scale:Float)
 			{
 				PlayState.instance.videoSprite.setGraphicSize(Std.int(PlayState.instance.videoSprite.width * scale));
+			});
+
+			// JOELwindows7: BOLO set lane underlay
+			Lua_helper.add_callback(lua, "setLaneUnderLayPos", function(value:Int)
+			{
+				PlayState.instance.laneunderlay.x = value;
+			});
+
+			// JOELwindows7: & the oppponent ones.
+			Lua_helper.add_callback(lua, "setOpponentLaneUnderLayOpponentPos", function(value:Int)
+			{
+				PlayState.instance.laneunderlayOpponent.x = value;
+			});
+
+			// JOELwindows7: Don't forget the lane alpha
+			Lua_helper.add_callback(lua, "setLaneUnderLayAlpha", function(value:Int)
+			{
+				PlayState.instance.laneunderlay.alpha = value;
+			});
+
+			// JOELwindows7: and opponent lane alpha
+			Lua_helper.add_callback(lua, "setOpponentLaneUnderLayOpponentAlpha", function(value:Int)
+			{
+				PlayState.instance.laneunderlayOpponent.alpha = value;
 			});
 
 			Lua_helper.add_callback(lua, "setHudAngle", function(x:Float)
@@ -909,6 +988,31 @@ class ModchartState
 		{
 			PlayState.instance.strumLine.y = y;
 		});
+
+		// JOELwindows7: BOLO note stuffs here we go
+		Lua_helper.add_callback(lua, "getNotes", function(y:Float)
+		{
+			Lua.newtable(lua);
+
+			for (i in 0...PlayState.instance.notes.members.length)
+			{
+				var note = PlayState.instance.notes.members[i];
+				Lua.pushstring(lua, note.LuaNote.className);
+				Lua.rawseti(lua, -2, i);
+			}
+		});
+
+		Lua_helper.add_callback(lua, "setScrollSpeed", function(value:Float)
+		{
+			// PlayState.instance.scrollSpeed = value;
+			PlayStateChangeables.scrollSpeed = value; // JOELwindows7: No, Kade use static variable over there instead.
+		});
+
+		Lua_helper.add_callback(lua, "changeScrollSpeed", function(mult:Float, time:Float, ?ease:String)
+		{
+			PlayState.instance.changeScrollSpeed(mult, time, getFlxEaseByString(ease));
+		});
+		// end BOLO note stuffs
 
 		// actors
 		// JOELwindows7: olde
@@ -1168,7 +1272,6 @@ class ModchartState
 			// JOELwindows7: old
 			if (PlayStateChangeables.legacyLuaModchartSupport)
 			{
-				var member = PlayState.strumLineNotes.members[i];
 				Debug.logTrace(PlayState.strumLineNotes.members[i].x
 					+ " "
 					+ PlayState.strumLineNotes.members[i].y + " " + PlayState.strumLineNotes.members[i].angle + " | strum" + i);
@@ -1178,6 +1281,7 @@ class ModchartState
 				setVar("defaultStrum" + i + "Y", Math.floor(member.y));
 				// setVar("strum" + i + "Angle", Math.floor(member.angle));
 				setVar("defaultStrum" + i + "Angle", Math.floor(member.angle));
+
 				Debug.logTrace("Adding strum" + i);
 			}
 			// end old
@@ -1702,6 +1806,40 @@ class ModchartState
 		}
 		// end tweener old
 
+		// JOELwindows7: BOLO Psyched shaders!!!!
+		// SHADER SHIT (Thanks old psych engine)
+
+		Lua_helper.add_callback(lua, "addChromaticAbberationEffect", function(camera:String, chromeOffset:Float = 0.005)
+		{
+			PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
+		});
+
+		Lua_helper.add_callback(lua, "addVignetteEffect", function(camera:String, radius:Float = 0.5, smoothness:Float = 0.5)
+		{
+			PlayState.instance.addShaderToCamera(camera, new VignetteEffect(radius, smoothness));
+		});
+
+		Lua_helper.add_callback(lua, "addGameboyEffect", function(camera:String, brightness:Float = 1.0)
+		{
+			PlayState.instance.addShaderToCamera(camera, new GameboyEffect(brightness));
+		});
+
+		Lua_helper.add_callback(lua, "addCRTEffect", function(camera:String, curved:Bool = true)
+		{
+			PlayState.instance.addShaderToCamera(camera, new CRTEffect(curved));
+		});
+
+		Lua_helper.add_callback(lua, "addGlitchEffect", function(camera:String, waveSpeed:Float = 0, waveFrq:Float = 0, waveAmp:Float = 0)
+		{
+			PlayState.instance.addShaderToCamera(camera, new GlitchEffect(waveSpeed, waveFrq, waveAmp));
+		});
+
+		Lua_helper.add_callback(lua, "clearEffects", function(camera:String)
+		{
+			PlayState.instance.clearShaderFromCamera(camera);
+		});
+		// end Psyched shader
+
 		// JOELwindows7: kem0x mod shader
 		Lua_helper.add_callback(lua, "createShaders", function(shaderName, ?optimize:Bool = false)
 		{
@@ -1943,6 +2081,147 @@ class ModchartState
 			}
 		});
 
+		// JOELwindows7: NOW NEW FUNCTIONALITY
+		Lua_helper.add_callback(lua, 'getStepModulo', function(stepWhich:Int, equalsWhat:Float = 0)
+		{
+			@:privateAccess {
+				return PlayState.instance.getStepModulo(stepWhich, equalsWhat);
+			}
+		});
+
+		Lua_helper.add_callback(lua, 'getStepBetween',
+			function(stepLeft:Int, stepRight:Int, withEquals:Bool = false, leftEquals:Bool = true, rightEquals:Bool = true)
+			{
+				@:privateAccess {
+					return PlayState.instance.getStepBetween(stepLeft, stepRight, withEquals, leftEquals, rightEquals);
+				}
+			});
+
+		Lua_helper.add_callback(lua, 'getStepCompare', function(stepWhich:Int, compareType:String)
+		{
+			@:privateAccess {
+				return PlayState.instance.getStepCompareStr(stepWhich, compareType);
+			}
+		});
+
+		// JOELwindows7: HOLD! before we go, let's just bring our HaxeScriptState interp to here first. shall we?
+		if (PlayState.hscriptModchart != null)
+		{
+			// uh, useless, because according to your PlayState, the lua script loads first!
+			@:privateAccess {
+				haxeInterp = PlayState.hscriptModchart.interp;
+			}
+		}
+
+		// JOELwindows7: INCOMING BOLO HAXE SCRIPT THINGIES
+		Lua_helper.add_callback(lua, "runHaxeCode", function(codeToRun:String)
+		{
+			// you insert entire haxe code to the function.
+			if (haxeInterp == null)
+			{
+				// haxeInterp = new InterpEx(); // JOELwindows7: use EX man!
+				haxeInterp = HaxeScriptState.createInterp(); // how about this instead?
+				// haxeInterp.variables.set('FlxG', HscriptGlobals); // JOELwindows7: DO NOT DIRECTLY FlxG!!! UNSAFE!!! save data manipulation e.g.
+				// JOELwindows7: also pls modify so it uses BulbyVR filters.
+				/*
+						haxeInterp.variables.set('FlxSprite', FlxSprite);
+						haxeInterp.variables.set('FlxCamera', FlxCamera);
+						haxeInterp.variables.set('FlxTween', FlxTween);
+						haxeInterp.variables.set('FlxEase', FlxEase);
+						haxeInterp.variables.set('PlayState', PlayState);
+						haxeInterp.variables.set('game', PlayState.instance);
+						haxeInterp.variables.set('currentPlayState', PlayState.instance); // JOELwindows7: mirror
+						haxeInterp.variables.set('Paths', Paths);
+						haxeInterp.variables.set('Conductor', Conductor);
+						haxeInterp.variables.set('Character', Character);
+						haxeInterp.variables.set('Alphabet', Alphabet);
+						haxeInterp.variables.set('StringTools', StringTools);
+					 
+					haxeInterp.variables.set('setVar', function(name:String, value:Dynamic)
+					{
+						PlayState.instance.variables.set(name, value);
+					});
+					haxeInterp.variables.set('getVar', function(name:String)
+					{
+						if (!PlayState.instance.variables.exists(name))
+							return null;
+						return PlayState.instance.variables.get(name);
+					});
+				 */
+			}
+
+			try
+			{
+				// JOELwindows7: use ParserEx man!
+				var myFunction:Dynamic = haxeInterp.expr(new ParserEx().parseString(codeToRun));
+				myFunction();
+			}
+			catch (e:Dynamic)
+			{
+				switch (e)
+				{
+					case 'Null Function Pointer', 'SReturn':
+					// nothing
+					default:
+						// JOELwindows7: there is details!
+						// was `path + ":" + lastCalledFunction + " - " + e`
+						Debug.logError(path + ":" + lastCalledFunction + " - " + e);
+						Application.current.window.alert('$path : $lastCalledFunction - $e\n${e.details()}', "Kade Engine Modcharts");
+				}
+			}
+		});
+
+		Lua_helper.add_callback(lua, "addHaxeLibrary", function(libName:String, ?libFolder:String = '')
+		{
+			if (haxeInterp == null)
+			{
+				// haxeInterp = new InterpEx(); // JOELwindows7: use EX man
+				haxeInterp = HaxeScriptState.createInterp(); // JOELwindows7: use this instead, I guess.
+				/*
+					haxeInterp.variables.set('FlxG', FlxG);
+					haxeInterp.variables.set('FlxSprite', FlxSprite);
+					haxeInterp.variables.set('FlxCamera', FlxCamera);
+					haxeInterp.variables.set('FlxTween', FlxTween);
+					haxeInterp.variables.set('FlxEase', FlxEase);
+					haxeInterp.variables.set('PlayState', PlayState);
+					haxeInterp.variables.set('game', PlayState.instance);
+					haxeInterp.variables.set('currentPlayState', PlayState.instance); // JOELwindows7: mirror
+					haxeInterp.variables.set('Paths', Paths);
+					haxeInterp.variables.set('Conductor', Conductor);
+					haxeInterp.variables.set('Character', Character);
+					haxeInterp.variables.set('Alphabet', Alphabet);
+					haxeInterp.variables.set('StringTools', StringTools);
+					haxeInterp.variables.set('setVar', function(name:String, value:Dynamic)
+					{
+						PlayState.instance.variables.set(name, value);
+					});
+					haxeInterp.variables.set('getVar', function(name:String)
+					{
+						if (!PlayState.instance.variables.exists(name))
+							return null;
+						return PlayState.instance.variables.get(name);
+					});
+				 */
+			}
+
+			try
+			{
+				var str:String = '';
+				if (libFolder.length > 0)
+					str = libFolder + '.';
+
+				haxeInterp.variables.set(libName, Type.resolveClass(str + libName));
+			}
+			catch (e:Dynamic)
+			{
+				// JOELwindows7: there is detail!
+				// was `path + ":" + lastCalledFunction + " - " + e`
+				Debug.logError('$path : $lastCalledFunction - $e\n${e.details()}');
+				Application.current.window.alert('$path : $lastCalledFunction - $e\n${e.details()}', "Kade Engine Modcharts");
+			}
+		});
+		// end BOLO HAXE SCRIPT THINGIES
+
 		// end more special functions
 		// So you don't have to hard code your cool effects.
 		// end Special additional functions
@@ -1973,13 +2252,26 @@ class ModchartState
 	 */
 	public function executeState(name, args:Array<Dynamic>)
 	{
-		return Lua.tostring(lua, callLua(name, args));
+		// JOELwindows7: extra when function called
+		// was immediate return like
+		// return Lua.tostring(lua, callLua(name, args));
+		var result = Lua.tostring(lua, callLua(name, args));
+		// callLua("methodExecutes", [name, args]);
+		return result;
 	}
 
 	// JOELwindows7: raw mode pls!
 	public static function createModchartState(?isStoryMode = true, rawMode:Bool = false, path:String = ""):ModchartState
 	{
 		return new ModchartState(isStoryMode, rawMode, path);
+	}
+
+	// JOELwindows7: BOLO get FlxEase by string
+	// ouu, we gotta fix capital here. nvm, it's already lowercased so whatever it says caps, some, or not.
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/ModchartState.hx
+	public static function getFlxEaseByString(?ease:String = '')
+	{
+		return HelperFunctions.getFlxEaseByString(ease);
 	}
 }
 #end

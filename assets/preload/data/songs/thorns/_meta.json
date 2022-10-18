@@ -1,7 +1,9 @@
 {
     "offset": 0,
+    "name": "Thorns",
     "artist": "Kawai Sprite",
     "hasEpilogueVideo": true,
-    "epilogueVideoPath": "after-week6",
-    "hasDialogueChat": true
+    "epilogueVideoPath": "after-week6-embargo-lift",
+    "hasDialogueChat": true,
+    "selectionColor": "purple"
 }

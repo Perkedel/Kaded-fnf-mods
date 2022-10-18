@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.*;
 import Conductor.BPMChangeEvent;
 import flixel.FlxCamera;
 import flixel.math.FlxRect;
@@ -30,25 +31,26 @@ import flixel.input.FlxKeyManager;
 
 using StringTools;
 
-class DiffOverview extends FlxSubState
+// JOELwindows7: Broh!!! FlxUI fy & COrestate pls. cast!
+class DiffOverview extends CoreSubState // FlxSubState
 {
-	var blackBox:FlxSprite;
+	var blackBox:FlxUISprite;
 
 	var handOne:Array<Float>;
 	var handTwo:Array<Float>;
 
-	var giantText:FlxText;
+	var giantText:FlxUIText;
 
 	var SONG:SongData;
-	var strumLine:FlxSprite;
+	var strumLine:FlxUISprite;
 	var camHUD:FlxCamera;
 
-	var offset:FlxText;
+	var offset:FlxUIText;
 
 	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT'];
 	private var dataColor:Array<String> = ['purple', 'blue', 'green', 'red'];
 
-	public static var playerStrums:FlxTypedGroup<FlxSprite> = null;
+	public static var playerStrums:FlxTypedGroup<FlxUISprite> = null;
 
 	override function create()
 	{
@@ -65,14 +67,15 @@ class DiffOverview extends FlxSubState
 
 		FlxCamera.defaultCameras = [camGame];
 
-		playerStrums = new FlxTypedGroup<FlxSprite>();
+		playerStrums = new FlxTypedGroup<FlxUISprite>();
 
 		SONG = FreeplayState.songData.get(FreeplayState.songs[FreeplayState.curSelected].songName)[FreeplayState.curDifficulty];
 
-		strumLine = new FlxSprite(0, (FlxG.height / 2) - 295).makeGraphic(FlxG.width, 10);
+		// JOELwindows7: GOIYYYYYYY
+		strumLine = cast new FlxUISprite(0, (FlxG.height / 2) - 295).makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
 
-		blackBox = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		blackBox = cast new FlxUISprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		blackBox.alpha = 0;
 		add(blackBox);
 
@@ -104,7 +107,7 @@ class DiffOverview extends FlxSubState
 		blackBox.y -= 100;
 		blackBox.x -= 100;
 
-		offset = new FlxText(10, FlxG.height
+		offset = new FlxUIText(10, FlxG.height
 			- 40, 0,
 			"Offset: "
 			+ HelperFunctions.truncateFloat(FlxG.save.data.offset, 0)

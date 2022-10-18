@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
 #if FEATURE_LUAMODCHART
@@ -18,6 +20,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
+// JOELwindows7: FlxUI fy!
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -25,6 +28,7 @@ class PauseSubState extends MusicBeatSubstate
 	public static var goToOptions:Bool = false;
 	public static var goBack:Bool = false;
 	public static var goConfirmation:Bool = false; // JOELwindows7: here confirmation mode.
+	public static var silencePauseBeep:Bool = false; // JOELwindows7: set this single trigger tripwire to true to silence pause beep.
 
 	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
 	// JOELwindows7: Oh we got more here!
@@ -39,12 +43,12 @@ class PauseSubState extends MusicBeatSubstate
 
 	var noMusicPls:Bool = false; // JOELwindows7: enable to skip adding music.
 
-	var perSongOffset:FlxText;
+	var perSongOffset:FlxUIText;
 
 	var offsetChanged:Bool = false;
 	var startOffset:Float = PlayState.songOffset;
 
-	var bg:FlxSprite;
+	var bg:FlxUISprite;
 
 	public static var inCharter:Bool = false; // JOELwindows7: set this for in chartener or not.
 	public static var inStoryMenu:Bool = false; // JOELwindows7: maybe we should make this substate aware where state are we instead?
@@ -82,9 +86,22 @@ class PauseSubState extends MusicBeatSubstate
 				menuItems.remove("Resume");
 				#if FEATURE_VLC
 				// if (PlayState.instance.vlcHandler.isPlaying)
-				PlayState.instance.vlcHandler.pause();
+				PlayState.instance.vlcHandler.bitmap.pause(); // JOELwindows7: YOU PECKING FORGOT!!!
 				#end
 			}
+
+		// JOELwindows7: play the pause sound
+		if (!(silencePauseBeep))
+		{
+			playSoundEffect("PauseOpen");
+			// this still often cuts of. maybe we should add it just like pause music?
+		}
+		else
+		{
+			// the silence is on! no play pause sound & just do bellow
+			silencePauseBeep = false; // false it again so next time you pause, it play pause sound again.
+			// haha cool single trigger tripwire flag toggle!
+		}
 
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
@@ -104,6 +121,8 @@ class PauseSubState extends MusicBeatSubstate
 				pauseMusic.volume = 0;
 				pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 				pauseMusic.ID = 9000;
+				// JOELwindows7: install to Game PEngined extensions
+				Game.pauseMusic = pauseMusic;
 
 				FlxG.sound.list.add(pauseMusic);
 			}
@@ -119,20 +138,21 @@ class PauseSubState extends MusicBeatSubstate
 				pauseMusic.destroy(); // JOELwindows7: make sure it completely destroy for no music allowed mode.
 		}
 
-		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		// JOELwindows7: recast
+		bg = cast new FlxUISprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0;
 		bg.scrollFactor.set();
 		add(bg);
 
-		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
-		levelInfo.text += PlayState.SONG.songName;
+		var levelInfo:FlxUIText = new FlxUIText(20, 15, 0, "", 32);
+		levelInfo.text += '${PlayState.SONG.artist} - ${PlayState.SONG.songName}';
 		levelInfo.scrollFactor.set();
 		// levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
 		levelInfo.setFormat(Paths.font("UbuntuMono-R.ttf"), 32); // JOELwindows7: use universal language font
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
-		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
+		var levelDifficulty:FlxUIText = new FlxUIText(20, 15 + 32, 0, "", 32);
 		levelDifficulty.text += CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toUpperCase();
 		levelDifficulty.scrollFactor.set();
 		// levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
@@ -141,7 +161,7 @@ class PauseSubState extends MusicBeatSubstate
 		add(levelDifficulty);
 
 		// JOELwindows7: show how many you failed during playing this song.
-		var levelBlueballs:FlxText = new FlxText(20, 15 + (32 * 2), 0, "", 32);
+		var levelBlueballs:FlxUIText = new FlxUIText(20, 15 + (32 * 2), 0, "", 32);
 		levelBlueballs.text += "Blueballed: " + Std.string(GameOverSubstate.getBlueballCounter());
 		levelBlueballs.scrollFactor.set();
 		// levelBlueballs.setFormat(Paths.font('vcr.ttf'), 32);
@@ -164,8 +184,9 @@ class PauseSubState extends MusicBeatSubstate
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
-		// perSongOffset = new FlxText(5, FlxG.height - 18, 0, "Hello chat", 12);
-		perSongOffset = new FlxText(5, FlxG.height - 18, 0, "Song ID: " + PlayState.SONG.songId + " | Hello Chat", 12); // JOELwindows7: don't empty that this!
+		// perSongOffset = new FlxUIText(5, FlxG.height - 18, 0, "Hello chat", 12);
+		perSongOffset = new FlxUIText(5, FlxG.height - 18, 0, "Song ID: " + PlayState.SONG.songId + " | Hello Chat",
+			12); // JOELwindows7: don't empty that this!
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
@@ -314,6 +335,9 @@ class PauseSubState extends MusicBeatSubstate
 							case _:
 								true;
 						};
+
+						// JOELwindows7: play this sound effect
+						playSoundEffect("PauseClose");
 					}
 					else
 						FlxG.mouse.visible = true; // JOELwindows7: sigh, do not invisiblize mouse in charter!
@@ -345,7 +369,9 @@ class PauseSubState extends MusicBeatSubstate
 						PlayState.instance.removedVideo = true;
 					}
 					PlayState.instance.clean();
-					FlxG.resetState();
+					// FlxG.resetState();
+					// MusicBeatState.resetState(); // JOELwindows7: BOLO reset state
+					MusicBeatState.switchStateStatic(new PlayState()); // JOELwindows7: BOLO nvm just manually go to playstate again instead.
 					PlayState.stageTesting = false;
 				case "Options":
 					goToOptions = true;
@@ -647,5 +673,11 @@ class PauseSubState extends MusicBeatSubstate
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+	}
+
+	// JOELwindows7: move them here!
+	override function manageMouse()
+	{
+		super.manageMouse();
 	}
 }

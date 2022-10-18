@@ -11,6 +11,7 @@ import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
+// JOELwindows7: FlxUI fy!!!
 class GameOverSubstate extends MusicBeatSubstate
 {
 	// class TesMo{} // TEST: JOELwindows7: class definition is not allowed inside a class defintion.
@@ -30,6 +31,23 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	static var blueBallCounter:Int = 0; // JOELwindows7: and now! for the moment of truth, blueball counter!!!
 
+	// JOELwindows7: globalize these variables which previously local.
+	var daStage:String = "";
+	var daBf:String = '';
+	var daDad:String = '';
+	var daSong:String = '';
+
+	public static var instance:GameOverSubstate; // JOELwindows7: BOLO has instanceoid
+
+	// JOELwindows7: BOLO has create
+	override function create()
+	{
+		Paths.clearUnusedMemory();
+		instance = this;
+
+		super.create();
+	}
+
 	public function new(x:Float, y:Float, ?handoverUnspawnNotes:Array<Note>, ?handoverStaticArrow:Array<StaticArrow>)
 	{
 		// JOELwindows7: add blueball
@@ -45,9 +63,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.sound.music.stop();
 
 		// JOELwindows7: install the handover arrows too as well for cool osu! arrows collapsing.
-		var daStage = PlayState.Stage.curStage;
-		var daBf:String = '';
-		var daSong:String = PlayState.SONG.songId; // damn, I couldn't access that. I change the publicity to public man! JOELwindows7: use Song ID.
+		daStage = PlayState.Stage.curStage;
+		daBf = '';
+		daSong = PlayState.SONG.songId; // damn, I couldn't access that. I change the publicity to public man! JOELwindows7: use Song ID.
 		switch (PlayState.boyfriend.curCharacter)
 		{
 			case 'bf-pixel':
@@ -60,9 +78,14 @@ class GameOverSubstate extends MusicBeatSubstate
 				daBf = 'hookx';
 			case 'placeholder':
 				daBf = 'placeholder';
+			// JOELwindows7: & finally week 7.
+			case 'bf-holding-gf':
+				daBf = 'bf-holding-gf-dead';
 			default:
-				daBf = 'bf';
+				// daBf = 'bf';
+				daBf = PlayState.boyfriend.deathCharacterIsSameAsThis ? PlayState.boyfriend.curCharacter : PlayState.boyfriend.deathCharacter; // JOELwindows7: or maybe we should specify? YES we must
 		}
+		daDad = PlayState.dad.curCharacter; // JOELwindows7: here the player 2
 
 		// JOELwindows7: check if the song is midi version
 		if (StringTools.endsWith(PlayState.SONG.songId, midiSuffix))
@@ -73,6 +96,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			detectMidiSuffix = "";
 		}
+
+		// JOELwindows7: & conclusion for these suffixes
+		setAddSuffixes(stageSuffix, detectMemeSuffix, detectMidiSuffix);
 
 		// JOELwindows7: checks depending on song
 		switch (daSong.toLowerCase())
@@ -91,6 +117,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			default:
 				{}
 		}
+		// TODO: play fail sound & play random variant fail sound like did on character!!!
 
 		super();
 
@@ -118,7 +145,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				if (handoverUnspawnNotes[i].mustPress)
 				{
-					// var imageArrow = new FlxSprite(handoverUnspawnNotes[i].x, handoverUnspawnNotes[i].y, handoverUnspawnNotes[i].graphic);
+					// var imageArrow = new FlxUISprite(handoverUnspawnNotes[i].x, handoverUnspawnNotes[i].y, handoverUnspawnNotes[i].graphic);
 					var imageArrow = handoverUnspawnNotes[i];
 					imageArrow.totalOverride = true; // Must be on, don't let update parameter holds the original angle supposed to be.
 					// imageArrow.animation.play(imageArrow.dataColor[imageArrow.noteData] + 'Scroll');
@@ -142,7 +169,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			for (i in 0...handoverStaticArrow.length)
 			{
-				// var imageStaticArrow = new FlxSprite(handoverStaticArrow[i].x, handoverStaticArrow[i].y, handoverStaticArrow[i].graphic);
+				// var imageStaticArrow = new FlxUISprite(handoverStaticArrow[i].x, handoverStaticArrow[i].y, handoverStaticArrow[i].graphic);
 				var imageStaticArrow = handoverStaticArrow[i];
 				imageStaticArrow.totalOverride = true; // this must be on to disable enforcement (update) by external parameters.
 				imageStaticArrow.playAnim('static');
@@ -175,6 +202,11 @@ class GameOverSubstate extends MusicBeatSubstate
 					FlxG.sound.play(Paths.sound('paperTear' + Std.string(FlxG.random.int(1, 8))));
 					FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
 				}
+			case 'bf-holding-gf':
+				{
+					FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
+					FlxG.sound.play(Paths.soundRandom('GF_', 1, 4, 'shared'), 0.3);
+				}
 			default:
 				{
 					FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
@@ -185,7 +217,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		// FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
-
+		bf.animation.curAnim.frameRate = 24; // JOELwindows7: BOLO Force default frameRate if bf dies in non 1x Formats.
 		bf.playAnim('firstDeath');
 
 		// JOELwindows7: vibrate controller
@@ -215,7 +247,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			haveClicked = false; // JOELwindows7: the mouse support improvement
 		}
 
-		if (FlxG.save.data.InstantRespawn)
+		if (FlxG.save.data.InstantRespawn || FlxG.save.data.optimize) // JOELwindows7: BOLO also instant respawn if optimize?!
 		{
 			// LoadingState.loadAndSwitchState(new PlayState());
 			PlayState.instance.switchState(new PlayState(), true, true, true, true); // JOELwindows7: Hex weekend switchstate pls
@@ -253,8 +285,22 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
 		{
 			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
-			startVibin = true;
+
 			FlxTween.tween(backButton, {y: FlxG.height - 100, alpha: 1}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+			// JOELwindows7: also week 7 gameover pls. luckydog7 yeah
+			// if (daStage == 'tankStage' || daStage == 'tankStage2') // wrong! it should be who's player 2!!
+			if (daDad == 'tankman')
+			{
+				// JOELwindows7: first, because the original does game over reduce volume, let's do it now!
+				FlxG.sound.music.fadeOut(.2, .2); // and BOLO used .2
+				FlxG.sound.play(Paths.sound('jeffGameover-' + FlxG.random.int(1, 25), 'shared'), 1, false, null, true, function()
+				{
+					// JOELwindows7: but BOLO has more!!!
+					FlxG.sound.music.fadeIn(0.2, 1, 4);
+				});
+			}
+
+			startVibin = true; // JOELwindows7: move this to down, okay. like BOLO did.
 		}
 		else
 		{
@@ -305,7 +351,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	function endBullshit():Void
 	{
-		var daStage = PlayState.curStage;
+		var daStage = PlayState.Stage.curStage; // JOELwindows7: oh, here's in Stage already.
 		var daBf:String = '';
 		var daSong:String = PlayState.SONG.songId;
 
@@ -345,7 +391,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{
 					// LoadingState.loadAndSwitchState(new PlayState());
-					PlayState.instance.switchState(new PlayState()); // JOELwindows7: hex switch state lol
+					PlayState.instance.switchState(new PlayState(), true, true, true, true, PlayState.instance); // JOELwindows7: hex switch state lol
 					PlayState.stageTesting = false;
 				});
 			});
@@ -372,5 +418,22 @@ class GameOverSubstate extends MusicBeatSubstate
 	public static function reloadBlueballCounterFromWeekSave()
 	{
 		return GameOverSubstate.blueBallCounter = FlxG.save.data.leftBlueball;
+	}
+
+	// JOELwindows7: and suffixes yess
+	static var finalStageSuffix:String = "";
+	static var finalMemeSuffix:String = "";
+	static var finalMidiSuffix:String = "";
+
+	public static function getAddSuffixes(doIt:Bool = false)
+	{
+		return doIt ? '${finalStageSuffix}${finalMemeSuffix}${finalMidiSuffix}' : '';
+	}
+
+	static function setAddSuffixes(stageS:String = "", memeS:String = "", midiS:String = "")
+	{
+		finalStageSuffix = stageS;
+		finalMemeSuffix = memeS;
+		finalMidiSuffix = midiS;
 	}
 }

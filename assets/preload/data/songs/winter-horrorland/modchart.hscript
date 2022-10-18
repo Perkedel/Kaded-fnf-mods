@@ -1,0 +1,159 @@
+//JOELwindows7: steal example from BulbyVR
+// https://github.com/FunkinModdingPlus/ModdingPlus/blob/master/assets/data/milf/modchart.hscript
+// It should work the same like Kade Engine Lua Modchart, just this time, in Haxe Language
+// Lua Modchart Documentation at: https://kadedev.github.io/Kade-Engine/modchart .
+// https://github.com/KadeDev/Kade-Engine/wiki
+// But remember, this is Haxe Script. convert your syntax format to it here.
+// templated by JOELwindows7, with yoinks from that documentation & that BulbyVR hscripts.
+
+var haveRevealed = false;
+
+function loaded(song)
+{
+
+}
+
+function start(song) 
+{
+    //currentPlayState.iconP2.changeIcon("placeholder");
+    /*
+    29:47.18 [ERROR] (Game/update#65): Fatal Werror: hscript:18: Invalid access to field changeIcon
+    Exception: hscript:18: Invalid access to field changeIcon
+    Called from hscript.Interp.expr (hscript/Interp.hx line 383)
+    Called from hscript.Interp.expr (hscript/Interp.hx line 347)
+    Called from hscript.Interp.exprReturn (hscript/Interp.hx line 264)
+    Called from hscript.Interp.expr (hscript/Interp.hx line 457)
+    Called from HaxeScriptState.callHscript (HaxeScriptState.hx line 182)
+    Called from HaxeScriptState.executeState (HaxeScriptState.hx line 272)
+    Called from PlayState.executeModchartState (PlayState.hx line 11489)
+    Called from PlayState.create (PlayState.hx line 1551)
+    Called from flixel.FlxGame.switchState (flixel/FlxGame.hx line 637)
+    Called from flixel.FlxGame.update (flixel/FlxGame.hx line 724)
+    Called from Game.update (Game.hx line 57)
+    Called from flixel.FlxGame.step (flixel/FlxGame.hx line 677)
+    Called from flixel.FlxGame.onEnterFrame (flixel/FlxGame.hx line 551)
+    Called from openfl.events.EventDispatcher.__dispatchEvent (openfl/events/EventDispatcher.hx line 402)
+    Called from openfl.display.DisplayObject.__dispatch (openfl/display/DisplayObject.hx line 1399)
+    Called from openfl.display.Stage.__broadcastEvent (openfl/display/Stage.hx line 1166)
+    Called from openfl.display.Stage.__onLimeRender (openfl/display/Stage.hx line 1950)
+    Called from lime.app._Event_lime_graphics_RenderContext_Void.dispatch (lime/_internal/macros/EventMacro.hx line 91)
+    Called from lime._internal.backend.native.NativeApplication.handleRenderEvent (lime/_internal/backend/native/NativeApplication.hx line 370)
+    Called from lime._internal.backend.native.NativeApplication.exec (lime/_internal/backend/native/NativeApplication.hx line 146)
+    Called from lime.app.Application.exec (lime/app/Application.hx line 150)
+    Called from ApplicationMain.create (ApplicationMain.hx line 130)
+    Called from ApplicationMain.main (ApplicationMain.hx line 25)
+    */
+    currentPlayState.changePlayerIcon(1,"placeholder");
+}
+
+function songStart()
+{
+
+}
+
+function songEnd()
+{
+
+}
+
+function introCutscene()
+{
+    //currentPlayState.iconP2.changeIcon("placeholder");
+    currentPlayState.changePlayerIcon(1,"placeholder");
+}
+
+function outroCutscene()
+{
+
+}
+
+function dialogueStart()
+{
+
+}
+
+function dialogueEnd()
+{
+
+}
+
+function dialogueSkip()
+{
+    //dialogueEnd() // do you want to do the same anyway?
+}
+
+function dialogueNext(index)
+{
+    //`index` is where dialogue line number you were at
+}
+
+function update(elapsed)
+{
+
+}
+
+function beatHit(beat)
+{
+    
+}
+
+function stepHit(step)
+{
+
+}
+
+function keyPressed(key)
+{
+
+}
+
+function keyReleased(key)
+{
+    
+}
+
+function playerTwoTurn()
+{
+    if(!haveRevealed){
+        //currentPlayState.iconP2.resetIcon();
+        currentPlayState.resetPlayerIcon(1);
+        haveRevealed = true;
+    }
+}
+
+function playerTwoMiss(note, position)
+{
+
+}
+
+function playerTwoSing(note, position)
+{
+
+}
+
+function playerOneTurn()
+{
+    
+}
+
+function playerOneMiss(note, position)
+{
+
+}
+
+function playerOneSing(note, position)
+{
+
+}
+
+function variableChange(name,value)
+{
+
+}
+
+function methodExecutes(name,args)
+{
+    
+}
+
+trace("finish loading hscript <3 yay cool and good.");

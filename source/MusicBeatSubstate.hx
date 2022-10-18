@@ -11,15 +11,19 @@ import flixel.FlxG;
 import flixel.FlxSubState;
 import CoreState;
 
-//JOELwindows7: now inherit CoreSubState instead of FlxSubState
+// JOELwindows7: now inherit CoreSubState instead of FlxSubState
+// and pls FlxUI fy this. okay, there gotta be one here, for sure. ok idk anymore.
 class MusicBeatSubstate extends CoreSubState
 {
+	public static var instance:MusicBeatSubstate;
+
 	public function new()
 	{
 		super();
+		// instance = this; // JOELwindows7: trouble since some of them may inherit without being a substate.
 	}
 
-	//JOELwindows7: variables moved to CoreState.hx
+	// JOELwindows7: variables moved to CoreState.hx
 
 	override function destroy()
 	{
@@ -30,6 +34,7 @@ class MusicBeatSubstate extends CoreSubState
 
 	override function create()
 	{
+		instance = this; // JOELwindows7: okay here.
 		super.create();
 		Application.current.window.onFocusIn.add(onWindowFocusIn);
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
@@ -40,14 +45,14 @@ class MusicBeatSubstate extends CoreSubState
 
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
+
 	// private var controls(get, never):Controls; //JOELwindows7: steal control. sorry guys
+	// JOELwindows7: stole this getter too, sorry guys.
 
-	//JOELwindows7: stole this getter too, sorry guys.
 	/*
-	inline function get_controls():Controls
-		return PlayerSettings.player1.controls;
-	*/
-
+		inline function get_controls():Controls
+			return PlayerSettings.player1.controls;
+	 */
 	override function update(elapsed:Float)
 	{
 		// everyStep();
@@ -143,5 +148,5 @@ class MusicBeatSubstate extends CoreSubState
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 	}
 
-	//JOELwindows7: functions I add moved to CoreState.hx
+	// JOELwindows7: functions I add moved to CoreState.hx
 }

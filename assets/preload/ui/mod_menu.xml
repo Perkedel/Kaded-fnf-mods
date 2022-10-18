@@ -1,0 +1,38 @@
+<!-- JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/assets/preload/ui/mod_menu.xml -->
+<!-- Additionally, you need to yoink: -->
+<!-- 
+  https://github.com/EnigmaEngine/EnigmaEngine/tree/stable/assets/core for things that loads before mods loaded.
+ -->
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+  <!-- Font definitions -->
+  <!-- This broke earlier because in order to set style="bold" you need to have a separate font file called vcrb.ttf -->
+  <definition id="vcr32" font="vcr" size="32" color="0xffffff" outline="0x000000" align="center"/>
+  <definition id="vcr24" font="vcr" size="24" color="0xffffff" outline="0x000000" align="center"/>
+  <definition id="vcr18" font="vcr" size="18" color="0xffffff" outline="0x000000" align="center"/>
+  <definition id="vcr16" font="vcr" size="16" color="0xffffff" outline="0x000000" align="center"/>
+  <definition id="vcr12" font="vcr" size="12" color="0xffffff" outline="0x000000" align="center"/>
+  
+  <!-- App background. -->
+  <background src="menubg" core="true" color="#333333" x="0" y="0" w="1280" h="720" />
+
+  <!-- App layout. Make sure to specify x/y/w/h. -->
+  <text text="Mod Configuration" use_def="vcr32" x="400" y="16" width="480"/>
+
+  <!-- JOELwindows7: tell that loaded mods cannot be unloaded atm -->
+  <text text="Loaded mods cannot be unloaded at the moment. To unload, you will need to restart this software. Pardon for inconveniences." use_def="vcr12" x="375" y="50" width="500"/>
+
+  <!-- JOELwindows7: y was 56, height was 680 -->
+  <modlist name="modlist_unloaded" x="16"  y="100" w="500" h="620" loaded="false" />
+  <modlist name="modlist_loaded"   x="764" y="100" w="500" h="620" loaded="true"  />
+
+  <!-- JOELwindows7: height was 160, width was 40 -->
+  <!-- <button name="btn_refresh"           use_def="vcr16" x="576" y="140" w="200" h="75" label="Refresh All Mods"            /> -->
+  <button name="btn_loadall"           use_def="vcr16" x="576" y="180" w="200" h="75" label="Load All Mods"            />
+  <button name="btn_unloadall"         use_def="vcr16" x="576" y="230" w="200" h="75" label="Unload All Mods"          />
+  <button name="btn_revert"            use_def="vcr16" x="576" y="280" w="200" h="75" label="Revert Mod Config"        />
+  <button name="btn_saveandexit"       use_def="vcr16" x="576" y="420" w="200" h="75" label="Save and Load Game"       />
+  <button name="btn_exitwithoutsaving" use_def="vcr16" x="576" y="450" w="200" h="75" label="Discard Changes and Load Game" />
+
+  
+</data>

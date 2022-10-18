@@ -1,10 +1,13 @@
 package flixel;
 
+import flixel.addons.ui.FlxUISprite;
+#if FEATURE_GIF
 import com.yagp.GifDecoder;
 import com.yagp.Gif;
 import com.yagp.GifPlayer;
 import com.yagp.GifPlayerWrapper;
 import com.yagp.GifRenderer;
+#end
 import openfl.utils.ByteArray;
 import openfl.utils.Assets;
 import flixel.FlxSprite;
@@ -17,8 +20,10 @@ import haxe.ValueException;
 import flixel.system.FlxGifAsset;
 import haxe.io.Bytes;
 
+// JOELwindows7: FlxUIfy pls
+#if FEATURE_GIF
 @:access(openfl.utils.ByteArrayData)
-class FlxGifSprite extends FlxSprite
+class FlxGifSprite extends FlxUISprite
 {
 	public var gif:Gif;
 	public var player:GifPlayer;
@@ -49,7 +54,7 @@ class FlxGifSprite extends FlxSprite
 					parseByteArr(byteArr);
 				}).onError(function(msg)
 				{
-					throw new ValueException("Kill Yourself :3 Bytes Wont Load!");
+						throw new ValueException("Kill Yourself :3 Bytes Wont Load!");
 				});
 		}
 		else if ((GifThing is ByteArrayData))
@@ -59,31 +64,31 @@ class FlxGifSprite extends FlxSprite
 		else
 			dumb();
 	}
-	
+
 	public function dumb()
 	{
 		throw new ValueException("Hello, Why Are You Dumb?\nYou Are Supposed To Enter A Valid GIF!");
 	}
-	
+
 	public function parseByteArr(byteArr:ByteArray)
 	{
 		gif = GifDecoder.parseByteArray(byteArr);
 		createPlayer();
 	}
-	
+
 	public function parseBytes(bytes:Bytes)
 	{
 		gif = GifDecoder.parseBytes(bytes);
 		createPlayer();
 	}
-	
+
 	public function createPlayer()
 	{
 		player = new GifPlayer(gif);
 		pixels = player.data;
 		ready = true;
 	}
-	
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -94,3 +99,4 @@ class FlxGifSprite extends FlxSprite
 		}
 	}
 }
+#end

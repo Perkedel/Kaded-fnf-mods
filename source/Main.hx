@@ -1,5 +1,13 @@
 package;
 
+import ui.states.debug.WerrorForceMajeurState;
+import ui.states.debug.WerrorCrashState;
+import openfl.system.System;
+import utils.Initializations;
+#if crashdumper
+import crashdumper.CrashDumper;
+import crashdumper.SessionData;
+#end
 import ui.SplashScreen;
 import plugins.sprites.LoadingBar;
 import GameJolt;
@@ -8,8 +16,12 @@ import flixel.input.keyboard.FlxKey;
 // import grig.midi.MidiOut;
 // import grig.midi.MidiIn;
 import flixel.util.FlxTimer;
-#if !debug
+#if android
+#if (!debug && android6permission)
 import com.player03.android6.Permissions;
+#end
+import android.Permissions as AndroidPermissions;
+import android.Hardware;
 #end
 #if FEATURE_WEBM_NATIVE
 import webm.WebmPlayer;
@@ -35,9 +47,18 @@ import plugins.systems.ScanPlatform;
 import haxe.ui.Toolkit;
 #if EXPERIMENTAL_OPENFL_XINPUT
 import com.furusystems.openfl.input.xinput.*;
-
 // import com.furusystems.openfl.input.xinput.XBox360Controller;
 #end
+// crash handler stuff
+import openfl.events.UncaughtErrorEvent;
+import haxe.CallStack;
+import haxe.io.Path;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.Process;
+#end
+
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -75,6 +96,11 @@ class Main extends Sprite
 		// public static var midiOut:MidiOut; //JOELwindows7: Grig MIDI out
 	 */
 	// You can pretty much ignore everything from here on - your code should go in your states.
+	// JOELwindows7: Larsius prime crashdumper
+	#if crashdumper
+	public static var crashDumper:CrashDumper;
+	#end
+
 	public static function main():Void
 	{
 		// quick checks
@@ -82,10 +108,23 @@ class Main extends Sprite
 		trace("Last Funkin Moments v" + Perkedel.ENGINE_VERSION); // JOELwindows7: idk why crash on android.
 		// pls don't destroy debug only because you don't have filesystem access!!
 
-		// JOELwindows7: here haxeUI
-		Toolkit.init();
+		// JOELwindows7: totally try catch now!
+		try
+		{
+			// JOELwindows7: here haxeUI
+			trace('init HaxeUI');
+			Toolkit.init();
+			trace('HaxeUI success');
 
-		Lib.current.addChild(new Main());
+			trace('init main game');
+			Lib.current.addChild(new Main());
+			trace('main game success');
+		}
+		catch (e)
+		{
+			WerrorForceMajeurState.writeErrorLog(e, 'STATIC MAIN UNCAUGHT WERROR!!!', 'StaticMainUncaught');
+			throw 'STATIC MAIN UNCAUGHT WERROR!!!: $e:\n${e.message}\n${e.details()}';
+		}
 	}
 
 	public function new()
@@ -96,37 +135,58 @@ class Main extends Sprite
 
 		super();
 
-		// JOELwindows7: Grig midi pls
-		// trace("MIDI out APIs:\n" + MidiOut.getApis());
-		// midiIn = new MidiIn(grig.midi.Api.Unspecified);
-		// midiOut = new MidiOut(grig.midi.Api.Unspecified);
-
-		// JOELwindows7: pecking ask permission on Android 6 and forth
-		#if (android && !debug)
-		var askPermNum:Int = 0;
-		var timeoutPermNum:Int = 10;
-		while (!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE)
-			|| !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE))
+		// JOELwindows7: you must totally try catch!
+		try
 		{
-			Permissions.requestPermissions([Permissions.WRITE_EXTERNAL_STORAGE, Permissions.READ_EXTERNAL_STORAGE,]);
+			// JOELwindows7: install crashdumper
+			// setupCrashDumper();
 
-			// count how many attempts. if after timeout num still not work, peck this poop
-			// I gave up!
-			trace("Num of Attempt ask permissions: " + Std.string(askPermNum));
-			askPermNum++;
-			if (askPermNum > timeoutPermNum)
-				break;
+			// JOELwindows7: Grig midi pls
+			// trace("MIDI out APIs:\n" + MidiOut.getApis());
+			// midiIn = new MidiIn(grig.midi.Api.Unspecified);
+			// midiOut = new MidiOut(grig.midi.Api.Unspecified);
+
+			// JOELwindows7: pecking ask permission on Android 6 and forth
+			#if (android && !debug)
+			var askPermNum:Int = 0;
+			var timeoutPermNum:Int = 10;
+			#if android6permission
+			// while (!Permissions.hasPermission(Permissions.WRITE_EXTERNAL_STORAGE)
+			// 	|| !Permissions.hasPermission(Permissions.READ_EXTERNAL_STORAGE))
+			// {
+			// 	Permissions.requestPermissions([Permissions.WRITE_EXTERNAL_STORAGE, Permissions.READ_EXTERNAL_STORAGE,]);
+
+			// 	// count how many attempts. if after timeout num still not work, peck this poop
+			// 	// I gave up!
+			// 	trace("Num of Attempt ask permissions: " + Std.string(askPermNum));
+			// 	askPermNum++;
+			// 	if (askPermNum > timeoutPermNum)
+			// 		break;
+			// }
+			#end
+			// JOELwindows7: from https://github.com/jigsaw-4277821/extension-androidtools
+			// #if (extension-androidtools)
+			AndroidPermissions.requestPermissions([
+				AndroidPermissions.READ_EXTERNAL_STORAGE,
+				AndroidPermissions.WRITE_EXTERNAL_STORAGE
+			]);
+			// #end
+			#end
+			// wtf, it doesn't work if Debug situation?! I don't get it!
+
+			if (stage != null)
+			{
+				init();
+			}
+			else
+			{
+				addEventListener(Event.ADDED_TO_STAGE, init);
+			}
 		}
-		#end
-		// wtf, it doesn't work if Debug situation?! I don't get it!
-
-		if (stage != null)
+		catch (e)
 		{
-			init();
-		}
-		else
-		{
-			addEventListener(Event.ADDED_TO_STAGE, init);
+			WerrorForceMajeurState.writeErrorLog(e, 'NEW INSTANCE UNCAUGHT WERROR!!!', 'NewInstanceUncaught');
+			throw 'NEW INSTANCE UNCAUGHT WERROR!!!: $e:\n${e.message}\n${e.details()}';
 		}
 	}
 
@@ -134,12 +194,24 @@ class Main extends Sprite
 
 	private function init(?E:Event):Void
 	{
-		if (hasEventListener(Event.ADDED_TO_STAGE))
+		// JOELwindows7: try catch now!
+		try
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-		}
+			if (hasEventListener(Event.ADDED_TO_STAGE))
+			{
+				removeEventListener(Event.ADDED_TO_STAGE, init);
+			}
 
-		setupGame();
+			setupGame();
+
+			// JOELwindows7: no, install crashdumper after everything.
+			// setupCrashDumper();
+		}
+		catch (e)
+		{
+			WerrorForceMajeurState.writeErrorLog(e, 'PRIVATE INIT UNCAUGHT WERROR', 'PrivateInitUncaught');
+			throw 'PRIVATE INIT UNCAUGHT WERROR: $e:\n${e.message}\n${e.details()}';
+		}
 	}
 
 	private function setupGame():Void
@@ -192,7 +264,7 @@ class Main extends Sprite
 		#if FEATURE_WEBM_JS
 		trace("Video Cutscener is built-in Browser's");
 		var str1:String = "HTML CRAP";
-		var vHandler = new VideoHandler();
+		var vHandler = new VideoHandlir();
 		vHandler.init1();
 		vHandler.video.name = str1;
 		addChild(vHandler.video);
@@ -217,7 +289,16 @@ class Main extends Sprite
 		trace("inited program");
 
 		// Gotta run this before any assets get loaded.
-		ModCore.initialize();
+		// ModCore.initialize();
+
+		// JOELwindows7: BOLO Discord init & shutdowner
+		#if FEATURE_DISCORD
+		Discord.DiscordClient.initialize();
+		Application.current.onExit.add(function(exitCode)
+		{
+			DiscordClient.shutdown();
+		});
+		#end
 
 		trace("init FPS counter");
 		#if FEATURE_DISPLAY_FPS_CHANGE
@@ -234,7 +315,9 @@ class Main extends Sprite
 		// #end
 		// trace("put game");
 
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		// game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		// JOELwindows7: hey, here use PEnginify extensions!
+		game = new Game(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
 
 		// JOELwindows7: now build Xbox controllers
@@ -253,8 +336,8 @@ class Main extends Sprite
 		});
 		#end
 		// JOELwindows7: finally, have a GameJolt toast
-		addChild(gjToastManager); // Needs to be added after the game. that's how stack workss
-		gjToastManager.createToast(Paths.image("art/LFMicon128"), "Cool and good", "Welcome to Last Funkin Moments", false);
+		addChild(gjToastManager); // Needs to be added after the game. that's how layout stack workss
+		gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION, false);
 
 		// JOELwindows7: Oh don't forget! the loading bar
 		loadingBar = new LoadingBar(0, 0, 0xFFFFFF);
@@ -288,6 +371,11 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
+
+		// JOELwindows7: BOLO crash handler. Just in case PEngine crash handle still break also.
+		#if FEATURE_CRASH_BOLO
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		#end
 	}
 
 	var game:FlxGame;
@@ -299,6 +387,7 @@ class Main extends Sprite
 	public static function dumpCache()
 	{
 		///* SPECIAL THANKS TO HAYA
+		#if PRELOAD_ALL // JOELwindows7: BOLO restrict to preload all only
 		@:privateAccess
 		for (key in FlxG.bitmap._cache.keys())
 		{
@@ -311,6 +400,8 @@ class Main extends Sprite
 			}
 		}
 		Assets.cache.clear("songs");
+		Assets.cache.clear("images"); // JOELwindows7: BOLO also clear images cache
+		#end
 		// */
 	}
 
@@ -338,6 +429,15 @@ class Main extends Sprite
 		return fpsCounter.currentFPS;
 	}
 
+	// JOELwindows7: BOLO adjust FPS pls
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/Main.hx
+	// lov u tails
+	// https://github.com/nebulazorua/tails-gets-trolled-v3/blob/master/source/Main.hx
+	public static function adjustFPS(num:Float):Float
+	{
+		return num * (60 / (cast(Lib.current.getChildAt(0), Main)).getFPS());
+	}
+
 	// JOELwindows7: Pusholl! Disable vol keys pls! it annoys me!!!
 	public function destroyAccidentVolKeys()
 	{
@@ -357,6 +457,180 @@ class Main extends Sprite
 	}
 
 	// JOELwindows7: mini platform scanner
+	// JOELwindows7: crash trace larsiusprime
+	function setupCrashDumper()
+	{
+		#if crashdumper
+		// https://github.com/larsiusprime/crashdumper/
+		// sample: https://github.com/larsiusprime/crashdumper/blob/master/Example/Source/Main.hx
+		// specific interest: https://github.com/larsiusprime/crashdumper/blob/master/crashdumper/hooks/openfl/HookOpenFL.hx#L100
+		// class: https://github.com/larsiusprime/crashdumper/blob/master/crashdumper/CrashDumper.hx
+		var unique_id:String = SessionData.generateID('${Perkedel.ENGINE_ID}_');
+		// generates unique id: "fooApp_YYYY-MM-DD_HH'MM'SS_CRASH"
+
+		#if flash
+		crashDumper = new CrashDumper(unique_id, null, "http://localhost:8080/result", false, false, werrorCrashPre, werrorCrash, stage);
+		#else
+		crashDumper = new CrashDumper(unique_id, null, "http://localhost:8080/result", false, false, werrorCrashPre, werrorCrash);
+		#end
+		// starts the crashDumper
+		#else
+		// Manually override crash
+		// https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, werrorCrash);
+		#end
+		Debug.logInfo("Installed crash dumper");
+	}
+
+	#if crashdumper
+	// JOELwindows7: and function to be called on crash yess.
+	function werrorCrash(crashDumpener:CrashDumper)
+	{
+		@:privateAccess {
+			#if flash
+			Debug.displayAlert('WERROR ${crashDumpener.theError}', 'Oh no! Werror:\n${crashDumpener.errorMessageStr()}');
+			#else
+			Debug.displayAlert('WERROR ${crashDumpener.theError.error}', 'Oh no! Werror:\n${crashDumpener.errorMessageStr()}');
+			#end
+		}
+
+		if (!Initializations.isInitialized())
+		{
+			// Application.current.; // where is exit?!?!?!
+			System.exit(1);
+			return;
+		}
+		#if crashdumper
+		FlxG.switchState(new WerrorCrashState(crashDumpener));
+		#end
+	}
+
+	// JOELwindows7: maybe also add pre-werror dump too?
+	function werrorCrashPre(crashDumpener:CrashDumper)
+	{
+	}
+	#else
+	// JOELwindows7: and function to be called on crash yess.
+	function werrorCrash(crashDumpener:Dynamic)
+	{
+		Debug.displayAlert('WERROR ${crashDumpener.error}', 'Oh no! Werror:\n${crashDumpener.text}\n\nRAW:\n${crashDumpener}');
+		if (!Initializations.isInitialized())
+		{
+			// Application.current.; // where is exit?!?!?!
+			System.exit(1);
+			return;
+		}
+		FlxG.switchState(new WerrorCrashState(crashDumpener));
+	}
+
+	// JOELwindows7: maybe also add pre-werror dump too?
+	function werrorCrashPre(crashDumpener:Dynamic)
+	{
+	}
+	#end
+
+	// JOELwindows7: new BOLO crash detect
+	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
+	// very cool person for real they don't get enough credit for their work
+	// #if !html5 // because of how it show up on desktop
+	#if FEATURE_CRASH_BOLO // JOELwindows7: no, let's make it definable anytime.
+	function onCrash(e:UncaughtErrorEvent):Void
+	{
+		// JOELwindows7: argument more unavailable. we could bind manually but eh, tedious. idk..
+		var errorTitle:String = 'FATAL UnCaught WError';
+		var errorDiffFileName:String = 'Uncaught';
+		var withWindowAlert:Bool = true;
+
+		if (FlxG.fullscreen)
+			FlxG.fullscreen = !FlxG.fullscreen;
+
+		var errMsg:String = "";
+		var errHdr:String = ""; // JOELwindows7: da header
+		var path:String;
+		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var dateNow:String = Date.now().toString();
+		var firmwareName:String = Perkedel.ENGINE_ID;
+
+		dateNow = StringTools.replace(dateNow, " ", "_");
+		dateNow = StringTools.replace(dateNow, ":", "'");
+
+		// path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
+		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+
+		for (stackItem in callStack)
+		{
+			switch (stackItem)
+			{
+				case FilePos(s, file, line, column):
+					errMsg += file + " (line " + line + ")\n";
+				default:
+					Sys.println(stackItem);
+			}
+		}
+
+		errHdr += '```\n' + '${Perkedel.CRASH_TEXT_BANNER}' + '\n```\n';
+
+		errMsg += '# ${errorTitle}: `${e.error}`\n'
+			+ '\n```\n'
+			+ e.error.getStackTrace()
+			+ '\n```\n'
+			+ '# Firmware name & version:\n'
+			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\n\n'
+			+ '# Please report this error to our Github page:\n ${Perkedel.ENGINE_BUGREPORT_URL}\n\n> Crash Handler written by: Paidyy, sqirra-rng';
+
+		// if (!FileSystem.exists("./crash/"))
+		// 	FileSystem.createDirectory("./crash/");
+
+		// File.saveContent(path, errMsg + "\n");
+
+		// Sys.println(errMsg);
+		// Sys.println("Crash dump saved in " + Path.normalize(path));
+		// JOELwindows7: add safety
+		try
+		{
+			#if FEATURE_FILESYSTEM
+			if (!FileSystem.exists("./crash/"))
+				FileSystem.createDirectory("./crash/");
+
+			File.saveContent(path, errHdr + errMsg + "\n");
+			#end
+
+			#if sys
+			Sys.println('===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('===============');
+			Sys.println("Crash dump saved in " + Path.normalize(path));
+			#else
+			trace(errHdr + errMsg);
+			trace('error');
+			#end
+		}
+		catch (e)
+		{
+			#if sys
+			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			Sys.println('Anyway pls detail!:\n===============');
+			Sys.println(errHdr + errMsg);
+			Sys.println('================\nThere, clipboard pls');
+			#else
+			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			trace('Anyway pls detail!:\n===============');
+			trace(errHdr + errMsg);
+			trace('================\nThere, clipboard pls');
+			#end
+		}
+
+		if (withWindowAlert)
+			Application.current.window.alert(errMsg, "Error!");
+
+		// JOELwindows7: just use that guy there
+		// WerrorForceMajeurState.writeErrorLog(e.error, 'FATAL Uncaught WError', 'Uncaught');
+		#if FEATURE_DISCORD
+		DiscordClient.shutdown();
+		#end
+		Sys.exit(1);
+	}
+	#end
 }
 // JOELwindows7: Oh my God. extremely complicated since 1.7 changes here yeauw.
 /**

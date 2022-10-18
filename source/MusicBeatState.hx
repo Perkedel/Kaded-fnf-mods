@@ -1,5 +1,8 @@
 package;
 
+import flixel.addons.transition.FlxTransitionableState;
+import ui.states.transition.PsychTransition;
+import flixel.addons.ui.FlxUISprite;
 import flixel.addons.ui.FlxUI;
 import flixel.FlxState;
 import plugins.sprites.QmovephBackground;
@@ -33,8 +36,11 @@ import flixel.addons.ui.FlxUIState;
 using StringTools;
 
 // JOELwindows7: now inherit from CoreState instead of FlxUIState
+// also pls FlxUI fy this!
 class MusicBeatState extends CoreState
 {
+	public static var instance:MusicBeatState;
+
 	// JOELwindows7: all var I add moved to CoreState.hx
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
@@ -48,6 +54,9 @@ class MusicBeatState extends CoreState
 
 	public static var lastState:FlxState; // Last state
 
+	// JOELwindows7: BOLO stuffs
+	public static var switchingState:Bool = false; // idk why?
+
 	// private var controls(get, never):Controls; //JOELwindows7: steal controls
 	// JOELwindows7: stole this getter too
 	/*
@@ -57,6 +66,12 @@ class MusicBeatState extends CoreState
 	public static var initSave:Bool = false;
 
 	private var assets:Array<FlxBasic> = [];
+
+	public function new()
+	{
+		super();
+		// instance = this; // JOELwindows7: trouble since Stage class inherits this
+	}
 
 	override function destroy()
 	{
@@ -82,16 +97,40 @@ class MusicBeatState extends CoreState
 						Debug.logWarn("you are adding a fuckin null texture (THIS WILL CRASH YOUR GAME!)");
 			}
 		}
+		// JOELwindows7: FlxUISprite version!
+		else if (Std.isOfType(Object, FlxUISprite))
+		{
+			var spr:FlxUISprite = cast(Object, FlxUISprite);
+			if (spr.graphic != null)
+			{
+				if (spr.graphic.bitmap.image == null)
+					if (FlxG.save.data.annoyingWarns)
+						Debug.logWarn("you are adding a fuckin null texture (THIS WILL CRASH YOUR GAME!)");
+			}
+		}
 		// Debug.logTrace(Object);
-		#if EXPERIMENTAL_HEX_WEEKEND
-		MasterObjectLoader.addObject(Object);
-		#end
+		// #if EXPERIMENTAL_HEX_WEEKEND
+		// MasterObjectLoader.addObject(Object);
+		// #end
 
-		// JOELwindows7: move it here
-		if (FlxG.save.data.optimize)
-			assets.push(Object);
+		// // JOELwindows7: move it here
+		// if (FlxG.save.data.optimize)
+		// 	assets.push(Object);
+
 		// var result = super.add(Object);
 		// return result;
+
+		// JOELwindows7: HEY BRAND NEW BOLO OBJECT STORING STUFFS!!!
+		#if FEATURE_MULTITHREADING
+		if (!FlxG.save.data.optimize)
+			MasterObjectLoader.addObject(Object);
+		#else
+		if (!FlxG.save.data.optimize)
+			assets.push(Object);
+		#end
+		// var result = super.add(Object);
+		// return result;
+
 		// JOELwindows7: hey pls functional!
 		return super.add(Object); // yeah that's better.
 	}
@@ -99,11 +138,17 @@ class MusicBeatState extends CoreState
 	// JOELwindows7: also this remove override thingy
 	override function remove(Object:flixel.FlxBasic, Splice:Bool = false):flixel.FlxBasic
 	{
-		#if EXPERIMENTAL_HEX_WEEKEND
-		MasterObjectLoader.removeObject(Object);
-		#end
+		// #if EXPERIMENTAL_HEX_WEEKEND
+		// MasterObjectLoader.removeObject(Object);
+		// #end
 		// var result = super.remove(Object, Splice);
 		// return result;
+
+		// JOELwindows7: AGAIN NEW BOLO OBJECT UNSTORE STUFFS!!!
+		#if FEATURE_MULTITHREADING
+		MasterObjectLoader.removeObject(Object);
+		#end
+
 		// JOELwindows7: hey pls functional!
 		return super.remove(Object, Splice); // yeah that's better.
 	}
@@ -112,10 +157,18 @@ class MusicBeatState extends CoreState
 	{
 		if (FlxG.save.data.optimize)
 		{
+			// JOELwindows7: we got BOLO stuffs to do here!
+			#if FEATURE_MULTITHREADING
+			for (i in MasterObjectLoader.Objects)
+			{
+				remove(i);
+			}
+			#else
 			for (i in assets)
 			{
 				remove(i);
 			}
+			#end
 		}
 	}
 
@@ -130,7 +183,8 @@ class MusicBeatState extends CoreState
 	 * @param trans whether to have transition
 	 * @param song is this a song loading?
 	 */
-	public function switchState(nextState:FlxState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false, stopMusic:Bool = false)
+	public function switchState(nextState:FlxState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false, stopMusic:Bool = false,
+			?previously:FlxState)
 	{
 		#if EXPERIMENTAL_HEX_WEEKEND
 		if (fuckYou)
@@ -182,10 +236,84 @@ class MusicBeatState extends CoreState
 		}
 		#else
 		if (song)
-			LoadingState.loadAndSwitchState(nextState, stopMusic)
+			LoadingState.loadAndSwitchState(nextState, stopMusic, previously)
 		else
-			FlxG.switchState(nextState);
+		{
+			// JOELwindows7: INCOMING SHADOW MARIO PSYCHED THING YOINKED BY BOLO!!!
+			// MusicBeatState.switchingState = true;
+			// var curState:Dynamic = FlxG.state;
+			// var leState:MusicBeatState = curState;
+			// if (!FlxTransitionableState.skipNextTransIn)
+			// {
+			// 	leState.openSubState(new PsychTransition(0.75, false));
+			// 	if (nextState == FlxG.state)
+			// 	{
+			// 		PsychTransition.finishCallback = function()
+			// 		{
+			// 			MusicBeatState.switchingState = false;
+			// 			FlxG.resetState();
+			// 		};
+			// 		// trace('resetted');
+			// 	}
+			// 	else
+			// 	{
+			// 		PsychTransition.finishCallback = function()
+			// 		{
+			// 			MusicBeatState.switchingState = false;
+			// 			FlxG.switchState(nextState);
+			// 		};
+			// 		// trace('changed state');
+			// 	}
+			// 	return;
+			// }
+			// FlxTransitionableState.skipNextTransIn = false;
+			// FlxG.switchState(nextState);
+
+			// JOELwindows7: You know what, just rather use this instead.
+			switchStateStatic(nextState);
+		}
 		#end
+	}
+
+	// JOELwindows7: okay so, um BOLO's Psyched switch state is static actually..
+	// ALL CREDITS TO SHADOWMARIO
+	public static function switchStateStatic(nextState:FlxState)
+	{
+		MusicBeatState.switchingState = true;
+		var curState:Dynamic = FlxG.state;
+		var leState:MusicBeatState = curState;
+		if (!FlxTransitionableState.skipNextTransIn)
+		{
+			leState.openSubState(new PsychTransition(0.75, false));
+			if (nextState == FlxG.state)
+			{
+				PsychTransition.finishCallback = function()
+				{
+					MusicBeatState.switchingState = false;
+					FlxG.resetState();
+				};
+				// trace('resetted');
+			}
+			else
+			{
+				PsychTransition.finishCallback = function()
+				{
+					MusicBeatState.switchingState = false;
+					FlxG.switchState(nextState);
+				};
+				// trace('changed state');
+			}
+			return;
+		}
+		FlxTransitionableState.skipNextTransIn = false;
+		FlxG.switchState(nextState);
+	}
+
+	// JOELwindows7: BOLO's reset state!!!
+	public static function resetState()
+	{
+		// MusicBeatState.instance.switchState(FlxG.state);
+		MusicBeatState.switchStateStatic(FlxG.state);
 	}
 
 	var loadedCompletely:Bool = false; // JOELwindows7: also used by that Switch state above
@@ -202,6 +330,7 @@ class MusicBeatState extends CoreState
 
 	override function create()
 	{
+		instance = this; // JOELwindows7: okay here.
 		if (initSave)
 		{
 			if (FlxG.save.data.laneTransparency < 0)
@@ -215,11 +344,24 @@ class MusicBeatState extends CoreState
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 		TimingStruct.clearTimings();
 
+		KeyBinds.keyCheck();
+
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
+		var skip:Bool = FlxTransitionableState.skipNextTransOut; // JOELwindows7: BOLO's skip detection.
+
 		super.create();
 		// trace("created Music Beat State");
+
+		// JOELwindows7: specialized BOLO Psyched transitions!
+		if (!skip)
+		{
+			openSubState(new PsychTransition(0.85, true));
+		}
+		FlxTransitionableState.skipNextTransOut = false;
+
+		Paths.clearUnusedMemory(); // JOELwindows7: BOLO clears memory
 	}
 
 	override function update(elapsed:Float)
@@ -257,7 +399,7 @@ class MusicBeatState extends CoreState
 
 				FlxG.watch.addQuick("Current Conductor Timing Seg", data.bpm);
 
-				Conductor.crochet = ((60 / data.bpm) * 1000);
+				Conductor.crochet = ((60 / data.bpm) * 1000) / PlayState.songMultiplier; // JOELwindows7: BOLO. do not forget, div songMultiplier.
 
 				var step = ((60 / data.bpm) * 1000) / 4;
 				var startInMS = (data.startTime * 1000);
@@ -313,8 +455,6 @@ class MusicBeatState extends CoreState
 			}
 		}
 
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-
 		super.update(elapsed);
 	}
 
@@ -353,8 +493,15 @@ class MusicBeatState extends CoreState
 
 	public function fancyOpenURL(schmancy:String)
 	{
+		// JOELwindows7: Ahem, turns out `FlxG.openURL` already `xdg-open` on itself. System open URL thingy! open File yeah.
 		#if linux
-		Sys.command('/usr/bin/xdg-open', [schmancy, "&"]);
+		// Sys.command('/usr/bin/xdg-open', [schmancy, "&"]);
+		Sys.command('/usr/bin/xdg-open', [schmancy]); // this also got the same issue. how about you forget the `&` (put as bg process)?
+
+		/**
+			xdg-open: unexpected argument '&'
+			Try 'xdg-open --help' for more information.
+		**/
 		#else
 		FlxG.openURL(schmancy);
 		#end
@@ -384,8 +531,13 @@ class MusicBeatState extends CoreState
 				PlayState.instance.persistentDraw = true;
 				PlayState.instance.paused = true;
 
-				PlayState.instance.vocals.stop();
-				FlxG.sound.music.stop();
+				// PlayState.instance.vocals.stop();
+				// FlxG.sound.music.stop();
+
+				// JOELwindows7: that ain't gonna work I think. let's pause instead! like in PlayState really.
+				PlayState.instance.vocals.pause();
+				PlayState.instance.vocals2.pause();
+				FlxG.sound.music.pause();
 			}
 		}
 	}

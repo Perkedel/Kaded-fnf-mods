@@ -18,6 +18,7 @@
 
 package experiments;
 
+import flixel.addons.ui.FlxUIText;
 import plugins.sprites.DVDScreenSaver;
 import lime.media.openal.AL;
 import lime.media.openal.ALSource;
@@ -38,7 +39,7 @@ class LimeAudioBufferTester extends MusicBeatState{
     // public var theVLC:VlcBitmap;
     public var anHitCorner:DVDScreenSaver;
 
-    public var infoText:FlxText;
+    public var infoText:FlxUIText;
     override function create(){
         FlxG.mouse.visible = true;
         if(FlxG.sound.music != null){FlxG.sound.music.stop();}
@@ -60,7 +61,7 @@ class LimeAudioBufferTester extends MusicBeatState{
 
         trace("There are " + theBuffer.channels + " channels here");
         trace("Play " + Paths.sound("SurroundSoundTest"));
-        infoText = new FlxText();
+        infoText = new FlxUIText();
         infoText.text = "Surround Sound Test\n" +
         "\n" +
         "ENTER = Play the sound\n" +

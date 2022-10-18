@@ -16,8 +16,8 @@ jobs:
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
       - name: first, begin caching stuffs
         uses: actions/cache@v2.1.7
@@ -30,7 +30,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.4
+          haxe-version: 4.2.5
       # Runs a set of commands using the runners shell
       
       - name: Linuxly set things up first!
@@ -62,7 +62,9 @@ jobs:
           haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
           haxelib run lime rebuild extension-webm linux
           haxelib run lime rebuild extension-webm html5
-          haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
+          # haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
+          # haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
+          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
           haxelib install actuate 
           haxelib install android6permissions
@@ -94,7 +96,17 @@ jobs:
           haxelib install haxeui-flixel
           haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
           haxelib install yagp
+          haxelib git crashdumper http://github.com/larsiusprime/crashdumper
           haxelib run lime rebuild yagp linux
+          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
+          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
+          haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
+          haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
+          haxelib install udprotean
+          haxelib install markdown
+          haxelib install openfl-webm
+          # haxelib install hxCodec
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib list
       
       - name: if there is cache still then just update everything
@@ -108,11 +120,11 @@ jobs:
           haxelib run lime rebuild yagp linux
           haxelib list
 
-      - name: Obtain stuffs of Linux
-        run: |
-          wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
-          sudo mkdir -p /opt/hostedtoolcache/haxe/4.2.4/x64/lib/linc_luajit/lib/lua/lib/Linux64
-          sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.2.4/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
+      # - name: Obtain stuffs of Linux
+      #   run: |
+      #     wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
+      #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64
+      #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
 
       - name: Obtain GameJolt empty file
         run: |
@@ -139,5 +151,14 @@ jobs:
           PACKAGE: export/release/html5/bin
       
       - name: Yo, release now
-        uses: softprops/action-gh-release@v0.1.13
-        if: startsWith(github.ref, 'refs/tags/')
+        # uses: softprops/action-gh-release@v0.1.13
+        # if: startsWith(github.ref, 'refs/tags/')
+        #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+        uses: svenstaro/upload-release-action@2.3.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: export/release/html5/bin
+          asset_name: HTML5 Build
+          tag: ${{ github.ref }}
+          overwrite: true
+          # body: "This is my release text"

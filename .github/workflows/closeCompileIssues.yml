@@ -28,7 +28,7 @@ jobs:
             {
               "type": "title",
               "regex": ".*reupload sky*",
-              "message": "@${issue.user.login}, Protoglin Amexamlef::Saubo"
+              "message": "@${issue.user.login}, Protoglin Amexamlef::Saubo, Kontraktua Majoris = https://gamebanana.com/mods/44555"
             }
           ]
     - name: Autoclose Whitty issues

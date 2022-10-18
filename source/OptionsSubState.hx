@@ -1,33 +1,36 @@
 package;
 
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
+// JOELwindows7: oops, Wait. no, this is not used one. still, FlxUI this??
 class OptionsSubState extends MusicBeatSubstate
 {
 	var textMenuItems:Array<String> = ['Master Volume', 'Sound Volume', 'Controls'];
 
-	var selector:FlxSprite;
+	var selector:FlxUISprite;
 	var curSelected:Int = 0;
 
-	var grpOptionsTexts:FlxTypedGroup<FlxText>;
+	var grpOptionsTexts:FlxTypedGroup<FlxUIText>;
 
 	public function new()
 	{
 		super();
 
-		grpOptionsTexts = new FlxTypedGroup<FlxText>();
+		grpOptionsTexts = new FlxTypedGroup<FlxUIText>();
 		add(grpOptionsTexts);
 
-		selector = new FlxSprite().makeGraphic(5, 5, FlxColor.RED);
+		selector = cast new FlxUISprite().makeGraphic(5, 5, FlxColor.RED);
 		add(selector);
 
 		for (i in 0...textMenuItems.length)
 		{
-			var optionText:FlxText = new FlxText(20, 20 + (i * 50), 0, textMenuItems[i], 32);
+			var optionText:FlxUIText = new FlxUIText(20, 20 + (i * 50), 0, textMenuItems[i], 32);
 			optionText.ID = i;
 			grpOptionsTexts.add(optionText);
 		}
@@ -49,7 +52,7 @@ class OptionsSubState extends MusicBeatSubstate
 		if (curSelected >= textMenuItems.length)
 			curSelected = 0;
 
-		grpOptionsTexts.forEach(function(txt:FlxText)
+		grpOptionsTexts.forEach(function(txt:FlxUIText)
 		{
 			txt.color = FlxColor.WHITE;
 

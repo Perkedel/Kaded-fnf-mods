@@ -13,6 +13,7 @@ class PlayerSettings
 	static public var numAvatars(default, null) = 0;
 	static public var player1(default, null):PlayerSettings;
 	static public var player2(default, null):PlayerSettings;
+	static public var players(default, null):Array<PlayerSettings> = []; // JOELwindows7: I wonder if we can add it up this.
 
 	#if (haxe >= "4.0.0")
 	static public final onAvatarAdd = new FlxTypedSignal<PlayerSettings->Void>();
@@ -60,6 +61,9 @@ class PlayerSettings
 				throw 'Unexpected null gamepad. id:0';
 
 			player1.controls.addDefaultGamepad(0);
+
+			// JOELwindows7: add to our array first
+			players[0] = player1;
 		}
 
 		if (numGamepads > 1)
@@ -72,10 +76,30 @@ class PlayerSettings
 
 			var gamepad = FlxG.gamepads.getByID(1);
 			if (gamepad == null)
-				throw 'Unexpected null gamepad. id:0';
+				throw 'Unexpected null gamepad. id:1';
 
 			player2.controls.addDefaultGamepad(1);
+
+			// JOELwindows7: add to our array first
+			players[1] = player2;
 		}
+
+		// JOELwindows7: and okay we should try to get every gamepads possible
+		if (numGamepads > 2)
+			for (i in 2...numGamepads)
+			{
+				if (players[i] == null)
+				{
+					players[i] = new PlayerSettings(i, None);
+					++numPlayers;
+				}
+
+				var gamepad = FlxG.gamepads.getByID(i);
+				if (gamepad == null)
+					throw 'Unexpected null gamepad. id:$i';
+
+				players[i].controls.addDefaultGamepad(i);
+			}
 
 		// DeviceManager.init();
 	}
@@ -84,6 +108,9 @@ class PlayerSettings
 	{
 		player1 = null;
 		player2 = null;
+		// JOELwindows7: also reset our array pls.
+		for (i in 0...players.length)
+			players[i] = null;
 		numPlayers = 0;
 	}
 }

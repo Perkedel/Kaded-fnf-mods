@@ -8,6 +8,10 @@ class KadeEngineData
 	public static function initSave()
 	{
 		trace("init save data now");
+		// JOELwindows7: the OOBE init!!
+		if (FlxG.save.data.oobeSetuped == null)
+			FlxG.save.data.oobeSetuped = false;
+
 		if (FlxG.save.data.weekUnlocked == null)
 			FlxG.save.data.weekUnlocked = 7;
 
@@ -38,6 +42,12 @@ class KadeEngineData
 		if (FlxG.save.data.fps == null)
 			FlxG.save.data.fps = false;
 
+		if (FlxG.save.data.fpsBorder == null)
+			FlxG.save.data.fpsBorder = false;
+
+		if (FlxG.save.data.rotateSprites == null)
+			FlxG.save.data.rotateSprites = true;
+
 		if (FlxG.save.data.changedHit == null)
 		{
 			FlxG.save.data.changedHitX = -1;
@@ -56,6 +66,13 @@ class KadeEngineData
 		if (FlxG.save.data.fpsRain == null)
 			FlxG.save.data.fpsRain = false;
 
+		if (FlxG.save.data.memoryDisplay == null)
+			FlxG.save.data.memoryDisplay = true; // JOELwindows7: bro wtf? false by default?! BOLO
+
+		// JOELwindows7: BOLO lerp score
+		if (FlxG.save.data.lerpScore == null)
+			FlxG.save.data.lerpScore = true;
+
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 120;
 
@@ -67,7 +84,7 @@ class KadeEngineData
 			FlxG.save.data.scrollSpeed = 1;
 
 		if (FlxG.save.data.npsDisplay == null)
-			FlxG.save.data.npsDisplay = false;
+			FlxG.save.data.npsDisplay = true; // JOELwindows7: BRO, set it tru instead!. BOLO did.
 
 		if (FlxG.save.data.frames == null)
 			FlxG.save.data.frames = 10;
@@ -90,6 +107,7 @@ class KadeEngineData
 		if (FlxG.save.data.naughtiness == null)
 			FlxG.save.data.naughtiness = true;
 
+		// JOELwindows7: heartbeat fetish option
 		if (FlxG.save.data.cardiophile == null)
 			FlxG.save.data.cardiophile = true;
 
@@ -143,7 +161,7 @@ class KadeEngineData
 			FlxG.save.data.useTouchScreenButtons = false;
 
 		if (FlxG.save.data.selectTouchScreenButtons == null)
-			FlxG.save.data.useTouchScreenButtons == 0;
+			FlxG.save.data.selectTouchScreenButtons == 0;
 
 		// JOELwindows7: Vibrations
 		if (FlxG.save.data.vibration == null)
@@ -178,7 +196,8 @@ class KadeEngineData
 		// JOELwindows7: enable legacy lua modchart supports
 		if (FlxG.save.data.legacyLuaScript == null)
 		{
-			FlxG.save.data.legacyLuaScript = false;
+			FlxG.save.data.legacyLuaScript = true; // from now on, let's make it true because
+			// let's be honest. How many of you still made modchart for older Kade Engine?
 		}
 
 		// JOELwindows7: enigma init mod data
@@ -247,6 +266,14 @@ class KadeEngineData
 			FlxG.save.data.hitsound = false; // originally in this game FNF, it's OFF. while osu! is ON
 		}
 
+		// JOELwindows7: BOLO's hitsound select!
+		if (FlxG.save.data.hitSoundSelect == null)
+			FlxG.save.data.hitSoundSelect = 0;
+
+		// JOELwindows7: BOLO's hitsound volume
+		if (FlxG.save.data.hitVolume == null)
+			FlxG.save.data.hitVolume = 0.5;
+
 		// JOELwindows7: left stuffs
 		if (FlxG.save.data.leftAWeek == null)
 		{
@@ -309,6 +336,8 @@ class KadeEngineData
 		{
 			FlxG.save.data.blueballWeek = false;
 		}
+		if (FlxG.save.data.roundAccuracy == null)
+			FlxG.save.data.roundAccuracy = false;
 
 		FlxG.save.data.cacheImages = false;
 
@@ -352,12 +381,99 @@ class KadeEngineData
 			FlxG.save.data.sickMs
 		];
 
+		// JOELwindows7: BOLO background stage enablement
+		if (FlxG.save.data.background == null)
+			FlxG.save.data.background = true;
+
 		if (FlxG.save.data.noteskin == null)
 			FlxG.save.data.noteskin = 0;
 
 		// Gonna make this an option on another PR
 		if (FlxG.save.data.overrideNoteskins == null)
 			FlxG.save.data.overrideNoteskins = false;
+
+		// JOELwindows7: NEW BOLO GPU render
+		if (FlxG.save.data.gpuRender == null)
+		{
+			#if html5
+			FlxG.save.data.gpuRender = false;
+			#else
+			FlxG.save.data.gpuRender = true;
+			#end
+		}
+
+		// JOELwindows7: (BOLO) The volume level should now be saved.
+		if (FlxG.save.data.volume == null)
+			FlxG.save.data.volume = 1;
+
+		// JOELwindows7: & mute too.
+		if (FlxG.save.data.mute == null)
+			FlxG.save.data.mute = false;
+
+		// JOELwindows7: Toby-Fox tale character name. not to be confused with your own / player name
+		if (FlxG.save.data.radiationName == null)
+			FlxG.save.data.radiationName = "Ioniq";
+		// Toby "Radiation" Fox. since we went on "Sorento" with Deltarune && Sorento happens to be Kia Sorento,
+		// Then eh whatever why not call this character for Rhythm Tale / Rune "Ioniq" idk.. because
+		// We made our own Sky, drives Hyundai IONIQ 5 lmao!
+
+		// JOELwindows7: BOLO's modifier init!!!
+		if (FlxG.save.data.hgain == null)
+			FlxG.save.data.hgain = 1;
+
+		if (FlxG.save.data.hloss == null)
+			FlxG.save.data.hloss = 1;
+
+		if (FlxG.save.data.hdrain == null)
+			FlxG.save.data.hdrain = false;
+
+		if (FlxG.save.data.sustains == null)
+			FlxG.save.data.sustains = true;
+
+		if (FlxG.save.data.noMisses == null)
+			FlxG.save.data.noMisses = false;
+
+		if (FlxG.save.data.modcharts == null)
+			FlxG.save.data.modcharts = true;
+
+		if (FlxG.save.data.practice == null)
+			FlxG.save.data.practice = false;
+
+		if (FlxG.save.data.opponent == null)
+			FlxG.save.data.opponent = false;
+
+		if (FlxG.save.data.mirror == null)
+			FlxG.save.data.mirror = false;
+		// end BOLO's modifier init!!!
+
+		// JOELwindows7: BOLO again
+		if (FlxG.save.data.strumHit == null)
+			FlxG.save.data.strumHit = true;
+
+		if (FlxG.save.data.showCombo == null)
+			FlxG.save.data.showCombo = true;
+
+		if (FlxG.save.data.showComboNum == null)
+			FlxG.save.data.showComboNum = true;
+
+		if (FlxG.save.data.showMs == null)
+			FlxG.save.data.showMs = true;
+
+		// JOELwindows7: BOLO autosave modchart
+		if (FlxG.save.data.autoSaveChart == null)
+			FlxG.save.data.autoSaveChart = false;
+
+		// JOELwindows7: BOLO discord rich Presence
+		if (FlxG.save.data.discordMode == null)
+			FlxG.save.data.discordMode = 1;
+
+		// JOELwindows7: workarounds!
+
+		// video cutscene crash on Linux
+		if (FlxG.save.data.disableVideoCutscener == null)
+			FlxG.save.data.disableVideoCutscener = false;
+
+		// end workarounds
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
@@ -373,8 +489,25 @@ class KadeEngineData
 		Main.perkedelMark = FlxG.save.data.perkedelMark;
 		FlxG.fullscreen = FlxG.save.data.fullscreen;
 
+		#if FEATURE_DISPLAY_FPS_CHANGE
 		Debug.logInfo("set FPS stuff from setting"); // JOELwindows7: trace this for android crashsures
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		Debug.logInfo("successfully set FPS settings"); // JOELwindows7: see if Android version crash!
+		#end
+	}
+
+	// JOELwindows7: BOLO's reset modifier
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/KadeEngineData.hx
+	public static function resetModifiers():Void
+	{
+		FlxG.save.data.hgain = 1;
+		FlxG.save.data.hloss = 1;
+		FlxG.save.data.hdrain = false;
+		FlxG.save.data.sustains = true;
+		FlxG.save.data.noMisses = false;
+		FlxG.save.data.modcharts = true;
+		FlxG.save.data.practice = false;
+		FlxG.save.data.opponent = false;
+		FlxG.save.data.mirror = false;
 	}
 }

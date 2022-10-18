@@ -1,6 +1,8 @@
-#if FEATURE_FILESYSTEM
 package;
 
+import flixel.addons.ui.FlxUIText;
+#if FEATURE_FILESYSTEM
+import flixel.addons.ui.FlxUISprite;
 import lime.app.Application;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
@@ -32,6 +34,7 @@ import flixel.input.keyboard.FlxKey;
 
 using StringTools;
 
+// JOELwindows7: Still, FlxUI fy this... idk
 class Caching extends MusicBeatState
 {
 	var toBeDone = 0;
@@ -39,14 +42,15 @@ class Caching extends MusicBeatState
 
 	var loaded = false;
 
-	var text:FlxText;
-	var kadeLogo:FlxSprite;
-	var lFMLogo:FlxSprite; //JOELwindows7: LFM logo
+	var text:FlxUIText;
+	var kadeLogo:FlxUISprite;
+	var lFMLogo:FlxUISprite; // JOELwindows7: LFM logo
 
-	var bar:FlxBar; //JOELwindows7: globalize the loading bar.
+	var bar:FlxBar; // JOELwindows7: globalize the loading bar.
 
 	public static var bitmapData:Map<String, FlxGraphic>;
 
+	// public static var rawBitmapData:Map<String, BitmapData>; // JOELwindows7: I said, the raw bitmap data!
 	var images = [];
 	var music = [];
 	var charts = [];
@@ -73,19 +77,20 @@ class Caching extends MusicBeatState
 		FlxG.worldBounds.set(0, 0);
 
 		bitmapData = new Map<String, FlxGraphic>();
+		// rawBitmapData = new Map<String, BitmapData>();
 
-		text = new FlxText(FlxG.width / 2, FlxG.height / 2 + 300, 0, "Loading...");
+		text = new FlxUIText(FlxG.width / 2, FlxG.height / 2 + 300, 0, "Loading...");
 		text.size = 34;
 		text.alignment = FlxTextAlign.CENTER;
 		text.alpha = 0;
 
-		//JOELwindows7: LFM logo
-        lFMLogo = new FlxSprite(FlxG.width / 2, (FlxG.height / 2)+270).loadGraphic(Paths.image('art/LFMicon128'));
-        lFMLogo.x -= lFMLogo.width / 2;
-        lFMLogo.y -= lFMLogo.height / 2;
-        lFMLogo.alpha = 0;		
+		// JOELwindows7: LFM logo. & cast all these too
+		lFMLogo = cast new FlxUISprite(FlxG.width / 2, (FlxG.height / 2) + 270).loadGraphic(Paths.image('art/LFMicon128'));
+		lFMLogo.x -= lFMLogo.width / 2;
+		lFMLogo.y -= lFMLogo.height / 2;
+		lFMLogo.alpha = 0;
 
-		kadeLogo = new FlxSprite(FlxG.width / 2, FlxG.height / 2).loadGraphic(Paths.loadImage('KadeEngineLogo'));
+		kadeLogo = cast new FlxUISprite(FlxG.width / 2, FlxG.height / 2).loadGraphic(Paths.loadImage('KadeEngineLogo'));
 		kadeLogo.x -= kadeLogo.width / 2;
 		kadeLogo.y -= kadeLogo.height / 2 + 100;
 		text.y -= kadeLogo.height / 2 - 125;
@@ -139,22 +144,22 @@ class Caching extends MusicBeatState
 
 		toBeDone = Lambda.count(images) + Lambda.count(music);
 
-		//JOELwindows7: globalize loading bar
+		// JOELwindows7: globalize loading bar
 		bar = new FlxBar(10, FlxG.height - 50, FlxBarFillDirection.LEFT_TO_RIGHT, FlxG.width, 40, null, "done", 0, toBeDone);
 		bar.color = FlxColor.PURPLE;
 
-		//JOELwindows7:bekgrond stuffer
-		installStarfield3D(0,0,FlxG.width,FlxG.height);
+		// JOELwindows7:bekgrond stuffer
+		installStarfield3D(0, 0, FlxG.width, FlxG.height);
 		starfield3D.alpha = 0;
 
 		add(bar);
-		bar.color = FlxColor.PURPLE; //JOELwindows7: try again after adding this time?
+		bar.color = FlxColor.PURPLE; // JOELwindows7: try again after adding this time?
 
 		add(kadeLogo);
 		add(lFMLogo);
 		add(text);
 
-		installBusyHourglassScreenSaver(); //JOELwindows7: for loading animation hourglass
+		installBusyHourglassScreenSaver(); // JOELwindows7: for loading animation hourglass
 
 		trace('starting caching..');
 
@@ -168,12 +173,12 @@ class Caching extends MusicBeatState
 				if (toBeDone != 0 && done != toBeDone)
 				{
 					var alpha = HelperFunctions.truncateFloat(done / toBeDone * 100, 2) / 100;
-					starfield3D.alpha = alpha; //JOELwindows7: Haxe starfield walker
+					starfield3D.alpha = alpha; // JOELwindows7: Haxe starfield walker
 					kadeLogo.alpha = alpha;
-					lFMLogo.alpha = alpha; //JOELwindows7: that logo
+					lFMLogo.alpha = alpha; // JOELwindows7: that logo
 					text.alpha = alpha;
 					text.text = "Loading... (" + done + "/" + toBeDone + ")";
-					//bar.value = done; //JOELwindows7: workaround since not showing up
+					// bar.value = done; //JOELwindows7: workaround since not showing up
 				}
 			}
 		});

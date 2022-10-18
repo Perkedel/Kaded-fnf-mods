@@ -18,6 +18,7 @@
 
 package plugins.sprites;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxBasic;
 import flixel.util.FlxGradient;
@@ -28,8 +29,12 @@ import flixel.group.FlxGroup;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 
+/**
+ * The infamous default background of Perkedel Technologies. Now animated here yeya!
+ * @author JOELwindows7
+ */
 class QmovephBackground extends FlxGroup{
-    var bg:FlxSprite;
+    var bg:FlxUISprite;
     var stars:FlxTypedGroup<QmovephFlying>;
     var starSpawnTime:Float;
     var bubbles:FlxTypedGroup<QmovephFlying>;
@@ -48,7 +53,7 @@ class QmovephBackground extends FlxGroup{
         //     ]
         //     )
         //     ;
-        bg = new FlxSprite(0,0,Paths.image("DefaultBackground-empty720p"));
+        bg = new FlxUISprite(0,0,Paths.image("DefaultBackground-empty720p"));
         trace("addre");
         stars = new FlxTypedGroup<QmovephFlying>(50);
         trace("dreea");
@@ -86,7 +91,11 @@ class QmovephBackground extends FlxGroup{
     }
 }
 
-class QmovephFlying extends FlxSprite{
+/**
+ * The flying objects in this Qmoveph background. can be circle or star
+ * @author JOELwindows7
+ */
+class QmovephFlying extends FlxUISprite{
     public var aStar:Bool = true;
     public function new()
     {
@@ -112,7 +121,7 @@ class QmovephFlying extends FlxSprite{
             ;
         loadGraphic(Paths.image(aStar? "QmovephStar" : "QmovephBubble"));
         velocity.x = -(FlxG.random.float(200,750));
-        angularVelocity = FlxG.random.float(-100,100);
+        angularVelocity = FlxG.random.float(-720,720);
         color = FlxG.random.color(FlxColor.fromRGB(10,10,10),FlxColor.WHITE);
         updateHitbox();
         super.revive();
@@ -126,7 +135,7 @@ class QmovephFlying extends FlxSprite{
     }
 }
 
-class QmovephBubble extends FlxSprite{
+class QmovephBubble extends FlxUISprite{
     public function new()
     {
         super();
@@ -143,7 +152,7 @@ class QmovephBubble extends FlxSprite{
             ;
         loadGraphic(Paths.image("QmovephBubble"));
         velocity.x = -(FlxG.random.float(500,1000));
-        angularVelocity = FlxG.random.float(-100,100);
+        angularVelocity = FlxG.random.float(-720,720);
         color = FlxG.random.color(FlxColor.fromRGB(10,10,10),FlxColor.WHITE);
         updateHitbox();
         super.revive();

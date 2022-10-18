@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "CCWioDDQZVvra/xJHnghIlIlAW9+foMrmhwJ/75LZlhjQC99xx3VvqmqskoF+zXijWqk7TLKNSt8uKSNHSaENA==",
+  "success": true,
+  "projectFilePath": "/run/media/joelwindows7/OS/Users/joelr/Documents/starring codes/Haxe Projects/Kaded-fnf-mods/extra_projects/webmHelper/project.json",
+  "expectedPackageFiles": [
+    "/home/joelwindows7/.nuget/packages/gccbuildtargets/1.22.77.8/gccbuildtargets.1.22.77.8.nupkg.sha512"
+  ],
+  "logs": []
+}

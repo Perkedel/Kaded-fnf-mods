@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <TextureAtlas imagePath="Placeholder.png"><SubTexture name="Placeholder Sing Note DOWN0000" x="0" y="0" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
 <SubTexture name="Placeholder Sing Note alt DOWN0000" x="388" y="0" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
-<SubTexture name="Placeholder Miss Down0000" x="776" y="0" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
+<SubTexture name="Placeholder Miss down0000" x="776" y="0" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
 <SubTexture name="Placeholder idle0000" x="1164" y="0" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
 <SubTexture name="Placeholder alt idle0000" x="0" y="628" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />
 <SubTexture name="Placeholder Sing Note LEFT0000" x="388" y="628" width="388" height="628" frameX="0" frameY="0" frameWidth="388" frameHeight="628" />

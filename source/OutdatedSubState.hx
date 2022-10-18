@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIText;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -10,6 +12,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 
+// JOELwindows7: FlxUI fy this!
 class OutdatedSubState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
@@ -31,20 +34,22 @@ class OutdatedSubState extends MusicBeatState
 
 	override function create()
 	{
-		super.create();
+		trace('Welcome to outdated or leaked');
+		// super.create();
 		// JOELwindows7: put bekgrondes yesh
 		installStarfield2D(0, 0, FlxG.width, FlxG.height);
 		installDefaultBekgron();
 		defaultBekgron.visible = false;
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('week54prototype', 'shared'));
+		// JOELwindows7: caste
+		var bg:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage('week54prototype', 'shared'));
 		bg.scale.x *= 1.55;
 		bg.scale.y *= 1.55;
 		bg.screenCenter();
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
-		var kadeLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.loadImage('KadeEngineLogo'));
+		var kadeLogo:FlxUISprite = cast new FlxUISprite(FlxG.width, 0).loadGraphic(Paths.loadImage('KadeEngineLogo'));
 		kadeLogo.scale.y = 0.3;
 		kadeLogo.scale.x = 0.3;
 		kadeLogo.x -= kadeLogo.frameHeight;
@@ -55,7 +60,7 @@ class OutdatedSubState extends MusicBeatState
 		kadeLogo.visible = false; // JOELwindows7: wait check which case first
 
 		// JOELwindows7: our LFM logo here pls
-		var lfmLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.loadImage('art/LFMicon256'));
+		var lfmLogo:FlxUISprite = cast new FlxUISprite(FlxG.width, 0).loadGraphic(Paths.loadImage('art/LFMicon256'));
 		lfmLogo.scale.y = .5;
 		lfmLogo.scale.x = .5;
 		lfmLogo.x -= lfmLogo.frameHeight;
@@ -65,7 +70,7 @@ class OutdatedSubState extends MusicBeatState
 		add(lfmLogo);
 		lfmLogo.visible = false; // JOELwindows7: wait check which case first
 
-		var txt:FlxText = new FlxText(0, 0, FlxG.width,
+		var txt:FlxUIText = new FlxUIText(0, 0, FlxG.width,
 			"Your Kade Engine is outdated!\nYou are on "
 			+ MainMenuState.kadeEngineVer
 			+ "\nwhile the most recent version is "
@@ -92,7 +97,7 @@ class OutdatedSubState extends MusicBeatState
 		add(txt);
 
 		// JOELwindows7: now for LFM
-		var teks:FlxText = new FlxText(0, 0, FlxG.width,
+		var teks:FlxUIText = new FlxUIText(0, 0, FlxG.width,
 			"Your Last Funkin Moment is outdated!\nYou are on "
 			+ MainMenuState.lastFunkinMomentVer
 			+ "\nwhile the most recent version is "
@@ -108,8 +113,12 @@ class OutdatedSubState extends MusicBeatState
 		if (MainMenuState.larutMalam != "")
 			teks.text = "You are on\n"
 				+ MainMenuState.lastFunkinMomentVer
-				+ "\nWhich is a PRE-RELEASE BUILD!"
-				+ "\n\nReport all bugs to the author of the pre-release.\nSpace/Escape ignores this.";
+				+ "\nWhich is beyond the main version than: "
+				+ needVerLast
+				+ '\n\nReport all bugs to the bug report place at: \n${Perkedel.ENGINE_BUGREPORT_URL}'
+				+ '\n\nPress Space to visit the bug report place and report bugs\nor ESCAPE to ignore this'
+				+
+				'\nAnd remember folks, only Perkedel Technologies will be fine with software leaks like this.\nDO NOT leak other people\'s project UNLESS they are also CONFIRMED fine with it, people!';
 
 		teks.setFormat("VCR OSD Mono", 32, FlxColor.fromRGB(200, 200, 200), CENTER);
 		teks.borderColor = FlxColor.BLACK;
@@ -118,7 +127,7 @@ class OutdatedSubState extends MusicBeatState
 		teks.screenCenter();
 		add(teks);
 
-		var mitsake:FlxText = new FlxText(0, 0, FlxG.width,
+		var mitsake:FlxUIText = new FlxUIText(0, 0, FlxG.width,
 			"Your Last Funkin Moment is outdated!\nYou are on "
 			+ "wait a minute.\n"
 			+ "who told you to go here?\n"
@@ -200,13 +209,17 @@ class OutdatedSubState extends MusicBeatState
 			else
 				FlxTween.tween(lfmLogo, {alpha: 0.8}, 0.8, {ease: FlxEase.quartInOut});
 		}, 0);
+
+		addBackButton();
+		addAcceptButton();
+		super.create(); // JOELwindows7: maybe do it last?
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (controls.ACCEPT && MainMenuState.nightly == "" && MainMenuState.larutMalam == "")
+		if ((controls.ACCEPT || haveClicked) && MainMenuState.nightly == "" && MainMenuState.larutMalam == "")
 		{
-			// JOELwindows7: accepted, go to which area should be updated
+			// JOELwindows7: accepted, go to which area should be updated. don't forget mouse!
 			switch (whichAreaOutdated)
 			{
 				case 0:
@@ -216,6 +229,8 @@ class OutdatedSubState extends MusicBeatState
 				default:
 					fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
 			}
+
+			haveClicked = false;
 		}
 		else if (controls.ACCEPT || haveClicked)
 		{
@@ -225,6 +240,7 @@ class OutdatedSubState extends MusicBeatState
 				case 0: // Kade Engine
 					leftState = true;
 				case 1: // Last Funkin Moment
+					fancyOpenURL(Perkedel.ENGINE_BUGREPORT_URL);
 					tinggalkanState = true;
 				case 2: // Your mod
 					trace("your mod");
@@ -253,5 +269,26 @@ class OutdatedSubState extends MusicBeatState
 			haveBacked = false;
 		}
 		super.update(elapsed);
+	}
+
+	override function manageMouse()
+	{
+		if (FlxG.mouse.overlaps(backButton))
+		{
+			if (FlxG.mouse.justPressed)
+			{
+				if (!haveBacked)
+					haveBacked = true;
+			}
+		}
+		if (FlxG.mouse.overlaps(acceptButton))
+		{
+			if (FlxG.mouse.justPressed)
+			{
+				if (!haveClicked)
+					haveClicked = true;
+			}
+		}
+		super.manageMouse();
 	}
 }

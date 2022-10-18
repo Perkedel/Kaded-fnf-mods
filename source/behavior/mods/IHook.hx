@@ -15,7 +15,6 @@
  */
 
 // JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/behavior/mods/IHook.hx
-
 /*
  * IHook.hx
  * An interface which can be added to a class, which indicates that one or more functions on it are script hooks.
@@ -23,6 +22,7 @@
  */
 package behavior.mods;
 
+#if FEATURE_MODCORE
 import polymod.hscript.HScriptable;
 
 @:autoBuild(funkin.util.macro.HaxeHScriptFixer.build()) // This macro adds a `Debug.logError` call that occurs if a script error occurs.
@@ -33,4 +33,4 @@ import polymod.hscript.HScriptable;
 interface IHook extends HScriptable
 {
 }
-
+#end

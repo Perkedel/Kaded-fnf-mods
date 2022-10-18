@@ -1,4 +1,7 @@
 import CoreState;
+#if openfl
+import openfl.system.System;
+#end
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import openfl.Lib;
@@ -44,6 +47,12 @@ class KadeEngineFPS extends TextField
 	public static var extraLoadingSpinnerIndex:Int = 0; // JOELwindows7: loading spinner index to be placed underneath. `-`,`\`,`|`,`/`
 	public static var showLoadingText:Bool; // JOELwindows7: visibility of loading text
 
+	public var memoryUsage:Float;
+	public var imInDanger:Bool = false; // JOELwindows7: flag whether memory is low or FPS too low
+	// JOELwindows7: kay, you know what? why not just detail which one that went wrong?
+	public var memoryUsageTooHigh:Bool = false;
+	public var fpsTooLow:Bool = false;
+
 	public var bitmap:Bitmap;
 
 	@:noCompletion private var cacheCount:Int;
@@ -75,9 +84,6 @@ class KadeEngineFPS extends TextField
 			__enterFrame(time - currentTime);
 		});
 		#end
-
-		bitmap = ImageOutline.renderImage(this, 1, 0x000000, 1, true);
-		(cast(Lib.current.getChildAt(0), Main)).addChild(bitmap);
 	}
 
 	var array:Array<FlxColor> = [
@@ -100,7 +106,7 @@ class KadeEngineFPS extends TextField
 		extraLoadingText = text;
 	}
 
-	//JOELwindows7: set loading percentage
+	// JOELwindows7: set loading percentage
 	public static function setLoadingPercentage(percentage:Float):Void
 	{
 		extraLoadingPercentage = percentage;
@@ -151,7 +157,7 @@ class KadeEngineFPS extends TextField
 				case 3:
 					extraLoadingSpinner = "/";
 			}
-			if(extraLoadingType == ExtraLoadingType.GOING || extraLoadingType == ExtraLoadingType.VAGUE)
+			if (extraLoadingType == ExtraLoadingType.GOING || extraLoadingType == ExtraLoadingType.VAGUE)
 				extraLoadingSpinnerIndex++;
 			switch (extraLoadingType)
 			{
@@ -224,6 +230,22 @@ class KadeEngineFPS extends TextField
 				if (skippedFrames > (FlxG.save.data.fpsCap / 3))
 					skippedFrames = 0;
 			}
+			else
+			{
+				// JOELwindows7: the color signifies danger Psychedly then.
+				if (imInDanger)
+				{
+					// textColor = FlxColor.fromRGB(255, 0, 0);
+					// textColor = FlxColor.RED;
+					(cast(Lib.current.getChildAt(0), Main)).changeFPSColor(FlxColor.RED);
+				}
+				else
+				{
+					// textColor = FlxColor.fromRGB(255, 255, 255);
+					// textColor = FlxColor.WHITE;
+					(cast(Lib.current.getChildAt(0), Main)).changeFPSColor(FlxColor.WHITE);
+				}
+			}
 
 		currentTime += deltaTime;
 		times.push(currentTime);
@@ -238,6 +260,11 @@ class KadeEngineFPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
+
+			// JOELwindows7: here comes the Psyched memory RAM megas!
+			// https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/openfl/display/FPS.hx
+			// var memoryMegas:Float = 0; // already globalized!
+
 			/*
 				text = (FlxG.save.data.fps ? "FPS: "
 					+ currentFPS
@@ -251,12 +278,35 @@ class KadeEngineFPS extends TextField
 					);
 			 */
 			// JOELwindows7: Kade, STOP! this kind of comparison is cringe! why not do it like this:
-			text = (FlxG.save.data.fps ? "FPS: " + currentFPS + "\n" : "")
-				+ (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "")
-				+ (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "")
-				+ extraInfo; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
+			text = (FlxG.save.data.fps ? "FPS: " + currentFPS + "\n" : "");
+			#if openfl
+			// JOELwindows7: get RAM usage Psychedly.
+			memoryUsage = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
+			text += (FlxG.save.data.memoryDisplay ? 'Memory: $memoryUsage MB\n' : ""); // JOELwindows7: get the BOLO memory display option!
+			// here's BOLO's implementation https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/KadeEngineFPS.hx
+			#end
+			text += (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "");
+			text += (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "");
+			// JOELwindows7: OH COOL!! GREAT IDEA, BOLO. Debug mode indicator, yess!!!
+			text += '${(#if debug "DEBUG MODE\n" #elseif release "RELEASE MODE\n" #else "" #end)}';
+			text += '$extraInfo\n'; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
 			// remember to have \n at the beginning of the line at available if case.
 			// No, at the end of line at available if case. + "\n" one.
+
+			// JOELwindows7: psyched check danger status
+			// JOELwindows7: Okay, on second thought you know what? let's just tell which one is in danger.
+			memoryUsageTooHigh = memoryUsage > 3000;
+			fpsTooLow = currentFPS <= 60;
+			// if (memoryUsage > 3000 || currentFPS <= FlxG.save.data.fpsCap / 2)
+			if (memoryUsageTooHigh || fpsTooLow) // JOELwindows7: no uuuh, Why half of the fps cap? perhaps, panic only if uh..
+				// you just have FPS lower than what considerable as lag usually? idk I guess...
+			{
+				imInDanger = true;
+			}
+			else
+			{
+				imInDanger = false;
+			}
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();
@@ -264,17 +314,26 @@ class KadeEngineFPS extends TextField
 			text += "\nstageDC: " + Context3DStats.contextDrawCalls(DrawCallContext.STAGE);
 			text += "\nstage3DDC: " + Context3DStats.contextDrawCalls(DrawCallContext.STAGE3D);
 			#end
+			// JOELwindows7: make sure there's a newline at the end of the line due to bug last line ommited here.
+			text += "\n";
 		}
 
-		visible = true;
+		if (FlxG.save.data.fpsBorder)
+		{
+			visible = true;
+			Main.instance.removeChild(bitmap);
 
-		Main.instance.removeChild(bitmap);
+			bitmap = ImageOutline.renderImage(this, 2, 0x000000, 1);
 
-		bitmap = ImageOutline.renderImage(this, 2, 0x000000, 1);
-
-		Main.instance.addChild(bitmap);
-
-		visible = false;
+			Main.instance.addChild(bitmap);
+			visible = false;
+		}
+		else
+		{
+			visible = true;
+			if (Main.instance.contains(bitmap))
+				Main.instance.removeChild(bitmap);
+		}
 
 		cacheCount = currentCount;
 	}

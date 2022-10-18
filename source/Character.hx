@@ -1,9 +1,14 @@
 package;
 
+import flixel.util.FlxSort;
+import Section;
+import flixel.addons.ui.FlxUISprite;
+import DokiDoki;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.graphics.frames.FlxFramesCollection;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
@@ -11,20 +16,55 @@ import haxe.Json;
 
 using StringTools;
 
-class Character extends FlxSprite
+// JOELwindows7: hey, should we do that here too as well??
+class Character extends FlxUISprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
+	public var animInterrupt:Map<String, Bool>;
+	public var animNext:Map<String, String>;
+	public var animDanced:Map<String, Bool>;
 	public var debugMode:Bool = false;
 
 	public var isPlayer:Bool = false;
+	public var forceIcon:Bool = false; // JOELwindows7: force the health icon to be this exact icon name, skipping filter.
 	public var curCharacter:String = 'bf';
 	public var barColor:FlxColor;
-	public var colorTween:FlxTween; //JOELwindows7: Psyched color tween lol! what a big surpise.
+	public var colorTween:FlxTween; // JOELwindows7: Psyched color tween lol! what a big surpise.
 
 	public var holdTimer:Float = 0;
 
-	public var name:String = 'Boyfriend'; // JOELwindows7: JSON character name, with detaile.
+	// public var name:String = 'Boyfriend'; // JOELwindows7: JSON character name, with detaile. Oh, there's already built in.
 	public var displayName:String = 'Boyfriend'; // JOELwindows7: for showcase name on screen rather than ID
+	public var replacesGF:Bool;
+	public var hasTrail:Bool;
+	public var isDancing:Bool;
+	public var holdLength:Float;
+	public var charPos:Array<Int>;
+	public var camPos:Array<Int>;
+	public var camFollow:Array<Int>;
+
+	// JOELwindows7: death character
+	public var deathCharacter:String = 'bf';
+	public var deathCharacterIsSameAsThis:Bool = true;
+
+	public var heartOrgans:Array<SwagHeart>; // JOELwindows7: for the 🫀 hearts. yep, Shinon51788 Doki Doki dance thingy. turns out either:
+	public var deathSoundPaths:Array<DeathSoundPath>; // JOELwindows7: play these death sounds defined in this list on the asset sound folders.
+	public var randomizedDeathSoundPaths:Array<RandomizedDeathSoundPath>; // JOELwindows7: same but each bit plays one of the random variations
+	public var riseUpAgainSoundPaths:Array<DeathSoundPath>; // JOELwindows7: press retry
+	public var randomizedRiseUpAgainSoundPaths:Array<RandomizedDeathSoundPath>; // JOELwindows7: and random one each bit plays one of the random variations
+
+	public var font:String; // JOELwindows7: name of the font for dialoguebox. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
+	public var fontDrop:String; // JOELwindows7: & for the text behind
+	public var fontColor:String; // JOELwindows7: dialog font color
+	public var fontColorDrop:String; // JOELwindows7: and the drop color, for text behind.
+	public var dialogueChatSoundPaths:Array<String>; // JOELwindows7: array of dialogue chat sound paths.
+	public var dialogueChatSoundVolume:Float; // JOELwindows7: volume for all sounds
+
+	// - more than one characters at once in this class instance, which of course has 1 heart each.
+	// - more than one hearts at once in this class instance, which yess they do exists.
+	public var externalBeating:Bool = false;
+
+	public static var animationNotes:Array<Note> = []; // JOELwindows7: BOLO animation note contains.
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -32,610 +72,19 @@ class Character extends FlxSprite
 
 		barColor = isPlayer ? 0xFF66FF33 : 0xFFFF0000;
 		animOffsets = new Map<String, Array<Dynamic>>();
+		animInterrupt = new Map<String, Bool>();
+		animNext = new Map<String, String>();
+		animDanced = new Map<String, Bool>();
 		curCharacter = character;
 		this.isPlayer = isPlayer;
-
-		var tex:FlxAtlasFrames;
-		antialiasing = FlxG.save.data.antialiasing;
+		this.jantungInstances = new Array<JantungOrgan>(); // JOELwindows7: first, initialize the thorax cavity/ies.
 
 		// JOELwindows7: bruh you forgot to lowercase curCharacter case name. that's why it crash if I capital one of the letter.
 		// please toLowerCase, should I do that?
-		switch (curCharacter)
-		{
-			/*
-				case 'gf':
-					//JOELwindows7: deprecated, use JSON file at preload/data/characters/gf.json and so on.
-					name = "Girlfriend"; // JOELwindows7: name it
-					displayName = "Girlfriend"; // JOELwindows7: display name it
-					// GIRLFRIEND CODE
-					tex = Paths.getSparrowAtlas('GF_assets','shared',true);
-					frames = tex;
-					animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-					animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-					animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
-					animation.addByPrefix('singUP', 'GF Up Note', 24, false);
-					animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
-					animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
-					animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-					animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-					animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
-					animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-					animation.addByPrefix('scared', 'GF FEAR', 24);
 
-					loadOffsetFile(curCharacter);
+		// PAIN IS TEMPORARY, GLORY IS FOREVER. LOL WINTERGATAN
 
-					playAnim('danceRight');
-			 */
-
-			case 'gf-ht':
-				// JOELwindows7: copy from above GIRLFRIEND CODE
-				name = "Television"; // JOELwindows7: name it
-				displayName = "Television"; // JOELwindows7: display name it
-				tex = Paths.getSparrowAtlas('characters/gfHomeTheater');
-				frames = tex;
-				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
-				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
-				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
-				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
-				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-				animation.addByPrefix('scared', 'GF FEAR', 24);
-
-				// addOffset('cheer', 0, 2);
-				// addOffset('sad', 0, 2);
-				// addOffset('danceLeft', 0, 2);
-				// addOffset('danceRight', 0, 2);
-
-				// addOffset("singUP", 0, 2);
-				// addOffset("singRIGHT", 0, 2);
-				// addOffset("singLEFT", 0, 2);
-				// addOffset("singDOWN", 0, 2);
-				// addOffset('hairBlow', 0, 2);
-				// addOffset('hairFall', 0, 2);
-
-				// addOffset('scared', 0, 2);
-				loadOffsetFile(curCharacter);
-				// JOELwindows7: this should be deprecated because of Characters JSON file
-
-				playAnim('danceRight');
-
-				barColor = 0xFFFF0000;
-			case 'gf-covid':
-				// JOELwindows7: copy from that GIRLFRIEND CODE
-				name = "Girlfriend"; // JOELwindows7: name it
-				displayName = "Girlfriend"; // JOELwindows7: display name it
-				tex = Paths.getSparrowAtlas('GF-covid_assets', 'shared', true);
-				frames = tex;
-				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
-				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
-				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
-				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
-				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-				animation.addByPrefix('scared', 'GF FEAR', 24);
-
-				loadOffsetFile(curCharacter);
-
-				playAnim('danceRight');
-
-				barColor = 0xFFFF0000;
-			case 'gf-christmas':
-				name = "Girlfriend (Christmas)"; // JOELwindows7: name it
-				displayName = "Girlfriend"; // JOELwindows7: display name it
-				tex = Paths.getSparrowAtlas('gfChristmas', 'shared', true);
-				frames = tex;
-				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
-				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
-				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
-				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
-				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-				animation.addByPrefix('scared', 'GF FEAR', 24);
-
-				loadOffsetFile(curCharacter);
-
-				playAnim('danceRight');
-
-			case 'gf-car':
-				name = "Girlfriend (Car)"; // JOELwindows7: name it
-				tex = Paths.getSparrowAtlas('gfCar', 'shared', true);
-				frames = tex;
-				animation.addByIndices('singUP', 'GF Dancing Beat Hair blowing CAR', [0], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF Dancing Beat Hair blowing CAR', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				animation.addByIndices('danceRight', 'GF Dancing Beat Hair blowing CAR', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24,
-					false);
-				animation.addByIndices('idleHair', 'GF Dancing Beat Hair blowing CAR', [10, 11, 12, 25, 26, 27], "", 24, true);
-
-				loadOffsetFile(curCharacter);
-
-				playAnim('danceRight');
-
-			case 'gf-pixel':
-				name = "Girlfriend"; // JOELwindows7: name it
-				displayName = "Girlfriend"; // JOELwindows7: display name it
-				tex = Paths.getSparrowAtlas('gfPixel', 'shared', true);
-				frames = tex;
-				animation.addByIndices('singUP', 'GF IDLE', [2], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF IDLE', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				animation.addByIndices('danceRight', 'GF IDLE', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-
-				loadOffsetFile(curCharacter);
-
-				playAnim('danceRight');
-
-				setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
-				updateHitbox();
-				antialiasing = false;
-
-			case 'dad':
-				// DAD ANIMATION LOADING CODE
-				name = "Daddy Dearest"; // JOELwindows7: name it
-				displayName = "Daddy Dearest"; // JOELwindows7: display name it
-				tex = Paths.getSparrowAtlas('DADDY_DEAREST', 'shared', true);
-				frames = tex;
-				animation.addByPrefix('idle', 'Dad idle dance', 24, false);
-				animation.addByPrefix('singUP', 'Dad Sing Note UP', 24, false);
-				animation.addByPrefix('singRIGHT', 'Dad Sing Note RIGHT', 24, false);
-				animation.addByPrefix('singDOWN', 'Dad Sing Note DOWN', 24, false);
-				animation.addByPrefix('singLEFT', 'Dad Sing Note LEFT', 24, false);
-				animation.addByIndices('idleLoop', "Dad idle dance", [11, 12], "", 12, true);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFaf66ce;
-
-				playAnim('idle');
-			case 'hookx':
-				// HOOKX ANIMATION LOADING CODE
-				name = "Hookx"; // JOELwindows7: name it
-				displayName = "Hookx"; // JOELwindows7: display name it
-				// JOELwindows7: bruh you forgot to lowecase the character case name!
-				tex = Paths.getSparrowAtlas('characters/Hookx');
-				frames = tex;
-				animation.addByPrefix('idle', 'Hookx idle dance', 24);
-				animation.addByPrefix('singUP', 'Hookx Sing Note UP', 24);
-				animation.addByPrefix('singRIGHT', 'Hookx Sing Note RIGHT', 24);
-				animation.addByPrefix('singDOWN', 'Hookx Sing Note DOWN', 24);
-				animation.addByPrefix('singLEFT', 'Hookx Sing Note LEFT', 24);
-
-				loadOffsetFile(curCharacter);
-
-				// addOffset('idle');
-				// addOffset("singUP");
-				// addOffset("singRIGHT");
-				// addOffset("singLEFT");
-				// addOffset("singDOWN");
-
-				barColor = 0xFF5000E6; // Also: Sky, Carol
-
-				playAnim('idle');
-			case 'spooky':
-				name = "Skid and Pump"; // JOELwindows7: name them
-				displayName = "Skid and Pump"; // JOELwindows7: display name them
-				tex = Paths.getSparrowAtlas('spooky_kids_assets', 'shared', true);
-				frames = tex;
-				animation.addByPrefix('singUP', 'spooky UP NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'spooky DOWN note', 24, false);
-				animation.addByPrefix('singLEFT', 'note sing left', 24, false);
-				animation.addByPrefix('singRIGHT', 'spooky sing right', 24, false);
-				animation.addByIndices('danceLeft', 'spooky dance idle', [0, 2, 6], "", 12, false);
-				animation.addByIndices('danceRight', 'spooky dance idle', [8, 10, 12, 14], "", 12, false);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFd57e00;
-
-				playAnim('danceRight');
-			case 'mom':
-				name = "Mommy Mearest"; // JOELwindows7: name it
-				displayName = "Mommy Mearest"; // JOELwindows7: display name it
-				tex = Paths.getSparrowAtlas('Mom_Assets', 'shared', true);
-				frames = tex;
-
-				animation.addByPrefix('idle', "Mom Idle", 24, false);
-				animation.addByPrefix('singUP', "Mom Up Pose", 24, false);
-				animation.addByPrefix('singDOWN', "MOM DOWN POSE", 24, false);
-				animation.addByPrefix('singLEFT', 'Mom Left Pose', 24, false);
-				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
-				// CUZ DAVE IS DUMB!
-				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
-				animation.addByIndices('idleLoop', "Mom Idle", [11, 12], "", 12, true);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFd8558e;
-
-				playAnim('idle');
-
-			case 'mom-car':
-				name = "Mommy Mearest (Car)"; // JOELwindows7: name it
-				displayName = "Mommy Mearest"; // JOELwindows7: display name it
-				tex = Paths.getSparrowAtlas('momCar', 'shared', true);
-				frames = tex;
-
-				animation.addByPrefix('idle', "Mom Idle", 24, false);
-				animation.addByPrefix('singUP', "Mom Up Pose", 24, false);
-				animation.addByPrefix('singDOWN', "MOM DOWN POSE", 24, false);
-				animation.addByPrefix('singLEFT', 'Mom Left Pose', 24, false);
-				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
-				// CUZ DAVE IS DUMB!
-				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
-				animation.addByIndices('idleHair', 'Mom Idle', [10, 11, 12, 13], "", 24, true);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFd8558e;
-
-				playAnim('idle');
-			case 'monster':
-				name = "Monster"; // JOELwindows7: name it
-				displayName = "Monster"; // JOELwindows7: display name it
-				tex = Paths.getSparrowAtlas('Monster_Assets', 'shared', true);
-				frames = tex;
-				animation.addByPrefix('idle', 'monster idle', 24, false);
-				animation.addByPrefix('singUP', 'monster up note', 24, false);
-				animation.addByPrefix('singDOWN', 'monster down', 24, false);
-				animation.addByPrefix('singLEFT', 'Monster left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFf3ff6e;
-				playAnim('idle');
-			case 'monster-christmas':
-				name = "Monster (Christmas)"; // JOELwindows7: name it
-				displayName = "Monster"; // JOELwindows7: name it
-				tex = Paths.getSparrowAtlas('monsterChristmas', 'shared', true);
-				frames = tex;
-				animation.addByPrefix('idle', 'monster idle', 24, false);
-				animation.addByPrefix('singUP', 'monster up note', 24, false);
-				animation.addByPrefix('singDOWN', 'monster down', 24, false);
-				animation.addByPrefix('singLEFT', 'Monster left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFf3ff6e;
-				playAnim('idle');
-			case 'pico':
-				name = "Pico"; // JOELwindows7: name it
-				displayName = "Pico"; // JOELwindows7: display name it
-				tex = Paths.getSparrowAtlas('Pico_FNF_assetss', 'shared', true);
-				frames = tex;
-				animation.addByPrefix('idle', "Pico Idle Dance", 24, false);
-				animation.addByPrefix('singUP', 'pico Up note0', 24, false);
-				animation.addByPrefix('singDOWN', 'Pico Down Note0', 24, false);
-				if (isPlayer)
-				{
-					animation.addByPrefix('singLEFT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss', 24, false);
-				}
-				else
-				{
-					// Need to be flipped! REDO THIS LATER!
-					animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico Note Right Miss', 24, false);
-				}
-
-				animation.addByPrefix('singUPmiss', 'pico Up note miss', 24);
-				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFb7d855;
-
-				playAnim('idle');
-
-				flipX = true;
-
-			case 'bf':
-				name = "Boyfriend"; // JOELwindows7: name it
-				displayName = "Boyfriend"; // JOELwindows7: display name it
-				var tex = Paths.getSparrowAtlas('BOYFRIEND', 'shared', true);
-				frames = tex;
-
-				trace(tex.frames.length);
-
-				animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-				animation.addByPrefix('hey', 'BF HEY', 24, false);
-
-				animation.addByPrefix('firstDeath', "BF dies", 24, false);
-				animation.addByPrefix('deathLoop', "BF Dead Loop", 24, false);
-				animation.addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
-
-				animation.addByPrefix('scared', 'BF idle shaking', 24);
-
-				loadOffsetFile(curCharacter);
-
-				playAnim('idle');
-
-				barColor = 0xFF31b0d1;
-
-				flipX = true;
-
-			case 'bf-covid':
-				// JOELwindows7: copy paste the bf above, add masker in his face, and mic. also add vaccine injection mark plaster in left arm
-				name = "Boyfriend (Covid-19)"; // JOELwindows7: name it
-				displayName = "Boyfriend"; // JOELwindows7: display name it
-				// install masker and vaccine injection (all done) Hopefully can fight omicron in case of the worst
-				var tex = Paths.getSparrowAtlas('characters/BOYFRIEND-covid');
-				frames = tex;
-				animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-				animation.addByPrefix('hey', 'BF HEY', 24, false);
-
-				animation.addByPrefix('firstDeath', "BF dies", 24, false);
-				animation.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
-				animation.addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
-
-				animation.addByPrefix('scared', 'BF idle shaking', 24);
-
-				// addOffset('idle', -5);
-				// addOffset("singUP", -29, 27);
-				// addOffset("singRIGHT", -38, -7);
-				// addOffset("singLEFT", 12, -6);
-				// addOffset("singDOWN", -10, -50);
-				// addOffset("singUPmiss", -29, 27);
-				// addOffset("singRIGHTmiss", -30, 21);
-				// addOffset("singLEFTmiss", 12, 24);
-				// addOffset("singDOWNmiss", -11, -19);
-				// addOffset("hey", 7, 4);
-				// addOffset('firstDeath', 37, 11);
-				// addOffset('deathLoop', 37, 5);
-				// addOffset('deathConfirm', 37, 69);
-				// addOffset('scared', -4);
-				loadOffsetFile(curCharacter);
-
-				playAnim('idle');
-
-				barColor = 0xFF31b0d1;
-
-				flipX = true;
-			case 'bf-christmas':
-				name = "Boyfriend (Christmas)"; // JOELwindows7: name it
-				displayName = "Boyfriend"; // JOELwindows7: display name it
-				var tex = Paths.getSparrowAtlas('bfChristmas', 'shared', true);
-				frames = tex;
-				animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-				animation.addByPrefix('hey', 'BF HEY', 24, false);
-
-				loadOffsetFile(curCharacter);
-
-				playAnim('idle');
-
-				flipX = true;
-			case 'bf-car':
-				name = "Boyfriend (Car)"; // JOELwindows7: name it
-				displayName = "Boyfriend"; // JOELwindows7: display name it
-				var tex = Paths.getSparrowAtlas('bfCar', 'shared', true);
-				frames = tex;
-				animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-				animation.addByIndices('idleHair', 'BF idle dance', [10, 11, 12, 13], "", 24, true);
-
-				loadOffsetFile(curCharacter);
-				playAnim('idle');
-
-				barColor = 0xFF31b0d1;
-
-				flipX = true;
-			case 'bf-pixel':
-				name = "Boyfriend (Pixel Day)"; // JOELwindows7: name it
-				displayName = "Boyfriend"; // JOELwindows7: name it
-				frames = Paths.getSparrowAtlas('bfPixel', 'shared', true);
-				animation.addByPrefix('idle', 'BF IDLE', 24, false);
-				animation.addByPrefix('singUP', 'BF UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'BF LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'BF DOWN NOTE', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF DOWN MISS', 24, false);
-
-				loadOffsetFile(curCharacter);
-
-				setGraphicSize(Std.int(width * 6));
-				updateHitbox();
-
-				playAnim('idle');
-
-				width -= 100;
-				height -= 100;
-
-				antialiasing = false;
-
-				barColor = 0xFF31b0d1;
-
-				flipX = true;
-			case 'bf-pixel-dead':
-				name = "Boyfriend (Pixel Day) (Game Over)"; // JOELwindows7: name it
-				displayName = "Boyfriend"; // JOELwindows7: displayname it
-				frames = Paths.getSparrowAtlas('bfPixelsDEAD', 'shared', true);
-				animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
-				animation.addByPrefix('firstDeath', "BF Dies pixel", 24, false);
-				animation.addByPrefix('deathLoop', "Retry Loop", 24, false);
-				animation.addByPrefix('deathConfirm', "RETRY CONFIRM", 24, false);
-				animation.play('firstDeath');
-
-				loadOffsetFile(curCharacter);
-				playAnim('firstDeath');
-				// pixel bullshit
-				setGraphicSize(Std.int(width * 6));
-				updateHitbox();
-				antialiasing = false;
-				flipX = true;
-
-				barColor = 0xFF31b0d1;
-
-			case 'senpai':
-				name = "Senpai"; // JOELwindows7: name it
-				displayName = "Senpai"; // JOELwindows7: name it
-				frames = Paths.getSparrowAtlas('senpai', 'shared', true);
-				animation.addByPrefix('idle', 'Senpai Idle', 24, false);
-				animation.addByPrefix('singUP', 'SENPAI UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'SENPAI LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'SENPAI RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'SENPAI DOWN NOTE', 24, false);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFffaa6f;
-
-				playAnim('idle');
-
-				setGraphicSize(Std.int(width * 6));
-				updateHitbox();
-
-				antialiasing = false;
-			case 'senpai-angry':
-				name = "Senpai (Angry)"; // JOELwindows7: name it
-				displayName = "Senpai"; // JOELwindows7: name it
-				frames = Paths.getSparrowAtlas('senpai', 'shared', true);
-				animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);
-				animation.addByPrefix('singUP', 'Angry Senpai UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'Angry Senpai LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'Angry Senpai RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'Angry Senpai DOWN NOTE', 24, false);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFffaa6f;
-				playAnim('idle');
-
-				setGraphicSize(Std.int(width * 6));
-				updateHitbox();
-
-				antialiasing = false;
-
-			case 'spirit':
-				name = "Spirit"; // JOELwindows7: name it
-				displayName = "Senpai"; // JOELwindows7: display name it
-				frames = Paths.getPackerAtlas('spirit', 'shared', true);
-				animation.addByPrefix('idle', "idle spirit_", 24, false);
-				animation.addByPrefix('singUP', "up_", 24, false);
-				animation.addByPrefix('singRIGHT', "right_", 24, false);
-				animation.addByPrefix('singLEFT', "left_", 24, false);
-				animation.addByPrefix('singDOWN', "spirit down_", 24, false);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFFff3c6e;
-
-				setGraphicSize(Std.int(width * 6));
-				updateHitbox();
-
-				playAnim('idle');
-
-				antialiasing = false;
-
-			case 'parents-christmas':
-				name = "Parents (Christmas)"; // JOELwindows7: name them
-				name = "Mom and Dad"; // JOELwindows7: display name them
-				frames = Paths.getSparrowAtlas('mom_dad_christmas_assets', 'shared', true);
-				animation.addByPrefix('idle', 'Parent Christmas Idle', 24, false);
-				animation.addByPrefix('singUP', 'Parent Up Note Dad', 24, false);
-				animation.addByPrefix('singDOWN', 'Parent Down Note Dad', 24, false);
-				animation.addByPrefix('singLEFT', 'Parent Left Note Dad', 24, false);
-				animation.addByPrefix('singRIGHT', 'Parent Right Note Dad', 24, false);
-
-				animation.addByPrefix('singUP-alt', 'Parent Up Note Mom', 24, false);
-				animation.addByPrefix('singDOWN-alt', 'Parent Down Note Mom', 24, false);
-				animation.addByPrefix('singLEFT-alt', 'Parent Left Note Mom', 24, false);
-				animation.addByPrefix('singRIGHT-alt', 'Parent Right Note Mom', 24, false);
-				animation.addByIndices('idleLoop', "Parent Christmas Idle", [11, 12], "", 12, true);
-
-				loadOffsetFile(curCharacter);
-				barColor = 0xFF9a00f8;
-
-				playAnim('idle');
-			case 'placeholder' | 'gf-placeholder':
-				name = "Placeholder"; // JOELwindows7: name it
-				displayName = "?????"; // JOELwindows7: name it
-				// JOELwindows7: Placeholder character
-				// For temporary placeholder & gone mods cope machine
-				frames = Paths.getSparrowAtlas('Placeholder', 'shared', true);
-				animation.addByPrefix('idle', 'Placeholder idle', 24, false);
-				animation.addByPrefix('singUP', 'Placeholder Sing Note UP', 24, false);
-				animation.addByPrefix('singDOWN', 'Placeholder Sing Note DOWN', 24, false);
-				animation.addByPrefix('singLEFT', 'Placeholder Sing Note LEFT', 24, false);
-				animation.addByPrefix('singRIGHT', 'Placeholder Sing Note RIGHT', 24, false);
-
-				animation.addByPrefix('singUP-alt', 'Placeholder Sing Note alt UP', 24, false);
-				animation.addByPrefix('singDOWN-alt', 'Placeholder Sing Note alt DOWN', 24, false);
-				animation.addByPrefix('singLEFT-alt', 'Placeholder Sing Note alt LEFT', 24, false);
-				animation.addByPrefix('singRIGHT-alt', 'Placeholder Sing Note alt RIGHT', 24, false);
-
-				animation.addByPrefix('singUPmiss', 'Placeholder Miss up', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'Placeholder Miss left', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'Placeholder Miss right', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'Placeholder Miss down', 24, false);
-
-				animation.addByPrefix('hey', 'Placeholder Hey', 24, false);
-				animation.addByPrefix('cheer', 'Placeholder Hey alt', 24, false);
-				animation.addByPrefix('firstDeath', "Placeholder First Death", 24, false);
-				animation.addByPrefix('deathLoop', "Placeholder Dead Loop", 24, false);
-				animation.addByPrefix('deathConfirm', "Placeholder Dead Confirm", 24, false);
-
-				animation.addByPrefix('scared', 'Placeholder Scared', 24);
-				animation.addByPrefix('sad', 'Placeholder Sad', 24);
-
-				animation.addByPrefix('danceLeft', 'Placeholder Dance LEFT', 24, false);
-				animation.addByPrefix('danceRight', 'Placeholder Dance RIGHT', 24, false);
-				animation.addByPrefix('hairBlow', "Placeholder Hair Blowing", 24);
-				animation.addByPrefix('hairFall', "Placeholder Hair Falling", 24, false);
-				trace("Added Placeholderizing frames");
-				loadOffsetFile(curCharacter);
-
-				barColor = 0xFF0D0D0D;
-
-				if (!curCharacter.contains('gf'))
-					playAnim('idle')
-				else
-					playAnim('danceLeft');
-				trace("Go placeholdering");
-			default:
-				parseDataFile();
-		}
-
-		if (curCharacter.startsWith('bf'))
-			dance();
+		parseDataFile();
 
 		if (isPlayer && frames != null)
 		{
@@ -664,21 +113,67 @@ class Character extends FlxSprite
 	{
 		Debug.logInfo('Generating character (${curCharacter}) from JSON data...');
 
+		// JOELwindows7: INCOMING BOLO RETHOUGHT STUFFS
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/Character.hx
 		// Load the data from JSON and cast it to a struct we can easily read.
 		var jsonData = Paths.loadJSON('characters/${curCharacter}');
 		if (jsonData == null)
 		{
 			Debug.logError('Failed to parse JSON data for character ${curCharacter}');
-			return;
+			// JOELwindows7: BOLO has habbit to unfullscreen for alert window. idk why tho..
+			// if (FlxG.fullscreen)
+			// 	FlxG.fullscreen = !FlxG.fullscreen;
+			if (isPlayer)
+			{
+				Debug.displayAlert('Kade Engine JSON Parser', 'Failed to parse JSON data for character  ${curCharacter}. Loading default boyfriend...');
+				jsonData = Paths.loadJSON('characters/bf');
+			}
+			else if (replacesGF)
+			{
+				Debug.displayAlert('Kade Engine JSON Parser', 'Failed to parse JSON data for character  ${curCharacter}. Loading default girlfriend...');
+				jsonData = Paths.loadJSON('characters/gf');
+			}
+			else
+			{
+				Debug.displayAlert('Kade Engine JSON Parser', 'Failed to parse JSON data for character  ${curCharacter}. Loading default opponent...');
+				jsonData = Paths.loadJSON('characters/dad');
+			}
+			// return; // JOELwindows7: no longer needed! we already just loaded emergency fallbacks!!
 		}
 
 		var data:CharacterData = cast jsonData;
 
+		// JOELwindows7: BOLO optimizener. uuhh, idk, why.. we have heart organ things here!
+		// var tex:FlxAtlasFrames;
+		var tex:FlxFramesCollection;
+
+		// to be deleted
 		name = data.name; // JOELwindows7: name it. wow, Kade and friends prepared that already lol! thancc Eric Millyoja yey cool and good!
-		displayName = data.displayName;
+		displayName = data.displayName; // JOELwindows7: separate name for on screen because `name` can have variation descriptors.
 		if (data.displayName == null) // JOELwindows7: If displayName is empty, copy from name
 			displayName = name;
-		var tex:FlxAtlasFrames = Paths.getSparrowAtlas(data.asset, 'shared');
+		// tex:FlxAtlasFrames = Paths.getSparrowAtlas(data.asset, 'shared');
+		// end to be deleted
+
+		/*
+			if (data.usePackerAtlas)
+				tex = Paths.getPackerAtlas(data.asset, 'shared');
+			else
+				tex = Paths.getSparrowAtlas(data.asset, 'shared');
+		 */
+		// JOELwindows7: NEW BOLO types of atlas!
+		switch (data.AtlasType)
+		{
+			case 'PackerAtlas':
+				tex = Paths.getPackerAtlas(data.asset, 'shared');
+			case 'TextureAtlas':
+				tex = Paths.getTextureAtlas(data.asset, 'shared');
+			case 'JsonAtlas':
+				tex = Paths.getJSONAtlas(data.asset, 'shared');
+			default: // SparrowAtlas
+				tex = Paths.getSparrowAtlas(data.asset, 'shared');
+		}
+
 		frames = tex;
 		if (frames != null)
 			for (anim in data.animations)
@@ -688,85 +183,209 @@ class Character extends FlxSprite
 				var flipX = anim.flipX == null ? false : anim.flipX;
 				var flipY = anim.flipY == null ? false : anim.flipY;
 
+				// JOELwindows7: BOLO. frameRate times song multiplier right now.
 				if (anim.frameIndices != null)
 				{
-					animation.addByIndices(anim.name, anim.prefix, anim.frameIndices, "", frameRate, looped, flipX, flipY);
+					animation.addByIndices(anim.name, anim.prefix, anim.frameIndices, "", Std.int(frameRate * PlayState.songMultiplier), looped, flipX, flipY);
 				}
 				else
 				{
-					animation.addByPrefix(anim.name, anim.prefix, frameRate, looped, flipX, flipY);
+					animation.addByPrefix(anim.name, anim.prefix, Std.int(frameRate * PlayState.songMultiplier), looped, flipX, flipY);
 				}
 
 				animOffsets[anim.name] = anim.offsets == null ? [0, 0] : anim.offsets;
+				animInterrupt[anim.name] = anim.interrupt == null ? true : anim.interrupt;
+
+				if (data.isDancing && anim.isDanced != null)
+					animDanced[anim.name] = anim.isDanced;
+
+				if (anim.nextAnim != null)
+					animNext[anim.name] = anim.nextAnim;
 			}
+
+		this.replacesGF = data.replacesGF == null ? false : data.replacesGF;
+		this.hasTrail = data.hasTrail == null ? false : data.hasTrail;
+		this.isDancing = data.isDancing == null ? false : data.isDancing;
+		this.forceIcon = data.forceIcon == null ? false : data.forceIcon; // JOELwindows7: force icon to be exact this.
+		this.charPos = data.charPos == null ? [0, 0] : data.charPos;
+		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
+		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
+		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
+		// JOELwindows7: chec death is same with this or not.
+		this.deathCharacterIsSameAsThis = data.deathCharacterIsSameAsThis == null ? Perkedel.NULL_DEATH_CHARACTER_IS_AS_SAME_AS_THIS : data.deathCharacterIsSameAsThis;
+		this.deathCharacter = data.deathCharacter == null ? Perkedel.NULL_DEATH_CHARACTER : data.deathCharacter;
+		this.deathSoundPaths = data.deathSoundPaths == null ? Perkedel.NULL_DEATH_SOUND_PATHS : data.deathSoundPaths;
+		this.randomizedDeathSoundPaths = data.randomizedDeathSoundPaths == null ? Perkedel.NULL_RANDOMIZED_DEATH_SOUND_PATHS : data.randomizedDeathSoundPaths;
+		this.riseUpAgainSoundPaths = data.riseUpAgainSoundPaths == null ? Perkedel.NULL_RISE_UP_AGAIN_SOUND_PATHS : data.riseUpAgainSoundPaths;
+		this.randomizedRiseUpAgainSoundPaths = data.randomizedRiseUpAgainSoundPaths == null ? Perkedel.NULL_RANDOMIZED_DEATH_SOUND_PATHS : data.randomizedRiseUpAgainSoundPaths;
+		this.heartOrgans = data.heartOrgans == null ? [Perkedel.NULL_HEART_SPEC] : data.heartOrgans; // JOELwindows7: yess, the hearts & each specification!
+		this.font = data.font == null ? Perkedel.NULL_DIALOGUE_FONT : data.font;
+		this.fontDrop = data.fontDrop == null ? Perkedel.NULL_DIALOGUE_FONT_DROP : data.fontDrop;
+		this.fontColor = data.fontColor == null ? Perkedel.NULL_DIALOGUE_FONT_COLOR : data.fontColor;
+		this.fontColorDrop = data.fontColorDrop == null ? Perkedel.NULL_DIALOGUE_FONT_COLOR_DROP : data.fontColorDrop;
+		this.dialogueChatSoundPaths = data.dialogueChatSoundPaths == null ? Perkedel.NULL_DIALOGUE_SOUND_PATHS : data.dialogueChatSoundPaths;
+		this.dialogueChatSoundVolume = data.dialogueChatSoundVolume == null ? Perkedel.NULL_DIALOGUE_SOUND_VOLUME : data.dialogueChatSoundVolume;
+
+		flipX = data.flipX == null ? false : data.flipX;
+
+		if (data.scale != null)
+		{
+			setGraphicSize(Std.int(width * data.scale));
+			updateHitbox();
+		}
+
+		antialiasing = data.antialiasing == null ? FlxG.save.data.antialiasing : data.antialiasing;
+
+		playAnim(data.startingAnim);
+		// end optimize
 
 		barColor = FlxColor.fromString(data.barColor);
 
-		playAnim(data.startingAnim);
-	}
-
-	public function loadOffsetFile(character:String, library:String = 'shared')
-	{
-		var offset:Array<String> = CoolUtil.coolTextFile(Paths.txt('images/characters/' + character + "Offsets", library));
-
-		for (i in 0...offset.length)
+		// JOELwindows7: fill out heart organs!
+		for (thisSpec in heartOrgans)
 		{
-			var data:Array<String> = offset[i].split(' ');
-			addOffset(data[0], Std.parseInt(data[1]), Std.parseInt(data[2]));
+			var aHeart = new JantungOrgan(thisSpec);
+			jantungInstances.push(aHeart);
 		}
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (!isPlayer)
+		// JOELwindows7: BOLO's safety bruh!
+		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/Character.hx
+		if (animation.curAnim != null)
 		{
-			if (animation.curAnim.name.startsWith('sing'))
+			if (!isPlayer)
 			{
-				holdTimer += elapsed;
+				if (!PlayStateChangeables.opponentMode) // JOELwindows7: BOLO opponent mode check moved out here
+				{
+					if (animation.curAnim.name.startsWith('sing'))
+						holdTimer += elapsed;
+
+					if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
+					{
+						// JOELwindows7: BOLO's opponent mode check. if not opponent mode then dance
+						if (!PlayStateChangeables.opponentMode)
+						{
+							/*
+								if (isDancing)
+									playAnim('danceLeft'); // overridden by dance correctly later
+							 */
+							dance();
+						}
+						holdTimer = 0;
+					}
+
+					// JOELwindows7: BOLO's return back to idle when not player.
+					if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+					{
+						// playAnim('idle', true, false, 10); // perhaps no, don't, I guess..
+					}
+				}
+				else
+				{
+					// JOELwindows7: BOLO opponent mode
+					if (animation.curAnim.name.startsWith('sing'))
+						holdTimer += elapsed;
+					else
+						holdTimer = 0;
+
+					if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+						dance();
+
+					if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)
+						playAnim('deathLoop');
+				}
 			}
 
-			if (curCharacter.endsWith('-car')
-				&& !animation.curAnim.name.startsWith('sing')
-				&& animation.curAnim.finished
-				&& animation.getByName('idleHair') != null)
-				playAnim('idleHair');
-
-			if (animation.getByName('idleLoop') != null)
+			if (!debugMode)
 			{
-				if (!animation.curAnim.name.startsWith('sing') && animation.curAnim.finished)
-					playAnim('idleLoop');
+				var nextAnim = animNext.get(animation.curAnim.name);
+				var forceDanced = animDanced.get(animation.curAnim.name);
+
+				// case 'gf' | 'gf-ht' | 'gf-covid' | 'gf-placeholder':
+				// JOELwindows7: okay idk how to make this work at all!
+				if (nextAnim != null && animation.curAnim.finished)
+				{
+					if (isDancing && forceDanced != null)
+						danced = forceDanced;
+					playAnim(nextAnim); // JOELwindows7: BOLO play next anim!
+				}
+				else
+				{
+					// if (isDancing || animation.curAnim.finished)
+					// 	dance();
+					// animation.curAnim
+				}
 			}
 
-			var dadVar:Float = 4;
-
-			if (curCharacter == 'dad')
-				dadVar = 6.1;
-			else if (curCharacter == 'gf' || curCharacter == 'spooky')
-				dadVar = 4.1; // fix double dances
-			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
+			// JOELwindows7: BOLO additional special
+			switch (curCharacter)
 			{
-				if (curCharacter == 'gf' || curCharacter == 'spooky')
-					playAnim('danceLeft'); // overridden by dance correctly later
-				dance();
-				holdTimer = 0;
+				case 'pico-speaker':
+					if (animationNotes.length > 0 && Conductor.songPosition >= animationNotes[0].strumTime)
+					{
+						var noteData:Int = 1;
+						if (2 <= animationNotes[0].noteData)
+							noteData = 3;
+
+						noteData += FlxG.random.int(0, 1);
+						playAnim('shoot' + noteData, true);
+						animationNotes.shift();
+					}
 			}
 		}
-
-		switch (curCharacter)
+		else
 		{
-			case 'gf' | 'gf-ht' | 'gf-covid' | 'gf-placeholder':
-				// JOELwindows7: okay idk how to make this work at all!
-				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-				{
-					danced = true;
-					playAnim('danceRight');
-				}
+			// JOELwindows7: curAnim is null bruh
 		}
 
 		super.update(elapsed);
+
+		if (!externalBeating)
+			updateHeartbeats(elapsed); // JOELwindows7: DOESN'T UPDATE! ATTACH TO STATE'S UPDATE INSTEAD!! nvm. it works.
+		// okay don't I notice faster the song, faster character, faster heart.
+		// slower song, slower character, slower heart.
+		// no no no! that's not how heart organ works!
+	}
+
+	/**
+	 * Turns out, the `update` function above doesn't work. 
+	 * try manually attach this update method into state's update method we are right now instead.
+	 * wait, I guess I've fixed it lol!
+	 * ever mind! the character speed affects! go attach it!
+	 * @author JOELwindows7
+	 * @param elapsed handover elapsed
+	 */
+	function updateHeartbeats(elapsed:Float)
+	{
+		// JOELwindows7: update heart organs!
+		if (jantungInstances != null)
+			for (each in jantungInstances)
+			{
+				// if (each != null)
+				each.update(elapsed);
+			}
+	}
+
+	/**
+	 * Send heart update frame & elapsed to here.
+	 * Please call this method in your state's `update` method 
+	 * complete with `elapsed` argument variable to this `elapsed` argument.
+	 * By accessing this function, you enable external clock.
+	 * this will disable self heartbeat management.
+	 * to disable external clock & let heart management does itself again, set `reself` to true.
+	 * @param elapsed handover elapsed
+	 * @param reself whether to reenable own heart management system again
+	 */
+	public function doHeartbeats(elapsed:Float, reself:Bool = false)
+	{
+		externalBeating = !reself;
+		updateHeartbeats(elapsed);
 	}
 
 	private var danced:Bool = false;
+	private var jantungInstances:Array<JantungOrgan>; // JOELwindows7: bunch of 🫀 heart organs object instances.
 
 	/**
 	 * FOR GF DANCING SHIT
@@ -775,103 +394,486 @@ class Character extends FlxSprite
 	{
 		if (!debugMode)
 		{
-			switch (curCharacter)
+			// JOELwindows7: BOLO nested safety pls!
+			if (!PlayStateChangeables.optimize)
 			{
-				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-covid' | 'gf-placeholder' | 'gf-ht':
-					// JOELwindows7: copy this if from above case
-					// well we can just add OR to this.
-					if (!animation.curAnim.name.startsWith('hair') && !animation.curAnim.name.startsWith('sing'))
+				if (animation.curAnim != null)
+				{
+					// trace('${curCharacter} Dancening force ${forced}, alt ${altAnim}');
+					// JOELwindows7: looks like interupt is defaultly true looks like!
+					// crash if animation frame reference in the name is missing
+					// Debug.logTrace('${animation.curAnim.name} here,');
+					// Debug.logTrace('${animation.curAnim.name} can interupt? ${animInterrupt.get(animation.curAnim.name)}');
+					var canInterrupt = animInterrupt.get(animation.curAnim.name);
+					if (canInterrupt == null)
 					{
-						danced = !danced;
+						canInterrupt = true;
+					} // JOELwindows7: prevent gf goes dead silent after train hair fall.
 
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-				case 'spooky':
-					if (!animation.curAnim.name.startsWith('sing'))
+					if (canInterrupt)
 					{
-						danced = !danced;
+						// case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-covid' | 'gf-placeholder' | 'gf-ht':
+						if (isDancing)
+						{
+							// JOELwindows7: copy this if from above case
+							// well we can just add OR to this.
+							// if (!animation.curAnim.name.startsWith('hair') && !animation.curAnim.name.startsWith('sing'))
+							//
+							danced = !danced;
 
-						if (danced)
-							playAnim('danceRight');
+							if (altAnim && animation.getByName('danceRight-alt') != null && animation.getByName('danceLeft-alt') != null)
+							{
+								if (danced)
+									playAnim('danceRight-alt');
+								else
+									playAnim('danceLeft-alt');
+							}
+							else
+							{
+								if (danced)
+									playAnim('danceRight');
+								else
+									playAnim('danceLeft');
+							}
+						}
 						else
-							playAnim('danceLeft');
+						{
+							if (altAnim && animation.getByName('idle-alt') != null)
+								playAnim('idle-alt', forced);
+							else
+								playAnim('idle', forced);
+						}
 					}
-				/*
-					// new dance code is gonna end up cutting off animation with the idle
-					// so here's example code that'll fix it. just adjust it to ya character 'n shit
-					case 'custom character':
-						if (!animation.curAnim.name.endsWith('custom animation'))
-							playAnim('idle', forced);
-				 */
-				default:
-					if (altAnim && animation.getByName('idle-alt') != null)
-						playAnim('idle-alt', forced);
-					else
-						playAnim('idle', forced);
+				}
 			}
 		}
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		if (AnimName.endsWith('alt') && animation.getByName(AnimName) == null)
+		// JOELwindows7: BOLO optimizeoid
+		if (!PlayStateChangeables.optimize)
 		{
-			#if debug
-			FlxG.log.warn(['Such alt animation doesnt exist: ' + AnimName]);
-			#end
-			AnimName = AnimName.split('-')[0];
-		}
-
-		animation.play(AnimName, Force, Reversed, Frame);
-
-		var daOffset = animOffsets.get(AnimName);
-		if (animOffsets.exists(AnimName))
-		{
-			offset.set(daOffset[0], daOffset[1]);
-		}
-		else
-			offset.set(0, 0);
-
-		if (curCharacter == 'gf' || curCharacter == 'gf-ht' || curCharacter == 'gf-placeholder')
-		{
-			if (AnimName == 'singLEFT')
+			if (AnimName.endsWith('alt') && animation.getByName(AnimName) == null)
 			{
-				danced = true;
-			}
-			else if (AnimName == 'singRIGHT')
-			{
-				danced = false;
+				#if debug
+				FlxG.log.warn(['Such alt animation doesnt exist: ' + AnimName]);
+				#end
+				AnimName = AnimName.split('-')[0];
 			}
 
-			if (AnimName == 'singUP' || AnimName == 'singDOWN')
+			animation.play(AnimName, Force, Reversed, Frame);
+
+			var daOffset = animOffsets.get(AnimName);
+			if (animOffsets.exists(AnimName))
 			{
-				danced = !danced;
+				offset.set(daOffset[0], daOffset[1]);
+			}
+			else
+				offset.set(0, 0);
+
+			if (curCharacter == 'gf' || curCharacter == 'gf-ht' || curCharacter == 'gf-placeholder')
+			{
+				if (AnimName == 'singLEFT')
+				{
+					danced = true;
+				}
+				else if (AnimName == 'singRIGHT')
+				{
+					danced = false;
+				}
+
+				if (AnimName == 'singUP' || AnimName == 'singDOWN')
+				{
+					danced = !danced;
+				}
 			}
 		}
+	}
+
+	// JOELwindows7: add BOLO things here.
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Character.hx
+	// the load mapped anim
+	public static function loadMappedAnims():Void
+	{
+		var noteData:Array<SwagSection> = Song.loadFromJson(PlayState.SONG.songId, 'picospeaker').notes;
+		for (section in noteData)
+		{
+			for (songNotes in section.sectionNotes)
+			{
+				var daStrumTime:Float = (songNotes[0] - FlxG.save.data.offset - PlayState.songOffset) / PlayState.songMultiplier;
+				if (daStrumTime < 0)
+					daStrumTime = 0;
+
+				var daNoteData:Int = Std.int(songNotes[1] % 4);
+
+				var oldNote:Note;
+
+				if (PlayState.instance.unspawnNotes.length > 0)
+					oldNote = PlayState.instance.unspawnNotes[Std.int(PlayState.instance.unspawnNotes.length - 1)];
+				else
+					oldNote = null;
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4]);
+
+				animationNotes.push(swagNote);
+			}
+		}
+		TankmenBG.animationNotes = animationNotes;
+		animationNotes.sort(sortAnims);
+	}
+
+	// JOELwindows7: BOLO sort anims
+	static function sortAnims(Obj1:Note, Obj2:Note):Int
+	{
+		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)
 	{
 		animOffsets[name] = [x, y];
 	}
+
+	// JOELwindows7: heart functions!
+	public function stimulateHeart(whichOne:Int = -1, typeOfStimulate:HeartStimulateType, givenValue:Float = 0)
+	{
+		if (whichOne < 0)
+		{
+			// all of them
+			for (each in jantungInstances)
+			{
+				each.stimulate(typeOfStimulate, givenValue);
+			}
+		}
+		else
+		{
+			// one of selected
+			try
+			{
+				jantungInstances[whichOne].stimulate(typeOfStimulate, givenValue);
+			}
+			catch (e)
+			{
+				Debug.logError("WERROR! Heart organ No. " + Std.string(whichOne) + " not found while attempting to: Stimulate!\n" + e + ": " + e.message
+					+ "\n" + e.details());
+			}
+		}
+	}
+
+	public function successfullyStep(whichOne:Int = -1, rewards:Int = 1)
+	{
+		if (whichOne < 0)
+		{
+			// all of them
+			for (each in jantungInstances)
+			{
+				each.successfullyStep(rewards);
+			}
+		}
+		else
+		{
+			// one of selected
+			try
+			{
+				jantungInstances[whichOne].successfullyStep(rewards);
+			}
+			catch (e)
+			{
+				Debug.logError("WERROR 404! Heart organ No. " + Std.string(whichOne) + " not found while attempting to: Succesfully Step!\n" + e + ": "
+					+ e.message + "\n" + e.details());
+			}
+		}
+	}
+
+	public function getHeartRate(which:Int = -1):Float
+	{
+		if (which < 0)
+		{
+			// JOELwindows7: GitHub copilot coded this! average heart rate of all heart organs inside! lmao!
+			var total:Float = 0;
+			for (each in jantungInstances)
+			{
+				total += each.getHeartRate();
+			}
+			return total / jantungInstances.length;
+		}
+		try
+		{
+			return jantungInstances[which].getHeartRate();
+		}
+		catch (e)
+		{
+			Debug.logError("WERROR 404! Heart organ No. " + Std.string(which) + " not found while attempting to: Get heart rate!\n" + e + ": " + e.message
+				+ "\n" + e.details());
+		}
+		return -1;
+	}
+
+	public function getHeartTier(which:Int = 0):Int
+	{
+		if (which < 0)
+		{
+			// JOELwindows7: GitHub copilot coded this! average heart tier of all heart organs inside! lmao!
+			var total:Int = 0;
+			for (each in jantungInstances)
+			{
+				total += each.getHeartTier();
+			}
+			return Std.int(total / jantungInstances.length);
+		}
+		try
+		{
+			return jantungInstances[which].getHeartTier();
+		}
+		catch (e)
+		{
+			Debug.logError("WERROR 404! Heart organ No. "
+				+ Std.string(which)
+				+ " not found while attempting to: Get heart tier!\n"
+				+ e
+				+ ": "
+			+ e.message
+				+ "\n" + e.details());
+		}
+		return -3;
+	}
+
+	// JOELwindows7: enable print the lub dub for debugging purpose
+	public function _setDebugPrintHeart(which:Int = -1, into:Bool = false)
+	{
+		if (which < 0)
+		{
+			for (each in jantungInstances)
+			{
+				each._setDebugPrint(into);
+			}
+		}
+		else
+		{
+			try
+			{
+				jantungInstances[which]._setDebugPrint(into);
+			}
+			catch (e)
+			{
+				Debug.logError("WERROR 404! Heart organ No. " + Std.string(which) + " not found while attempting to: set debug print!\n" + e + ": " +
+					e.message + "\n" + e.details());
+			}
+		}
+	}
+
+	// JOELwindows7: play death animation & all sounds defined
+	public function blueballsNow(mute:Bool = false)
+	{
+		playAnim('firstDeath');
+		if (!mute)
+		{
+			if (deathSoundPaths != null && deathSoundPaths.length > 0)
+			{
+				for (daThing in deathSoundPaths)
+				{
+					FlxG.sound.play(Paths.sound('${daThing.pathPrefix}${(daThing.addSuffixes == null ? true : daThing.addSuffixes) ? GameOverSubstate.getAddSuffixes() : ""}',
+						'shared'),
+						daThing.volume == null ? Perkedel.NULL_DEATH_SOUND_VOLUME : daThing.volume);
+				}
+			}
+			if (randomizedDeathSoundPaths != null && randomizedDeathSoundPaths.length > 0)
+			{
+				for (daThing in randomizedDeathSoundPaths)
+				{
+					FlxG.sound.play(Paths.soundRandom('${daThing.pathPrefix}${(daThing.addSuffixes == null ? false : daThing.addSuffixes) ? GameOverSubstate.getAddSuffixes() : ""}',
+						daThing.minRange, daThing.maxRange, 'shared'),
+						daThing.volume == null ? Perkedel.NULL_DEATH_SOUND_VOLUME : daThing.volume);
+				}
+			}
+		}
+	}
+
+	// JOELwindows7: maybe also add witnessing of death too? e.g. when fail in tutorial uh.. idk.
+	public function witnessBlueball(mute:Bool = false, yayPersonDied:Bool = false)
+	{
+		// yayPersonDied true means this character play "yay he's dead!" animation a.k.a. evil character.
+		// otherwise show pity a.k.a. good character
+		if (!mute)
+		{
+			// TODO: pls build way of differenter.
+		}
+	}
+
+	// JOELwindows7: press retry
+	public function riseUpAgain(mute:Bool = false)
+	{
+		playAnim('deathConfirm', true);
+		if (!mute)
+		{
+			if (riseUpAgainSoundPaths != null && riseUpAgainSoundPaths.length > 0)
+			{
+				for (daThing in riseUpAgainSoundPaths)
+				{
+					FlxG.sound.play(Paths.sound('${daThing.pathPrefix}${(daThing.addSuffixes == null ? true : daThing.addSuffixes) ? GameOverSubstate.getAddSuffixes() : ""}',
+						'shared'),
+						daThing.volume == null ? Perkedel.NULL_DEATH_SOUND_VOLUME : daThing.volume);
+				}
+			}
+			if (randomizedRiseUpAgainSoundPaths != null && randomizedRiseUpAgainSoundPaths.length > 0)
+			{
+				for (daThing in randomizedRiseUpAgainSoundPaths)
+				{
+					FlxG.sound.play(Paths.soundRandom('${daThing.pathPrefix}${(daThing.addSuffixes == null ? false : daThing.addSuffixes) ? GameOverSubstate.getAddSuffixes() : ""}',
+						daThing.minRange, daThing.maxRange, 'shared'),
+						daThing.volume == null ? Perkedel.NULL_DEATH_SOUND_VOLUME : daThing.volume);
+				}
+			}
+		}
+	}
 }
 
 typedef CharacterData =
 {
 	var name:String;
+
+	/**
+	 * Name of the character that'll be displayed on screen such as Dialogue chat
+	 */
 	var ?displayName:String; // JOELwindows7: If they have special name, reregular name, or whatever it should be displayed as.
+
+	/**
+	 * Force the health icon to be specific icon regardless of the filter.
+	 */
+	var ?forceIcon:Bool; // JOELwindows7: force the health icon to be specific icon regardless of the filter.
+
+	/**
+	 * Font for the dialog. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
+	 */
+	var ?font:String; // JOELwindows7: name of the font for dialoguebox. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
+
+	/**
+	 * Drop Font for the dialog text behind. e.g. `Pixel Arial 11 Bold` or `Ubuntu Bold` etc.
+	 */
+	var ?fontDrop:String; // JOELwindows7: & for the text behind
+
+	/**
+	 * Paths of sounds to play all at the same time in event of death / blueball
+	 */
+	var ?deathSoundPaths:Array<DeathSoundPath>; // JOELwindows7: sounds to play when death. plays these all at the same time.
+
+	/**
+		Character ID for the Game Over screen.
+	**/
+	var ?deathCharacter:String; // JOELwindows7: if the death char is different, then which character is it
+
+	/**
+		Would you like to use this same character or different character ID defined in `deathCharacter`?
+	**/
+	var ?deathCharacterIsSameAsThis:Bool; // JOELwindows7: whether the death character is same or use above path idk.
+
+	/**
+	 * Paths of sounds to play all at the same time in event of death / blueball
+	 * with each bit randomly chooses different variations ranging from minimum number to maximum number
+	 */
+	var ?randomizedDeathSoundPaths:Array<RandomizedDeathSoundPath>; // JOELwindows7: and play sound randomized one. play all, each bit plays which.
+
+	/**
+	 * Paths of sounds to play all at the same time in event of press retry
+	 */
+	var ?riseUpAgainSoundPaths:Array<DeathSoundPath>; // JOELwindows7: press retry
+
+	/**
+	 * Paths of sounds to play all at the same time in event of press retry
+	 * with each bit randomly chooses different variations ranging from minimum number to maximum number
+	 */
+	var ?randomizedRiseUpAgainSoundPaths:Array<RandomizedDeathSoundPath>; // and randomized ones.
+
+	// var ?forceHealthIconIsThat:Bool; // JOELwindows7: force the health icon to be specific icon regardless of the filter.
 	var asset:String;
 	var startingAnim:String;
+	var ?charPos:Array<Int>;
+	var ?camPos:Array<Int>;
+	var ?camFollow:Array<Int>;
+	var ?holdLength:Float;
+
+	/**
+	 * Heart organs specification inside this character. can have more than 1 heart specification.
+	 */
+	var ?heartOrgans:Array<SwagHeart>; // JOELwindows7: Array of heart organs inside this Character.
 
 	/**
 	 * The color of this character's health bar.
 	 */
 	var barColor:String;
 
+	/**
+	 * The color of this character's dialogue font.
+	 */
+	var ?fontColor:String; // JOELwindows7: dialog font color
+
+	/**
+	 * The color of this character's dialogue font for the drop behind text.
+	 */
+	var ?fontColorDrop:String; // JOELwindows7: and the drop color, for text behind.
+
+	/**
+	 * The sound path of this character's dialogue.
+	 */
+	var ?dialogueChatSoundPaths:Array<String>; // JOELwindows7: array of dialogue chat sound paths.
+
+	/**
+	 * The sound volume for all sounds of character dialogue.
+	 */
+	var ?dialogueChatSoundVolume:Float; // JOELwindows7: volume for all sounds
+
 	var animations:Array<AnimationData>;
+
+	/**
+	 * Whether this character is flipped horizontally.
+	 * @default false
+	 */
+	var ?flipX:Bool;
+
+	/**
+	 * The scale of this character.
+	 * Pixel characters typically use 6.
+	 * @default 1
+	 */
+	var ?scale:Int;
+
+	/**
+	 * Whether this character has antialiasing.
+	 * @default true
+	 */
+	var ?antialiasing:Bool;
+
+	// JOELwindows7: BOLO
+
+	/**
+	 * What type of Atlas the character uses.
+	 * @default SparrowAtlas
+	 */
+	var ?AtlasType:String;
+
+	/**
+	 * Whether this character uses PackerAtlas.
+	 * @default false
+	 */
+	var ?usePackerAtlas:Bool;
+
+	/**
+	 * Whether this character uses a dancing idle instead of a regular idle.
+	 * (ex. gf, spooky)
+	 * @default false
+	 */
+	var ?isDancing:Bool;
+
+	/**
+	 * Whether this character has a trail behind them.
+	 * @default false
+	 */
+	var ?hasTrail:Bool;
+
+	/**
+	 * Whether this character replaces gf if they are set as dad.
+	 * @default false
+	 */
+	var ?replacesGF:Bool;
 }
 
 typedef AnimationData =
@@ -896,4 +898,56 @@ typedef AnimationData =
 	var ?frameRate:Int;
 
 	var ?frameIndices:Array<Int>;
+
+	/**
+	 * Whether this animation can be interrupted by the dance function.
+	 * @default true
+	 */
+	var ?interrupt:Bool;
+
+	/**
+	 * The animation that this animation will go to after it is finished.
+	 */
+	var ?nextAnim:String;
+
+	/**
+	 * Whether this animation sets danced to true or false.
+	 * Only works for characters with isDancing enabled.
+	 */
+	var ?isDanced:Bool;
+}
+
+// JOELwindows7: turns out there is random sound bits from num which to what.
+typedef RandomizedDeathSoundPath =
+{
+	var pathPrefix:String;
+	var minRange:Int;
+	var maxRange:Int;
+	var ?volume:Float;
+	var ?addSuffixes:Bool;
+}
+
+// JOELwindows7: oh turns out the regular death sound may have various volumes too!
+typedef DeathSoundPath =
+{
+	var pathPrefix:String;
+	var ?volume:Float;
+	var ?addSuffixes:Bool;
+}
+
+// JOELwindows7: damn, could've just one unisound type for many various parametering things right? this used for both regular & randomized one.
+typedef WitnessBlueballSoundPath =
+{
+	var pathPrefix:String;
+	var ?minRange:Int;
+	var ?maxRange:Int;
+	var ?volume:Float;
+	var ?addSuffixes:Bool;
+
+	/**
+		Set this to `true`, if this character hates that opponent, it'll play sound with `insulting` set to `true`. show insult haha you lose!!
+		Set this to `false`, if this character likes the opponent, it'll play sound with `insulting` set to `false`. show pity oh no are you okay?!
+	**/
+	var ?insulting:Bool; // JOELwindows7: true means that this if for when hated opponent lose. otherwise this is for to pity.
+
 }

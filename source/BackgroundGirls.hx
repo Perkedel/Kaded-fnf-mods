@@ -1,9 +1,12 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
-class BackgroundGirls extends FlxSprite
+//JOELwindows7: bro, sis, FlxUI this!
+
+class BackgroundGirls extends FlxUISprite
 {
 	public function new(x:Float, y:Float)
 	{

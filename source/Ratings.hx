@@ -2,6 +2,103 @@ import flixel.FlxG;
 
 class Ratings
 {
+	// JOELwindows7: BOLO generate combo rank!!!! wait, this is duplicate.
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Ratings.hx
+	public static function GenerateComboRank(accuracy:Float) // generate a letter ranking
+	{
+		var comboranking:String = "N/A";
+		if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods == 0) // Marvelous (SICK) Full Combo
+			comboranking = "(MFC)";
+		else if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods >= 1) // Good Full Combo (Nothing but Goods & Sicks)
+			comboranking = "(GFC)";
+		else if (PlayState.misses == 0) // Regular FC
+			comboranking = "(FC)";
+		else if (PlayState.misses < 10) // Single Digit Combo Breaks
+			comboranking = "(SDCB)";
+		else
+			comboranking = "(Clear)";
+
+		return comboranking;
+		// WIFE TIME :)))) (based on Wife3)
+	}
+
+	// JOELwindows7: let's BOLO just letter rank
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Ratings.hx
+	public static function GenerateJustLetterRank(accuracy:Float) // generate just a letter ranking
+	{
+		var letterRanking:String = "";
+		var wifeConditions:Array<Bool> = [
+			accuracy >= 99.9935, // AAAAA
+			accuracy >= 99.980, // AAAA:
+			accuracy >= 99.970, // AAAA.
+			accuracy >= 99.955, // AAAA
+			accuracy >= 99.90, // AAA:
+			accuracy >= 99.80, // AAA.
+			accuracy >= 99.70, // AAA
+			accuracy >= 99, // AA:
+			accuracy >= 96.50, // AA.
+			accuracy >= 93, // AA
+			accuracy >= 90, // A:
+			accuracy >= 85, // A.
+			accuracy >= 80, // A
+			accuracy >= 70, // B
+			accuracy >= 60, // C
+			accuracy < 60 // D
+		];
+
+		for (i in 0...wifeConditions.length)
+		{
+			var b = wifeConditions[i];
+
+			if (b)
+			{
+				switch (i)
+				{
+					case 0:
+						letterRanking += "AAAAA";
+					case 1:
+						letterRanking += "AAAA:";
+					case 2:
+						letterRanking += "AAAA.";
+					case 3:
+						letterRanking += "AAAA";
+					case 4:
+						letterRanking += "AAA:";
+					case 5:
+						letterRanking += "AAA.";
+					case 6:
+						letterRanking += "AAA";
+					case 7:
+						letterRanking += "AA:";
+					case 8:
+						letterRanking += "AA.";
+					case 9:
+						letterRanking += "AA";
+					case 10:
+						letterRanking += "A:";
+					case 11:
+						letterRanking += "A.";
+					case 12:
+						letterRanking += "A";
+					case 13:
+						letterRanking += "B";
+					case 14:
+						letterRanking += "C";
+					case 15:
+						letterRanking += "D";
+				}
+				break;
+			}
+		}
+		if (accuracy == 0 && !PlayStateChangeables.practiceMode)
+			letterRanking = "You suck lmao";
+		else if (PlayStateChangeables.botPlay && !PlayState.loadRep)
+			letterRanking = "BotPlay";
+		else if (PlayStateChangeables.practiceMode)
+			letterRanking = "PRACTICE";
+		return letterRanking;
+	}
+
 	public static function GenerateLetterRank(accuracy:Float) // generate a letter ranking
 	{
 		var ranking:String = "N/A";
@@ -94,11 +191,18 @@ class Ratings
 
 	public static var timingWindows:Array<Float> = []; // JOELwindows7: hey, you forgot to type!
 
-	public static function judgeHeartBeat(heartBeat:Int, heartTier:Int)
+	// JOELwindows7: here judge heartbeat condition
+	public static function judgeHeartBeat(heartBeat:Float, heartTier:Int)
 	{
 		var classify:String = "Nrml";
 		switch (heartTier)
 		{
+			case -3:
+				classify = "Disconnected";
+			case -2:
+				classify = "Dead";
+			case -1:
+				classify = "Brady";
 			case 0:
 				classify = "Nrml";
 			case 1:
@@ -107,9 +211,49 @@ class Ratings
 				classify = "Rcing";
 			case 3:
 				classify = "Poundn";
+			case 4:
+				classify = "Tachy";
+			default:
+				classify = "???";
 		}
 
-		return Std.string(heartBeat) + " BPM (" + classify + ")";
+		return Std.string(HelperFunctions.truncateFloat(heartBeat, 2)) + " BPM (" + classify + ")";
+	}
+
+	// JOELwindows7: here judge metronome
+	public static function judgeMetronome(curBeat:Int = 0, beatsInABar:Int = 4, formating:Bool = false):String
+	{
+		var say:String = '';
+		if (curBeat >= 0)
+		{
+			for (i in 0...beatsInABar)
+			{
+				say += if (curBeat % beatsInABar == i)
+				{
+					(i == 0 ? (formating ? Perkedel.METRONOME_FIRST_SYNTAX : '') + Perkedel.METRONOME_FIRST_TICK_ICON
+						+ (formating ? Perkedel.METRONOME_FIRST_SYNTAX : '') : (formating ? Perkedel.METRONOME_REST_SYNTAX : '')
+							+ Perkedel.METRONOME_REST_TICK_ICON + (formating ? Perkedel.METRONOME_REST_SYNTAX : ''));
+				}
+				else
+				{
+					(i == 0 ? (formating ? Perkedel.METRONOME_OFF_SYNTAX : '') + Perkedel.METRONOME_FIRST_OFF_ICON
+						+ (formating ? Perkedel.METRONOME_OFF_SYNTAX : '') : (formating ? Perkedel.METRONOME_OFF_SYNTAX : '')
+							+ Perkedel.METRONOME_REST_OFF_ICON + (formating ? Perkedel.METRONOME_OFF_SYNTAX : ''));
+				};
+			}
+			return say;
+		}
+		return "....";
+	}
+
+	// JOELwindows7: and the true false version of metronome. true if first beat in bar
+	public static function judgeMetronomeDing(curBeat:Int = 0, beatsInABar:Int = 4):Bool
+	{
+		if (curBeat >= 0)
+		{
+			return (curBeat % beatsInABar == 0);
+		}
+		return false;
 	}
 
 	public static function judgeNote(noteDiff:Float)
@@ -187,7 +331,7 @@ class Ratings
 		return 2;
 	}
 
-	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float, hR:Int, hTier:Int):String
+	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float, hR:Float, hTier:Int):String
 	{
 		return (FlxG.save.data.npsDisplay ? // NPS Toggle
 			"NPS: "
@@ -206,8 +350,12 @@ class Ratings
 						+ (PlayStateChangeables.botPlay && !PlayState.loadRep ? "N/A" : HelperFunctions.truncateFloat(accuracy, 2) + " %")
 						+ // 	Accuracy
 						" | "
-						+ GenerateLetterRank(accuracy) : "") : "") // 	Letter Rank
+						+ GenerateLetterRank(accuracy) : "") : "" // 	Letter Rank
+					+ " " // JOELwindows7: spacer
+					+ (!PlayStateChangeables.practiceMode ? '' : 'PRACTICE') // JOELwindows7: BOLO's Practive mode
+			) // JOELwindows7: block ends
 			+ (FlxG.save.data.cardiophile ? " | HR: " + judgeHeartBeat(hR, hTier) : "") // JOELwindows7: in game heartbeat rate
+
 			;
 	}
 }

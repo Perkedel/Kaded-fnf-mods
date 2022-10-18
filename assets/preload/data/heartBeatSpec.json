@@ -1,5 +1,14 @@
 {
     "heartSpecs": [{
+            "character": "null",
+            "initHR": 1,
+            "maxHR": 5,
+            "minHR": 1,
+            "heartTierBoundaries": [1, 2, 3, 4],
+            "successionAdrenalAdd": [1, 1, 1, 1],
+            "fearShockAdd": [1, 1, 1, 1],
+            "relaxMinusPerBeat": [1, 1, 1, 1]
+        }, {
             "character": "bf",
             "initHR": 70,
             "maxHR": 220,

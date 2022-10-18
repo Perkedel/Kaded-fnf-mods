@@ -18,6 +18,9 @@
 
 package experiments;
 
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIText;
+import flixel.FlxState;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.addons.display.FlxStarField;
 import flixel.FlxSprite;
@@ -28,13 +31,23 @@ import flixel.text.FlxText;
 // import extension.android.*;
 class AbstractTestMenu extends MusicBeatState
 {
-	public var infoText:FlxText;
+	public var infoText:FlxUIText;
+	public var wouldGoBackToStateOf:FlxState = new MainMenuState();
+	public var needsSpeciallyLoad:Bool = false;
 
 	override function create()
 	{
 		super.create();
 
-		infoText = new FlxText();
+		// JOELwindows7: BG BG BG BG BOLO
+		var bg:FlxUISprite = new FlxUISprite();
+		// bg.loadGraphic(Paths.imageGraphic('MenuBGDesatAlt'));
+		bg.loadGraphic(Paths.loadImage('MenuBGDesatAlt'));
+		bg.scrollFactor.set();
+		bg.color = 0xFF111111;
+		add(bg);
+
+		infoText = new FlxUIText();
 		infoText.text = "ESCAPE = Go back\n" + "";
 		infoText.size = 32;
 		infoText.screenCenter(X);
@@ -52,6 +65,8 @@ class AbstractTestMenu extends MusicBeatState
 		var wext = text;
 		wext = wext + "\n" + "ESCAPE = Go back\n";
 		infoText.text = wext;
+		infoText.y = 0;
+		infoText.screenCenter(X);
 	}
 
 	override function update(elapsed)
@@ -60,7 +75,8 @@ class AbstractTestMenu extends MusicBeatState
 
 		if (FlxG.keys.justPressed.ESCAPE || haveBacked)
 		{
-			FlxG.switchState(new MainMenuState());
+			// FlxG.switchState(wouldGoBackToStateOf);
+			switchState(wouldGoBackToStateOf, needsSpeciallyLoad, needsSpeciallyLoad, needsSpeciallyLoad);
 			haveBacked = false;
 		}
 		if (FlxG.keys.justPressed.ENTER || haveClicked)

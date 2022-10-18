@@ -6,6 +6,9 @@ mall
 mallEvil
 school
 schoolEvil
+tank
+tankStage
+tankStage2
 jakartaFair
 qmoveph
 cruelThesis

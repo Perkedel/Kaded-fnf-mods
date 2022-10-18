@@ -1142,6 +1142,7 @@
         "hasDialogueChat": true,
         "hasEpilogueChat": true,
         "hasEpilogueVideo": true,
-        "epilogueVideoPath": "credit-week6-midi"
+        "epilogueVideoPath": "credit-week6-midi",
+        "selectionColor": "purple"
     }
 }

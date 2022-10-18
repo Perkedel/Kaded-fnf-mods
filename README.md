@@ -1,4 +1,5 @@
-![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.02-thumb.png )
+![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.09-thumb.png )
+<!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.02-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2021.11-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-toxic-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-merdeka-thumb.png ) -->
@@ -6,27 +7,30 @@
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-meta-thumb.png ) -->
 [Last Funkin Moment image](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-strong-thumb.svg )
 
-# Last Funkin Moments
+# [![](https://github.com/Perkedel/Kaded-fnf-mods/raw/stable/art/LFMicon64.png )]() Last Funkin Moments
 
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
-also a **Friday Night Funkin modding engine** yey!!!
+also a **Friday Night Funkin modding engine** (LFMengine) yey!!!
 
 ## Kontraktua Majoris
 
-`☁️Saubo ⏳` [`💣Copiar ✅`](https://gamebanana.com/mods/354884 ) `⛪Alfaheur 💥`
+[`☁️Saubo ✅`](https://gamebanana.com/mods/44555 ) [`💣Copiar ✅`](https://gamebanana.com/mods/354884 ) `⛪Alfaheur 💥`
 
 > *by wearing the following Protoglin Amexamlef, you are agree to abide by the rules to always keep & make sure that following Majoris*
-> *are safe & sound, away from any disaster particularly made by a group of terrorist in the world of cyber.*
+> *are safe & sound, away from any disaster particularly made by a group of bad actors in the world of cyber.*
 > *You will also will be given pledge card in form of this game itself in which hereby you are certified members of*
 > *the Last Funkin Moment campaign, for you will do the activism, telling worlds about what is happening around us.*
+
+<!-- I don't care!!! BRING THE PECK THAT BAAAAAAAAACK!!! I DO NOT MOVE ON!!!! -->
+<!-- calm down sir, I know, we gotta hold on tight! -->
 
 ## Download NOW
 - Odysee
   - [Linux x64](https://odysee.com/@JOELwindows7:a/last-funkin-moments:b?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
   - ~~[Linux 32 bit](https://odysee.com/@JOELwindows7:a/last-funkin-32bit )~~
   - [Win64](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows:c?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
-  - [Win32](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows32 )
+  - ~~[Win32](https://odysee.com/@JOELwindows7:a/last-funkin-moments-windows32 )~~
   - [macOS](https://odysee.com/@JOELwindows7:a/last-funkin-moments-macOS)
   - [Android](https://odysee.com/@JOELwindows7:a/last-funkin-moments-android )
 - GameBanana https://gamebanana.com/mods/293257
@@ -44,6 +48,17 @@ Please just upload publish the Polymod LFM, **NOT** the executable. Please, have
 It is also ***PRO GAMER MOVE*** if you completely rely only towards Polymod LFM rather than modifying the source code, and then upload the executable which is **PECKING HUGE**. NA ah! Please utilize Polymod LFM! if you believe there are serveral feature missing in e.g. the modchart capabilities, Please submit [`ISSUE`](https://github.com/Perkedel/Kaded-fnf-mods/issues) with `FEATURE_REQUEST` as the template. We will happily discuss and consider as best as we can to grant your wish.
 
 see folder `/example_mods/`, `/Admiral_Zumi/`, `/separate_mods/` for examples of Polymod LFM sub-mods.
+
+### *Sir! But my platform doesn't have Polymod modcore, we tried compiling the support for it & unlocked it for my OS but it still not compile & if does, it crash!*
+Oh. uh..  😬sssssss, ummm... Well, that was arrogance of me, my apology. I shouldn't have done that.
+
+I see. Right so, I understand. Me too. I tried to Polymod in my environment here on Arch with VScode terminal. it does compile, but crashes before even went to splash screen. just loading & then crash without clear explanation that could figure how to make solution resolve.
+
+Well, since that the case, keep building mods polymodding way, but enjoyers are free to extract the mod and place respective assets dirrectly **ONLY IF** they cannot Polymod. Seriously, if your platform can polymod, I recommend that you do that. The organizer will thank you. Okay, cannot be encouraged. Polymod did not work cross platformly without crashing. Just make sure you don't mess up the assets, and make sure too you remember which assets did you add, and which did crashes things, idk.
+
+And also the Polymod is essential for mods that are controversial & is suicidal if built in, you know... umm Okay, yea you know. Kamatussas hates that, and you already know what are those 😏😏😏😏😏😏😏😏😏.
+
+In conclusion, This is your download, you free to do anything, I just recommend this easier way to manage custom things, if you messed it up, figure out yourself or download from scratch again, bla bla bla. If you publish something involving our stuffs or others make sure credit at least URL where you got it from, yeah. and make sure that when you publish something, it's easy to setup so ***everyone*** from various skill level can join in idk..
 
 ## Using API
 - GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (**Private, do not share** if filled with your keys). Here's the code:
@@ -76,6 +91,17 @@ Unfortunately folks, we still not witness JUCE integrator to Haxe, OpenFl, HaxeF
 - Android (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/wkicycueho8xtb7h?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windroid)
 - HTML5 (built on Windows) [![Build status](https://ci.appveyor.com/api/projects/status/ngwvliwkacsu0nly?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-winhtml5)
 - macOS [![Build status macOS](https://ci.appveyor.com/api/projects/status/61pl7ba9rgu375pn?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-macos)
+
+## License
+### FOSSA 
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods?ref=badge_small)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods?ref=badge_shield)
+
+## Mods comeback status (Protoglin Amexamlef)
+- Sky ✅. https://gamebanana.com/mods/44555 . More: [NuSky + SkyVerse](https://gamebanana.com/mods/369981 ), [ReManifested](https://gamebanana.com/mods/370008 )
+- Whitty ✅. https://gamebanana.com/mods/44214 . More: [Definitive Psyched](https://gamebanana.com/mods/354884 )
+- Mid Fight Masses ❌. (*Because one of the contributor had pranked us saying this comeback but it's a fool in time like this, maybe we should just... idk, just saying.*)
 
 ## Stuff
 - WakaTime Total [![wakatime](https://wakatime.com/badge/user/dbc5f9fc-c736-48c6-83db-e5a221526daa.svg)](https://wakatime.com/@dbc5f9fc-c736-48c6-83db-e5a221526daa)
@@ -219,6 +245,11 @@ https://gamebanana.com/blogs/19216
 
 yeah lol
 
+### Cars
+Owner & model. License plate UUID. facing license plate. specs bar.
+- Sky's Hyundai IONIQ 5 (Indonesia Cikarang Version) Signature Long Range (Modded-frankensteined, fulfill all misses). 6ac4ea02-0194-45e4-a1cf-a636af63ab98. ISKY-AB98. Dasandim, ⚡Pure Full EV, 🏠Personal.
+- Latsufir's Prototype Dasandim Military Tough Saucer Mk. 2019. 4dd6fa8f-bd5d-4c64-a5b0-b1e6a4edae56. LUCY-AE56. Dasandim, ☢️ Mini Reactor, 🏠Personal. 
+
 ## todo
 - ~~redecorate for Perkedel temp week works~~
 - ~~week strong. vs. Hookx the friendly singing portrait tv robot assistant~~
@@ -233,6 +264,52 @@ edit: goned the day. we lack more than 1 person after 1 week.
 
 ![](https://github.com/Perkedel/kaded-fnf-mods/raw/stable/LastFunkinMomentsLogo.png)
 
+## scrap
+### extra anim frame info
+```
+"frameRate": 24,
+            "frameIndices": [],
+            "flipX": false,
+            "flipY": false,
+            "looped": false,
+            "interupt": false,
+            "isDanced": false
+```
+
+<!-- end of LFM description -->
+<!-- 
+LOREM IPSUM DOLOR SIT AMET
+
+aaaaaaaaaaa
+
+aaaaaaaaaa
+
+aaaaaaaaaaa
+
+aaaaaaaaaaa
+
+aaaaaaaaaaa
+
+aaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+aaaaaaaaaaaa
+
+asdfhauighgiuergrbi
+ -->
 <!-- Kade Descriptions -->
 # Kade Engine Descriptions
 
@@ -244,8 +321,13 @@ edit: goned the day. we lack more than 1 person after 1 week.
 
 # Friday Night Funkin': Kade Engine
 
-### If you want to contribute to Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/CONTRIBUTING.md) first.
-### If you want to build Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/docs/building.md).
+### ~~If you want to contribute to Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/CONTRIBUTING.md) first.~~
+### ~~If you want to build Kade Engine, read [this](https://github.com/KadeDev/Kade-Engine/blob/stable/docs/building.md).~~
+
+### Folks, unfortunately, Kade Engine has been discontinued. This or [that](https://github.com/BoloVEVO/Kade-Engine-Public ) or other are the continuations.
+wait wait, be careful. I only have confirmed this, & [that](https://github.com/BoloVEVO/Kade-Engine-Public ), are safe. Just, careful when trying other Kade Engine continuation or whatever. review codes carefully, and you're good to go. yeah.
+
+If you going to use this, read very above. This is also Kade Engine continuation mod engine.
 
 ## Friday Night Funkin'
 **Friday Night Funkin'** is a rhythm game originally made for Ludum Dare 47 "Stuck In a Loop".

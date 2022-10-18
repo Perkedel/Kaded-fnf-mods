@@ -1,5 +1,9 @@
 package;
 
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
+import ui.states.IBGColorTweening;
+import flixel.tweens.misc.ColorTween;
 import Options.LockWeeksOption;
 import CoreState;
 import GalleryAchievements;
@@ -25,12 +29,19 @@ import tjson.TJSON;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
+#if FEATURE_VLC
+// import vlc.MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+// import vlc.MP4Sprite; // yep.
+import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+import VideoSprite as MP4Sprite; // yep.
 
+#end
 using StringTools;
 
-class StoryMenuState extends MusicBeatState
+// JOELwindows7: FlxUI fy here yeah!
+class StoryMenuState extends MusicBeatState implements IBGColorTweening
 {
-	var scoreText:FlxText;
+	var scoreText:FlxUIText;
 
 	// JOELwindows7: ahei. so, we have already make the week list as a json file.
 	// therefore, you just have to do edit assets/data/weekList.json (rendered version)
@@ -52,6 +63,7 @@ class StoryMenuState extends MusicBeatState
 				['satin-panties', "high", "milf"],
 				['cocoa', 'eggnog', 'winter-horrorland'],
 				['senpai', 'roses', 'thorns'],
+				['ugh', 'guns', 'stress'],
 				['windfall', 'rule-the-world', 'well-meet-again'],
 			];
 		else
@@ -71,6 +83,7 @@ class StoryMenuState extends MusicBeatState
 		['mom', 'bf', 'gf'],
 		['parents-christmas', 'bf', 'gf'],
 		['senpai', 'bf', 'gf'],
+		['tankman', 'bf', 'gf'],
 		['hookx', 'bf', 'gf'],
 	];
 
@@ -94,24 +107,25 @@ class StoryMenuState extends MusicBeatState
 	var weekUnderlayPath:Array<String>; // LCD underlay image path
 	var weekClickSoundPath:Array<String>; // Click sound path
 
-	var txtWeekTitle:FlxText;
+	var txtWeekTitle:FlxUIText;
 
 	var curWeek:Int = 0;
 
-	var txtTracklist:FlxText;
+	var txtTracklist:FlxUIText;
 
 	var grpWeekText:FlxTypedGroup<MenuItem>;
 	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
 
-	var grpLocks:FlxTypedGroup<FlxSprite>;
+	var grpLocks:FlxTypedGroup<FlxUISprite>;
 
 	var difficultySelectors:FlxGroup;
-	var sprDifficulty:FlxSprite;
-	var leftArrow:FlxSprite;
-	var rightArrow:FlxSprite;
+	var sprDifficulty:FlxUISprite;
+	var leftArrow:FlxUISprite;
+	var rightArrow:FlxUISprite;
 
-	var yellowBG:FlxSprite; // JOELwindows7: globalize this bg so we can colorize it.
-	var underlayBG:FlxSprite; // JOELwindows7: for Underlay. the image appear between character & yellowBG.
+	var yellowBG:FlxUISprite; // JOELwindows7: globalize this bg so we can colorize it.
+	var underlayBG:FlxUISprite; // JOELwindows7: for Underlay. the image appear between character & yellowBG.
+	var bgColorTween:ColorTween; // JOELwindows7: to manage week display color change tween
 
 	function unlockWeeks():Array<Bool>
 	{
@@ -228,28 +242,29 @@ class StoryMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);
+		scoreText = new FlxUIText(10, 10, 0, "SCORE: 49324858", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
 
-		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
+		txtWeekTitle = new FlxUIText(FlxG.width * 0.7, 10, 0, "", 32);
 		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
 		txtWeekTitle.alpha = 0.7;
 
-		var rankText:FlxText = new FlxText(0, 10);
+		var rankText:FlxUIText = new FlxUIText(0, 10);
 		rankText.text = 'RANK: GREAT';
 		rankText.setFormat(Paths.font("vcr.ttf"), 32);
 		rankText.size = scoreText.size;
 		rankText.screenCenter(X);
 
+		// JOELwindows7: yeah
 		// Mark selection for campaign menu ui assets
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE); // JOELwindows7: globalized lol
+		yellowBG = cast new FlxUISprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE); // JOELwindows7: globalized lol
 		// original color was 0xFFF9CF51
 		// You must be white as a base colorable.
 
 		trace("Line smothing");
-		// JOELwindows7: add Underlay image first
-		underlayBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+		// JOELwindows7: add Underlay image first. also the cast
+		underlayBG = cast new FlxUISprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
 		underlayBG.alpha = .3; // Just like the LCD watch game toy.
 		// 64 bit, 32 bit, 16 bit. 8 bit, 4 Bit, 2 BIt, 1 BiT, HALF bIT, QUARTER BIT, THE WRIST GAAAAAAAAAME!!!
 		// lmao angry game review lololol
@@ -257,10 +272,11 @@ class StoryMenuState extends MusicBeatState
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
 
-		grpLocks = new FlxTypedGroup<FlxSprite>();
+		grpLocks = new FlxTypedGroup<FlxUISprite>();
 		add(grpLocks);
 
-		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
+		// JOELwindows7: yo! sup!
+		var blackBarThingie:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
 		add(blackBarThingie);
 
 		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();
@@ -287,7 +303,7 @@ class StoryMenuState extends MusicBeatState
 			if (!weekUnlocked[i])
 			{
 				trace('locking week ' + i);
-				var lock:FlxSprite = new FlxSprite(weekThing.width + 10 + weekThing.x);
+				var lock:FlxUISprite = new FlxUISprite(weekThing.width + 10 + weekThing.x);
 				lock.frames = ui_tex;
 				lock.animation.addByPrefix('lock', 'lock');
 				lock.animation.play('lock');
@@ -302,13 +318,43 @@ class StoryMenuState extends MusicBeatState
 		grpWeekCharacters.add(new MenuCharacter(0, 100, 0.5, false));
 		grpWeekCharacters.add(new MenuCharacter(450, 25, 0.9, true));
 		grpWeekCharacters.add(new MenuCharacter(850, 100, 0.5, true));
+		// JOELwindows7: hey, try the week 7 way, yoinked by luckdydog7
+		// for (char in 0...3)
+		// {
+		// 	var weekCharacterThing = new MenuCharacter(Std.int((FlxG.width * 0.25) * (1 + char) - 150), 100, 0.5, false);
+		// var weekCharacterThing:MenuCharacter = new MenuCharacter((FlxG.width * 0.25) * (1 + char) - 150, weekCharacters[curWeek][char]);
+		// weekCharacterThing.y += 70;
+		// weekCharacterThing.antialiasing = FlxG.save.data.antialiasing;
+		// switch (weekCharacterThing.character)
+		// {
+		// 	case 'dad':
+		// 		weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
+		// 		weekCharacterThing.updateHitbox();
+
+		// 	case 'bf':
+		// 		weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.9));
+		// 		weekCharacterThing.updateHitbox();
+		// 		weekCharacterThing.x -= 80;
+		// 	case 'gf':
+		// 		weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
+		// 		weekCharacterThing.updateHitbox();
+		// 	case 'pico':
+		// 		weekCharacterThing.flipX = true;
+		// 	case 'parents-christmas':
+		// 		weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.9));
+		// 		weekCharacterThing.updateHitbox();
+		// }
+
+		// grpWeekCharacters.add(weekCharacterThing);
+
+		// }
 
 		difficultySelectors = new FlxGroup();
 		add(difficultySelectors);
 
 		trace("Line 124");
 
-		leftArrow = new FlxSprite(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10);
+		leftArrow = new FlxUISprite(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10);
 		leftArrow.frames = ui_tex;
 		leftArrow.animation.addByPrefix('idle', "arrow left");
 		leftArrow.animation.addByPrefix('press', "arrow push left");
@@ -316,7 +362,7 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.antialiasing = FlxG.save.data.antialiasing;
 		difficultySelectors.add(leftArrow);
 
-		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
+		sprDifficulty = new FlxUISprite(leftArrow.x + 130, leftArrow.y);
 		sprDifficulty.frames = ui_tex;
 		sprDifficulty.animation.addByPrefix('easy', 'EASY');
 		sprDifficulty.animation.addByPrefix('normal', 'NORMAL');
@@ -327,7 +373,7 @@ class StoryMenuState extends MusicBeatState
 
 		difficultySelectors.add(sprDifficulty);
 
-		rightArrow = new FlxSprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
+		rightArrow = new FlxUISprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
 		rightArrow.frames = ui_tex;
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
@@ -341,7 +387,7 @@ class StoryMenuState extends MusicBeatState
 		add(underlayBG); // JOELwindows7: here add underlay
 		add(grpWeekCharacters);
 
-		txtTracklist = new FlxText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 100, 0, "Tracks", 32);
+		txtTracklist = new FlxUIText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 100, 0, "Tracks", 32);
 		txtTracklist.alignment = CENTER;
 		txtTracklist.font = rankText.font;
 		txtTracklist.color = 0xFFe55777;
@@ -389,7 +435,7 @@ class StoryMenuState extends MusicBeatState
 
 		difficultySelectors.visible = weekUnlocked[curWeek];
 
-		grpLocks.forEach(function(lock:FlxSprite)
+		grpLocks.forEach(function(lock:FlxUISprite)
 		{
 			lock.y = grpWeekText.members[lock.ID].y;
 		});
@@ -579,6 +625,12 @@ class StoryMenuState extends MusicBeatState
 			PlayState.SONG = Song.conversionChecks(Song.loadFromJson(PlayState.storyPlaylist[0], diff));
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
+			PlayStateChangeables.howManySongThisWeek = PlayState.storyPlaylist.length; // JOELwindows7: set to how many songs we have this week yess.
+			PlayStateChangeables.weekColor = FlxColor.fromString(weekColor[curWeek]); // JOELwindows7: the obvious week color for any references.
+			PlayStateChangeables.songPosBarColor = FlxColor.fromString(weekColor[curWeek]); // JOELwindows7: here change color for song bar pls.
+			PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.songPosBarColor.brightness,
+				PlayStateChangeables.songPosBarColor.brightness, PlayStateChangeables.songPosBarColor.brightness)
+				.getInverted();
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				// JOELwindows7: check if the song has video files
@@ -586,7 +638,7 @@ class StoryMenuState extends MusicBeatState
 				// LoadingState.loadAndSwitchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(),
 				// 	true);
 				switchState(PlayState.SONG.hasVideo ? VideoCutscener.getThe(PlayState.SONG.videoPath, new PlayState()) : new PlayState(), true, true, true,
-					true); // JOELwindows7: switch state hex
+					true, new StoryMenuState()); // JOELwindows7: switch state hex
 				// #else //workaround for Video cutscener not working in Android
 				// LoadingState.loadAndSwitchState(new PlayState(), true);
 				// #end
@@ -727,6 +779,13 @@ class StoryMenuState extends MusicBeatState
 
 		txtTracklist.text += "\n";
 
+		if (bgColorTween != null)
+		{
+			// JOELwindows7: first, cancel running tween to prevent color
+			// tweetch after running through colored item selections.
+			bgColorTween.cancel();
+			// then to bellow, reinitiate new change color tween.
+		}
 		// JOELwindows7: change yellowBG color pls
 		var colores:FlxColor = FlxColor.fromString("0xFFF9CF51");
 		// yellowBG.color = FlxColor.fromString(weekColor[curWeek]);
@@ -746,7 +805,7 @@ class StoryMenuState extends MusicBeatState
 		// 	greenFloat: colores.greenFloat,
 		// 	blueFloat: colores.blueFloat
 		// }}, 0.5, {ease: FlxEase.linear});
-		FlxTween.color(yellowBG, .5, yellowBG.color, colores, {ease: FlxEase.linear}); // JOELwindows7: FINALLY!!!
+		bgColorTween = FlxTween.color(yellowBG, .5, yellowBG.color, colores, {ease: FlxEase.linear}); // JOELwindows7: FINALLY!!!
 
 		#if !switch
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);

@@ -21,8 +21,13 @@
  */
 package utils.macro;
 
+using haxe.macro.ExprTools;
+using haxe.macro.TypeTools;
+using Lambda;
+
 class HaxeRelative
 {
+	#if macro
 	public static macro function build():Array<Field>
 	{
 		var cls:haxe.macro.Type.ClassType = Context.getLocalClass().get();
@@ -61,6 +66,7 @@ class HaxeRelative
 
 		return fields;
 	}
+	#end
 
 	static function checkSuperclass(cls:haxe.macro.Type.ClassType)
 	{

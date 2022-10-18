@@ -1,0 +1,130 @@
+{
+    "name": "Girlfriend (Standalone)",
+    "displayName": "Girlfriend",
+    "asset": "characters/Playable GF V2",
+    "barColor": "#A5004D",
+    "startingAnim": "idle",
+    "isDancing": true,
+    "holdLength": 4.1,
+    "replacesGF": false,
+    "heartOrgans": [{
+        "character": "gf",
+        "initHR": 80,
+        "maxHR": 400,
+        "minHR": 80,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "phobia": {
+        "lightningStorm": true
+    },
+    "animations": [{
+            "name": "idle",
+            "prefix": "GF idle dance",
+            "offsets": [-6, -1]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "GF left",
+            "offsets": [45, -36]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "GF Right",
+            "offsets": [-49, -7]
+        },
+        {
+            "name": "singUP",
+            "prefix": "GF Up",
+            "offsets": [-60, 17]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "GF Down",
+            "offsets": [-6, -75]
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "GF Miss Up",
+            "offsets": [-60, 55]
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "GF Miss Left",
+            "offsets": [35, -18]
+        },
+        {
+            "name": "singRIGHTmiss",
+            "prefix": "GF Miss Right",
+            "offsets": [-80, 22]
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "GF Miss Down",
+            "offsets": [-42, -44]
+        },
+        {
+            "name": "cheer",
+            "prefix": "GF hey",
+            "offsets": [-36, 1]
+        },
+        {
+            "name": "hey",
+            "prefix": "GF hey",
+            "offsets": [-36, 1]
+        },
+        {
+            "name": "firstDeath",
+            "prefix": "GF First Death",
+            "offsets": [-27, 11]
+        },
+        {
+            "name": "deathLoop",
+            "prefix": "GF Death Loop",
+            "offsets": [-39, -3]
+        },
+        {
+            "name": "deathConfirm",
+            "prefix": "GF Death Continue",
+            "offsets": [-33, -2]
+        },
+        {
+            "name": "scared",
+            "prefix": "GF Scared",
+            "offsets": [-35, -2],
+            "looped": true
+        },
+        {
+            "looped": false,
+            "offsets": [-92, -23],
+            "name": "dodgeUP",
+            "prefix": "GF Dodge"
+        },
+        {
+            "looped": false,
+            "offsets": [-92, -24],
+            "name": "dodgeLEFT",
+            "prefix": "GF Dodge"
+        },
+        {
+            "looped": false,
+            "offsets": [-93, -24],
+            "name": "dodgeDOWN",
+            "prefix": "GF Dodge"
+        },
+        {
+            "looped": false,
+            "offsets": [-92, -23],
+            "name": "dodgeRIGHT",
+            "prefix": "GF Dodge"
+        },
+        {
+            "offsets": [-92, -23],
+            "name": "dodge",
+            "looped": false,
+            "prefix": "GF Dodge"
+        }
+    ]
+}

@@ -1847,7 +1847,7 @@
                 "mustHitSection": true
             }
         ],
-        "player2": "hookx",
+        "player2": "hookx-legacy",
         "isHey": false,
         "isCheer": false,
         "cutsceneType": "none",
@@ -1871,6 +1871,7 @@
         "stage": "amfrost",
         "sections": 0,
         "bpm": 160,
-        "noteStyle": "saubo"
+        "noteStyle": "saubo",
+        "useCustomNoteStyle": true
     }
 }

@@ -4,6 +4,25 @@
     "asset": "characters/mom_dad_christmas_assets",
     "barColor": "#9A00F8",
     "startingAnim": "idle",
+    "heartOrgans": [{
+        "character": "dad",
+        "initHR": 60,
+        "maxHR": 190,
+        "minHR": 50,
+        "heartTierBoundaries": [80, 100, 125, 180],
+        "successionAdrenalAdd": [2, 2, 1, 1],
+        "fearShockAdd": [10, 10, 8, 5],
+        "relaxMinusPerBeat": [2, 8, 10, 15]
+    }, {
+        "character": "mom",
+        "initHR": 60,
+        "maxHR": 200,
+        "minHR": 50,
+        "heartTierBoundaries": [80, 100, 125, 180],
+        "successionAdrenalAdd": [2, 2, 1, 1],
+        "fearShockAdd": [10, 10, 8, 5],
+        "relaxMinusPerBeat": [2, 8, 10, 15]
+    }],
     "animations": [{
             "name": "idle",
             "prefix": "Parent Christmas Idle",

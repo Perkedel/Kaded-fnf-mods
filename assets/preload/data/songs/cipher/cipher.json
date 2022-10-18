@@ -10680,6 +10680,8 @@
         "needsVoices": false,
         "stage": "stage",
         "noteStyle": "saubo",
-        "bpm": 150
+        "bpm": 150,
+        "introCutSceneDoneManually": true,
+        "outroCutSceneDoneManually": false
     }
 }

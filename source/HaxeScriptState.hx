@@ -1,5 +1,10 @@
 package;
 
+import flixel.effects.FlxFlicker;
+import CoolUtil;
+import flixel.input.keyboard.FlxKey;
+import Shader;
+import flixel.addons.ui.FlxUISprite;
 import flixel.util.FlxAxes;
 import utils.Asset2File;
 import flixel.util.FlxDestroyUtil;
@@ -118,9 +123,14 @@ class HaxeScriptState
 	var hscriptState:Map<String, InterpEx>;
 	var defaultUseHaxe:String = "modchart";
 
+	// JOELwindows7: BOLO haxe mini interp
+	// var miniInterp:InterpEx;
+	// JOELwindows7: NEW BOLO
+	var lastCalledFunction:String = '';
+
 	// var instancering;
 	// Some other variables
-	public static var hscriptSprite:Map<String, FlxSprite> = [];
+	public static var hscriptSprite:Map<String, FlxUISprite> = [];
 
 	public var haxeWiggles:Map<String, WiggleEffect> = new Map<String, WiggleEffect>();
 
@@ -142,15 +152,16 @@ class HaxeScriptState
 		initHaxeScriptState(rawMode, path, useHaxe, className, useRetail);
 	}
 
-	function callHscript(func_name:String, args:Array<Dynamic>, useHaxe:String = "modchart")
+	function callHscript(func_name:String, args:Array<Dynamic>, useHaxe:String = "modchart"):Dynamic
 	{
+		lastCalledFunction = func_name; // JOELwindows7: BOLO remember last called function
 		if (retailIsReady)
 		{
 			// if function doesn't exist
 			if (!hscriptState.get(useHaxe).variables.exists(func_name))
 			{
 				trace(func_name + " Function in Retail doesn't exist, silently skipping...");
-				return;
+				return null;
 			}
 		}
 		else
@@ -159,7 +170,7 @@ class HaxeScriptState
 			if (!interp.variables.exists(func_name))
 			{
 				trace(func_name + " Function in Interp doesn't exist, silently skipping...");
-				return;
+				return null;
 			}
 		}
 		var method;
@@ -170,40 +181,42 @@ class HaxeScriptState
 		switch (args.length)
 		{
 			case 0:
-				method();
+				return method();
 			case 1:
-				method(args[0]);
+				return method(args[0]);
 			case 2:
-				method(args[0], args[1]);
+				return method(args[0], args[1]);
 			case 3:
-				method(args[0], args[1], args[2]);
+				return method(args[0], args[1], args[2]);
 			case 4:
-				method(args[0], args[1], args[2], args[3]);
+				return method(args[0], args[1], args[2], args[3]);
 			case 5:
-				method(args[0], args[1], args[2], args[3], args[4]);
+				return method(args[0], args[1], args[2], args[3], args[4]);
 			case 6:
-				method(args[0], args[1], args[2], args[3], args[4], args[5]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5]);
 			case 7:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
 			case 8:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
 			case 9:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
 			case 10:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
 			case 11:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
 			case 12:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
 			case 13:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
 			case 14:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12],
+					args[13]);
 			case 15:
-				method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13],
-					args[14]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12],
+					args[13], args[14]);
 				// JOELwindows7: Okay that's enough & inefficient. wtf?!?! there's no way to procedurally do this?!?!?
 		}
+		return null;
 	}
 
 	function callAllHScript(func_name:String, args:Array<Dynamic>)
@@ -223,12 +236,15 @@ class HaxeScriptState
 	public function setVar(name:String, value:Dynamic, useHaxe:String = "modchart")
 	{
 		if (interp != null)
+		{
 			if (retailIsReady)
 			{
 				hscriptState.get(useHaxe).variables.set(name, value);
 			}
 			else
 				interp.variables.set(name, value);
+			callHscript('variableChange', [name, value], useHaxe);
+		}
 		else
 		{
 			interp = createInterp();
@@ -254,9 +270,12 @@ class HaxeScriptState
 		setVar(var_name, object);
 	}
 
-	public function executeState(name:String, args:Array<Dynamic>, useHaxe:String = "modchart")
+	public function executeState(name:String, args:Array<Dynamic>, useHaxe:String = "modchart"):Dynamic
 	{
-		callHscript(name, args, useHaxe);
+		// return callHscript(name, args, useHaxe);
+		var result = callHscript(name, args, useHaxe);
+		callHscript('methodExecutes', [name, args], useHaxe);
+		return result;
 	}
 
 	function resetHaxeScriptState(soft:Bool = false)
@@ -290,7 +309,8 @@ class HaxeScriptState
 		#end
 
 		script = Assets.getText(rawMode ? Paths.hscript(path) : patho).trim();
-		trace(script);
+		// trace(script);
+		trace('got the script! let\'s parse it!');
 		prog = parser.parseString(script);
 		trace("parsened");
 	}
@@ -322,13 +342,22 @@ class HaxeScriptState
 		// start by init core stuffs.
 		resetHaxeScriptState();
 
+		// core here
+		addCallback("variableChange", function(name:String, value:Dynamic)
+		{
+		});
+		addCallback("methodExecutes", function(name:String, args:Array<Dynamic>)
+		{
+		});
+
 		// var p = Path.of(Paths.hscript(path));
 		// trace("opening the hscript of " + p.getAbsolutePath() + "\nisExist " + p.exists());
 		// var f = p.toFile();
 		// script = p.exists()? f.readAsString(): "";
 
-		fillInScripts(rawMode, path);
-		trace("Filled Script");
+		// JOELwindows7: maybe don't fill script before all setvar & callback filled first?
+		// fillInScripts(rawMode, path);
+		// trace("Filled Script");
 
 		// Syndicate all vars here boys!
 		// Peck this. let's just yoink BulbyVR's modchart inits and stuffs
@@ -337,11 +366,18 @@ class HaxeScriptState
 		// now with copy from ModChartState.hx
 		setVar("difficulty", PlayState.storyDifficulty);
 		setVar("bpm", Conductor.bpm);
-		setVar("scrollspeed", FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed : PlayState.SONG.speed);
+		// setVar("scrollspeed", FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed : PlayState.SONG.speed);
+		// JOELwindows7: complicated set of scroll speed BOLO yess.
+		setVar("scrollspeed",
+			FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed * PlayState.songMultiplier : PlayState.SONG.speed * PlayState.songMultiplier);
 		setVar("fpsCap", FlxG.save.data.fpsCap);
 		setVar("downscroll", FlxG.save.data.downscroll);
 		setVar("flashing", FlxG.save.data.flashing);
 		setVar("distractions", FlxG.save.data.distractions);
+		setVar("colour", FlxG.save.data.colour); // JOELwindows7: oops forgot Kade's
+		// JOELwindows7: BOLO things
+		setVar("middlescroll", FlxG.save.data.middleScroll);
+		setVar("rate", PlayState.songMultiplier); // Kinda XD since you can modify this through Lua and break the game.
 		trace("setVar those metadata");
 
 		setVar("curStep", 0);
@@ -375,6 +411,8 @@ class HaxeScriptState
 		trace("mustHit setVar");
 
 		setVar("strumLineY", PlayState.instance.strumLine.y);
+
+
 		trace("Camera target & Strumline height setVar");
 
 		// JOELwindows7: Statusoid
@@ -387,9 +425,11 @@ class HaxeScriptState
 		// end mirror variables
 
 		// init just in case
-		setVar("songLength", 0);
+		setVar("songLength", 0.0);
+		setVar("songLengthMs", 0.0);
 		setVar('variables', PlayState.SONG.variables);
 		setVar('diffVariables', PlayState.SONG.diffVariables);
+		setVar("accuracy", PlayState.instance.accuracy);
 
 		// callbacks
 
@@ -450,9 +490,15 @@ class HaxeScriptState
 		});
 		// JOELwindows7: & even more!!!
 		setVar("thisStage", PlayState.Stage); // JOELwindows7: Stage class is already FlxG.stage I think..
-		setVar("Paths", Paths);
+		// setVar("Paths", Paths); // JOELwindows7: already done
 
 		trace("setVar BulbyVR stuffs");
+
+		// JOELwindows7: BOLO precache
+		addCallback("precache", function(asset:String, type:String, ?library:String)
+		{
+			PlayState.instance.precacheThing(asset, type, library);
+		});
 
 		// You must init the function callbacks first before even considered existed.
 		addCallback("loaded", function(song)
@@ -477,7 +523,7 @@ class HaxeScriptState
 		addCallback("stepHit", function(step)
 		{
 		});
-		addCallback("playerTwoTurn", function()
+		addCallback("playerTwoTurn", function(beatOf, stepOf) // JOELwindows7: GOUYA
 		{
 		});
 		addCallback("playerTwoMiss", function(note, position, beatOf, stepOf)
@@ -486,7 +532,7 @@ class HaxeScriptState
 		addCallback("playerTwoSing", function(note, position, beatOf, stepOf)
 		{
 		});
-		addCallback("playerOneTurn", function()
+		addCallback("playerOneTurn", function(beatOf, stepOf) // JOELwindows7: GOUYA
 		{
 		});
 		addCallback("playerOneMiss", function(note, position, beatOf, stepOf)
@@ -495,6 +541,17 @@ class HaxeScriptState
 		addCallback("playerOneSing", function(note, position, beatOf, stepOf)
 		{
 		});
+		// JOELwindows7: well, because there is opponent mode, you should then use absolute character positionals here.
+		addCallback("characterTurn", function(whichTurn:Int, absoluteCharId:Int)
+		{
+		});
+		addCallback("characterSing", function(whichTurn:Int, absoluteCharId:Int, note, position, beatOf, stepOf)
+		{
+		});
+		addCallback("characterMiss", function(whichTurn:Int, absoluteCharId:Int, note, position, beatOf, stepOf)
+		{
+		});
+		// yeah.
 		addCallback("noteHit", function(player1:Bool, note:Note)
 		{
 		});
@@ -519,6 +576,13 @@ class HaxeScriptState
 		addCallback("dialogueNext", function()
 		{
 		});
+		// these has to be on top!
+		// addCallback("variableChange", function(name:String, value:Dynamic)
+		// {
+		// });
+		// addCallback("methodExecutes", function(name:String, args:Array<Dynamic>)
+		// {
+		// });
 		trace("Inited setVars");
 
 		// Callbacks heres, Kade Engine like
@@ -538,6 +602,12 @@ class HaxeScriptState
 		addCallback("setSustainWiggle", function(wiggleId)
 		{
 			PlayState.instance.camSustains.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
+		});
+
+		// JOELwindows7: here strums BOLO wiggle
+		addCallback("setStrumsWiggle", function(wiggleId)
+		{
+			PlayState.instance.camStrums.setFilters([new ShaderFilter(haxeWiggles.get(wiggleId).shader)]);
 		});
 
 		addCallback("createWiggle", function(freq:Float, amplitude:Float, speed:Float)
@@ -584,12 +654,20 @@ class HaxeScriptState
 			trace('playing assets/videos/' + videoName + '.webm');
 			PlayState.instance.backgroundVideo("assets/videos/" + videoName + ".webm");
 		});
+
+		// BOLO's video
+		/*
+		addCallback("initBackgroundOverlayVideo", function(vidPath:String, type:String, layInFront:Bool)
+		{
+			PlayState.instance.backgroundOverlayVideo(vidPath, type, layInFront);
+		});
+		*/
 		addCallback("pauseVideo", function()
 		{
 			if (PlayState.instance.useVLC)
 			{
 				#if FEATURE_VLC
-				PlayState.instance.vlcHandler.pause();
+				PlayState.instance.vlcHandler.bitmap.pause(); // JOELwindows7: FIX PLS!!
 				#end
 			}
 			else if (!GlobalVideo.get().paused)
@@ -600,7 +678,7 @@ class HaxeScriptState
 			if (PlayState.instance.useVLC)
 			{
 				#if FEATURE_VLC
-				PlayState.instance.vlcHandler.resume();
+				PlayState.instance.vlcHandler.bitmap.resume(); // JOELwindows7: fix!!!!
 				#end
 			}
 			else if (GlobalVideo.get().paused)
@@ -611,7 +689,10 @@ class HaxeScriptState
 			if (PlayState.instance.useVLC)
 			{
 				#if FEATURE_VLC
-				// PlayState.instance.vlcHandler.restart();
+				// PlayState.instance.vlcHandler.bitmap.restart();
+				PlayState.instance.vlcHandler.bitmap.pause();
+				PlayState.instance.vlcHandler.bitmap.seek(0);
+				PlayState.instance.vlcHandler.bitmap.play();
 				#end
 			}
 			else
@@ -633,6 +714,27 @@ class HaxeScriptState
 		{
 			PlayState.instance.videoSprite.setGraphicSize(Std.int(PlayState.instance.videoSprite.width * scale));
 		});
+		// JOELwindows7: BOLO set lane underlay
+		addCallback("setLaneUnderLayPos", function(value:Int)
+		{
+			PlayState.instance.laneunderlay.x = value;
+		});
+		// JOELwindows7: & the oppponent ones.
+		addCallback("setOpponentLaneUnderLayOpponentPos", function(value:Int)
+		{
+			PlayState.instance.laneunderlayOpponent.x = value;
+		});
+		// JOELwindows7: Don't forget the lane alpha
+		addCallback("setLaneUnderLayAlpha", function(value:Int)
+		{
+			PlayState.instance.laneunderlay.alpha = value;
+		});
+		// JOELwindows7: and opponent lane alpha
+		addCallback("setOpponentLaneUnderLayOpponentAlpha", function(value:Int)
+		{
+			PlayState.instance.laneunderlayOpponent.alpha = value;
+		});
+		// JOELwindows7: that's it. now the rest.
 		addCallback("setHudAngle", function(x:Float)
 		{
 			PlayState.instance.camHUD.angle = x;
@@ -708,6 +810,38 @@ class HaxeScriptState
 		{
 			PlayState.instance.strumLine.y = y;
 		});
+
+		// JOELwindows7: BOLO note stuffs here we go
+		addCallback("getNotes", function(y:Float)
+		{
+			/*
+				Lua.newtable(lua);
+
+				for (i in 0...PlayState.instance.notes.members.length)
+				{
+					var note = PlayState.instance.notes.members[i];
+					Lua.pushstring(lua, note.LuaNote.className);
+					Lua.rawseti(lua, -2, i);
+				}
+			 */
+
+			for (i in 0...PlayState.instance.notes.members.length)
+			{
+				var note = PlayState.instance.notes.members[i];
+			}
+		});
+
+		addCallback("setScrollSpeed", function(value:Float)
+		{
+			// PlayState.instance.scrollSpeed = value;
+			PlayStateChangeables.scrollSpeed = value; // JOELwindows7: No, Kade use static variable over there instead.
+		});
+
+		addCallback("changeScrollSpeed", function(mult:Float, time:Float, ?ease:String)
+		{
+			PlayState.instance.changeScrollSpeed(mult, time, getFlxEaseByString(ease));
+		});
+		// end BOLO note stuffs
 
 		// Actors
 		addCallback("getRenderedNotes", function()
@@ -1480,6 +1614,40 @@ class HaxeScriptState
 			#end
 		});
 
+		// JOELwindows7: BOLO Psyched shaders!!!!
+		// SHADER SHIT (Thanks old psych engine)
+
+		addCallback("addChromaticAbberationEffect", function(camera:String, chromeOffset:Float = 0.005)
+		{
+			PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
+		});
+
+		addCallback("addVignetteEffect", function(camera:String, radius:Float = 0.5, smoothness:Float = 0.5)
+		{
+			PlayState.instance.addShaderToCamera(camera, new VignetteEffect(radius, smoothness));
+		});
+
+		addCallback("addGameboyEffect", function(camera:String, brightness:Float = 1.0)
+		{
+			PlayState.instance.addShaderToCamera(camera, new GameboyEffect(brightness));
+		});
+
+		addCallback("addCRTEffect", function(camera:String, curved:Bool = true)
+		{
+			PlayState.instance.addShaderToCamera(camera, new CRTEffect(curved));
+		});
+
+		addCallback("addGlitchEffect", function(camera:String, waveSpeed:Float = 0, waveFrq:Float = 0, waveAmp:Float = 0)
+		{
+			PlayState.instance.addShaderToCamera(camera, new GlitchEffect(waveSpeed, waveFrq, waveAmp));
+		});
+
+		addCallback("clearEffects", function(camera:String)
+		{
+			PlayState.instance.clearShaderFromCamera(camera);
+		});
+		// end Psyched shader
+
 		// shader set
 
 		addCallback("setShadersToCamera", function(shaderName:Array<String>, cameraName)
@@ -1672,6 +1840,8 @@ class HaxeScriptState
 			}
 		});
 
+		// Sound Pls
+
 		// end more special functions
 		// So you don't have to hard code your cool effects.
 
@@ -1690,6 +1860,77 @@ class HaxeScriptState
 			setVar("defaultStrum" + i + "Angle", Math.floor(member.angle));
 			trace("Adding strum" + i);
 		}
+
+		// JOELwindows7: NOW NEW FUNCTIONALITY
+		addCallback('getStepModulo', function(stepWhich:Int, equalsWhat:Float = 0)
+		{
+			@:privateAccess {
+				return PlayState.instance.getStepModulo(stepWhich, equalsWhat);
+			}
+		});
+
+		addCallback('getStepBetween', function(stepLeft:Int, stepRight:Int, withEquals:Bool = false, leftEquals:Bool = true, rightEquals:Bool = true)
+		{
+			@:privateAccess {
+				return PlayState.instance.getStepBetween(stepLeft, stepRight, withEquals, leftEquals, rightEquals);
+			}
+		});
+
+		addCallback('getStepCompare', function(stepWhich:Int, compareType:String)
+		{
+			@:privateAccess {
+				return PlayState.instance.getStepCompareStr(stepWhich, compareType);
+			}
+		});
+
+		// JOELwindows7: let BOLO it out haxe script
+		addCallback('runHaxeCode', function(codeToRun:String)
+		{
+			// you insert entire haxe code to the function.
+			try
+			{
+				// JOELwindows7: use ParserEx man!
+				var myFunction:Dynamic = interp.expr(parser.parseString(codeToRun));
+				myFunction();
+			}
+			catch (e:Dynamic)
+			{
+				switch (e)
+				{
+					case 'Null Function Pointer', 'SReturn':
+					// nothing
+					default:
+						// JOELwindows7: there is details!
+						// was `path + ":" + lastCalledFunction + " - " + e`
+						Debug.logError('$path : $lastCalledFunction - $e\n${e.details()}');
+						Application.current.window.alert('$path : $lastCalledFunction - $e\n${e.details()}', "Kade Engine Haxe Script Modcharts");
+				}
+			}
+		});
+		addCallback('addHaxeLibrary', function(libName:String, ?libFolder:String = '')
+		{
+			try
+			{
+				// JOELwindows7: just add it right inside our current interp!
+				var str:String = '';
+				if (libFolder.length > 0)
+					str = libFolder + '.';
+
+				interp.variables.set(libName, Type.resolveClass(str + libName));
+			}
+			catch (e:Dynamic)
+			{
+				// JOELwindows7: there is detail!
+				// was `path + ":" + lastCalledFunction + " - " + e`
+				Debug.logError('$path : $lastCalledFunction - $e\n${e.details()}');
+				Application.current.window.alert('$path : $lastCalledFunction - $e\n${e.details()}', "Kade Engine Haxe Script Modcharts");
+			}
+		});
+		// end BOLO
+
+		// JOELwindows7: okay, now here
+		fillInScripts(rawMode, path);
+		trace("Filled Script");
 
 		// set hscriptState
 		hscriptState = new Map<String, InterpEx>();
@@ -1729,23 +1970,61 @@ class HaxeScriptState
 	 * @see https://github.com/TheDrawingCoder-Gamer/Funkin/blob/master/source/PluginManager.hx
 	 * @return InterpEx() the prebuilt InterpEx instance
 	 */
-	function createInterp():InterpEx
+	public static function createInterp():InterpEx // JOELwindows7: now is public static yey!
 	{
 		var reterp:InterpEx = new InterpEx();
 
+		// JOELwindows7: please remove exact import reference such as flixel.util bla bla!
+		// just let the top import do their job!
 		reterp.variables.set("Conductor", Conductor);
 		reterp.variables.set("FlxSprite", DynamicSprite);
 		reterp.variables.set("FlxSound", DynamicSound);
 		reterp.variables.set("FlxAtlasFrames", DynamicSprite.DynamicAtlasFrames);
-		reterp.variables.set("FlxGroup", flixel.group.FlxGroup);
-		reterp.variables.set("FlxAngle", flixel.math.FlxAngle);
-		reterp.variables.set("FlxMath", flixel.math.FlxMath);
+		reterp.variables.set("FlxGroup", FlxGroup);
+		reterp.variables.set("FlxAngle", FlxAngle);
+		reterp.variables.set("FlxMath", FlxMath);
 		reterp.variables.set("TitleState", TitleState);
 		reterp.variables.set("makeRangeArray", CoolUtil.numberArray);
 
+		// JOELwindows7: just coolutil?
+		reterp.variables.set('CoolUtil', CoolUtil);
+		reterp.variables.set('difficultyFromInt', CoolUtil.difficultyFromInt);
+		reterp.variables.set('coolTextFile', CoolUtil.coolTextFile);
+		reterp.variables.set('coolStringFile', CoolUtil.coolStringFile);
+		reterp.variables.set('boundTo', CoolUtil.boundTo);
+		reterp.variables.set("numberArray", CoolUtil.numberArray);
+		reterp.variables.set('dashToSpace', CoolUtil.dashToSpace);
+		reterp.variables.set('spaceToDash', CoolUtil.spaceToDash);
+		reterp.variables.set('swapSpaceDash', CoolUtil.swapSpaceDash);
+		reterp.variables.set('mRoundSmul', CoolUtil.mRoundSmul);
+		reterp.variables.set('stepModulo', CoolUtil.stepModulo);
+		reterp.variables.set('stepCompare', CoolUtil.stepCompare);
+		reterp.variables.set('stepCompareInt', CoolUtil.stepCompareInt);
+		reterp.variables.set('stepCompareStr', CoolUtil.stepCompareStr);
+		reterp.variables.set('stepBetween', CoolUtil.stepBetween);
+		reterp.variables.set('toCompatCase', CoolUtil.toCompatCase);
+		reterp.variables.set('clamp', CoolUtil.clamp);
+		reterp.variables.set('parseJson', CoolUtil.parseJson);
+		reterp.variables.set('stringifyJson', CoolUtil.stringifyJson);
+
+		// JOELwindows7: helper functions pls
+		reterp.variables.set('HelperFunction', HelperFunctions);
+		reterp.variables.set('buildArrayFromRange', HelperFunctions.buildArrayFromRange);
+		reterp.variables.set('truncateFloat', HelperFunctions.truncateFloat);
+		reterp.variables.set('GCD', HelperFunctions.GCD);
+		reterp.variables.set('durationToString', HelperFunctions.durationToString);
+		reterp.variables.set('getTypeName', HelperFunctions.getTypeName);
+		reterp.variables.set('getFlxEaseByString', HelperFunctions.getFlxEaseByString);
+		reterp.variables.set('parseARGB', HelperFunctions.parseARGB);
+		reterp.variables.set('toHexString', HelperFunctions.toHexString);
+
+		// JOELwindows7: enum works?
+		reterp.variables.set('CompareTypes', CompareTypes); // oh wow it works. hope not crash
+
 		reterp.variables.set("FlxG", HscriptGlobals);
-		reterp.variables.set("FlxTimer", flixel.util.FlxTimer);
-		reterp.variables.set("FlxTween", flixel.tweens.FlxTween);
+		reterp.variables.set("FlxTimer", FlxTimer);
+		reterp.variables.set("FlxTween", FlxTween);
+		reterp.variables.set("FlxFlicker", FlxFlicker); // JOELwindow7: there is this, people!
 		reterp.variables.set("Std", Std);
 		reterp.variables.set("StringTools", StringTools);
 		reterp.variables.set("MetroSprite", MetroSprite);
@@ -1754,6 +2033,22 @@ class HaxeScriptState
 		reterp.variables.set("Reflect", Reflect);
 		reterp.variables.set("Character", Character);
 		reterp.variables.set("OptionsHandler", OptionsHandler);
+
+		// JOELwindows7: BOLO's interp
+		reterp.variables.set('game', PlayState.instance);
+		reterp.variables.set('Paths', Paths);
+		reterp.variables.set('Alphabet', Alphabet);
+		reterp.variables.set('setVar', function(name:String, value:Dynamic)
+		{
+			PlayState.instance.variables.set(name, value);
+		});
+		reterp.variables.set('getVar', function(name:String)
+		{
+			if (!PlayState.instance.variables.exists(name))
+				return null;
+			return PlayState.instance.variables.get(name);
+		});
+		// end BOLO
 
 		#if debug
 		reterp.variables.set("debug", true);
@@ -1797,7 +2092,7 @@ class HaxeScriptState
 		);
 		trace("bitmap data " + Std.string(data));
 
-		var sprite:FlxSprite = new FlxSprite(0, 0);
+		var sprite:FlxUISprite = new FlxUISprite(0, 0);
 		var imgWidth:Float = FlxG.width / data.width;
 		var imgHeight:Float = FlxG.height / data.height;
 		var scale:Float = imgWidth <= imgHeight ? imgWidth : imgHeight;
@@ -1936,7 +2231,7 @@ class HaxeScriptState
 		var data:BitmapData = BitmapData.fromFile(#if !mobile path + "/" + spritePath + ".png" #else Asset2File.getPath(path + "/" + spritePath + ".png") #end
 		);
 
-		var sprite:FlxSprite = new FlxSprite(0, 0);
+		var sprite:FlxUISprite = new FlxUISprite(0, 0);
 
 		// sprite.frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data), Sys.getCwd() + "assets/data/" + songLowercase + "/" + spritePath + ".xml");
 		sprite.frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(data), Paths.xml(songLowercase + "/" + spritePath));
@@ -2043,6 +2338,14 @@ class HaxeScriptState
 		parser = null;
 		script = "";
 		retailIsReady = false;
+	}
+
+	// JOELwindows7: BOLO get FlxEase by string
+	// ouu, we gotta fix capital here. nvm, it's already lowercased so whatever it says caps, some, or not.
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/ModchartState.hx
+	public static function getFlxEaseByString(?ease:String = '')
+	{
+		return HelperFunctions.getFlxEaseByString(ease);
 	}
 }
 
@@ -2356,10 +2659,33 @@ class HscriptSoundFrontEndWrapper
 	public var defaultSoundGroup(get, set):FlxSoundGroup;
 	public var list(get, never):FlxTypedGroup<FlxSound>;
 	public var music(get, set):FlxSound;
+	public var muteKeys(get, never):Array<FlxKey>; // JOELwindows7: get only
+	public var muted(get, never):Bool; // JOELwindows7: get only
+	public var soundTrayEnabled(get, set):Bool;
 
-	// no mute keys because why do you need that
-	// no muted because i don't trust you guys
-	// no soundtray enabled because i'm lazy
+	// no mute keys because why do you need that. JOELwindows7: maybe just try the get, no set?
+	function get_muteKeys()
+	{
+		return wrapping.muteKeys;
+	}
+
+	// no muted because i don't trust you guys. JOELwindows7: just get, no set pls
+	function get_muted()
+	{
+		return wrapping.muted;
+	}
+
+	// no soundtray enabled because i'm lazy. JOELwindows7:NO!! DO NOT!!!
+	function get_soundTrayEnabled()
+	{
+		return wrapping.soundTrayEnabled;
+	}
+
+	function set_soundTrayEnabled(a)
+	{
+		return wrapping.soundTrayEnabled = a;
+	}
+
 	// no volume because i don't trust you guys
 	function get_defaultMusicGroup()
 	{
@@ -2396,12 +2722,14 @@ class HscriptSoundFrontEndWrapper
 		return wrapping.music = a;
 	}
 
-	public function load(?EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = false, AutoPlay = false, ?URL, ?OnComplete)
+	// JOELwindows7: now don't forget library
+	public function load(?EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = false, AutoPlay = false, ?URL, ?OnComplete,
+			?library:String)
 	{
 		if ((EmbeddedSound is String))
 		{
 			// var sound = FNFAssets.getSound(EmbeddedSound);
-			var sound = Paths.sound(EmbeddedSound);
+			var sound = Paths.sound(EmbeddedSound, library);
 			return wrapping.load(sound, Volume, Looped, Group, AutoDestroy, AutoPlay, URL, OnComplete);
 		}
 		return wrapping.load(EmbeddedSound, Volume, Looped, Group, AutoDestroy, AutoPlay, URL, OnComplete);
@@ -2412,23 +2740,23 @@ class HscriptSoundFrontEndWrapper
 		wrapping.pause();
 	}
 
-	public function play(EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = true, ?OnComplete)
+	public function play(EmbeddedSound:FlxSoundAsset, Volume = 1.0, Looped = false, ?Group, AutoDestroy = true, ?OnComplete, ?library:String)
 	{
 		if ((EmbeddedSound is String))
 		{
 			// var sound = FNFAssets.getSound(EmbeddedSound);
-			var sound = Paths.sound(EmbeddedSound);
+			var sound = Paths.sound(EmbeddedSound, library);
 			return wrapping.play(sound, Volume, Looped, Group, AutoDestroy, OnComplete);
 		}
 		return wrapping.play(EmbeddedSound, Volume, Looped, Group, AutoDestroy, OnComplete);
 	}
 
-	public function playMusic(Music:FlxSoundAsset, Volume = 1.0, Looped = true, ?Group)
+	public function playMusic(Music:FlxSoundAsset, Volume = 1.0, Looped = true, ?Group, ?library:String)
 	{
 		if ((Music is String))
 		{
 			// var sound = FNFAssets.getSound(Music);
-			var sound = Paths.music(Music);
+			var sound = Paths.music(Music, library);
 			wrapping.playMusic(sound, Volume, Looped, Group);
 			return;
 		}

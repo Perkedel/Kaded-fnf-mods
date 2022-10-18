@@ -4,19 +4,20 @@ import openfl.Lib;
 
 class GlobalVideo
 {
-	private static var video:VideoHandler;
+	// JOELwindows7: name revise Handlir due to VLC
+	private static var video:VideoHandlir;
 	private static var webm:WebmHandler;
 	public static var isWebm:Bool = false;
 	public static var isAndroid:Bool = false;
 	public static var daAlpha1:Float = 0.2;
 	public static var daAlpha2:Float = 1;
 
-	public static function setVid(vid:VideoHandler):Void
+	public static function setVid(vid:VideoHandlir):Void
 	{
 		video = vid;
 	}
 
-	public static function getVid():VideoHandler
+	public static function getVid():VideoHandlir
 	{
 		return video;
 	}

@@ -29,6 +29,7 @@ class ModCore
 		#if FEATURE_MODCORE
 		Debug.logInfo("Initializing ModCore...");
 		loadModsById(getModIds());
+		CarryAround.raiseModAlreadyLoaded();
 		#else
 		Debug.logInfo("ModCore not initialized; not supported on this platform.");
 		#end
@@ -42,6 +43,7 @@ class ModCore
 		Debug.logTrace('  User mod config: ${FlxG.save.data.modConfig}');
 		var userModConfig = getConfiguredMods();
 		loadModsById(userModConfig);
+		CarryAround.raiseModAlreadyLoaded();
 		#else
 		Debug.logInfo("ModCore not initialized; not supported on this platform.");
 		#end
@@ -238,12 +240,37 @@ class ModCore
 			// JOELwindows7: Just what the peck?! also add Enigma yoinkeh stuffs
 			assetLibraryPaths: [
 				"default" => "./preload", // ./preload
-				"sm" => "./sm", "songs" => "./songs", "shared" => "./", "tutorial" => "./tutorial",
-				"scripts" => "./scripts", "week1" => "./week1", "week2" => "./week2", "week3" => "./week3", "week4" => "./week4", "week5" => "./week5",
-				"week6" => "./week6", "week7" => "./week7", "week8" => "./week8", "week9" => "./week9", "week10" => "./week10", "week11" => "./week11",
-				"week12" => "./week12", "week13" => "./week13", "week14" => "./week14", "week15" => "./week15", "weeks" => "./weeks", "thief" => "./thief",
-				"videos" => "./videos", "preload_odysee" => "./preload_odysee", "preload_thief" => "./preload_thief", "fonts" => "./fonts",
-				"bonusWeek" => "./bonusWeek", "week-1" => "./week-1", "exclude" => "./exclude", "week5720NG" => "./week5720NG",
+				"sm" => "./sm",
+				"songs" => "./songs",
+				"shared" => "./",
+				"tutorial" => "./tutorial",
+				"scripts" => "./scripts",
+				"week1" => "./week1",
+				"week2" => "./week2",
+				"week3" => "./week3",
+				"week4" => "./week4",
+				"week5" => "./week5",
+				"week6" => "./week6",
+				"week7" => "./week7",
+				"week8" => "./week8",
+				"week9" => "./week9",
+				"week10" => "./week10",
+				"week11" => "./week11",
+				"week12" => "./week12",
+				"week13" => "./week13",
+				"week14" => "./week14",
+				"week15" => "./week15",
+				"weeks" => "./weeks",
+				"thief" => "./thief",
+				"videos" => "./videos",
+				"preload_odysee" => "./preload_odysee",
+				"preload_thief" => "./preload_thief",
+				"fonts" => "./fonts",
+				"bonusWeek" => "./bonusWeek",
+				"week-1" => "./week-1",
+				"exclude" => "./exclude",
+				"week5720NG" => "./week5720NG",
+				'core' => './_core', // Don't override these files.
 			]
 		}
 	}
@@ -283,13 +310,19 @@ class ModCore
 				{
 					// JOELwindows7: advanced readout now yey
 					case NOTICE:
-						Debug.logInfo('NOTICE ${error.code} when ${error.origin}: ${error.message}', null);
+						Debug.logInfo('[NOTICE] ${error.code} when ${error.origin}: ${error.message}', null);
 					case WARNING:
-						Debug.logWarn('WARNING ${error.code} when ${error.origin}: ${error.message}', null);
+						Debug.logWarn('[WARNING] ${error.code} when ${error.origin}: ${error.message}', null);
 					case ERROR:
-						Debug.logError('WERROR ${error.code} when ${error.origin}: ${error.message}', null);
+						Debug.logError('[WERROR] ${error.code} when ${error.origin}: ${error.message}', null);
 				}
 		}
+	}
+	#else
+	public static function getAllMods():Array<Dynamic>
+	{
+		Debug.logInfo('cannot get all mod, mod support unavailable');
+		return null;
 	}
 	#end
 }

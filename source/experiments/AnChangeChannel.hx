@@ -18,9 +18,10 @@
 
 package experiments;
 
+import behavior.audio.IManipulateAudio;
 import flixel.FlxG;
 
-class AnChangeChannel extends AbstractTestMenu
+class AnChangeChannel extends AbstractTestMenu implements IManipulateAudio
 {
 	var rate:Float = 1;
 	var channel:Float = 0;
@@ -75,16 +76,45 @@ class AnChangeChannel extends AbstractTestMenu
 		}
 
 		// JOELwindows7: there you are, audio manipulate lol
+		// #if FEATURE_AUDIO_MANIPULATE
+		// @:privateAccess
+		// {
+		// 	if (FlxG.sound.music.playing)
+		// 	{
+		// 		lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
+		// 		lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.CHANNELS, channel);
+		// 	}
+		// }
+		// #end
+		manipulateTheAudio();
+		super.update(elapsed);
+	}
+
+	function manipulateTheAudio():Void
+	{
 		#if FEATURE_AUDIO_MANIPULATE
 		@:privateAccess
 		{
+			// JOELwindows7: hey, there's a new advanced way of doing this with BOLO's figure outs!
+			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
 			if (FlxG.sound.music.playing)
 			{
+				#if web
+				#if (lime >= "8.0.0" && lime_howlerjs)
+				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				#else
+				FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+				#end
+				#elseif cpp
+				#if (lime >= "8.0.0")
+				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				#else
 				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
 				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.CHANNELS, channel);
+				#end
+				#end
 			}
 		}
 		#end
-		super.update(elapsed);
 	}
 }

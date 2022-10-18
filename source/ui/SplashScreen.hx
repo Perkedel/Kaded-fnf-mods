@@ -18,6 +18,9 @@
 
 package ui;
 
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIButton;
+import ui.states.modding.ModMenuState;
 import flixel.text.FlxText;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.transition.FlxTransitionSprite;
@@ -36,7 +39,8 @@ import flixel.util.FlxColor;
 import flixel.FlxState;
 import flash.display.Graphics;
 import flash.display.Sprite;
-import flash.Lib;
+// import flash.Lib;
+import openfl.Lib;
 import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
@@ -63,11 +67,18 @@ class SplashScreen extends MusicBeatState
 	 */
 	public static var muted:Bool = #if html5 true #else false #end;
 
+	// Master Eric Enigma mod load evaluations
+	var configFound = false;
+	var modsToLoad = [];
+
+	// static var modAlreadyLoaded = false; // raise this flag if mod already loaded.
+	// Haxe logo
 	var _sprite:Sprite;
 	var _gfx:Graphics;
 	var _text:TextField;
 	var _poweredByText:TextField;
 
+	// other things
 	var _times:Array<Float>;
 	var _colors:Array<Int>;
 	var _functions:Array<Void->Void>;
@@ -77,31 +88,45 @@ class SplashScreen extends MusicBeatState
 	var _cachedAutoPause:Bool;
 
 	var _aModOfText:FlxUIText;
-	var _productLogo:FlxSprite;
-	var _companyLogo:FlxSprite;
+	var _aPressEscapeToBiosText:FlxUIText;
+	var _aPressEscapeToBiosButton:FlxUIButton;
+	var _productLogo:FlxUISprite;
+	var _companyLogo:FlxUISprite;
 
 	public function new()
 	{
+		// check mod support
+		@:privateAccess {
+			#if FEATURE_MODCORE
+			CarryAround._supportsModding = true;
+			#else
+			CarryAround._supportsModding = false;
+			#end
+		}
+
 		super();
 	}
 
 	override public function create():Void
 	{
+		// Master Eric Enigma check mod configuration
+		#if FEATURE_MODCORE
+		var modsToLoad = ModCore.getConfiguredMods();
+		configFound = (modsToLoad != null && modsToLoad.length > 0);
+		#else
+		configFound = false;
+		#end
+
+		// installTemporaryDiamondTransition(); // No need. already psyched it.
+		FlxTransitionableState.skipNextTransOut = true; // & skip transition
+		FlxTransitionableState.skipNextTransIn = true; // maybe also this, idk help
+
 		super.create();
 
 		Initializations.begin();
 
 		_cachedBgColor = FlxG.cameras.bgColor;
 		FlxG.cameras.bgColor = FlxColor.BLACK;
-
-		// JOELwindows7: temporary diamond from TitleScreen
-		var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
-		diamond.persist = true;
-		diamond.destroyOnNoUse = false;
-
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32},
-			new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
 
 		FlxG.mouse.visible = false;
 
@@ -156,22 +181,66 @@ class SplashScreen extends MusicBeatState
 		_aModOfText.y += 150;
 		add(_aModOfText);
 
-		_productLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("LFMLogoSplash"));
+		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, Perkedel.BIOS_BUTTON_SAY, 18);
+		_aPressEscapeToBiosText.setFormat(Paths.font("UbuntuMono-R.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		_aPressEscapeToBiosText.scrollFactor.set();
+		_aPressEscapeToBiosText.screenCenter(XY);
+		_aPressEscapeToBiosText.y += 180;
+		add(_aPressEscapeToBiosText);
+		_aPressEscapeToBiosText.visible = !CarryAround.modAlreadyLoaded() && CarryAround.supportsModding(); // only visiblize if not already loaded & supports modding
+
+		_aPressEscapeToBiosButton = new FlxUIButton(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 230), "BIOS Setting", onBiosButtonClick);
+		_aPressEscapeToBiosButton.setSize(90, 50);
+		_aPressEscapeToBiosButton.setGraphicSize(90, 50);
+		_aPressEscapeToBiosButton.updateHitbox();
+		_aPressEscapeToBiosButton.setLabelFormat(Paths.font("UbuntuMono-R.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		_aPressEscapeToBiosButton.scrollFactor.set();
+		_aPressEscapeToBiosButton.screenCenter(XY);
+		_aPressEscapeToBiosButton.y += 230;
+		add(_aPressEscapeToBiosButton);
+		_aPressEscapeToBiosButton.visible = !CarryAround.modAlreadyLoaded() && CarryAround.supportsModding(); // only visiblize if not already loaded & supports modding
+
+		_productLogo = new FlxUISprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("LFMLogoSplash"));
 		_productLogo.setPosition((FlxG.width / 2) - (_productLogo.width / 2), (FlxG.height / 2) - (_productLogo.height / 2));
+		_productLogo.screenCenter(XY);
 		_productLogo.scrollFactor.set();
+		_productLogo.antialiasing = FlxG.save.data.antialiasing;
 		add(_productLogo);
 
-		_companyLogo = new FlxSprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("Perkedel_Logo_Typeborder"));
+		_companyLogo = new FlxUISprite((FlxG.width / 2), (FlxG.height / 2), Paths.image("Perkedel_Logo_Typeborder"));
 		// _companyLogo.scale.x = _companyLogo.scale.y = .5;
 		_companyLogo.setGraphicSize(Std.int(_companyLogo.width * .075), Std.int(_companyLogo.height * .075));
 		_companyLogo.setPosition((FlxG.width / 2) - (_companyLogo.width / 2), (FlxG.height / 2) - (_companyLogo.height / 2) + 80);
 		_companyLogo.scrollFactor.set();
+		_companyLogo.antialiasing = FlxG.save.data.antialiasing;
 		add(_companyLogo);
 
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		// FlxG.sound.play(Paths.sound('scrollMenu'));
+		playSoundEffect('scrollMenu');
 
 		// if (nextState != null)
 		// 	FlxG.switchState(nextState);
+	}
+
+	override public function update(elapsed:Float)
+	{
+		// if user press escape, go to BIOS setting
+		if (_aPressEscapeToBiosText.visible)
+		{
+			if (CarryAround.supportsModding())
+			{
+				_aPressEscapeToBiosText.text = Perkedel.BIOS_BUTTON_SAY
+					+ " ("
+					+ (_beginSplashTimer != null ? Std.string(HelperFunctions.truncateFloat(_beginSplashTimer.timeLeft, 1)) : "")
+					+ ")";
+				if (FlxG.keys.justPressed.ESCAPE || (joypadLastActive != null ? joypadLastActive.justPressed.BACK : false))
+				{
+					onBiosButtonClick();
+				}
+			}
+		}
+
+		super.update(elapsed);
 	}
 
 	override public function destroy():Void
@@ -185,38 +254,74 @@ class SplashScreen extends MusicBeatState
 		super.destroy();
 	}
 
+	var _beginSplashTimer:FlxTimer;
+
 	function beginSplashShow()
 	{
-		new FlxTimer().start(2, function(tmr:FlxTimer)
+		_beginSplashTimer = new FlxTimer();
+		_beginSplashTimer.start(2, function(tmr:FlxTimer)
 		{
 			intoStateNow();
 		});
 	}
 
+	var _intoStateFlicker:FlxFlicker;
+	var _intoStateTimer:FlxTimer;
+
 	function intoStateNow()
 	{
-		FlxG.sound.play(Paths.sound('confirmMenu'));
+		_aPressEscapeToBiosText.visible = false; // immediately invisible bios text
+		_aPressEscapeToBiosButton.visible = false; // immediately invisible bios button
+
+		// check mods!
+		if (!CarryAround.modAlreadyLoaded())
+		{
+			// #if FEATURE_MODCORE
+			if (configFound)
+			{
+				Debug.logTrace("Load configured mods");
+				ModCore.loadConfiguredMods();
+			}
+			else
+			{
+				Debug.logTrace("Load all mods");
+				ModCore.initialize();
+			}
+			// #else
+			// Debug.logTrace("Mod support unavailable");
+			// #end
+		}
+		else
+		{
+		}
+
+		// FlxG.sound.play(Paths.sound('confirmMenu'));
+		playSoundEffect('confirmMenu');
 		if (FlxG.save.data.flashing)
 		{
-			FlxFlicker.flicker(_productLogo, 2, 0.06, false, false, function(flicker:FlxFlicker)
+			_intoStateFlicker = FlxFlicker.flicker(_productLogo, 2, 0.06, false, false, function(flicker:FlxFlicker)
 			{
-				if (nextState != null)
-					FlxG.switchState(nextState);
-
-				justComplete();
+				finishedFlicker();
 				// flicker.stop();
 			});
 		}
 		else
 		{
-			new FlxTimer().start(2, function(tmr:FlxTimer)
+			_intoStateTimer = new FlxTimer();
+			_intoStateTimer.start(2, function(tmr:FlxTimer)
 			{
-				if (nextState != null)
-					FlxG.switchState(nextState);
-
-				justComplete();
+				finishedFlicker();
 			});
 		}
+	}
+
+	function finishedFlicker()
+	{
+		// then cleanup & move to the next state!
+		justComplete();
+		if (nextState != null)
+			// FlxG.switchState(nextState);
+			switchState(nextState);
 	}
 
 	override public function onResize(Width:Int, Height:Int):Void
@@ -350,5 +455,61 @@ class SplashScreen extends MusicBeatState
 		FlxG.stage.removeChild(_poweredByText);
 		// FlxG.switchState(Type.createInstance(nextState, []));
 		// FlxG.game._gameJustStarted = true;
+	}
+
+	function installTemporaryDiamondTransition():Void
+	{
+		// JOELwindows7: temporary diamond from TitleScreen
+		var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
+		diamond.persist = true;
+		diamond.destroyOnNoUse = false;
+
+		transIn = FlxTransitionableState.defaultTransIn;
+		transOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32},
+			new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+	}
+
+	public static function markModLoaded():Void
+	{
+		// modAlreadyLoaded = true;
+		CarryAround.raiseModAlreadyLoaded();
+	}
+
+	function cancelEverything():Void
+	{
+		if (_beginSplashTimer != null)
+		{
+			_beginSplashTimer.cancel();
+			// _beginSplashTimer = null;
+		}
+		if (_intoStateFlicker != null)
+		{
+			_intoStateFlicker.stop();
+			// _intoStateFlicker = null;
+		}
+		if (_intoStateTimer != null)
+		{
+			_intoStateTimer.cancel();
+			// _intoStateTimer = null;
+		}
+		FlxG.stage.removeChild(_sprite);
+		FlxG.stage.removeChild(_text);
+		FlxG.stage.removeChild(_poweredByText);
+	}
+
+	function onBiosButtonClick()
+	{
+		if (_aPressEscapeToBiosText.visible)
+		{
+			// FlxG.sound.play(Paths.sound('cancelMenu'));
+			playSoundEffect('cancelMenu');
+			// FlxG.switchState(new BiosSettingsState());
+			cancelEverything();
+			_aPressEscapeToBiosText.visible = false;
+			_aPressEscapeToBiosButton.visible = false;
+			#if FEATURE_MODCORE
+			switchState(new ModMenuState()); // temporary. pls make proper BIOS setting menu!
+			#end
+		}
 	}
 }

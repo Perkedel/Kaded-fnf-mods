@@ -1,13 +1,16 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
+//JOELwindows7: FlxUI fy
+
 class GitarooPause extends MusicBeatState
 {
-	var replayButton:FlxSprite;
-	var cancelButton:FlxSprite;
+	var replayButton:FlxUISprite;
+	var cancelButton:FlxUISprite;
 
 	var replaySelect:Bool = false;
 
@@ -27,11 +30,11 @@ class GitarooPause extends MusicBeatState
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('pauseAlt/pauseBG'));
+		var bg:FlxUISprite = cast new FlxUISprite().loadGraphic(Paths.loadImage('pauseAlt/pauseBG'));
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
-		var bf:FlxSprite = new FlxSprite(0, 30);
+		var bf:FlxUISprite = new FlxUISprite(0, 30);
 		bf.frames = Paths.getSparrowAtlas('pauseAlt/bfLol');
 		bf.animation.addByPrefix('lol', "funnyThing", 13);
 		bf.animation.play('lol');
@@ -39,7 +42,7 @@ class GitarooPause extends MusicBeatState
 		add(bf);
 		bf.screenCenter(X);
 
-		replayButton = new FlxSprite(FlxG.width * 0.28, FlxG.height * 0.7);
+		replayButton = new FlxUISprite(FlxG.width * 0.28, FlxG.height * 0.7);
 		replayButton.frames = Paths.getSparrowAtlas('pauseAlt/pauseUI');
 		replayButton.animation.addByPrefix('selected', 'bluereplay', 0, false);
 		replayButton.animation.appendByPrefix('selected', 'yellowreplay');
@@ -47,7 +50,7 @@ class GitarooPause extends MusicBeatState
 		replayButton.antialiasing = FlxG.save.data.antialiasing;
 		add(replayButton);
 
-		cancelButton = new FlxSprite(FlxG.width * 0.58, replayButton.y);
+		cancelButton = new FlxUISprite(FlxG.width * 0.58, replayButton.y);
 		cancelButton.frames = Paths.getSparrowAtlas('pauseAlt/pauseUI');
 		cancelButton.animation.addByPrefix('selected', 'bluecancel', 0, false);
 		cancelButton.animation.appendByPrefix('selected', 'cancelyellow');

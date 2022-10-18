@@ -18,5 +18,9 @@ bf-pixel
 senpai
 senpai-angry
 spirit
+tankman
+pico-speaker
+bf-holding-gf
 hookx
+hookx-legacy
 placeholder

@@ -24,8 +24,13 @@
  */
 package utils.macro;
 
+using haxe.macro.ExprTools;
+using haxe.macro.TypeTools;
+using Lambda;
+
 class HaxeCommit
 {
+	#if macro
 	public static macro function getGitCommitHash():haxe.macro.Expr.ExprOf<String>
 	{
 		#if !display
@@ -54,5 +59,6 @@ class HaxeCommit
 		return macro $v{commitHashSplice};
 		#end
 	}
+	#end
 }
 

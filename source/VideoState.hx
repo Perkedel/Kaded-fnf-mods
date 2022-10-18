@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 #if cpp
 import webm.WebmPlayer;
 #end
@@ -18,11 +20,12 @@ import openfl.Lib;
 
 using StringTools;
 
+// JOELwindows7: carefully FlxUI fy!
 class VideoState extends MusicBeatState
 {
 	public var leSource:String = "";
 	public var transClass:FlxState;
-	public var txt:FlxText;
+	public var txt:FlxUIText;
 	public var fuckingVolume:Float = 1;
 	public var notDone:Bool = true;
 	public var vidSound:FlxSound;
@@ -36,7 +39,7 @@ class VideoState extends MusicBeatState
 	public var autoPause:Bool = false;
 	public var musicPaused:Bool = false;
 
-	#if cpp
+	#if FEATURE_FRAME_COUNTER
 	static private var nativeFramecount:String->Int = cpp.Lib.load("webmHelper", "GetFramecount", 1);
 	#end
 
@@ -65,23 +68,43 @@ class VideoState extends MusicBeatState
 	// https://github.com/kem0x/openfl-haxeflixel-video-code/blob/main/source/VideoState.hx
 	public function frameCount():Int
 	{
-		#if cpp
+		#if FEATURE_FRAME_COUNTER
 		return nativeFramecount(leSource);
 		#else
 		return Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));
 		#end
 	}
 
+	// JOELwindows7: and now the utility for it
+	public static function frameCountUtil(daSource:String = ''):Int
+	{
+		#if FEATURE_FRAME_COUNTER
+		return nativeFramecount(daSource);
+		#else
+		return Std.parseInt(Assets.getText(daSource.replace(".webm", ".txt")));
+		#end
+	}
+
 	override function create()
 	{
+		trace('welcome to Video state');
 		super.create();
+
+		// JOELwindows7: cancel breakpoint
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			Main.gjToastManager.createToast(null, Perkedel.VIDEO_DISABLED_TITLE, Perkedel.VIDEO_DISABLED_DESCRIPTION);
+			FlxG.switchState(transClass);
+			return;
+		}
+
 		FlxG.autoPause = false;
 		doShit = false;
 
 		if (GlobalVideo.isWebm)
 		{
 			// videoFrames = Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));
-			#if cpp
+			#if FEATURE_FRAME_COUNTER
 			videoFrames = frameCount();
 
 			trace("swag dll told us vid has " + videoFrames);
@@ -91,7 +114,7 @@ class VideoState extends MusicBeatState
 			#end
 				videoFrames = Std.parseInt(Assets.getText(leSource.replace(".webm", ".txt")));
 
-			#if cpp
+			#if FEATURE_FRAME_COUNTER
 			}
 			#end
 		}
@@ -102,7 +125,7 @@ class VideoState extends MusicBeatState
 		#if web
 		isHTML = true;
 		#end
-		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		var bg:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 		var html5Text:String = "You Are Not Using HTML5...\nThe Video Didnt Load!";
 		if (isHTML)
@@ -110,7 +133,7 @@ class VideoState extends MusicBeatState
 			html5Text = "You Are Using HTML5!";
 		}
 		defaultText = "If Your On HTML5\nTap Anything...\nThe Bottom Text Indicates If You\nAre Using HTML5...\n\n" + html5Text;
-		txt = new FlxText(0, 0, FlxG.width, defaultText, 32);
+		txt = new FlxUIText(0, 0, FlxG.width, defaultText, 32);
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
 		add(txt);

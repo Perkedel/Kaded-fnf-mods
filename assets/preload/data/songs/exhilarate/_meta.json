@@ -22,5 +22,15 @@
     "noteStyle": "saubo",
     "player1": "bf-covid",
     "player2": "hookx",
-    "gfVersion": "gf-covid"
+    "gfVersion": "gf-covid",
+    "introCutSceneDoneManually": true,
+    "outroCutSceneDoneManually": false,
+    "eventObjects": [{
+        "name": "Init BPM",
+        "position": 0,
+        "value": 170,
+        "value2": 0,
+        "value3": 0,
+        "type": "BPM Change"
+    }]
 }

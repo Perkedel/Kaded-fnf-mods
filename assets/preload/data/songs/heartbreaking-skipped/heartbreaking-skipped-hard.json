@@ -1,0 +1,172 @@
+{
+    "ProgramUsed": "Last Funkin Moments",
+    "charter": "JOELwindows7",
+    "generatedBy": "charting",
+    "song": {
+        "strumProfile": "Dance-Single",
+        "isCreditRoll": false,
+        "delayBeforeStart": 0,
+        "videoPath": "",
+        "songName": "Heartbreaking (SCRAPPED)",
+        "hasVideo": false,
+        "notes": [{
+            "betterSectionNotes": [
+
+            ],
+            "lengthInSteps": 16,
+            "altAnim": false,
+            "CPUAltAnim": false,
+            "typeOfSection": 0,
+            "sectionNotes": [
+
+            ],
+            "bpm": 72,
+            "startTime": 0,
+            "changeBPM": false,
+            "endTime": 3333.33333333333,
+            "playerAltAnim": false,
+            "mustHitSection": true
+        }, {
+            "betterSectionNotes": [{
+                "isAlt": false,
+                "strumTime": 3333.33333333333,
+                "noteTypeId": "default",
+                "hitsoundPath": "SNAP",
+                "vowelType": 0,
+                "beat": 4,
+                "noteData": 3,
+                "noteType": 0,
+                "sustainLength": 0
+            }, {
+                "isAlt": false,
+                "strumTime": 3333.33333333333,
+                "noteTypeId": "default",
+                "hitsoundPath": "SNAP",
+                "vowelType": 0,
+                "beat": 4,
+                "noteData": 7,
+                "noteType": 0,
+                "sustainLength": 0
+            }],
+            "lengthInSteps": 16,
+            "altAnim": false,
+            "CPUAltAnim": false,
+            "typeOfSection": 0,
+            "sectionNotes": [
+                [
+                    3333.33333333333, 3, 0, false, 4, 0, "SNAP", 0
+                ],
+                [
+                    3333.33333333333, 7, 0, false, 4, 0, "SNAP", 0
+                ]
+            ],
+            "bpm": 72,
+            "startTime": 3333.33333333333,
+            "changeBPM": false,
+            "endTime": 6666.66666666667,
+            "playerAltAnim": false,
+            "mustHitSection": true
+        }, {
+            "betterSectionNotes": [
+
+            ],
+            "lengthInSteps": 16,
+            "altAnim": false,
+            "CPUAltAnim": false,
+            "typeOfSection": 0,
+            "sectionNotes": [
+
+            ],
+            "bpm": 72,
+            "startTime": 6666.66666666667,
+            "changeBPM": false,
+            "endTime": 10000,
+            "playerAltAnim": false,
+            "mustHitSection": true
+        }, {
+            "betterSectionNotes": [
+
+            ],
+            "lengthInSteps": 16,
+            "altAnim": false,
+            "CPUAltAnim": false,
+            "typeOfSection": 0,
+            "sectionNotes": [
+
+            ],
+            "bpm": 72,
+            "startTime": 10000,
+            "changeBPM": false,
+            "endTime": 13333.3333333333,
+            "playerAltAnim": false,
+            "mustHitSection": true
+        }],
+        "creditRunsOnce": false,
+        "isCheer": false,
+        "invisibleCountdown": false,
+        "forceHscriptModchart": false,
+        "cutsceneType": "none",
+        "hasTankmanVideo": false,
+        "loadNoteStyleOtherWayAround": false,
+        "epilogueTankmanVideoPath": "null",
+        "useCustomStage": false,
+        "useCustomNoteStyle": true,
+        "artist": "Kevin MacLeod",
+        "speed": 1,
+        "hasEpilogueChat": true,
+        "sectionLengths": [
+
+        ],
+        "forceLuaModchart": false,
+        "outroCutSceneDoneManually": false,
+        "hasDialogueChat": true,
+        "epilogueVideoPath": "",
+        "charter": "JOELwindows7",
+        "introCutSceneDoneManually": true,
+        "preferredNoteAmount": 4,
+        "hasEpilogueVideo": false,
+        "delayAfterFinish": 0,
+        "strumCounts": 4,
+        "uiType": "normal",
+        "sections": 0,
+        "reversedCountdown": false,
+        "tankmanVideoPath": "null",
+        "player1": "bf-covid",
+        "songId": "heartbreaking-skipped",
+        "player2": "hookx",
+        "forceLuaModchartLegacy": false,
+        "diffVariables": {
+
+        },
+        "isHey": false,
+        "offset": 0,
+        "song": "heartbreaking-skipped",
+        "isSpooky": false,
+        "difficultyId": "normal",
+        "validScore": true,
+        "variables": {
+
+        },
+        "isMoody": false,
+        "gfVersion": "gf-covid",
+        "eventObjects": [{
+            "_hxcls": "Event",
+            "name": "Init BPM",
+            "position": 0,
+            "value": 72,
+            "value2": 0,
+            "value3": 0,
+            "type": "BPM Change"
+        }],
+        "chartVersion": "KE1",
+        "difficulty": 0,
+        "hasEpilogueTankmanVideo": false,
+        "allowedToHeadbang": true,
+        "difficultyStrength": 0.01,
+        "silentCountdown": false,
+        "stage": "stage",
+        "needsVoices": false,
+        "bpm": 72,
+        "noteStyle": "saubo"
+    }
+}

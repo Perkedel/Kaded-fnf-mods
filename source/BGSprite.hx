@@ -2,10 +2,13 @@
 // okeh idk man.
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
-class BGSprite extends FlxSprite
+// JOELwindows7: FlxUI fy carefully
+
+class BGSprite extends FlxUISprite
 {
 	private var idleAnim:String;
 

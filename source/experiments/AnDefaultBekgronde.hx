@@ -18,6 +18,7 @@
 
 package experiments;
 
+import flixel.addons.ui.FlxUIText;
 import plugins.sprites.QmovephBackground;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
 import flixel.addons.display.FlxStarField;
@@ -29,7 +30,7 @@ import flixel.text.FlxText;
 
 class AnDefaultBekgronde extends MusicBeatState{
 
-    public var infoText:FlxText;
+    public var infoText:FlxUIText;
     
     override function create(){
         super.create();
@@ -43,7 +44,7 @@ class AnDefaultBekgronde extends MusicBeatState{
 			trace(e + ": " + e.message);
         }
 
-        infoText = new FlxText();
+        infoText = new FlxUIText();
         infoText.text = "Default Bekgron Test\n" +
         "\n" +
         "ENTER = ...\n" +

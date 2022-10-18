@@ -3,6 +3,8 @@ package;
 import Song.SongData;
 import flixel.FlxG;
 
+// JOELwindows7: yoink some https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/Conductor.hx
+
 /**
  * ...
  * @author
@@ -17,7 +19,7 @@ typedef BPMChangeEvent =
 class Conductor
 {
 	public static var bpm:Float = 100;
-	public static var crochet:Float = ((60 / bpm) * 1000); // beats in milliseconds
+	public static var crochet:Float = ((60 / bpm) * 1000) / PlayState.songMultiplier; // beats in milliseconds. JOELwindows7: BOLO
 	public static var stepCrochet:Float = crochet / 4; // steps in milliseconds
 	public static var songPosition:Float;
 	public static var lastSongPos:Float;
@@ -89,7 +91,7 @@ class Conductor
 	{
 		bpm = newBpm;
 
-		crochet = ((60 / bpm) * 1000);
+		crochet = ((60 / bpm) * 1000) / PlayState.songMultiplier; // JOELwindows7: BOLO
 		stepCrochet = crochet / 4;
 	}
 }

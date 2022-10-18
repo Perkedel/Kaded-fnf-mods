@@ -15,15 +15,12 @@ permissions:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: windows-latest
-    
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
       - name: first, begin caching stuffs
         uses: actions/cache@v2.1.7
@@ -36,7 +33,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.4
+          haxe-version: 4.2.5
       # Runs a set of commands using the runners shell
 
       - name: Schlob Chocolatey
@@ -101,6 +98,7 @@ jobs:
           haxelib install tink_core
           haxelib install grig.audio
           haxelib install grig.midi
+          # haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
           haxelib install actuate 
@@ -120,6 +118,16 @@ jobs:
           haxelib install haxeui-flixel
           haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
           haxelib install yagp
+          haxelib git crashdumper http://github.com/larsiusprime/crashdumper
+          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
+          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
+          haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
+          haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
+          haxelib install udprotean
+          haxelib install markdown
+          haxelib install openfl-webm
+          # haxelib install hxCodec
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib list
           dir
           pwd
@@ -136,23 +144,23 @@ jobs:
           haxelib run lime rebuild yagp linux
           haxelib list
       
-      - name: Obtain stuffs of Windows?
-        run: |
-          mkdir -p C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
-          mkdir -p C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
-          mkdir -p C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit-5.1.so
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit.so
-          mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
-          mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit-5.1.so
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit.so
-          mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
-          mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit-5.1.so
-          wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit.so
-          mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
-          mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
+      # - name: Obtain stuffs of Windows?
+      #   run: |
+      #     mkdir -p C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
+      #     mkdir -p C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
+      #     mkdir -p C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit-5.1.so
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/Aarch64/libluajit.so
+      #     mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
+      #     mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\Aarch64
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit-5.1.so
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/arm/libluajit.so
+      #     mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
+      #     mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\arm
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit-5.1.so
+      #     wget https://github.com/JOELwindows7/linc_luajit/raw/master/lib/Lua/lib/Android/x86/libluajit.so
+      #     mv .\libluajit-5.1.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
+      #     mv .\libluajit.so C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\linc_luajit\lib\Lua\lib\Android\x86
       
       - name: TEMP patch FlxAction.hx workaround
         run: |
@@ -160,14 +168,14 @@ jobs:
           dir C:\hostedtoolcache
           dir "C:\hostedtoolcache\windows"
           dir "C:\hostedtoolcache\windows\haxe"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.4"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.4\x64"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\flixel"
+          dir "C:\hostedtoolcache\windows\haxe\4.2.5"
+          dir "C:\hostedtoolcache\windows\haxe\4.2.5\x64"
+          dir "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib"
+          dir "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\flixel"
           wget "https://gist.github.com/JOELwindows7/118b3a40a76d60e701399a61fb5e1c2d/raw/fef2b6649a4b51d76f912459ef3f107b4bd25905/FlxAction.hx"
           dir
           pwd
-          mv ".\FlxAction.hx" "C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\flixel\4,11,0\flixel\input\actions\FlxAction.hx" -Force
+          mv ".\FlxAction.hx" "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\flixel\4,11,0\flixel\input\actions\FlxAction.hx" -Force
       
       - name: Setup Android support
         run: |
@@ -180,7 +188,7 @@ jobs:
         run: |
           wget https://github.com/Perkedel/After-Church/raw/master/RAW%20files/stray%20anything/Borkarounds/extension-webm/ndll/Android.zip
           unzip .\Android.zip
-          mv ".\Android" "C:\hostedtoolcache\windows\haxe\4.2.4\x64\lib\extension-webm\git\ndll"
+          mv ".\Android" "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\extension-webm\git\ndll"
         
       - name: Obtain Gamejolt empty key
         run : |
@@ -214,6 +222,15 @@ jobs:
           butler push D:\a\Kaded-fnf-mods\Kaded-fnf-mods\export\release\android\bin\app\build\output\apk\Last Funkin Moments-debug.apk joelwindows7/last-funkin-moments:android-GHAction
       
       - name: Yo, release now
-        uses: softprops/action-gh-release@v0.1.13
-        if: startsWith(github.ref, 'refs/tags/')
+        # uses: softprops/action-gh-release@v0.1.13
+        # if: startsWith(github.ref, 'refs/tags/')
+        #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+        uses: svenstaro/upload-release-action@2.3.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: export/release/android/bin/app/build/output/apk/Last Funkin Moments-debug.apk
+          asset_name: Android Build
+          tag: ${{ github.ref }}
+          overwrite: true
+          # body: "This is my release text"
 

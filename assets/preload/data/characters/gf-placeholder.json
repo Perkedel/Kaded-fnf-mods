@@ -1,0 +1,161 @@
+{
+    "name": "Placeholder Girlfriend",
+    "displayName": "Placeholder",
+    "asset": "characters/Placeholder",
+    "barColor": "#0D0D0D",
+    "flipX": false,
+    "startingAnim": "danceRight",
+    "isDancing": true,
+    "holdLength": 4.1,
+    "replacesGF": true,
+    "info": [
+        "Your info here",
+        "This is new line",
+        "This is another line"
+    ],
+    "heartOrgans": [{
+        "character": "placeholder",
+        "isEmulator": true,
+        "initHR": 1,
+        "maxHR": 9999,
+        "minHR": 1,
+        "heartTierBoundaries": [100, 1000, 5000, 9000],
+        "successionAdrenalAdd": [100, 50, 25, 10],
+        "fearShockAdd": [5000, 1000, 500, 100],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "phobia": {
+        "lightningStorm": false,
+        "cancelCulture": false
+    },
+    "animations": [{
+            "name": "idle",
+            "prefix": "Placeholder idle",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singUP",
+            "prefix": "Placeholder Sing Note UP",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "Placeholder Sing Note LEFT",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "Placeholder Sing Note RIGHT",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "Placeholder Sing Note DOWN",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singUP-alt",
+            "prefix": "Placeholder Sing Note alt UP",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singLEFT-alt",
+            "prefix": "Placeholder Sing Note alt LEFT",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singRIGHT-alt",
+            "prefix": "Placeholder Sing Note alt RIGHT",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singDOWN-alt",
+            "prefix": "Placeholder Sing Note alt DOWN",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singUPmiss",
+            "prefix": "Placeholder Miss up",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singLEFTmiss",
+            "prefix": "Placeholder Miss left",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singRIGHTmiss",
+            "prefix": "Placeholder Miss right",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "singDOWNmiss",
+            "prefix": "Placeholder Miss down",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "hey",
+            "prefix": "Placeholder Hey",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "firstDeath",
+            "prefix": "Placeholder First Death",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "deathLoop",
+            "prefix": "Placeholder Death Loop",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "deathConfirm",
+            "prefix": "Placeholder Death Confirm",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "scared",
+            "prefix": "Placeholder Scared",
+            "offsets": [30, -75],
+            "looped": true
+        },
+        {
+            "name": "danceLeft",
+            "prefix": "Placeholder Dance LEFT",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "danceRight",
+            "prefix": "Placeholder Dance RIGHT",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "cheer",
+            "prefix": "Placeholder Hey alt",
+            "offsets": [30, -75]
+        },
+        {
+            "name": "hairBlow",
+            "prefix": "Placeholder Hair Blowing",
+            "interrupt": false,
+            "offsets": [30, -75],
+            "frameIndices": [0, 1, 2, 3],
+            "looped": true
+        },
+        {
+            "name": "hairFall",
+            "prefix": "Placeholder Hair Falling",
+            "nextAnim": "danceRight",
+            "interrupt": false,
+            "isDanced": true,
+            "offsets": [30, -75],
+            "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        },
+        {
+            "name": "sad",
+            "prefix": "Placeholder Sad",
+            "offsets": [30, -75],
+            "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        }
+    ]
+}

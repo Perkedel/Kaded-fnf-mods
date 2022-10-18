@@ -1,12 +1,14 @@
 #if FEATURE_STEPMANIA
 package smTools;
 
+import tjson.TJSON;
 import sys.io.File;
 import haxe.Exception;
 import lime.app.Application;
 import Section.SwagSection;
 import haxe.Json;
 
+// TODO: JOELwindows7: I thin I can attempt to multi diff & modes here. idk. just array of headers yeah!
 class SMFile
 {
 	public static function loadFile(path):SMFile
@@ -125,6 +127,8 @@ class SMFile
 
 		var song = {
 			song: header.TITLE,
+			songName: header.TITLE, // JOELwindows7: yeah
+			artist: header.ARTIST, // JOELwindows7: yeah
 			notes: [],
 			eventObjects: [],
 			bpm: header.getBPM(0),
@@ -230,32 +234,52 @@ class SMFile
 				for (i in notes)
 				{
 					// if its a mine lets skip (maybe add mines in the future??)
-					if (i == "M")
-					{
-						index++;
-						continue;
-					}
+					// JOELwindows7: EH PECK NO!!! WE HAVE MINES!!!
+					// if (i == "M")
+					// {
+					// 	index++;
+					// 	continue;
+					// }
 
 					// get the lane and note type
 					var lane = index;
 					var numba = Std.parseInt(i);
+					// JOELwindows7: we gotta make the section note array itself as it says, Dynamic. not all floats.
+					var noteThing:Array<Dynamic> = [rowTime, lane, 0, 0, currentBeat, 0, 'SNAP'];
 
 					// switch through the type and add the note
 
 					switch (numba)
 					{
 						case 1: // normal
-							section.sectionNotes.push([rowTime, lane, 0, 0, currentBeat]);
+							noteThing[5] = 0; // normal type
+							// section.sectionNotes.push([rowTime, lane, 0, 0, currentBeat, 0]);
+							section.sectionNotes.push(noteThing);
 						case 2: // held head
-							heldNotes[lane] = [rowTime, lane, 0, 0, currentBeat];
+							// heldNotes[lane] = [rowTime, lane, 0, 0, currentBeat];
+							heldNotes[lane] = noteThing;
 						case 3: // held tail
 							var data = heldNotes[lane];
 							var timeDiff = rowTime - data[0];
-							section.sectionNotes.push([data[0], lane, timeDiff, 0, data[4]]);
+							noteThing = [data[0], lane, timeDiff, 0, data[4], 0, 'SNAP'];
+							// section.sectionNotes.push([data[0], lane, timeDiff, 0, data[4],0,'SNAP']);
+							section.sectionNotes.push(noteThing);
 							heldNotes[index] = [];
 						case 4: // roll head
-							heldNotes[lane] = [rowTime, lane, 0, 0, currentBeat];
+							// TODO: JOELwindows7: Hold type rolls
+							// heldNotes[lane] = [rowTime, lane, 0, 0, currentBeat];
+							heldNotes[lane] = noteThing;
 					}
+
+					// JOELwindows7: here! special note types!
+					switch (i)
+					{
+						case "M": // mine
+							noteThing[5] = 2; // mine type
+							section.sectionNotes.push(noteThing);
+						default:
+					}
+
 					index++;
 				}
 
@@ -332,7 +356,8 @@ class SMFile
 			"song": song
 		};
 
-		var data:String = Json.stringify(json, null, " ");
+		// var data:String = Json.stringify(json, null, " ");
+		var data:String = TJSON.encode(json, "fancy"); // JOELwindows7: better stringify with TJSON yey!!!
 		File.saveContent(saveTo, data);
 		return data;
 	}

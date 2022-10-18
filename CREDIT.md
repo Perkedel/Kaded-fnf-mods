@@ -344,6 +344,68 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://stackoverflow.com/questions/3745135/push-git-commits-tags-simultaneously how to tag
 - https://stackoverflow.com/questions/29830544/how-do-i-add-a-tag-to-a-github-commit commit with GUI GitHub!??!?!?!
 - https://stackoverflow.com/questions/18216991/create-a-tag-in-a-github-repository still no GUI interface way to do that easily??!! no wonder kids these days hate being programmer because we are forced to stick with terminal type here and there, not obvious if this works, and what does it do!
+- https://gamebanana.com/mods/44555?post=9958187 SKY IS BACK!!!! FNALLY!! I THOUGHT WE WILL LEAVE FNF FANDOM UNDER DEADLY DEPRESSIONS!!!
+- https://gamebanana.com/threads/221466 YESS!!! IT'S PECKING CONFIRMED!!!
+- https://www.datree.io/resources/git-push-force
+- https://www.geeksforgeeks.org/how-to-undo-a-commit-in-git/
+- https://stackoverflow.com/questions/12704568/undo-a-git-commit
+- https://git-annex.branchable.com/git-annex/
+- https://odysee.com/@DistroTube:2/git-annex-is-the-coolest-program-you've:8
+- https://odysee.com/@DistroTube:2/git-annex-is-the-coolest-program-you%27ve:8?r=5QVnh7Qi8KKQzh7G7pWw9nkfaEGprCzM
+- dump
+- https://www.freenom.com/en/index.html
+- https://fitsmallbusiness.com/free-domain-name/
+- https://makeawebsitehub.com/free-domains/
+- https://stackoverflow.com/questions/59709283/haxe-error-you-cannot-access-the-cpp-package-while-targeting-cross-for-cpp-lib
+- https://github.com/HeapsIO/heaps/issues/368
+- https://www.flashdevelop.org/community/viewtopic.php?f=6&t=11478&sid=17c7e19da07ffc09259d9d905cfbe45e&start=15
+- https://gamebanana.com/questions/13619
+- https://community.haxe.org/t/debug-you-cannot-access-the-js-package-while-in-a-macro-error/1976/2
+- https://stackoverflow.com/questions/21391833/macro-include-is-recursively-including-packages-not-appropriate-for-build-targ
+- https://developer.android.com/topic/google-play-instant/instant-play-games-checklist
+- dump end
+- https://blog.hamaluik.ca/posts/getting-started-with-haxe-macros/
+- https://haxe.org/manual/macro.html
+- https://github.com/HaxeFoundation/haxe/releases/tag/4.2.5
+- https://haxe.org/download/
+- https://api.haxeflixel.com/flixel/addons/ui/FlxUIList.html
+- https://stackoverflow.com/a/21422639/9079640
+- https://code.haxe.org/category/macros/
+- https://code.haxe.org/category/macros/get-compiler-define-value.html
+- https://kinocreates.io/tutorials/haxe-build-macro-basics/
+- https://blog.hamaluik.ca/posts/getting-started-with-haxe-macros/#buildmacros
+- https://git-annex.branchable.com/special_remotes/bup/
+- https://git-annex.branchable.com/related_software/
+- https://git-annex.branchable.com/not/
+- https://github.com/ianharrigan/hscript-ex
+- https://github.com/HaxeFlixel/flixel-ui#xml-layout-basics
+- https://gamebanana.com/mods/370355
+- https://gamebanana.com/mods/316530
+- https://migmoog.newgrounds.com/news/post/1207508 how to stop being `lime test html5` tediously. have live server, go live, build html5. explore html5 file to open that index html.
+- https://stackoverflow.com/questions/55342758/haxe-uncaught-global-exception-handler uncaught error handler
+- https://rustyanimator.com/free-maya-rigs/ Random list of **$0 / Free 3D model** for Autodesk Maya (some includes FBX) & little promo for paywalled models.
+- https://www.cgtrader.com/3d-models?keywords=free+3d+mode cg trader search for `free 3d model` missing `l`.
+- https://www.kernel.org/doc/html/latest/sound/hd-audio/models.html hd audio kernel parameter mode
+- https://www.linuxuprising.com/2018/06/fix-no-sound-dummy-output-issue-in.html fix sound 
+- https://askubuntu.com/questions/1272908/ubuntu-20-04-headphones-detected-but-no-sound headphone no sound fix
+- https://twitter.com/EliteMasterEric/status/1537634171732037633 Master Eric, on PNG & memory usages things upon those.
+- https://www.youtube.com/watch?v=crnGzF43aoc How to write your own Arch User Repository PKGBUILD. 30 minutes video!
+- https://wiki.archlinux.org/title/Arch_User_Repository AUR article
+- https://wiki.archlinux.org/title/Creating_packages creating packages
+- https://wiki.archlinux.org/title/Arch_package_guidelines AUR guideline
+- https://wiki.archlinux.org/title/PKGBUILD PKGBUILD
+- https://wiki.archlinux.org/title/VCS_package_guidelines#The_pkgver()_function VCS Package
+- https://wiki.archlinux.org/title/AUR_helpers AUR Helper
+- https://linuxhint.com/aur_arch_linux/ How to AUR
+- https://twitter.com/Hideki_Naganuma/status/1546937991641579520?s=20&t=cghsUZh9tZ3AhboqiXjOHg Hideki litterally said BUBI PUT OL IN MA MOUT. say copy: 
+    > BIG TITTI..
+    > SMALL TITTI..
+    >
+    > WHO CARES..
+    > PUT IT ALL IN MY MOUT.
+- tebarek
+
+
 
 # in event of git merge conflict
 use VScode and Github desktop!
@@ -352,11 +414,12 @@ use VScode and Github desktop!
 - commit and push new commit to your GitHub now.
 - go to conflict solving branch. pull the last commit from main to here.
 - pull from upstream while you're at conflict solving branch
-- see GitHub Desktop. the commit window will popup. open all conflict files in VScode.
+- see GitHub Desktop. the conflict window will popup. open all conflict files in VScode.
 - wait.
 - after blue and green field appear, open comparison to map your changes and the upstream.
 - review, and bring your changed (the green field) to upstream pull (blue field)
-- after you've carefully brought all of them, `accept incoming change`
+- or anything that leaves current work there while adding new things.
+- after you've carefully brought all of them, `accept incoming change` or anything that bake all current & new things together.
 - repeat for the rest of the part and files
 - after all conflict solved, `Commit Merge` in GitHub desktop.
 - go back to main branch again.
@@ -388,6 +451,7 @@ use VScode and Github desktop!
 # other mods that wins the inclusion (without permission if has CC or uh whatever bruh, otherwise unlikely). Congratulations!
 Note: in Game Banana, mods that did not have license written will set to CC4.0-BY-NC-ND by default (marked by `Warning: presumably no license so default`). We believe that with ND circle legally prevents anyone to yoink such mods without asking permission. However, such statement is vague, due to the gray area like e.g. SF2. in any case, review the details and yoink with caution.
 
+- https://twitter.com/PhantomArcade3K/status/1521540912421257218?s=20&t=O7JJ0hkHEBFfyiFsu63GzA Phantom Arcade. Week 7 Assets finally released & its restriction has been leasened. See `PERMISSIONS.md`.
 - https://github.com/ninjamuffin99/Funkin ninja_muffin99. Original vanilla. uh, license formerly was Apache 2.0, but have canceled to `Mods must be open source` since commit on 16 May 2021 [here](https://github.com/ninjamuffin99/Funkin/commit/8bd9126acd48a0c23124b897561b5fca1e161a8c ) because of allowing modders to not Open Source the fork while also avoiding license that Nintendo hates.
 - https://github.com/KadeDev/Kade-Engine KadeDev. Engine we freshly forked from. hey, it's still Apache-2.0 License.
 - https://gamebanana.com/mods/43569 (you can edit mod but pls credit author) FNF but midi, SeaNothing. it also includes the MIDI file for all songs as well!!! MIDI Rendered with Microsoft GS Wavetable. enjoy FNF Java MIDP but Microemulator lol!
@@ -458,6 +522,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://en.wikipedia.org/wiki/File:Flag_of_Indonesia.svg flag of Indonesia.
 - https://gamebanana.com/mods/30863 (`Pls Credit`) AetherLynx Noteskin pack. can use if you credit him/her. PECKING FINALLY asset we can use right ahead woohoo thancc cool and good awesome div by zero!!!
 - https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support BrightFyre friggin Haxe VLC. FlxSprite video MP4 support guys!
+- https://github.com/polybiusproxy/hxCodec PolybiusProxy. it is now renamed to `hxCodec` now.
 - https://github.com/ShadowMario/FNF-PsychEngine/ https://gamebanana.com/mods/309789 Shadow Mario. Psyched inspirations such as blinking botplay text & stuff. bbpanzu had used this and the showcase shows it that.
 - pls insert TheFatRat - Mayday credit https://lnk.to/thefatratmayday
 - pls insert Sub Urban - Cradles (NCS Release)
@@ -473,7 +538,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.w3schools.com/colors/colors_hexadecimal.asp W3 Consortium. ah this tool right here to get hex color. 
 - https://github.com/marketplace/actions/butler-push push to itch and
 - https://github.com/marketplace/actions/setup-haxe-environment setup da haxe CI now
-- https://gamebanana.com/mods/336567 https://twitter.com/RedstyP/status/1460982660751257601?s=20 (WARNING: CC4.0-BY-NC-ND, but can reuse if you credit all these 3 on credit sidebar) Redsty Phoenix (everything this thing, Co-Animator, Artis), P (16th letter), & IronB (banner). The Playable Standalone GF yess! 
+- https://gamebanana.com/mods/336567 https://gamebanana.com/mods/363954 https://twitter.com/RedstyP/status/1460982660751257601?s=20 (WARNING: CC4.0-BY-NC-ND, but can reuse if you credit all these 3 on credit sidebar) Redsty Phoenix (everything this thing, Co-Animator, Artis), P (16th letter) (a.k.a. [Voideyedpanda](https://www.youtube.com/channel/UCtsc-4fC0f_aaDHzDn7LaIQ )???), & IronB (banner), also [Trake](https://www.youtube.com/channel/UC8BvxhAwwx7lz4h_WIb--gA ) (the enthusiast) for v2. The Playable Standalone GF yess! Hey, use v2. but we also added legacy ones.
 - https://github.com/EnigmaEngine/EnigmaEngine Master Eric. Kade FNF fork with Quality of Life feature & pioneer of Polymod ModCore system. taking inspiration & perhaps yoink some of their stuff back in here. Obviously needs to be edited to fit Kade-LFM specification, No replacement is allowed, week must be added by this Kade-LFM format & rereverse engineered (if the mod ports from somebody's mod). The Enigma repository did alot of drastic changes that seems have broken compatibilities with Kade's current structure. While it's good to sort it out, but then it will / could be difficult to pull the new upstream commits back to there.
 - https://github.com/polybiusproxy/PolyEngine/ Polybius proxy. this where BrightFyre maybe contributed or taken MP4 support to/from. Yeah basically this is mod that pioneers mp4 support. Oh yeah infact this is original MP4 support, BrightFyre yanked this for us all to implement. No, I do not shame BrightFyre, it's cool and good! we finally have easy to implement VLC, pecking finally!
 - https://musical-artifacts.com/artifacts/1600 Pedmanxd999. Here SF2 Soundfont consisting vocals of FNF including mods too aswell. That's right, that includes also deleted & privated ones!
@@ -490,6 +555,43 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://github.com/marketplace/actions/cache GitHub. cache build cache stuffs for faster CI building.
 - https://github.com/marketplace/actions/upload-a-build-artifact GitHub. upload build results
 - https://github.com/marketplace?type=actions&query=mingw+ GitHub. wait, what is this for? we don't use mingw right now. that's for Zumi's new factory in his palace.
+- https://sfbgames.itch.io/chiptone (Warning: Proprietary, but it's gratis. also all sound made are public domain able) SFB Games. Generate sound effect!! sfxr thingy!!!
+- https://www.fontspace.com/azonix-font-f30718 ???. Azonix cool techy font!
+- https://www.fontspace.com/category/tech Fontspace. lots of more techy fonts! A-atmosphere too! pls where link!
+- https://gamebanana.com/tools/7923 catt47. cool notes for fnf mods, for free. Psyched more notes!
+- https://gamebanana.com/mods/372232 Cherry Kai (vCherry.kAI.16) (*Can use, just credit*). Cherry Noteskin yeah!
+- https://gamebanana.com/mods/360401 Epoli (Pls credit). The Note splash for pixel yey!
+- https://www.uuidgenerator.net/version4 generate UUID online now!
+- http://guid.one/ generate GUID too
+- app.sketchup.com/app?3dwid=b46ef9dd-2f75-4d0b-9415-9a993f59b286 Ghost. Hyundai IONIQ 5 the only $0 model we can get
+- ddg.gg & search `qr 6ac4ea02-0194-45e4-a1cf-a636af63ab98` to generate QR code. the license plate id of this car, Sky's Hyundai IONIQ 5. etc too.
+- https://youtu.be/EwB3HWcUdEk Plaster material for the rough salt ground
+- https://gamebanana.com/mods/43037 AjTheFunky (WARNING: NO Pibby allowed; [permission thread](https://gamebanana.com/mods/43037?post=10023453 )). Heartbreak Girlfriend. Nah, don't worry, we don't pibby right now. Not too interested apparently idk.. Right?? aah..
+- https://gamebanana.com/mods/352532 https://github.com/YoshiCrafter29/YoshiCrafterEngine YoshiCrafter29. Yoshi Engine. let's yoink features for down the road.
+- https://github.com/larsiusprime/crashdumper/ larsiusprime. Crash dumper tool for HaxeFlixel & OpenFl based stuffs! see stackoverflow [here](https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create )
+- https://gamebanana.com/mods/372917 FoxDeveloper (Permissioned: `Free to use`). Reshaded gf-less speaker. Only has 3 frames! lightweight!
+- https://gamebanana.com/mods/185805 theoriginalalex (no need credit). gf-less speaker, out of original `GF_assets` & `gfPixel`, the gf is removed. extracted off. has both normal & pixel version.
+- https://gamebanana.com/mods/366075 Borist (free to use, don't forget credit). Gf without speaker, & floating in the air lol! look at her `ASS_SETS` lol pun filename.
+- https://gamebanana.com/mods/373601 https://github.com/whiteninja1/funkin-64-public the white ninja. Mario64 themed fnf mod. also using bunch of new libraries too! let's refer them! **WHOAHOW!!! HE USED MY TIPS ON DIGITAL INPUT ANDROID FORGOR COMPILE ERROR!!!**
+- https://github.com/Paidyy/Funkin-PEngine Paidyy. PEngine (not Psych Engine). easy mod FNF engine no touch code. Let's install & refer the new libraries used.
+- https://github.com/Paidyy/haxe-yaml Paidyy. YAML interpreter.
+- https://github.com/jigsaw-4277821/extension-androidtools https://github.com/jigsaw-4277821/extension-videoview jigsaw-4277821. Android tools & java native video view for haxe flixel
+- https://github.com/MAJigsaw77/extension-androidtools Jigsaw renamed a bit!
+- https://github.com/josuigoa/linc_clipboard josuigoa. Clipboard manager. set & get system clipboard!. interacts with OS / Desktop Environment clipboard!
+- https://gamebanana.com/members/submissions/mods/1881129 (Permissioned) DemonOfRazgriz. All mods from this.
+- https://gamebanana.com/mods/287311 (Permissioned) DemonOfRazgriz. Niko fnf mod playable
+- https://gamebanana.com/mods/374302 (Permissioned) DemonOfRazgriz. Alula bf skin
+- https://gamebanana.com/mods/334106 (Permissioned) DemonOfRazgriz. Noelle bf skin
+- https://gamebanana.com/mods/328542 (Permissioned) DemonOfRazgriz. Plight
+- https://gamebanana.com/mods/329405 (Permissioned) DemonOfRazgriz. Silver mommy mearest skin
+- https://gamebanana.com/mods/385202 Cool Leaf. Pixel note but non-week 6 classic. Inspired from normal noteskin
+- https://gamebanana.com/mods/384783 https://github.com/BoloVEVO/Kade-Engine-Public BoloVEVO / Boloxd. Continued Kade Engine development & added week 7. also added serveral stuffs too as well!
+- https://ubuntu.com Canonical. take every asset possible from that Ubuntu installation
+- https://archlinux.org Arch Linux. take every asset possible from that Arch installation btw, as well as AUR which those asset are royalty free if there is.
+- https://www.gnome.org/ GNOME. take every asset too!
+- https://youtu.be/hr7GyFM7pX4 (WARNING: Unknown license) Dairy Orange. Fart reverb
+- https://gamebanana.com/tools/10566 (WARNING: NO SOURCE CODE AVAILABLE AS OF 2022-09-16) Lua Modchart editor yey methewhenmethe. Godot app. WIP atm
+- https://github.com/ryanoasis/nerd-fonts https://nerdfonts.com Nerd Fonts (ryanoasis). Collection of Patched famous developer fonts with icons for everything that wants icon!!!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
@@ -505,6 +607,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://gamebanana.com/sounds/51159 (WARNING: has NC, ND) bruh miss note. MrBruh redistributed it this. 10 11 12 miss note
 - https://gamebanana.com/sounds/51838 (WARNING: has NC, ND) BABABOOEY! irdk_anymore. miss note 13 14 15
 - https://gamebanana.com/mods/44306 (Warning: has NC, ND) Placeholder of week 7 temporarily. (Canceled, due to unforseen and fear of bad circumstances against centralized mod hosting, as well as precaution against ND circled Creative Commons license)
+- - https://gamebanana.com/mods/377842 TornPaint, Novikond the idea of this, HentryBATIM; (Credit if used). **THICC 😏🍉🍉 gf**. Uh oh, archive [here](https://web.archive.org/web/20220518230045/https://gamebanana.com/mods/377842 ). Tracened. deleted by admin due to copyright violation. This asset has been removed & moved to Scrap due to fear of copyright strike again since that mod got copyright struck. not because of license of this asset. Ah peck! I didn't have the latest 1.2 version. Archiver bot should've been vigilant. PECK. At least we do have Redsty Phoenix standalone gf, yeah.. idk.
 
 **dislcaimer**: above list are no way meant to insult, defame, or threat authors of the mods listed. Perkedel requires all contributor from all tiers, roles, etc. to be transparent not only what have been yoinked, but also deyoinked assets, as well as the reason behind each deyoinks and removal (also including the foreshadowing which means mods that wish to be yoinked but ND circled license in the way). for those author that got the mod removed, feel free to make change in your licensing in case you disagree with the removal.
 
@@ -568,3 +671,6 @@ of course, kindly contact the submitters first. give them time for maybe, a mont
 - https://github.com/Perkedel/HexagonEngine logo inkscape assets#
 # bonus
 https://godotshaders.com/shader/update-botw-toon-shader/
+
+# Trabek
+merge master to here pls

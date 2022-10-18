@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUIButton;
 import lime.ui.Haptic;
 import flixel.util.FlxTimer;
 import openfl.Lib;
@@ -307,7 +308,7 @@ class Controls extends FlxActionSet
 	 * @param thing the button
 	 * @param state the state of that button
 	 */
-	public function installActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState)
+	public function installActionButtonings(action:FlxActionDigital, thing:FlxUIButton, state:FlxInputState)
 	{
 		// trace("install action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
 		var input = new FlxActionInputDigitalIFlxInput(thing, state);
@@ -318,7 +319,7 @@ class Controls extends FlxActionSet
 		// trace("add the " + mappedinputs.toString() + " a " + Std.string(action) + " in " + Std.string(state));
 	}
 
-	public function uninstallActionButtonings(action:FlxActionDigital, thing:FlxButton, state:FlxInputState)
+	public function uninstallActionButtonings(action:FlxActionDigital, thing:FlxUIButton, state:FlxInputState)
 	{
 		// trace("uninstall action buttonings " + Std.string(action) + " " + Std.string(thing) + " " + Std.string(state));
 		// var input = new FlxActionInputDigitalIFlxInput(thing, state);
@@ -388,22 +389,22 @@ class Controls extends FlxActionSet
 		switch (DPad)
 		{
 			case UP_DOWN:
-				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
-				inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonDown, state));
+				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, cast virtualPad.buttonUp, state));
+				inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, cast virtualPad.buttonDown, state));
 			case LEFT_RIGHT:
-				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonRight, state));
+				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonLeft, state));
+				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonRight, state));
 			case UP_LEFT_RIGHT:
-				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
-				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonRight, state));
+				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, cast virtualPad.buttonUp, state));
+				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonLeft, state));
+				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonRight, state));
 			case FULL | RIGHT_FULL:
 				// We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
 				trace("inlined assignations");
-				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonUp, state));
-				inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonDown, state));
-				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonRight, state));
+				inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, cast virtualPad.buttonUp, state));
+				inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, cast virtualPad.buttonDown, state));
+				inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonLeft, state));
+				inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonRight, state));
 			case NONE:
 				trace("No DPAD");
 		}
@@ -412,25 +413,25 @@ class Controls extends FlxActionSet
 		switch (Action)
 		{
 			case A:
-				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
+				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonA, state));
 			case A_B:
-				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
-				inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
+				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonA, state));
+				inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, cast virtualPad.buttonB, state));
 			case A_B_C:
-				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
-				inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
+				inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonA, state));
+				inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, cast virtualPad.buttonB, state));
 			case A_B_X_Y:
 				if (isGameplay)
 				{
-					inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, virtualPad.buttonY, state));
-					inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
-					inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, virtualPad.buttonX, state));
-					inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
+					inline forEachBound(Control.UP, (action, state) -> installActionButtonings(action, cast virtualPad.buttonY, state));
+					inline forEachBound(Control.DOWN, (action, state) -> installActionButtonings(action, cast virtualPad.buttonA, state));
+					inline forEachBound(Control.LEFT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonX, state));
+					inline forEachBound(Control.RIGHT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonB, state));
 				}
 				else
 				{
-					inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, virtualPad.buttonA, state));
-					inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, virtualPad.buttonB, state));
+					inline forEachBound(Control.ACCEPT, (action, state) -> installActionButtonings(action, cast virtualPad.buttonA, state));
+					inline forEachBound(Control.BACK, (action, state) -> installActionButtonings(action, cast virtualPad.buttonB, state));
 				}
 			case NONE:
 				trace("No Action button");
@@ -454,22 +455,22 @@ class Controls extends FlxActionSet
 		switch (DPad)
 		{
 			case UP_DOWN:
-				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonUp, state));
-				inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonDown, state));
+				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonUp, state));
+				inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonDown, state));
 			case LEFT_RIGHT:
-				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonRight, state));
+				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonLeft, state));
+				inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonRight, state));
 			case UP_LEFT_RIGHT:
-				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonUp, state));
-				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonRight, state));
+				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonUp, state));
+				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonLeft, state));
+				inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonRight, state));
 			case FULL | RIGHT_FULL:
 				// We don't have RIGHT_FULL here by default, it was from luckydog7's mod of the FlxVirtualPad library itself.
 				trace("inlined unassignations");
-				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonUp, state));
-				inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonDown, state));
-				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonLeft, state));
-				inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonRight, state));
+				inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonUp, state));
+				inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonDown, state));
+				inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonLeft, state));
+				inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonRight, state));
 			case NONE:
 				trace("No DPAD");
 		}
@@ -478,25 +479,25 @@ class Controls extends FlxActionSet
 		switch (Action)
 		{
 			case A:
-				inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonA, state));
+				inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonA, state));
 			case A_B:
-				inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonA, state));
-				inline forEachBound(Control.BACK, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonB, state));
+				inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonA, state));
+				inline forEachBound(Control.BACK, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonB, state));
 			case A_B_C:
-				inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonA, state));
-				inline forEachBound(Control.BACK, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonB, state));
+				inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonA, state));
+				inline forEachBound(Control.BACK, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonB, state));
 			case A_B_X_Y:
 				if (isGameplay)
 				{
-					inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonX, state));
-					inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonY, state));
-					inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonB, state));
-					inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonA, state));
+					inline forEachBound(Control.UP, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonX, state));
+					inline forEachBound(Control.DOWN, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonY, state));
+					inline forEachBound(Control.LEFT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonB, state));
+					inline forEachBound(Control.RIGHT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonA, state));
 				}
 				else
 				{
-					inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonA, state));
-					inline forEachBound(Control.BACK, (action, state) -> uninstallActionButtonings(action, virtualPad.buttonB, state));
+					inline forEachBound(Control.ACCEPT, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonA, state));
+					inline forEachBound(Control.BACK, (action, state) -> uninstallActionButtonings(action, cast virtualPad.buttonB, state));
 				}
 			case NONE:
 				trace("No Action button");
@@ -942,7 +943,7 @@ class Controls extends FlxActionSet
 
 		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
-			inline bindButtons(control, id, buttons);
+		inline bindButtons(control, id, buttons);
 		#else
 		for (control in buttonMap.keys())
 			bindButtons(control, id, buttonMap[control]);
@@ -955,7 +956,7 @@ class Controls extends FlxActionSet
 
 		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
-			inline bindButtons(control, id, buttons);
+		inline bindButtons(control, id, buttons);
 		#else
 		for (control in buttonMap.keys())
 			bindButtons(control, id, buttonMap[control]);

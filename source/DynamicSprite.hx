@@ -1,7 +1,9 @@
 //JOELwindows7: stolen from BulbyVR FNFM+ lol
+// and pls FlxUI fy this.
 
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.FlxSprite;
@@ -9,7 +11,7 @@ import flixel.FlxSprite;
  * A sprite that automatically handles loading files dynamically. This is used in hscripts by default.
  * Only overwrites "loadGraphic."
  */
-class DynamicSprite extends FlxSprite {
+class DynamicSprite extends FlxUISprite {
     override public function loadGraphic(Graphic:FlxGraphicAsset, Animated:Bool = false, Width:Int = 0, Height:Int = 0, Unique:Bool = false, ?Key:String) {
         if ((Graphic is String)) {
             // show time baby

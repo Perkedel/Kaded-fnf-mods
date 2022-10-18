@@ -6,3 +6,8 @@ package-lock.json
 package.json
 # GameJolt API Key may not be shared
 source/GJKeys.hx
+# Arch makepkg folder! & wrong stuffs
+LastFunkinMoments/
+LastFunkinMoments
+lastfunkinmoments-git
+Kaded-fnf-mods.git

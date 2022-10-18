@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -9,6 +10,7 @@ import flixel.util.FlxColor;
 #if polymod
 import polymod.format.ParseRules.TargetSignatureElement;
 #end
+import LuaClass;
 import PlayState;
 
 using StringTools;
@@ -19,7 +21,7 @@ using StringTools;
 	- https://gamebanana.com/questions/17887
  */
 // Yes, noteTypes like mine or so.
-class Note extends FlxSprite
+class Note extends FlxUISprite
 {
 	public var strumTime:Float = 0;
 	public var baseStrum:Float = 0;
@@ -28,8 +30,14 @@ class Note extends FlxSprite
 
 	public var rStrumTime:Float = 0;
 
+	// JOELwindows7: BOLO's psyched LuaNote reference
+	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Note.hx
+	#if FEATURE_LUAMODCHART
+	public var LuaNote:LuaNote;
+	#end
+
 	public var mustPress:Bool = false;
-	public var noteData:Int = 0;
+	public var noteData:Int = 0; // Orders for 4K = left, down, up, right.
 	public var rawNoteData:Int = 0;
 	public var canBeHit:Bool = false;
 	public var tooLate:Bool = false;
@@ -47,15 +55,17 @@ class Note extends FlxSprite
 
 	public var isAlt:Bool = false;
 
-	public var noteCharterObject:FlxSprite;
+	// JOELwindows7: everything must use `FlxUISprite` from now on.
+	public var noteCharterObject:FlxUISprite;
 
 	public var noteScore:Float = 1;
 
-	public var noteYOff:Int = 0;
+	public var noteYOff:Float = 0; // JOELwindows7: Brother, it's Float supposedly bruh. look at BOLO!
 
 	public var beat:Float = 0;
 
 	public static var swagWidth:Float = 160 * 0.7;
+	public static var swagHeight:Float = 160 * 0.7; // JOELwindows7: make it square.
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
 	public static var BLUE_NOTE:Int = 1;
@@ -88,12 +98,20 @@ class Note extends FlxSprite
 	public var inCharter:Bool = false; // JOELwindows7: globalize inCharter for all charting state detection
 	public var noteTypeCheck:String; // JOELwindows7: globalize noteTypeCheck for all noteSkin detection
 
+	public var hitsoundUseIt:Bool = false; // JOELwindows7: because there is BOLO here, now we have to prioritze default. flag up to override.
 	public var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound audio file to play when hit & hitsound option enabled.
+	public var hitlinePath:String = "HitLineParticle"; // JOELwindows7: hitline particle to emit when hit & hitline option enabled. idk this always on?
 	public var vowelType:Int = 0; // JOELwindows7: vowel type. radpas12131's mod. a i u e o.
 
 	// IDEA: JOELwindows7: you can have more variables about string or whatever too! like
 	// sylables or phoneme for VOCALOID
 	// noteNumber MIDI note number for everything
+	// JOELwindows7: Hold on, BOLO has more of these
+	public var stepHeight:Float = 0;
+
+	var leSpeed:Float = 0;
+
+	var leBpm:Float = 0;
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
 			?bet:Float = 0, ?noteType:Int = 0) // JOELwindows7: edge long noteType
@@ -139,12 +157,18 @@ class Note extends FlxSprite
 		if (this.strumTime < 0)
 			this.strumTime = 0;
 
-		if (!inCharter)
-			y += FlxG.save.data.offset + PlayState.songOffset;
-
 		this.noteData = noteData;
 
-		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.Optimize) ? PlayState.Stage.curStage : 'stage');
+		// JOELwindows7: BOLO's mirror modifier people!!!
+		// YOOO WTF IT WORKED???!!!
+		if (PlayStateChangeables.mirrorMode)
+		{
+			this.noteData = Std.int(Math.abs(3 - noteData));
+			noteData = Std.int(Math.abs(3 - noteData));
+		}
+
+		// JOELwindows7: consistenize capitalization for `optimize` pls.
+		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.optimize) ? PlayState.Stage.curStage : 'stage');
 
 		// defaults if no noteStyle was found in chart
 		noteTypeCheck = 'normal';
@@ -162,6 +186,10 @@ class Note extends FlxSprite
 			// JOELwindows7: noteType speziale
 			switch (noteType)
 			{
+				// case 0:
+				// normal. use default!
+				// case 1:
+				// powerup special
 				case 2:
 					Debug.logTrace("Whoah dude they adds mine?");
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
@@ -169,6 +197,9 @@ class Note extends FlxSprite
 					// frames = PlayState.noteskinSpriteMine;
 					Debug.logTrace("Mine graphic loaded");
 				// TODO: other note types! special 1, important 3, never 4, etc.
+				// case 3: // important
+				// case 4: // never
+				// case 5: // reserved unknown etc.
 				default:
 					frames = PlayState.noteskinSprite != null ? PlayState.noteskinSprite : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
 						noteType);
@@ -310,21 +341,25 @@ class Note extends FlxSprite
 			}
 		}
 
-		x += swagWidth * noteData;
+		// x += swagWidth * noteData;
+		x += swagWidth * (noteData % 4); // JOELwindows7: idk why BOLO has this here, idk.. note row id modulo how many row we had..
 		animation.play(dataColor[noteData] + 'Scroll');
 		originColor = noteData; // The note's origin color will be checked by its sustain notes
 
 		// JOELwindows7: whoa, the PlayState.instance can be null! make sure be careful
 		// JOELwindows7: okay we still have to quantize color.
+		// if (FlxG.save.data.stepMania
+		// 	&& !isSustainNote
+		// 	&& ((FlxG.save.data.forceStepmania) ? true : ((PlayState.instance != null) ? !(PlayState.instance.executeModchart
+		// 		|| PlayState.instance.executeModHscript) : true)))
+		// JOELwindows7: huh! turns out Kade decided to not quantize note if any modchart is running.
+		// perhaps for authenticity in retransform craze, due to to this quantization only select other arrow,
+		// and rotates it which dislodge the supposed original angle. idk just saying.
+		// Okay, now I have installed force option. idk this still not recommended because again, pre-rotate messes up your rotation
+		// craze calculations!
 		if (FlxG.save.data.stepMania
 			&& !isSustainNote
-			&& ((FlxG.save.data.forceStepmania) ? true : ((PlayState.instance != null) ? (!PlayState.instance.executeModchart
-				&& !PlayState.instance.executeModHscript) : true)))
-			// JOELwindows7: huh! turns out Kade decided to not quantize note if any modchart is running.
-			// perhaps for authenticity in retransform craze, due to to this quantization only select other arrow,
-			// and rotates it which dislodge the supposed original angle. idk just saying.
-			// Okay, now I have installed force option. idk this still not recommended because again, pre-rotate messes up your rotation
-			// craze calculations!
+			&& !(PlayState.instance != null ? (PlayState.instance.executeModchart || PlayState.instance.executeModHscript) : false))
 		{
 			var col:Int = 0;
 
@@ -346,9 +381,12 @@ class Note extends FlxSprite
 				col = quantityColor[4];
 
 			animation.play(dataColor[col] + 'Scroll');
-			localAngle -= arrowAngles[col];
-			localAngle += arrowAngles[noteData];
-			originAngle = localAngle;
+			if (FlxG.save.data.rotateSprites)
+			{
+				localAngle -= arrowAngles[col];
+				localAngle += arrowAngles[noteData];
+				originAngle = localAngle;
+			}
 			originColor = col;
 		}
 
@@ -365,7 +403,8 @@ class Note extends FlxSprite
 
 		if (isSustainNote && prevNote != null)
 		{
-			noteYOff = Math.round(-stepHeight + swagWidth * 0.5);
+			// noteYOff = Math.round(-stepHeight + swagWidth * 0.5) + FlxG.save.data.offset + PlayState.songOffset;
+			noteYOff = -stepHeight + swagWidth * 0.5; // JOELwindows7: hey, BOLO got this instead...
 
 			noteScore * 0.2;
 			alpha = 0.6;
@@ -394,7 +433,21 @@ class Note extends FlxSprite
 				prevNote.updateHitbox();
 
 				if (antialiasing)
-					prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
+				{
+					// prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
+					// JOELwindows7: BOLO note offseting antialiasing
+					switch (FlxG.save.data.noteskin)
+					{
+						case 0:
+							prevNote.scale.y *= 1.0064 + (1.0 / prevNote.frameHeight);
+						default:
+							prevNote.scale.y *= 0.995 + (1.0 / prevNote.frameHeight);
+					}
+				}
+
+				// JOELwindows7: BOLO update all hitbox one last time
+				prevNote.updateHitbox();
+				updateHitbox();
 			}
 		}
 
@@ -403,20 +456,82 @@ class Note extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		// JOELwindows7: INCOMING! BOLO STUFF FIXES
+		// This updates hold notes height to current scroll Speed in case of scroll Speed changes.
+
+		var newStepHeight = (((0.45 * PlayState.fakeNoteStepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
+			2)) * PlayState.songMultiplier;
+
+		if (stepHeight != newStepHeight)
+		{
+			stepHeight = newStepHeight;
+			if (isSustainNote)
+			{
+				// noteYOff = Math.round(-stepHeight + swagWidth * 0.5) + FlxG.save.data.offset + PlayState.songOffset;
+				noteYOff = -stepHeight + swagWidth * 0.5;
+			}
+		}
+
 		super.update(elapsed);
+		// JOELwindows7: mine rotate pls
 		if (!totalOverride)
 		{ // JOELwindows7: here total override, if on forget special parameter!
-			if (!modifiedByLua)
-				angle = modAngle + localAngle;
-			else
-				angle = modAngle;
-
-			// JOELwindows7: sneaky little punk! you can't get away from this!
-			if (!modifiedByLua)
+			if (noteType == 0)
 			{
-				if (!sustainActive)
+				// JOELwindows7: This is normal mote!
+				if (!modifiedByLua)
+					angle = modAngle + localAngle;
+				else
+					angle = modAngle;
+
+				// JOELwindows7: sneaky little punk! you can't get away from this! with BOLO tooLate
+				if (!modifiedByLua)
 				{
-					alpha = 0.3;
+					if (!sustainActive && tooLate)
+					{
+						alpha = 0.3;
+						// IDEA: JOELwindows7: tween alpha or animate the sustain bar, like
+						// cell died creepily, deflatingly, something something turns dark & rot
+						// instantly idk..
+					}
+				}
+			}
+			else
+			{
+				// JOELwindows7: spin mine!!! and other deadly & useful notes
+				angularVelocity = switch (noteType)
+				{
+					case 1: // powerup
+						0;
+					case 2: // mine
+						360;
+					case 3: // important
+						0;
+					case 4: // never
+						720;
+					default:
+						360;
+				};
+
+				// TODO: JOELwindows7: thing
+				// lift note. note breaths in & out
+
+				if (!modifiedByLua)
+				{
+					// angle += (modAngle + localAngle);
+				}
+				else
+				{
+					// angle += modAngle;
+				}
+
+				// JOELwindows7: sneaky little punk! you can't get away from this!
+				if (!modifiedByLua)
+				{
+					if (!sustainActive && tooLate)
+					{
+						alpha = .3; // JOELwindows7: was 1
+					}
 				}
 			}
 		}
@@ -487,17 +602,24 @@ class Note extends FlxSprite
 		}
 		else
 		{
-			if (PlayState.SONG.noteStyle == null)
+			if (PlayState.SONG != null)
 			{
-				switch (PlayState.storyWeek)
+				if (PlayState.SONG.noteStyle == null)
 				{
-					case 6:
-						noteTypeCheck = 'pixel';
+					switch (PlayState.storyWeek)
+					{
+						case 6:
+							noteTypeCheck = 'pixel';
+					}
+				}
+				else
+				{
+					noteTypeCheck = PlayState.SONG.noteStyle;
 				}
 			}
 			else
 			{
-				noteTypeCheck = PlayState.SONG.noteStyle;
+				noteTypeCheck = 'normal';
 			}
 
 			switch (noteTypeCheck)

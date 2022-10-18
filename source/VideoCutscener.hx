@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.addons.ui.FlxUIText;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.text.FlxText;
 import flixel.FlxG;
@@ -31,6 +32,13 @@ import lime.app.Application;
 import flixel.system.FlxSound;
 import openfl.utils.Assets;
 import openfl.utils.AssetType;
+#if FEATURE_VLC
+// import vlc.MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+// import vlc.MP4Sprite; // yep.
+import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+import VideoSprite as MP4Sprite; // yep.
+
+#end
 
 /**
  * To select which the best Video cutscener system to choose from.
@@ -40,6 +48,14 @@ class VideoCutscener
 {
 	public static function startThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = true)
 	{
+		// cancel breakpoint
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			Debug.logInfo("Video Cutscener disabled");
+			Main.gjToastManager.createToast(null, Perkedel.VIDEO_DISABLED_TITLE, Perkedel.VIDEO_DISABLED_DESCRIPTION);
+			FlxG.switchState(toTrans);
+			return;
+		}
 		FlxG.switchState(#if FEATURE_VLC new VLCState(Paths.video(source), toTrans, frameSkipLimit,
 			autopause) #elseif (!FEATURE_VLC && FEATURE_WEBM_NATIVE && !android) new VideoState(Paths.video(source), toTrans, frameSkipLimit,
 				autopause) #else new VideoSelfContained(source, toTrans, frameSkipLimit, autopause) #end);
@@ -47,6 +63,13 @@ class VideoCutscener
 
 	public static function getThe(source:String, toTrans:FlxState, frameSkipLimit:Int = 90, autopause:Bool = true):MusicBeatState
 	{
+		// cancel breakpoint
+		// if (FlxG.save.data.disableVideoCutscener)
+		// {
+		// 	Debug.logInfo("Video Cutscener disabled");
+		// 	FlxG.switchState(toTrans);
+		// 	return toTrans;
+		// }
 		return #if FEATURE_VLC
 			new VLCState(Paths.video(source), toTrans, frameSkipLimit, autopause)
 		#elseif (!FEATURE_VLC && (FEATURE_WEBM_NATIVE || FEATURE_WEBM_JS))
@@ -71,7 +94,7 @@ class VideoSelfContained extends MusicBeatState
 	public var pauseText:String = "Press P To Pause/Unpause";
 	public var autoPause:Bool = false;
 	public var musicPaused:Bool = false;
-	public var txt:FlxText;
+	public var txt:FlxUIText;
 	public var peckingVolume:Float = 1;
 
 	var defaultText:String = "";
@@ -89,12 +112,23 @@ class VideoSelfContained extends MusicBeatState
 
 	override function create()
 	{
+		trace('welcome to video self contained state');
 		super.create();
 		// FlxG.autoPause = false;
 
 		// FlxG.sound.music.stop();
 		peckingVolume = FlxG.sound.music.volume;
 		FlxG.sound.music.volume = 0;
+		// FlxG.sound.music.pause();
+
+		// cancel breakpoint
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			Debug.logInfo('Video Cutscener disabled');
+			Main.gjToastManager.createToast(null, Perkedel.VIDEO_DISABLED_TITLE, Perkedel.VIDEO_DISABLED_DESCRIPTION);
+			donedCallback();
+			return;
+		}
 		try
 		{
 			if (videoSprite != null)
@@ -118,7 +152,7 @@ class VideoSelfContained extends MusicBeatState
 			donedCallback();
 		}
 
-		txt = new FlxText(0, 0, FlxG.width, defaultText, 32);
+		txt = new FlxUIText(0, 0, FlxG.width, defaultText, 32);
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
 		add(txt);
@@ -149,7 +183,9 @@ class VideoSelfContained extends MusicBeatState
 	function donedCallback()
 	{
 		FlxG.sound.music.volume = peckingVolume;
-		FlxG.switchState(toTrans);
+		// FlxG.sound.music.play();
+		// FlxG.switchState(toTrans);
+		switchState(toTrans);
 	}
 }
 
@@ -165,7 +201,7 @@ class VLCState extends MusicBeatState
 	public var pauseText:String = "Press P To Pause/Unpause";
 	public var autoPause:Bool = false;
 	public var musicPaused:Bool = false;
-	public var txt:FlxText;
+	public var txt:FlxUIText;
 	public var peckingVolume:Float = 1;
 
 	var defaultText:String = "";
@@ -188,6 +224,7 @@ class VLCState extends MusicBeatState
 
 	override function create()
 	{
+		trace('welcome to VLC state');
 		super.create();
 		// FlxG.autoPause = false;
 
@@ -196,8 +233,20 @@ class VLCState extends MusicBeatState
 		theVLC.finishCallback = donedCallback;
 		#end
 
+		trace('manufactured the VLC');
+
 		FlxG.sound.music.stop();
 		peckingVolume = FlxG.sound.music.volume;
+		// FlxG.sound.music.pause();
+
+		// cancel breakpoint
+		if (FlxG.save.data.disableVideoCutscener)
+		{
+			Debug.logInfo('Video Cutscener disabled');
+			Main.gjToastManager.createToast(null, Perkedel.VIDEO_DISABLED_TITLE, Perkedel.VIDEO_DISABLED_DESCRIPTION);
+			donedCallback();
+			return;
+		}
 
 		#if FEATURE_VLC
 		// FlxG.sound.music.volume = 0;
@@ -226,6 +275,7 @@ class VLCState extends MusicBeatState
 
 			new FlxTimer().start(0.1, function(tmr:FlxTimer)
 			{
+				trace('try play VLC');
 				// theVLC.playMP4(source);
 				theVLC.playVideo(source);
 			});
@@ -241,7 +291,7 @@ class VLCState extends MusicBeatState
 		donedCallback();
 		#end
 
-		txt = new FlxText(0, 0, FlxG.width, defaultText, 32);
+		txt = new FlxUIText(0, 0, FlxG.width, defaultText, 32);
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
 		add(txt);
@@ -264,6 +314,12 @@ class VLCState extends MusicBeatState
 			//     videoSprite.undim();
 			// 	txt.text = defaultText;
 			// }
+			#if FEATURE_VLC
+			if (theVLC != null)
+			{
+				theVLC.togglePause();
+			}
+			#end
 		}
 	}
 
@@ -271,7 +327,8 @@ class VLCState extends MusicBeatState
 	{
 		// FlxG.autoPause = true; //No longer necessary because the gameplay pauses on lost focus
 		FlxG.sound.music.volume = peckingVolume;
-		FlxG.switchState(toTrans);
+		// FlxG.switchState(toTrans);
+		switchState(toTrans);
 		// LoadingState.loadAndSwitchState(toTrans);
 	}
 

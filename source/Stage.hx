@@ -1,5 +1,11 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
+import flixel.math.FlxAngle;
+import flixel.math.FlxMath;
+import tjson.TJSON;
+import haxe.Json;
+import PlayState;
 import flixel.FlxCamera;
 import flixel.util.typeLimit.OneOfTwo;
 import flixel.util.typeLimit.OneOfFour;
@@ -21,9 +27,11 @@ import hx.files.*;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import DokiDoki;
 
 using StringTools;
 
+// JOELwindows7: maybe you should just also follow suit FlxUI fy these all. idk..
 class Stage extends MusicBeatState
 {
 	public var curStage:String = '';
@@ -39,38 +47,38 @@ class Stage extends MusicBeatState
 	public var swagGroup:Map<String, FlxTypedGroup<Dynamic>> = []; // Store Groups
 	// public var swagGroup:Map<String, FlxTypedGroup<OneOfFour<Character,BackgroundDancer,BackgroundGirls,OneOfTwo<FlxSprite,Dynamic>>>> = []; // Store Groups //JOELwindows7: ultimate attempt
 	// JOELwindows7: that too, why Dynamic?! Everyone would fill those with FlxSprite exclusively.
-	public var animatedBacks:Array<FlxSprite> = []; // Store animated backgrounds and make them play animation(Animation must be named Idle!! Else use swagGroup/swagBacks and script it in stepHit/beatHit function of this file!!)
-	public var layInFront:Array<Array<FlxSprite>> = [[], [], []]; // BG layering, format: first [0] - in front of GF, second [1] - in front of opponent, third [2] - in front of boyfriend(and technically also opponent since Haxe layering moment)
+	public var animatedBacks:Array<FlxUISprite> = []; // Store animated backgrounds and make them play animation(Animation must be named Idle!! Else use swagGroup/swagBacks and script it in stepHit/beatHit function of this file!!)
+	public var layInFront:Array<Array<FlxUISprite>> = [[], [], []]; // BG layering, format: first [0] - in front of GF, second [1] - in front of opponent, third [2] - in front of boyfriend(and technically also opponent since Haxe layering moment)
 	public var slowBacks:Map<Int,
-		Array<FlxSprite>> = []; // Change/add/remove backgrounds mid song! Format: "slowBacks[StepToBeActivated] = [Sprites,To,Be,Changed,Or,Added];"
+		Array<FlxUISprite>> = []; // Change/add/remove backgrounds mid song! Format: "slowBacks[StepToBeActivated] = [Sprites,To,Be,Changed,Or,Added];"
 
 	public var swagColors:Map<String, FlxColor> = []; // JOELwindows7: store color for which bg name
 
 	// JOELwindows7: global backgrounder. to prioritize add() in order after all variable has been filled with instances
-	var bgAll:FlxTypedGroup<FlxSprite>;
-	var stageFrontAll:FlxTypedGroup<FlxSprite>;
-	var stageCurtainAll:FlxTypedGroup<FlxSprite>;
+	var bgAll:FlxTypedGroup<FlxUISprite>;
+	var stageFrontAll:FlxTypedGroup<FlxUISprite>;
+	var stageCurtainAll:FlxTypedGroup<FlxUISprite>;
 	var trailAll:FlxTypedGroup<FlxTrail>;
 
 	// JOELwindows7: okeh globalize those special bg var thingy anyways.
-	var phillyCityLights:FlxTypedGroup<FlxSprite>;
+	var phillyCityLights:FlxTypedGroup<FlxUISprite>;
 	var phillyCityLightsEvent:FlxTypedGroup<BGSprite>; // JOELwindows7: psyched stuffening
 	var phillyCityLightsEventTween:FlxTween; // JOELwindows7: psyched stuffening
 
 	public var executeStageScript = false; // JOELwindows7: for stage lua scripter
 	public var executeStageHscript = false;
 
-	public var colorableGround:FlxSprite; // JOELwindows7: the colorable sprite thingy
+	public var colorableGround:FlxUISprite; // JOELwindows7: the colorable sprite thingy
 	public var originalColor:FlxColor = FlxColor.WHITE; // JOELwindows7: store the original color for chroma screen and RGB lightings
 	public var isChromaScreen:Bool = false; // JOELwindows7: whether this is a Chroma screen or just RGB lightings.
 
-	public var blammedLightsBlack:FlxSprite; // JOELwindows7: black screen for blammed lights Psyched
+	public var blammedLightsBlack:FlxUISprite; // JOELwindows7: black screen for blammed lights Psyched
 	public var blammedLightsBlackTween:FlxTween; // JOELwindows7: and the tween for it.
-	public var sha:FlxSprite; // JOELwindows7: shader image sprite for the kem0x Nexus Engine stuff
+	public var sha:FlxUISprite; // JOELwindows7: shader image sprite for the kem0x Nexus Engine stuff
 
 	// if chroma screen, then don't invisiblize, instead turn it back to original color!
 	// JOELwindows7: arraying them seems won't work at all. so let's make them separateroid instead.
-	public var multicolorableGround:FlxTypedGroup<FlxSprite>; // JOELwindows7: the colorable sprite thingy
+	public var multicolorableGround:FlxTypedGroup<FlxUISprite>; // JOELwindows7: the colorable sprite thingy
 	public var multiOriginalColor:Array<FlxColor> = [FlxColor.WHITE]; // JOELwindows7: store the original color for chroma screen and RGB lightings
 	public var multiIsChromaScreen:Array<Bool> = [false]; // JOELwindows7: whether this is a Chroma screen or just RGB lightings.
 	public var multiColorable:Array<Bool> = [false];
@@ -90,7 +98,8 @@ class Stage extends MusicBeatState
 	// JOELwindows7: wtf, where's default position????!!!
 	// why do I have to do this every character????
 	// JOELwindows7: add to here pls. here NULL-bf, NULL-gf, NULL-dad for default fallbacks
-	public var positions:Map<String, Map<String, Array<Int>>> = [
+	// OI!! Float pls!!
+	public var positions:Map<String, Map<String, Array<Float>>> = [
 		// Assign your characters positions on stage here!
 		'halloween' => ['spooky' => [100, 300], 'monster' => [100, 200], 'NULL-dad' => [100, 300]],
 		'philly' => ['pico' => [100, 400], 'NULL-dad' => [100, 400]],
@@ -124,6 +133,75 @@ class Stage extends MusicBeatState
 			'NULL-gf' => [580, 430],
 			'NULL-dad' => [-50, 200]
 		],
+		'tankStage' => [
+			// JOELwindows7: the week 7 interpreto.
+			'bf' => [810, 450],
+			'gf-tankman' => [200, 75],
+			'tankman' => [20, 380],
+			'NULL-bf' => [810, 450],
+			'NULL-gf' => [200, 75],
+			'NULL-dad' => [20, 380],
+		],
+		'tankStage2' => [
+			// JOELwindows7: the week 7 interpreto.
+			'bf-holding-gf' => [810, 450],
+			'picoSpeaker' => [310, -25],
+			'tankman' => [20, 380],
+			'NULL-bf' => [810, 450],
+			'NULL-gf' => [310, -25],
+			'NULL-dad' => [20, 380],
+		],
+		// JOELwindows7: BOLO's tank stage yoink
+		'tank' => [
+			'picoSpeaker' => [307, 97],
+			'pico-speaker' => [307, 97],
+			'bf' => [810, 500],
+			'bf-holding-gf' => [807, 479],
+			'gf-tankmen' => [200, 85],
+			'tankman' => [20, 100]
+		],
+		'theShift' => [
+			// JOELwindows7: sky bbpanzu
+			// no, I swear, he directly set it to exact position!
+			'bf' => [828.75, 265.65],
+			'gf' => [359.7, -37.95],
+			'gf-crucified' => [359.7, -37.95],
+			'sky' => [30.15, 37.95],
+			'sky-annoyed' => [30.15, 37.95],
+			'NULL-bf' => [828.75, 265.65],
+			'NULL-gf' => [359.7, -37.95],
+			'NULL-dad' => [30.15, 37.95]
+		],
+		'theShift2' => [
+			// JOELwindows7: sky bbpanzu
+			// no, I swear, he directly set it to exact position!
+			'bf' => [828.75, 265.65],
+			'gf' => [359.7, -37.95],
+			'gf-crucified' => [479.3, -56.1],
+			'sky' => [30.15, 37.95],
+			'sky-annoyed' => [30.15, 37.95],
+			'NULL-bf' => [828.75, 265.65],
+			'NULL-gf' => [359.7, -37.95],
+			'NULL-dad' => [30.15, 37.95]
+		],
+		'theManifest' => [
+			// JOELwindows7: sky bbpanzu
+			// no, I swear, he directly set it to exact position!
+			'bf' => [828.75, 265.65],
+			'gf' => [359.7, -37.95],
+			'gf-crucified' => [479.3, -56.1],
+			'sky' => [119.3, 93.9],
+			'sky-annoyed' => [119.3, 93.9],
+			'sky-mad' => [119.3, 93.9],
+			'NULL-bf' => [828.75, 265.65],
+			'NULL-gf' => [479.3, -56.1],
+			'NULL-dad' => [119.3, 93.9]
+		],
+		'pizza' => [
+			// JOELwindows7: copilot lol!
+			'bf-pizza' => [1030, 230],
+			'NULL-bf' => [1030, 230]
+		],
 		'jakartaFair' => [
 			'hookx' => [-95, 100],
 			'gf-ht' => [290, 80],
@@ -154,6 +232,29 @@ class Stage extends MusicBeatState
 		'NULL' => ['NULL-bf' => [770, 450], 'NULL-gf' => [400, 130], 'NULL-dad' => [100, 100]] // JOELwindows7: default fallback, don't change!
 	];
 
+	// JOELwindows7: moar yoink from luckydog7 with the week7 yoink
+	public var tankWatchtower:FlxUISprite;
+	public var tankRolling:FlxUISprite;
+	public var tankmanRun:FlxTypedGroup<TankmenBG>;
+	public var tankGround:FlxUISprite; // JOELwindows7: BOLO's implementation of week 7. same as tankRolling.
+	// tankbop shit
+	public var tankBop1:FlxUISprite;
+	public var tankBop2:FlxUISprite;
+	public var tankBop3:FlxUISprite;
+	public var tankBop4:FlxUISprite;
+	public var tankBop5:FlxUISprite;
+	public var tankBop6:FlxUISprite;
+
+	// end of tankbop
+	public var picoStep:Ps;
+	public var tankStep:Ts;
+
+	// JOELwindows7: sky bbpanzu
+	public var shiftbg:FlxUISprite;
+	public var floor:FlxUISprite;
+
+	// end of sky bbpanzu
+
 	public function addThe(object:Dynamic, mapName:String, layFront:Bool = false, whichLayerFront:Int = 0)
 	{
 		swagBacks[mapName] = object;
@@ -166,20 +267,22 @@ class Stage extends MusicBeatState
 	public function new(daStage:String)
 	{
 		// JOELwindows7: add BgAll here boys
-		swagGroup['bgAll'] = new FlxTypedGroup<FlxSprite>();
+		swagGroup['bgAll'] = new FlxTypedGroup<FlxUISprite>();
 
 		super();
 		this.curStage = daStage;
 		camZoom = 1.05; // Don't change zoom here, unless you want to change zoom of every stage that doesn't have custom one
-		if (PlayStateChangeables.Optimize)
+		if (PlayStateChangeables.optimize)
 			return;
 
 		trace("Load da stage here ya"); // JOELwindows7: wtf happened
 
 		// JOELwindows7: init blammed light first
-		blammedLightsBlack = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5);
+		blammedLightsBlack = new FlxUISprite(FlxG.width * -0.5, FlxG.height * -0.5);
 		blammedLightsBlack.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 		blammedLightsBlack.alpha = 0;
+		phillyCityLights = new FlxTypedGroup<FlxUISprite>();
+		phillyCityLightsEvent = new FlxTypedGroup<BGSprite>();
 
 		if (PlayState.SONG != null && PlayState.SONG.useCustomStage)
 		{
@@ -193,7 +296,7 @@ class Stage extends MusicBeatState
 					{
 						var hallowTex = Paths.getSparrowAtlas('halloween_bg', 'week2');
 
-						var halloweenBG = new FlxSprite(-200, -80);
+						var halloweenBG = new FlxUISprite(-200, -80);
 						halloweenBG.frames = hallowTex;
 						halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
 						halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
@@ -204,19 +307,21 @@ class Stage extends MusicBeatState
 					}
 				case 'philly':
 					{
-						var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('philly/sky', 'week3'));
+						var bg:FlxUISprite = cast new FlxUISprite(-100).loadGraphic(Paths.loadImage('philly/sky', 'week3'));
 						bg.scrollFactor.set(0.1, 0.1);
+						bg.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['bg'] = bg;
 						toAdd.push(bg);
 
-						var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.loadImage('philly/city', 'week3'));
+						var city:FlxUISprite = cast new FlxUISprite(-10).loadGraphic(Paths.loadImage('philly/city', 'week3'));
 						city.scrollFactor.set(0.3, 0.3);
 						city.setGraphicSize(Std.int(city.width * 0.85));
 						city.updateHitbox();
+						city.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['city'] = city;
 						toAdd.push(city);
 
-						phillyCityLights = new FlxTypedGroup<FlxSprite>();
+						phillyCityLights = new FlxTypedGroup<FlxUISprite>();
 						// phillyCityLights = new FlxTypedGroup<BGSprite>(); // JOELwindows7: okeh idk man.
 						if (FlxG.save.data.distractions)
 						{
@@ -226,7 +331,7 @@ class Stage extends MusicBeatState
 
 						for (i in 0...5)
 						{
-							var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.loadImage('philly/win' + i, 'week3'));
+							var light:FlxUISprite = cast new FlxUISprite(city.x).loadGraphic(Paths.loadImage('philly/win' + i, 'week3'));
 							// var light:BGSprite = new BGSprite(city.x).loadGraphic(Paths.loadImage('philly/win' + i, 'week3'));
 							light.scrollFactor.set(0.3, 0.3);
 							light.visible = false;
@@ -236,11 +341,13 @@ class Stage extends MusicBeatState
 							phillyCityLights.add(light);
 						}
 
-						var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.loadImage('philly/behindTrain', 'week3'));
+						var streetBehind:FlxUISprite = cast new FlxUISprite(-40, 50).loadGraphic(Paths.loadImage('philly/behindTrain', 'week3'));
+						streetBehind.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['streetBehind'] = streetBehind;
 						toAdd.push(streetBehind);
 
-						var phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.loadImage('philly/train', 'week3'));
+						var phillyTrain = new FlxUISprite(2000, 360).loadGraphic(Paths.loadImage('philly/train', 'week3'));
+						phillyTrain.antialiasing = FlxG.save.data.antialiasing;
 						if (FlxG.save.data.distractions)
 						{
 							swagBacks['phillyTrain'] = phillyTrain;
@@ -256,13 +363,14 @@ class Stage extends MusicBeatState
 						// yay it works.
 						// Oh. Kade moved it somehow.
 
-						// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
+						// var cityLights:FlxUISprite = new FlxUISprite().loadGraphic(AssetPaths.win0.png);
 
 						// JOELwindows7: first, install blammed lights. Psyched blammed lights yey
 						// https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/PlayState.hx
-						addThe(blammedLightsBlack, 'blammedLightsBlack');
+						// addThe(blammedLightsBlack, 'blammedLightsBlack');
 
-						var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street', 'week3'));
+						var street:FlxUISprite = cast new FlxUISprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street', 'week3'));
+						street.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['street'] = street;
 						toAdd.push(street);
 					}
@@ -270,13 +378,13 @@ class Stage extends MusicBeatState
 					{
 						camZoom = 0.90;
 
-						var skyBG:FlxSprite = new FlxSprite(-120, -50).loadGraphic(Paths.loadImage('limo/limoSunset', 'week4'));
+						var skyBG:FlxUISprite = cast new FlxUISprite(-120, -50).loadGraphic(Paths.loadImage('limo/limoSunset', 'week4'));
 						skyBG.scrollFactor.set(0.1, 0.1);
 						skyBG.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['skyBG'] = skyBG;
 						toAdd.push(skyBG);
 
-						var bgLimo:FlxSprite = new FlxSprite(-200, 480);
+						var bgLimo:FlxUISprite = cast new FlxUISprite(-200, 480);
 						bgLimo.frames = Paths.getSparrowAtlas('limo/bgLimo', 'week4');
 						bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
 						bgLimo.animation.play('drive');
@@ -285,8 +393,8 @@ class Stage extends MusicBeatState
 						swagBacks['bgLimo'] = bgLimo;
 						toAdd.push(bgLimo);
 
-						var fastCar:FlxSprite;
-						fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.loadImage('limo/fastCarLol', 'week4'));
+						var fastCar:FlxUISprite;
+						fastCar = cast new FlxUISprite(-300, 160).loadGraphic(Paths.loadImage('limo/fastCarLol', 'week4'));
 						fastCar.antialiasing = FlxG.save.data.antialiasing;
 						fastCar.visible = false;
 
@@ -307,9 +415,12 @@ class Stage extends MusicBeatState
 							swagBacks['fastCar'] = fastCar;
 							layInFront[2].push(fastCar);
 							resetFastCar();
+
+							// IDEA: JOELwindows7: add Hyundai IONIQ 5, 6, 7, 3, 9 whatever but only for last 2022, not at the time this
+							// week here!
 						}
 
-						var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.loadImage('limo/limoOverlay', 'week4'));
+						var overlayShit:FlxUISprite = cast new FlxUISprite(-500, -600).loadGraphic(Paths.loadImage('limo/limoOverlay', 'week4'));
 						overlayShit.alpha = 0.5;
 						// add(overlayShit);
 
@@ -321,7 +432,7 @@ class Stage extends MusicBeatState
 
 						var limoTex = Paths.getSparrowAtlas('limo/limoDrive', 'week4');
 
-						var limo = new FlxSprite(-120, 550);
+						var limo = new FlxUISprite(-120, 550);
 						limo.frames = limoTex;
 						limo.animation.addByPrefix('drive', "Limo stage", 24);
 						limo.animation.play('drive');
@@ -333,7 +444,7 @@ class Stage extends MusicBeatState
 					{
 						camZoom = 0.80;
 
-						var bg:FlxSprite = new FlxSprite(-1000, -500).loadGraphic(Paths.loadImage('christmas/bgWalls', 'week5'));
+						var bg:FlxUISprite = cast new FlxUISprite(-1000, -500).loadGraphic(Paths.loadImage('christmas/bgWalls', 'week5'));
 						bg.antialiasing = FlxG.save.data.antialiasing;
 						bg.scrollFactor.set(0.2, 0.2);
 						bg.active = false;
@@ -342,7 +453,7 @@ class Stage extends MusicBeatState
 						swagBacks['bg'] = bg;
 						toAdd.push(bg);
 
-						var upperBoppers = new FlxSprite(-240, -90);
+						var upperBoppers = new FlxUISprite(-240, -90);
 						upperBoppers.frames = Paths.getSparrowAtlas('christmas/upperBop', 'week5');
 						upperBoppers.animation.addByPrefix('idle', "Upper Crowd Bob", 24, false);
 						upperBoppers.antialiasing = FlxG.save.data.antialiasing;
@@ -356,7 +467,7 @@ class Stage extends MusicBeatState
 							animatedBacks.push(upperBoppers);
 						}
 
-						var bgEscalator:FlxSprite = new FlxSprite(-1100, -600).loadGraphic(Paths.loadImage('christmas/bgEscalator', 'week5'));
+						var bgEscalator:FlxUISprite = cast new FlxUISprite(-1100, -600).loadGraphic(Paths.loadImage('christmas/bgEscalator', 'week5'));
 						bgEscalator.antialiasing = FlxG.save.data.antialiasing;
 						bgEscalator.scrollFactor.set(0.3, 0.3);
 						bgEscalator.active = false;
@@ -365,13 +476,13 @@ class Stage extends MusicBeatState
 						swagBacks['bgEscalator'] = bgEscalator;
 						toAdd.push(bgEscalator);
 
-						var tree:FlxSprite = new FlxSprite(370, -250).loadGraphic(Paths.loadImage('christmas/christmasTree', 'week5'));
+						var tree:FlxUISprite = cast new FlxUISprite(370, -250).loadGraphic(Paths.loadImage('christmas/christmasTree', 'week5'));
 						tree.antialiasing = FlxG.save.data.antialiasing;
 						tree.scrollFactor.set(0.40, 0.40);
 						swagBacks['tree'] = tree;
 						toAdd.push(tree);
 
-						var bottomBoppers = new FlxSprite(-300, 140);
+						var bottomBoppers = new FlxUISprite(-300, 140);
 						bottomBoppers.frames = Paths.getSparrowAtlas('christmas/bottomBop', 'week5');
 						bottomBoppers.animation.addByPrefix('idle', 'Bottom Level Boppers', 24, false);
 						bottomBoppers.antialiasing = FlxG.save.data.antialiasing;
@@ -385,13 +496,13 @@ class Stage extends MusicBeatState
 							animatedBacks.push(bottomBoppers);
 						}
 
-						var fgSnow:FlxSprite = new FlxSprite(-600, 700).loadGraphic(Paths.loadImage('christmas/fgSnow', 'week5'));
+						var fgSnow:FlxUISprite = cast new FlxUISprite(-600, 700).loadGraphic(Paths.loadImage('christmas/fgSnow', 'week5'));
 						fgSnow.active = false;
 						fgSnow.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['fgSnow'] = fgSnow;
 						toAdd.push(fgSnow);
 
-						var santa = new FlxSprite(-840, 150);
+						var santa = new FlxUISprite(-840, 150);
 						santa.frames = Paths.getSparrowAtlas('christmas/santa', 'week5');
 						santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
 						santa.antialiasing = FlxG.save.data.antialiasing;
@@ -402,9 +513,12 @@ class Stage extends MusicBeatState
 							animatedBacks.push(santa);
 						}
 					}
-				case 'mallEvil':
+				case 'mall-empty':
 					{
-						var bg:FlxSprite = new FlxSprite(-400, -500).loadGraphic(Paths.loadImage('christmas/evilBG', 'week5'));
+						// JOELwindows7: This mall is emptied.
+						camZoom = 0.80;
+
+						var bg:FlxUISprite = cast new FlxUISprite(-1000, -500).loadGraphic(Paths.loadImage('christmas/bgWalls', 'week5'));
 						bg.antialiasing = FlxG.save.data.antialiasing;
 						bg.scrollFactor.set(0.2, 0.2);
 						bg.active = false;
@@ -413,13 +527,33 @@ class Stage extends MusicBeatState
 						swagBacks['bg'] = bg;
 						toAdd.push(bg);
 
-						var evilTree:FlxSprite = new FlxSprite(300, -300).loadGraphic(Paths.loadImage('christmas/evilTree', 'week5'));
+						var bgEscalator:FlxUISprite = cast new FlxUISprite(-1100, -600).loadGraphic(Paths.loadImage('christmas/bgEscalator', 'week5'));
+						bgEscalator.antialiasing = FlxG.save.data.antialiasing;
+						bgEscalator.scrollFactor.set(0.3, 0.3);
+						bgEscalator.active = false;
+						bgEscalator.setGraphicSize(Std.int(bgEscalator.width * 0.9));
+						bgEscalator.updateHitbox();
+						swagBacks['bgEscalator'] = bgEscalator;
+						toAdd.push(bgEscalator);
+					}
+				case 'mallEvil':
+					{
+						var bg:FlxUISprite = cast new FlxUISprite(-400, -500).loadGraphic(Paths.loadImage('christmas/evilBG', 'week5'));
+						bg.antialiasing = FlxG.save.data.antialiasing;
+						bg.scrollFactor.set(0.2, 0.2);
+						bg.active = false;
+						bg.setGraphicSize(Std.int(bg.width * 0.8));
+						bg.updateHitbox();
+						swagBacks['bg'] = bg;
+						toAdd.push(bg);
+
+						var evilTree:FlxUISprite = cast new FlxUISprite(300, -300).loadGraphic(Paths.loadImage('christmas/evilTree', 'week5'));
 						evilTree.antialiasing = FlxG.save.data.antialiasing;
 						evilTree.scrollFactor.set(0.2, 0.2);
 						swagBacks['evilTree'] = evilTree;
 						toAdd.push(evilTree);
 
-						var evilSnow:FlxSprite = new FlxSprite(-200, 700).loadGraphic(Paths.loadImage("christmas/evilSnow", 'week5'));
+						var evilSnow:FlxUISprite = cast new FlxUISprite(-200, 700).loadGraphic(Paths.loadImage("christmas/evilSnow", 'week5'));
 						evilSnow.antialiasing = FlxG.save.data.antialiasing;
 						swagBacks['evilSnow'] = evilSnow;
 						toAdd.push(evilSnow);
@@ -428,29 +562,29 @@ class Stage extends MusicBeatState
 					{
 						// defaultCamZoom = 0.9;
 
-						var bgSky = new FlxSprite().loadGraphic(Paths.loadImage('weeb/weebSky', 'week6'));
+						var bgSky = new FlxUISprite().loadGraphic(Paths.loadImage('weeb/weebSky', 'week6'));
 						bgSky.scrollFactor.set(0.1, 0.1);
 						swagBacks['bgSky'] = bgSky;
 						toAdd.push(bgSky);
 
 						var repositionShit = -200;
 
-						var bgSchool:FlxSprite = new FlxSprite(repositionShit, 0).loadGraphic(Paths.loadImage('weeb/weebSchool', 'week6'));
+						var bgSchool:FlxUISprite = cast new FlxUISprite(repositionShit, 0).loadGraphic(Paths.loadImage('weeb/weebSchool', 'week6'));
 						bgSchool.scrollFactor.set(0.6, 0.90);
 						swagBacks['bgSchool'] = bgSchool;
 						toAdd.push(bgSchool);
 
-						var bgStreet:FlxSprite = new FlxSprite(repositionShit).loadGraphic(Paths.loadImage('weeb/weebStreet', 'week6'));
+						var bgStreet:FlxUISprite = cast new FlxUISprite(repositionShit).loadGraphic(Paths.loadImage('weeb/weebStreet', 'week6'));
 						bgStreet.scrollFactor.set(0.95, 0.95);
 						swagBacks['bgStreet'] = bgStreet;
 						toAdd.push(bgStreet);
 
-						var fgTrees:FlxSprite = new FlxSprite(repositionShit + 170, 130).loadGraphic(Paths.loadImage('weeb/weebTreesBack', 'week6'));
+						var fgTrees:FlxUISprite = cast new FlxUISprite(repositionShit + 170, 130).loadGraphic(Paths.loadImage('weeb/weebTreesBack', 'week6'));
 						fgTrees.scrollFactor.set(0.9, 0.9);
 						swagBacks['fgTrees'] = fgTrees;
 						toAdd.push(fgTrees);
 
-						var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -800);
+						var bgTrees:FlxUISprite = cast new FlxUISprite(repositionShit - 380, -800);
 						var treetex = Paths.getPackerAtlas('weeb/weebTrees', 'week6');
 						bgTrees.frames = treetex;
 						bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
@@ -459,7 +593,7 @@ class Stage extends MusicBeatState
 						swagBacks['bgTrees'] = bgTrees;
 						toAdd.push(bgTrees);
 
-						var treeLeaves:FlxSprite = new FlxSprite(repositionShit, -40);
+						var treeLeaves:FlxUISprite = new FlxUISprite(repositionShit, -40);
 						treeLeaves.frames = Paths.getSparrowAtlas('weeb/petals', 'week6');
 						treeLeaves.animation.addByPrefix('leaves', 'PETALS ALL', 24, true);
 						treeLeaves.animation.play('leaves');
@@ -510,7 +644,7 @@ class Stage extends MusicBeatState
 						var posX = 400;
 						var posY = 200;
 
-						var bg:FlxSprite = new FlxSprite(posX, posY);
+						var bg:FlxUISprite = new FlxUISprite(posX, posY);
 						bg.frames = Paths.getSparrowAtlas('weeb/animatedEvilSchool', 'week6');
 						bg.animation.addByPrefix('idle', 'background 2', 24);
 						bg.animation.play('idle');
@@ -520,12 +654,12 @@ class Stage extends MusicBeatState
 						toAdd.push(bg);
 
 						/* 
-							var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.loadImage('weeb/evilSchoolBG'));
+							var bg:FlxUISprite = new FlxUISprite(posX, posY).loadGraphic(Paths.loadImage('weeb/evilSchoolBG'));
 							bg.scale.set(6, 6);
 							// bg.setGraphicSize(Std.int(bg.width * 6));
 							// bg.updateHitbox();
 							add(bg);
-							var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.loadImage('weeb/evilSchoolFG'));
+							var fg:FlxUISprite = new FlxUISprite(posX, posY).loadGraphic(Paths.loadImage('weeb/evilSchoolFG'));
 							fg.scale.set(6, 6);
 							// fg.setGraphicSize(Std.int(fg.width * 6));
 							// fg.updateHitbox();
@@ -557,6 +691,585 @@ class Stage extends MusicBeatState
 							add(waveSpriteFG);
 						 */
 					}
+				// JOELwindows7: Finally, week 7 yoinkeh. big shout out also to luckydog7 for the help with the Android port yeah!
+				case 'tankStage':
+					{
+						curStage = 'tankStage';
+						camZoom = 0.9;
+						var sky:FlxUISprite = cast new FlxUISprite(-400, -400).loadGraphic(Paths.image('tankSky'));
+						sky.scrollFactor.set(0, 0);
+						sky.antialiasing = true;
+						sky.setGraphicSize(Std.int(sky.width * 1.5));
+						// add(sky);
+						addThe(sky, 'sky');
+
+						var clouds:FlxUISprite = cast new FlxUISprite(FlxG.random.int(-700, -100),
+							FlxG.random.int(-20, 20)).loadGraphic(Paths.image('tankClouds'));
+						clouds.scrollFactor.set(0.1, 0.1);
+						clouds.velocity.x = FlxG.random.float(5, 15);
+						clouds.antialiasing = true;
+						clouds.updateHitbox();
+						// add(clouds);
+						addThe(clouds, 'clouds');
+
+						var mountains:FlxUISprite = cast new FlxUISprite(-300, -20).loadGraphic(Paths.image('tankMountains'));
+						mountains.scrollFactor.set(0.2, 0.2);
+						mountains.setGraphicSize(Std.int(1.2 * mountains.width));
+						mountains.updateHitbox();
+						mountains.antialiasing = true;
+						// add(mountains);
+						addThe(mountains, 'mountains');
+
+						var buildings:FlxUISprite = cast new FlxUISprite(-200, 0).loadGraphic(Paths.image('tankBuildings'));
+						buildings.scrollFactor.set(0.3, 0.3);
+						buildings.setGraphicSize(Std.int(buildings.width * 1.1));
+						buildings.updateHitbox();
+						buildings.antialiasing = true;
+						// add(buildings);
+						addThe(buildings, 'buildings');
+
+						var ruins:FlxUISprite = cast new FlxUISprite(-200, 0).loadGraphic(Paths.image('tankRuins'));
+						ruins.scrollFactor.set(0.35, 0.35);
+						ruins.setGraphicSize(Std.int(ruins.width * 1.1));
+						ruins.updateHitbox();
+						ruins.antialiasing = true;
+						// add(ruins);
+						addThe(ruins, 'ruins');
+
+						var smokeLeft:FlxUISprite = new FlxUISprite(-200, -100);
+						smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft');
+						smokeLeft.animation.addByPrefix('idle', 'SmokeBlurLeft ', 24, true);
+						smokeLeft.scrollFactor.set(0.4, 0.4);
+						smokeLeft.antialiasing = true;
+						smokeLeft.animation.play('idle');
+
+						// add(smokeLeft);
+						addThe(smokeLeft, 'smokeLeft');
+
+						var smokeRight:FlxUISprite = new FlxUISprite(1100, -100);
+						smokeRight.frames = Paths.getSparrowAtlas('smokeRight');
+						smokeRight.animation.addByPrefix('idle', 'SmokeRight ', 24, true);
+						smokeRight.scrollFactor.set(0.4, 0.4);
+						smokeRight.antialiasing = true;
+						smokeRight.animation.play('idle');
+
+						// add(smokeRight);
+						addThe(smokeRight, 'smokeRight');
+
+						var tankWatchtower:FlxUISprite = new FlxUISprite(100, 120);
+						tankWatchtower.frames = Paths.getSparrowAtlas('tankWatchtower');
+						tankWatchtower.animation.addByPrefix('bop', 'watchtower gradient color instance 1', 24, true);
+						tankWatchtower.scrollFactor.set(0.5, 0.5);
+						tankWatchtower.antialiasing = true;
+
+						// add(tankWatchtower);
+						addThe(tankWatchtower, 'tankWatchtower');
+
+						tankRolling = new FlxUISprite(300, 300);
+						tankRolling.frames = Paths.getSparrowAtlas('tankRolling');
+						tankRolling.animation.addByPrefix('idle', 'BG tank w lighting ', 24, true);
+						tankRolling.scrollFactor.set(0.5, 0.5);
+						tankRolling.antialiasing = true;
+						tankRolling.animation.play('idle');
+						// add(tankRolling);
+						addThe(tankRolling, 'tankRolling');
+
+						var ground:FlxUISprite = cast new FlxUISprite(-420, -150).loadGraphic(Paths.image('tankGround'));
+						ground.scrollFactor.set();
+						ground.antialiasing = true;
+						ground.setGraphicSize(Std.int(ground.width * 1.15));
+						ground.scrollFactor.set(1, 1);
+
+						ground.updateHitbox();
+						// add(ground);
+						addThe(ground, 'ground');
+
+						tankBop1 = new FlxUISprite(-500, 650);
+						tankBop1.frames = Paths.getSparrowAtlas('tank0');
+						tankBop1.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
+						tankBop1.scrollFactor.set(1.7, 1.5);
+						tankBop1.antialiasing = true;
+
+						tankBop2 = new FlxUISprite(-300, 750);
+						tankBop2.frames = Paths.getSparrowAtlas('tank1');
+						tankBop2.animation.addByPrefix('bop', 'fg tankhead 5 instance 1', 24);
+						tankBop2.scrollFactor.set(2.0, 0.2);
+						tankBop2.antialiasing = true;
+
+						tankBop3 = new FlxUISprite(450, 940);
+						tankBop3.frames = Paths.getSparrowAtlas('tank2');
+						tankBop3.animation.addByPrefix('bop', 'foreground man 3 instance 1', 24);
+						tankBop3.scrollFactor.set(1.5, 1.5);
+						tankBop3.antialiasing = true;
+
+						tankBop4 = new FlxUISprite(1300, 1200);
+						tankBop4.frames = Paths.getSparrowAtlas('tank3');
+						tankBop4.animation.addByPrefix('bop', 'fg tankhead 4 instance 1', 24);
+						tankBop4.scrollFactor.set(3.5, 2.5);
+						tankBop4.antialiasing = true;
+
+						tankBop5 = new FlxUISprite(1300, 900);
+						tankBop5.frames = Paths.getSparrowAtlas('tank4');
+						tankBop5.animation.addByPrefix('bop', 'fg tankman bobbin 3 instance 1', 24);
+						tankBop5.scrollFactor.set(1.5, 1.5);
+						tankBop5.antialiasing = true;
+
+						tankBop6 = new FlxUISprite(1620, 700);
+						tankBop6.frames = Paths.getSparrowAtlas('tank5');
+						tankBop6.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
+						tankBop6.scrollFactor.set(1.5, 1.5);
+						tankBop6.antialiasing = true;
+
+						// JOELwindows7: use layfront!
+						addThe(tankBop1, 'tankBop1', true, 2);
+						addThe(tankBop2, 'tankBop2', true, 2);
+						addThe(tankBop3, 'tankBop3', true, 2);
+						addThe(tankBop4, 'tankBop4', true, 2);
+						addThe(tankBop5, 'tankBop5', true, 2);
+						addThe(tankBop6, 'tankBop6', true, 2);
+
+						tankWatchtower.animation.play('bop');
+						tankBop1.animation.play('bop');
+						tankBop2.animation.play('bop');
+						tankBop3.animation.play('bop');
+						tankBop4.animation.play('bop');
+						tankBop5.animation.play('bop');
+						tankBop6.animation.play('bop');
+					}
+				case 'tankStage2':
+					{
+						curStage = 'tankStage2';
+						camZoom = 0.9;
+
+						// picoStep = Json.parse(openfl.utils.Assets.getText(Paths.json('stress/picospeaker')));
+						// tankStep = Json.parse(openfl.utils.Assets.getText(Paths.json('stress/tankSpawn')));
+						// JOELwindows7: No! use the new TJSONer! idk..
+						picoStep = TJSON.parse(openfl.utils.Assets.getText(Paths.json('songs/${PlayState.SONG.songId}/picospeaker')));
+						tankStep = TJSON.parse(openfl.utils.Assets.getText(Paths.json('songs/${PlayState.SONG.songId}/tankSpawn')));
+
+						var sky:FlxUISprite = cast new FlxUISprite(-400, -400).loadGraphic(Paths.image('tankSky'));
+						sky.scrollFactor.set(0, 0);
+						sky.antialiasing = true;
+						sky.setGraphicSize(Std.int(sky.width * 1.5));
+						// add(sky);
+						addThe(sky, 'sky');
+
+						var clouds:FlxUISprite = cast new FlxUISprite(FlxG.random.int(-700, -100),
+							FlxG.random.int(-20, 20)).loadGraphic(Paths.image('tankClouds'));
+						clouds.scrollFactor.set(0.1, 0.1);
+						clouds.velocity.x = FlxG.random.float(5, 15);
+						clouds.antialiasing = true;
+						clouds.updateHitbox();
+						// add(clouds);
+						addThe(clouds, 'clouds');
+
+						var mountains:FlxUISprite = cast new FlxUISprite(-300, -20).loadGraphic(Paths.image('tankMountains'));
+						mountains.scrollFactor.set(0.2, 0.2);
+						mountains.setGraphicSize(Std.int(1.2 * mountains.width));
+						mountains.updateHitbox();
+						mountains.antialiasing = true;
+						// add(mountains);
+						addThe(mountains, 'mountains');
+
+						var buildings:FlxUISprite = cast new FlxUISprite(-200, 0).loadGraphic(Paths.image('tankBuildings'));
+						buildings.scrollFactor.set(0.3, 0.3);
+						buildings.setGraphicSize(Std.int(buildings.width * 1.1));
+						buildings.updateHitbox();
+						buildings.antialiasing = true;
+						// add(buildings);
+						addThe(buildings, 'buildings');
+
+						var ruins:FlxUISprite = cast new FlxUISprite(-200, 0).loadGraphic(Paths.image('tankRuins'));
+						ruins.scrollFactor.set(0.35, 0.35);
+						ruins.setGraphicSize(Std.int(ruins.width * 1.1));
+						ruins.updateHitbox();
+						ruins.antialiasing = true;
+						// add(ruins);
+						addThe(ruins, 'ruins');
+
+						var smokeLeft:FlxUISprite = new FlxUISprite(-200, -100);
+						smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft');
+						smokeLeft.animation.addByPrefix('idle', 'SmokeBlurLeft ', 24, true);
+						smokeLeft.scrollFactor.set(0.4, 0.4);
+						smokeLeft.antialiasing = true;
+						smokeLeft.animation.play('idle');
+
+						// add(smokeLeft);
+						addThe(smokeLeft, 'smokeLeft');
+
+						var smokeRight:FlxUISprite = new FlxUISprite(1100, -100);
+						smokeRight.frames = Paths.getSparrowAtlas('smokeRight');
+						smokeRight.animation.addByPrefix('idle', 'SmokeRight ', 24, true);
+						smokeRight.scrollFactor.set(0.4, 0.4);
+						smokeRight.antialiasing = true;
+						smokeRight.animation.play('idle');
+
+						// add(smokeRight);
+						addThe(smokeRight, 'smokeRight');
+
+						var tankWatchtower:FlxUISprite = new FlxUISprite(100, 120);
+						tankWatchtower.frames = Paths.getSparrowAtlas('tankWatchtower');
+						tankWatchtower.animation.addByPrefix('bop', 'watchtower gradient color instance 1', 24, true);
+						tankWatchtower.scrollFactor.set(0.5, 0.5);
+						tankWatchtower.antialiasing = true;
+
+						// add(tankWatchtower);
+						addThe(tankWatchtower, 'tankWatchtower');
+
+						tankRolling = new FlxUISprite(300, 300);
+						tankRolling.frames = Paths.getSparrowAtlas('tankRolling');
+						tankRolling.animation.addByPrefix('idle', 'BG tank w lighting ', 24, true);
+						tankRolling.scrollFactor.set(0.5, 0.5);
+						tankRolling.antialiasing = true;
+						tankRolling.animation.play('idle');
+						// add(tankRolling);
+						addThe(tankRolling, 'tankRolling');
+						tankmanRun = new FlxTypedGroup<TankmenBG>();
+						// JOELwindows7: add at least one object instance!
+						// for (i in 0...10)
+						// {
+						var tankmanRunEmpty = new TankmenBG();
+						tankmanRunEmpty.resetShit(FlxG.random.int(630, 730) * -1, 255, true, 1, 1.5);
+						tankmanRunEmpty.kill();
+						var tankmanRunEmpty2 = new TankmenBG();
+						tankmanRunEmpty2.resetShit(FlxG.random.int(1500, 1700) * 1, 275, false, 1, 1.5);
+						tankmanRunEmpty2.kill();
+						tankmanRun.add(tankmanRunEmpty); // so that we can recycle one member.
+						tankmanRun.add(tankmanRunEmpty2); // again just in case.
+						// }
+						// add(tankmanRun);
+						addThe(tankmanRun, 'tankmanRun');
+
+						var ground:FlxUISprite = cast new FlxUISprite(-420, -150).loadGraphic(Paths.image('tankGround'));
+						ground.scrollFactor.set();
+						ground.antialiasing = true;
+						ground.setGraphicSize(Std.int(ground.width * 1.15));
+						ground.scrollFactor.set(1, 1);
+
+						ground.updateHitbox();
+						// add(ground);
+						addThe(ground, 'ground');
+
+						tankBop1 = new FlxUISprite(-500, 650);
+						tankBop1.frames = Paths.getSparrowAtlas('tank0');
+						tankBop1.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
+						tankBop1.scrollFactor.set(1.7, 1.5);
+						tankBop1.antialiasing = true;
+
+						tankBop2 = new FlxUISprite(-300, 750);
+						tankBop2.frames = Paths.getSparrowAtlas('tank1');
+						tankBop2.animation.addByPrefix('bop', 'fg tankhead 5 instance 1', 24);
+						tankBop2.scrollFactor.set(2.0, 0.2);
+						tankBop2.antialiasing = true;
+
+						tankBop3 = new FlxUISprite(450, 940);
+						tankBop3.frames = Paths.getSparrowAtlas('tank2');
+						tankBop3.animation.addByPrefix('bop', 'foreground man 3 instance 1', 24);
+						tankBop3.scrollFactor.set(1.5, 1.5);
+						tankBop3.antialiasing = true;
+
+						tankBop4 = new FlxUISprite(1300, 1200);
+						tankBop4.frames = Paths.getSparrowAtlas('tank3');
+						tankBop4.animation.addByPrefix('bop', 'fg tankhead 4 instance 1', 24);
+						tankBop4.scrollFactor.set(3.5, 2.5);
+						tankBop4.antialiasing = true;
+
+						tankBop5 = new FlxUISprite(1300, 900);
+						tankBop5.frames = Paths.getSparrowAtlas('tank4');
+						tankBop5.animation.addByPrefix('bop', 'fg tankman bobbin 3 instance 1', 24);
+						tankBop5.scrollFactor.set(1.5, 1.5);
+						tankBop5.antialiasing = true;
+
+						tankBop6 = new FlxUISprite(1620, 700);
+						tankBop6.frames = Paths.getSparrowAtlas('tank5');
+						tankBop6.animation.addByPrefix('bop', 'fg tankhead far right instance 1', 24);
+						tankBop6.scrollFactor.set(1.5, 1.5);
+						tankBop6.antialiasing = true;
+
+						// JOELwindows7: use layfront!
+						addThe(tankBop1, 'tankBop1', true, 2);
+						addThe(tankBop2, 'tankBop2', true, 2);
+						addThe(tankBop3, 'tankBop3', true, 2);
+						addThe(tankBop4, 'tankBop4', true, 2);
+						addThe(tankBop5, 'tankBop5', true, 2);
+						addThe(tankBop6, 'tankBop6', true, 2);
+
+						tankWatchtower.animation.play('bop');
+						tankBop1.animation.play('bop');
+						tankBop2.animation.play('bop');
+						tankBop3.animation.play('bop');
+						tankBop4.animation.play('bop');
+						tankBop5.animation.play('bop');
+						tankBop6.animation.play('bop');
+					}
+				// JOELwindows7: here's BOLO's implementation of week 7 stage
+				case 'tank':
+					{
+						camZoom = 0.9;
+						var tankSky:FlxSprite = new FlxUISprite(-400, -400).loadGraphic(Paths.image('tankSky', 'week7'));
+						tankSky.antialiasing = FlxG.save.data.antialiasing;
+						tankSky.scrollFactor.set(0, 0);
+						swagBacks['tankSky'] = tankSky;
+						toAdd.push(tankSky);
+						if (FlxG.save.data.distractions)
+						{
+							var tankClouds:FlxSprite = new FlxUISprite(FlxG.random.int(-700, -100),
+								FlxG.random.int(-20, 20)).loadGraphic(Paths.image('tankClouds', 'week7'));
+							tankClouds.antialiasing = FlxG.save.data.antialiasing;
+							tankClouds.scrollFactor.set(0.9, 0.9);
+							swagBacks['tankClouds'] = tankClouds;
+							toAdd.push(tankClouds);
+
+							var tankMountains:FlxSprite = new FlxUISprite(-300, -20).loadGraphic(Paths.image('tankMountains', 'week7'));
+							tankMountains.antialiasing = FlxG.save.data.antialiasing;
+							tankMountains.setGraphicSize(Std.int(1.2 * tankMountains.width));
+							tankMountains.scrollFactor.set(0.2, 0.2);
+							tankMountains.updateHitbox();
+
+							swagBacks['tankMountains'] = tankMountains;
+							toAdd.push(tankMountains);
+
+							var tankBuildings:FlxSprite = new FlxUISprite(-200, 0).loadGraphic(Paths.image('tankBuildings', 'week7'));
+
+							tankBuildings.setGraphicSize(Std.int(1.1 * tankBuildings.width));
+							tankBuildings.scrollFactor.set(0.3, 0.3);
+							tankBuildings.antialiasing = FlxG.save.data.antialiasing;
+							tankBuildings.updateHitbox();
+							swagBacks['tankBuildings'] = tankBuildings;
+							toAdd.push(tankBuildings);
+						}
+
+						var tankRuins:FlxSprite = new FlxUISprite(-200, 0).loadGraphic(Paths.image('tankRuins', 'week7'));
+						tankRuins.setGraphicSize(Std.int(1.1 * tankRuins.width));
+						tankRuins.antialiasing = FlxG.save.data.antialiasing;
+						tankRuins.scrollFactor.set(0.35, 0.35);
+						tankRuins.updateHitbox();
+						swagBacks['tankRuins'] = tankRuins;
+						toAdd.push(tankRuins);
+
+						if (FlxG.save.data.distractions)
+						{
+							var smokeLeft:FlxUISprite = new FlxUISprite(-200, -100);
+							smokeLeft.antialiasing = FlxG.save.data.antialiasing;
+							smokeLeft.scrollFactor.set(0.4, 0.4);
+							smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft', 'week7');
+							smokeLeft.animation.addByPrefix('idle', 'SmokeBlurLeft instance ', Std.int(24 * PlayState.songMultiplier), true);
+							smokeLeft.animation.play('idle');
+							swagBacks['smokeLeft'] = smokeLeft;
+							toAdd.push(smokeLeft);
+
+							var smokeRight:FlxUISprite = new FlxUISprite(1100, -100);
+							smokeRight.antialiasing = FlxG.save.data.antialiasing;
+							smokeRight.scrollFactor.set(0.4, 0.4);
+							smokeRight.frames = Paths.getSparrowAtlas('smokeRight', 'week7');
+							smokeRight.animation.addByPrefix('idle', 'SmokeRight instance ', Std.int(24 * PlayState.songMultiplier), true);
+							smokeRight.animation.play('idle');
+							swagBacks['smokeRight'] = smokeRight;
+							toAdd.push(smokeRight);
+
+							var tankWatchTower:FlxUISprite = new FlxUISprite(100, 50);
+							tankWatchTower.antialiasing = FlxG.save.data.antialiasing;
+							tankWatchTower.scrollFactor.set(0.5, 0.5);
+							tankWatchTower.frames = Paths.getSparrowAtlas('tankWatchtower', 'week7');
+							tankWatchTower.animation.addByPrefix('idle', 'watchtower gradient color instance ', Std.int(24 * PlayState.songMultiplier));
+							tankWatchTower.animation.play('idle');
+							tankWatchTower.active = true;
+							swagBacks['tankWatchTower'] = tankWatchTower;
+							toAdd.push(tankWatchTower);
+						}
+						// 						var tankGround:FlxUISprite = new FlxSprite(300, 300);
+						tankGround = new FlxUISprite(300, 300); // JOELwindows7: globalize it!
+						tankGround.scrollFactor.set(0.5, 0.5);
+						tankGround.antialiasing = FlxG.save.data.antialiasing;
+						tankGround.frames = Paths.getSparrowAtlas('tankRolling', 'week7');
+						tankGround.animation.addByPrefix('idle', 'BG tank w lighting instance ', Std.int(24 * PlayState.songMultiplier), true);
+						tankGround.animation.play('idle');
+						swagBacks['tankGround'] = tankGround;
+						toAdd.push(tankGround);
+
+						var tankmanRun = new FlxTypedGroup<TankmenBG>();
+						swagBacks['tankmanRun'] = tankmanRun;
+						toAdd.push(tankmanRun);
+
+						var tankField:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.image('tankGround', 'week7'));
+						tankField.antialiasing = FlxG.save.data.antialiasing;
+						tankField.setGraphicSize(Std.int(1.15 * tankField.width));
+						tankField.updateHitbox();
+						swagBacks['tankField'] = tankField;
+						toAdd.push(tankField);
+
+						if (PlayState.isStoryMode)
+						{
+							if (PlayState.SONG.songId == 'stress')
+							{
+								var dummyGf:FlxUISprite = new FlxUISprite(200, 105);
+								dummyGf.antialiasing = FlxG.save.data.antialiasing;
+								dummyGf.frames = Paths.getSparrowAtlas('characters/gfTankmen');
+								dummyGf.animation.addByPrefix('idle', 'GF Dancing at Gunpoint', 24, false);
+								dummyGf.animation.play('idle');
+								swagBacks['dummyGf'] = dummyGf;
+								layInFront[2].push(dummyGf);
+
+								var gfCutscene:FlxUISprite = new FlxUISprite(200, 85);
+								gfCutscene.antialiasing = FlxG.save.data.antialiasing;
+								gfCutscene.frames = Paths.getSparrowAtlas('cutscenes/stressGF');
+								gfCutscene.animation.addByPrefix('dieBitch', 'GF STARTS TO TURN PART 1', 24, false);
+								gfCutscene.animation.addByPrefix('getRektLmao', 'GF STARTS TO TURN PART 2', 24, false);
+								gfCutscene.visible = false;
+								swagBacks['gfCutscene'] = gfCutscene;
+								layInFront[2].push(gfCutscene);
+
+								var picoCutscene:FlxUISprite = new FlxUISprite(-552, -298);
+								picoCutscene.antialiasing = FlxG.save.data.antialiasing;
+								swagBacks['picoCutscene'] = picoCutscene;
+								picoCutscene.frames = AtlasFrameMaker.construct('cutscenes/stressPico', 'week7');
+								picoCutscene.animation.addByPrefix('anim', 'Pico Badass', 24, false);
+								picoCutscene.visible = false;
+
+								toAdd.push(picoCutscene);
+
+								var bfCutscene:FlxUISprite = new FlxUISprite(815, 500);
+								bfCutscene.antialiasing = FlxG.save.data.antialiasing;
+								bfCutscene.frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
+								bfCutscene.animation.addByPrefix('idle', 'BF idle dance', 24, false);
+								bfCutscene.animation.play('idle', true);
+								swagBacks['bfCutscene'] = bfCutscene;
+								layInFront[2].push(bfCutscene);
+							}
+
+							var tankman:FlxUISprite = new FlxUISprite(18, 333);
+							tankman.frames = Paths.getSparrowAtlas('cutscenes/' + PlayState.SONG.songId);
+							tankman.antialiasing = FlxG.save.data.antialiasing;
+							swagBacks['tankman'] = tankman;
+							layInFront[2].push(tankman);
+						}
+
+						var foreGround0 = new FlxUISprite(-500, 600);
+						foreGround0.scrollFactor.set(1.7, 1.5);
+						foreGround0.antialiasing = FlxG.save.data.antialiasing;
+						foreGround0.frames = Paths.getSparrowAtlas('tank0', 'week7');
+						foreGround0.animation.addByPrefix('idle', 'fg tankhead far right instance ', Std.int(24 * PlayState.songMultiplier));
+						foreGround0.animation.play('idle');
+						swagBacks['foreGround0'] = foreGround0;
+						layInFront[2].push(foreGround0);
+
+						if (FlxG.save.data.distractions)
+						{
+							var foreGround1 = new FlxUISprite(-300, 750);
+							foreGround1.scrollFactor.set(2, 0.2);
+							foreGround1.antialiasing = FlxG.save.data.antialiasing;
+							foreGround1.frames = Paths.getSparrowAtlas('tank1', 'week7');
+							foreGround1.animation.addByPrefix('idle', 'fg tankhead 5 instance ', Std.int(24 * PlayState.songMultiplier));
+							foreGround1.animation.play('idle');
+							swagBacks['foreGround1'] = foreGround1;
+							layInFront[2].push(foreGround1);
+						}
+
+						var foreGround2 = new FlxUISprite(450, 940);
+						foreGround2.scrollFactor.set(1.5, 1.5);
+						foreGround2.antialiasing = FlxG.save.data.antialiasing;
+						foreGround2.frames = Paths.getSparrowAtlas('tank2', 'week7');
+						foreGround2.animation.addByPrefix('idle', 'foreground man 3 instance ', Std.int(24 * PlayState.songMultiplier));
+						foreGround2.animation.play('idle');
+						swagBacks['foreGround2'] = foreGround2;
+						layInFront[2].push(foreGround2);
+
+						if (FlxG.save.data.distractions)
+						{
+							var foreGround3 = new FlxUISprite(1300, 900);
+							foreGround3.scrollFactor.set(1.5, 1.5);
+							foreGround3.antialiasing = FlxG.save.data.antialiasing;
+							foreGround3.frames = Paths.getSparrowAtlas('tank4', 'week7');
+							foreGround3.animation.addByPrefix('idle', 'fg tankman bobbin 3 instance ', Std.int(24 * PlayState.songMultiplier));
+							foreGround3.animation.play('idle');
+							swagBacks['foreGround3'] = foreGround3;
+							layInFront[2].push(foreGround3);
+						}
+
+						var foreGround4 = new FlxUISprite(1620, 710);
+						foreGround4.scrollFactor.set(1.5, 1.5);
+						foreGround4.antialiasing = FlxG.save.data.antialiasing;
+						foreGround4.frames = Paths.getSparrowAtlas('tank5', 'week7');
+						foreGround4.animation.addByPrefix('idle', 'fg tankhead far right instance ', Std.int(24 * PlayState.songMultiplier));
+						foreGround4.animation.play('idle');
+						swagBacks['foreGround4'] = foreGround4;
+						layInFront[2].push(foreGround4);
+
+						if (FlxG.save.data.distractions)
+						{
+							var foreGround5 = new FlxUISprite(1400, 1290);
+							foreGround5.scrollFactor.set(3.5, 2.5);
+							foreGround5.antialiasing = FlxG.save.data.antialiasing;
+							foreGround5.frames = Paths.getSparrowAtlas('tank3', 'week7');
+							foreGround5.animation.addByPrefix('idle', 'fg tankhead 4 instance ', Std.int(24 * PlayState.songMultiplier));
+							foreGround5.animation.play('idle');
+							swagBacks['foreGround5'] = foreGround5;
+							layInFront[2].push(foreGround5);
+						}
+					}
+				// JOELwindows7: da bbpanzu sky. sorry, people. KitsuneSkulls turns out to be a bad guy. Not Micheal's fault! We wish Rodrigo had it instead, idk..
+				case 'theShift':
+					{
+						// daPixelZoom = 1;
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'theShift';
+						shiftbg = new FlxUISprite(-388.05, -232);
+						shiftbg.frames = Paths.getSparrowAtlas("sky/bg_normal");
+						shiftbg.animation.addByIndices("idle", "bg", [5], "", 24, false);
+						shiftbg.animation.addByPrefix("bop", "bg", 24, false);
+						// shiftbg.animation.addByPrefix("manifest", "bgBOOM", 24, false);
+						shiftbg.animation.play("idle");
+
+						shiftbg.updateHitbox();
+						shiftbg.antialiasing = true;
+						shiftbg.scrollFactor.set(0, 1);
+						addThe(shiftbg, 'shiftbg');
+					}
+				case 'theShift2':
+					{
+						// daPixelZoom = 1;
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'theShift2';
+						shiftbg = new FlxUISprite(-388.05, -232);
+						shiftbg.frames = Paths.getSparrowAtlas("sky/bg_annoyed");
+						shiftbg.animation.addByIndices("idle", "bg2", [5], "", 24, false);
+						shiftbg.animation.addByPrefix("bop", "bg2", 24, false);
+						shiftbg.animation.addByPrefix("manifest", "bgBOOM", 24, false);
+						shiftbg.animation.play("idle");
+
+						shiftbg.updateHitbox();
+						shiftbg.antialiasing = true;
+						shiftbg.scrollFactor.set(0, 1);
+						addThe(shiftbg, 'shiftbg');
+					}
+				case 'theManifest':
+					{
+						// daPixelZoom = 1;
+						// defaultCamZoom = 0.9;
+						camZoom = 0.9;
+						curStage = 'theManifest';
+						shiftbg = new FlxUISprite(-388.05, -232);
+						shiftbg.frames = Paths.getSparrowAtlas("sky/bg_manifest");
+						shiftbg.animation.addByIndices("idle", "bg_manifest", [5], "", 24, false);
+						shiftbg.animation.addByPrefix("bop", "bg_manifest", 24, false);
+						shiftbg.animation.play("idle");
+						shiftbg.updateHitbox();
+						shiftbg.antialiasing = true;
+						shiftbg.scrollFactor.set(0.4, 0.4);
+						addThe(shiftbg, 'shiftbg');
+
+						floor = new FlxUISprite(-1053.1, -464.7);
+						floor.frames = Paths.getSparrowAtlas("sky/floorManifest");
+						floor.animation.addByIndices("idle", "floorManifest", [5], "", 24, false);
+						floor.animation.addByPrefix("bop", "floorManifest", 24, false);
+						floor.animation.play("idle");
+						floor.updateHitbox();
+						floor.antialiasing = true;
+						floor.scrollFactor.set(0.9, 0.9);
+						addThe(floor, 'floor');
+					}
 				// JOELwindows7: start init LFM stage
 				case 'jakartaFair':
 					{
@@ -576,7 +1289,7 @@ class Stage extends MusicBeatState
 						curStage = 'jakartaFair';
 						var bgActualOffset_x = -150;
 						var bgActualOffset_y = -100;
-						var bg:FlxSprite = new FlxSprite(bgActualOffset_x + -500,
+						var bg:FlxUISprite = cast new FlxUISprite(bgActualOffset_x + -500,
 							bgActualOffset_y + -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgBehindALL'));
 						bg.setGraphicSize(Std.int(bg.width * 1.2), Std.int(bg.height * 1.2));
 						bg.antialiasing = FlxG.save.data.antialiasing;
@@ -584,7 +1297,7 @@ class Stage extends MusicBeatState
 						bg.active = false;
 						addThe(bg, 'bg');
 
-						var stageFront:FlxSprite = new FlxSprite(-500, -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgInsideBooth'));
+						var stageFront:FlxUISprite = cast new FlxUISprite(-500, -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgInsideBooth'));
 						stageFront.setGraphicSize(Std.int(stageFront.width * 1.2), Std.int(stageFront.height * 1.2));
 						stageFront.updateHitbox();
 						stageFront.antialiasing = FlxG.save.data.antialiasing;
@@ -593,7 +1306,7 @@ class Stage extends MusicBeatState
 						addThe(stageFront, 'stageFront');
 
 						// Now for the colorable ceiling!
-						colorableGround = new FlxSprite(-500, -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'));
+						colorableGround = cast new FlxUISprite(-500, -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'));
 						colorableGround.setGraphicSize(Std.int(colorableGround.width * 1.2), Std.int((colorableGround.height * 1.2)));
 						colorableGround.updateHitbox();
 						colorableGround.antialiasing = FlxG.save.data.antialiasing;
@@ -606,7 +1319,7 @@ class Stage extends MusicBeatState
 						colorableGround.visible = false; // Hide the RGB light first before begin!
 
 						// now back to final closest to the camera.
-						var stageCurtains:FlxSprite = new FlxSprite(-500, -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgRearSpeakers'));
+						var stageCurtains:FlxUISprite = cast new FlxUISprite(-500, -100).loadGraphic(Paths.image('jakartaFair/jakartaFairBgRearSpeakers'));
 						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2), Std.int(stageFront.height * 1.2));
 						stageCurtains.updateHitbox();
 						stageCurtains.antialiasing = FlxG.save.data.antialiasing;
@@ -619,7 +1332,7 @@ class Stage extends MusicBeatState
 						// defaultCamZoom = 0.9;
 						camZoom = 0.9;
 						curStage = 'qmoveph';
-						var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('qmoveph/DefaultBackground'));
+						var bg:FlxUISprite = cast new FlxUISprite(-200, -100).loadGraphic(Paths.image('qmoveph/DefaultBackground'));
 						bg.setGraphicSize(Std.int(bg.width * 1.1), Std.int(bg.height * 1.1));
 						bg.antialiasing = FlxG.save.data.antialiasing;
 						bg.scrollFactor.set(0.9, 0.9);
@@ -632,7 +1345,7 @@ class Stage extends MusicBeatState
 						// defaultCamZoom = 0.9;
 						camZoom = 0.9;
 						curStage = 'cruelThesis';
-						var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('VanElektronische/VanElektronische_corpThesis'));
+						var bg:FlxUISprite = cast new FlxUISprite(-200, -100).loadGraphic(Paths.image('VanElektronische/VanElektronische_corpThesis'));
 						bg.setGraphicSize(Std.int(bg.width * 1.2), Std.int(bg.height * 1.2));
 						bg.antialiasing = FlxG.save.data.antialiasing;
 						bg.scrollFactor.set(0.9, 0.9);
@@ -644,28 +1357,28 @@ class Stage extends MusicBeatState
 						// defaultCamZoom = 0.9;
 						camZoom = 0.9;
 						curStage = 'lapanganParalax';
-						var bg:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Bekgron'));
+						var bg:FlxUISprite = cast new FlxUISprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Bekgron'));
 						bg.setGraphicSize(Std.int(bg.width * 1.2), Std.int(bg.height * 1.2));
 						bg.antialiasing = FlxG.save.data.antialiasing;
 						bg.scrollFactor.set(0.3, 0.3);
 						bg.active = false;
 						addThe(bg, 'bg');
 
-						var bg2:FlxSprite = new FlxSprite(-200, -150).loadGraphic(Paths.image('lapanganParalax/Betwaangron'));
+						var bg2:FlxUISprite = cast new FlxUISprite(-200, -150).loadGraphic(Paths.image('lapanganParalax/Betwaangron'));
 						bg2.setGraphicSize(Std.int(bg2.width * 1.2), Std.int(bg2.height * 1.2));
 						bg2.antialiasing = FlxG.save.data.antialiasing;
 						bg2.scrollFactor.set(0.5, 0.5);
 						bg2.active = false;
 						addThe(bg2, 'bg2');
 
-						var bg3:FlxSprite = new FlxSprite(-200, -50).loadGraphic(Paths.image('lapanganParalax/Betweengron'));
+						var bg3:FlxUISprite = cast new FlxUISprite(-200, -50).loadGraphic(Paths.image('lapanganParalax/Betweengron'));
 						bg3.setGraphicSize(Std.int(bg3.width * 1.2), Std.int(bg3.height * 1.2));
 						bg3.antialiasing = FlxG.save.data.antialiasing;
 						bg3.scrollFactor.set(0.7, 0.7);
 						bg3.active = false;
 						addThe(bg3, 'bg3');
 
-						var stageFront:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Midgron'));
+						var stageFront:FlxUISprite = cast new FlxUISprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Midgron'));
 						stageFront.setGraphicSize(Std.int(stageFront.width * 1.2), Std.int(stageFront.height * 1.2));
 						stageFront.updateHitbox();
 						stageFront.antialiasing = FlxG.save.data.antialiasing;
@@ -673,7 +1386,7 @@ class Stage extends MusicBeatState
 						stageFront.active = false;
 						addThe(stageFront, 'stageFront');
 
-						var stageCurtains:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Forgron'));
+						var stageCurtains:FlxUISprite = cast new FlxUISprite(-200, -100).loadGraphic(Paths.image('lapanganParalax/Forgron'));
 						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 1.2), Std.int(stageCurtains.height * 1.2));
 						stageCurtains.updateHitbox();
 						stageCurtains.antialiasing = FlxG.save.data.antialiasing;
@@ -701,7 +1414,7 @@ class Stage extends MusicBeatState
 						// so, now you can chroma key full green!
 						// heh what the peck man? GREEN is #008000 (dim green)!?? but LIME is #00FF00 (full green)?!? really bro?!
 						// you confused me!!! the true green was supposed to be full green #00FF00 what the peck, Flixel?!
-						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
+						colorableGround = cast new FlxUISprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
 						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5), Std.int(colorableGround.height * 5));
 						colorableGround.updateHitbox();
 						colorableGround.antialiasing = FlxG.save.data.antialiasing;
@@ -717,7 +1430,7 @@ class Stage extends MusicBeatState
 						// defaultCamZoom = 0.5;
 						camZoom = 0.5;
 						curStage = 'bluechroma';
-						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.BLUE);
+						colorableGround = cast new FlxUISprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.BLUE);
 						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5), Std.int(colorableGround.height * 5));
 						colorableGround.updateHitbox();
 						colorableGround.antialiasing = FlxG.save.data.antialiasing;
@@ -738,7 +1451,7 @@ class Stage extends MusicBeatState
 						curStage = 'semple';
 						// JOELwindows7: to me, that pinkest pink looks like magenta! at least on screen. idk how about in person
 						// because no camera has the ability to capture way over Pink Semple had.
-						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.MAGENTA);
+						colorableGround = cast new FlxUISprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.MAGENTA);
 						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5), Std.int(colorableGround.height * 5));
 						colorableGround.updateHitbox();
 						colorableGround.antialiasing = FlxG.save.data.antialiasing;
@@ -757,7 +1470,7 @@ class Stage extends MusicBeatState
 						camZoom = 0.5;
 						curStage = 'whitening';
 						// JOELwindows7: guys, pls don't blamm me. it's nothing to do. let's assume it's purely coincidental.
-						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.WHITE);
+						colorableGround = cast new FlxUISprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.WHITE);
 						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5), Std.int(colorableGround.height * 5));
 						colorableGround.updateHitbox();
 						colorableGround.antialiasing = FlxG.save.data.antialiasing;
@@ -773,7 +1486,7 @@ class Stage extends MusicBeatState
 						// defaultCamZoom = 0.5;
 						camZoom = 0.5;
 						curStage = 'kuning';
-						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.YELLOW);
+						colorableGround = cast new FlxUISprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.YELLOW);
 						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5), Std.int(colorableGround.height * 5));
 						colorableGround.updateHitbox();
 						colorableGround.antialiasing = FlxG.save.data.antialiasing;
@@ -789,7 +1502,7 @@ class Stage extends MusicBeatState
 						// defaultCamZoom = 0.5;
 						camZoom = 0.5;
 						curStage = 'blood';
-						colorableGround = new FlxSprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.RED);
+						colorableGround = cast new FlxUISprite(-800, -500).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.RED);
 						colorableGround.setGraphicSize(Std.int(colorableGround.width * 5), Std.int(colorableGround.height * 5));
 						colorableGround.updateHitbox();
 						colorableGround.antialiasing = FlxG.save.data.antialiasing;
@@ -804,14 +1517,14 @@ class Stage extends MusicBeatState
 					{
 						camZoom = 0.9;
 						curStage = 'stage';
-						var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.loadImage('stageback', 'shared'));
+						var bg:FlxUISprite = cast new FlxUISprite(-600, -200).loadGraphic(Paths.loadImage('stageback', 'shared'));
 						bg.antialiasing = FlxG.save.data.antialiasing;
 						bg.scrollFactor.set(0.9, 0.9);
 						bg.active = false;
 						swagBacks['bg'] = bg;
 						toAdd.push(bg);
 
-						var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.loadImage('stagefront', 'shared'));
+						var stageFront:FlxUISprite = cast new FlxUISprite(-650, 600).loadGraphic(Paths.loadImage('stagefront', 'shared'));
 						stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
 						stageFront.updateHitbox();
 						stageFront.antialiasing = FlxG.save.data.antialiasing;
@@ -821,7 +1534,7 @@ class Stage extends MusicBeatState
 						toAdd.push(stageFront);
 
 						// JOELwindows7: reinstall stage light and this time, I added bloom yay!
-						var stageLight:FlxSprite = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light'));
+						var stageLight:FlxUISprite = cast new FlxUISprite(-100, -80).loadGraphic(Paths.image('stage_light'));
 						stageLight.setGraphicSize(Std.int(stageLight.width * 1), Std.int(stageLight.height * 1));
 						stageLight.updateHitbox();
 						stageLight.antialiasing = FlxG.save.data.antialiasing;
@@ -829,7 +1542,7 @@ class Stage extends MusicBeatState
 						stageLight.active = false;
 
 						// JOELwindows7: here's the bloom of that lighting
-						colorableGround = new FlxSprite(-100, -80).loadGraphic(Paths.image('stage_light_bloom'));
+						colorableGround = cast new FlxUISprite(-100, -80).loadGraphic(Paths.image('stage_light_bloom'));
 						colorableGround.setGraphicSize(Std.int(colorableGround.width * 2), Std.int(colorableGround.height * 2));
 						colorableGround.updateHitbox();
 						colorableGround.antialiasing = FlxG.save.data.antialiasing;
@@ -841,7 +1554,7 @@ class Stage extends MusicBeatState
 						addThe(stageLight, 'stageLight');
 						colorableGround.visible = false; // initially off for performer safety.
 
-						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
+						var stageCurtains:FlxUISprite = cast new FlxUISprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
 						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
 						stageCurtains.updateHitbox();
 						stageCurtains.antialiasing = FlxG.save.data.antialiasing;
@@ -872,7 +1585,7 @@ class Stage extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (!PlayStateChangeables.Optimize)
+		if (!PlayStateChangeables.optimize)
 		{
 			switch (curStage)
 			{
@@ -887,7 +1600,15 @@ class Stage extends MusicBeatState
 							trainFrameTiming = 0;
 						}
 					}
-					// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
+				// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
+				// JOELwindows7: week 7 tank rolling pls
+				case 'tankStage':
+					moveTank();
+				case 'tankStage2':
+					moveTank();
+				// JOELwindows7: & BOLO's week 7 implementation
+				case 'tank':
+					moveTank();
 			}
 		}
 	}
@@ -896,7 +1617,7 @@ class Stage extends MusicBeatState
 	{
 		super.stepHit();
 
-		if (!PlayStateChangeables.Optimize)
+		if (!PlayStateChangeables.optimize)
 		{
 			var array = slowBacks[curStep];
 			if (array != null && array.length > 0)
@@ -927,6 +1648,52 @@ class Stage extends MusicBeatState
 						bg.visible = !bg.visible;
 				}
 			}
+
+			// JOELwindows7: incoming! week7 yoink! yey luckydog7
+			// picoSpeaker and running tankmen
+
+			// if (PlayState.SONG.songId == 'stress')
+			// {
+			// 	// RIGHT
+			// 	for (i in 0...picoStep.right.length)
+			// 	{
+			// 		if (curStep == picoStep.right[i])
+			// 		{
+			// 			PlayState.gf.playAnim('shoot' + FlxG.random.int(1, 2), true);
+			// 			// var tankmanRunner:TankmenBG = new TankmenBG();
+			// 		}
+			// 	}
+			// 	// LEFT
+			// 	for (i in 0...picoStep.left.length)
+			// 	{
+			// 		if (curStep == picoStep.left[i])
+			// 		{
+			// 			PlayState.gf.playAnim('shoot' + FlxG.random.int(3, 4), true);
+			// 		}
+			// 	}
+			// 	// Left tankspawn
+			// 	for (i in 0...tankStep.left.length)
+			// 	{
+			// 		if (curStep == tankStep.left[i])
+			// 		{
+			// 			var tankmanRunner:TankmenBG = new TankmenBG();
+			// 			tankmanRunner.resetShit(FlxG.random.int(630, 730) * -1, 255, true, 1, 1.5);
+
+			// 			tankmanRun.add(tankmanRunner);
+			// 		}
+			// 	}
+
+			// 	// Right spawn
+			// 	for (i in 0...tankStep.right.length)
+			// 	{
+			// 		if (curStep == tankStep.right[i])
+			// 		{
+			// 			var tankmanRunner:TankmenBG = new TankmenBG();
+			// 			tankmanRunner.resetShit(FlxG.random.int(1500, 1700) * 1, 275, false, 1, 1.5);
+			// 			tankmanRun.add(tankmanRunner);
+			// 		}
+			// 	}
+			// }
 		}
 	}
 
@@ -934,13 +1701,13 @@ class Stage extends MusicBeatState
 	{
 		super.beatHit();
 
-		if (FlxG.save.data.distractions && animatedBacks.length > 0)
+		if (FlxG.save.data.distractions && FlxG.save.data.background && animatedBacks.length > 0) // JOELwindows7: BOLO check bg setting
 		{
 			for (bg in animatedBacks)
 				bg.animation.play('idle', true);
 		}
 
-		if (!PlayStateChangeables.Optimize)
+		if (!PlayStateChangeables.optimize && FlxG.save.data.distractions && FlxG.save.data.background) // JOELwindows7: BOLO check distract & bg setting
 		{
 			switch (curStage)
 			{
@@ -981,7 +1748,7 @@ class Stage extends MusicBeatState
 						if (curBeat % 4 == 0)
 						{
 							var phillyCityLights = swagGroup['phillyCityLights'];
-							phillyCityLights.forEach(function(light:FlxSprite)
+							phillyCityLights.forEach(function(light:FlxUISprite)
 							{
 								light.visible = false;
 							});
@@ -1037,10 +1804,14 @@ class Stage extends MusicBeatState
 		{
 			FlxG.camera.flash(FlxColor.WHITE, .6);
 		}
+		// IDEA: find API that triggers DSLR / Mirrorless camera external flash or built-in flash
 
 		// JOELwindows7: shock fear Heartbeat jumps
-		PlayState.instance.increaseHR(PlayState.instance.fearShockAdd[0][PlayState.instance.heartTierIsRightNow[0]], 0);
-		PlayState.instance.increaseHR(PlayState.instance.fearShockAdd[2][PlayState.instance.heartTierIsRightNow[2]], 2);
+		// PlayState.instance.increaseHR(PlayState.instance.fearShockAdd[0][PlayState.instance.heartTierIsRightNow[0]], 0);
+		// PlayState.instance.increaseHR(PlayState.instance.fearShockAdd[2][PlayState.instance.heartTierIsRightNow[2]], 2);
+		// PlayState.boyfriend
+		PlayState.boyfriend.stimulateHeart(-1, HeartStimulateType.FEAR);
+		PlayState.gf.stimulateHeart(-1, HeartStimulateType.FEAR);
 
 		// JOELwindows7: vibrate controllers
 		Controls.vibrate(0, 100);
@@ -1111,6 +1882,7 @@ class Stage extends MusicBeatState
 		{
 			if (lightId > 0 && curLightEvent != lightId)
 			{
+				Debug.logTrace('Blammed light ON Light ID ${lightId}');
 				if (lightId > 5)
 					lightId = FlxG.random.int(1, 5, [curLightEvent]);
 
@@ -1191,8 +1963,12 @@ class Stage extends MusicBeatState
 						{
 							spr.visible = false;
 						});
-						phillyCityLightsEvent.members[lightId - 1].visible = true;
-						phillyCityLightsEvent.members[lightId - 1].alpha = 1;
+						if (phillyCityLightsEvent.members[lightId - 1] != null)
+						{
+							// JOELwindows7: Yo, this crashes here! Null object reference
+							phillyCityLightsEvent.members[lightId - 1].visible = true;
+							phillyCityLightsEvent.members[lightId - 1].alpha = 1;
+						}
 					}
 				}
 			}
@@ -1215,16 +1991,26 @@ class Stage extends MusicBeatState
 
 				if (curStage == 'philly')
 				{
-					phillyCityLights.forEach(function(spr:FlxSprite) // JOELwindows7: this gotta be changed
+					// JOELwindows7: pls don't forget safety!
+					if (phillyCityLights != null)
 					{
-						spr.visible = false;
-					});
-					phillyCityLightsEvent.forEach(function(spr:BGSprite)
+						phillyCityLights.forEach(function(spr:FlxUISprite) // JOELwindows7: this gotta be changed
+						{
+							spr.visible = false;
+						});
+					}
+					if (phillyCityLightsEvent != null)
 					{
-						spr.visible = false;
-					});
+						phillyCityLightsEvent.forEach(function(spr:BGSprite)
+						{
+							spr.visible = false;
+						});
+					}
 
-					var memb:FlxSprite = phillyCityLightsEvent.members[curLightEvent - 1];
+					var memb:FlxUISprite = new FlxUISprite();
+					// JOELwindows7: I believe this also Null object reference too.
+					if (phillyCityLightsEvent.members[curLightEvent - 1] != null)
+						memb = phillyCityLightsEvent.members[curLightEvent - 1];
 					if (memb != null)
 					{
 						memb.visible = true;
@@ -1270,9 +2056,25 @@ class Stage extends MusicBeatState
 		if (FlxG.save.data.distractions)
 		{
 			if (PlayState.gf != null)
+			{
 				PlayState.gf.playAnim('hairFall');
+				// JOELwindows7: gf goes dead silent afterward. work around pls
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					PlayState.gf.playAnim('danceRight');
+					PlayState.gf.dance();
+				});
+			}
 			else
+			{
 				GameplayCustomizeState.gf.playAnim('hairFall');
+				// JOELwindows7: gf goes dead silent afterward. work around pls
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					GameplayCustomizeState.gf.playAnim('danceRight');
+					GameplayCustomizeState.gf.dance();
+				});
+			}
 
 			swagBacks['phillyTrain'].x = FlxG.width + 200;
 			trainMoving = false;
@@ -1317,10 +2119,46 @@ class Stage extends MusicBeatState
 		}
 	}
 
+	// JOELwindows7: week 7 tank rolling
+	var tankX = 400;
+	var tankAngle:Float = FlxG.random.int(-90, 45);
+	var tankSpeed:Float = FlxG.random.float(5, 7);
+
+	function moveTank()
+	{
+		tankAngle += FlxG.elapsed * tankSpeed * PlayState.songMultiplier; // JOELwindows7: BOLO here songMultiplier
+
+		if (tankRolling != null)
+		{
+			tankRolling.angle = tankAngle - 90 + 15;
+			tankRolling.x = tankX + 1500 * FlxMath.fastCos(FlxAngle.asRadians(tankAngle + 180));
+			tankRolling.y = 1300 + 1100 * FlxMath.fastSin(FlxAngle.asRadians(tankAngle + 180));
+		}
+
+		// JOELwindows7: BOLO said:
+		// Worst fix I've ever done in my life. I hope this doesn't make lag stutters.
+		if (swagBacks['tankGround'] != null)
+		{
+			if (!PlayState.instance.endingSong)
+				PlayState.instance.createTween(swagBacks['tankGround'], {angle: tankAngle - 90 + 15}, 0.01, {type: FlxTweenType.ONESHOT});
+			swagBacks['tankGround'].x = tankX + 1500 * FlxMath.fastCos(FlxAngle.asRadians(tankAngle + 180));
+			swagBacks['tankGround'].y = 1300 + 1100 * FlxMath.fastSin(FlxAngle.asRadians(tankAngle + 180));
+		}
+	}
+
+	function again()
+	{
+		tankRolling.x = 300;
+		tankRolling.y = 300;
+		moveTank();
+	}
+
+	// JOELwindows7: They see me rolling, they, okeh stop.
 	// JOELwindows7: init stagefile
 	public var customStage:SwagStage;
 
 	var useStageScript:Bool = false; // JOELwindows7: flag to start try the stage Lua script
+
 	public var attemptStageScript:Bool = false; // JOELwindows7: flag to start prepare stage script after all stuffs loaded
 
 	function loadStageFile(path:String)
@@ -1338,7 +2176,7 @@ class Stage extends MusicBeatState
 		for (i in 0...customStage.backgroundImages.length)
 		{
 			var dataBg:SwagBackground = customStage.backgroundImages[i];
-			var anBgThing:FlxSprite = new FlxSprite(dataBg.position[0], dataBg.position[1]);
+			var anBgThing:FlxUISprite = new FlxUISprite(dataBg.position[0], dataBg.position[1]);
 			multiColorable[i] = dataBg.colorable;
 			trace("spawning bg " + dataBg.callName);
 			if (dataBg.generateMode)
@@ -1428,12 +2266,12 @@ class Stage extends MusicBeatState
 			// defaultCamZoom = customStage.defaultCamZoom;
 			camZoom = customStage.defaultCamZoom;
 			// halloweenLevel = customStage.isHalloween;
-			// bgAll = new FlxTypedGroup<FlxSprite>();
+			// bgAll = new FlxTypedGroup<FlxUISprite>();
 			// add(bgAll);
 			// trailAll = new FlxTypedGroup<FlxTrail>();
 			// add(trailAll);
 			#if FEATURE_LUAMODCHART
-			executeStageScript = !PlayStateChangeables.Optimize
+			executeStageScript = !PlayStateChangeables.optimize
 				&& PlayState.SONG.useCustomStage
 				&& customStage.useStageScript
 				&& (Paths.doesTextAssetExist(Paths.lua("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/stageScript"))
@@ -1444,7 +2282,7 @@ class Stage extends MusicBeatState
 			#end
 
 			// for hscript pls
-			executeStageHscript = !PlayStateChangeables.Optimize
+			executeStageHscript = !PlayStateChangeables.optimize
 				&& PlayState.SONG.useCustomStage
 				&& customStage.useStageScript
 				&& (Paths.doesTextAssetExist(Paths.hscript("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/stageScript"))
@@ -1484,9 +2322,9 @@ class Stage extends MusicBeatState
 			?animated:Bool = false, color:Null<FlxColor> = FlxColor.WHITE, width:Int = 1, height:Int = 1, upscaleX:Int = 1, upscaleY:Int = 1,
 			antialiasing:Bool = true, scrollFactorX:Float = .5, scrollFactorY:Float = .5, active:Bool = false, callNow:Bool = true, ?unique:Bool = false)
 	{
-		colorableGround = useImage ? new FlxSprite(positionX,
+		colorableGround = useImage ? cast new FlxUISprite(positionX,
 			positionY).loadGraphic(Paths.image('jakartaFair/jakartaFairBgColorableRoof'), animated, width, height,
-			unique) : new FlxSprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
+				unique) : cast new FlxUISprite(positionX, positionY).makeGraphic(FlxG.width * 5, FlxG.height * 5, FlxColor.LIME);
 		colorableGround.setGraphicSize(Std.int(colorableGround.width * upscaleX), Std.int(colorableGround.height * upscaleY));
 		colorableGround.updateHitbox();
 		colorableGround.antialiasing = antialiasing;
@@ -1550,7 +2388,7 @@ class Stage extends MusicBeatState
 			}
 			else
 			{
-				swagGroup['bgAll'].forEach(function(theBg:FlxSprite)
+				swagGroup['bgAll'].forEach(function(theBg:FlxUISprite)
 				{
 					if (multiColorable[theBg.ID])
 					{
@@ -1603,7 +2441,7 @@ class Stage extends MusicBeatState
 			}
 			else
 			{
-				swagGroup['bgAll'].forEach(function(theBg:FlxSprite)
+				swagGroup['bgAll'].forEach(function(theBg:FlxUISprite)
 				{
 					if (multiColorable[theBg.ID])
 					{
@@ -1650,7 +2488,7 @@ class Stage extends MusicBeatState
 			else
 			{
 				var counte:Int = 0;
-				swagGroup['bgAll'].forEach(function(theBg:FlxSprite)
+				swagGroup['bgAll'].forEach(function(theBg:FlxUISprite)
 				{
 					// theBg.color = multiOriginalColor[theBg.ID];
 					// theBg.color.redFloat = multiOriginalColor[theBg.ID].redFloat;
@@ -1668,20 +2506,33 @@ class Stage extends MusicBeatState
 	}
 
 	// JOELwindows7: for that additional bellow
-	var blackbarsTop:FlxSprite;
-	var blackbarsBottom:FlxSprite;
+	var blackbarsTop:FlxUISprite;
+	var blackbarsBottom:FlxUISprite;
 	var blackbarHeight:Int = 100;
 	var additionalSubCamera:FlxCamera;
 
 	// JOELwindows7: additional system wide FlxSprites
+
+	/**
+	 * Psyched Blammed Lights. Initiate turn off the lights & turn on the rave lights.
+	 * With this on, the background & objects darkens then followed with fade to discotic color lamps,
+	 * all characters color will change to based on chosen color.
+	 * Used for songs like Blammed (Psyched Engine), Stadium Rave Spongebob, 
+	 * Carameldansen, finger crazy move TikTok meme, etc.
+	 * @param lightsId select color of the rave lamp from 1 to 5. 0 is off & go back to normal, & 6 is random color
+	 */
 	function additionalCreateFlxSprites()
 	{
+		// Blammed Light block bekgron background
+		addThe(blammedLightsBlack, 'blammedLightsBlack');
 		// Psyched Blackbars
-		blackbarsTop = new FlxSprite(0, 0);
+		blackbarsTop = new FlxUISprite(0, 0);
 		blackbarsTop.makeGraphic(FlxG.width, blackbarHeight, 0xFF000000);
+		blackbarsTop.alpha = 0;
 		blackbarsTop.scrollFactor.set();
-		blackbarsBottom = new FlxSprite(0, FlxG.height - blackbarHeight);
+		blackbarsBottom = new FlxUISprite(0, FlxG.height - blackbarHeight);
 		blackbarsBottom.makeGraphic(FlxG.width, blackbarHeight, 0xFF000000);
+		blackbarsBottom.alpha = 0;
 		blackbarsBottom.scrollFactor.set();
 		addThe(blackbarsTop, 'blackbarsTop');
 		addThe(blackbarsBottom, 'blackbarsBottom');
@@ -1704,8 +2555,8 @@ class Stage extends MusicBeatState
 		// blackbarsBottom.x = FlxG.height;
 		FlxTween.color(blackbarsTop, forHowLong, blackbarsTop.color, 0xFF000000, {ease: FlxEase.linear});
 		FlxTween.color(blackbarsBottom, forHowLong, blackbarsBottom.color, 0xFF000000, {ease: FlxEase.linear});
-		FlxTween.tween(blackbarsTop, {y: 0, alpha: 1}, forHowLong, {ease: FlxEase.linear});
-		FlxTween.tween(blackbarsBottom, {y: FlxG.height - blackbarHeight, alpha: 1}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(blackbarsTop, {y: 0, alpha: .8}, forHowLong, {ease: FlxEase.linear});
+		FlxTween.tween(blackbarsBottom, {y: FlxG.height - blackbarHeight, alpha: .8}, forHowLong, {ease: FlxEase.linear});
 	}
 
 	// JOELwindows7: Psyched disappear blackbar
@@ -1715,14 +2566,14 @@ class Stage extends MusicBeatState
 			return;
 		// blackbarsTop.x = 0;
 		// blackbarsBottom.x = FlxG.height - blackbarHeight;
-		FlxTween.tween(blackbarsTop, {y: -blackbarHeight}, forHowLong, {
+		FlxTween.tween(blackbarsTop, {y: -blackbarHeight, alpha: 0}, forHowLong, {
 			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{
 				blackbarsTop.visible = false;
 			}
 		});
-		FlxTween.tween(blackbarsBottom, {y: FlxG.height}, forHowLong, {
+		FlxTween.tween(blackbarsBottom, {y: FlxG.height, alpha: 0}, forHowLong, {
 			ease: FlxEase.linear,
 			onComplete: function(twn:FlxTween)
 			{

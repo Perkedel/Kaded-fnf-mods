@@ -1,0 +1,38 @@
+{
+    "name": "No Girlfriend Speaker (Pixel Day)",
+    "displayName": "Speaker",
+    "asset": "characters/gfPixel_empty",
+    "barColor": "#A5004D",
+    "scale": 6,
+    "antialiasing": false,
+    "startingAnim": "danceRight",
+    "isDancing": true,
+    "replacesGF": true,
+    "heartOrgans": [{
+        "character": "null",
+        "isEmulator": true,
+        "initHR": 80,
+        "maxHR": 400,
+        "minHR": 80,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "phobia": {
+        "lightningStorm": true
+    },
+    "animations": [{
+            "name": "danceLeft",
+            "prefix": "GF IDLE",
+            "offsets": [0, 0],
+            "frameIndices": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        },
+        {
+            "name": "danceRight",
+            "prefix": "GF IDLE",
+            "offsets": [0, 0],
+            "frameIndices": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+        }
+    ]
+}

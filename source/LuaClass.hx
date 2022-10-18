@@ -254,6 +254,17 @@ class LuaNote extends LuaClass
 				setter: SetNumProperty
 			},
 
+			"isDead" => {
+				// JOELwindows7: new from BOLO
+				defaultValue: 0,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushboolean(l, !connectedNote.alive);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
 			"mustPress" => {
 				defaultValue: 1,
 				getter: function(l:State, data:Any):Int
@@ -275,7 +286,7 @@ class LuaNote extends LuaClass
 			},
 
 			"isSustain" => {
-				defaultValue: 1,
+				defaultValue: 0, // JOELwindows7: was 1, BOLO now 0
 				getter: function(l:State, data:Any):Int
 				{
 					Lua.pushnumber(l, connectedNote.rawNoteData);
@@ -285,7 +296,7 @@ class LuaNote extends LuaClass
 			},
 
 			"isParent" => {
-				defaultValue: 1,
+				defaultValue: 0, // JOELwindows7: was 1, BOLO now 0
 				getter: function(l:State, data:Any):Int
 				{
 					Lua.pushboolean(l, connectedNote.isParent);
@@ -332,6 +343,17 @@ class LuaNote extends LuaClass
 					LuaL.error(l, "getChildren is read-only.");
 					return 0;
 				}
+			},
+
+			"yNoteOff" => {
+				// JOELwindows7: new from BOLO
+				defaultValue: 0,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, connectedNote.noteYOff);
+					return 1;
+				},
+				setter: SetNumProperty
 			},
 
 			"getSpotInline" => {
@@ -431,9 +453,11 @@ class LuaNote extends LuaClass
 		// 2 = x
 		// 3 = y
 		// 4 = time
+		// 5 = ease
 		var xp = LuaL.checknumber(state, 2);
 		var yp = LuaL.checknumber(state, 3);
 		var time = LuaL.checknumber(state, 4);
+		var ease = LuaL.checkstring(state, 5); // JOELwindows7: BOLO rember
 
 		Lua.getfield(state, 1, "strumTime");
 		var time = Lua.tonumber(state, -1);
@@ -447,8 +471,9 @@ class LuaNote extends LuaClass
 			LuaL.error(state, "Failure to tween (couldn't find note " + time + ")");
 			return 0;
 		}
-
-		FlxTween.tween(note, {x: xp, y: yp}, time);
+		// FlxTween.tween(note, {x: xp, y: yp}, time);
+		// JOELwindows7: BOLO instead
+		PlayState.instance.createTween(note, {x: xp, y: yp}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO install tweener
 
 		return 0;
 	}
@@ -458,8 +483,10 @@ class LuaNote extends LuaClass
 		// 1 = self
 		// 2 = angle
 		// 3 = time
+		// 4 = ease
 		var nangle = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO rember
 
 		Lua.getfield(state, 1, "strumTime");
 		var time = Lua.tonumber(state, -1);
@@ -474,7 +501,8 @@ class LuaNote extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(note, {modAngle: nangle}, time);
+		// FlxTween.tween(note, {modAngle: nangle}, time);
+		PlayState.instance.createTween(note, {modAngle: nangle}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO install tweener
 
 		return 0;
 	}
@@ -484,8 +512,10 @@ class LuaNote extends LuaClass
 		// 1 = self
 		// 2 = alpha
 		// 3 = time
+		// 4 = ease
 		var nalpha = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO rember
 
 		Lua.getfield(state, 1, "strumTime");
 		var time = Lua.tonumber(state, -1);
@@ -499,7 +529,9 @@ class LuaNote extends LuaClass
 			LuaL.error(state, "Failure to tween (couldn't find note " + time + ")");
 			return 0;
 		}
-		FlxTween.tween(note, {alpha: nalpha}, time);
+		// FlxTween.tween(note, {alpha: nalpha}, time);
+		// JOELwindows7: BOLO instead
+		PlayState.instance.createTween(note, {alpha: nalpha}, time, {ease: ModchartState.getFlxEaseByString(ease)});
 
 		return 0;
 	}
@@ -537,14 +569,32 @@ class LuaReceptor extends LuaClass
 
 	public var sprite:StaticArrow;
 
+	// JOELwindows7: HEY!!! GLOBALIZE THE VARIABLES!!! BOLO example here
+	var defaultY = 0.0;
+	var defaultX = 0.0;
+	var defaultAngle = 0.0;
+	var defaultScaleX = 0.0;
+	var defaultScaleY = 0.0;
+	var defaultDirection = 0.0; // JOElwindows7: BOLO
+	var defaultScrollType = false; // JOELwindows7: BOLO
+
+	public static var receptorTween:FlxTween; // JOELwindows7: BOLO's receptor tweener
+
 	public function new(connectedSprite:StaticArrow, name:String)
 	{
 		super();
-		var defaultY = connectedSprite.y;
-		var defaultX = connectedSprite.x;
-		var defaultAngle = connectedSprite.angle;
+		// JOELwindows7: BOLO globalize variable
+		this.defaultY = connectedSprite.y;
+		this.defaultX = connectedSprite.x;
+		this.defaultAngle = connectedSprite.angle;
+		this.defaultScaleX = connectedSprite.scale.x;
+		this.defaultScaleY = connectedSprite.scale.y;
+		this.defaultDirection = connectedSprite.direction;
+		this.defaultScrollType = connectedSprite.downScroll;
 
 		sprite = connectedSprite;
+
+		connectedSprite.luaObject = this; // JOELwindows7: BOLO connected sprite lua object
 
 		className = name;
 
@@ -616,6 +666,39 @@ class LuaReceptor extends LuaClass
 				setter: SetNumProperty
 			},
 
+			// JOELwindows7: BOLO incoming
+			"direction" => {
+				defaultValue: 90,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, connectedSprite.direction);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
+			"defaultDirection" => {
+				defaultValue: 90,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, defaultDirection);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
+			"downScroll" => {
+				defaultValue: 0,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushboolean(l, connectedSprite.downScroll);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
+			// JOELwindows7: hyeah
+
 			"defaultAngle" => {
 				defaultValue: defaultAngle,
 				getter: function(l:State, data:Any):Int
@@ -678,6 +761,36 @@ class LuaReceptor extends LuaClass
 				}
 			},
 
+			"tweenScale" => {
+				// JOELwindows7: do not forget. this is BOLO's tween scale.
+				defaultValue: 0,
+				getter: function(l:State, data:Any)
+				{
+					Lua.pushcfunction(l, tweenScaleC);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "tweenScale is read-only.");
+					return 0;
+				}
+			},
+
+			"tweenDirection" => {
+				// JOELwindows7: BOLO ye
+				defaultValue: 0,
+				getter: function(l:State, data:Any)
+				{
+					Lua.pushcfunction(l, tweenDirectionC);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "tweenDirection is read-only.");
+					return 0;
+				}
+			},
+
 			"defaultY" => {
 				defaultValue: defaultY,
 				getter: function(l:State, data:Any):Int
@@ -693,8 +806,52 @@ class LuaReceptor extends LuaClass
 					// 4 = metatable
 					return 0;
 				}
-			}
+			},
+			// JOELwindows7: do not forget these BOLO stuffs too
+			"scaleX" => {
+				// defaultValue: connectedSprite.scale.x,
+				defaultValue: 1,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, connectedSprite.scale.x);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
 
+			"scaleY" => {
+				// defaultValue: connectedSprite.scale.y,
+				defaultValue: 1,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, connectedSprite.scale.y);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
+			"defaultScaleX" => {
+				// defaultValue: defaultScaleX,
+				defaultValue: 1, // JOELwindows7: yeah so on BOLO
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, defaultScaleX);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
+			"defaultScaleY" => {
+				// defaultValue: defaultScaleY,
+				defaultValue: 1, // JOELwindows7: BOLO
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, defaultScaleY);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+			// end BOLO stuffs
 		];
 	}
 
@@ -716,22 +873,53 @@ class LuaReceptor extends LuaClass
 		// 2 = x
 		// 3 = y
 		// 4 = time
+		// 5 = ease
 		var xp = LuaL.checknumber(state, 2);
 		var yp = LuaL.checknumber(state, 3);
 		var time = LuaL.checknumber(state, 4);
+		var ease = LuaL.checkstring(state, 5); // JOELwindows7: BOLO lua ease
 
 		Lua.getfield(state, 1, "id");
 		var index = Std.parseInt(Lua.tostring(state, -1).split('_')[1]);
 
 		var receptor = findReceptor(index);
 
+		var luaObject = receptor.luaObject; // JOELwindows7: BOLO lua object referencing
+
 		if (receptor == null)
 		{
 			LuaL.error(state, "Failure to tween (couldn't find receptor " + index + ")");
 			return 0;
 		}
-
-		FlxTween.tween(receptor, {x: xp, y: yp}, time);
+		// JOELwindows7: BOLO thouing tween
+		if (yp == receptor.y)
+		{
+			receptorTween = PlayState.instance.createTween(receptor, {x: xp}, time, {
+				ease: ModchartState.getFlxEaseByString(ease),
+				onUpdate: function(tw)
+				{
+					luaObject.defaultX = receptor.x;
+				},
+				onComplete: function(twn:FlxTween)
+				{
+					receptorTween = null;
+				}
+			});
+		}
+		else
+			receptorTween = PlayState.instance.createTween(receptor, {x: xp, y: yp}, time, {
+				ease: ModchartState.getFlxEaseByString(ease),
+				onUpdate: function(tw)
+				{
+					luaObject.defaultX = receptor.x;
+					luaObject.defaultY = receptor.y;
+				},
+				onComplete: function(twn:FlxTween)
+				{
+					receptorTween = null;
+				}
+			});
+		// FlxTween.tween(receptor, {x: xp, y: yp}, time);
 
 		return 0;
 	}
@@ -741,8 +929,10 @@ class LuaReceptor extends LuaClass
 		// 1 = self
 		// 2 = angle
 		// 3 = time
+		// 4 = ease
 		var nangle = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: seriously, don't forget ease! BOLO yeah
 
 		Lua.getfield(state, 1, "id");
 		var index = Std.parseInt(Lua.tostring(state, -1).split('_')[1]);
@@ -755,7 +945,43 @@ class LuaReceptor extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(receptor, {modAngle: nangle}, time);
+		// FlxTween.tween(receptor, {modAngle: nangle}, time);
+		// JOELwindows7: BOLO managed tween.
+		PlayState.instance.createTween(receptor, {modAngle: nangle}, time, {ease: ModchartState.getFlxEaseByString(ease)});
+
+		return 0;
+	}
+
+	// JOELwindows7: this shall not forget. BOLO
+	private static function tweenDirection(l:StatePointer):Int
+	{
+		// 1 = self
+		// 2 = angle
+		// 3 = time
+		var direction = LuaL.checknumber(state, 2);
+		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4);
+
+		Lua.getfield(state, 1, "id");
+		var index = Std.parseInt(Lua.tostring(state, -1).split('_')[1]);
+
+		var receptor = findReceptor(index);
+
+		var luaObject = receptor.luaObject;
+
+		if (receptor == null)
+		{
+			LuaL.error(state, "Failure to tween (couldn't find receptor " + index + ")");
+			return 0;
+		}
+
+		PlayState.instance.createTween(receptor, {direction: direction}, time, {
+			ease: ModchartState.getFlxEaseByString(ease),
+			onUpdate: function(tw)
+			{
+				luaObject.defaultDirection = receptor.direction;
+			}
+		});
 
 		return 0;
 	}
@@ -765,8 +991,10 @@ class LuaReceptor extends LuaClass
 		// 1 = self
 		// 2 = alpha
 		// 3 = time
+		// 4 = ease
 		var nalpha = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO ease
 
 		Lua.getfield(state, 1, "id");
 		var index = Std.parseInt(Lua.tostring(state, -1).split('_')[1]);
@@ -779,11 +1007,53 @@ class LuaReceptor extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(receptor, {alpha: nalpha}, time);
+		// FlxTween.tween(receptor, {alpha: nalpha}, time);
+		// JOELwindows7: BOLO managed tween
+		PlayState.instance.createTween(receptor, {alpha: nalpha}, time, {ease: ModchartState.getFlxEaseByString(ease)});
 
 		return 0;
 	}
 
+	// JOELwindows7: BOLO Tween scale pls
+	private static function tweenScale(l:StatePointer):Int
+	{
+		// 1 = self
+		// 2 = x
+		// 3 = y
+		// 4 = time
+		// 5 = ease
+		var nscaleX = LuaL.checknumber(state, 2);
+		var nscaleY = LuaL.checknumber(state, 3);
+		var time = LuaL.checknumber(state, 4);
+		var ease = LuaL.checkstring(state, 5);
+
+		Lua.getfield(state, 1, "id");
+		var index = Std.parseInt(Lua.tostring(state, -1).split('_')[1]);
+
+		var receptor = findReceptor(index);
+
+		var luaObject = receptor.luaObject;
+
+		if (receptor == null)
+		{
+			LuaL.error(state, "Failure to tween (couldn't find receptor " + index + ")");
+			return 0;
+		}
+
+		PlayState.instance.createTween(receptor.scale, {x: nscaleX, y: nscaleY}, time, {
+			ease: ModchartState.getFlxEaseByString(ease),
+			onUpdate: function(twn)
+			{
+				luaObject.defaultScaleX = receptor.scale.x;
+				luaObject.defaultScaleY = receptor.scale.y;
+			}
+		});
+
+		return 0;
+	}
+
+	private static var tweenScaleC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenScale); // JOELwindows7: BOLO
+	private static var tweenDirectionC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenDirection); // JOELwindows7: BOLO
 	private static var tweenPosC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenPos);
 	private static var tweenAngleC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenAngle);
 	private static var tweenAlphaC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenAlpha);
@@ -843,6 +1113,18 @@ class LuaCamera extends LuaClass
 				getter: function(l:State, data:Any):Int
 				{
 					Lua.pushnumber(l, connectedCamera.angle);
+					return 1;
+				},
+				setter: SetNumProperty
+			},
+
+			"zoom" => {
+				// JOELwindows7: thancc BOLO. Kade & friends, bruh! you even forgot regular zoom!!!
+				// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/LuaClass.hx#L998
+				defaultValue: connectedCamera.zoom,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, connectedCamera.zoom);
 					return 1;
 				},
 				setter: SetNumProperty
@@ -935,7 +1217,10 @@ class LuaCamera extends LuaClass
 			},
 
 			"shake" => {
-				// JOELwindows7: now camera shake lol
+				// JOELwindows7: now camera shake lol. okay, this time it was my rescratch.
+				// BOLO's rescratch already same.
+				// but basically bruh, they even forgot this fancy schmancy function of all
+				// taronuke funs! idk man.
 				defaultValue: 0,
 				getter: function(l:State, data:Any)
 				{
@@ -973,8 +1258,10 @@ class LuaCamera extends LuaClass
 		// 1 = self
 		// 2 = zoom
 		// 3 = time
+		// 4 = ease
 		var nzoom = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: ease pls BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -995,7 +1282,8 @@ class LuaCamera extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(camera, {zoom: nzoom}, time);
+		// FlxTween.tween(camera, {zoom: nzoom}, time);
+		PlayState.instance.createTween(camera, {zoom: nzoom}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1008,9 +1296,11 @@ class LuaCamera extends LuaClass
 		// 2 = x
 		// 3 = y
 		// 4 = time
+		// 5 = ease
 		var xp = LuaL.checknumber(state, 2);
 		var yp = LuaL.checknumber(state, 3);
 		var time = LuaL.checknumber(state, 4);
+		var ease = LuaL.checkstring(state, 5); // JOELwindows7: BOLO woohooo
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1029,7 +1319,8 @@ class LuaCamera extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(camera, {x: xp, y: yp}, time);
+		// FlxTween.tween(camera, {x: xp, y: yp}, time);
+		PlayState.instance.createTween(camera, {x: xp, y: yp}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1039,8 +1330,10 @@ class LuaCamera extends LuaClass
 		// 1 = self
 		// 2 = angle
 		// 3 = time
+		// 4 = ease
 		var nangle = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1059,7 +1352,8 @@ class LuaCamera extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(camera, {modAngle: nangle}, time);
+		// FlxTween.tween(camera, {modAngle: nangle}, time);
+		PlayState.instance.createTween(camera, {modAngle: nangle}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1069,8 +1363,10 @@ class LuaCamera extends LuaClass
 		// 1 = self
 		// 2 = alpha
 		// 3 = time
+		// 4 = ease
 		var nalpha = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1089,7 +1385,8 @@ class LuaCamera extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(camera, {alpha: nalpha}, time);
+		// FlxTween.tween(camera, {alpha: nalpha}, time);
+		PlayState.instance.createTween(camera, {alpha: nalpha}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1100,7 +1397,7 @@ class LuaCamera extends LuaClass
 		// 1 = self
 		// 2 = intensity
 		// 3 = duration
-		var intensity = LuaL.checknumber(state, 2);
+		var intensity = LuaL.checknumber(state, 2); // equals to BOLO's `namp`
 		var duration = LuaL.checknumber(state, 3);
 
 		Lua.getfield(state, 1, "id");
@@ -1317,9 +1614,11 @@ class LuaCharacter extends LuaClass
 		// 2 = x
 		// 3 = y
 		// 4 = time
+		// 5 = ease
 		var xp = LuaL.checknumber(state, 2);
 		var yp = LuaL.checknumber(state, 3);
 		var time = LuaL.checknumber(state, 4);
+		var ease = LuaL.checkstring(state, 5); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1338,7 +1637,8 @@ class LuaCharacter extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(char, {x: xp, y: yp}, time);
+		// FlxTween.tween(char, {x: xp, y: yp}, time);
+		PlayState.instance.createTween(char, {x: xp, y: yp}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1348,8 +1648,10 @@ class LuaCharacter extends LuaClass
 		// 1 = self
 		// 2 = angle
 		// 3 = time
+		// 4 = ease
 		var nangle = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1368,7 +1670,8 @@ class LuaCharacter extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(char, {angle: nangle}, time);
+		// FlxTween.tween(char, {angle: nangle}, time);
+		PlayState.instance.createTween(char, {angle: nangle}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1378,8 +1681,10 @@ class LuaCharacter extends LuaClass
 		// 1 = self
 		// 2 = alpha
 		// 3 = time
+		// 4 = ease
 		var nalpha = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1398,7 +1703,8 @@ class LuaCharacter extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(char, {alpha: nalpha}, time);
+		// FlxTween.tween(char, {alpha: nalpha}, time);
+		PlayState.instance.createTween(char, {alpha: nalpha}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1665,9 +1971,11 @@ class LuaSprite extends LuaClass
 		// 2 = x
 		// 3 = y
 		// 4 = time
+		// 5 = ease
 		var xp = LuaL.checknumber(state, 2);
 		var yp = LuaL.checknumber(state, 3);
 		var time = LuaL.checknumber(state, 4);
+		var ease = LuaL.checkstring(state, 5); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1686,7 +1994,8 @@ class LuaSprite extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(sprite, {x: xp, y: yp}, time);
+		// FlxTween.tween(sprite, {x: xp, y: yp}, time);
+		PlayState.instance.createTween(sprite, {x: xp, y: yp}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1696,8 +2005,10 @@ class LuaSprite extends LuaClass
 		// 1 = self
 		// 2 = angle
 		// 3 = time
+		// 4 = ease
 		var nangle = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1716,7 +2027,8 @@ class LuaSprite extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(sprite, {angle: nangle}, time);
+		// FlxTween.tween(sprite, {angle: nangle}, time);
+		PlayState.instance.createTween(sprite, {angle: nangle}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO managed
 
 		return 0;
 	}
@@ -1726,8 +2038,10 @@ class LuaSprite extends LuaClass
 		// 1 = self
 		// 2 = alpha
 		// 3 = time
+		// 4 = ease
 		var nalpha = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1746,7 +2060,8 @@ class LuaSprite extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(sprite, {alpha: nalpha}, time);
+		// FlxTween.tween(sprite, {alpha: nalpha}, time);
+		PlayState.instance.createTween(sprite, {alpha: nalpha}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1967,9 +2282,11 @@ class LuaGifSprite extends LuaClass
 		// 2 = x
 		// 3 = y
 		// 4 = time
+		// 5 = ease
 		var xp = LuaL.checknumber(state, 2);
 		var yp = LuaL.checknumber(state, 3);
 		var time = LuaL.checknumber(state, 4);
+		var ease = LuaL.checkstring(state, 5); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -1988,7 +2305,8 @@ class LuaGifSprite extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(sprite, {x: xp, y: yp}, time);
+		// FlxTween.tween(sprite, {x: xp, y: yp}, time);
+		PlayState.instance.createTween(sprite, {x: xp, y: yp}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -1998,8 +2316,10 @@ class LuaGifSprite extends LuaClass
 		// 1 = self
 		// 2 = angle
 		// 3 = time
+		// 4 = ease
 		var nangle = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -2018,7 +2338,8 @@ class LuaGifSprite extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(sprite, {angle: nangle}, time);
+		// FlxTween.tween(sprite, {angle: nangle}, time);
+		PlayState.instance.createTween(sprite, {angle: nangle}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO managed
 
 		return 0;
 	}
@@ -2028,8 +2349,10 @@ class LuaGifSprite extends LuaClass
 		// 1 = self
 		// 2 = alpha
 		// 3 = time
+		// 4 = ease
 		var nalpha = LuaL.checknumber(state, 2);
 		var time = LuaL.checknumber(state, 3);
+		var ease = LuaL.checkstring(state, 4); // JOELwindows7: BOLO
 
 		Lua.getfield(state, 1, "id");
 		var index = Lua.tostring(state, -1);
@@ -2048,7 +2371,8 @@ class LuaGifSprite extends LuaClass
 			return 0;
 		}
 
-		FlxTween.tween(sprite, {alpha: nalpha}, time);
+		// FlxTween.tween(sprite, {alpha: nalpha}, time);
+		PlayState.instance.createTween(sprite, {alpha: nalpha}, time, {ease: ModchartState.getFlxEaseByString(ease)}); // JOELwindows7: BOLO
 
 		return 0;
 	}
@@ -2171,6 +2495,33 @@ class LuaWindow extends LuaClass
 					return 0;
 				},
 			},
+			// JOELwindows7: additional BOLO bounds bruh
+			"boundsWidth" => { // TODO: turn into a table w/ bounds.x and bounds.y
+				defaultValue: Lib.application.window.display.bounds.width,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, Lib.application.window.display.bounds.width);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "boundsWidth is read-only.");
+					return 0;
+				}
+			},
+			"boundsHeight" => { // TODO: turn into a table w/ bounds.x and bounds.y
+				defaultValue: Lib.application.window.display.bounds.height,
+				getter: function(l:State, data:Any):Int
+				{
+					Lua.pushnumber(l, Lib.application.window.display.bounds.height);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "boundsHeight is read-only.");
+					return 0;
+				}
+			}
 		];
 	}
 
@@ -2180,11 +2531,16 @@ class LuaWindow extends LuaClass
 		// 2 = x
 		// 3 = y
 		// 4 = time
+		// 5 = ease
 		var xp = LuaL.checknumber(state, 2);
 		var yp = LuaL.checknumber(state, 3);
 		var time = LuaL.checknumber(state, 4);
+		var ease = LuaL.checkstring(state, 5); // JOELwindows7: BOLO
 
-		FlxTween.tween(Application.current.window, {x: xp, y: yp}, time);
+		// FlxTween.tween(Application.current.window, {x: xp, y: yp}, time);
+		PlayState.instance.createTween(Application.current.window, {x: xp, y: yp}, time, {
+			ease: ModchartState.getFlxEaseByString(ease)
+		}); // JOELwindows7: BOLO
 
 		return 0;
 	}

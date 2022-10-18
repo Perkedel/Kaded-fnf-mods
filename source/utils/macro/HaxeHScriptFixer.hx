@@ -29,6 +29,7 @@ using Lambda;
 
 class HaxeHScriptFixer
 {
+	#if macro
 	public static macro function build():Array<Field>
 	{
 		var cls = Context.getLocalClass().get();
@@ -107,4 +108,5 @@ class HaxeHScriptFixer
 
 		return fields;
 	}
+	#end
 }

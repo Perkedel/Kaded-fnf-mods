@@ -1,5 +1,7 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
+import flixel.addons.ui.FlxUIText;
 import flixel.util.FlxColor;
 import flixel.FlxState;
 import flixel.FlxG;
@@ -15,7 +17,9 @@ import openfl.net.FileReference;
 
 using StringTools;
 
-class StageDebugState extends FlxState
+// JOELwindows7: yo! you forgot this one!
+// COreState & FlxUI fy!
+class StageDebugState extends CoreState // FlxState
 {
 	public var daStage:String;
 	public var daBf:String;
@@ -29,18 +33,18 @@ class StageDebugState extends FlxState
 	var dad:Character;
 	var Stage:Stage;
 	var camFollow:FlxObject;
-	var posText:FlxText;
-	var curChar:FlxSprite;
+	var posText:FlxUIText;
+	var curChar:FlxUISprite;
 	var curCharIndex:Int = 0;
 	var curCharString:String;
-	var curChars:Array<FlxSprite>;
+	var curChars:Array<FlxUISprite>;
 	var dragging:Bool = false;
 	var oldMousePosX:Int;
 	var oldMousePosY:Int;
 	var camHUD:FlxCamera;
 	var camGame:FlxCamera;
 	var charMode:Bool = true;
-	var usedObjects:Array<FlxSprite> = [];
+	var usedObjects:Array<FlxUISprite> = [];
 
 	public function new(daStage:String = 'stage', daGf:String = 'gf', daBf:String = 'bf', opponent:String = 'dad')
 	{
@@ -105,25 +109,27 @@ class StageDebugState extends FlxState
 		FlxG.camera = camGame;
 		camGame.follow(camFollow);
 
-		posText = new FlxText(0, 0);
+		posText = new FlxUIText(0, 0);
 		posText.size = 26;
 		posText.scrollFactor.set();
 		posText.cameras = [camHUD];
 		add(posText);
 
-    addHelpText();
+		addHelpText();
 	}
 
-  var helpText:FlxText;
-  function addHelpText():Void {
-    var helpTextValue = "Help:\nQ/E : Zoom in and out\nI/J/K/L : Pan Camera\nSpace : Cycle Object\nShift : Switch Mode (Char/Stage)\nClick and Drag : Move Active Object\nZ/X : Rotate Object\nR : Reset Rotation\nCTRL-S : Save Offsets to File\nESC : Return to Stage\nPress F1 to hide/show this!\n";
-    helpText = new FlxText(940, 0, 0, helpTextValue, 15);
-    helpText.scrollFactor.set();
-		helpText.cameras = [camHUD];
-    helpText.color = FlxColor.WHITE;
+	var helpText:FlxUIText;
 
-    add(helpText);
-  }
+	function addHelpText():Void
+	{
+		var helpTextValue = "Help:\nQ/E : Zoom in and out\nI/J/K/L : Pan Camera\nSpace : Cycle Object\nShift : Switch Mode (Char/Stage)\nClick and Drag : Move Active Object\nZ/X : Rotate Object\nR : Reset Rotation\nCTRL-S : Save Offsets to File\nESC : Return to Stage\nPress F1 to hide/show this!\n";
+		helpText = new FlxUIText(940, 0, 0, helpTextValue, 15);
+		helpText.scrollFactor.set();
+		helpText.cameras = [camHUD];
+		helpText.color = FlxColor.WHITE;
+
+		add(helpText);
+	}
 
 	override public function update(elapsed:Float)
 	{
@@ -242,10 +248,10 @@ class StageDebugState extends FlxState
 		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S)
 			saveBoyPos();
 
-    if (FlxG.keys.justPressed.F1)
+		if (FlxG.keys.justPressed.F1)
 			FlxG.save.data.showHelp = !FlxG.save.data.showHelp;
 
-    helpText.visible = FlxG.save.data.showHelp;
+		helpText.visible = FlxG.save.data.showHelp;
 
 		super.update(elapsed);
 	}

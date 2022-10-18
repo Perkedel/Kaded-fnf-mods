@@ -1,0 +1,28 @@
+{
+    "ProgramUsed": "Visual Studio Code",
+    "generatedBy": "manually",
+    "charter": "YOUR_NAME",
+    "info": [
+        "Empty reliance is minimalist version of regular empty template.",
+        "It relies heavily on `_meta.json` so fields are removed here, leaving on the meta file"
+    ],
+    "song": {
+        "player2": "dad",
+        "player1": "bf",
+        "useCustomStage": false,
+        "stage": "stage",
+        "gfVersion": "gf",
+        "speed": 1,
+        "needsVoices": false,
+        "sectionLengths": [],
+        "songId": "empty",
+        "notes": [],
+        "chartVersion": "1",
+        "bpm": 100,
+        "sections": 0,
+        "validScore": true,
+        "allowedToHeadbang": false,
+        "preferredNoteAmount": 4,
+        "diffVariables": {}
+    }
+}

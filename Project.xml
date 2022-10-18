@@ -27,6 +27,11 @@
 	<define name="mobileC" if="mobile" />
 	<!-- hey why do we need this? Touchscreen supposed to be supported on all platforms man. -->
 
+	<!-- JOELwindows7: hscript position pls! -->
+	<define name="hscriptPos"/>
+	<!-- well define or haxedef appears to be the same. what do you think? -->
+	<!-- BOLO here uses `define`. -->
+
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
@@ -47,14 +52,148 @@
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
+	<!-- TODO: JOELwindows7: make Linux console more canon than just canon due to other console archaicly proprietary nature -->
+	<!-- hence you should not hope for console release, just linux it out! AUR or PPA it out! idk.. thancc, GabeN yey! -->
+
 	<!-- _____________________________ Path Settings ____________________________ -->
 
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
 	<set name="BUILD_DIR" value="export/arm64" if="arm64" />
+	<!-- JOELwindows7: please, RISC V yess!!!! -->
+	<set name="BUILD_DIR" value="export/riscv" if="riscv" />
 
 	<classpath name="source" />
+
+	<!-- Use defines to ensure compile-time definitions have readable context. -->
+	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
+
+	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
+	<haxedef name="FEATURE_DISCORD" if="cpp desktop" unless="mobile || neko || hl" />
+	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
+	<haxedef name="FEATURE_FILESYSTEM" if="desktop || sys" />
+	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. wtf bruh! linux troubled.-->
+	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile || linux"/>
+	<!-- JOELwindows7: okay fam, we've got libraries for most of the platform here yey, mobile still broken tho, Android yess. -->
+	<!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
+	<haxedef name="FEATURE_WEBM" if="desktop" unless = "neko || hl"/>
+	<!-- Defines whether StepMania files can be loaded. -->
+	<haxedef name="FEATURE_STEPMANIA" if="desktop || sys" />
+	<!-- Defines whether the Thread class can be used. -->
+	<haxedef name="FEATURE_MULTITHREADING" if="cpp || neko || hl || cs || python" />
+	<!-- <haxedef name="FEATURE_MULTITHREADING" if="target.threaded" /> -->
+	<!-- JOELwindows7: Defines whether uh I forgot -->
+
+	<!-- JOELwindows7: Defines whether the WebMer native should be enabled. This is for cpp-->
+	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="hl || neko"/>
+	<!-- JOELwindows7: and for JS -->
+	<haxedef name="FEATURE_WEBM_JS" if="web"/>
+	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
+	<!-- <haxedef name="FEATURE_VLC" if="cpp desktop || mobile" unless="neko || hl"/> -->
+	<haxedef name="FEATURE_VLC" if="cpp" unless="neko || hl || web || 32bits || 32bit"/>
+	<haxedef name="FEATURE_GIF" unless="web"/>
+	<!-- JOELwindows7: additional howl for LIME project xml here -->
+	<echo value="This is Odysee build" if="odysee"/>
+	<echo value="we have stolen mods in it" if="thief"/>
+
+	<!-- Defines whether the Mods menu will display before launching. -->
+	<haxedef name="FEATURE_MODCORE" if="cpp"/>
+
+	<!-- JOELwindows7: Defines whether the HTTP query possible. -->
+	<haxedef name="FEATURE_HTTP" unless="mobile"/>
+	<!-- JOELwindows7: Defines whether OpenAl audio manipulation is available -->
+	<haxedef name="FEATURE_AUDIO_MANIPULATE" if="cpp || web"/>
+	<!-- JOELwindows7: Defines whether FPS change is possible safely. was disallow mobile -->
+	<haxedef name="FEATURE_DISPLAY_FPS_CHANGE" />
+
+	<!-- oh, also MasterEric's way of defining -->
+	<haxedef name="FEATURE_GAMEJOLT" unless="flash || mobile"/>
+
+	<!-- JOELwindows7: clipboard error arch linux no solution pls help -->
+	<!-- 
+	```
+	Compiling group: linc_clipboard
+	g++ -I/home/joelwindows7/haxe/lib/linc_clipboard/git//linc/ -I/usr/include/gtk-3.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/libpng12 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/include/pixman-1 -c -fvisibility=hidden -O2 -fpic -fPIC -Wno-overflow -DHX_LINUX -DHXCPP_M64 -DHXCPP_VISIT_ALLOCS(haxe) -DHXCPP_GC_BIG_BLOCKS(gc) -DHX_SMART_STRINGS(haxe) -DHXCPP_API_LEVEL=400(haxe) -m64 -DHXCPP_M64 -I/home/joelwindows7/haxe/lib/hxcpp/4,2,1/include ... tags=[haxe,static]
+	- /home/joelwindows7/haxe/lib/linc_clipboard/git//linc/linc_clipboard_linux.cpp 
+	Error: In file included from /usr/include/pango-1.0/pango/pango-font.h:25,
+					from /usr/include/pango-1.0/pango/pango-attributes.h:25,
+					from /usr/include/pango-1.0/pango/pango.h:25,
+					from /usr/include/gtk-3.0/gdk/gdktypes.h:35,
+					from /usr/include/gtk-3.0/gdk/gdkapplaunchcontext.h:30,
+					from /usr/include/gtk-3.0/gdk/gdk.h:32,
+					from /usr/include/gtk-3.0/gtk/gtk.h:30,
+					from /home/joelwindows7/haxe/lib/linc_clipboard/git//linc/linc_clipboard_linux.cpp:3:
+	/usr/include/pango-1.0/pango/pango-coverage.h:28:10: fatal error: hb.h: Tidak ada berkas atau direktori seperti itu
+	28 | #include <hb.h>
+		|          ^~~~~~
+	kompilasi berakhir.
+	^CError: Source path "export/release/linux/obj/ApplicationMain" does not exist
+	```
+	 -->
+	<haxedef name="FEATURE_CLIPBOARD" unless="linux"/>
+
+	<!-- JOELwindows7: Frame counter troubles -->
+	<!-- 
+	```
+	Link: ApplicationMain
+	Error : Could not load module webmHelper@GetFramecount__1
+	```
+	 -->
+	<haxedef name="FEATURE_FRAME_COUNTER" if="windows cpp"/>
+
+	<!-- JOELwindows7: here force defines to know. -->
+	<!-- Write override defines for development special features -->
+
+	<!-- FORCE_INCLUDE_DLC to include separate_mods anyway which previously included only in debug build -->
+	<haxedef name="FORCE_INCLUDE_DLC" if="debug"/>
+	
+	<!-- Experimentals -->
+	<!-- Kade + YinYang48 Hex Weekend Kade Engine features. BUG on FlxDrawQuadItem on function render: 
+		`shader.bitmap.input = graphics.bitmap;` goes still null unless 
+		```
+		var bitmap = graphics.bitmap;
+		shader.bitmap.input = bitmap;
+		``` 
+		Weird, isn't that same?? what the? -->
+	<!-- <haxedef name="EXPERIMENTAL_HEX_WEEKEND"/> -->
+
+	<!-- furusystem's OpenFL XInput & Karaidon XInput -->
+	<!-- https://github.com/furusystems/openfl-xinput -->
+	<!-- https://github.com/karaidon/hXInput -->
+	<!-- <haxedef name="EXPERIMENTAL_OPENFL_XINPUT" if = "windows"/> -->
+	<!-- Error: Malfunction today as OpenFL updates drastically:
+	```
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:171: characters 16-22 : id: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:197: characters 27-44 : vibrationLeft: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:197: characters 46-63 : vibrationLeft: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:198: characters 31-52 : vibrationLeftNorm: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:198: characters 54-75 : vibrationLeftNorm: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:224: characters 28-46 : vibrationRight: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:224: characters 48-66 : vibrationRight: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:225: characters 32-54 : vibrationRightNorm: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:225: characters 56-78 : vibrationRightNorm: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:87: characters 22-34 : deadZone: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:87: characters 36-48 : deadZone: Custom property accessor is no longer supported, please use `set`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:88: characters 26-42 : deadZoneNorm: Custom property accessor is no longer supported, please use `get`
+	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:88: characters 44-60 : deadZoneNorm: Custom property accessor is no longer supported, please use `set`
+	source/CoreState.hx:189: characters 4-19 : Unknown identifier : xboxControllers
+	source/Controls.hx:561: characters 6-20 : Unknown identifier : xboxController
+	source/Controls.hx:563: characters 4-18 : Unknown identifier : xboxController
+	```
+	 -->
+	
+	<!-- kem0x Shaderer -->
+	<!-- <haxedef name="EXPERIMENTAL_KEM0X_SHADERS" unless="debug"/> -->
+
+	<!-- JOELwindows7: make the larsiusprime crashdumper complete -->
+	<!--if you want line numbers-->
+	<!-- <haxedef name="HXCPP_STACK_LINE" if="crashdumper"/>   -->
+	<!--if you want stack traces-->
+	<!-- <haxedef name="HXCPP_STACK_TRACE" if="crashdumper"/>   -->
+
+	<!-- JOELwindows7: BOLO final crash handler -->
+	<haxedef name="FEATURE_CRASH_BOLO" unless="html5"/>
 
 	<!-- JOELwindows7: yoinkoid-->
 	<!-- from https://github.com/luckydog7/Funkin-android/blob/master/Project.xml -->
@@ -80,10 +219,18 @@
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web || neko || hl" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
+
+	<!-- JOELwindows7: always embed core & script, says MasterEric -->
+	<!-- https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/project.xml -->
+	<library name="scripts" preload="true" />
+	<library name="core"
+					 preload="true"
+					 embed="true" />
 	
 	<section if="PRELOAD_ALL">
 		<library name="songs"    preload="true" />
 		<library name="shared"   preload="true" />
+		<library name="core"   preload="true" />
 		<library name="week-1"    preload="true" />
 		<library name="tutorial" preload="true" />
 		<library name="week1"    preload="true" />
@@ -108,6 +255,7 @@
 	<section if="NO_PRELOAD_ALL">
 		<library name="songs"    preload="false" />
 		<library name="shared"   preload="false" />
+		<library name="core"   preload="false" />
 		<library name="week-1"    preload="false" />
 		<library name="tutorial" preload="false" />
 		<library name="week1"    preload="false" />
@@ -133,6 +281,10 @@
 	<assets path="assets/songs"    library="songs"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/shared"   library="shared"   exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"   library="shared"   exclude="*.mp3" unless="web"/>
+	<assets path="assets/core"   library="core"   exclude="*.ogg" if="web"/>
+	<assets path="assets/core"   library="core"   exclude="*.mp3" unless="web"/>
+	<assets path="assets/scripts"   library="scripts"   exclude="*.ogg" if="web"/>
+	<assets path="assets/scripts"   library="scripts"   exclude="*.mp3" unless="web"/>
 	<assets path="assets/week-1"    library="week-1"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week-1"    library="week-1"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/tutorial" library="tutorial" exclude="*.ogg" if="web"/>
@@ -183,8 +335,8 @@
 	<assets path="assets/videos" include="*.ogg" unless="web"/>
 
 	<!-- for VLC Cutscener BrightFyre yess -->
-	<assets path="plugins/" rename='' if="windows"/>
-	<assets path="dlls/" rename='' if="windows"/>
+	<!-- <assets path="plugins/" rename='' if="windows"/>
+	<assets path="dlls/" rename='' if="windows"/> -->
 	
 	<assets path="assets/sm"    library="sm"    exclude="*.ogg" if="web"/>
 	<assets path="assets/sm"    library="sm"    exclude="*.mp3" unless="web"/>
@@ -208,7 +360,7 @@
 	<!-- JOELwindows7: Prevent FileDaddy 1 click being appeared since -->
 	<!-- This mod wasn't meant to be asset addition or replacement at all -->
 	<!-- Yeah this mod is the full Executable standalone -->
-	<assets path='.disable_gb1click_filedaddy'/>
+	<assets path='.disable_gb1click_filedaddy' unless="html5"/>
 
 	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY 
 		TO FIX ONE OF THEM, I CONVERTED IT TO OTF. DUNNO IF YOU NEED TO
@@ -216,6 +368,11 @@
 		NOT USING A DIRECT THING TO THE ASSET!!!
 	-->
 	<assets path="assets/fonts" embed='true'/>
+
+	<!-- first, call macro allow this -->
+	<haxeflag name="--macro" value="allowPackage('flash')" />
+	<!-- https://stackoverflow.com/a/21422639/9079640 -->
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
@@ -240,15 +397,18 @@
 	<!-- JOELwindows7: VVV Danger -->
 	<!-- <haxelib name="faxe"/>  -->
 	<!-- JOELwindows7: ^^^ dangerous experiment-->
-	<haxelib name="polymod"/>
-	<haxelib name="discord_rpc" if="cpp desktop" unless="neko || hl"/>
-	<haxelib name="linc_luajit" if="desktop"/>
+	<!-- JOELwindows7: nvm, library if can't be defined seemingly. -->
+	<haxelib name="polymod" if="cpp"/>
+	<haxelib name="discord_rpc" if="cpp desktop" unless="mobile || neko || hl"/>
+	<haxelib name="linc_luajit" if="cpp"/>
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
-	<haxelib name="hxvm-luajit" if="desktop"/>
-	<!-- <haxelib name="hxcpp-debug-server" if="cpp desktop"/> -->
+	<haxelib name="hxvm-luajit" />
+	<haxelib name="hxcpp-debug-server" if="cpp"/>
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
+
+	
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
@@ -279,7 +439,7 @@
 	<!-- not updated anymore, I guess, it's error here. Unknown identifier : getModificationDate -->
 
 	<!-- JOELwindows7: vegardid filesystemer -->
-	<haxelib name="haxe-files"/>
+	<!-- <haxelib name="haxe-files"/> -->
 
 	<!-- JOELwindows7: used by BulbyVR with Modding+ for modchart instead of Lua. -->
 	<!-- <haxelib name="hscript"/> -->
@@ -301,6 +461,10 @@
 	<!-- <include path="source/vlc/LibVLCBuild.xml" /> -->
 	<!-- https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/5 -->
 	<!-- https://github.com/datee/HaxeVLC -->
+	<!-- NEW BrightFyre VLC MP4 support (now handed over to PolybiusProxy, as hxCodec) -->
+	<!-- <haxelib name="hxCodec" if="cpp desktop || mobile" unless="neko || hl"/> -->
+	<!-- <haxelib name="hxCodec" if="FEATURE_VLC" unless="web"/> -->
+	<haxelib name="hxCodec" if="cpp" unless="neko || hl || web || 32bits || 32bit"/>
 
 	<!-- JOELwindows7: try Android Media extension thingy -->
 	<!-- <haxelib name="extension-android-media"/> -->
@@ -339,7 +503,9 @@
 
 	<!-- JOELwindows7: GIF image support that should've been there since we are not from SparrowAtlas XML days -->
 	<!-- GrowtopiaFli / GwebDev too -->
-	<haxelib name="yagp" unless = "web"/>
+	<!-- <haxelib name="yagp" if="FEATURE_GIF"/> -->
+	<haxelib name="yagp" unless="web"/>
+	<!-- <haxelib name="yagp"/> -->
 	<!-- ah peck, i can't believe not work on web -->
 	<!-- 
 	```
@@ -365,7 +531,31 @@
 	/opt/hostedtoolcache/haxe/4.2.4/x64/lib/yagp/1,1,4/com/yagp/GifDecoder.hx:82: characters 46-54 : openfl.utils.ByteArray has no field byteView
 	Error: Process completed with exit code 1.
 	```
+
+	another
+	```
+	/home/joelwindows7/haxe/lib/yagp/1,1,4/com/yagp/GifDecoder.hx:82: characters 46-54 : openfl.utils.ByteArray has no field byteView
+	```
 	 -->
+	<!-- Hey, try this fix!: https://github.com/Paidyy/haxe-yaml.git -->
+	<!-- oops, that's not yagp. it's yaml interpreter! -->
+
+	<!-- JOELwindows7: The Crashdumper. larsius prime (bit of trolling / general infinity if not wrong) -->
+	<!-- https://stackoverflow.com/questions/71878287/is-there-anyway-to-make-to-write-a-crash-handler-for-haxeflixel-that-can-create -->
+	<!-- https://github.com/larsiusprime/crashdumper/ -->
+	<!-- <haxelib name="crashdumper"/> -->
+
+	<!-- JOELwindows7: da android things for funkin64 -->
+	<haxelib name="extension-videoview" if="android"/>
+  	<haxelib name="extension-androidtools" if="android"/>
+
+	<!-- JOELwindows7: additional PEngine (not to be confused with Psych Engine) -->
+	<!-- <haxelib name="openfl-webm" if="desktop"/> -->
+	<haxelib name="yaml"/>
+	<haxelib name="udprotean" />
+	<haxelib name="linc_clipboard" unless = "FEATURE_CLIPBOARD"/>
+	<haxelib name="markdown" />
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
@@ -395,13 +585,28 @@
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 
-	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
+	<haxedef name="HXCPP_GC_BIG_BLOCKS" if="cpp"/>
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
+	<!-- JOELwindows7: BOLO! Show debug traces for hxCodec -->
+	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
+
+	<!-- JOELwindows7: BOLO's using it now. -->
+	<!-- This Is For Crashing ERRORS! Used for Izzy Engine's crash handler -->
+	<haxedef name="HXCPP_STACK_TRACE" if="desktop"/>  <!--if you want stack traces--> 
+	<haxedef name="HXCPP_CHECK_POINTER" if="desktop" />
+	<haxedef name="HXCPP_STACK_LINE" if="desktop" />
+
 	<!-- JOELwindows7: the ARM64 definition for ARM PC. for that BrightFyre VLC thingy -->
 	<haxedef name="HXCPP_ARM64" if="arm64" unless="mobile"/>
+
+	<!-- JOELwindows7: RISC V pls? -->
+	<haxedef name="HXCPP_RISCV" if="riscv"/>
+
+	<!-- JOELwindows7: BOLO disable deprecation warning pls. BOLO's commit d39409be823cc18d97912f570115ff8eb9ecafb2 -->
+	<haxedef name="no-deprecation-warnings" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 
@@ -428,7 +633,31 @@
 
 	<!-- Never disable debug message, especially on Mobile -->
 	<haxeflag name="--no-traces" unless="debug || mobile" />
-	<haxeflag name="--dce full" if="release" />
+	<haxeflag name="--dce full" if="release || final" />
+	<!-- BOLO removes DCE entirely, but uh isn't this deoptimize the game? let's just disable dce on debug, idk. -->
+	<haxeflag name="-dce no" if="debug"/>
+
+	<!-- wtf -->
+	<!-- 
+		```
+		C:/HaxeToolkit/haxe/lib/haxe-files/3,0,0/src/hx/files/internal/Macros.hx:38: [INFO] Setting compiler define 'filesystem_support'.
+		C:/HaxeToolkit/haxe/lib/haxe-concurrent/3,0,2/src/hx/concurrent/internal/Macros.hx:35: [INFO] Setting compiler define 'threads'.
+		C:/HaxeToolkit/haxe/lib/flixel/4,11,0/flixel/FlxG.hx:3: characters 8-17 : You cannot access the flash package while in a macro (for flash.Lib)
+		C:/HaxeToolkit/haxe/lib/flixel/4,11,0/flixel/util/FlxTimer.hx:3: characters 8-19 : ... referenced here
+		source/DokiDoki.hx:21: characters 8-28 : ... referenced here
+		source/const/Perkedel.hx:24: characters 8-16 : ... referenced here
+		C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\source\import.hx:6: characters 8-22 : ... referenced here
+		C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\source\import.hx:5: characters 8-25 : ... referenced here
+		C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\source\import.hx:3: characters 8-17 : ... referenced here
+		C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods\source\import.hx:1: characters 8-13 : ... referenced here
+		source/ui/components/input/InteractableUIList.hx:29: character 1 : ... referenced here
+		```
+	 -->
+	<!-- https://stackoverflow.com/a/21422639/9079640 -->
+	<!-- <haxeflag name="macro" value="allowPackage('flash')" /> -->
+	<!-- dash dash macro -->
+	<!-- <haxeflag name="macro allowPackage('flash')" /> -->
+	<!-- called on very top -->
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
 	<!-- <haxedef name="NG_LOGIN" if="newgrounds" /> -->
@@ -447,96 +676,15 @@
 	<!-- <android permission="android.permission.WAKE_LOCK"/> -->
 	<android permission="android.permission.VIBRATE"/>
 	<android permission="android.permission.READ_EXTERNAL_STORAGE"/>
-	
-	<!-- Use defines to ensure compile-time definitions have readable context. -->
-	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
 
-	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
-	<haxedef name="FEATURE_DISCORD" if="desktop || cpp" unless="mobile || neko || hl" />
-	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
-	<haxedef name="FEATURE_FILESYSTEM" if="desktop || sys" />
-	<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
-	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile"/>
-	<!-- JOELwindows7: okay fam, we've got libraries for most of the platform here yey, mobile still broken tho, Android yess. -->
-	<!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
-	<haxedef name="FEATURE_WEBM" if="windows" unless = "neko || hl"/>
-	<!-- Defines whether StepMania files can be loaded. -->
-	<haxedef name="FEATURE_STEPMANIA" if="desktop || sys" />
-	<!-- Defines whether the Thread class can be used. -->
-	<haxedef name="FEATURE_MULTITHREADING" if="cpp || neko || hl || cs || python" />
-	<!-- <haxedef name="FEATURE_MULTITHREADING" if="target.threaded" /> -->
-	<!-- JOELwindows7: Defines whether uh I forgot -->
+	<!-- JOELwindows7: Here funkin64 figured out android permissions -->
+	<!-- https://github.com/whiteninja1/funkin-64-public/blob/main/Project.xml -->
+	<config:android permission="android.permission.READ_EXTERNAL_STORAGE"/>
+  	<config:android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-	<!-- JOELwindows7: Defines whether the WebMer native should be enabled. This is for cpp-->
-	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="hl || neko"/>
-	<!-- JOELwindows7: and for JS -->
-	<haxedef name="FEATURE_WEBM_JS" if="web"/>
-	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
-	<haxedef name="FEATURE_VLC" if="cpp windows" unless="neko || hl || mobile"/>
-	<haxedef name="FEATURE_GIF" unless="web"/>
-	<!-- JOELwindows7: additional howl for LIME project xml here -->
-	<echo value="This is Odysee build" if="odysee"/>
-	<echo value="we have stolen mods in it" if="thief"/>
-
-	<!-- Defines whether the Mods menu will display before launching. -->
-	<haxedef name="FEATURE_MODCORE" if="desktop" />
-
-	<!-- JOELwindows7: Defines whether the HTTP query possible. -->
-	<haxedef name="FEATURE_HTTP" unless="mobile"/>
-	<!-- JOELwindows7: Defines whether OpenAl audio manipulation is available -->
-	<haxedef name="FEATURE_AUDIO_MANIPULATE" if="cpp"/>
-	<!-- JOELwindows7: Defines whether FPS change is possible safely -->
-	<haxedef name="FEATURE_DISPLAY_FPS_CHANGE" unless = "mobile"/>
-
-	<!-- oh, also MasterEric's way of defining -->
-	<haxedef name="FEATURE_GAMEJOLT" if="gamejolt"/>
+	<!-- JOELwindows7: Use defines has been moved to top according to BOLO -->
+	<!-- So the library reference if statements will also already defined for it. -->
 
 	
-
-	<!-- JOELwindows7: here force defines to know. -->
-	<!-- Write override defines for development special features -->
-
-	<!-- FORCE_INCLUDE_DLC to include separate_mods anyway which previously included only in debug build -->
-	<haxedef name="FORCE_INCLUDE_DLC" if="debug"/>
-
-	
-	<!-- Experimentals -->
-	<!-- Kade + YinYang48 Hex Weekend Kade Engine features. BUG on FlxDrawQuadItem on function render: 
-		`shader.bitmap.input = graphics.bitmap;` goes still null unless 
-		```
-		var bitmap = graphics.bitmap;
-		shader.bitmap.input = bitmap;
-		``` 
-		Weird, isn't that same?? what the? -->
-	<!-- <haxedef name="EXPERIMENTAL_HEX_WEEKEND"/> -->
-
-	<!-- furusystem's OpenFL XInput & Karaidon XInput -->
-	<!-- https://github.com/furusystems/openfl-xinput -->
-	<!-- https://github.com/karaidon/hXInput -->
-	<!-- <haxedef name="EXPERIMENTAL_OPENFL_XINPUT" if = "windows"/> -->
-	<!-- Error: Malfunction today as OpenFL updates drastically:
-	```
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:171: characters 16-22 : id: Custom property accessor is no longer supported, please use `get`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:197: characters 27-44 : vibrationLeft: Custom property accessor is no longer supported, please use `get`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:197: characters 46-63 : vibrationLeft: Custom property accessor is no longer supported, please use `set`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:198: characters 31-52 : vibrationLeftNorm: Custom property accessor is no longer supported, please use `get`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:198: characters 54-75 : vibrationLeftNorm: Custom property accessor is no longer supported, please use `set`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:224: characters 28-46 : vibrationRight: Custom property accessor is no longer supported, please use `get`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:224: characters 48-66 : vibrationRight: Custom property accessor is no longer supported, please use `set`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:225: characters 32-54 : vibrationRightNorm: Custom property accessor is no longer supported, please use `get`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360Controller.hx:225: characters 56-78 : vibrationRightNorm: Custom property accessor is no longer supported, please use `set`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:87: characters 22-34 : deadZone: Custom property accessor is no longer supported, please use `get`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:87: characters 36-48 : deadZone: Custom property accessor is no longer supported, please use `set`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:88: characters 26-42 : deadZoneNorm: Custom property accessor is no longer supported, please use `get`
-	C:/HaxeToolkit/haxe/lib/openfl-xinput/git/com/furusystems/openfl/input/xinput/XBox360ThumbStick.hx:88: characters 44-60 : deadZoneNorm: Custom property accessor is no longer supported, please use `set`
-	source/CoreState.hx:189: characters 4-19 : Unknown identifier : xboxControllers
-	source/Controls.hx:561: characters 6-20 : Unknown identifier : xboxController
-	source/Controls.hx:563: characters 4-18 : Unknown identifier : xboxController
-	```
-	 -->
-	
-	<!-- kem0x Shaderer -->
-	<!-- <haxedef name="EXPERIMENTAL_KEM0X_SHADERS" unless="debug"/> -->
-
 
 </project>

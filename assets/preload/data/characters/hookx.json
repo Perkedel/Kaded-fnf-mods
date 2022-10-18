@@ -1,0 +1,65 @@
+{
+    "name": "Hookx",
+    "displayName": "Hookx",
+    "asset": "characters/Hookx",
+    "barColor": "#5000E6",
+    "flipX": false,
+    "startingAnim": "idle",
+    "font": "Ubuntu Bold",
+    "fontDrop": "Ubuntu Bold",
+    "fontColor": "0xFF055bff",
+    "fontColorDrop": "0xFF7d00bf",
+    "dialogueChatSoundPaths": [
+        "textSpeak/hookx/talk1",
+        "textSpeak/hookx/talk2",
+        "textSpeak/hookx/talk3"
+    ],
+    "deathSoundPaths":[
+        {
+            "pathPrefix":"fnf_loss_sfx-BSoD",
+            "volume":1.0
+        }
+    ],
+    "heartOrgans": [{
+        "character": "hookx",
+        "isEmulator": true,
+        "initHR": 70,
+        "maxHR": 400,
+        "minHR": 70,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "phobia": {
+        "lightningStorm": false,
+        "cancelCulture": false
+    },
+    "animations": [{
+            "name": "idle",
+            "prefix": "Hookx idle dance",
+            "offsets": [0, -90],
+            "looped": false
+        },
+        {
+            "name": "singUP",
+            "prefix": "Hookx Sing Note UP",
+            "offsets": [0, -90]
+        },
+        {
+            "name": "singLEFT",
+            "prefix": "Hookx Sing Note LEFT",
+            "offsets": [0, -90]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "Hookx Sing Note RIGHT",
+            "offsets": [0, -90]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "Hookx Sing Note DOWN",
+            "offsets": [0, -90]
+        }
+    ]
+}

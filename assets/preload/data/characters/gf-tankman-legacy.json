@@ -1,0 +1,67 @@
+{
+    "name": "Girlfriend (Gunpointed by tankmen)",
+    "displayName": "Girlfriend",
+    "asset": "tankman/gfTankman",
+    "barColor": "#A5004D",
+    "startingAnim": "danceRight",
+    "isDancing": true,
+    "holdLength": 4.1,
+    "replacesGF": true,
+    "heartOrgans": [{
+        "character": "gf",
+        "initHR": 80,
+        "maxHR": 400,
+        "minHR": 80,
+        "heartTierBoundaries": [100, 150, 200, 300],
+        "successionAdrenalAdd": [6, 5, 4, 3],
+        "fearShockAdd": [50, 30, 20, 15],
+        "relaxMinusPerBeat": [1, 2, 2, 3]
+    }],
+    "phobia": {
+        "lightningStorm": true
+    },
+    "animations": [{
+            "name": "singLEFT",
+            "prefix": "GF Dancing at Gunpoint",
+            "offsets": [0, -19]
+        },
+        {
+            "name": "singRIGHT",
+            "prefix": "GF Dancing at Gunpoint",
+            "offsets": [0, -20]
+        },
+        {
+            "name": "singUP",
+            "prefix": "GF Dancing at Gunpoint",
+            "offsets": [0, 4]
+        },
+        {
+            "name": "singDOWN",
+            "prefix": "GF Dancing at Gunpoint",
+            "offsets": [0, -20]
+        },
+        {
+            "name": "danceLeft",
+            "prefix": "GF Dancing at Gunpoint",
+            "offsets": [0, -9],
+            "frameIndices": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        },
+        {
+            "name": "danceRight",
+            "prefix": "GF Dancing at Gunpoint",
+            "offsets": [0, -9],
+            "frameIndices": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+        },
+        {
+            "name": "cheer",
+            "prefix": "GF Dancing at Gunpoint",
+            "offsets": [0, 0]
+        },
+        {
+            "name": "sad",
+            "prefix": "GF Crying at Gunpoint ",
+            "offsets": [-2, -21],
+            "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        }
+    ]
+}

@@ -1,28 +1,32 @@
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
-class HealthIcon extends FlxSprite
+// JOELwindows7: use `FlxUISprite` instead.
+class HealthIcon extends FlxUISprite
 {
 	public var char:String = 'bf';
 	public var isPlayer:Bool = false;
 	public var isOldIcon:Bool = false;
+	public var forceIcon:Bool = false;
 
 	/**
 	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying
 	 */
-	public var sprTracker:FlxSprite;
+	public var sprTracker:FlxSprite; // JOELwindows7: turns out FlxUISprite fy causes position trouble.
 
-	public function new(?char:String = "bf", ?isPlayer:Bool = false)
+	public function new(?char:String = "bf", ?isPlayer:Bool = false, ?forceIcon:Bool = false)
 	{
 		super();
 
 		this.char = char;
 		this.isPlayer = isPlayer;
+		this.forceIcon = forceIcon; // JOELwindows7: icon is forced to be this exact icon, skipping the filtering.
 
 		isPlayer = isOldIcon = false;
 
@@ -35,9 +39,16 @@ class HealthIcon extends FlxSprite
 		(isOldIcon = !isOldIcon) ? changeIcon("bf-old") : changeIcon(char);
 	}
 
+	// JOELwindows7: this inspires me to have swap icon into another icons we have.
+	public function resetIcon()
+	{
+		changeIcon(char);
+	}
+
 	public function changeIcon(char:String)
 	{
-		if (char != 'bf-pixel' && char != 'bf-old')
+		// JOELwindows7: maybe we should not do this filter anymore? or.. add something?
+		if ((char != 'bf-pixel' && char != 'bf-old' && char != 'bf-holding-gf') && !forceIcon)
 			char = char.split("-")[0];
 
 		if (!OpenFlAssets.exists(Paths.image('icons/icon-' + char)))

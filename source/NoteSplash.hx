@@ -1,12 +1,14 @@
 // JOELwindows7: Psyched note splash lmao
 // yoink from https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/NoteSplash.hx
+// pls FlxUI fy
 package;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
-class NoteSplash extends FlxSprite
+class NoteSplash extends FlxUISprite
 {
 	// public var colorSwap:ColorSwap = null;
 	private var idleAnim:String;
@@ -17,9 +19,9 @@ class NoteSplash extends FlxSprite
 	{
 		super(x, y);
 
-		var skin:String = 'Arrow-splash';
+		var skin:String = 'Arrows-splash';
 		if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0 && PlayState.SONG.useCustomNoteStyle)
-			skin = PlayState.SONG.noteStyle + "-splash";
+			skin = PlayState.SONG.noteStyle + (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "") + "-splash";
 
 		loadAnims(skin);
 
@@ -39,10 +41,43 @@ class NoteSplash extends FlxSprite
 
 		if (texture == null)
 		{
-			texture = 'Arrow-splash';
+			texture = 'Arrows-splash';
 			if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0)
-				texture = PlayState.SONG.noteStyle + "-splash" + (noteTypeIs == 2 ? "-duar" : "");
+				texture = PlayState.SONG.noteStyle
+					+ (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "")
+					+ "-splash"
+					+ (noteTypeIs == 2 ? "-duar" : "");
 		}
+
+		antialiasing = FlxG.save.data.antialiasing && !texture.contains("pixel"); // JOELwindows7: decide antialiasing!
+
+		if (textureLoaded != texture)
+		{
+			loadAnims(texture);
+		}
+		// colorSwap.hue = hueColor;
+		// colorSwap.saturation = satColor;
+		// colorSwap.brightness = brtColor;
+		offset.set(10, 10);
+
+		var animNum:Int = FlxG.random.int(1, 2);
+		animation.play('note' + note + '-' + animNum, true);
+		if (animation.curAnim != null)
+			animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
+	}
+
+	public function bruteForceSetupNoteSplash(x:Float, y:Float, note:Int = 0, texture:String = null, hueColor:Float = 0, satColor:Float = 0,
+			brtColor:Float = 0)
+	{
+		setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
+		alpha = 0.6;
+
+		if (texture == null)
+		{
+			texture = 'Arrow-splash';
+		}
+
+		antialiasing = FlxG.save.data.antialiasing && !texture.contains("pixel"); // JOELwindows7: decide antialiasing!
 
 		if (textureLoaded != texture)
 		{
@@ -61,8 +96,10 @@ class NoteSplash extends FlxSprite
 
 	function loadAnims(skin:String)
 	{
+		// JOELwindows7: now with pixel!
 		frames = Paths.doesTextAssetExist(Paths.sparrowXml("noteskins/" + skin,
-			"shared")) ? Paths.getSparrowAtlas("noteskins/" + skin) : Paths.getSparrowAtlas("noteskins/" + ("Arrow-splash" + (noteTypeIs == 2 ? "-duar" : "")));
+			"shared")) ? Paths.getSparrowAtlas("noteskins/" + skin) : Paths.getSparrowAtlas("noteskins/"
+				+ ("Arrows" + (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "") + "-splash" + (noteTypeIs == 2 ? "-duar" : "")));
 		for (i in 1...3)
 		{
 			animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);
