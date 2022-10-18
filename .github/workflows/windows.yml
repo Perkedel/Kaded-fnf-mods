@@ -200,7 +200,7 @@ jobs:
           pwd
           butler push D:\a\Kaded-fnf-mods\Kaded-fnf-mods\export\release\windows\bin joelwindows7/last-funkin-moments:windows-GHAction
       
-       - name: Yo, release now
+      - name: Yo, release now
         # uses: softprops/action-gh-release@v0.1.13
         # if: startsWith(github.ref, 'refs/tags/')
         #  https://github.com/marketplace/actions/upload-files-to-a-github-release
