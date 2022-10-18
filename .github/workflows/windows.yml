@@ -20,9 +20,9 @@ jobs:
     # The type of runner that the job will run on
     runs-on: windows-latest
     steps:
-    # Steps represent a sequence of tasks that will be executed as part of the job
       - name: Do checkout pls
         uses: actions/checkout@v2
+      # Steps represent a sequence of tasks that will be executed as part of the job
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
       - name: first, begin caching stuffs
