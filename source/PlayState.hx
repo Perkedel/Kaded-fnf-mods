@@ -2307,10 +2307,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						// {
 						babyArrow.y -= 10;
 						babyArrow.alpha = 0;
-						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
-							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index), onComplete: function(twn:FlxTween){
+						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {
+							ease: FlxEase.circOut,
+							startDelay: 0.5 + (0.2 * index),
+							onComplete: function(twn:FlxTween)
+							{
 								babyArrow.resetPosToCheckpoint();
-							}}); // JOELwindows7: managed BOLO tween.
+							}
+						}); // JOELwindows7: managed BOLO tween.
 						// }
 					}
 					else
@@ -2349,10 +2353,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						// {
 						babyArrow.y -= 10;
 						babyArrow.alpha = 0;
-						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1,
-							{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * index),onComplete: function(twn:FlxTween){
+						createTween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {
+							ease: FlxEase.circOut,
+							startDelay: 0.5 + (0.2 * index),
+							onComplete: function(twn:FlxTween)
+							{
 								babyArrow.resetPosToCheckpoint();
-							}}); // JOELwindows7: managed BOLO tween.
+							}
+						}); // JOELwindows7: managed BOLO tween.
 						// }
 					}
 					else
@@ -6113,8 +6121,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 										2)))
 									+ daNote.noteYOff;
 						 */
-						daNote.y = (strumY
-							// - 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+						daNote.y = (strumY // - 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 							- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(scrollSpeed == 1 ? SONG.speed : scrollSpeed,
 								2)))
 							+ daNote.noteYOff;
@@ -6479,8 +6486,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 				// JOELwindows7: BOLO
 				// if (Conductor.songPosition > ((350 * songMultiplier) / (PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed))
-				if (Conductor.songPosition > ((350 * songMultiplier) / (scrollSpeed == 1 ? SONG.speed : scrollSpeed))
-					+ daNote.strumTime)
+				if (Conductor.songPosition > ((350 * songMultiplier) / (scrollSpeed == 1 ? SONG.speed : scrollSpeed)) + daNote.strumTime)
 				{
 					if (daNote.isSustainNote && daNote.wasGoodHit && Conductor.songPosition >= daNote.strumTime)
 					{
@@ -7483,7 +7489,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			// JOELwindows7: idk man.
 			var comboSpr:FlxUISprite = new FlxUISprite();
-			comboSpr.loadGraphic(Paths.loadImage(pixelShitPart1 + 'combo' + pixelShitPart2, pixelShitPart3));
+			// comboSpr.loadGraphic(Paths.loadImage(pixelShitPart1 + 'combo' + pixelShitPart2, pixelShitPart3));
+			comboSpr.loadGraphic(Paths.imageGraphic(pixelShitPart1 + 'combo' + pixelShitPart2, pixelShitPart3));
 			comboSpr.screenCenter();
 			comboSpr.x = rating.x - 84; // JOELwindows7: was +0. now with BOLO -84.
 			comboSpr.y = rating.y + 145; // JOELwindows7: was +100. now with BOLO +145.
@@ -7491,8 +7498,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			comboSpr.velocity.y -= 150;
 			// JOELwindows7: BOLO add it now.
 			if (FlxG.save.data.showCombo)
-			if ((!PlayStateChangeables.botPlay || loadRep) && combo >= 5)
-				add(comboSpr);
+				if ((!PlayStateChangeables.botPlay || loadRep) && combo >= 5)
+					add(comboSpr);
 
 			currentTimingShown.screenCenter();
 			currentTimingShown.x = comboSpr.x + 225; // JOELwindows7: was +100. now is BOLO +255
@@ -7561,7 +7568,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			{
 				// JOELwindows7: okeh. drastic measures.
 				var numScore:FlxUISprite = new FlxUISprite();
-				numScore.loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2, pixelShitPart3));
+				// numScore.loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2, pixelShitPart3));
+				numScore.loadGraphic(Paths.imageGraphic(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2, pixelShitPart4));
 				numScore.screenCenter();
 				numScore.x = rating.x + (43 * daLoop) - 50;
 				numScore.y = rating.y + 100;
@@ -8197,7 +8205,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						0,
 						direction,
 						// -(166 * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166)
-						-(Ratings.timingWindows[0] * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / Ratings.timingWindows[0]) // JOELwindows7: BOLO
+						- (Ratings.timingWindows[0] * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / Ratings.timingWindows[0]) // JOELwindows7: BOLO
 					]);
 					saveJudge.push("miss");
 				}
@@ -8209,7 +8217,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					0,
 					direction,
 					// -(166 * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166)
-					-(Ratings.timingWindows[0] * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / Ratings.timingWindows[0])
+					- (Ratings.timingWindows[0] * Math.floor((PlayState.rep.replay.sf / 60) * 1000) / Ratings.timingWindows[0])
 				]);
 				saveJudge.push("miss");
 			}
@@ -9324,7 +9332,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		else
 		{
 			scrollTween = createTween(this, {scrollSpeed: newSpeed}, time, {
-			// scrollTween = createTweenNum(PlayStateChangeables.scrollSpeed, newSpeed, time, {
+				// scrollTween = createTweenNum(PlayStateChangeables.scrollSpeed, newSpeed, time, {
 				ease: ease,
 				onComplete: function(twn:FlxTween)
 				{

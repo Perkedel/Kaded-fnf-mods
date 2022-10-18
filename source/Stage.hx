@@ -1804,6 +1804,7 @@ class Stage extends MusicBeatState
 		{
 			FlxG.camera.flash(FlxColor.WHITE, .6);
 		}
+		// IDEA: find API that triggers DSLR / Mirrorless camera external flash or built-in flash
 
 		// JOELwindows7: shock fear Heartbeat jumps
 		// PlayState.instance.increaseHR(PlayState.instance.fearShockAdd[0][PlayState.instance.heartTierIsRightNow[0]], 0);
