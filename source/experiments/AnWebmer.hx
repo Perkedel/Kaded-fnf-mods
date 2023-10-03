@@ -24,7 +24,8 @@ import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 #if FEATURE_VLC
-import VideoHandler as MP4Handler; // JOELwindows7: newe
+// import VideoHandler as MP4Handler; // JOELwindows7: newe
+import hxcodec.flixel.FlxVideo as MP4Handler; // JOELwindows7: newe
 
 // import vlc.MP4Handler as MP4Handler; // wait what?!
 #end
@@ -90,12 +91,17 @@ class AnWebmer extends MusicBeatState
 			anVideo = new MP4Handler();
 			// add(anVideo);
 			// anVideo.playVideo(Paths.videoVlc("Compilateur-justAlsa"), false, true);
-			anVideo.playVideo(Paths.video("OldMacDonaldHadABinCannon"), false, true);
+			// anVideo.playVideo(Paths.video("OldMacDonaldHadABinCannon"), false, true);
+			anVideo.play(Paths.video("OldMacDonaldHadABinCannon"), false);
 			// anVideo.stateCallback = new AnWebmer();
-			anVideo.finishCallback = function()
+			// anVideo.finishCallback = function()
+			// {
+			// 	// FlxG.switchState(new AnWebmer());
+			// };
+			anVideo.onEndReached.add(function()
 			{
 				// FlxG.switchState(new AnWebmer());
-			};
+			});
 			#end
 		}
 

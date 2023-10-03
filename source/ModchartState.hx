@@ -852,9 +852,14 @@ class ModchartState
 				{
 					#if FEATURE_VLC
 					// PlayState.instance.vlcHandler.bitmap.restart(); // JOELwindows7: Bumir
-					PlayState.instance.vlcHandler.bitmap.pause();
-					PlayState.instance.vlcHandler.bitmap.seek(0);
-					PlayState.instance.vlcHandler.bitmap.play();
+					// PlayState.instance.vlcHandler.bitmap.pause();
+					// PlayState.instance.vlcHandler.bitmap.seek(0);
+					// PlayState.instance.vlcHandler.bitmap.play();
+					// PlayState.instance.vlcHandler.bitmap.pause();
+					// PlayState.instance.vlcHandler.bitmap.seek(0);
+					PlayState.instance.vlcHandler.bitmap.stop();
+					// PlayState.instance.vlcHandler.bitmap.play();
+					PlayState.instance.vlcHandler.bitmap.resume();
 					#end
 				}
 				else

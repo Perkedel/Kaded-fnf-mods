@@ -35,8 +35,10 @@ import openfl.utils.AssetType;
 #if FEATURE_VLC
 // import vlc.MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
 // import vlc.MP4Sprite; // yep.
-import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
-import VideoSprite as MP4Sprite; // yep.
+// import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+// import VideoSprite as MP4Sprite; // yep.
+import hxcodec.flixel.FlxVideo as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yep.
 
 #end
 
@@ -230,7 +232,8 @@ class VLCState extends MusicBeatState
 
 		#if FEATURE_VLC
 		theVLC = new MP4Handler();
-		theVLC.finishCallback = donedCallback;
+		// theVLC.finishCallback = donedCallback;
+		theVLC.onEndReached.add(donedCallback);
 		#end
 
 		trace('manufactured the VLC');
@@ -277,7 +280,8 @@ class VLCState extends MusicBeatState
 			{
 				trace('try play VLC');
 				// theVLC.playMP4(source);
-				theVLC.playVideo(source);
+				// theVLC.playVideo(source);
+				theVLC.play(source);
 			});
 		}
 		catch (e)
@@ -317,7 +321,7 @@ class VLCState extends MusicBeatState
 			#if FEATURE_VLC
 			if (theVLC != null)
 			{
-				theVLC.togglePause();
+				theVLC.togglePaused();
 			}
 			#end
 		}
@@ -325,6 +329,10 @@ class VLCState extends MusicBeatState
 
 	function donedCallback()
 	{
+		#if FEATURE_VLC
+		if (theVLC != null)
+			theVLC.dispose();
+		#end
 		// FlxG.autoPause = true; //No longer necessary because the gameplay pauses on lost focus
 		FlxG.sound.music.volume = peckingVolume;
 		// FlxG.switchState(toTrans);

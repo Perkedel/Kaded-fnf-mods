@@ -15,7 +15,6 @@
  */
 
 // JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/util/input/GestureUtil.hx
-
 /*
  * GestureUtil.hx
  * Contains utility functions for dealing with gestures.
@@ -32,9 +31,14 @@ import flixel.input.mouse.FlxMouseEventManager;
 
 class GestureUtil
 {
+	// JOELwindows7: Oh no.. lots of changes!
+	static var mouseEvent:FlxMouseEventManager;
+
 	public static function initMouseControls()
 	{
-		FlxG.plugins.add(new FlxMouseEventManager());
+		mouseEvent = new FlxMouseEventManager();
+		// FlxG.plugins.add(new FlxMouseEventManager());
+		FlxG.plugins.add(mouseEvent);
 	}
 
 	/**
@@ -88,9 +92,12 @@ class GestureUtil
 			t.onJustReleasedMiddle(FlxG.mouse.getScreenPosition(), pressTime);
 		}
 
-		FlxMouseEventManager.add(target, mouseDownEvent, mouseUpEvent, mouseOverEvent, mouseOutEvent, false, true, true, [LEFT]);
-		FlxMouseEventManager.add(target, rightMouseDownEvent, rightMouseUpEvent, null, null, false, true, true, [RIGHT]);
-		FlxMouseEventManager.add(target, middleMouseDownEvent, middleMouseUpEvent, null, null, false, true, true, [MIDDLE]);
+		// FlxMouseEventManager.add(target, mouseDownEvent, mouseUpEvent, mouseOverEvent, mouseOutEvent, false, true, true, [LEFT]);
+		// FlxMouseEventManager.add(target, rightMouseDownEvent, rightMouseUpEvent, null, null, false, true, true, [RIGHT]);
+		// FlxMouseEventManager.add(target, middleMouseDownEvent, middleMouseUpEvent, null, null, false, true, true, [MIDDLE]);
+		mouseEvent.add(target, mouseDownEvent, mouseUpEvent, mouseOverEvent, mouseOutEvent, false, true, true, [LEFT]);
+		mouseEvent.add(target, rightMouseDownEvent, rightMouseUpEvent, null, null, false, true, true, [RIGHT]);
+		mouseEvent.add(target, middleMouseDownEvent, middleMouseUpEvent, null, null, false, true, true, [MIDDLE]);
 	}
 
 	public static function handleGestureState(target:IInteractable, inputData:GestureStateData):GestureStateData

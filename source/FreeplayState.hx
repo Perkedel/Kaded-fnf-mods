@@ -39,8 +39,11 @@ import Discord.DiscordClient;
 #if FEATURE_VLC
 // import vlc.MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
 // import vlc.MP4Sprite; // yep.
-import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
-import VideoSprite as MP4Sprite; // yep.
+// import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+// import VideoSprite as MP4Sprite; // yep.
+import hxcodec.flixel.FlxVideo as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yep.
+
 
 #end
 using StringTools;

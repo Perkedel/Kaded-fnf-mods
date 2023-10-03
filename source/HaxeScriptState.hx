@@ -209,8 +209,7 @@ class HaxeScriptState
 			case 13:
 				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
 			case 14:
-				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12],
-					args[13]);
+				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
 			case 15:
 				return method(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12],
 					args[13], args[14]);
@@ -411,7 +410,6 @@ class HaxeScriptState
 		trace("mustHit setVar");
 
 		setVar("strumLineY", PlayState.instance.strumLine.y);
-
 
 		trace("Camera target & Strumline height setVar");
 
@@ -657,11 +655,11 @@ class HaxeScriptState
 
 		// BOLO's video
 		/*
-		addCallback("initBackgroundOverlayVideo", function(vidPath:String, type:String, layInFront:Bool)
-		{
-			PlayState.instance.backgroundOverlayVideo(vidPath, type, layInFront);
-		});
-		*/
+			addCallback("initBackgroundOverlayVideo", function(vidPath:String, type:String, layInFront:Bool)
+			{
+				PlayState.instance.backgroundOverlayVideo(vidPath, type, layInFront);
+			});
+		 */
 		addCallback("pauseVideo", function()
 		{
 			if (PlayState.instance.useVLC)
@@ -690,9 +688,14 @@ class HaxeScriptState
 			{
 				#if FEATURE_VLC
 				// PlayState.instance.vlcHandler.bitmap.restart();
-				PlayState.instance.vlcHandler.bitmap.pause();
-				PlayState.instance.vlcHandler.bitmap.seek(0);
-				PlayState.instance.vlcHandler.bitmap.play();
+				// PlayState.instance.vlcHandler.bitmap.pause();
+				// PlayState.instance.vlcHandler.bitmap.seek(0);
+				// PlayState.instance.vlcHandler.bitmap.play();
+				// PlayState.instance.vlcHandler.pause();
+				// PlayState.instance.vlcHandler.seek(0);
+				PlayState.instance.vlcHandler.stop();
+				// PlayState.instance.vlcHandler.play();
+				PlayState.instance.vlcHandler.resume();
 				#end
 			}
 			else
@@ -2489,7 +2492,8 @@ class HscriptGlobals
 
 	static function get_initialZoom():Float
 	{
-		return FlxG.initialZoom;
+		// return FlxG.initialZoom;
+		return 1;
 	}
 
 	static function get_inputs()

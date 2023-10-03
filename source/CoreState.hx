@@ -38,6 +38,7 @@ import flixel.FlxCamera;
 import flixel.group.FlxGroup;
 import flixel.addons.display.FlxStarField;
 import flixel.FlxSprite;
+import flixel.util.FlxAxes;
 import TouchScreenControls;
 import plugins.sprites.QmovephBackground;
 import flixel.addons.display.FlxBackdrop;
@@ -598,7 +599,8 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	function installDefaultBekgron():FlxBackdrop
 	{
-		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		// defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), FlxAxes.XY, 50, 0);
 		// defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
 		defaultBekgron.velocity.x = -100;
 		defaultBekgron.updateHitbox();
@@ -608,7 +610,8 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	function justInitDefaultBekgron():FlxBackdrop
 	{
-		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		// var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), FlxAxes.XY, 50, 0);
 		theBekgron.velocity.x = -100;
 		theBekgron.updateHitbox();
 		return theBekgron;
@@ -1289,7 +1292,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	function installDefaultBekgron():FlxBackdrop
 	{
-		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		// defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), FlxAxes.XY, 50, 0);
 		// defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
 		defaultBekgron.velocity.x = -100;
 		defaultBekgron.updateHitbox();
@@ -1299,7 +1303,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	function justInitDefaultBekgron():FlxBackdrop
 	{
-		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), FlxAxes.XY, 50, 0);
 		theBekgron.velocity.x = -100;
 		theBekgron.updateHitbox();
 		return theBekgron;

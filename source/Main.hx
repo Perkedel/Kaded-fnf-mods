@@ -317,7 +317,8 @@ class Main extends Sprite
 
 		// game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		// JOELwindows7: hey, here use PEnginify extensions!
-		game = new Game(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		// game = new Game(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		game = new Game(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
 
 		// JOELwindows7: now build Xbox controllers
@@ -486,7 +487,8 @@ class Main extends Sprite
 	// JOELwindows7: and function to be called on crash yess.
 	function werrorCrash(crashDumpener:CrashDumper)
 	{
-		@:privateAccess {
+		@:privateAccess
+		{
 			#if flash
 			Debug.displayAlert('WERROR ${crashDumpener.theError}', 'Oh no! Werror:\n${crashDumpener.errorMessageStr()}');
 			#else

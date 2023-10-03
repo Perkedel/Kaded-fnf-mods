@@ -112,8 +112,10 @@ import openfl.filters.ShaderFilter;
 import Discord.DiscordClient;
 #end
 #if FEATURE_VLC
-import VideoHandler as MP4Handler; // JOELwindows7: BrightFyre handed over hxCodec to PolybiusProxy
-import VideoSprite as MP4Sprite; // yeah.
+// import VideoHandler as MP4Handler; // JOELwindows7: BrightFyre handed over hxCodec to PolybiusProxy
+// import VideoSprite as MP4Sprite; // yeah.
+import hxcodec.flixel.FlxVideo as MP4Handler; // JOELwindows7: BrightFyre handed over hxCodec to PolybiusProxy
+import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yeah.
 
 // import vlc.MP4Handler; // wait what??
 // import vlc.MP4Sprite; // Oh, c'mon!!
@@ -2613,7 +2615,16 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		var video = new MP4Handler();
 		// video.cameras = [ownCam];
 
-		video.finishCallback = function()
+		// video.finishCallback = function()
+		// {
+		// 	trace("vid Finish");
+		// 	// videoSpriteFirst.kill();
+		// 	// remove(videoSpriteFirst);
+		// 	// remove(video);
+		// 	tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+		// 		handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+		// };
+		video.onEndReached.add(function()
 		{
 			trace("vid Finish");
 			// videoSpriteFirst.kill();
@@ -2621,10 +2632,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// remove(video);
 			tankmanIntroVidFinish(source, outro, handoverName, isNextSong, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 				handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
-		};
+		});
 		trace('time to play that ${Paths.video(source)} video');
 		// video.playMP4(source, null, videoSpriteFirst); // make the transition null so it doesn't take you out of this state
-		video.playVideo(Paths.video(source), false, true); // make the transition null so it doesn't take you out of this state
+		// video.playVideo(Paths.video(source), false, true); // make the transition null so it doesn't take you out of this state
+		video.play(Paths.video(source), false); // make the transition null so it doesn't take you out of this state
 		// videoSpriteFirst.setGraphicSize(Std.int(videoSpriteFirst.width * 1.2));
 		// video.setGraphicSize(Std.int(video.width * 1.2));
 		// videoSpriteFirst.updateHitbox();
@@ -3755,8 +3767,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			add(tempoBar);
 
 			// JOELwindows7: here metronome bar
-			metronomeBar = new FlxUIText(songPosBar.x + songPosBar.width + 10, songPosBar.y, 0, 'MEASURES: Oooo 0/0 | BEAT: ${curBeat} | STEP: ${curStep}',
-				16);
+			metronomeBar = new FlxUIText(songPosBar.x + songPosBar.width + 10, songPosBar.y, 0, 'MEASURES: Oooo 0/0 | BEAT: ${curBeat} | STEP: ${curStep}', 16);
 			metronomeBar.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			metronomeBar.scrollFactor.set();
 			// metronomeBar.text = 'MEASURES: ${Ratings.judgeMetronome(curBeat, 4)} ${Std.int(curBeat / 4)}/${SONG.notes.length - 1} | BEAT: ${curBeat} | STEP: ${curStep}';
@@ -8089,13 +8100,16 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		useVideo = true;
 		useVLC = true; // JOELwindows7: yes VLC
 		vlcHandler = new MP4Sprite(-470, -30);
-		vlcHandler.finishCallback = onVideoSpriteFinish;
+		// vlcHandler = new MP4Sprite();
+		// vlcHandler.finishCallback = onVideoSpriteFinish;
+		vlcHandler.bitmap.onEndReached.add(onVideoSpriteFinish);
 		vlcHandlerHasFinished = false; // JOELwindows7: reset flag yeahoid
 		// vlcHandler.playMP4(source, null, videoSprite); // make the transition null so it doesn't take you out of this state
-		vlcHandler.playVideo(source, false, false); // make the transition null so it doesn't take you out of this state
+		// vlcHandler.playVideo(source, false, false); // make the transition null so it doesn't take you out of this state
+		vlcHandler.play(source, false); // make the transition null so it doesn't take you out of this state
 
 		// videoSprite.setGraphicSize(Std.int(videoSprite.width * 1.2));
-		vlcHandler.setGraphicSize(Std.int(vlcHandler.width * 1.2));
+		// vlcHandler.setGraphicSize(Std.int(vlcHandler.width * 1.2)); // aaaaaaaaaaaaaaaaaaaaaa
 
 		remove(gf);
 		remove(boyfriend);
