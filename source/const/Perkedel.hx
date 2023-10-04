@@ -42,8 +42,8 @@ class Perkedel
 	public static final ENGINE_NAME:String = "Last Funkin Moments"; // oh yeah LFM baby!
 	public static final ENGINE_ID:String = "Last-Funkin-Moments"; // oh yeah LFM baby!
 	public static final ENGINE_ABBREVIATE:String = "LFM"; // oh yeah LFM baby!
-	public static final ENGINE_VERSION:String = "2022.10.0"; // current version number yeah!
-	public static final ENGINE_VERSION_NUMBER:Array<Int> = [2022, 10, 0]; // and numbered version
+	public static final ENGINE_VERSION:String = "2023.12.0"; // current version number yeah!
+	public static final ENGINE_VERSION_NUMBER:Array<Int> = [2023, 12, 0]; // and numbered version
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
 	public static final ENGINE_VERSION_URL:String = 'https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe'; // here URL check
 	public static final ENGINE_REPO_URL:String = 'https://github.com/Perkedel/kaded-fnf-mods';
@@ -163,6 +163,9 @@ class Perkedel
 	public static final VIDEO_DISABLED_DESCRIPTION:String = 'You have setting that disabled video.\nTo reenable, go to Setting, Misc, uncheck ${VIDEO_DISABLED_OPTION_NAME}';
 
 	public static final API_DISCORD_CLIENT_ID:String = "557069829501091850"; // change to whatever the peck you want lol
+
+	public static final SEPARATOR_DIALOG:String = "::";
+	public static final SEPARATOR_LYRIC:String = "::";
 
 	// Here image misc
 	public static final CRASH_TEXT_BANNER:String = "

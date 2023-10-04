@@ -442,6 +442,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	#end
 	public static var judgementWords:Array<String> = ["Misses", "Shits", "Bads", "Goods", "Sicks", "Danks", "MVPs"];
 
+	// JOELwindows7: Korean Pop Kpop TV Show lyric text. song is line by line
+	public var lyricers:FlxUIText;
+	public var lyricExists:Bool;
+	public var lyricLines:Array<String> = ['a::b', 'c::d', 'e::f'];
+
+	public static var lyricing:Array<Array<String>> = [["a", "b"], ["c", "d"]];
+
 	// API stuff
 	// JOELwindows7: INCOMING BOLO & friend's stuffs!!!
 	// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/PlayState.hx
@@ -552,6 +559,39 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		GameplayCustomizeState.freeplayStage = SONG.stage;
 		GameplayCustomizeState.freeplaySong = SONG.songId;
 		GameplayCustomizeState.freeplayWeek = storyWeek;
+
+		// JOELwindows7: Prepare the Kpop Lyric first!
+		lyricing = new Array<Array<String>>();
+		Debug.logTrace('Trying Lyric pls ${('songs/${PlayState.SONG.songId}/lyrics.txt')}');
+		try
+		{
+			var rawLyric = Paths.getKpopLyric('songs/${PlayState.SONG.songId}');
+			Debug.logTrace('RAW Lyric file looks like:\n============================\n${rawLyric}\n=============================\nyeah');
+			// lyricLines = CoolUtil.coolTextFile(('songs/${PlayState.SONG.songId}/lyrics.txt'));
+			lyricLines = CoolUtil.coolStringFile(rawLyric);
+			if (lyricLines != null)
+			{
+				Debug.logTrace('Lyrics here! Was querying ' + ('songs/' + SONG.songName));
+				for (i in 0...lyricLines.length)
+				{
+					Debug.logTrace('Lyric Line ${i}: ${lyricLines[i]}');
+					lyricing[i] = lyricLines[i].split(Perkedel.SEPARATOR_LYRIC);
+				}
+				lyricExists = true;
+			}
+			else
+			{
+				Debug.logTrace('No Lyric Available! Was querying ' + ('songs/${PlayState.SONG.songId}/lyrics.txt'));
+				lyricing = [["", ""], ["", ""]];
+				lyricExists = false;
+			}
+		}
+		catch (e)
+		{
+			Debug.logTrace('No Lyric Available! Was querying ' + ('songs/${PlayState.SONG.songId}/lyrics.txt'));
+			lyricing = [["", ""], ["", ""]];
+			lyricExists = false;
+		}
 
 		previousRate = songMultiplier - 0.05;
 
@@ -1716,7 +1756,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			+ 50, 0,
 			"Download Last Funkin Moments ($0) https://github.com/Perkedel/kaded-fnf-mods,\n"
 			+ "Kade Engine ($0) https://github.com/KadeDev/Kade-Engine ,\n"
-			+ "and vanilla funkin ($0) https://github.com/ninjamuffin99/Funkin\n"
+			+ "and vanilla funkin demo ($0) https://github.com/ninjamuffin99/Funkin ,\n"
+			+ "and vanilla funkin FULL-ASS ($???) STEAM_URL\n"
 			+ "Now Playing: "
 			+ SONG.artist
 			+ " - "
@@ -1765,7 +1806,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		accText.cameras = [camHUD];
 		add(accText);
 
-		// TODO: JOELwindows7: This maybe can be the Korean pop tv show lyric bottom left corner?
+		// DONE: JOELwindows7: This maybe can be the Korean pop tv show lyric bottom left corner?
+		lyricers = new FlxUIText(100, FlxG.height - 100, 0, " \n ", 20);
+		lyricers.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 14, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		lyricers.scrollFactor.set();
+		add(lyricers);
 
 		scoreTxt = new FlxUIText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
 		// JOELwindows7: move this up a bit due to elongated texts.
@@ -1890,6 +1935,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// touchscreenButtons.cameras = [camHUD]; //JOELwindows7: stick the touchscreen buttons to camera
 		kadeEngineWatermark.cameras = [camHUD];
 		reuploadWatermark.cameras = [camHUD]; // JOELwindows7: stick the reupload watermark to camera
+		lyricers.cameras = [camHUD]; // JOELwindows7: stick Kpop Lyric to the camera
 		// creditRollout.cameras = [camHUD]; //JOELwindows7: da credit must be stuck to the HUD field
 		creditRollout.textTitle.cameras = [camHUD]; // JOELwindows7: pls whynt work wtf
 		creditRollout.textName.cameras = [camHUD]; // JOELwindows7: cmon man
@@ -9110,6 +9156,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					{
 					}
 				}
+			}
+
+			// JOELwindows7: daLyric boi
+			if (lyricExists)
+			{
+				// lyricers.text = lyricing[curSection][0] + "\n" + lyricing[curSection][1];
+				lyricers.text = lyricing[Std.int(Math.floor(curBeat / 4))][0] + "\n" + lyricing[Std.int(Math.floor(curBeat / 4))][1];
+				lyricers.scrollFactor.set();
 			}
 
 			if (PlayStateChangeables.optimize)

@@ -44,7 +44,6 @@ import Discord.DiscordClient;
 import hxcodec.flixel.FlxVideo as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
 import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yep.
 
-
 #end
 using StringTools;
 
@@ -1808,6 +1807,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		 */
 		// JOELwindows7: No, we already have visiblized it here. let's not surprise the test unit & everyone.
 		PlayState.SONG = currentSongData;
+		// PlayState.lyricing = CoolUtil.getKpopLyric();
+		// PlayState.lyricing = CoolUtil.coolTextFile(Paths.getKpopLyric(currentSongData.name));
 		PlayState.isStoryMode = false;
 		PlayState.storyDifficulty = difficulty;
 		PlayState.storyWeek = songs[curSelected].week;

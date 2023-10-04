@@ -50,15 +50,54 @@ class CoolUtil
 
 	public static function coolStringFile(path:String):Array<String>
 	{
-		var daList:Array<String> = path.trim().split('\n');
+		// JOELwindows7: Hey, fix this up too!
+		// var daList:Array<String> = path.trim().split('\n');
+		var daList:Array<String>;
 
-		for (i in 0...daList.length)
+		try
 		{
-			daList[i] = daList[i].trim();
+			daList = path.trim().split('\n');
+		}
+		catch (e)
+		{
+			Debug.logError('WERROR Cool String File! ${e.message}\n${e.details()}');
+			daList = null;
+			// wait we're talking just string or what?
 		}
 
+		if (daList != null)
+			for (i in 0...daList.length)
+			{
+				daList[i] = daList[i].trim();
+				// we're talking that string. not file open.
+			}
+
+		// eh, whatever.
 		return daList;
 	}
+
+	// public static function coolLyricFile(path:String, onSong:String):Array<Array<String>>
+	// public static function coolLyricFile(path:String):Array<Array<String>>
+	// {
+	// 	// JOELwindows7: here it is. Kpop lyric file.
+	// 	var daList:Array<Array<String>> = new Array<Array<String>>();
+
+	// 	try
+	// 	{
+	// 		var stood:Array<String> = CoolUtil.coolTextFile(Path.getKpopLyric(path));
+	// 		for (i in 0...stood.length)
+	// 		{
+	// 			daList[i] = stood[i].trim().split('::');
+	// 		}
+	// 	}
+	// 	catch (e)
+	// 	{
+	// 		Debug.logError('WERROR Cool Text File! ${e.message}\n${e.details()}');
+	// 		daList = [['a', '...'], ['b', '...']];
+	// 	}
+
+	// 	return daList;
+	// }
 
 	public static function numberArray(max:Int, ?min = 0):Array<Int>
 	{

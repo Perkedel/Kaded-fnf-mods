@@ -89,6 +89,12 @@ class Paths
 		return Assets.getText('assets/data/$string/modchart.hscript');
 	}
 
+	// JOELwindows7: The Kpop Lyric file!
+	static public function getKpopLyric(string:String)
+	{
+		return Assets.getText('assets/data/$string/lyrics.txt');
+	}
+
 	/**
 	 * For a given key and library for an image, returns the corresponding BitmapData.
 	 		* We can probably move the cache handling here.
