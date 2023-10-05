@@ -2,6 +2,8 @@
     "name": "Tankman",
     "displayName": "Captain Tankman",
     "asset": "tankman/tankmanCaptain",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#000000",
     "startingAnim": "idle",
     "holdLength": 6.1,

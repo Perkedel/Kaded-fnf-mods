@@ -2,6 +2,8 @@
     "name": "Monster",
     "displayName": "Monster",
     "asset": "characters/Monster_Assets",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#F3FF6E",
     "startingAnim": "idle",
     "heartOrgans": [{

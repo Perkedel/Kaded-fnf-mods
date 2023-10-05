@@ -2,6 +2,8 @@
     "name": "Boyfriend (masker)",
     "displayName": "Boyfriend",
     "asset": "characters/BOYFRIEND-covid",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#31B0D1",
     "flipX": true,
     "startingAnim": "idle",

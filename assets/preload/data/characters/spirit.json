@@ -6,6 +6,7 @@
     "scale": 6,
     "antialiasing": false,
     "usePackerAtlas": true,
+    "AtlasType": "PackerAtlas",
     "startingAnim": "idle",
     "camPos": [300, 0],
     "hasTrail": true,

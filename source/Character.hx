@@ -140,8 +140,13 @@ class Character extends FlxUISprite
 			}
 			// return; // JOELwindows7: no longer needed! we already just loaded emergency fallbacks!!
 		}
+		else
+		{
+			Debug.logTrace('We got the Character JSON ${curCharacter} which contains:\n${jsonData}\n');
+		}
 
 		var data:CharacterData = cast jsonData;
+		Debug.logTrace('Converted JSON Data to Character Data:\n${data}');
 
 		// JOELwindows7: BOLO optimizener. uuhh, idk, why.. we have heart organ things here!
 		// var tex:FlxAtlasFrames;
@@ -155,25 +160,35 @@ class Character extends FlxUISprite
 		// tex:FlxAtlasFrames = Paths.getSparrowAtlas(data.asset, 'shared');
 		// end to be deleted
 
-		/*
-			if (data.usePackerAtlas)
-				tex = Paths.getPackerAtlas(data.asset, 'shared');
-			else
-				tex = Paths.getSparrowAtlas(data.asset, 'shared');
-		 */
 		// JOELwindows7: NEW BOLO types of atlas!
+		Debug.logTrace('Get the Atlas! it is ${data.AtlasType} at ${data.asset}');
 		switch (data.AtlasType)
 		{
 			case 'PackerAtlas':
+				Debug.logTrace('PackerAtlas');
 				tex = Paths.getPackerAtlas(data.asset, 'shared');
 			case 'TextureAtlas':
+				Debug.logTrace('TextureAtlas');
 				tex = Paths.getTextureAtlas(data.asset, 'shared');
 			case 'JsonAtlas':
+				Debug.logTrace('JsonAtlas');
 				tex = Paths.getJSONAtlas(data.asset, 'shared');
 			default: // SparrowAtlas
+				Debug.logTrace('SparrowAtlas');
 				tex = Paths.getSparrowAtlas(data.asset, 'shared');
 		}
 
+		// JOELwindows7: Compatibility detailes
+		// if (data.usePackerAtlas)
+		// {
+		// 	tex = Paths.getPackerAtlas(data.asset, 'shared');
+		// }
+		// else
+		// {
+		// 	// tex = Paths.getSparrowAtlas(data.asset, 'shared');
+		// }
+
+		Debug.logTrace('Proceed install Atlas ${curCharacter} to the frame');
 		frames = tex;
 		if (frames != null)
 			for (anim in data.animations)
@@ -242,6 +257,7 @@ class Character extends FlxUISprite
 		barColor = FlxColor.fromString(data.barColor);
 
 		// JOELwindows7: fill out heart organs!
+		Debug.logTrace('Don\' forget the 🫀 heart!');
 		for (thisSpec in heartOrgans)
 		{
 			var aHeart = new JantungOrgan(thisSpec);
@@ -626,12 +642,7 @@ class Character extends FlxUISprite
 		}
 		catch (e)
 		{
-			Debug.logError("WERROR 404! Heart organ No. "
-				+ Std.string(which)
-				+ " not found while attempting to: Get heart tier!\n"
-				+ e
-				+ ": "
-			+ e.message
+			Debug.logError("WERROR 404! Heart organ No. " + Std.string(which) + " not found while attempting to: Get heart tier!\n" + e + ": " + e.message
 				+ "\n" + e.details());
 		}
 		return -3;
@@ -655,8 +666,8 @@ class Character extends FlxUISprite
 			}
 			catch (e)
 			{
-				Debug.logError("WERROR 404! Heart organ No. " + Std.string(which) + " not found while attempting to: set debug print!\n" + e + ": " +
-					e.message + "\n" + e.details());
+				Debug.logError("WERROR 404! Heart organ No. " + Std.string(which) + " not found while attempting to: set debug print!\n" + e + ": "
+					+ e.message + "\n" + e.details());
 			}
 		}
 	}

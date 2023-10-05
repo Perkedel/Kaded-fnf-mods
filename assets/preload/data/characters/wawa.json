@@ -2,6 +2,8 @@
     "name": "Wawa",
     "displayName": "Wawa",
     "asset": "characters/wawa",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#8F8986",
     "flipX": true,
     "startingAnim": "idle",

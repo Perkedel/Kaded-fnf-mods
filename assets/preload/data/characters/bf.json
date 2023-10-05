@@ -2,6 +2,8 @@
     "name": "Boyfriend",
     "displayName": "Boyfriend",
     "asset": "characters/BOYFRIEND",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#31B0D1",
     "flipX": true,
     "startingAnim": "idle",

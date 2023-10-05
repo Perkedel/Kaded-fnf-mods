@@ -2,6 +2,8 @@
     "name": "No Girlfriend Speaker (Pixel Day)",
     "displayName": "Speaker",
     "asset": "characters/gfPixel_empty",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#A5004D",
     "scale": 6,
     "antialiasing": false,

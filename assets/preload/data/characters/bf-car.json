@@ -2,6 +2,8 @@
     "name": "Boyfriend (Car)",
     "displayName": "Boyfriend",
     "asset": "characters/bfCar",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#31B0D1",
     "flipX": true,
     "startingAnim": "idle",

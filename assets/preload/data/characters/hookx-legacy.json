@@ -2,6 +2,8 @@
     "name": "Hookx (when Sky was gone)",
     "displayName": "Hookx",
     "asset": "characters/Hookx-legacy",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#5000E6",
     "flipX": false,
     "startingAnim": "idle",

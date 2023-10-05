@@ -2,6 +2,8 @@
     "name": "Girlfriend (Pixel Day)",
     "displayName": "Girlfriend",
     "asset": "characters/gfPixel",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#A5004D",
     "scale": 6,
     "antialiasing": false,

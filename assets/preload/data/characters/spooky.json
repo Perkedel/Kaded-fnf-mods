@@ -2,6 +2,8 @@
     "name": "Skid and Pump",
     "displayName": "Skid and Pump",
     "asset": "characters/spooky_kids_assets",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#D57E00",
     "startingAnim": "danceRight",
     "isDancing": true,

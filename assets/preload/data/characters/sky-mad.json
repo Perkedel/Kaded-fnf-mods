@@ -2,6 +2,8 @@
     "name": "Sky (mad)",
     "displayName": "Sky",
     "asset": "characters/sky_mad_assets",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#000000",
     "flipX": false,
     "startingAnim": "danceRight",

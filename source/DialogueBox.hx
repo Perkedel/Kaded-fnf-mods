@@ -463,12 +463,12 @@ class DialogueBox extends FlxUIGroup
 
 		dropText = new FlxUIText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
 		dropText.font = 'Pixel Arial 11 Bold';
-		dropText.color = 0xFFD89494;
+		dropText.color = FlxColor.fromInt(0xFFD89494);
 		add(dropText);
 
 		swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
 		swagDialogue.font = 'Pixel Arial 11 Bold';
-		swagDialogue.color = 0xFF3F2021;
+		swagDialogue.color = FlxColor.fromInt(0xFF3F2021);
 		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		add(swagDialogue);
 
@@ -781,9 +781,9 @@ class DialogueBox extends FlxUIGroup
 							&& handoverDad.fontDrop != '' ? handoverDad.fontDrop : 'Pixel Arial 11 Bold';
 						swagDialogue.font = handoverDad.font != null && handoverDad.font != '' ? handoverDad.font : 'Pixel Arial 11 Bold';
 						dropText.color = handoverDad.fontColorDrop != null
-							&& handoverDad.fontColorDrop != '' ? FlxColor.fromString(handoverDad.fontColorDrop) : 0xFFD89494;
+							&& handoverDad.fontColorDrop != '' ? FlxColor.fromString(handoverDad.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 						swagDialogue.color = handoverDad.fontColor != null
-							&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : 0xFF3F2021;
+						&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : FlxColor.fromInt(0xFF3F2021);
 						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 						swagDialogue.sounds = [
 							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
@@ -843,16 +843,16 @@ class DialogueBox extends FlxUIGroup
 					default:
 						// dropText.font = 'Pixel Arial 11 Bold';
 						// swagDialogue.font = 'Pixel Arial 11 Bold';
-						// dropText.color = 0xFFD89494;
-						// swagDialogue.color = 0xFF3F2021;
+						// dropText.color = FlxColor.fromInt(0xFFD89494);
+						// swagDialogue.color = FlxColor.fromInt(0xFF3F2021);
 						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 						dropText.font = handoverBf.fontDrop != null
 							&& handoverBf.fontDrop != '' ? handoverBf.fontDrop : 'Pixel Arial 11 Bold';
 						swagDialogue.font = handoverBf.font != null && handoverBf.font != '' ? handoverBf.font : 'Pixel Arial 11 Bold';
 						dropText.color = handoverBf.fontColorDrop != null
-							&& handoverBf.fontColorDrop != '' ? FlxColor.fromString(handoverBf.fontColorDrop) : 0xFFD89494;
+							&& handoverBf.fontColorDrop != '' ? FlxColor.fromString(handoverBf.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 						swagDialogue.color = handoverBf.fontColor != null
-							&& handoverBf.fontColor != '' ? FlxColor.fromString(handoverBf.fontColor) : 0xFF3F2021;
+							&& handoverBf.fontColor != '' ? FlxColor.fromString(handoverBf.fontColor) : FlxColor.fromInt(0xFF3F2021);
 						swagDialogue.sounds = [
 							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
 						];
@@ -893,16 +893,16 @@ class DialogueBox extends FlxUIGroup
 					default:
 						// dropText.font = 'Pixel Arial 11 Bold';
 						// swagDialogue.font = 'Pixel Arial 11 Bold';
-						// dropText.color = 0xFFD89494;
-						// swagDialogue.color = 0xFF3F2021;
+						// dropText.color = FlxColor.fromInt(0xFFD89494);
+						// swagDialogue.color = FlxColor.fromInt(0xFF3F2021);
 						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 						dropText.font = handoverGf.fontDrop != null
 							&& handoverGf.fontDrop != '' ? handoverBf.fontDrop : 'Pixel Arial 11 Bold';
 						swagDialogue.font = handoverGf.font != null && handoverGf.font != '' ? handoverGf.font : 'Pixel Arial 11 Bold';
 						dropText.color = handoverGf.fontColorDrop != null
-							&& handoverGf.fontColorDrop != '' ? FlxColor.fromString(handoverGf.fontColorDrop) : 0xFFD89494;
+							&& handoverGf.fontColorDrop != '' ? FlxColor.fromString(handoverGf.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 						swagDialogue.color = handoverGf.fontColor != null
-							&& handoverGf.fontColor != '' ? FlxColor.fromString(handoverGf.fontColor) : 0xFF3F2021;
+							&& handoverGf.fontColor != '' ? FlxColor.fromString(handoverGf.fontColor) : FlxColor.fromInt(0xFF3F2021);
 						swagDialogue.sounds = [
 							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
 						];
@@ -928,9 +928,9 @@ class DialogueBox extends FlxUIGroup
 				dropText.font = handoverDad.fontDrop != null && handoverDad.fontDrop != '' ? handoverDad.fontDrop : 'Pixel Arial 11 Bold';
 				swagDialogue.font = handoverDad.font != null && handoverDad.font != '' ? handoverDad.font : 'Pixel Arial 11 Bold';
 				dropText.color = handoverDad.fontColorDrop != null
-					&& handoverDad.fontColorDrop != '' ? FlxColor.fromString(handoverDad.fontColorDrop) : 0xFFD89494;
+					&& handoverDad.fontColorDrop != '' ? FlxColor.fromString(handoverDad.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 				swagDialogue.color = handoverDad.fontColor != null
-					&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : 0xFF3F2021;
+					&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : FlxColor.fromInt(0xFF3F2021);
 				// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 				swagDialogue.sounds = [
 					FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
@@ -955,9 +955,9 @@ class DialogueBox extends FlxUIGroup
 				dropText.font = handoverDad.fontDrop != null && handoverDad.fontDrop != '' ? handoverDad.fontDrop : 'Pixel Arial 11 Bold';
 				swagDialogue.font = handoverDad.font != null && handoverDad.font != '' ? handoverDad.font : 'Pixel Arial 11 Bold';
 				dropText.color = handoverDad.fontColorDrop != null
-					&& handoverDad.fontColorDrop != '' ? FlxColor.fromString(handoverDad.fontColorDrop) : 0xFFD89494;
+					&& handoverDad.fontColorDrop != '' ? FlxColor.fromString(handoverDad.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 				swagDialogue.color = handoverDad.fontColor != null
-					&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : 0xFF3F2021;
+					&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : FlxColor.fromInt(0xFF3F2021);
 				// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 				swagDialogue.sounds = [
 					FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
@@ -983,9 +983,9 @@ class DialogueBox extends FlxUIGroup
 				dropText.font = handoverBf.fontDrop != null && handoverBf.fontDrop != '' ? handoverBf.fontDrop : 'Pixel Arial 11 Bold';
 				swagDialogue.font = handoverBf.font != null && handoverBf.font != '' ? handoverBf.font : 'Pixel Arial 11 Bold';
 				dropText.color = handoverBf.fontColorDrop != null
-					&& handoverBf.fontColorDrop != '' ? FlxColor.fromString(handoverBf.fontColorDrop) : 0xFFD89494;
+					&& handoverBf.fontColorDrop != '' ? FlxColor.fromString(handoverBf.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 				swagDialogue.color = handoverBf.fontColor != null
-					&& handoverBf.fontColor != '' ? FlxColor.fromString(handoverBf.fontColor) : 0xFF3F2021;
+					&& handoverBf.fontColor != '' ? FlxColor.fromString(handoverBf.fontColor) : FlxColor.fromInt(0xFF3F2021);
 				swagDialogue.sounds = [
 					FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
 				];
@@ -1010,9 +1010,9 @@ class DialogueBox extends FlxUIGroup
 				dropText.font = handoverGf.fontDrop != null && handoverGf.fontDrop != '' ? handoverBf.fontDrop : 'Pixel Arial 11 Bold';
 				swagDialogue.font = handoverGf.font != null && handoverGf.font != '' ? handoverGf.font : 'Pixel Arial 11 Bold';
 				dropText.color = handoverGf.fontColorDrop != null
-					&& handoverGf.fontColorDrop != '' ? FlxColor.fromString(handoverGf.fontColorDrop) : 0xFFD89494;
+					&& handoverGf.fontColorDrop != '' ? FlxColor.fromString(handoverGf.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 				swagDialogue.color = handoverGf.fontColor != null
-					&& handoverGf.fontColor != '' ? FlxColor.fromString(handoverGf.fontColor) : 0xFF3F2021;
+					&& handoverGf.fontColor != '' ? FlxColor.fromString(handoverGf.fontColor) : FlxColor.fromInt(0xFF3F2021);
 				swagDialogue.sounds = [
 					FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
 				];

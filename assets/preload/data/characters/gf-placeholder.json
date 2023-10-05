@@ -2,6 +2,8 @@
     "name": "Placeholder Girlfriend",
     "displayName": "Placeholder",
     "asset": "characters/Placeholder",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#0D0D0D",
     "flipX": false,
     "startingAnim": "danceRight",

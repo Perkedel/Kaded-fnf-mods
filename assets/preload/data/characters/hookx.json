@@ -2,6 +2,8 @@
     "name": "Hookx",
     "displayName": "Hookx",
     "asset": "characters/Hookx",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#5000E6",
     "flipX": false,
     "startingAnim": "idle",

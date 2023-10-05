@@ -1,6 +1,8 @@
 {
 	"asset": "characters/bfHoldingGF-DEAD",
 	"displayName": "Boyfriend & Girlfriend",
+	"usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
 	"flipX": true,
 	"barColor": "#31B0D1",
 	"camPos": [0,0],
