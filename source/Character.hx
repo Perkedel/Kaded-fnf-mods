@@ -140,10 +140,11 @@ class Character extends FlxUISprite
 			}
 			// return; // JOELwindows7: no longer needed! we already just loaded emergency fallbacks!!
 		}
-		else
-		{
-			Debug.logTrace('We got the Character JSON ${curCharacter} which contains:\n${jsonData}\n');
-		}
+		// else
+		// {
+		// 	Debug.logTrace('We got the Character JSON ${curCharacter} which contains:\n${jsonData}\n');
+		// }
+		// JOELwindows7: That above breaks everything?!?!??!?!
 
 		var data:CharacterData = cast jsonData;
 		Debug.logTrace('Converted JSON Data to Character Data:\n${data}');
@@ -157,6 +158,7 @@ class Character extends FlxUISprite
 		displayName = data.displayName; // JOELwindows7: separate name for on screen because `name` can have variation descriptors.
 		if (data.displayName == null) // JOELwindows7: If displayName is empty, copy from name
 			displayName = name;
+		Debug.logTrace('Naming ${curCharacter}: ${name}, ${displayName}');
 		// tex:FlxAtlasFrames = Paths.getSparrowAtlas(data.asset, 'shared');
 		// end to be deleted
 
