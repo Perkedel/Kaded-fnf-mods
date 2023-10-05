@@ -231,7 +231,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://api.haxeflixel.com/flixel/ui/FlxDPadMode.html dpad mode for the virtual pad
 - https://snippets.haxeflixel.com/input/keyboard/ keyboard how to
 - https://snippets.haxeflixel.com/input/ what input examples
-- https://gamebanana.com/threads/219778 avoid reuploading sky mod for the time being. I think, that's indefinite. Oh, speaking of browsing Git commit history, that's what I did. I turn back to time, right before the removal of Sky mod, and take everything Sky as all as I can. Assets, Codes, Projects, everything I know it would have one. May come back later if I missed anything. ssssshh, don't tell bbpanzu! if he know this he'll turn back in time and force push this alternate timeline like if Sky never been existed. wait a minute. uh oh! peck!
+- https://gamebanana.com/threads/219778 ~~avoid reuploading sky mod for the time being. I think, that's indefinite. Oh, speaking of browsing Git commit history, that's what I did. I turn back to time, right before the removal of Sky mod, and take everything Sky as all as I can. Assets, Codes, Projects, everything I know it would have one. May come back later if I missed anything. ssssshh, don't tell bbpanzu! if he know this he'll turn back in time and force push this alternate timeline like if Sky never been existed. wait a minute. uh oh! peck!~~ resolved
 - https://youtu.be/7awd-y_DTQY PEAR & https://twitter.com/gothmei/status/1309307834677571585 gothmei. peck, the tweet is gone. there is no preservation in twitter after all. We lost the little pogchamp voice. oh wait, PEAR still has it!
 - https://haxeflixel.com/documentation/flxtween/ how to tween
 - https://youtu.be/u1DKR9cOxnM Funkin modder direct trailer 
@@ -404,6 +404,11 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
     > WHO CARES..
     > PUT IT ALL IN MY MOUT.
 - tebarek
+- Sky public domain but then cancel public domain 💀
+- https://github.com/Perkedel/Kaded-fnf-mods/issues/44 
+- https://twitter.com/Alexander0110_/status/1597235683491733504?t=K7CL4zBMUGGzE7owQg8tRQ&s=19
+- https://twitter.com/01Alexander10_/status/1594684037238558721?t=l9FA2gP8OK_tEomAoOFp4A&s=19
+- the KPOP TV show has lyric!
 
 
 

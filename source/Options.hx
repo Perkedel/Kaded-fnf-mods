@@ -2808,12 +2808,14 @@ class AdjustVolumeOption extends Option
 	public override function press():Bool
 	{
 		display = updateDisplay();
+		// FlxG.save.data.masterVolume = FlxG.sound.volume;
 		return true;
 	}
 
 	override function right():Bool
 	{
 		FlxG.sound.changeVolume(.1);
+		// FlxG.save.data.masterVolume = FlxG.sound.volume;
 		display = updateDisplay();
 		return true;
 	}
@@ -2821,6 +2823,7 @@ class AdjustVolumeOption extends Option
 	override function left():Bool
 	{
 		FlxG.sound.changeVolume(-.1);
+		// FlxG.save.data.masterVolume = FlxG.sound.volume;
 		display = updateDisplay();
 		return true;
 	}
@@ -2848,6 +2851,7 @@ class AdjustVolumeOption extends Option
 		{
 			shoomSays += ' '; // was `U` before. now space supported so yeah.
 		}
+		FlxG.save.data.masterVolume = FlxG.sound.volume;
 		return "Volume < " + shoomSays + " (" + Std.string(Std.int(FlxG.sound.volume * 100)) + "%)" + " >";
 	}
 

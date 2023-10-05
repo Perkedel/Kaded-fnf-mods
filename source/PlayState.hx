@@ -1807,10 +1807,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		add(accText);
 
 		// DONE: JOELwindows7: This maybe can be the Korean pop tv show lyric bottom left corner?
-		lyricers = new FlxUIText(100, FlxG.height - 100, 0, " \n ", 20);
+		lyricers = new FlxUIText(100, FlxG.height - 150, 0, " \n ", 20);
 		lyricers.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 14, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		lyricers.scrollFactor.set();
 		add(lyricers);
+		lyricers.visible = FlxG.save.data.kpopLyrics;
 
 		scoreTxt = new FlxUIText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
 		// JOELwindows7: move this up a bit due to elongated texts.
@@ -9161,8 +9162,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// JOELwindows7: daLyric boi
 			if (lyricExists)
 			{
-				// lyricers.text = lyricing[curSection][0] + "\n" + lyricing[curSection][1];
-				lyricers.text = lyricing[Std.int(Math.floor(curBeat / 4))][0] + "\n" + lyricing[Std.int(Math.floor(curBeat / 4))][1];
+				try
+				{
+					// lyricers.text = lyricing[curSection][0] + "\n" + lyricing[curSection][1];
+					lyricers.text = lyricing[Std.int(Math.floor(curBeat / 4))][0] + "\n" + lyricing[Std.int(Math.floor(curBeat / 4))][1];
+				}
+				catch (e)
+				{
+					lyricers.text = '\n';
+				}
 				lyricers.scrollFactor.set();
 			}
 

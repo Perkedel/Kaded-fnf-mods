@@ -37,7 +37,7 @@ class KadeEngineData
 			FlxG.save.data.offset = 0;
 
 		if (FlxG.save.data.songPosition == null)
-			FlxG.save.data.songPosition = false;
+			FlxG.save.data.songPosition = true;
 
 		if (FlxG.save.data.fps == null)
 			FlxG.save.data.fps = false;
@@ -58,6 +58,14 @@ class KadeEngineData
 		// JOELwindows7: accident vol keys
 		if (FlxG.save.data.accidentVolumeKeys == null)
 			FlxG.save.data.accidentVolumeKeys = false;
+
+		// JOELwindows7: Master Volume
+		if (FlxG.save.data.masterVolume == null)
+			FlxG.save.data.masterVolumet = 1;
+
+		// JOELwindows7: MenuBG Volume
+		if (FlxG.save.data.menuBGVolume == null)
+			FlxG.save.data.menuBGVolume = 1;
 
 		// JOELwindows7: don't forget init save data of fullscreen mode
 		if (FlxG.save.data.fullscreen == null)
@@ -121,7 +129,7 @@ class KadeEngineData
 			FlxG.save.data.colour = true;
 
 		if (FlxG.save.data.stepMania == null)
-			FlxG.save.data.stepMania = false;
+			FlxG.save.data.stepMania = true;
 
 		if (FlxG.save.data.flashing == null)
 			FlxG.save.data.flashing = true;
@@ -136,7 +144,7 @@ class KadeEngineData
 			FlxG.save.data.botplay = false;
 
 		if (FlxG.save.data.cpuStrums == null)
-			FlxG.save.data.cpuStrums = false;
+			FlxG.save.data.cpuStrums = true;
 
 		if (FlxG.save.data.strumline == null)
 			FlxG.save.data.strumline = false;
@@ -467,6 +475,10 @@ class KadeEngineData
 		if (FlxG.save.data.discordMode == null)
 			FlxG.save.data.discordMode = 1;
 
+		// Bottom left corner lyric like in KPop TV show
+		if (FlxG.save.data.kpopLyrics == null)
+			FlxG.save.data.kpopLyrics = true;
+
 		// JOELwindows7: workarounds!
 
 		// video cutscene crash on Linux
@@ -494,6 +506,9 @@ class KadeEngineData
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		Debug.logInfo("successfully set FPS settings"); // JOELwindows7: see if Android version crash!
 		#end
+
+		// JOELwindows7: Oh, volume pls!
+		FlxG.sound.volume = FlxG.save.data.masterVolume;
 	}
 
 	// JOELwindows7: BOLO's reset modifier
