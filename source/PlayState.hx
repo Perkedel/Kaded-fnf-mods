@@ -565,7 +565,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		Debug.logTrace('Trying Lyric pls ${('songs/${PlayState.SONG.songId}/lyrics.txt')}');
 		try
 		{
-			var rawLyric = Paths.getKpopLyric('songs/${PlayState.SONG.songId}');
+			var rawLyric = isSM? Paths.getKpopLyric('${pathToSm}') : Paths.getKpopLyric('songs/${PlayState.SONG.songId}');
 			Debug.logTrace('RAW Lyric file looks like:\n============================\n${rawLyric}\n=============================\nyeah');
 			// lyricLines = CoolUtil.coolTextFile(('songs/${PlayState.SONG.songId}/lyrics.txt'));
 			lyricLines = CoolUtil.coolStringFile(rawLyric);

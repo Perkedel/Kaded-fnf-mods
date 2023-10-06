@@ -296,7 +296,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://github.com/karaidon/hXInput ah help
 - https://handbrake.fr/ Convert video. Gratis & open source
 - https://twitter.com/KadeDeveloper/status/1417958060014772224?s=20 about Whitty. Do not reupload RAW. just the mod there is to it.
-- https://twitter.com/KadeDeveloper/status/1417938858285494273?s=20 whitty gone.
+- https://twitter.com/KadeDeveloper/status/1417938858285494273?s=20 ~~whitty gone.~~
 - https://twitter.com/HiPhlox/status/1418519037005365249?s=20 one of bobcon
 - https://twitter.com/JOELwindows7/status/1418617463466434561?s=20 blns helep insert cameoid
 - https://community.haxe.org/t/solved-raspberry-pi-setup-issue/1111 rebuild lime itself for RPi with `lime rebuild lime rpi`
@@ -597,6 +597,8 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://youtu.be/hr7GyFM7pX4 (WARNING: Unknown license) Dairy Orange. Fart reverb
 - https://gamebanana.com/tools/10566 (WARNING: NO SOURCE CODE AVAILABLE AS OF 2022-09-16) Lua Modchart editor yey methewhenmethe. Godot app. WIP atm
 - https://github.com/ryanoasis/nerd-fonts https://nerdfonts.com Nerd Fonts (ryanoasis). Collection of Patched famous developer fonts with icons for everything that wants icon!!!
+- https://www.lyrics.com/sublyric/97872/KawaiSprite%2C+ninjamuffin99%2C+PhantomArcade%2C+evilsk8r/Monster+%28Friday+Night+Funkin%27%29 lyrics dot come. Please internal song `Monster` the lyric!!!!
+- https://genius.com/Bassetfilms-winter-horrorland-lyrics Genius lyrics. Please internal song `Winter Horrorland` the lyric!!!!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 > Why am I not credited?!
