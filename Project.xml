@@ -110,6 +110,9 @@
 	<!-- oh, also MasterEric's way of defining -->
 	<haxedef name="FEATURE_GAMEJOLT" unless="flash || mobile"/>
 
+	<!-- JOELwindows7: (hxCodec PolybiusProxy) LibVLC Logging for hxCodec -->
+	<haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
+
 	<!-- JOELwindows7: clipboard error arch linux no solution pls help -->
 	<!-- 
 	```
@@ -463,6 +466,7 @@
 	<!-- <include path="source/vlc/LibVLCBuild.xml" /> -->
 	<!-- https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/5 -->
 	<!-- https://github.com/datee/HaxeVLC -->
+	<!-- https://github.com/polybiusproxy/hxCodec -->
 	<!-- NEW BrightFyre VLC MP4 support (now handed over to PolybiusProxy, as hxCodec) -->
 	<!-- <haxelib name="hxCodec" if="cpp desktop || mobile" unless="neko || hl"/> -->
 	<!-- <haxelib name="hxCodec" if="FEATURE_VLC" unless="web"/> -->
@@ -635,7 +639,7 @@
 
 	<!-- Never disable debug message, especially on Mobile -->
 	<haxeflag name="--no-traces" unless="debug || mobile" />
-	<haxeflag name="--dce full" if="release || final" />
+	<haxeflag name="--dce full" if="release || final" unless="debug" />
 	<!-- BOLO removes DCE entirely, but uh isn't this deoptimize the game? let's just disable dce on debug, idk. -->
 	<haxeflag name="-dce no" if="debug"/>
 

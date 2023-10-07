@@ -23,7 +23,7 @@ jobs:
       - name: Just do it
         uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.3.1
       - name: Make your dreams come true
         # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
