@@ -4048,7 +4048,95 @@ class WorkaroundNoVideoOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return '${Perkedel.VIDEO_DISABLED_OPTION_NAME} <${FlxG.save.data.disableVideoCutscener ? "Video Disabled" : "Video Enabled"}>';
+		return '${Perkedel.VIDEO_DISABLED_OPTION_NAME} < Video ${FlxG.save.data.disableVideoCutscener ? "Disabled" : "Enabled"}>';
+	}
+}
+
+// JOELwindows7: Lyric!
+class KpopLyricsOption extends Option
+{
+	public function new(desc:String = "Should the song lyrics be displayed")
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.kpopLyrics = !FlxG.save.data.kpopLyrics;
+		display = updateDisplay();
+		// OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return '${Perkedel.LYRIC_ENABLED_OPTION_NAME} < Lyrics ${FlxG.save.data.kpopLyrics ? "Enabled" : "Disabled"}>';
+	}
+}
+
+// JOELwindows7: Lyrics Position
+class KpopLyricsPositionOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.kpopLyricsPosition--;
+		if (FlxG.save.data.kpopLyricsPosition < 0)
+			FlxG.save.data.kpopLyricsPosition = 2;
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.kpopLyricsPosition++;
+		if (FlxG.save.data.kpopLyricsPosition > 2)
+			FlxG.save.data.kpopLyricsPosition = 0;
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		// FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
+		right();
+		// display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return '${Perkedel.LYRIC_POSITION_OPTION_NAME} < ' + (switch (Std.int(FlxG.save.data.kpopLyricsPosition))
+		{
+			case 0:
+				"Left";
+			case 1:
+				"Center";
+			case 2:
+				"Right";
+			case _:
+				"???";
+		}) + ' >';
 	}
 }
 

@@ -161,6 +161,8 @@ class Perkedel
 	public static final VIDEO_DISABLED_OPTION_NAME:String = "(Workaround) Disable Video";
 	public static final VIDEO_DISABLED_TITLE:String = "Video Disabled";
 	public static final VIDEO_DISABLED_DESCRIPTION:String = 'You have setting that disabled video.\nTo reenable, go to Setting, Misc, uncheck ${VIDEO_DISABLED_OPTION_NAME}';
+	public static final LYRIC_ENABLED_OPTION_NAME:String = 'Kpop Lyrics';
+	public static final LYRIC_POSITION_OPTION_NAME:String = 'Lyrics Position';
 
 	public static final API_DISCORD_CLIENT_ID:String = "557069829501091850"; // change to whatever the peck you want lol
 

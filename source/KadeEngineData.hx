@@ -475,9 +475,12 @@ class KadeEngineData
 		if (FlxG.save.data.discordMode == null)
 			FlxG.save.data.discordMode = 1;
 
-		// Bottom left corner lyric like in KPop TV show
+		// JOELwindows7: Bottom left corner lyric like in KPop TV show
 		if (FlxG.save.data.kpopLyrics == null)
 			FlxG.save.data.kpopLyrics = true;
+
+		if (FlxG.save.data.kpopLyricsPosition == null)
+			FlxG.save.data.kpopLyricsPosition = 0;
 
 		// JOELwindows7: workarounds!
 

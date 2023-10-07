@@ -52,8 +52,22 @@
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
-	<!-- TODO: JOELwindows7: make Linux console more canon than just canon due to other console archaicly proprietary nature -->
+	<!-- PlayStation-spesific -->
+	<window if="playstation" orientation="landscape" fullscreen="true" resizable="false" vsync="false"/>
+
+	<!-- XBOX / UWP Specific -->
+	<window if="uwp" orientation="landscape" fullscreen="true" resizable="true" vsync="false"/>
+
+	<!-- WinCE/WinMobile-specific -->
+	<window if="wince" orientation="landscape" fullscreen="true" resizable="true" vsync="false"/>
+
+	<!-- DONE: JOELwindows7: make Linux console more canon than just canon due to other console archaicly proprietary nature -->
 	<!-- hence you should not hope for console release, just linux it out! AUR or PPA it out! idk.. thancc, GabeN yey! -->
+	<!-- SteamDeck-specific -->
+	<window if="steamdeck" orientation="landscape" fullscreen="true" resizable="true" vsync="false"/>
+
+	<!-- RaspberryPi-specific -->
+	<window if="rpi" orientation="landscape" fullscreen="true" resizable="true" vsync="false"/>
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -691,6 +705,29 @@
 	<!-- JOELwindows7: Use defines has been moved to top according to BOLO -->
 	<!-- So the library reference if statements will also already defined for it. -->
 
-	
+	<!-- JOELwindows7: Finally, cool bonus! -->
+	<echo value="██████████████████████████████████████████████████████████████████████████████"/>
+	<echo value="█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░▒▒▒█"/>
+	<echo value="█▒░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▒░▒▒▒▒▒░▒░░░░▒░░░░░▒░▒▒▒▒▒▒█"/>
+	<echo value="█▒░▒▒▒▒░░░░▒░░░░▒░▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒▒▒▒░▒▒▒▒▒▒▒░░▒▒▒░░▒░▒▒░▒░▒░▒░▒░░░░▒▒▒█"/>
+	<echo value="█▒░▒▒▒▒▒▒▒░▒░▒▒▒▒░▒▒▒▒▒░░░░▒▒▒▒▒▒▒▒▒▒▒░▒░░▒▒▒▒▒▒▒▒▒░▒░▒░▒░▒░░░░▒░▒░▒░▒░▒▒▒▒▒▒█"/>
+	<echo value="█▒░▒▒▒▒░░░░▒░░░░▒░░░░▒▒░▒▒▒▒░▒▒░▒░░░▒▒░░▒▒▒░▒░░░▒▒▒░▒▒░▒▒░▒▒▒▒▒▒░▒▒▒▒▒░░░░▒▒▒█"/>
+	<echo value="█▒░▒▒▒▒░▒▒░▒▒▒▒░▒░▒▒▒▒▒░▒▒▒▒░▒▒░▒░▒▒░▒░▒░▒▒░▒░▒▒░▒▒░▒▒▒▒▒░▒░░░░▒░░░▒▒▒▒▒▒▒▒▒▒█"/>
+	<echo value="█▒░░░░▒▒░░░▒░░░░▒░░░░▒▒░▒▒▒▒▒░░░▒░▒▒░▒░▒▒░▒░▒░▒▒░▒▒░▒▒▒▒▒░▒░▒▒░▒░▒▒▒▒▒s▒▒▒▒▒▒█"/>
+	<echo value="█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▒▒▒▒▒▒▒▒▒▒█"/>
+	<echo value="██████████████████████████████████████████████████████████████████████████████"/>
+	<echo value=" "/>
+	<echo value="Ahei, Dasandimians!"/>
+	<echo value="Thancc for compiling Last Funkin Moments! cool and good thancc"/>
+	<echo value="Sincerely - JOELwindows7"/>
+	<echo value="Founder of Perkedel Technologies"/>
+	<echo value=" "/>
+	<echo value="===================================================================================="/>
+	<echo value="For more informations, visit:"/>
+	<echo value="- https://github.com/Perkedel/Kaded-fnf-mods/"/>
+	<echo value="- https://odysee.com/@JOELwindows7:a/last-funkin-moments:b"/>
+	<echo value="- https://gamebanana.com/mods/293257"/>
+	<echo value="- https://perkedel.netlify.app"/>
+	<echo value="===================================================================================="/>
 
 </project>

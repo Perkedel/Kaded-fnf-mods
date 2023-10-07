@@ -565,7 +565,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		Debug.logTrace('Trying Lyric pls ${('songs/${PlayState.SONG.songId}/lyrics.txt')}');
 		try
 		{
-			var rawLyric = isSM? Paths.getKpopLyric('${pathToSm}') : Paths.getKpopLyric('songs/${PlayState.SONG.songId}');
+			var rawLyric = isSM ? Paths.getKpopLyric('${pathToSm}') : Paths.getKpopLyric('songs/${PlayState.SONG.songId}');
 			Debug.logTrace('RAW Lyric file looks like:\n============================\n${rawLyric}\n=============================\nyeah');
 			// lyricLines = CoolUtil.coolTextFile(('songs/${PlayState.SONG.songId}/lyrics.txt'));
 			lyricLines = CoolUtil.coolStringFile(rawLyric);
@@ -9171,7 +9171,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				{
 					lyricers.text = '\n';
 				}
-				lyricers.scrollFactor.set();
+				// lyricers.scrollFactor.set();
+				repositionLyric();
 			}
 
 			if (PlayStateChangeables.optimize)
@@ -12003,6 +12004,46 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	function getStepModulo(stepWhich:Int, equalsWhat:Float = 0):Bool
 	{
 		return CoolUtil.stepModulo(curStep, stepWhich, songMultiplier, equalsWhat);
+	}
+
+	// JOELwindows7: Reposition Lyric
+	function repositionLyric()
+	{
+		if (lyricExists)
+		{
+			try
+			{
+				lyricers.x = switch (FlxG.save.data.kpopLyricsPosition)
+				{
+					case 0:
+						(100);
+					case 1:
+						(FlxG.width / 2
+							- (Math.max(lyricing[Std.int(Math.floor(curBeat / 4))][0].length, lyricing[Std.int(Math.floor(curBeat / 4))][1].length) * 10) / 2);
+					case 2:
+						(FlxG.width
+							- 100
+							- (Math.max(lyricing[Std.int(Math.floor(curBeat / 4))][0].length, lyricing[Std.int(Math.floor(curBeat / 4))][1].length) * 10));
+					case _:
+						(100);
+				};
+			}
+			catch (e)
+			{
+			}
+			lyricers.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 14, FlxColor.WHITE, switch (FlxG.save.data.kpopLyricsPosition)
+			{
+				case 0:
+					FlxTextAlign.LEFT;
+				case 1:
+					FlxTextAlign.CENTER;
+				case 2:
+					FlxTextAlign.RIGHT;
+				case _:
+					FlxTextAlign.LEFT;
+			}, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			lyricers.scrollFactor.set();
+		}
 	}
 
 	// JOELwindows7: BOLO cleanups

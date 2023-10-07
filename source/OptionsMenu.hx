@@ -196,6 +196,8 @@ class OptionsMenu extends CoreSubState
 				new BorderFps("Draw a border around the FPS Text (Consumes a lot of CPU Resources)"),
 				new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
 				new CpuSplashOption("Toggle the CPU's note splash when it hits a note (REQUIRES: Note Splash to be ON)"),
+				new KpopLyricsOption("Should the lyrics be displayed"),
+				new KpopLyricsPositionOption("Where the position should the lyric be displayed at"),
 			]),
 			// JOELwindows7: Audio
 			new OptionCata(640, 40, 'Audio', [
