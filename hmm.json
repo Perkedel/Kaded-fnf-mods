@@ -190,6 +190,11 @@
             "version": null
         },
         {
+            "name": "parallaxlt",
+            "type": "haxelib",
+            "version": null
+        },
+        {
             "name": "discord_rpc",
             "type": "git",
             "dir": null,

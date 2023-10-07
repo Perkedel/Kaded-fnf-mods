@@ -404,7 +404,9 @@
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
 	<haxelib name="hxvm-luajit" />
 	<haxelib name="hxcpp-debug-server" if="cpp"/>
-
+	<!-- JOELwindows7: ParallaxLT as contributed by @Itz-MilesItz-Miles for Psych Engine -->
+	<!-- https://github.com/ShadowMario/FNF-PsychEngine/pull/13397 -->
+	<haxelib name="parallaxlt"/>
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
 

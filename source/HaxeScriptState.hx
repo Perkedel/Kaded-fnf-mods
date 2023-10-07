@@ -88,6 +88,7 @@ import flixel.FlxSprite;
 import lime.utils.Assets;
 import hscript.*;
 import plugins.tools.MetroSprite;
+import flixel_5_3_1.ParallaxSprite;
 
 using StringTools;
 
@@ -131,6 +132,7 @@ class HaxeScriptState
 	// var instancering;
 	// Some other variables
 	public static var hscriptSprite:Map<String, FlxUISprite> = [];
+	public static var hscriptParallax:Map<String, ParallaxSprite> = []; // JOELwindows7: it extends FlxSprite instead of advanced FlxUISprite we use!!!
 
 	public var haxeWiggles:Map<String, WiggleEffect> = new Map<String, WiggleEffect>();
 
@@ -586,11 +588,30 @@ class HaxeScriptState
 		// Callbacks heres, Kade Engine like
 		// Sprites
 		addCallback("makeSprite", makeHscriptSprite);
+		addCallback("makeParallaxSprite", makeHscriptParallaxSprite); // JOELwindows7: Itz-Miles Psyched
 		addCallback("makeGifSprite", makeHscriptGifSprite); // JOELwindows7: the Gif Sprite GWebdev
 		addCallback("changeDadCharacter", changeDadCharacter);
 		addCallback("changeBoyfriendCharacter", changeBoyfriendCharacter);
 		addCallback("changeGirlfriendCharacter", changeGirlfriendCharacter); // JOELwindows7: change GF
 		addCallback("getProperty", getPropertyByName);
+		addCallback("fixateParallaxSprite",
+			function(obj:String, anchorX:Int = 0, anchorY:Int = 0, scrollOneX:Float = 1, scrollOneY:Float = 1, scrollTwoX:Float = 1.1, scrollTwoY:Float = 1.1,
+					direct:String = 'horizontal')
+			{
+				// JOELwindows7: You please https://github.com/ShadowMario/FNF-PsychEngine/pull/13397/commits/f2bb3da80fda45ace1c3322518a2aab0f37115c5
+
+				try
+				{
+					// var spr:ParallaxSprite = LuaUtils.getObjectDirectly(obj, false);
+					var spr:ParallaxSprite = getActorByName(obj);
+					if (spr != null)
+						spr.fixate(anchorX, anchorY, scrollOneX, scrollOneY, scrollTwoX, scrollTwoY, direct);
+				}
+				catch (e)
+				{
+					Debug.logError('WError fixateParallaxSprite: ${e}\n${e.details()}');
+				}
+			});
 
 		addCallback("setNoteWiggle", function(wiggleId)
 		{
@@ -2209,7 +2230,7 @@ class HaxeScriptState
 	}
 
 	function makeAnimatedHscriptSprite(spritePath:String, names:Array<String>, prefixes:Array<String>, startAnim:String, id:String, imageFolder:Bool = false,
-			?library:String = '')
+			?library:String = '', drawBehind:Bool = false)
 	{
 		// pre lowercasing the song name (makeAnimatedLuaSprite)
 		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
@@ -2250,10 +2271,81 @@ class HaxeScriptState
 
 		hscriptSprite.set(id, sprite);
 
-		PlayState.instance.addObject(sprite);
+		// PlayState.instance.addObject(sprite);
+		// JOELwindows7: Hey don't forget layering too!
+		// and I quote:
+		// shitty layering but it works!
+		@:privateAccess
+		{
+			if (drawBehind)
+			{
+				PlayState.instance.removeObject(PlayState.gf);
+				PlayState.instance.removeObject(PlayState.boyfriend);
+				PlayState.instance.removeObject(PlayState.dad);
+			}
+			PlayState.instance.addObject(sprite);
+			if (drawBehind)
+			{
+				PlayState.instance.addObject(PlayState.gf);
+				PlayState.instance.addObject(PlayState.boyfriend);
+				PlayState.instance.addObject(PlayState.dad);
+			}
+		}
 
 		sprite.animation.play(startAnim);
 		return id;
+	}
+
+	// DONE: JOELwindows7: ParalaxLT Sprite as Itz-Miles contributed to Psych at https://github.com/ShadowMario/FNF-PsychEngine/pull/13397
+	function makeHscriptParallaxSprite(spritePath:String, toBeCalled:String, drawBehind:Bool, imageFolder:Bool = false, ?library:String = '')
+	{
+		// pre lowercasing the song name (makeAnimatedLuaSprite)
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// }
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs" + songLowercase);
+		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
+
+		#if sys
+		if (PlayState.isSM)
+			path = PlayState.pathToSm;
+		#end
+		trace(path);
+
+		// look at this commit https://github.com/ShadowMario/FNF-PsychEngine/pull/13397/commits/cb720bf4391caeaeae64d36ee292874b62d32a0b
+		// var sprite:ParallaxSprite = new ParallaxSprite(0, 0, Paths.image(path));
+		var sprite:ParallaxSprite = new ParallaxSprite(0, 0, path);
+
+		// we cannot hscriptSprite because ParallaxSprite is based on regular FlxSprite instead of extended FlxUISprite we use.
+		hscriptParallax.set(toBeCalled, sprite);
+		trace("new " + toBeCalled + " Sprite added \n" + Std.string(hscriptParallax.get(toBeCalled)));
+
+		// and I quote:
+		// shitty layering but it works!
+		@:privateAccess
+		{
+			if (drawBehind)
+			{
+				PlayState.instance.removeObject(PlayState.gf);
+				PlayState.instance.removeObject(PlayState.boyfriend);
+				PlayState.instance.removeObject(PlayState.dad);
+			}
+			PlayState.instance.addObject(sprite);
+			if (drawBehind)
+			{
+				PlayState.instance.addObject(PlayState.gf);
+				PlayState.instance.addObject(PlayState.boyfriend);
+				PlayState.instance.addObject(PlayState.dad);
+			}
+		}
+		return toBeCalled;
 	}
 
 	function getActorByName(id:String):Dynamic
@@ -2274,6 +2366,12 @@ class HaxeScriptState
 		// hscript objects or what ever
 		if (hscriptSprite.get(id) == null)
 		{
+			// JOELwindows7: Maybe you're looking for paralax?
+			if (hscriptParallax.get(id) != null)
+			{
+				return hscriptParallax.get(id);
+			}
+			// JOELwindows7: (not mine) Okay then, well just find anything with this name id whatever it is.
 			if (Std.parseInt(id) == null)
 				return Reflect.getProperty(PlayState.instance, id);
 			return PlayState.PlayState.strumLineNotes.members[Std.parseInt(id)];

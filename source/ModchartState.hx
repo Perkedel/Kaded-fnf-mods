@@ -6,6 +6,7 @@
 // Lua
 import hscript.ParserEx;
 import hscript.InterpEx;
+import utils.Asset2File;
 import Shader;
 import hscript.Interp;
 import flixel.addons.ui.FlxUISprite;
@@ -44,6 +45,7 @@ import openfl.Lib;
 import hscript.Parser;
 import hscript.Interp;
 import HaxeScriptState;
+import flixel_5_3_1.ParallaxSprite;
 
 using StringTools;
 
@@ -310,6 +312,8 @@ class ModchartState
 	}
 
 	public static var luaSprites:Map<String, FlxUISprite> = [];
+	public static var luaParallax:Map<String,
+		ParallaxSprite> = []; // JOELwindows7: Unfortunately, ParallaxSprite extends regular FlxSprite instead of advanced FlxUISprite
 
 	function changeDadCharacter(id:String)
 	{
@@ -541,6 +545,58 @@ class ModchartState
 		return toBeCalled;
 	}
 
+	// JOELwindows7: the Parallax Itz-Mine Psyched https://github.com/ShadowMario/FNF-PsychEngine/pull/13397
+	function makeLuaParallaxSprite(spritePath:String, toBeCalled:String, drawBehind:Bool, imageFolder:Bool = false, ?library:String = '')
+	{
+		// pre lowercasing the song name (makeAnimatedLuaSprite)
+		// var songLowercase = StringTools.replace(PlayState.SONG.songId, " ", "-").toLowerCase();
+		var songLowercase = PlayState.SONG.songId;
+		// switch (songLowercase)
+		// {
+		// 	case 'dad-battle':
+		// 		songLowercase = 'dadbattle';
+		// 	case 'philly-nice':
+		// 		songLowercase = 'philly';
+		// }
+		var convertingPath = "assets/" + (imageFolder ? (library != null && library != '' ? library + "/" : '') + "images" : "data/songs" + songLowercase);
+		// var path = #if !mobile Asset2File.getPath("assets/data/" + songLowercase) #else "assets/data/" + songLowercase #end;
+		var path = #if !mobile Asset2File.getPath(convertingPath) #else convertingPath #end;
+
+		#if sys
+		if (PlayState.isSM)
+			path = PlayState.pathToSm;
+		#end
+		trace(path);
+
+		// look at this commit https://github.com/ShadowMario/FNF-PsychEngine/pull/13397/commits/cb720bf4391caeaeae64d36ee292874b62d32a0b
+		// var sprite:ParallaxSprite = new ParallaxSprite(0, 0, Paths.image(path));
+		var sprite:ParallaxSprite = new ParallaxSprite(0, 0, path);
+
+		// we cannot hscriptSprite because ParallaxSprite is based on regular FlxSprite instead of extended FlxUISprite we use.
+		luaParallax.set(toBeCalled, sprite);
+		trace("new " + toBeCalled + " Sprite added \n" + Std.string(luaParallax.get(toBeCalled)));
+
+		// and I quote:
+		// shitty layering but it works!
+		@:privateAccess
+		{
+			if (drawBehind)
+			{
+				PlayState.instance.removeObject(PlayState.gf);
+				PlayState.instance.removeObject(PlayState.boyfriend);
+				PlayState.instance.removeObject(PlayState.dad);
+			}
+			PlayState.instance.addObject(sprite);
+			if (drawBehind)
+			{
+				PlayState.instance.addObject(PlayState.gf);
+				PlayState.instance.addObject(PlayState.boyfriend);
+				PlayState.instance.addObject(PlayState.dad);
+			}
+		}
+		return toBeCalled;
+	}
+
 	public function die()
 	{
 		Lua.close(lua);
@@ -696,7 +752,26 @@ class ModchartState
 		});
 
 		Lua_helper.add_callback(lua, "makeSprite", makeLuaSprite);
+		Lua_helper.add_callback(lua, "makeParallaxSprite", makeLuaParallaxSprite); // JOELwindows7: Itz-Miles Psyched
 		Lua_helper.add_callback(lua, "makeGifSprite", makeLuaGifSprite); // JOELwindows7: gifs are now supported. GWebDev gif sprite
+		Lua_helper.add_callback(lua, "fixateParallaxSprite",
+			function(obj:String, anchorX:Int = 0, anchorY:Int = 0, scrollOneX:Float = 1, scrollOneY:Float = 1, scrollTwoX:Float = 1.1, scrollTwoY:Float = 1.1,
+					direct:String = 'horizontal')
+			{
+				// JOELwindows7: You please https://github.com/ShadowMario/FNF-PsychEngine/pull/13397/commits/f2bb3da80fda45ace1c3322518a2aab0f37115c5
+
+				try
+				{
+					// var spr:ParallaxSprite = LuaUtils.getObjectDirectly(obj, false);
+					var spr:ParallaxSprite = getActorByName(obj);
+					if (spr != null)
+						spr.fixate(anchorX, anchorY, scrollOneX, scrollOneY, scrollTwoX, scrollTwoY, direct);
+				}
+				catch (e)
+				{
+					Debug.logError('WError fixateParallaxSprite: ${e}\n${e.details()}');
+				}
+			});
 
 		// bulbyVR callbackers
 		Lua_helper.add_callback(lua, "add", PlayState.instance.add);
