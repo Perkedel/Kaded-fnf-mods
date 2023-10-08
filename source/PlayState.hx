@@ -1808,7 +1808,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// DONE: JOELwindows7: This maybe can be the Korean pop tv show lyric bottom left corner?
 		lyricers = new FlxUIText(100, FlxG.height - 150, 0, " \n ", 20);
-		lyricers.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 14, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		lyricers.setFormat(Paths.font("Ubuntu-R-NF.ttf"), 14, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		lyricers.scrollFactor.set();
 		add(lyricers);
 		lyricers.visible = FlxG.save.data.kpopLyrics;
@@ -12007,12 +12007,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	}
 
 	// JOELwindows7: Reposition Lyric
-	function repositionLyric()
+	function repositionLyric(delta:Float = 0)
 	{
 		if (lyricExists)
 		{
 			try
 			{
+				// IDEA: Lerp??
 				lyricers.x = switch (FlxG.save.data.kpopLyricsPosition)
 				{
 					case 0:
@@ -12031,7 +12032,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			catch (e)
 			{
 			}
-			lyricers.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 14, FlxColor.WHITE, switch (FlxG.save.data.kpopLyricsPosition)
+			if (SONG.isCreditRoll)
+			{
+				// push it back up a bit
+				lyricers.y -= 250;
+			}
+			lyricers.setFormat(Paths.font("Ubuntu-R-NF.ttf"), 14, FlxColor.WHITE, switch (FlxG.save.data.kpopLyricsPosition)
 			{
 				case 0:
 					FlxTextAlign.LEFT;

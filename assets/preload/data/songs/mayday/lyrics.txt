@@ -2,30 +2,81 @@
  :: 
  :: 
  :: 
+(VERS 1) Can you hear, can you hear::can you hear my voice? 
+(VERS 1) Can you hear, can you hear::can you hear my voice? 
+Coming through, coming through::coming through the noise 
+Coming through, coming through::coming through the noise 
+I'm floating through outer space::I'm lost and I can't find a way, oh,
+I'm floating through outer space::I'm lost and I can't find a way, oh,
+all the lights going dark::and my hope's destroyed 
+all the lights going dark::and my hope's destroyed 
+(PRE-CHORUS)Help me,::is anybody there? 
+(PRE-CHORUS)Help me,::is anybody there? 
+(is anybody there?):: 
+(is anybody there?):: 
+Save me,::I'm running out of air
+Save me,::I'm running out of air
+Ooooooooooooh:: 
+Ooooooooooooh::(CHORUS) Calling out mayday
+(CHORUS) Calling out mayday:: 
+(CHORUS) Calling out mayday:: 
+ :: 
+Calling out mayday:: 
+Calling out mayday:: 
  :: 
  :: 
  :: 
+(VERS 2) It's so dark, it's so dark::out here in space 
+(VERS 2) It's so dark, it's so dark::out here in space 
+And it's been so long,::been so long since I've seen a face 
+And it's been so long,::been so long since I've seen a face 
+My eyes are shut but I can see:: the void between you and me, mm 
+My eyes are shut but I can see:: the void between you and me, mm 
+And I feel and I feel::like I'm going insane 
+And I feel and I feel::like I'm going insane 
+(PRE-CHORUS)Help me,::is anybody there? 
+(PRE-CHORUS)Help me,::is anybody there? 
+(is anybody there?):: 
+(is anybody there?):: 
+Save me,::I'm running out of air
+Save me,::I'm running out of air
+Ooooooooooooh:: 
+Ooooooooooooh::(CHORUS) Calling out mayday
+(CHORUS) Calling out mayday:: 
+(CHORUS) Calling out mayday:: 
+ :: 
+Calling out mayday:: 
+Calling out mayday:: 
  :: 
  :: 
  :: 
+(BRIDGE) Far::from the sun 
+(BRIDGE) Far::from the sun 
+Beyond stars::I hear their song 
+Beyond stars::I hear their song 
+They're coming closer::talking without sound 
+They're coming closer::talking without sound 
+Calling me home:: 
+Calling me home::(CHORUS) Calling out mayday
+(CHORUS) Calling out mayday:: 
+(CHORUS) Calling out mayday:: 
+ :: 
+Calling out mayday:: 
+Calling out mayday:: 
  :: 
  :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
+ ::  
+(OUTRO)Save me,::I'm running out of air 
+I'm running out of air::(0.937458%) 
+I'm running out of air::(0.689877%) 
+I'm running out of air::(0.478972%) 
+I'm running out of air::(0.283907%) 
+I'm running out of air::(0.003876%) 
+I'm running out of air::(?????????) 
+I'm running out of air::(END) 
+I'm running out of air::(END) 
+I'm running out of air::(END) 
+I'm running out of air::(END) 
  :: 
  :: 
  :: 

@@ -96,7 +96,8 @@ class SplashScreen extends MusicBeatState
 	public function new()
 	{
 		// check mod support
-		@:privateAccess {
+		@:privateAccess
+		{
 			#if FEATURE_MODCORE
 			CarryAround._supportsModding = true;
 			#else
@@ -220,6 +221,10 @@ class SplashScreen extends MusicBeatState
 
 		// if (nextState != null)
 		// 	FlxG.switchState(nextState);
+
+		// and here logo yey
+		Debug.logInfo(Perkedel.LFM_LOGO_BANNER);
+		Debug.logInfo("Welcome to Last Funkin Moments!");
 	}
 
 	override public function update(elapsed:Float)
