@@ -604,6 +604,11 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://youtu.be/DT61L8hbbJ4?si=zMUyC8PCjou5fGig TheFatRat. Mayday lyric!!!! wait, where are you? https://youtu.be/AcNy8QV4MhE?si=oOIPBkQ4kDn1G55- ok, 7clouds got the written!
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
+
+**EDIT X0p1r4t3**: We will return these files shortly but only to as reckless to place it. For clarification, Last Funkin Moment ownership has been transferred from Van Elektronische to X0p1r4t3 Eenvreensment, hence License Safety & Fear Protocol will be also cleared, since this fear is only on Van Elektronische. Additionally, other copyrighted files will also be installed, not as tidy as well, i.e. background unused parts (To avoid exposing gamers against Copyright Federals across galaxies).
+
+**EDIT X0p1r4t3 2**: Files may not be here, but on Kolmoroltzzet.
+
 > Why am I not credited?!
 
 > why my mods got removed?!
