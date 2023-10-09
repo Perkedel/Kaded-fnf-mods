@@ -150,7 +150,7 @@ class Game extends FlxGame
 		if (pauseMusic != null)
 		{
 			pauseMusic.stop();
-			pauseMusic.destroy();
+			// pauseMusic.destroy();
 		}
 	}
 
