@@ -2520,6 +2520,10 @@ class ChartingState extends MusicBeatState
 					saveRemove.push(i);
 					section.sectionNotes.push(i);
 				}
+				// JOELwindows7: pls remove stacked notes overlapping notes
+				// if (i[1]){
+
+				// }
 			}
 
 			for (i in saveRemove)
@@ -3195,10 +3199,15 @@ class ChartingState extends MusicBeatState
 			camFollow.y = strumLine.y;
 			// JOELwindows7: waveform positioner too too
 			if (waveform != null)
+			{
 				waveform.y = strumLine.y;
+				waveform.x = strumLine.x;
+			}
 			if (waveformVoice != null)
+			{
 				waveformVoice.y = strumLine.y;
-
+				waveformVoice.x = strumLine.x;
+			}
 			bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 				+ " / "
 				+ Std.string(FlxMath.roundDecimal(FlxG.sound.music.length / 1000, 2))
@@ -3217,12 +3226,13 @@ class ChartingState extends MusicBeatState
 				+ "\n"
 				+ (doSnapShit ? "Snap enabled" : "Snap disabled")
 				+ // JOELwindows7: helep! string hard to read!!!
-				(FlxG.save.data.showHelp ? "\n\n" + "Help:\n" + "Ctrl-MWheel : Zoom in/out\n" + "Shift-Left/Right :\nChange playback speed\n"
-					+ "Ctrl-Drag Click : Select notes\n" + "Ctrl-C : Copy notes\n" + "Ctrl-V : Paste notes\n" + "Ctrl-Z : Undo\n"
-					+ "Delete : Delete selection\n" + "CTRL-Left/Right :\n  Change Snap\n" + "Hold Shift : Disable Snap\n"
-					+ "Click or 1/2/3/4/5/6/7/8 :\n\tPlace notes\n" + "Place Note + ALT: Place mines\n" + "Up/Down :\n  Move selected notes 1 step\n"
-					+ "Shift-Up/Down :\nMove selected notes 1 beat\n" + "Space: Play Music\n" + "Enter : Preview\n" +
-					"Press F1 to hide/show help!" : "\nPress F1 to hide/show help!");
+				// (FlxG.save.data.showHelp ? "\n\n" + "Help:\n" + "Ctrl-MWheel : Zoom in/out\n" + "Shift-Left/Right :\nChange playback speed\n"
+				// 	+ "Ctrl-Drag Click : Select notes\n" + "Ctrl-C : Copy notes\n" + "Ctrl-V : Paste notes\n" + "Ctrl-Z : Undo\n"
+				// 	+ "Delete : Delete selection\n" + "CTRL-Left/Right :\n  Change Snap\n" + "Hold Shift : Disable Snap\n"
+				// 	+ "Click or 1/2/3/4/5/6/7/8 :\n\tPlace notes\n" + "Place Note + ALT: Place mines\n" + "Up/Down :\n  Move selected notes 1 step\n"
+				// 	+ "Shift-Up/Down :\nMove selected notes 1 beat\n" + "Space: Play Music\n" + "Enter : Preview\n" +
+				// 	"Press F1 to hide/show help!" : "\nPress F1 to hide/show help!");
+				(FlxG.save.data.showHelp ? Perkedel.CHART_HELP_TEXT : Perkedel.CHART_HELP_TEXT_OFF);
 
 			var left = FlxG.keys.justPressed.ONE;
 			var down = FlxG.keys.justPressed.TWO;
@@ -4926,9 +4936,9 @@ class ChartingState extends MusicBeatState
 		else
 		{
 			if (PlayState.SONG.needsVoices)
-				waveformVoice = new Waveform(0, 0, Paths.voices(PlayState.SONG.songId), 720);
+				waveformVoice = new Waveform(100, 0, Paths.voices(PlayState.SONG.songId), 720);
 
-			waveform = new Waveform(0, 0, Paths.inst(PlayState.SONG.songId), 720);
+			waveform = new Waveform(100, 0, Paths.inst(PlayState.SONG.songId), 720);
 		}
 	}
 
@@ -4936,8 +4946,15 @@ class ChartingState extends MusicBeatState
 	function addWaveforms()
 	{
 		if (waveform != null)
+		{
+			Debug.logTrace('Add Music Waveform');
 			add(waveform);
+		}
+
 		if (waveformVoice != null)
+		{
+			Debug.logTrace('Add Voice Waveform');
 			add(waveformVoice);
+		}
 	}
 }

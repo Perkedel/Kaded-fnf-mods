@@ -723,6 +723,7 @@ class CoreState extends FlxUIState implements ICoreStating
 		}
 	}
 
+	// JOELwindows7: Controls!
 	function manageMouse():Void
 	{
 		// JOELwindows7: nothing. use this special update to manage mouse
@@ -736,6 +737,18 @@ class CoreState extends FlxUIState implements ICoreStating
 		{
 			rawMouseHeld = false;
 		}
+	}
+
+	function updateLastGamepad(gamepad:FlxGamepad):Void
+	{
+	}
+
+	function updateFirstGamepad(gamepad:FlxGamepad):Void
+	{
+	}
+
+	function updateAllGamepads(gamepad:Array<FlxGamepad>):Void
+	{
 	}
 
 	function manageJoypad():Void
@@ -753,6 +766,20 @@ class CoreState extends FlxUIState implements ICoreStating
 			Main.xboxControllers[i].poll();
 		}
 		#end
+
+		// JOELwindows7: Also, consider https://haxeflixel.com/documentation/gamepads/
+		if (joypadFirstActive != null)
+		{
+			updateFirstGamepad(joypadFirstActive);
+		}
+		if (joypadLastActive != null)
+		{
+			updateLastGamepad(joypadLastActive);
+		}
+		if (joypadAllActive != null)
+		{
+			updateAllGamepads(joypadAllActive);
+		}
 	}
 }
 
@@ -1417,6 +1444,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 		}
 	}
 
+	// JOELwindows7: Controls!
 	function manageMouse():Void
 	{
 		// JOELwindows7: nothing. use this to manage mouse
@@ -1430,6 +1458,18 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 		{
 			rawMouseHeld = false;
 		}
+	}
+
+	function updateLastGamepad(gamepad:FlxGamepad):Void
+	{
+	}
+
+	function updateFirstGamepad(gamepad:FlxGamepad):Void
+	{
+	}
+
+	function updateAllGamepads(gamepad:Array<FlxGamepad>):Void
+	{
 	}
 
 	function manageJoypad():Void
@@ -1447,6 +1487,20 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 			Main.xboxControllers[i].poll();
 		}
 		#end
+
+		// JOELwindows7: Also, consider https://haxeflixel.com/documentation/gamepads/
+		if (joypadFirstActive != null)
+		{
+			updateFirstGamepad(joypadFirstActive);
+		}
+		if (joypadLastActive != null)
+		{
+			updateLastGamepad(joypadLastActive);
+		}
+		if (joypadAllActive != null)
+		{
+			updateAllGamepads(joypadAllActive);
+		}
 	}
 }
 
@@ -1758,5 +1812,8 @@ interface ICoreStating
 
 	private function manageMouse():Void;
 
+	private function updateLastGamepad(gamepad:FlxGamepad):Void;
+	private function updateFirstGamepad(gamepad:FlxGamepad):Void;
+	private function updateAllGamepads(gamepad:Array<FlxGamepad>):Void;
 	private function manageJoypad():Void;
 }

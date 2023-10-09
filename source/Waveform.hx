@@ -4,8 +4,10 @@ import openfl.geom.Rectangle;
 import haxe.io.Bytes;
 import lime.media.AudioBuffer;
 import flixel.FlxSprite;
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 
-class Waveform extends FlxSprite
+class Waveform extends FlxUISprite
 {
 	/// referenced from https://github.com/gedehari/HaxeFlixel-Waveform-Rendering/blob/master/source/PlayState.hx
 	/// by gedehari

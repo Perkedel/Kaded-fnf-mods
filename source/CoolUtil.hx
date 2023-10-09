@@ -6,6 +6,7 @@ import lime.utils.Assets;
 import lime.system.System;
 import tjson.TJSON;
 import openfl.utils.Assets as OpenFlAssets;
+import Song.SongData;
 
 using StringTools;
 
@@ -258,6 +259,61 @@ class CoolUtil
 			Conductor.changeBPM(102);
 		}
 		// }
+	}
+
+	// JOELwindows7: Portable song data cleaner
+	public static function cleanedSongData(SONG:SongData, ?reallyCleanTheSong = false):SongData{
+		// take from Pogger in Playstate
+		var notes = [];
+
+		var cleanedSong:SongData = SONG;
+
+		for (section in cleanedSong.notes)
+		{
+			var removed = [];
+
+			for (note in section.sectionNotes)
+			{
+				// commit suicide
+				var old = note[0];
+				if (note[0] < section.startTime)
+				{
+					notes.push(note);
+					removed.push(note);
+				}
+				if (note[0] > section.endTime)
+				{
+					notes.push(note);
+					removed.push(note);
+				}
+			}
+
+			for (i in removed)
+			{
+				section.sectionNotes.remove(i);
+			}
+		}
+
+		for (section in cleanedSong.notes)
+		{
+			var saveRemove = [];
+
+			for (i in notes)
+			{
+				if (i[0] >= section.startTime && i[0] < section.endTime)
+				{
+					saveRemove.push(i);
+					section.sectionNotes.push(i);
+				}
+			}
+
+			for (i in saveRemove)
+				notes.remove(i);
+		}
+
+		trace("FUCK YOU BITCH FUCKER CUCK SUCK BITCH " + cleanedSong.notes.length);
+
+		return cleanedSong;
 	}
 }
 

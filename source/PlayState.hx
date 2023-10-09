@@ -4296,6 +4296,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 		else if (paused)
 		{
+			Game.stopPauseMusic(); // JOELwindows7: Eehe
 			// JOELwindows7: BOLO resumes video. pls bring that our function here!
 			#if FEATURE_VLC
 			if (useVLC && vlcHandler != null)
@@ -9554,7 +9555,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				{
 					WellWellWell.play(true);
 
-					tankKludgeText.text = "Well well well, what do we got here?";
+					tankKludgeText.text = "[Tankman Captain] Well well well, what do we got here?";
 					tankKludgeText.screenCenter(X);
 				});
 
@@ -9569,7 +9570,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						boyfriend.playAnim('singUP', true);
 						FlxG.sound.play(Paths.sound('bfBeep'));
 
-						tankKludgeText.text = 'BEEP!';
+						tankKludgeText.text = '[Boyfriend] BEEP!';
 						tankKludgeText.screenCenter(X);
 					});
 
@@ -9582,7 +9583,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						Stage.swagBacks['tankman'].animation.play('killYou', true);
 						FlxG.sound.play(Paths.sound('killYou'));
 
-						tankKludgeText.text = 'We should just KILL YOU but...';
+						tankKludgeText.text = '[Tankman Captain] We should just KILL YOU but...';
 						tankKludgeText.screenCenter(X);
 						createTimer(2, function(tmr:FlxTimer)
 						{
@@ -9631,7 +9632,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				createTimer(0.01, function(tmr:FlxTimer)
 				{
 					tightBars.play(true);
-					tankKludgeText.text = 'Heh, pretty tight bars';
+					tankKludgeText.text = '[Tankman Captain] Heh, pretty tight bars';
 					tankKludgeText.screenCenter(X);
 					createTimer(2, function(tmr:FlxTimer)
 					{
@@ -9692,7 +9693,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					// JOELwindows7: btw, bf was also supposed to play anim angery upset for
 					// tankman mocked his gf. idk. but the original cutscene seems to have
 					// forgotten that. a mistakes, hopefully!
-					tankKludgeText.text = 'UGLY BORING little teenager';
+					tankKludgeText.text = '[Tankman Captain] UGLY BORING little teenager\n[Girfriend] (Cry hard)!!...';
 					tankKludgeText.screenCenter(X);
 					createTimer(2, function(tmr:FlxTimer)
 					{
@@ -9792,7 +9793,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				createTimer(0.01, function(tmr:FlxTimer) // Fixes sync????
 				{
 					cutsceneSnd.play(true);
-					tankKludgeText.text = 'God.. eFfing ${FlxG.save.data.naughtiness ? '(FUCKING)' : ''}.. Damnit.., tsk!';
+					tankKludgeText.text = '[Tankman Captain] God.. eFfing ${FlxG.save.data.naughtiness ? '(FUCKING)' : ''}.. Damnit.., tsk!';
 					tankKludgeText.screenCenter(X);
 					createTimer(3, function(tmr:FlxTimer)
 					{
@@ -9807,11 +9808,11 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 								tankKludgeText.text = 'PEOPLE DIE!!';
 								createTimer(1.7, function(tmr:FlxTimer)
 								{
-									tankKludgeText.text = 'Command, get ready to fire!';
+									tankKludgeText.text = '(right hand signal soldiers on speaker) Command, get ready to fire!';
 									tankKludgeText.screenCenter(X);
 									createTimer(2.1, function(tmr:FlxTimer)
 									{
-										tankKludgeText.text = 'Sorry no prom for you this year, HAHAHAA!';
+										tankKludgeText.text = 'Sorry no prom for you this year, HAHAHAA!\n(two soldiers on speaker about to shoot girlfriend)';
 										tankKludgeText.screenCenter(X);
 									});
 								});
@@ -9852,6 +9853,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						{
 							Stage.swagBacks['gfCutscene'].animation.play('getRektLmao', true);
 							Stage.swagBacks['gfCutscene'].offset.set(224, 445);
+							// tankKludgeText.text = '[Pico] (shoot right soldier & kick Girlfriend off to bring her to Boyfriend)!!!';
+							tankKludgeText.text = '(Girlfriend\'s eyes charging glowing up)';
+							tankKludgeText.screenCenter(X);
 						}
 						else
 						{
@@ -9861,14 +9865,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							Controls.vibrate(0, 90); // JOELwindows7: bang! pico shoots tankmen!
 							createTimer(1, function(tmr:FlxTimer)
 							{
-								tankKludgeText.text = 'WHAAAAA!!!!';
+								tankKludgeText.text = '[Pico] (point gun to left soldier)\n[Left soldier] WHAAAAA!!!!';
 								tankKludgeText.screenCenter(X);
 							});
 							// JOELwindows7: & then the other
 							createTimer(1.6, function(tmr:FlxTimer)
 							{
 								Controls.vibrate(0, 95);
-								tankKludgeText.text = '(eik serkat!)';
+								tankKludgeText.text = '[Pico] (BANG)!!\n[Left soldier] (eik serkat!)';
 								tankKludgeText.screenCenter(X);
 							});
 
@@ -9903,7 +9907,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					Stage.swagBacks['tankman'].animation.play('lookWhoItIs', true);
 					Stage.swagBacks['tankman'].x += 90;
 					Stage.swagBacks['tankman'].y += 6;
-					tankKludgeText.text = 'Aah, look who it is,';
+					tankKludgeText.text = '[Tankman Captain] Aah, look who it is,';
 					tankKludgeText.screenCenter(X);
 					trace('affa');
 					createTimer(2.4, function(tmr:FlxTimer)
@@ -10752,7 +10756,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		switch (curSong)
 		{
 			case 'ku-tetap-cinta-yesus':
-				createToast(null, "Forgiven", "[REDACTED] is now eligible to access Heaven again! Welcome home."); // this was Sarvente
+				// createToast(null, "Forgiven", "[REDACTED] is now eligible to access Heaven again! Welcome home."); // this was Sarvente
+				createToast(null, "Forgiven", "Sarvente (+ others) are now eligible to access Heaven again! Welcome home."); // SPILL THE BEAN!!!
 			default:
 				trace("an song complete");
 		}

@@ -10,6 +10,22 @@ import flixel.FlxSubState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.addons.ui.FlxUIText;
+import flixel.graphics.atlas.FlxAtlas;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
+import flixel.system.FlxSound;
+import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.ui.FlxBar;
+import flixel.util.FlxCollision;
+import flixel.util.FlxColor;
+import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
 
 // JOELwindows7: FlxUI fy!!!
 class GameOverSubstate extends MusicBeatSubstate
@@ -39,11 +55,20 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public static var instance:GameOverSubstate; // JOELwindows7: BOLO has instanceoid
 
+	public var tankmanSubtitle:FlxUIText; // JOELwindows7: week 7 game over subtitle
+
 	// JOELwindows7: BOLO has create
 	override function create()
 	{
 		Paths.clearUnusedMemory();
 		instance = this;
+
+		// JOELwindows7: add here yeo
+		// JOELwindows7: add tankman insults text
+		tankmanSubtitle = new FlxUIText(100, 150, 0, " \n ", 20);
+		tankmanSubtitle.setFormat(Paths.font("Ubuntu-R-NF.ttf"), 14, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		tankmanSubtitle.scrollFactor.set();
+		add(tankmanSubtitle);
 
 		super.create();
 	}
@@ -292,8 +317,14 @@ class GameOverSubstate extends MusicBeatSubstate
 			if (daDad == 'tankman')
 			{
 				// JOELwindows7: first, because the original does game over reduce volume, let's do it now!
+				var pickYourInsult:Int = FlxG.random.int(1, 25);
 				FlxG.sound.music.fadeOut(.2, .2); // and BOLO used .2
-				FlxG.sound.play(Paths.sound('jeffGameover-' + FlxG.random.int(1, 25), 'shared'), 1, false, null, true, function()
+				if (tankmanSubtitle != null)
+				{
+					tankmanSubtitle.text = Perkedel.HARDCODE_GAMEOVER_ENEMY_INSULTS[0][pickYourInsult - 1];
+					tankmanSubtitle.scrollFactor.set();
+				}
+				FlxG.sound.play(Paths.sound('jeffGameover-' + pickYourInsult, 'shared'), 1, false, null, true, function()
 				{
 					// JOELwindows7: but BOLO has more!!!
 					FlxG.sound.music.fadeIn(0.2, 1, 4);

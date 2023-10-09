@@ -2,6 +2,70 @@
  :: 
  :: 
  :: 
+(VERS 1) I live inside my own::world of make-believe 
+(VERS 1) I live inside my own::world of make-believe 
+Kids screaming in::their cradles, profanities 
+Kids screaming in::their cradles, profanities 
+I see the world through::eyes covered in ink and bleach 
+I see the world through::eyes covered in ink and bleach 
+Cross out the ones who::heard my cries and watched me weep 
+Cross out the ones who::heard my cries and watched me weep 
+(PRE-CHORUS) I love everything:: 
+Fire's spreading all::around my room 
+My world's so bright:: 
+It's hard to breathe::but that's alright HUSH 
+(CHORUS):: 
+(CHORUS):: 
+ :: 
+ssh:: 
+ :: 
+ :: 
+ :: 
+ :: 
+(VERS 2) Tape my eyes open::to force reality (Oh no, no) 
+(VERS 2) Tape my eyes open::to force reality (Oh no, no) 
+Why can't you juust let me::eat my weight in glee? 
+Why can't you juust let me::eat my weight in glee? 
+I live inside my own::world of make-believe 
+I live inside my own::world of make-believe 
+Kids screaming in::their cradles, profanities 
+Kids screaming in::their cradles, profanities 
+Some days I feel skinnier:: than all the other days 
+Some days I feel skinnier:: than all the other days 
+Sometimes I can't tell if::my body belongs to me 
+Sometimes I can't tell if::my body belongs to me 
+(PRE-CHORUS) I love everything:: 
+Fire's spreading all::around my room 
+My world's so bright:: 
+It's hard to breathe::but that's alright HUSH 
+(CHORUS):: 
+(CHORUS):: 
+ :: 
+ssh:: 
+ :: 
+ :: 
+ :: 
+ :: 
+(BRIDGE) I wanna taste your content:: 
+hold your breath and feel the tension::  
+devils hide behind redemption:: 
+honesty is one-way gate to hell:: 
+I wanna taste consumption:: 
+breathe faster to waste oxygen:: 
+hear the children sing aloud:: 
+it's music 'till the wick burns out::HUSH 
+(CHORUS):: 
+(CHORUS):: 
+ :: 
+(OUTRO) Just wanna be:: 
+care free lately,::yeah 
+just kicking up daisies::Got 
+one too many quarters in my pockets:: 
+count 'em like the four leaf clovers in my locket:: 
+Untied laces,::yeah 
+just tripping on daydreams::Got
+dirty little lullabies playing on repeat:: 
+might as well just rot around::the nursery and count sheep (END)
  :: 
  :: 
  :: 
@@ -26,21 +90,7 @@
  :: 
  :: 
  :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
- :: 
+sheep::(SHEEP) 
  :: 
  :: 
  :: 

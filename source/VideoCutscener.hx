@@ -98,6 +98,8 @@ class VideoSelfContained extends MusicBeatState
 	public var musicPaused:Bool = false;
 	public var txt:FlxUIText;
 	public var peckingVolume:Float = 1;
+	public var fillSkip:Float = 0;
+	public var maxFillSkip:Float = 1;
 
 	var defaultText:String = "";
 
@@ -162,6 +164,7 @@ class VideoSelfContained extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		super.update(elapsed);
 		if (FlxG.keys.justPressed.P || FlxG.mouse.justPressed)
 		{
 			txt.text = pauseText;
@@ -205,6 +208,8 @@ class VLCState extends MusicBeatState
 	public var musicPaused:Bool = false;
 	public var txt:FlxUIText;
 	public var peckingVolume:Float = 1;
+	public var fillSkip:Float = 0;
+	public var maxFillSkip:Float = 1;
 
 	var defaultText:String = "";
 
@@ -303,6 +308,7 @@ class VLCState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		super.update(elapsed);
 		if (FlxG.keys.justPressed.P || FlxG.mouse.justPressed)
 		{
 			txt.text = pauseText;
@@ -324,6 +330,28 @@ class VLCState extends MusicBeatState
 				theVLC.togglePaused();
 			}
 			#end
+		}
+		if (FlxG.keys.pressed.ENTER || (joypadLastActive != null? joypadLastActive.pressed.A : false))
+		// if (FlxG.keys.pressed.ENTER || (controls.ACCEPT))
+		{
+			// hold to skip
+			if (fillSkip < maxFillSkip)
+			{
+				// keep holding
+				fillSkip += elapsed;
+			}
+			else
+			{
+				// that's it skip now!
+				Debug.logInfo('Skip VLC Cutscene!');
+				theVLC.stop();
+				donedCallback();
+			}
+		}
+		else
+		{
+			// cancel skip
+			fillSkip = 0;
 		}
 	}
 

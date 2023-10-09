@@ -57,6 +57,12 @@ class Perkedel
 		"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
 		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights", "Appear Blackbar", "Disappear Blackbar"
 	];
+	public static final CHART_HELP_TEXT:String = "\n\n" + "Help:\n" + "Ctrl-MWheel : Zoom in/out\n" + "Shift-Left/Right :\nChange playback speed\n"
+		+ "Ctrl-Drag Click : Select notes\n" + "Ctrl-C : Copy notes\n" + "Ctrl-V : Paste notes\n" + "Ctrl-Z : Undo\n" + "Delete : Delete selection\n"
+		+ "CTRL-Left/Right :\n  Change Snap\n" + "Hold Shift : Disable Snap\n" + "Click or 1/2/3/4/5/6/7/8 :\n\tPlace notes\n"
+		+ "Place Note + ALT: Place mines\n" + "Up/Down :\n  Move selected notes 1 step\n" + "Shift-Up/Down :\nMove selected notes 1 beat\n"
+		+ "Space: Play Music\n" + "Enter : Preview\n" + "Press F1 to hide/show help!";
+	public static final CHART_HELP_TEXT_OFF:String = "\nPress F1 to hide/show help!";
 	public static final LFM_ICON_PATH_DOC:String = "art/LFMicon128";
 	public static final STARTUP_TOAST_TITLE:String = "Cool and good";
 	public static final STARTUP_TOAST_DESCRIPTION:String = "Welcome to Last Funkin Moments\n Today's Kontraktua Majoris\n (2 of 3): Sky, Whitty";
@@ -199,4 +205,48 @@ class Perkedel
 	█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▒▒▒▒▒▒▒▒▒▒█
 	██████████████████████████████████████████████████████████████████████████████
 	";
+
+	public static final HARDCODE_GAMEOVER_ENEMY_INSULTS:Array<Array<String>> = [
+		[
+			// Tankman
+			// '',
+			'I said let\'s rock, not suck cock, XD!!!!!!',
+			'Oh ho my God, what the hell was that?\n what the hell was THAT?',
+			'I guess your shooting hair dyes got in your eyes.\nIt\'s okay, it happens to all of us.',
+			'Maybe you should play Week 1 again. XD!!!!!!!',
+			'Can you even feed yourself? Can you even walk straight?',
+			//
+			'Maybe if you had more friend then you\'d be less depressed and play better, mmM??',
+			'You\'re ugly, and you can\'t keep a rhythm. \nTrully you are cursed.',
+			'Man, are you tired of eating shit yet? XD!!!!!!!',
+			'Ey you\'re getting closer. I won\'t brag about it tho..',
+			'No wonder your parents hate you. .. XD!!!!!!!\n(sniff)!!',
+			//
+			'If you can\'t beat me, how are you gonna survive this harsh and cruel world, hMM??',
+			'The only thing you\'re Funkin\' tonight is your sock.',
+			'Why I\'m wasting my time against some baggy pants... fucked?, XD!!!!!!!!',
+			'Why I\'m wasting my time against some baggy pants... punk?',
+			'Hey here\'s some Friday Night Funkin\' lore for ya:\nI DON\'T LIKE YOU!',
+			//
+			'You just make me wanna cry T_T....',
+			'You know I\'m running outta shit to say here, so you better beat this sometime today, asshole!',
+			'Congratulations, you won. That\'s what I would say if you weren\'t such a Goddamn.. failure, .. XD!!!!!!!',
+			'You gotta press the Arrows, kid, don\'t slap the keyboard like your blind uncle, WHAT??',
+			'You feel that? That\'s called failure and you\'d better get used to it. Heh heh hee...',
+			//
+			'Open your fuckin\' eyes, geez!!',
+			'I hope you\'re not some internet streamer screaming like a sociopath right now..',
+			'That waaas terrible.\nJuuust terrible.',
+			'My dead grandmother has more nimble fingers, come on!!',
+			'Good Lord, what the hell is your problem, man?!\n(Burp).., just do it right, PLEASE!',
+		],
+		[
+			// Shang Tsung
+			'Your soul, is mine!',
+		],
+		[
+			// Sans
+			'Get dunk\'d on, kid.',
+		],
+	];
 }

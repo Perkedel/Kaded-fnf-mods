@@ -168,13 +168,14 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.60 * (60 / FlxG.save.data.fpsCap));
 
-		// JOELwindows7: hard code our download link in case illegally reuploaded no matter what sign given
+		// JOELwindows7: hard code our download link in case reuploaded without credit no matter what sign given
 		// we also covered both Kade Engine and the vanilla itself
 		var reuploadWord:String = "Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\n"
 			+ "original Kade Engine at https://github.com/KadeDev/Kade-Engine,\n"
-			+ "and vanilla Funkin at https://github.com/ninjamuffin99/Funkin .\n"
+			+ "and vanilla Funkin at https://github.com/ninjamuffin99/Funkin ,\n"
+			+ "also FULL ASS Funkin at STEAM_URL .\n"
 			+ "play vanilla Funkin at https://www.newgrounds.com/portal/view/770371\n";
-		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 72, 0, reuploadWord, 12);
+		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 80, 0, reuploadWord, 12);
 		reuploadEdgeCase.scrollFactor.set();
 		reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(reuploadEdgeCase);

@@ -602,6 +602,8 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://youtu.be/KBtk5FUeJbk?si=vJa2lNp2SojfM_S8 Sub Urban. Cradles lyric!!!!
 - https://youtu.be/hJqYc62NCKo?si=1qPKuipCo4GmMEKx TheFatRat. We'll meet again lyric!!! most above 2016 ish should have these in description
 - https://youtu.be/DT61L8hbbJ4?si=zMUyC8PCjou5fGig TheFatRat. Mayday lyric!!!! wait, where are you? https://youtu.be/AcNy8QV4MhE?si=oOIPBkQ4kDn1G55- ok, 7clouds got the written!
+- https://youtu.be/e2ZhrVxtbpk?si=QLsAcJ53ew1NZctR MediaGamesGuide. Tankman week 7 all line game over. YouTube's auto substitle captioned it for me. But I still don't trust you.
+- https://g.co/kgs/G5nEDN Google. Google got Musixmatch for `Ku tetap cinta Yesus` song. search yes.
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 

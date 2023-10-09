@@ -776,6 +776,22 @@ class DialogueBox extends FlxUIGroup
 							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk2'), 0.6),
 							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk3'), 0.6),
 						];
+					case 'bf-pixel' | 'senpai' | 'senpai-mad' | 'senpai-angry':
+						// somehow color bug with pixel font
+						dropText.font = 'Pixel Arial 11 Bold';
+						swagDialogue.font = 'Pixel Arial 11 Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
+						];
+						if (handoverBf.dialogueChatSoundPaths != null && handoverBf.dialogueChatSoundPaths.length > 0)
+						{
+							for (i in handoverBf.dialogueChatSoundPaths)
+							{
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverBf.dialogueChatSoundVolume));
+							}
+						}
 					default:
 						dropText.font = handoverDad.fontDrop != null
 							&& handoverDad.fontDrop != '' ? handoverDad.fontDrop : 'Pixel Arial 11 Bold';
@@ -783,7 +799,7 @@ class DialogueBox extends FlxUIGroup
 						dropText.color = handoverDad.fontColorDrop != null
 							&& handoverDad.fontColorDrop != '' ? FlxColor.fromString(handoverDad.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 						swagDialogue.color = handoverDad.fontColor != null
-						&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : FlxColor.fromInt(0xFF3F2021);
+							&& handoverDad.fontColor != '' ? FlxColor.fromString(handoverDad.fontColor) : FlxColor.fromInt(0xFF3F2021);
 						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 						swagDialogue.sounds = [
 							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
@@ -840,6 +856,22 @@ class DialogueBox extends FlxUIGroup
 							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk2'), 0.6),
 							FlxG.sound.load(Paths.sound('textSpeak/hookx/talk3'), 0.6),
 						];
+					case 'bf-pixel' | 'senpai' | 'senpai-mad' | 'senpai-angry':
+						// somehow color bug with pixel font
+						dropText.font = 'Pixel Arial 11 Bold';
+						swagDialogue.font = 'Pixel Arial 11 Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
+						];
+						if (handoverBf.dialogueChatSoundPaths != null && handoverBf.dialogueChatSoundPaths.length > 0)
+						{
+							for (i in handoverBf.dialogueChatSoundPaths)
+							{
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverBf.dialogueChatSoundVolume));
+							}
+						}
 					default:
 						// dropText.font = 'Pixel Arial 11 Bold';
 						// swagDialogue.font = 'Pixel Arial 11 Bold';

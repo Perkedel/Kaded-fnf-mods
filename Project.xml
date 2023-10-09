@@ -92,7 +92,7 @@
 	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile || linux"/>
 	<!-- JOELwindows7: okay fam, we've got libraries for most of the platform here yey, mobile still broken tho, Android yess. -->
 	<!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
-	<haxedef name="FEATURE_WEBM" if="desktop" unless = "neko || hl"/>
+	<haxedef name="FEATURE_WEBM" if="desktop" unless = "neko || hl || java"/>
 	<!-- Defines whether StepMania files can be loaded. -->
 	<haxedef name="FEATURE_STEPMANIA" if="desktop || sys" />
 	<!-- Defines whether the Thread class can be used. -->
@@ -101,7 +101,7 @@
 	<!-- JOELwindows7: Defines whether uh I forgot -->
 
 	<!-- JOELwindows7: Defines whether the WebMer native should be enabled. This is for cpp-->
-	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="hl || neko"/>
+	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="hl || neko || java"/>
 	<!-- JOELwindows7: and for JS -->
 	<haxedef name="FEATURE_WEBM_JS" if="web"/>
 	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
@@ -404,7 +404,7 @@
 	<haxelib name="hscript" />
 
 	<haxelib name="actuate" />
-	<haxelib name="extension-webm"/> <!-- Make sure to use https://github.com/KadeDev/extension-webm/ -->
+	<haxelib name="extension-webm" unless='hl || neko'/> <!-- Make sure to use https://github.com/KadeDev/extension-webm/ -->
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
@@ -510,10 +510,10 @@
 
 	<!-- JOELwindows7: TentaRJ's GameJolt tools -->
 	<haxelib name="tentools" />
-	<haxelib name="systools" unless = "mobile"/>
-	<ndll name="systools" haxelib="systools" unless = "flash || mobile"/>
+	<haxelib name="systools" unless = "mobile || hl"/>
+	<ndll name="systools" haxelib="systools" unless = "flash || mobile || hl || neko"/>
 	<!-- Final touch to have this -->
-	<haxedef name="gamejolt" if="tentools systools" unless= "mobile"/>
+	<haxedef name="gamejolt" if="tentools systools" unless= "mobile || hl || neko"/>
 	
 
 	<!-- JOELwindows7: extra needed for Enigma whoahow -->
