@@ -1,3 +1,4 @@
+#if FEATURE_FMOD
 import faxe.Faxe;
 import SndTV;
 
@@ -1508,3 +1509,4 @@ class Snd
 		return cast fbank;
 	}
 }
+#end

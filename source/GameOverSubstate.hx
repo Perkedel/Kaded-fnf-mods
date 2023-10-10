@@ -321,6 +321,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				FlxG.sound.music.fadeOut(.2, .2); // and BOLO used .2
 				if (tankmanSubtitle != null)
 				{
+					// TODO: pls use FireTongue reference instead! like.. getText here. `'$WEEK7_GAMEOVER_TANKMAN_INSULT_' + pickYourInsult`
 					tankmanSubtitle.text = Perkedel.HARDCODE_GAMEOVER_ENEMY_INSULTS[0][pickYourInsult - 1];
 					tankmanSubtitle.scrollFactor.set();
 				}

@@ -664,7 +664,7 @@ class Paths
 
 	inline static public function videoSound(key:String, ?library:String)
 	{
-		return getPath('videos/$key.ogg', SOUND, library);
+		return getPath('videos/$key.$SOUND_EXT', SOUND, library);
 	}
 
 	// JOELwindows7: apparently BrightFyre's MP4 support video Cutscener

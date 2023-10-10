@@ -128,6 +128,9 @@
 	<!-- JOELwindows7: (hxCodec PolybiusProxy) LibVLC Logging for hxCodec -->
 	<haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
 
+	<!-- JOELwindows7: contain the fmod faxe -->
+	<haxedef name="FEATURE_FMOD" if="switch"/>
+
 	<!-- JOELwindows7: clipboard error arch linux no solution pls help -->
 	<!-- 
 	```

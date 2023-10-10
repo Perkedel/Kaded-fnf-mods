@@ -241,6 +241,8 @@ class WerrorForceMajeurState extends CoreState
 		path = '${Sys.getCwd()}crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
 		#end
 
+		path = Path.normalize(path);
+
 		for (stackItem in callStack)
 		{
 			switch (stackItem)
@@ -250,6 +252,8 @@ class WerrorForceMajeurState extends CoreState
 				default:
 					#if sys
 					Sys.println(stackItem);
+					#else
+					trace(stackItem);
 					#end
 			}
 		}
@@ -265,9 +269,19 @@ class WerrorForceMajeurState extends CoreState
 
 		try
 		{
+			var checkCrashFolderPath:String;
+			#if sys
+			checkCrashFolderPath = '${Sys.getCwd()}crash/';
+			#else
+			checkCrashFolderPath = './crash';
+			#end
+			checkCrashFolderPath = Path.normalize(checkCrashFolderPath);
+
 			#if FEATURE_FILESYSTEM
-			if (!FileSystem.exists("./crash/"))
-				FileSystem.createDirectory("./crash/");
+			// if (!FileSystem.exists("./crash/"))
+			// 	FileSystem.createDirectory("./crash/");
+			if (!FileSystem.exists(checkCrashFolderPath))
+				FileSystem.createDirectory(checkCrashFolderPath);
 
 			File.saveContent(path, errHdr + errMsg + "\n");
 			#end
@@ -285,7 +299,7 @@ class WerrorForceMajeurState extends CoreState
 		catch (e)
 		{
 			#if sys
-			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when wanted to write to ${path}\n\n$e:\n\ne${e.details()}');
 			Sys.println('Anyway pls detail!:\n===============');
 			Sys.println(errHdr + errMsg);
 			Sys.println('================\nThere, clipboard pls');

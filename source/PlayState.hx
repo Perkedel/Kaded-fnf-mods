@@ -9166,7 +9166,12 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				try
 				{
 					// lyricers.text = lyricing[curSection][0] + "\n" + lyricing[curSection][1];
-					lyricers.text = lyricing[Std.int(Math.floor(curBeat / 4))][0] + "\n" + lyricing[Std.int(Math.floor(curBeat / 4))][1];
+					var filterLyric:Array<String> = [
+						lyricing[Std.int(Math.floor(curBeat / 4))][0] != null ? lyricing[Std.int(Math.floor(curBeat / 4))][0] : '',
+						lyricing[Std.int(Math.floor(curBeat / 4))][1] != null ? lyricing[Std.int(Math.floor(curBeat / 4))][1] : '',
+					];
+					// lyricers.text = lyricing[Std.int(Math.floor(curBeat / 4))][0] + "\n" + lyricing[Std.int(Math.floor(curBeat / 4))][1];
+					lyricers.text = '${filterLyric[0]}\n${filterLyric[1]}';
 				}
 				catch (e)
 				{
@@ -9952,7 +9957,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					};
 					FlxG.camera.follow(camFollow, LOCKON, 1);
 
-					tankKludgeText.text = 'XD!!!!!';
+					tankKludgeText.text = '(Boyfriend & Girlfriend went bruh moment)\n[Tankman] XD!!!!!';
 					tankKludgeText.screenCenter(X);
 
 					camFollow.setPosition(1100, 625);
