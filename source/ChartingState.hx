@@ -4860,6 +4860,7 @@ class ChartingState extends MusicBeatState
 		}
 		else if (paused)
 		{
+			Game.stopPauseMusic();
 			FlxG.mouse.visible = true;
 			paused = false;
 		}

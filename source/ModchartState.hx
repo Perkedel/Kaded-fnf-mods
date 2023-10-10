@@ -281,6 +281,22 @@ class ModchartState
 		}
 	}
 
+	/**
+	 * JOELwindows7: Get Text from FireTongue Locale Language Table
+	 * @param Flag Text ID to fetch from
+	 * @param Context Table file to fetch from
+	 * @param Safe Null Safe mode
+	 * @return String The output from the table reference
+	 */
+	public function getText(Flag:String, Context:String = "ui", Safe:Bool = true):String
+	{
+		if (PlayState.instance != null)
+			return PlayState.instance.getText(Flag, Context, Safe);
+		if (Main.tongue != null)
+			return Main.tongue.get(Flag, Context, Safe);
+		return Flag;
+	}
+
 	function getActorByName(id:String):Dynamic
 	{
 		// pre defined names
@@ -744,6 +760,9 @@ class ModchartState
 		setVar("accuracy", PlayState.instance.accuracy);
 
 		// callbacks
+
+		// JOELwindows7: the FireTongue Language text pls
+		Lua_helper.add_callback(lua, "getText", getText);
 
 		// JOELwindows7: BOLO precache
 		Lua_helper.add_callback(lua, "precache", function(asset:String, type:String, ?library:String)

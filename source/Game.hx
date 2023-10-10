@@ -126,6 +126,13 @@ class Game extends FlxGame
 		}
 	}
 
+	// JOELwindows7: aaaaa ye
+
+	// JOELwindows7: Play Sounds pls
+	// public static function playSound(path:String){
+
+	// }
+
 	public static function playPauseMusic()
 	{
 		pauseFadingOut = false;

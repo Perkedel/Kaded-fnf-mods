@@ -175,7 +175,8 @@ class SplashScreen extends MusicBeatState
 
 		onResize(stageWidth, stageHeight);
 
-		_aModOfText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 150), 0, "A mod of Friday Night Funkin", 24);
+		// _aModOfText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 150), 0, "A mod of Friday Night Funkin", 24);
+		_aModOfText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 150), 0, getText("$SPLASH_SLOGAN"), 24);
 		_aModOfText.setFormat(Paths.font("UbuntuMono-R.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		_aModOfText.scrollFactor.set();
 		_aModOfText.screenCenter(XY);
@@ -190,7 +191,9 @@ class SplashScreen extends MusicBeatState
 		add(_aPressEscapeToBiosText);
 		_aPressEscapeToBiosText.visible = !CarryAround.modAlreadyLoaded() && CarryAround.supportsModding(); // only visiblize if not already loaded & supports modding
 
-		_aPressEscapeToBiosButton = new FlxUIButton(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 230), "BIOS Setting", onBiosButtonClick);
+		// _aPressEscapeToBiosButton = new FlxUIButton(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 230), "BIOS Setting", onBiosButtonClick);
+		_aPressEscapeToBiosButton = new FlxUIButton(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 230), getText("$SPLASH_BIOS_SETTING"),
+			onBiosButtonClick);
 		_aPressEscapeToBiosButton.setSize(90, 50);
 		_aPressEscapeToBiosButton.setGraphicSize(90, 50);
 		_aPressEscapeToBiosButton.updateHitbox();
@@ -224,7 +227,8 @@ class SplashScreen extends MusicBeatState
 
 		// and here logo yey
 		Debug.logInfo(Perkedel.LFM_LOGO_BANNER);
-		Debug.logInfo("Welcome to Last Funkin Moments!");
+		// Debug.logInfo("Welcome to Last Funkin Moments!");
+		Debug.logInfo(getText("$SPLASH_WELCOME"));
 	}
 
 	override public function update(elapsed:Float)

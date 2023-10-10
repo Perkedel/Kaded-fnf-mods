@@ -219,6 +219,13 @@
 	<!-- <assets path="assets" include="*.json"/> -->
 	<!-- end yoinkoid -->
 
+	<!-- JOELwindows7: Don't forget the FireTongue locale too! -->
+	<library name="locales" preload="true" />
+	<!-- <assets path="assets/locales"    library="locales"    exclude="*.ogg" if="web"/>
+	<assets path="assets/locales"    library="locales"    exclude="*.mp3" unless="web"/> -->
+	<assets path="assets/locales"    exclude="*.ogg" if="web"/>
+	<assets path="assets/locales"    exclude="*.mp3" unless="web"/>
+
 	<!-- JOELwindows7: add brightfyre infos -->
 	<assets path="assets/preload/videos" rename="assets/videos" include="*.mp4" embed='false' />
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
@@ -244,7 +251,7 @@
 	<library name="core"
 					 preload="true"
 					 embed="true" />
-	
+
 	<section if="PRELOAD_ALL">
 		<library name="songs"    preload="true" />
 		<library name="shared"   preload="true" />
@@ -386,6 +393,10 @@
 		NOT USING A DIRECT THING TO THE ASSET!!!
 	-->
 	<assets path="assets/fonts" embed='true'/>
+
+	<!-- JOELwindows7: Maybe add this too? -->
+	<assets path="assets/sounds" embed='true' exclude="*.ogg" if="web"/>
+	<assets path="assets/sounds" embed='true' exclude="*.mp3" unless="web"/>
 
 	<!-- first, call macro allow this -->
 	<haxeflag name="--macro" value="allowPackage('flash')" />
@@ -707,6 +718,6 @@
 	<!-- So the library reference if statements will also already defined for it. -->
 
 	<!-- JOELwindows7: Finally, cool bonus! -->
-	<echo value="Compile the Last Funkin Momments"/>
+	<!-- <echo value="Compile the Last Funkin Momments"/> -->
 
 </project>

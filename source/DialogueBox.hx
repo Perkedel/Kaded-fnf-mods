@@ -792,10 +792,25 @@ class DialogueBox extends FlxUIGroup
 								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverBf.dialogueChatSoundVolume));
 							}
 						}
+					case 'bf' | 'bf-car' | 'bf-christmas' | 'bf-covid' | 'bf-holding-gf':
+						// somehow color bug with pixel font
+						dropText.font = 'Ubuntu Bold';
+						swagDialogue.font = 'Ubuntu Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
+						];
+						if (handoverBf.dialogueChatSoundPaths != null && handoverBf.dialogueChatSoundPaths.length > 0)
+						{
+							for (i in handoverBf.dialogueChatSoundPaths)
+							{
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverBf.dialogueChatSoundVolume));
+							}
+						}
 					default:
-						dropText.font = handoverDad.fontDrop != null
-							&& handoverDad.fontDrop != '' ? handoverDad.fontDrop : 'Pixel Arial 11 Bold';
-						swagDialogue.font = handoverDad.font != null && handoverDad.font != '' ? handoverDad.font : 'Pixel Arial 11 Bold';
+						dropText.font = handoverDad.fontDrop != null && handoverDad.fontDrop != '' ? handoverDad.fontDrop : 'Ubuntu Bold';
+						swagDialogue.font = handoverDad.font != null && handoverDad.font != '' ? handoverDad.font : 'Ubuntu Bold';
 						dropText.color = handoverDad.fontColorDrop != null
 							&& handoverDad.fontColorDrop != '' ? FlxColor.fromString(handoverDad.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 						swagDialogue.color = handoverDad.fontColor != null
@@ -872,15 +887,30 @@ class DialogueBox extends FlxUIGroup
 								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverBf.dialogueChatSoundVolume));
 							}
 						}
+					case 'bf' | 'bf-car' | 'bf-christmas' | 'bf-covid' | 'bf-holding-gf':
+						// somehow color bug with pixel font
+						dropText.font = 'Ubuntu Bold';
+						swagDialogue.font = 'Ubuntu Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
+						];
+						if (handoverBf.dialogueChatSoundPaths != null && handoverBf.dialogueChatSoundPaths.length > 0)
+						{
+							for (i in handoverBf.dialogueChatSoundPaths)
+							{
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverBf.dialogueChatSoundVolume));
+							}
+						}
 					default:
 						// dropText.font = 'Pixel Arial 11 Bold';
 						// swagDialogue.font = 'Pixel Arial 11 Bold';
 						// dropText.color = FlxColor.fromInt(0xFFD89494);
 						// swagDialogue.color = FlxColor.fromInt(0xFF3F2021);
 						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
-						dropText.font = handoverBf.fontDrop != null
-							&& handoverBf.fontDrop != '' ? handoverBf.fontDrop : 'Pixel Arial 11 Bold';
-						swagDialogue.font = handoverBf.font != null && handoverBf.font != '' ? handoverBf.font : 'Pixel Arial 11 Bold';
+						dropText.font = handoverBf.fontDrop != null && handoverBf.fontDrop != '' ? handoverBf.fontDrop : 'Ubuntu Bold';
+						swagDialogue.font = handoverBf.font != null && handoverBf.font != '' ? handoverBf.font : 'Ubuntu Bold';
 						dropText.color = handoverBf.fontColorDrop != null
 							&& handoverBf.fontColorDrop != '' ? FlxColor.fromString(handoverBf.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 						swagDialogue.color = handoverBf.fontColor != null
@@ -922,15 +952,30 @@ class DialogueBox extends FlxUIGroup
 					// 	// JOELwindows7: idk what's the name of this TV
 					// 	prefixGf = 'Television';
 					// 	swagDialogue.prefix = prefixGf + ": ";
+					case 'gf-pixel' | 'gf-senpai' | 'gf-senpai-mad' | 'gf-senpai-angry':
+						// somehow color bug with pixel font
+						dropText.font = 'Pixel Arial 11 Bold';
+						swagDialogue.font = 'Pixel Arial 11 Bold';
+						dropText.color = 0xFFD89494;
+						swagDialogue.color = 0xFF3F2021;
+						swagDialogue.sounds = [
+							FlxG.sound.load(Paths.sound(Perkedel.NULL_DIALOGUE_SOUND_PATHS[0]), Perkedel.NULL_DIALOGUE_SOUND_VOLUME)
+						];
+						if (handoverBf.dialogueChatSoundPaths != null && handoverBf.dialogueChatSoundPaths.length > 0)
+						{
+							for (i in handoverBf.dialogueChatSoundPaths)
+							{
+								swagDialogue.sounds.push(FlxG.sound.load(Paths.sound(i), handoverBf.dialogueChatSoundVolume));
+							}
+						}
 					default:
 						// dropText.font = 'Pixel Arial 11 Bold';
 						// swagDialogue.font = 'Pixel Arial 11 Bold';
 						// dropText.color = FlxColor.fromInt(0xFFD89494);
 						// swagDialogue.color = FlxColor.fromInt(0xFF3F2021);
 						// swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
-						dropText.font = handoverGf.fontDrop != null
-							&& handoverGf.fontDrop != '' ? handoverBf.fontDrop : 'Pixel Arial 11 Bold';
-						swagDialogue.font = handoverGf.font != null && handoverGf.font != '' ? handoverGf.font : 'Pixel Arial 11 Bold';
+						dropText.font = handoverGf.fontDrop != null && handoverGf.fontDrop != '' ? handoverBf.fontDrop : 'Ubuntu Bold';
+						swagDialogue.font = handoverGf.font != null && handoverGf.font != '' ? handoverGf.font : 'Ubuntu Bold';
 						dropText.color = handoverGf.fontColorDrop != null
 							&& handoverGf.fontColorDrop != '' ? FlxColor.fromString(handoverGf.fontColorDrop) : FlxColor.fromInt(0xFFD89494);
 						swagDialogue.color = handoverGf.fontColor != null

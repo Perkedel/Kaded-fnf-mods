@@ -242,15 +242,90 @@ class ModCore
 					0:00.15 [ERROR] Your Lime/OpenFL configuration is using custom asset libraries, and you provided frameworkParams in Polymod.init(), but we couldn't find a match for this asset library: (week7)
 					PS C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods> 
 				```
+
+				```
+				0:03.64 [INFO ] DONE when unknown: Done loading mod mods/introMod
+				0:03.64 [ERROR] [WERROR] lime_missing_asset_library_reference when init: Your Lime/OpenFL configuration is using custom asset libraries, and you provided frameworkParams in Polymod.init(), but we couldn't find a match for this asset library: (locales)
+				0:07.70 [ERROR] (Game/update#91): Fatal Werror: Null Object Reference
+				Exception: Null Object Reference
+				Called from ModCore.initialize (ModCore.hx line 31)
+				Called from ui.SplashScreen.intoStateNow (ui/SplashScreen.hx line 297)
+				Called from ui.SplashScreen.beginSplashShow (ui/SplashScreen.hx line 273)
+				Called from flixel.util.FlxTimer.onLoopFinished (flixel/util/FlxTimer.hx line 205)
+				Called from flixel.util.FlxTimerManager.update (flixel/util/FlxTimer.hx line 295)
+				Called from flixel.FlxGame.update (flixel/FlxGame.hx line 750)
+				AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!
+
+				[file_open,W:\starring codes\Haxe Projects\Kaded-fnf-mods\export\release\windows\bin/crash/Last-Funkin-Moments_2023-10-10_19'17'30_SemiCaught.txt"]:
+
+				eException: [file_open,W:\starring codes\Haxe Projects\Kaded-fnf-mods\export\release\windows\bin/crash/Last-Funkin-Moments_2023-10-10_19'17'30_SemiCaught.txt"]
+				Called from sys.io.File.saveContent (C:\HaxeToolkit\haxe\std/cpp/_std/sys/io/File.hx line 39)
+				Anyway pls detail!:
+				===============
+				```
+
+						████████████████████████████████████████████████████████████████████████████████
+						█      ░▒▒▒▒▒▒▒░                                                               █
+						█    ░░░░▒▒▒░░░░░    ███████         █        █  ██    █   ███       ███       █
+						█   ░▒░░░░░░▒▒▒░░░   █               █        █ █  █   █   █  █        █       █
+						█  ░░▒░░▒▒░░░▒░░▒░░  ███████ █ █ ███ █  ███ ███ ████ ███   █  █ █  █ ███ ████  █
+						█         ░▒         █        █  █ █ █  █ █ █ █ █    █ █   █  █ █  █ █ █ █     █
+						█    ░▓█████████▒    ███████ █ █ ███ ██ ███ ███  ██  ███   ███  ███  ███ █     █
+						█         ░░                     █                                             █
+						█         ▒▒                       M E D I T A T I O N ! ! !                   █
+						█      ░░▒░▒░▓░                                                                █
+						████████████████████████████████████████████████████████████████████████████████
+
+						(image by JOELwindows7. CC4.0-BY-SA)
+
+
+
+				```
+				ModCore.hx (line 121)
+				ModCore.hx (line 31)
+				ui/SplashScreen.hx (line 297)
+				ui/SplashScreen.hx (line 273)
+				flixel/util/FlxTimer.hx (line 205)
+				flixel/util/FlxTimer.hx (line 295)
+				flixel/FlxGame.hx (line 750)
+				# SEMI-FATAL WhewCaught WError: `Null Object Reference`
+
+				```
+				Exception: Null Object Reference
+				Called from ModCore.initialize (ModCore.hx line 31)
+				Called from ui.SplashScreen.intoStateNow (ui/SplashScreen.hx line 297)
+				Called from ui.SplashScreen.beginSplashShow (ui/SplashScreen.hx line 273)
+				Called from flixel.util.FlxTimer.onLoopFinished (flixel/util/FlxTimer.hx line 205)
+				Called from flixel.util.FlxTimerManager.update (flixel/util/FlxTimer.hx line 295)
+				Called from flixel.FlxGame.update (flixel/FlxGame.hx line 750)
+				```
+				# Firmware name & version:
+				Last Funkin Moments v2023.12.0
+
+				# Please report this error to our Github page:
+				https://github.com/Perkedel/kaded-fnf-mods/issues
+
+				> Crash Handler written by: Paidyy, sqirra-rng
+				================
+				There, clipboard pls
+				0:09.51 [INFO ] (Character/parseDataFile#114): Generating character (gf) from JSON data...
+				```
+
+				```
+				0:03.64 [ERROR] [WERROR] lime_missing_asset_library_reference when init: Your Lime/OpenFL configuration is using custom asset libraries, and you provided frameworkParams in Polymod.init(), but we couldn't find a match for this asset library: (locales)
+				```
 			 */
+
 			// JOELwindows7: Just what the peck?! also add Enigma yoinkeh stuffs
 			assetLibraryPaths: [
 				"default" => "./preload", // ./preload
 				"sm" => "./sm",
 				"songs" => "./songs",
+				"sounds" => "./sounds",
+				"shaders" => "./shaders",
+				"scripts" => "./scripts",
 				"shared" => "./",
 				"tutorial" => "./tutorial",
-				"scripts" => "./scripts",
 				"week1" => "./week1",
 				"week2" => "./week2",
 				"week3" => "./week3",
@@ -269,6 +344,7 @@ class ModCore
 				"weeks" => "./weeks",
 				"thief" => "./thief",
 				"videos" => "./videos",
+				"ui" => "./ui",
 				"preload_odysee" => "./preload_odysee",
 				"preload_thief" => "./preload_thief",
 				"fonts" => "./fonts",
@@ -276,6 +352,7 @@ class ModCore
 				"week-1" => "./week-1",
 				"exclude" => "./exclude",
 				"week5720NG" => "./week5720NG",
+				"locales" => "./locales",
 				'core' => './_core', // Don't override these files.
 			]
 		}

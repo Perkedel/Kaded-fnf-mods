@@ -5,7 +5,7 @@
 	    The engine will NOT load any files that are not listed.	
 	-->
 	
-	<file id="data" value="data.tsv"/>
+	<file id="ui" value="ui.tsv"/>
 	<file id="data" value="more_data.tsv"/>
 	
 	<file id="fonts" value="fonts.xml"/>

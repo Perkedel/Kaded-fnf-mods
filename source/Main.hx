@@ -58,6 +58,7 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 #end
+import firetongue.FireTongue;
 
 class Main extends Sprite
 {
@@ -89,6 +90,10 @@ class Main extends Sprite
 	public static var xboxControllers:Array<XBox360Controller> = [];
 	public static final xboxControllerNum:Int = 7;
 	#end
+
+	// JOELwindows7: Please LarsiusPrime's FireTongue
+	// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/Main.hx
+	public static var tongue:FireTongueEx;
 
 	// JOELwindows7: Please no demonic reference about Mark of what the peck!
 	/*

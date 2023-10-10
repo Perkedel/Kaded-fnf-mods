@@ -45,6 +45,11 @@ class Paths
 			levelPath = getLibraryPathForce(file, "shared");
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
+
+			// JOELwindows7: oooh yeah core it
+			levelPath = getLibraryPathForce(file, "core");
+			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
 		}
 
 		return getPreloadPath(file);
@@ -460,9 +465,11 @@ class Paths
 		return getPath('images/$key.xml', TEXT, library);
 	}
 
-	inline static public function font(key:String)
+	inline static public function font(key:String, ?library:String)
 	{
-		return 'assets/fonts/$key';
+		// JOELwindows7: bruh, why directly?!
+		// return 'assets/fonts/$key';
+		return getPath('fonts/$key', FONT, library);
 	}
 
 	// JOELwindows7: BOLO has exclude asset!!!

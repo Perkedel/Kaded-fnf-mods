@@ -12040,7 +12040,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (SONG.isCreditRoll)
 			{
 				// push it back up a bit
-				lyricers.y = FlxG.height - 225;
+				lyricers.y = FlxG.height - 300;
 			}
 			lyricers.setFormat(Paths.font("Ubuntu-R-NF.ttf"), 14, FlxColor.WHITE, switch (FlxG.save.data.kpopLyricsPosition)
 			{

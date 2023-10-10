@@ -208,6 +208,15 @@ class CoreState extends FlxUIState implements ICoreStating
 		if (!FlxTransitionableState.skipNextTransOut)
 			openSubState(new PsychTransition(0.75, true));
 
+		// JOELwindows7: LarsiusPrime's FireTongue pls
+		// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/State_Title.hx
+		if (Main.tongue == null)
+		{
+			Main.tongue = new FireTongueEx();
+			Main.tongue.initialize({locale: "en-US"});
+			FlxUIState.static_tongue = Main.tongue;
+		}
+
 		super.create();
 
 		initCamControl(); // JOELwindows7: init the cam control now!
@@ -952,6 +961,15 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	override function create()
 	{
+		// JOELwindows7: LarsiusPrime's FireTongue pls
+		// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/State_Title.hx
+		if (Main.tongue == null)
+		{
+			Main.tongue = new FireTongueEx();
+			Main.tongue.initialize({locale: "en-US"});
+			FlxUIState.static_tongue = Main.tongue;
+		}
+
 		super.create();
 
 		// JOELwindows7: manage Stuffs first

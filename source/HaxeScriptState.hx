@@ -262,6 +262,22 @@ class HaxeScriptState
 	}
 
 	/**
+	 * JOELwindows7: Get Text from FireTongue Locale Language Table
+	 * @param Flag Text ID to fetch from
+	 * @param Context Table file to fetch from
+	 * @param Safe Null Safe mode
+	 * @return String The output from the table reference
+	 */
+	public function getText(Flag:String, Context:String = "ui", Safe:Bool = true):String
+	{
+		if (PlayState.instance != null)
+			return PlayState.instance.getText(Flag, Context, Safe);
+		if (Main.tongue != null)
+			return Main.tongue.get(Flag, Context, Safe);
+		return Flag;
+	}
+
+	/**
 	 * same as setVar, for compatibility I guess
 	 * @param var_name 
 	 * @param object 
@@ -493,6 +509,9 @@ class HaxeScriptState
 		// setVar("Paths", Paths); // JOELwindows7: already done
 
 		trace("setVar BulbyVR stuffs");
+
+		// JOELwindows7: the FireTongue Language text pls
+		addCallback("getText", getText);
 
 		// JOELwindows7: BOLO precache
 		addCallback("precache", function(asset:String, type:String, ?library:String)

@@ -1,0 +1,7 @@
+Slap the 'momCar.png' and 'momCar.xml' into whatever appropriate folders to replace Mom.
+For the icons, open up the 'Icons.png', then copy paste them onto Mommy Mearests icons in 'iconGrid.png', If you're using an 
+engine with Icons separated into individual files, copy the icons image and paste it over the appropriate files.
+
+if you're on Psyche Engine, put the file in 'PyscheEngineStuff' into the 'characters' folder in the assets folder.
+
+Not every engine and modpack is the same and these steps aren't universal, but I'm sure you can figure it out reader.
