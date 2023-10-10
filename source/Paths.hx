@@ -46,6 +46,23 @@ class Paths
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
 
+			// JOELwindows7: other libraries?
+			levelPath = getLibraryPathForce(file, "thief");
+			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
+
+			levelPath = getLibraryPathForce(file, "odysee");
+			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
+
+			levelPath = getLibraryPathForce(file, "preload_odysee");
+			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
+
+			levelPath = getLibraryPathForce(file, "preload_thief");
+			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
+
 			// JOELwindows7: oooh yeah core it
 			levelPath = getLibraryPathForce(file, "core");
 			if (OpenFlAssets.exists(levelPath, type))
@@ -191,7 +208,7 @@ class Paths
 		catch (e)
 		{
 			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-			Debug.logError(e + ": " + e.message); // JOELwindows7: error title & description
+			Debug.logError(e + ": " + e.message + "\n" + e.details()); // JOELwindows7: error title & description
 
 			// Return null.
 			return null;
