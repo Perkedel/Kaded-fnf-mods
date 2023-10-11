@@ -482,6 +482,14 @@ class KadeEngineData
 		if (FlxG.save.data.kpopLyricsPosition == null)
 			FlxG.save.data.kpopLyricsPosition = 0;
 
+		// JOELwindows7: Select Language ID
+		if (FlxG.save.data.languageID == null)
+			FlxG.save.data.languageID = 'en-US';
+
+		// JOELwindows7: nvm, use index number to Language ID instead. see Perkedel.LANGUAGES_AVAILABLE
+		if (FlxG.save.data.languageSelect == null)
+			FlxG.save.data.languageSelect = 0;
+
 		// JOELwindows7: workarounds!
 
 		// video cutscene crash on Linux

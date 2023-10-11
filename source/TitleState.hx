@@ -723,7 +723,9 @@ class TitleState extends MusicBeatState
 				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 			// credTextShit.visible = true;
 			case 3:
-				addMoreText('present');
+				// JOELwindows7: FireTonguefy
+				// addMoreText('present');
+				addMoreText(CoolUtil.getText("$TITLE_PRESENTS"));
 			// credTextShit.text += '\npresent...';
 			// credTextShit.addText();
 			case 4:
@@ -734,15 +736,27 @@ class TitleState extends MusicBeatState
 			case 5:
 				if (Main.watermarks)
 				{
+					// JOELwindows7: FireTonguefy
 					if (Main.odyseeMark)
-						createCoolText(['are we partnered', 'with']);
+						// createCoolText(['are we partnered', 'with']);
+						createCoolText([
+							CoolUtil.getText("$TITLE_ARE_WE_PARTNERED"),
+							CoolUtil.getText("$TITLE_ARE_WE_PARTNERED_WITH")
+						]);
 					else if (Main.perkedelMark)
-						createCoolText(['last funkin moments', 'by']);
+						// createCoolText(['last funkin moments', 'by']);
+						createCoolText(['last funkin moments', CoolUtil.getText("$TITLE_PRODUCT_BY")]);
 					else
-						createCoolText(['Kade Engine', 'by']);
+						// createCoolText(['Kade Engine', 'by']);
+						createCoolText(['Kade Engine', CoolUtil.getText("$TITLE_PRODUCT_BY")]);
 				}
 				else
-					createCoolText(['In Partnership', 'with']);
+					// JOELwindows7: Firetonguefy too!
+					// createCoolText(['In Partnership', 'with']);
+					createCoolText([
+						CoolUtil.getText("$TITLE_IN_PARTNERSHIP"),
+						CoolUtil.getText("$TITLE_IN_PARTNERSHIP_WITH")
+					]);
 			case 7:
 				if (Main.watermarks)
 					if (Main.odyseeMark)

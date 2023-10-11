@@ -174,6 +174,7 @@ class OptionsMenu extends CoreSubState
 				new UnpausePreparationOption("(RECOMMENDED Always / Manual Only) Initiate quick preparation countdown after unpausing"),
 			]),
 			new OptionCata(345, 40, "Appearance", [
+				new LanguageSelectorOption(CoolUtil.getText("$OPTIONS_SELECT_LANGUAGE_DESCRIPTION")),
 				new NoteskinOption("Change your current noteskin"),
 				new NoteSplashOption("Have your note press splash for every SICK! kyaaa!"),
 				new AnLoneNoteOption('Test your chosen noteskin'),
@@ -1013,6 +1014,28 @@ class OptionsMenu extends CoreSubState
 	public static function markRestartSong()
 	{
 		markForGameplayRestart = true;
+	}
+
+	// JOELwindows7: FireTongue thanks to LarsiusPrime pls!!!!
+	public static function getTextOf(Flag:String, Context:String = "ui", Safe:Bool = true):String
+	{
+		try
+		{
+			if (OptionsMenu.instance != null)
+				return OptionsMenu.instance.getText(Flag, Context, Safe);
+			if (Main.tongue != null)
+				return Main.tongue.get(Flag, Context, Safe);
+		}
+		catch (e)
+		{
+		}
+		return Flag;
+	}
+
+	// JOELwindows7: And the easiner for FireTongue get language ID
+	public static function getLanguage():String
+	{
+		return Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0];
 	}
 
 	// JOELwindows7: assign ID to category on screen

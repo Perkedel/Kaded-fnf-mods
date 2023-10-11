@@ -52,6 +52,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
+import flixel.addons.ui.FlxUIState;
 
 /**
  * A splash screen for the application.
@@ -183,7 +184,8 @@ class SplashScreen extends MusicBeatState
 		_aModOfText.y += 150;
 		add(_aModOfText);
 
-		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, Perkedel.BIOS_BUTTON_SAY, 18);
+		// _aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, Perkedel.BIOS_BUTTON_SAY, 18);
+		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, getText("$SPLASH_BIOS_BUTTON"), 18);
 		_aPressEscapeToBiosText.setFormat(Paths.font("UbuntuMono-R.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		_aPressEscapeToBiosText.scrollFactor.set();
 		_aPressEscapeToBiosText.screenCenter(XY);
@@ -238,7 +240,8 @@ class SplashScreen extends MusicBeatState
 		{
 			if (CarryAround.supportsModding())
 			{
-				_aPressEscapeToBiosText.text = Perkedel.BIOS_BUTTON_SAY
+				// _aPressEscapeToBiosText.text = Perkedel.BIOS_BUTTON_SAY
+				_aPressEscapeToBiosText.text = getText("$SPLASH_BIOS_BUTTON")
 					+ " ("
 					+ (_beginSplashTimer != null ? Std.string(HelperFunctions.truncateFloat(_beginSplashTimer.timeLeft, 1)) : "")
 					+ ")";

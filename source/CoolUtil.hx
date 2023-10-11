@@ -82,7 +82,6 @@ class CoolUtil
 	// {
 	// 	// JOELwindows7: here it is. Kpop lyric file.
 	// 	var daList:Array<Array<String>> = new Array<Array<String>>();
-
 	// 	try
 	// 	{
 	// 		var stood:Array<String> = CoolUtil.coolTextFile(Path.getKpopLyric(path));
@@ -96,9 +95,27 @@ class CoolUtil
 	// 		Debug.logError('WERROR Cool Text File! ${e.message}\n${e.details()}');
 	// 		daList = [['a', '...'], ['b', '...']];
 	// 	}
-
 	// 	return daList;
 	// }
+	// JOELwindows7: Pls standalone FireTongue Text
+	public static function coolFireTongueText(Flag:String, Context:String = "ui", Safe:Bool = true)
+	{
+		try
+		{
+			if (Main.tongue != null)
+				return Main.tongue.get(Flag, Context, Safe);
+		}
+		catch (e)
+		{
+		}
+		return Flag;
+	}
+
+	// JOELwindows7: Alias FireTongue
+	public static function getText(Flag:String, Context:String = "ui", Safe:Bool = true)
+	{
+		return coolFireTongueText(Flag, Context, Safe);
+	}
 
 	public static function numberArray(max:Int, ?min = 0):Array<Int>
 	{
@@ -262,7 +279,8 @@ class CoolUtil
 	}
 
 	// JOELwindows7: Portable song data cleaner
-	public static function cleanedSongData(SONG:SongData, ?reallyCleanTheSong = false):SongData{
+	public static function cleanedSongData(SONG:SongData, ?reallyCleanTheSong = false):SongData
+	{
 		// take from Pogger in Playstate
 		var notes = [];
 

@@ -24,6 +24,7 @@ import GameJolt;
 import sys.thread.Mutex;
 #end
 import openfl.utils.Assets as OpenFlAssets;
+import flixel.addons.ui.FlxUIState;
 
 class Initializations
 {
@@ -43,6 +44,10 @@ class Initializations
 		// JOELwindows7: clear unused memory first. BOLO
 		Paths.clearUnusedMemory();
 
+		FlxG.autoPause = false;
+
+		FlxG.save.bind('funkin', 'ninjamuffin99');
+
 		// JOELwindows7: here init first!
 		// JOELwindows7: TentaRJ GameJolter
 		#if gamejolt
@@ -51,10 +56,6 @@ class Initializations
 		GameJoltAPI.connect();
 		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
 		#end
-
-		FlxG.autoPause = false;
-
-		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		HitSounds.init(); // JOELwindows7: initialize BOLO's hitsound sound list yey!
 
@@ -90,6 +91,10 @@ class Initializations
 		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
 		MusicBeatState.initSave = true;
+
+		// JOELwindows7: Wait, after we got the language, pls refresh it.
+		refreshLanguage();
+
 		initialized = true;
 		trace('Things Initialized yey');
 	}
@@ -97,5 +102,38 @@ class Initializations
 	public static function isInitialized():Bool
 	{
 		return initialized;
+	}
+
+	// JOELwindows7: Hey the language!
+	public static function refreshLanguage()
+	{
+		try
+		{
+			if (Main.tongue == null)
+			{
+				Main.tongue = new FireTongueEx();
+				// Main.tongue.initialize({locale: FlxG.save.data.languageID});
+				Main.tongue.initialize({locale: Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]});
+				FlxUIState.static_tongue = Main.tongue;
+			}
+			else
+			{
+				// Main.tongue.initialize({locale: FlxG.save.data.languageID});
+				Main.tongue.initialize({locale: Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]});
+				FlxUIState.static_tongue = Main.tongue;
+			}
+		}
+		catch (e)
+		{
+			try
+			{
+				Debug.logError('WERROR Refresh language ${e.message}:\n${e.details()}');
+			}
+			catch (oh)
+			{
+				trace('WERROR Damn it, debug not ready ${oh.message}:\n${oh.details()}', 'error');
+				trace('WERROR Refresh language ${e.message}:\n${e.details()}');
+			}
+		}
 	}
 }

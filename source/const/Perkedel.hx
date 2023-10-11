@@ -249,4 +249,6 @@ class Perkedel
 			'Get dunk\'d on, kid.',
 		],
 	];
+
+	public static final LANGUAGES_AVAILABLE:Array<Array<String>> = [['en-US', 'English (US)'], ['id-ID', 'Bahasa Indonesia'],];
 }

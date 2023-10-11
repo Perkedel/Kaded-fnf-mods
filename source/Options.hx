@@ -1,5 +1,6 @@
 package;
 
+import utils.Initializations;
 import ui.states.modding.ModMenuState;
 import ui.GameJoltGateway;
 import GalleryAchievements;
@@ -4137,6 +4138,55 @@ class KpopLyricsPositionOption extends Option
 			case _:
 				"???";
 		}) + ' >';
+	}
+}
+
+// JOELwindows7: Language selector!!!
+class LanguageSelectorOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.languageSelect--;
+		if (FlxG.save.data.languageSelect < 0)
+			FlxG.save.data.languageSelect = Perkedel.LANGUAGES_AVAILABLE.length - 1;
+		FlxG.save.data.languageID = Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0];
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.languageSelect++;
+		if (FlxG.save.data.languageSelect > Perkedel.LANGUAGES_AVAILABLE.length - 1)
+			FlxG.save.data.languageSelect = 0;
+		FlxG.save.data.languageID = Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0];
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		// FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
+		// right();
+		FlxG.save.data.languageID = Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0];
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		Initializations.refreshLanguage();
+
+		return
+			'${OptionsMenu.getTextOf("$OPTIONS_SELECT_LANGUAGE")} < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][1]} >';
 	}
 }
 

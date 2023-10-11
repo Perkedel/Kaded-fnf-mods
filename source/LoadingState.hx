@@ -90,8 +90,7 @@ class LoadingState extends MusicBeatState
 		// https://github.com/luckydog7/Funkin-android/blob/master/source/LoadingState.hx
 		// cast too!
 		loadBar = cast new FlxUISprite(0,
-			FlxG.height - 20).makeGraphic(FlxG.width, 10,
-				0xffff00ff); // JOELwindows7: was -59694, now use BOLO's proper hex 0xfffffab8! nvm. use same magenta!
+			FlxG.height - 20).makeGraphic(FlxG.width, 10, 0xffff00ff); // JOELwindows7: was -59694, now use BOLO's proper hex 0xfffffab8! nvm. use same magenta!
 		loadBar.screenCenter(FlxAxes.X);
 		loadBar.antialiasing = FlxG.save.data.antialiasing; // JOELwindows7: BOLO antialias the loading bar too!
 		add(loadBar);
@@ -233,7 +232,8 @@ class LoadingState extends MusicBeatState
 			// _loadingBar.setPercentage((callbacks.getFired().length / callbacks.getUnfired().length) * 100); // already onProgress
 
 			// JOELwindows7: here new BOLO's way
-			loadingText.text = 'Loading [${callbacks.length - callbacks.numRemaining}/${callbacks.length}]';
+			// loadingText.text = 'Loading [${callbacks.length - callbacks.numRemaining}/${callbacks.length}]';
+			loadingText.text = '${CoolUtil.getText("$LOADING_JUST_LOADING")} [${callbacks.length - callbacks.numRemaining}/${callbacks.length}]'; // JOELwindows7: FireTongue pls
 			targetShit = FlxMath.remapToRange(callbacks.numRemaining / callbacks.length, 1, 0, 0, 1);
 			// loadBar.scale.x += 0.5 * (targetShit - loadBar.scale.x);
 			loadBar.scale.x += (targetShit - loadBar.scale.x); // JOELwindows7: I mean, why do you halve half it?

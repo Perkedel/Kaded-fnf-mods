@@ -440,7 +440,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>(); // kem0x mod shader
 
 	#end
-	public static var judgementWords:Array<String> = ["Misses", "Shits", "Bads", "Goods", "Sicks", "Danks", "MVPs"];
+	// public static var judgementWords:Array<String> = ["Misses", "Shits", "Bads", "Goods", "Sicks", "Danks", "MVPs"];
+	public static var judgementWords:Array<String> = ["Misses", "Shits", "Bads", "Goods", "Sicks", "Danks", "MVPs"]; // JOELwindows7: Languaged! nvm don't do it here, do it below!
 
 	// JOELwindows7: Korean Pop Kpop TV Show lyric text. song is line by line
 	public var lyricers:FlxUIText;
@@ -1741,12 +1742,15 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// healthBar
 		// add(healthBar);
 
-		// JOELwindows7: BOLO's accuracy mode text say
-		var accMode:String = "None";
+		// JOELwindows7: BOLO's accuracy mode text say. pls FireTongue them
+		// var accMode:String = "None";
+		var accMode:String = CoolUtil.getText("$GAMEPLAY_ACCURACY_MODE_OPTION_NONE");
 		if (FlxG.save.data.accuracyMod == 0)
-			accMode = "Accurate";
+			// accMode = "Accurate";
+			accMode = CoolUtil.getText("$GAMEPLAY_ACCURACY_MODE_OPTION_ACCURATE");
 		else if (FlxG.save.data.accuracyMod == 1)
-			accMode = "Complex";
+			// accMode = "Complex";
+			accMode = CoolUtil.getText("$GAMEPLAY_ACCURACY_MODE_OPTION_COMPLEX");
 
 		// JOELwindows7: add reupload watermark
 		// usually, YouTube mod showcase only shows gameplay
@@ -1800,7 +1804,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// JOELwindows7: BOLO's accurac watermark?!!?!?
 		// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx
 		// ACCURACY WATERMARK
-		accText = new FlxUIText(4, FlxG.height * 0.9 + 45 - 20, 0, "Accuracy Mode: " + accMode, 16);
+		// accText = new FlxUIText(4, FlxG.height * 0.9 + 45 - 20, 0, "Accuracy Mode: " + accMode, 16);
+		accText = new FlxUIText(4, FlxG.height * 0.9 + 45 - 20, 0, CoolUtil.getText("$GAMEPLAY_ACCURACY_MODE") + ": " + accMode,
+			16); // JOELwindows7: FireTongue
 		accText.scrollFactor.set();
 		accText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		accText.cameras = [camHUD];
@@ -1833,6 +1839,18 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		#end
 		add(scoreTxt);
 
+		// JOELwindows7: Languaging JudgmementWord
+		// judgementWords = ["Misses", "Shits", "Bads", "Goods", "Sicks", "Danks", "MVPs"];
+		judgementWords = [
+			CoolUtil.getText("$GAMEPLAY_JUDGEMENT_COUNTING_MISS"),
+			CoolUtil.getText("$GAMEPLAY_JUDGEMENT_COUNTING_ALMOST"),
+			CoolUtil.getText("$GAMEPLAY_JUDGEMENT_COUNTING_BAD"),
+			CoolUtil.getText("$GAMEPLAY_JUDGEMENT_COUNTING_GOOD"),
+			CoolUtil.getText("$GAMEPLAY_JUDGEMENT_COUNTING_PERFECT"),
+			CoolUtil.getText("$GAMEPLAY_JUDGEMENT_COUNTING_FLAWLESS"),
+			CoolUtil.getText("$GAMEPLAY_JUDGEMENT_COUNTING_LUDICROUS")
+		];
+
 		judgementCounter = new FlxUIText(20, 0, 0, "", 20);
 		// JOELwindows7: I think this should be placed on right as where your player strum is at.
 		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1844,7 +1862,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		judgementCounter.screenCenter(Y);
 		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
 		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words. also other things, idk..
-		judgementCounter.text = 'Combo: ${combo}\nMax Combo: ${highestCombo}\n\n${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
+		// judgementCounter.text = 'Combo: ${combo}\nMax Combo: ${highestCombo}\n\n${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
+		judgementCounter.text = '${CoolUtil.getText("$GAMEPLAY_HUD_TEXT_COMBO")}: ${combo}\n${CoolUtil.getText("$GAMEPLAY_HUD_TEXT_MAXCOMBO")}: ${highestCombo}\n\n${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
 		judgementCounter.setPosition(FlxG.width - judgementCounter.width - 15, 0); // JOELwindows7: hey! place it actually right side of screen!
 		judgementCounter.screenCenter(Y); // JOELwindows7: do center it again just in case.
 		if (FlxG.save.data.judgementCounter)
@@ -1852,8 +1871,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			add(judgementCounter);
 		}
 
-		replayTxt = new FlxUIText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0, "REPLAY",
-			20);
+		replayTxt = new FlxUIText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
+			CoolUtil.getText("$GAMEPLAY_BLINK_TEXT_REPLAY"), 20); // JOELwindows7: "REPLAY"
+		replayTxt.text = CoolUtil.getText("$GAMEPLAY_BLINK_TEXT_REPLAY");
 		replayTxt.setPosition((FlxG.width / 2) - 75, 130); // JOELwindows7: oh wait, Psych this up pls!
 		replayTxt.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		replayTxt.borderSize = 4;
@@ -1866,7 +1886,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 		// Literally copy-paste of the above, fu
 		botPlayState = new FlxUIText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
-			"BOTPLAY", 20);
+			CoolUtil.getText("$GAMEPLAY_BLINK_TEXT_BOTPLAY"), 20); // JOELwindows7: "BOTPLAY",
+		botPlayState.text = CoolUtil.getText("$GAMEPLAY_BLINK_TEXT_BOTPLAY");
 		botPlayState.setPosition((FlxG.width / 2) - 75, 130); // JOELwindows7: oh wait, Psych this up pls!
 		botPlayState.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); // JOELwindows7: was size 42
 		botPlayState.scrollFactor.set();
@@ -3589,7 +3610,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		{
 			skipActive = true;
 			skipText = new FlxUIText(healthBarBG.x + 80, healthBarBG.y - 110, 500);
-			skipText.text = "Press Space to Skip Intro";
+			// skipText.text = "Press Space to Skip Intro";
+			skipText.text = CoolUtil.getText("$GAMEPLAY_PRESS_SPACE_TO_SKIP_INTRO"); // JOELwindows7: FireTongue ey
 			skipText.size = 30;
 			skipText.color = FlxColor.WHITE;
 			skipText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
@@ -8397,7 +8419,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				(FlxG.save.data.roundAccuracy ? FlxMath.roundDecimal(accuracy, 0) : accuracy), boyfriend.getHeartRate(0), boyfriend.getHeartTier(0));
 		// JOELwindows7: wai wait! Custom sponsor word. ... I mean judgement words. here this too! also more idk.
 		// judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
-		judgementCounter.text = 'Combo: ${combo}\nMax Combo: ${highestCombo}\n\n${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
+		// judgementCounter.text = 'Combo: ${combo}\nMax Combo: ${highestCombo}\n\n${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
+		judgementCounter.text = '${getText("$GAMEPLAY_HUD_TEXT_COMBO")}: ${combo}\n${getText("$GAMEPLAY_HUD_TEXT_MAXCOMBO")}: ${highestCombo}\n\n${judgementWords[4]}: ${sicks}\n${judgementWords[3]}: ${goods}\n${judgementWords[2]}: ${bads}\n${judgementWords[1]}: ${shits}\n${judgementWords[0]}: ${misses}';
 		judgementCounter.setPosition(FlxG.width - judgementCounter.width - 15, 0); // JOELwindows7: don't forget readjust everytime.
 		judgementCounter.screenCenter(Y); // JOELwindows7: yeah
 	}

@@ -183,6 +183,7 @@ class MainMenuState extends MusicBeatState
 		// also somehow at the end of the paragraph above, you must `\n` it at the very end. idk why, but that's the workaround
 		// so the last line of text also shows.
 
+		// TODO: JOELwindows7: add menu description!!! bla bla bla blbalblablb
 		// var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod v" + lastFunkinMomentVer : ""), 12);
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer, 12);
 		versionShit.scrollFactor.set();
