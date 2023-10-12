@@ -325,6 +325,8 @@ class SplashScreen extends MusicBeatState
 				finishedFlicker();
 			});
 		}
+
+		Initializations.refreshLanguage();
 	}
 
 	function finishedFlicker()

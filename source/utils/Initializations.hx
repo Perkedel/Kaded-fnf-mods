@@ -104,6 +104,22 @@ class Initializations
 		return initialized;
 	}
 
+	public static function changeLanguageID(into:String = 'en-US'){
+			
+		refreshLanguage();
+	}
+
+	public static function changeLanguage(into:Int = 0)
+	{
+		FlxG.save.data.languageSelect = into;
+		if (FlxG.save.data.languageSelect < 0)
+			FlxG.save.data.languageSelect = Perkedel.LANGUAGES_AVAILABLE.length - 1;
+		if (FlxG.save.data.languageSelect > Perkedel.LANGUAGES_AVAILABLE.length - 1)
+			FlxG.save.data.languageSelect = 0;
+		FlxG.save.data.languageID = Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0];
+		refreshLanguage();
+	}
+
 	// JOELwindows7: Hey the language!
 	public static function refreshLanguage()
 	{

@@ -231,7 +231,7 @@ class WerrorForceMajeurState extends CoreState
 		var firmwareName:String = Perkedel.ENGINE_ID;
 
 		dateNow = StringTools.replace(dateNow, " ", "_");
-		dateNow = StringTools.replace(dateNow, ":", "'");
+		dateNow = StringTools.replace(dateNow, ":", "-");
 		// firmwareName = StringTools.replace(firmwareName, "-", "");
 
 		// path = "./crash/" + "KadeEngine_" + dateNow + "_SemiCaught.txt";
@@ -304,7 +304,7 @@ class WerrorForceMajeurState extends CoreState
 			Sys.println(errHdr + errMsg);
 			Sys.println('================\nThere, clipboard pls');
 			#else
-			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when wanted to write to ${path}\n\n$e:\n\ne${e.details()}');
 			trace('Anyway pls detail!:\n===============');
 			trace(errHdr + errMsg);
 			trace('================\nThere, clipboard pls');

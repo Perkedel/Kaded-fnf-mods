@@ -559,10 +559,12 @@ class Main extends Sprite
 		var firmwareName:String = Perkedel.ENGINE_ID;
 
 		dateNow = StringTools.replace(dateNow, " ", "_");
-		dateNow = StringTools.replace(dateNow, ":", "'");
+		dateNow = StringTools.replace(dateNow, ":", "-");
 
 		// path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
 		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+
+		path = Path.normalize(path);
 
 		for (stackItem in callStack)
 		{
@@ -615,12 +617,12 @@ class Main extends Sprite
 		catch (e)
 		{
 			#if sys
-			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when trying to ${path}:\n\n$e:\n\ne${e.details()}');
 			Sys.println('Anyway pls detail!:\n===============');
 			Sys.println(errHdr + errMsg);
 			Sys.println('================\nThere, clipboard pls');
 			#else
-			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when trying to ${path}:\n\n$e:\n\ne${e.details()}');
 			trace('Anyway pls detail!:\n===============');
 			trace(errHdr + errMsg);
 			trace('================\nThere, clipboard pls');

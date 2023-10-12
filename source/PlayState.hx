@@ -785,6 +785,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
+		// camGame.width = 2000; // JOELwindows7: What if I enwidened it?
+		// camGame.height = 2000; // JOELwindows7: and stretch it?
+		// camGame.viewMarginLeft = 3000; // JOELwindows7: don't know will this work?
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		camSustains = new FlxCamera();
@@ -9836,7 +9839,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 								tankKludgeText.text = 'PEOPLE DIE!!';
 								createTimer(1.7, function(tmr:FlxTimer)
 								{
-									tankKludgeText.text = '(right hand signal soldiers on speaker) Command, get ready to fire!';
+									tankKludgeText.text = 'Command,\n(right hand signal soldiers on speaker) get ready to fire!';
 									tankKludgeText.screenCenter(X);
 									createTimer(2.1, function(tmr:FlxTimer)
 									{

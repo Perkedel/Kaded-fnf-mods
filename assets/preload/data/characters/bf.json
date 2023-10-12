@@ -4,6 +4,10 @@
     "asset": "characters/BOYFRIEND",
     "usePackerAtlas": false,
     "AtlasType": "SparrowAtlas",
+    "hasExtraAtlases": false,
+    "extraAtlases":[
+
+    ],
     "barColor": "#31B0D1",
     "flipX": true,
     "startingAnim": "idle",

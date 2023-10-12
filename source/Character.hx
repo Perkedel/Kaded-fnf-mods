@@ -150,8 +150,8 @@ class Character extends FlxUISprite
 		Debug.logTrace('Converted JSON Data to Character Data:\n${data}');
 
 		// JOELwindows7: BOLO optimizener. uuhh, idk, why.. we have heart organ things here!
-		// var tex:FlxAtlasFrames;
-		var tex:FlxFramesCollection;
+		var tex:FlxAtlasFrames;
+		// var tex:FlxFramesCollection;
 
 		// to be deleted
 		name = data.name; // JOELwindows7: name it. wow, Kade and friends prepared that already lol! thancc Eric Millyoja yey cool and good!
@@ -167,17 +167,71 @@ class Character extends FlxUISprite
 		switch (data.AtlasType)
 		{
 			case 'PackerAtlas':
-				Debug.logTrace('PackerAtlas');
+				Debug.logTrace('PackerAtlas ${data.asset}');
 				tex = Paths.getPackerAtlas(data.asset, 'shared');
 			case 'TextureAtlas':
-				Debug.logTrace('TextureAtlas');
-				tex = Paths.getTextureAtlas(data.asset, 'shared');
+				Debug.logTrace('TextureAtlas ${data.asset}');
+				tex = cast Paths.getTextureAtlas(data.asset, 'shared');
 			case 'JsonAtlas':
-				Debug.logTrace('JsonAtlas');
+				Debug.logTrace('JsonAtlas ${data.asset}');
 				tex = Paths.getJSONAtlas(data.asset, 'shared');
 			default: // SparrowAtlas
-				Debug.logTrace('SparrowAtlas');
+				Debug.logTrace('SparrowAtlas ${data.asset}');
 				tex = Paths.getSparrowAtlas(data.asset, 'shared');
+		}
+
+		// JOELwindows7: Hold on, there's more!
+		try
+		{
+			if (data.hasExtraAtlases == null)
+				data.hasExtraAtlases = false;
+			if (data.extraAtlases != null)
+				if (data.extraAtlases.length > 0 && data.hasExtraAtlases)
+				{
+					Debug.logInfo('Character ${curCharacter}: Has Extra Atlas! adding now...');
+					// https://haxeflixel.com/blog/16-HaxeFlixel-5-4-0/
+					// var anExtraAtlas:FlxFramesCollection;
+					var anExtraAtlas:FlxAtlasFrames;
+					// var aa:FlxAtlasFrames;
+					for (piece in data.extraAtlases)
+					{
+						switch (piece.AtlasType)
+						{
+							case 'PackerAtlas':
+								Debug.logTrace('Extra PackerAtlas ${piece.asset}');
+								anExtraAtlas = Paths.getPackerAtlas(piece.asset, 'shared');
+							// aa = Paths.getPackerAtlas(data.asset, 'shared');
+							case 'TextureAtlas':
+								Debug.logTrace('Extra TextureAtlas ${piece.asset}');
+								anExtraAtlas = cast Paths.getTextureAtlas(piece.asset, 'shared');
+							// aa = FlxAtlasFrames.fromTe
+							case 'JsonAtlas':
+								Debug.logTrace('Extra JsonAtlas ${piece.asset}');
+								anExtraAtlas = Paths.getJSONAtlas(piece.asset, 'shared');
+							default: // SparrowAtlas
+								Debug.logTrace('Extra SparrowAtlas ${piece.asset}');
+								anExtraAtlas = Paths.getSparrowAtlas(piece.asset, 'shared');
+								// aa = anExtraAtlas;
+								// tex.addAtlasFrame(anExtraAtlas);
+						}
+
+						// install it!
+						// argh disaster, it's very diferent way!
+						// wai wait. FlxAtlasFrames is from FlxFramesCollection bruh!
+						tex.addAtlas(anExtraAtlas);
+						// Untested, tell me if crash.
+					}
+				}
+				else
+				{
+					Debug.logTrace('Character ${curCharacter}: Has Extra Atlas, but refuses to be used OR is empty. That\'s okay.');
+				}
+			else
+				Debug.logTrace('Character ${curCharacter}: Welp that\'s all the frames there is to it.');
+		}
+		catch (e)
+		{
+			Debug.logError('Character ${curCharacter} WERROR when attempting to add Extra Asset: ${e.message}\n${e.details()}');
 		}
 
 		// JOELwindows7: Compatibility detailes
@@ -805,6 +859,13 @@ typedef CharacterData =
 	var ?holdLength:Float;
 
 	/**
+	 * Extra Asset file to be combined with this main Asset file.
+	 */
+	var ?extraAtlases:Array<ExtraAtlasAssets>;
+
+	var ?hasExtraAtlases:Bool;
+
+	/**
 	 * Heart organs specification inside this character. can have more than 1 heart specification.
 	 */
 	var ?heartOrgans:Array<SwagHeart>; // JOELwindows7: Array of heart organs inside this Character.
@@ -963,4 +1024,11 @@ typedef WitnessBlueballSoundPath =
 	**/
 	var ?insulting:Bool; // JOELwindows7: true means that this if for when hated opponent lose. otherwise this is for to pity.
 
+}
+
+// JOELwindows7: Extra Atlases based on https://haxeflixel.com/blog/16-HaxeFlixel-5-4-0/ Combining Atlases
+typedef ExtraAtlasAssets =
+{
+	var asset:String;
+	var AtlasType:String;
 }
