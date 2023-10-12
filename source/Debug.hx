@@ -189,8 +189,13 @@ class Debug
 		trace('Initializing Debug tools...');
 
 		// Override Haxe's vanilla trace() calls to use the Flixel console.
+		#if !web
 		Log.trace = function(data:Dynamic, ?info:PosInfos)
 		{
+			// #if web
+			// trace("Trace overidden");
+			// #end
+
 			var paramArray:Array<Dynamic> = [data];
 
 			if (info != null)
@@ -205,10 +210,14 @@ class Debug
 			}
 
 			// JOELwindows7: cmon what happened?
+			#if web
 			// trace("Attempt Override trace");
+			#end
 
 			logTrace(paramArray, info);
 		};
+		#end
+		trace('aaaaaaaaaaaaa');
 
 		// JOELwindows7: what happening?
 		trace("Overriden the trace thing");

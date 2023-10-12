@@ -202,11 +202,13 @@ class Main extends Sprite
 		// JOELwindows7: try catch now!
 		try
 		{
+			trace('Let\'s init');
 			if (hasEventListener(Event.ADDED_TO_STAGE))
 			{
 				removeEventListener(Event.ADDED_TO_STAGE, init);
 			}
 
+			trace('Setup the game now!');
 			setupGame();
 
 			// JOELwindows7: no, install crashdumper after everything.
@@ -288,6 +290,8 @@ class Main extends Sprite
 		GlobalVideo.setWebm(webmHandle);
 		#end
 		// end GrowtopiaFli Video Cutscener
+
+		trace('Let s a go');
 
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
@@ -382,6 +386,8 @@ class Main extends Sprite
 		#if FEATURE_CRASH_BOLO
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
+
+		trace('Done the Setup Game cool and good');
 	}
 
 	var game:FlxGame;

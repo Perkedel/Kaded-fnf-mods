@@ -331,8 +331,8 @@ class VLCState extends MusicBeatState
 			}
 			#end
 		}
-		if (FlxG.keys.pressed.ENTER || (joypadLastActive != null? joypadLastActive.pressed.A : false))
-		// if (FlxG.keys.pressed.ENTER || (controls.ACCEPT))
+		if (FlxG.keys.pressed.ENTER || (joypadLastActive != null ? joypadLastActive.pressed.A : false))
+			// if (FlxG.keys.pressed.ENTER || (controls.ACCEPT))
 		{
 			// hold to skip
 			if (fillSkip < maxFillSkip)
@@ -344,7 +344,12 @@ class VLCState extends MusicBeatState
 			{
 				// that's it skip now!
 				Debug.logInfo('Skip VLC Cutscene!');
-				theVLC.stop();
+				#if FEATURE_VLC
+				if (theVLC != null)
+				{
+					theVLC.stop();
+				}
+				#end
 				donedCallback();
 			}
 		}

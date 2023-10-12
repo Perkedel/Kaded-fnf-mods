@@ -807,6 +807,9 @@ class Controls extends FlxActionSet
 
 	public function setKeyboardScheme(scheme:KeyboardScheme, reset = true)
 	{
+		#if web
+		trace('Set the Keyboard Scheme ${scheme} with reset of ${reset}');
+		#end
 		loadKeyBinds();
 		/*if (reset)
 				removeKeyboard();
@@ -884,14 +887,32 @@ class Controls extends FlxActionSet
 
 	public function loadKeyBinds()
 	{
+		#if web
+		trace('Load Key Binds');
 		// trace(FlxKey.fromString(FlxG.save.data.upBind));
+		#end
 
 		removeKeyboard();
+
+		#if web
+		trace('Keyboard removed');
+		#end
 		if (gamepadsAdded.length != 0)
 			removeGamepad();
+		#if web
+		trace('Gamepad removed');
+		#end
+
 		KeyBinds.keyCheck();
+		#if web
+		trace('Checked the keybind');
+		#end
 
 		var buttons = new Map<Control, Array<FlxGamepadInputID>>();
+
+		#if web
+		trace('Gamepadding the keybind');
+		#end
 
 		if (KeyBinds.gamepad)
 		{
@@ -904,7 +925,14 @@ class Controls extends FlxActionSet
 			buttons.set(Control.PAUSE, [FlxGamepadInputID.fromString(FlxG.save.data.pauseBind)]);
 
 			addGamepad(0, buttons);
+			#if web
+			trace('Add Gamepad p1 the buttons');
+			#end
 		}
+
+		#if web
+		trace('Rebinding new keys');
+		#end
 
 		inline bindKeys(Control.UP, [FlxKey.fromString(FlxG.save.data.upBind), FlxKey.UP]);
 		inline bindKeys(Control.DOWN, [FlxKey.fromString(FlxG.save.data.downBind), FlxKey.DOWN]);
@@ -915,15 +943,37 @@ class Controls extends FlxActionSet
 		inline bindKeys(Control.PAUSE, [FlxKey.fromString(FlxG.save.data.pauseBind)]);
 		inline bindKeys(Control.RESET, [FlxKey.fromString(FlxG.save.data.resetBind)]);
 
+		#if web
+		trace('Assign Volume keys');
+		#end
+
+		#if !web
 		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+		// #if web
+		// trace('yea');
+		// #end
 		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+		// #if web
+		// trace('ooo');
+		// #end
 		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+		#end
+
+		#if web
+		trace('Done Loading Keybinds');
+		#end
 	}
 
 	function removeKeyboard()
 	{
+		#if web
+		trace('Okay, let\'s remove keyboard first');
+		#end
 		for (action in this.digitalActions)
 		{
+			#if web
+			trace('Removing Digital Keyboard Action of ${action}');
+			#end
 			var i = action.inputs.length;
 			while (i-- > 0)
 			{
@@ -943,7 +993,7 @@ class Controls extends FlxActionSet
 
 		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
-		inline bindButtons(control, id, buttons);
+			inline bindButtons(control, id, buttons);
 		#else
 		for (control in buttonMap.keys())
 			bindButtons(control, id, buttonMap[control]);
@@ -956,7 +1006,7 @@ class Controls extends FlxActionSet
 
 		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
-		inline bindButtons(control, id, buttons);
+			inline bindButtons(control, id, buttons);
 		#else
 		for (control in buttonMap.keys())
 			bindButtons(control, id, buttonMap[control]);
@@ -1080,8 +1130,14 @@ class Controls extends FlxActionSet
 		switch (device)
 		{
 			case Keys:
+				#if web
+				trace('I am removeing Keyboard Scheme of ${device}');
+				#end
 				setKeyboardScheme(None);
 			case Gamepad(id):
+				#if web
+				trace('I am removeing Gamepad Scheme of ${device} No. ${id}');
+				#end
 				removeGamepad(id);
 		}
 	}
