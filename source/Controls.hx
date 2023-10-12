@@ -949,13 +949,7 @@ class Controls extends FlxActionSet
 
 		#if !web
 		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		// #if web
-		// trace('yea');
-		// #end
 		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		// #if web
-		// trace('ooo');
-		// #end
 		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
 		#end
 

@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
- // JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/ui/component/input/
-
+// JOELwindows7: yoink from https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/source/funkin/ui/component/input/
 /*
  * InteractableSprite.hx
  * An FlxSprite which has additional handlers for gestures and interaction.
@@ -42,7 +41,9 @@ class InteractableSprite extends RelativeSprite implements IInteractable
 	{
 		super(X, Y, SimpleGraphic, Parent);
 
+		#if !web
 		GestureUtil.addGestureCallbacks(this);
+		#end
 	}
 
 	public override function loadGraphic(Graphic:FlxGraphicAsset, Animated:Bool = false, Width:Int = 0, Height:Int = 0, Unique:Bool = false,
