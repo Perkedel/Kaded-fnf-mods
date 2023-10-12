@@ -102,7 +102,7 @@ class Game extends FlxGame
 							'Fatal WError: ${exc.message}',
 							'The game has crashed. Oh peck!!!\n\n${exc.details()}'
 						]);
-						#elseif web
+						#elseif (web && !emscripten)
 						// use https://www.w3schools.com/js/js_popup.asp
 						Browser.alert('Fatal WError: ${exc.message}\n\nThe game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
 						#else
@@ -127,10 +127,8 @@ class Game extends FlxGame
 	}
 
 	// JOELwindows7: aaaaa ye
-
 	// JOELwindows7: Play Sounds pls
 	// public static function playSound(path:String){
-
 	// }
 
 	public static function playPauseMusic()

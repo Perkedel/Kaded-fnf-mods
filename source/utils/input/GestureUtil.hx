@@ -29,7 +29,7 @@ import flixel.math.FlxPoint;
 import flixel.FlxG;
 import flixel.input.mouse.FlxMouseEventManager;
 
-#if !web
+// #if !web
 class GestureUtil
 {
 	// JOELwindows7: Oh no.. lots of changes!
@@ -211,7 +211,7 @@ class GestureUtil
 		return SOUTH;
 	}
 }
-#end
+// #end
 
 enum SwipeDirection
 {

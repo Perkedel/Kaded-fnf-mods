@@ -41,9 +41,9 @@ class InteractableSprite extends RelativeSprite implements IInteractable
 	{
 		super(X, Y, SimpleGraphic, Parent);
 
-		#if !web
+		// #if !web
 		GestureUtil.addGestureCallbacks(this);
-		#end
+		// #end
 	}
 
 	public override function loadGraphic(Graphic:FlxGraphicAsset, Animated:Bool = false, Width:Int = 0, Height:Int = 0, Unique:Bool = false,

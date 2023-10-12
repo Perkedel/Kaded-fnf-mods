@@ -947,11 +947,11 @@ class Controls extends FlxActionSet
 		trace('Assign Volume keys');
 		#end
 
-		#if !web
+		// #if !web
 		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
 		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
 		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
-		#end
+		// #end
 
 		#if web
 		trace('Done Loading Keybinds');
