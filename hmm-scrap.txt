@@ -1,0 +1,6 @@
+{
+            "name": "hscript",
+            "type": "haxelib",
+            "version": null
+        },
+

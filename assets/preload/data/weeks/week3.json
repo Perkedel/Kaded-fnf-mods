@@ -1,0 +1,17 @@
+{
+	"songs": [
+		"pico",
+		"philly",
+		"blammed"
+	],
+
+	"weekCharacters": [
+		"pico",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "PICO",
+
+	"storyName": "PICO",
+	"weekBefore": "week2"
+}

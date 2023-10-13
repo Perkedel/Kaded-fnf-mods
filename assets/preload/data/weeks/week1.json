@@ -1,0 +1,17 @@
+{
+	"songs": [
+		"bopeebo",
+		"fresh",
+		"dadbattle"
+	],
+
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Dad",
+
+	"storyName": "Daddy Dearest",
+	"weekBefore": "tutorial"
+}

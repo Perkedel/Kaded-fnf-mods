@@ -1,0 +1,17 @@
+{
+	"songs": [
+		"spookeez",
+		"south",
+		"monster"
+	],
+
+	"weekCharacters": [
+		"spooky",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Spooky",
+
+	"storyName": "Spooky Month",
+	"weekBefore": "week1"
+}

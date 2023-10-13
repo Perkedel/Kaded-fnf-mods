@@ -410,6 +410,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://twitter.com/01Alexander10_/status/1594684037238558721?t=l9FA2gP8OK_tEomAoOFp4A&s=19
 - the KPOP TV show has lyric!
 - https://haxeflixel.com/blog/16-HaxeFlixel-5-4-0/ COMBINE THE ATLAS!!!!!!!
+- https://github.com/HaxeFoundation/hscript pls latest instead
 
 
 
@@ -609,6 +610,15 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://moawling.gumroad.com/l/fnf-sprites?layout=profile&recommended_by=library moawling. Just in case, I'm gonna place these official FNF Pixel assets source here along with FLAs I could find.
 - https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/Main.hx LarsiusPrime. FireTongue stuffs.
 - https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/State_Title.hx LarsiusPrime. FireTongue stuffs.
+- https://lib.haxe.org/p/HaxeGJClient/ GamerPablito. NEW GAMEJOLT CLIENT.
+- hhttps://lib.haxe.org/p/AE-Script/ Altronix Engine. Better Hscripter, based on [CNE Hscript](https://github.com/FNF-CNE-Devs/hscript-improved). Is this conflict with original hscript? **Yes it does**, so this is replacement! pls [Altronix Engine source code](https://github.com/Altronix-Team/FNF-AltronixEngine)
+- https://lib.haxe.org/p/complex/ Kisetil. Complex Math library.
+- https://lib.haxe.org/p/hxyarn/ cxsquared. YarnSpinner Dialogue pls.
+- https://github.com/Altronix-Team/FNF-AltronixEngine Altronix Engine. You know what? let's just yoink some of Altronix stuff too, I don't care anymore. As usual, keep the name.
+- https://lib.haxe.org/p/safety/ RealyUniqueName. Null safety will ya?.
+- https://lib.haxe.org/p/Console.hx/ Haxiomic. the COnsole fancy prints!!!!!
+- https://lib.haxe.org/p/haxe-ws/
+- https://lib.haxe.org/p/hxlibc/
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 

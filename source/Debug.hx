@@ -243,6 +243,7 @@ class Debug
 		logInfo('Last Funkin Moments version: ${MainMenuState.lastFunkinMomentVer}'); // JOELwindows7: haha yeah!
 		logInfo('Device: ${LimeSys.deviceVendor}, ${LimeSys.deviceModel}');
 		logInfo('Platform: ${LimeSys.platformLabel}, ${LimeSys.platformName}, ${LimeSys.platformVersion}');
+		logInfo('Compiled: ${CompileTime.buildDateString()}');
 	}
 
 	/**

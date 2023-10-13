@@ -3773,7 +3773,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			PlayStateChangeables.songPosBarColor = PlayStateChangeables.weekColor;
 			PlayStateChangeables.songPosBarColorBg = FlxColor.fromRGBFloat(PlayStateChangeables.weekColor.brightness,
 				PlayStateChangeables.weekColor.brightness, PlayStateChangeables.weekColor.brightness)
-				.getInverted();
+				.getComplementHarmony();
 			// prevent bar color from being alpha < 1. background bar is okay alpha < 1, I guess...
 			PlayStateChangeables.songPosBarColor.alphaFloat = 1;
 			// }

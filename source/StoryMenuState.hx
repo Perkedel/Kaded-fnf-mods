@@ -1,5 +1,6 @@
 package;
 
+import utils.assets.WeekData;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.ui.FlxUISprite;
 import ui.states.IBGColorTweening;
@@ -220,6 +221,11 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			jsonWeekList();
 		else
 			textedWeekList();
+
+		// the Altronix week JSON
+		WeekData.reloadWeekFiles(true);
+		if (curWeek >= WeekData.weeksList.length)
+			curWeek = 0;
 
 		weekUnlocked = unlockWeeks();
 

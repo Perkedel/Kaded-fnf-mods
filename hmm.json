@@ -44,16 +44,23 @@
             "type": "haxelib",
             "version": null
         },
+        
+        {
+            "name": "flixel-demos",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-template",
+            "type": "haxelib",
+            "version": null
+        },
         {
             "name": "flixel-ui",
             "type": "haxelib",
             "version": null
         },
-        {
-            "name": "hscript",
-            "type": "haxelib",
-            "version": null
-        },
+        
         {
             "name": "polymod",
             "type": "haxelib",
@@ -159,8 +166,35 @@
             "type": "haxelib",
             "version": null
         },
+        
+        {
+            "name": "haxeui-html5",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "haxeui-openfl",
+            "type": "haxelib",
+            "version": null
+        },
         {
             "name": "android6permissions",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "threejs",
+            "type": "haxelib",
+            "version": null
+        },
+        
+        {
+            "name": "lime-samples",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "openfl-samples",
             "type": "haxelib",
             "version": null
         },
@@ -171,6 +205,11 @@
         },
         {
             "name": "uniontypes",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "format",
             "type": "haxelib",
             "version": null
         },
@@ -198,6 +237,133 @@
             "name": "hxjava",
             "type": "haxelib",
             "version": null
+        },
+        {
+            "name": "HaxeGJClient",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "AE-Script",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "complex",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxyarn",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "electron",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "away3d",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "safety",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "Console.hx",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "uuid",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "howlerjs",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "random",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "stb_ogg_sound",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxargs",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "exception",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxlibc",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "sure",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "ansi",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hashlink",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "datetime",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "vscode",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "ase",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "haxe-ws",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "openfl-compatibility",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "compiletime",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hscript",
+            "type": "git",
+            "dir": null,
+            "ref": "master",
+            "url": "https://github.com/HaxeFoundation/hscript"
         },
         {
             "name": "discord_rpc",
@@ -303,6 +469,18 @@
             "dir": null,
             "ref": "master",
             "url": "https://github.com/uhrobots/faxe"
+        },
+        {
+            "name": "flxanimate",
+            "type": "git",
+            "dir": null,
+            "ref": "master",
+            "url": "https://github.com/Dot-Stuff/flxanimate/"
+        },
+        {
+            "name": "thx.semver",
+            "type": "haxelib",
+            "version": null
         },
         {
             "name": "udprotean",

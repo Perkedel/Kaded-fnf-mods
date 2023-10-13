@@ -1,0 +1,20 @@
+{
+	"songs": [
+		"tutorial"
+	],
+
+	"weekCharacters": [
+		"",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Tutorial",
+
+	"storyName": "",
+	"weekBefore": "",
+	"weekName": "Empty",
+	"startUnlocked": true,
+
+    "hideStoryMode": false,
+    "hideFreeplay": false
+}
