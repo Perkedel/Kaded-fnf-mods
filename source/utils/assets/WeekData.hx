@@ -15,9 +15,9 @@ typedef WeekFile =
 {
 	var songs:Array<String>;
 	var weekCharacters:Array<String>;
-	var weekBackground:String;
+	var ?weekBackground:String;
 	var weekBefore:String;
-	var storyName:String;
+	var ?storyName:String;
 	var difficulties:String;
 	var ?weekImage:String;
 }
