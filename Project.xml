@@ -104,7 +104,7 @@
 	<!-- JOELwindows7: Defines whether uh I forgot -->
 
 	<!-- JOELwindows7: Defines whether the WebMer native should be enabled. This is for cpp-->
-	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="hl || neko || java"/>
+	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="hl || neko || java || mobile"/>
 	<!-- JOELwindows7: and for JS -->
 	<haxedef name="FEATURE_WEBM_JS" if="web"/>
 	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
@@ -439,7 +439,7 @@
 	<!-- <haxelib name="AE-Script" /> -->
 
 	<haxelib name="actuate" />
-	<haxelib name="extension-webm" unless='hl || neko'/> <!-- Make sure to use https://github.com/KadeDev/extension-webm/ -->
+	<haxelib name="extension-webm" unless='hl || neko || mobile'/> <!-- Make sure to use https://github.com/KadeDev/extension-webm/ -->
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
