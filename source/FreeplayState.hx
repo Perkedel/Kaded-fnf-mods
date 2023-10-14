@@ -1,5 +1,6 @@
 package;
 
+import utils.assets.WeekData;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.ui.FlxUISprite;
 import behavior.audio.IManipulateAudio;
@@ -136,6 +137,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	{
 		try
 		{
+			// JOELwindows7: the Altronix week JSON
+			WeekData.reloadWeekFiles(false);
+
 			// JOELwindows7: load weeks
 			if (legacyJSONWeekList)
 				weekDatas = StoryMenuState.loadFromJson('weekList')

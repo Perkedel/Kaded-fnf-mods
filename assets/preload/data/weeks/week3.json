@@ -11,7 +11,13 @@
 		"gf"
 	],
 	"weekBackground": "PICO",
-
+	"weekColor": "#993399",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":false,
 	"storyName": "PICO",
-	"weekBefore": "week2"
+	"weekBefore": "week2",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
 }

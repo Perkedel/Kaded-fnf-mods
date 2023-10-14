@@ -20,6 +20,8 @@ typedef WeekFile =
 	var ?storyName:String;
 	var difficulties:String;
 	var ?weekImage:String;
+	var ?weekColor:String;
+	var ?weekClickSound:String;
 }
 
 class WeekData
@@ -33,12 +35,16 @@ class WeekData
 	public var songs:Array<String>;
 	public var weekCharacters:Array<String>;
 	public var weekBackground:String;
+	public var weekColor:String;
 	public var weekBefore:String;
 	public var storyName:String;
 	public var difficulties:String;
 	public var weekImage:String;
+	public var weekClickSound:String;
 
 	public var fileName:String;
+
+	public var fileItself:WeekFile; // JOELwindows7: For clarification
 
 	public static function createWeekFile():WeekFile
 	{
@@ -48,6 +54,8 @@ class WeekData
 			weekBackground: 'Dad',
 			weekBefore: 'tutorial',
 			weekImage: 'week1',
+			weekColor: '#F9CF51',
+			weekClickSound: 'confirmMenu',
 			storyName: 'Your New Week',
 			difficulties: 'Easy, Normal, Hard, Hard P'
 		};
@@ -64,6 +72,10 @@ class WeekData
 		storyName = weekFile.storyName;
 		difficulties = weekFile.difficulties;
 		weekImage = weekFile.weekImage;
+		weekColor = weekFile.weekColor;
+		weekClickSound = weekFile.weekClickSound;
+		// JOELwindows7: Sorry, Max, idk too aswell, AFAIK. maybe just.. have the weekFile variable to itself at one final point.
+		fileItself = weekFile;
 
 		this.fileName = fileName;
 	}
@@ -80,7 +92,7 @@ class WeekData
 		trace('WeekData: Weeks consists of\n${sexList}');
 		for (i in 0...sexList.length)
 		{
-			var fileToCheck:String = Paths.json('data/weeks/${sexList[i]}', 'preload');
+			var fileToCheck:String = Paths.json('weeks/${sexList[i]}');
 			if (!weeksLoaded.exists(sexList[i]))
 			{
 				var week:WeekFile = getWeekFile(fileToCheck);
@@ -89,12 +101,15 @@ class WeekData
 					var weekFile:WeekData = new WeekData(week, sexList[i]);
 					if (weekFile != null)
 					{
+						trace('push konka');
 						weeksLoaded.set(sexList[i], weekFile);
 						weeksList.push(sexList[i]);
 					}
 				}
 			}
+			trace('Week ${i}: ${sexList[i]}\n${weeksLoaded.get(weeksList[i])}');
 		}
+		trace('Weeks Loaded: ${weeksLoaded.toString()}');
 	}
 
 	static function listWeeks():Array<String>
@@ -121,7 +136,7 @@ class WeekData
 	static function listWeeksInPath(path:String)
 	{
 		trace('hey list the week at ${path}');
-		var library = OpenFlAssets.getLibrary("");
+		var library = OpenFlAssets.getLibrary("default");
 		var dataAssets = library.list(null);
 		// trace('Listing Weeks in Path ${path}:\n${dataAssets}');
 
@@ -131,8 +146,11 @@ class WeekData
 
 		for (data in dataAssets)
 		{
-			if (data.contains("/assets/"))
-				continue;
+			// if (data.contains("/assets/"))
+			// 	continue;
+			// if (!data.contains('/assets/${path}'))
+			// 	continue;
+			// trace('listing path week ${data}');
 
 			if (data.indexOf(queryPath) != -1
 				&& data.endsWith('.json')
@@ -140,7 +158,10 @@ class WeekData
 			{
 				var suffixPos = data.indexOf(queryPath) + queryPath.length;
 				if (!defaultWeeks.contains(data.substr(suffixPos).replaceAll('.json', '')))
+				{
 					results.push(data.substr(suffixPos).replaceAll('.json', ''));
+					trace('Weeksin JSONing: ${results}');
+				}
 			}
 		}
 		trace('List Weeks in Path we got:\n${results}');

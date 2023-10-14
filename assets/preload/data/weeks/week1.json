@@ -11,7 +11,13 @@
 		"gf"
 	],
 	"weekBackground": "Dad",
-
+	"weekColor": "#F9CF51",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":true,
 	"storyName": "Daddy Dearest",
-	"weekBefore": "tutorial"
+	"weekBefore": "tutorial",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
 }

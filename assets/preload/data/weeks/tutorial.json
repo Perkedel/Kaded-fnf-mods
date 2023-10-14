@@ -9,7 +9,13 @@
 		"gf"
 	],
 	"weekBackground": "Tutorial",
-
+	"weekColor": "#F9CF51",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":true,
 	"storyName": "",
-	"weekBefore": ""
+	"weekBefore": "",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
 }

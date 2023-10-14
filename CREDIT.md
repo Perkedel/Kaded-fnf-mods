@@ -411,12 +411,14 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - the KPOP TV show has lyric!
 - https://haxeflixel.com/blog/16-HaxeFlixel-5-4-0/ COMBINE THE ATLAS!!!!!!!
 - https://github.com/HaxeFoundation/hscript pls latest instead
-
-
+- https://roy-torley.github.io/Inkscape_Tutorial/Tutorial07/Tutorial07.html
+- https://graphicdesign.stackexchange.com/questions/36025/how-do-i-shear-a-selection-in-inkscape
 
 # in event of git merge conflict
+
 use VScode and Github desktop!
 ## New
+
 - cease all works
 - commit and push new commit to your GitHub now.
 - go to conflict solving branch. pull the last commit from main to here.
@@ -434,6 +436,7 @@ use VScode and Github desktop!
 - push while you're at `main` now!
 
 ## legacyed
+
 - make sure to backup your last mod commit into a new branch first.
 - pull your latest commit from main to the conflict solving branch
 - try to checkout the new topic branch that conflict with the default branch where you supposed to merge all topic into default. 
@@ -444,6 +447,7 @@ use VScode and Github desktop!
 - after all conflict resolved you can commit merge. yay
 
 ## involved helps
+
 - https://stackoverflow.com/questions/6006737/git-merge-errors/6006775
 - https://stackoverflow.com/questions/57044187/git-error-you-need-to-resolve-your-current-index-first#57044188
 - https://stackoverflow.com/questions/36086202/git-merge-is-not-possible-because-i-have-unmerged-files
@@ -451,6 +455,7 @@ use VScode and Github desktop!
 - https://stackoverflow.com/questions/36086202/git-merge-is-not-possible-because-i-have-unmerged-files
 
 # Musics involved
+
 - https://linktr.ee/TheFatRat TheFatRat songs
 - https://gamebanana.com/mods/43569 SeaNothing's MIDI remake of FNF songs
 - https://youtu.be/RWf50T52n58 AFI Junior - Guruku Tersayang
@@ -619,6 +624,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://lib.haxe.org/p/Console.hx/ Haxiomic. the COnsole fancy prints!!!!!
 - https://lib.haxe.org/p/haxe-ws/
 - https://lib.haxe.org/p/hxlibc/
+- https://github.com/Dovyski/flixel-studio Dovyski. The comprehensive Flixel in-game editor. Use the debug `~` menu and click **interaction tool**
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 

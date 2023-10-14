@@ -116,6 +116,7 @@ class VideoSelfContained extends MusicBeatState
 
 	override function create()
 	{
+		Paths.clearStoredMemory();
 		trace('welcome to video self contained state');
 		super.create();
 		// FlxG.autoPause = false;

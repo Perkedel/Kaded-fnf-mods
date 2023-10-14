@@ -1,5 +1,8 @@
 package;
 
+#if debug
+import flixel.addons.studio.FlxStudio;
+#end
 import ui.states.debug.WerrorForceMajeurState;
 import ui.states.debug.WerrorCrashState;
 import openfl.system.System;
@@ -112,6 +115,7 @@ class Main extends Sprite
 		trace("yey");
 		trace("Last Funkin Moments v" + Perkedel.ENGINE_VERSION); // JOELwindows7: idk why crash on android.
 		// pls don't destroy debug only because you don't have filesystem access!!
+		Console.log('<cyan><b>Last Funkin Moments v${Perkedel.ENGINE_VERSION}</></>');
 
 		// JOELwindows7: totally try catch now!
 		try
@@ -329,6 +333,11 @@ class Main extends Sprite
 		// game = new Game(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		game = new Game(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
+
+		// JOELwindows7: Flixel Studio
+		#if debug
+		FlxStudio.create();
+		#end
 
 		// JOELwindows7: now build Xbox controllers
 		#if EXPERIMENTAL_OPENFL_XINPUT

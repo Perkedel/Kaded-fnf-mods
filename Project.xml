@@ -225,6 +225,9 @@
 	<!-- JOELwindows7: Define debug for modcore like Altronix did -->
 	<haxedef name="POLYMOD_DEBUG" if="debug" />
 
+	<!-- JOELwindows7: Console.hx advanced cross platform print to console -->
+	<haxedef name="FEATURE_CONSOLE_HX"/>
+
 	<!-- JOELwindows7: yoinkoid-->
 	<!-- from https://github.com/luckydog7/Funkin-android/blob/master/Project.xml -->
 	<!-- <assets path="assets" include="*.txt"/> -->
@@ -623,6 +626,9 @@
 
 	<!-- JOELwindows7: Compile time data fetch https://lib.haxe.org/p/compiletime/ -->
 	<haxelib name="compiletime" />
+
+	<!-- JOELwindows7: Flixel Studio https://github.com/Dovyski/flixel-studio -->
+	<haxelib name="flixel-studio" if='debug'/>
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

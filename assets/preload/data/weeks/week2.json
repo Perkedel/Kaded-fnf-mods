@@ -11,7 +11,13 @@
 		"gf"
 	],
 	"weekBackground": "Spooky",
-
+	"weekColor": "#3333ff",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":false,
 	"storyName": "Spooky Month",
-	"weekBefore": "week1"
+	"weekBefore": "week1",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
 }

@@ -1,3 +1,4 @@
+// import Console.ConsoleOutputStream;
 import haxe.display.Protocol.Version;
 import lime.app.Application;
 import lime.system.System as LimeSys;
@@ -244,6 +245,7 @@ class Debug
 		logInfo('Device: ${LimeSys.deviceVendor}, ${LimeSys.deviceModel}');
 		logInfo('Platform: ${LimeSys.platformLabel}, ${LimeSys.platformName}, ${LimeSys.platformVersion}');
 		logInfo('Compiled: ${CompileTime.buildDateString()}');
+		logInfo('Git Commit: ${CompileTime.buildGitCommitSha()}');
 	}
 
 	/**
@@ -484,7 +486,11 @@ class DebugLogWriter
 		// Output text to the debug console directly.
 		if (shouldLog(logLevel))
 		{
+			// #if FEATURE_CONSOLE_HX
+			// printConsole(msg); // JOELwindows7: write to Console!
+			// #else
 			printDebug(msg);
+			// #end
 		}
 	}
 
@@ -495,6 +501,32 @@ class DebugLogWriter
 		#else
 		// Pass null to exclude the position.
 		haxe.Log.trace(msg, null);
+		#end
+	}
+
+	// JOELwindows7: NEW Write Console
+	function printConsole(msg:String, logLevel:String = 'TRACE')
+	{
+		// var selectLevel:Console.ConsoleOutputStream;
+		// switch (logLevel)
+		// {
+		// 	default:
+		// 		selectLevel = Log;
+		// }
+		#if FEATURE_CONSOLE_HX
+		switch (logLevel)
+		{
+			case 'TRACE':
+				Console.log(msg);
+			case 'WARN':
+				Console.warn(msg);
+			case 'INFO':
+				Console.success(msg);
+			case 'ERROR':
+				Console.error(msg);
+			default:
+				Console.log(msg);
+		}
 		#end
 	}
 }

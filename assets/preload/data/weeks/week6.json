@@ -11,7 +11,13 @@
 		"gf"
 	],
 	"weekBackground": "Senpai",
-
+	"weekColor": "pink",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":false,
 	"storyName": "hating simulator ft. moawling",
-	"weekBefore": "week5"
+	"weekBefore": "week5",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
 }

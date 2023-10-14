@@ -1,6 +1,5 @@
 import Paths;
-// JOELwindows7: also CoreState & CoreSubState
-import CoreState;
+
 // JOELwindows7:yo, carry arounds!
 import utils.CarryAround;
 import const.Perkedel;
@@ -18,6 +17,8 @@ import haxe.macro.Context;
 // =====================
 // COMMONLY USED MODULES
 // =====================
+// JOELwindows7: also CoreState & CoreSubState
+import CoreState;
 // flixel
 import flixel.FlxG;
 import Debug;

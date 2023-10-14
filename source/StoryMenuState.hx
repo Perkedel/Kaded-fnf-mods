@@ -201,6 +201,37 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		}
 	}
 
+	// JOELwindows7: Okay, so I Altronix
+	function altronixWeekList()
+	{
+		weekDatas = new Array<Dynamic>();
+		weekCharacters = new Array<Dynamic>();
+		weekColor = new Array<String>();
+		weekBannerPath = new Array<String>();
+		weekUnderlayPath = new Array<String>();
+		weekClickSoundPath = new Array<String>();
+		weekNames = new Array<String>();
+		for (i in 0...WeekData.weeksList.length)
+		{
+			var weekLine:Array<String> = WeekData.weeksLoaded.get(WeekData.weeksList[i]).songs;
+			var weekSongs:Array<String> = new Array<String>(); // remember, if empty, must initialize!
+			for (j in 0...weekLine.length)
+			{
+				var song:String = weekLine[j];
+				// weekDatas[i].push(song);
+				weekSongs.push(song);
+			}
+			weekDatas.insert(i, weekSongs);
+			// var lineStuffs:Array<String> = weekStuffs[i].split(':');
+			weekCharacters.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekCharacters);
+			weekColor.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekColor);
+			weekBannerPath.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekImage);
+			weekUnderlayPath.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekBackground);
+			weekClickSoundPath.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekClickSound);
+			weekNames.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).storyName);
+		}
+	}
+
 	// TODO: JOELwindows7: use better week loading JSON granular from Master Eric's Enigma or whatever.
 
 	override function create()
@@ -216,14 +247,17 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 				LOL wintergatan
 			// */ // a fed. looks like comment inside comment block doesn't affect. only after closing.
 		legacyJSONWeekList = false; // JOELwindows7: turn off after you completed new weeklist. DONE
-		// TODO: JOELwindow7: implement Master Eric's granular week JSON.
+
+		// JOELwindows7: the Altronix week JSON
+		WeekData.reloadWeekFiles(true);
+
+		// DONE: JOELwindow7: implement Master Eric's granular week JSON. nvm, maybe we have Altronix already?
 		if (legacyJSONWeekList)
 			jsonWeekList();
 		else
 			textedWeekList();
+		// altronixWeekList(); // JOELwindows7: Whenever it's ready!
 
-		// the Altronix week JSON
-		WeekData.reloadWeekFiles(true);
 		if (curWeek >= WeekData.weeksList.length)
 			curWeek = 0;
 
@@ -607,6 +641,9 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			{
 				// JOELwindows7: change click sound based on week selected
 				Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
+				// FlxG.sound.play(Paths.sound(weekClickSoundPath[curWeek] != null
+				// 	&& weekClickSoundPath[curWeek] != ''
+				// 	&& Paths.doesSoundAssetExist(weekClickSoundPath[curWeek]) ? weekClickSoundPath[curWeek] : 'confirmMenu'));
 				FlxG.sound.play(Paths.sound(weekClickSoundPath[curWeek] != null
 					&& weekClickSoundPath[curWeek] != '' ? weekClickSoundPath[curWeek] : 'confirmMenu'));
 
