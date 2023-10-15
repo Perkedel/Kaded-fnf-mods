@@ -1,3 +1,4 @@
+import ui.states.transition.PsychTransition;
 import const.Perkedel;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
@@ -490,6 +491,10 @@ class KadeEngineData
 		if (FlxG.save.data.languageSelect == null)
 			FlxG.save.data.languageSelect = 0;
 
+		// JOELwindows7: Capture screenshot before transition & use it as the meltings
+		if (FlxG.save.data.doomTransition == null)
+			FlxG.save.data.doomTransition == PsychTransition.wackyScreenTransitionTechnique;
+
 		// JOELwindows7: workarounds!
 
 		// video cutscene crash on Linux
@@ -517,6 +522,9 @@ class KadeEngineData
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		Debug.logInfo("successfully set FPS settings"); // JOELwindows7: see if Android version crash!
 		#end
+
+		// JOELwindows7: don't forget to set it
+		PsychTransition.wackyScreenTransitionTechnique = FlxG.save.data.doomTransition;
 
 		// JOELwindows7: Oh, volume pls!
 		FlxG.sound.volume = FlxG.save.data.masterVolume;

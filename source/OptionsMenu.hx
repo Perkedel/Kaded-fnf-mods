@@ -199,6 +199,7 @@ class OptionsMenu extends CoreSubState
 				new CpuSplashOption("Toggle the CPU's note splash when it hits a note (REQUIRES: Note Splash to be ON)"),
 				new KpopLyricsOption("Should the lyrics be displayed"),
 				new KpopLyricsPositionOption("Where the position should the lyric be displayed at"),
+				new DoomMeltOption(CoolUtil.getText("$OPTIONS_DOOM_MELT_DESCRIPTION")),
 			]),
 			// JOELwindows7: Audio
 			new OptionCata(640, 40, 'Audio', [

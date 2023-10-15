@@ -1,5 +1,6 @@
 package;
 
+import ui.states.transition.PsychTransition;
 import utils.Initializations;
 import ui.states.modding.ModMenuState;
 import ui.GameJoltGateway;
@@ -4085,6 +4086,42 @@ class KpopLyricsOption extends Option
 	private override function updateDisplay():String
 	{
 		return '${Perkedel.LYRIC_ENABLED_OPTION_NAME} < Lyrics ${FlxG.save.data.kpopLyrics ? "Enabled" : "Disabled"}>';
+	}
+}
+
+// JOELwindows7: Doom fall melt screen attempt
+class DoomMeltOption extends Option
+{
+	public function new(desc:String = "Doom Melt Screen")
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.doomTransition = !FlxG.save.data.doomTransition;
+		display = updateDisplay();
+		// OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		PsychTransition.wackyScreenTransitionTechnique = FlxG.save.data.doomTransition;
+		return '${OptionsMenu.getTextOf("$OPTIONS_DOOM_MELT")} < ${FlxG.save.data.doomTransition ? "Enabled" : "Disabled"}>';
 	}
 }
 

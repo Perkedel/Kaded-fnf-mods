@@ -183,9 +183,10 @@ class MusicBeatState extends CoreState
 	 * @param trans whether to have transition
 	 * @param song is this a song loading?
 	 */
-	public function switchState(nextState:FlxState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false, stopMusic:Bool = false,
-			?previously:FlxState)
+	public function switchState(nextState:FlxState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false, stopMusic:Bool = false, ?previously:FlxState)
 	{
+		// Game.captureScreenshot();
+
 		#if EXPERIMENTAL_HEX_WEEKEND
 		if (fuckYou)
 			return;
@@ -282,6 +283,7 @@ class MusicBeatState extends CoreState
 		MusicBeatState.switchingState = true;
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
+		Game.captureScreenshot();
 		if (!FlxTransitionableState.skipNextTransIn)
 		{
 			leState.openSubState(new PsychTransition(0.75, false));

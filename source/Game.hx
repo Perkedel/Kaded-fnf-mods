@@ -21,6 +21,9 @@
 // btw, coding has been oversaturated with politics for the license part of it. license itself is politic, idk.. coz it has view! side a b c d e f g
 package;
 
+import openfl.geom.Rectangle;
+import flixel.addons.plugin.screengrab.FlxScreenGrab;
+import openfl.display.Bitmap;
 import ui.states.debug.WerrorForceMajeurState;
 import flixel.tweens.FlxTween;
 import flixel.tweens.misc.VarTween;
@@ -45,6 +48,8 @@ class Game extends FlxGame
 	public static var pauseFadingOut:Bool = false;
 
 	static var hasCrashed:Bool = false;
+
+	public static var lastScreenshotBitmap:Bitmap;
 
 	// JOELwindows7: override creato
 	override function create(_)
@@ -185,6 +190,12 @@ class Game extends FlxGame
 			// });
 			pauseFadingOut = true;
 		}
+	}
+
+	public static function captureScreenshot(?CaptureRegion:Null<Rectangle>, SaveToFile:Bool = false, HideMouse:Bool = true):Bitmap
+	{
+		lastScreenshotBitmap = FlxScreenGrab.grab(CaptureRegion, SaveToFile, HideMouse);
+		return lastScreenshotBitmap;
 	}
 
 	// JOELwindows7: reset tripwire
