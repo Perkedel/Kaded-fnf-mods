@@ -101,7 +101,7 @@ class WeekData
 					var weekFile:WeekData = new WeekData(week, sexList[i]);
 					if (weekFile != null)
 					{
-						trace('push konka');
+						// trace('push konka');
 						weeksLoaded.set(sexList[i], weekFile);
 						weeksList.push(sexList[i]);
 					}

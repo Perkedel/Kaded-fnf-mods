@@ -240,6 +240,18 @@ class Paths
 		return getPath('data/$key.lua', TEXT, library);
 	}
 
+	// JOELwindows7: More
+	inline static public function zig(key:String, ?library:String)
+	{
+		return getPath('data/$key.zig', TEXT, library);
+	}
+
+	// JOELwindows7: MOAR!!
+	inline static public function nim(key:String, ?library:String)
+	{
+		return getPath('data/$key.nim', TEXT, library);
+	}
+
 	/**
 	 * Path to an hscript file
 	 * @author JOELwindows7

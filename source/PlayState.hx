@@ -12144,6 +12144,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			btw, who the peck would use Decimal Tempo in a music huh?!\nMaybe you should instead times 10 it couple times over until it no longers decimal, just saying.. like if 150.5 to 1505 something2\n
 			woi dengerin tempo lu itu koma-koma-an!! kok pake acara koma-koma-an segala sih, pusing tau!
 			');
+			Main.gjToastManager.createToast(null,'Decimal Tempo', 'Your init tempo is ${SONG.BPM}, which is decimal!\nEnsure it\'s whole number.');
 
 			// although this may cause problems still, since this code framework might has no double precisison and could cause whole `20` to be `20.0000759832475` something2.
 			// if only there is function like `isWhole()`;

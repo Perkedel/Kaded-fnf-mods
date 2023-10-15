@@ -359,6 +359,16 @@
             "version": null
         },
         {
+            "name": "hxmidilib",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "rtmidi-wrapper",
+            "type": "haxelib",
+            "version": null
+        },
+        {
             "name": "hscript",
             "type": "git",
             "dir": null,

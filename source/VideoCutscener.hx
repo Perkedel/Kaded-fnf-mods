@@ -232,6 +232,7 @@ class VLCState extends MusicBeatState
 
 	override function create()
 	{
+		Paths.clearStoredMemory();
 		trace('welcome to VLC state');
 		super.create();
 		// FlxG.autoPause = false;

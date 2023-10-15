@@ -625,6 +625,11 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://lib.haxe.org/p/haxe-ws/
 - https://lib.haxe.org/p/hxlibc/
 - https://github.com/Dovyski/flixel-studio Dovyski. The comprehensive Flixel in-game editor. Use the debug `~` menu and click **interaction tool**
+- https://lib.haxe.org/p/hxmidilib/
+- https://github.com/OIIOIIOI/hxmidilib
+- https://code.google.com/archive/p/as3midilib/
+- https://code.google.com/archive/p/as3midilib/
+- https://lib.haxe.org/p/rtmidi-wrapper/
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 
