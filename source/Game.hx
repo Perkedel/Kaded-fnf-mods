@@ -46,6 +46,15 @@ class Game extends FlxGame
 
 	static var hasCrashed:Bool = false;
 
+	// JOELwindows7: override creato
+	override function create(_)
+	{
+		super.create(_);
+
+		FlxG.sound.soundTray.volumeDownSound = Paths.sound('GF_4', 'shared');
+		FlxG.sound.soundTray.volumeUpSound = Paths.sound('GF_3', 'shared');
+	}
+
 	override public function update()
 	{
 		if (pauseMusic != null)

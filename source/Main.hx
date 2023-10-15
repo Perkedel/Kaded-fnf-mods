@@ -1,5 +1,6 @@
 package;
 
+// import utils.api.WindowsAPI;
 #if debug
 import flixel.addons.studio.FlxStudio;
 #end
@@ -335,6 +336,9 @@ class Main extends Sprite
 		// game = new Game(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		game = new Game(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
+
+		// JOELwindows7: YoshiCrafter Windows API pls
+		// WindowsAPI.setWindowToDarkMode();
 
 		// JOELwindows7: Flixel Studio
 		#if debug

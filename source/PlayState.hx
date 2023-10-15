@@ -5734,6 +5734,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			if (camFollow.x != dad.getMidpoint().x + 150 && !currentSection.mustHitSection)
 			{
+				// dad turn
+				turnChanges(true); // JOELwindows7: yey
 				var offsetX = 0;
 				var offsetY = 0;
 				#if FEATURE_LUAMODCHART
@@ -5786,6 +5788,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 			if (currentSection.mustHitSection && camFollow.x != boyfriend.getMidpoint().x - 100)
 			{
+				// bf turn
+				turnChanges(true); // JOELwindows7: yey
 				var offsetX = 0;
 				var offsetY = 0;
 				#if FEATURE_LUAMODCHART
@@ -12134,12 +12138,35 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		}
 	}
 
+	var wasBf:Bool = false;
+
+	function turnChanges(isBf:Bool = false)
+	{
+		if (isBf)
+		{
+			if (!wasBf)
+			{
+				// square underlay to right
+				wasBf = true;
+			}
+		}
+		else
+		{
+			if (wasBf)
+			{
+				// square underlay to left
+				wasBf = false;
+			}
+		}
+	}
+
 	// JOELwindows7: some other checks
 	function extraInitCheck()
 	{
 		// JOELwindows7: BPM decimaled
 		// https://github.com/Perkedel/Kaded-fnf-mods/issues/42
-		if (SONG.bpm % 1 != 0)
+		// https://api.haxeflixel.com/flixel/math/FlxMath.html#getDecimals
+		if (SONG.bpm % 1 != 0 || FlxMath.getDecimals(SONG.bpm) > 0)
 		{
 			// https://stackoverflow.com/a/2304062/9079640
 			Debug.logWarn('PlayState DECIMAL TEMPO: Your Init Tempo (${SONG.bpm}) is decimal!! This may cause messed up rhythms. Ensure your BPM is whole number unless your music is itself decimal tempo\n

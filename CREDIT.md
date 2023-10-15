@@ -413,6 +413,12 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://github.com/HaxeFoundation/hscript pls latest instead
 - https://roy-torley.github.io/Inkscape_Tutorial/Tutorial07/Tutorial07.html
 - https://graphicdesign.stackexchange.com/questions/36025/how-do-i-shear-a-selection-in-inkscape
+- https://stackoverflow.com/questions/10168193/haxe-and-windows-api
+- https://stackoverflow.com/questions/1080635/others-library-define-naming-conflict
+- https://api.haxeflixel.com/lime/ui/Window.html
+- https://github.com/larsiusprime/SteamWrap
+- https://github.com/HeapsIO/hlsteam
+- https://www.openfl.org/learn/npm/api/pages/lime/app/Application.html
 
 # in event of git merge conflict
 
@@ -630,6 +636,9 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://code.google.com/archive/p/as3midilib/
 - https://code.google.com/archive/p/as3midilib/
 - https://lib.haxe.org/p/rtmidi-wrapper/
+- https://github.com/FNF-CNE-Devs/YoshiCrafterEngine/blob/main/source/logging/LogsOverlay.hx YoshiCrafter. Ayy.. wait.
+- https://github.com/FNF-CNE-Devs/YoshiCrafterEngine/blob/main/source/WindowsAPI.hx#L80 YoshiCrafter. Ayy Windows API. Can I *borrow*, if.. YOINK!! thancc. from [here](https://community.openfl.org/t/transparent-desktop-window-background-confusion/11026/8) & [this](https://community.haxe.org/t/transparent-openfl-desktop-window-background-confusion/1157)
+- https://lib.haxe.org/p/winapi/
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 

@@ -658,6 +658,36 @@ class Paths
 		return FlxAtlasFrames.fromTexturePackerJson(imageGraphic(key, library), file('images/$key.json', library));
 	}
 
+	// JOELwindows7: XML atlas yey
+	inline static public function getXMLAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		if (isCharacter)
+			return FlxAtlasFrames.fromTexturePackerXml(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.xml', library));
+
+		return FlxAtlasFrames.fromTexturePackerXml(imageGraphic(key, library), file('images/$key.xml', library));
+	}
+
+	// JOELwindows7: Aseprite atlas whatever
+	inline static public function getAsepriteAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		if (isCharacter)
+			return FlxAtlasFrames.fromAseprite(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.json', library));
+
+		return FlxAtlasFrames.fromAseprite(imageGraphic('$key', library, gpuRender), file('images/$key.json', library));
+	}
+
+	// JOELwindows7: finally, libGDX
+	inline static public function getGDXAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		if (isCharacter)
+			return FlxAtlasFrames.fromLibGdx(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.txt', library));
+
+		return FlxAtlasFrames.fromLibGdx(imageGraphic('$key', library, gpuRender), file('images/$key.txt', library));
+	}
+
 	// JOELwindows7: the get bitmap sprite sheet for pixel e.g.
 	// inline static public function getBitmapSpriteSheet(key:String, ?library:String, ?isCharacter:Bool = false, ?unique:Bool = false)
 	// {

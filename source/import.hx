@@ -1,5 +1,4 @@
 import Paths;
-
 // JOELwindows7:yo, carry arounds!
 import utils.CarryAround;
 import const.Perkedel;
@@ -34,6 +33,8 @@ import flixel.FlxG;
 // import ndll.*;
 // import plugins.*;
 // import smTools.*;
+import Paths;
+import flixel.FlxSprite;
 #end
 // JOELwindows7: the threadening
 import utils.Threading;

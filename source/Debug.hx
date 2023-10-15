@@ -1,4 +1,5 @@
 // import Console.ConsoleOutputStream;
+// import flixel.system.macros.FlxGitSHA;
 import haxe.display.Protocol.Version;
 import lime.app.Application;
 import lime.system.System as LimeSys;
@@ -246,6 +247,8 @@ class Debug
 		logInfo('Platform: ${LimeSys.platformLabel}, ${LimeSys.platformName}, ${LimeSys.platformVersion}');
 		logInfo('Compiled: ${CompileTime.buildDateString()}');
 		logInfo('Git Commit: ${CompileTime.buildGitCommitSha()}');
+		// logInfo('Git Commit (FlxGitSHA): ${FlxGitSHA.getGitSHA('.')}');
+		logInfo('on Mobile: ${FlxG.onMobile}');
 	}
 
 	/**

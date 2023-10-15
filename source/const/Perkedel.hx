@@ -41,6 +41,7 @@ class Perkedel
 	public static final OPTION_CATEGORY_LENGTH:Int = 6; // How many categories on option menu? was 4, now we got 6. no wait that's DFJK.
 	public static final ENGINE_NAME:String = "Last Funkin Moments"; // oh yeah LFM baby!
 	public static final ENGINE_ID:String = "Last-Funkin-Moments"; // oh yeah LFM baby!
+	public static final ENGINE_ID_CLOSE:String = "LastFunkinMoments"; // oh yeah LFM baby!
 	public static final ENGINE_ABBREVIATE:String = "LFM"; // oh yeah LFM baby!
 	public static final ENGINE_VERSION:String = "2023.12.0"; // current version number yeah!
 	public static final ENGINE_VERSION_NUMBER:Array<Int> = [2023, 12, 0]; // and numbered version

@@ -369,6 +369,11 @@
             "version": null
         },
         {
+            "name": "winapi",
+            "type": "haxelib",
+            "version": null
+        },
+        {
             "name": "hscript",
             "type": "git",
             "dir": null,

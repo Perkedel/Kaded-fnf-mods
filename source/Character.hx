@@ -175,6 +175,15 @@ class Character extends FlxUISprite
 			case 'JsonAtlas':
 				Debug.logTrace('JsonAtlas ${data.asset}');
 				tex = Paths.getJSONAtlas(data.asset, 'shared');
+			case 'AsepriteAtlas':
+				Debug.logTrace('AsepriteAtlas ${data.asset}');
+				tex = Paths.getAsepriteAtlas(data.asset, 'shared');
+			case 'XMLAtlas':
+				Debug.logTrace('XMLAtlas ${data.asset}');
+				tex = Paths.getXMLAtlas(data.asset, 'shared');
+			case 'GDXAtlas':
+				Debug.logTrace('GDXAtlas ${data.asset}');
+				tex = Paths.getGDXAtlas(data.asset, 'shared');
 			default: // SparrowAtlas
 				Debug.logTrace('SparrowAtlas ${data.asset}');
 				tex = Paths.getSparrowAtlas(data.asset, 'shared');
@@ -208,6 +217,15 @@ class Character extends FlxUISprite
 							case 'JsonAtlas':
 								Debug.logTrace('Extra JsonAtlas ${piece.asset}');
 								anExtraAtlas = Paths.getJSONAtlas(piece.asset, 'shared');
+							case 'AsepriteAtlas':
+								Debug.logTrace('Extra AsepriteAtlas ${data.asset}');
+								anExtraAtlas = Paths.getAsepriteAtlas(data.asset, 'shared');
+							case 'XMLAtlas':
+								Debug.logTrace('Extra XMLAtlas ${data.asset}');
+								anExtraAtlas = Paths.getXMLAtlas(data.asset, 'shared');
+							case 'GDXAtlas':
+								Debug.logTrace('Extra GDXAtlas ${data.asset}');
+								anExtraAtlas = Paths.getGDXAtlas(data.asset, 'shared');
 							default: // SparrowAtlas
 								Debug.logTrace('Extra SparrowAtlas ${piece.asset}');
 								anExtraAtlas = Paths.getSparrowAtlas(piece.asset, 'shared');
@@ -313,7 +331,7 @@ class Character extends FlxUISprite
 		barColor = FlxColor.fromString(data.barColor);
 
 		// JOELwindows7: fill out heart organs!
-		Debug.logTrace('Don\' forget the 🫀 heart!');
+		Debug.logTrace('Don\'t forget the 🫀 heart!');
 		for (thisSpec in heartOrgans)
 		{
 			var aHeart = new JantungOrgan(thisSpec);

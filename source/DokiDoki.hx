@@ -263,8 +263,15 @@ class JantungOrgan
 	 */
 	public function update(elapsed:Float)
 	{
-		lifePosition += elapsed * 1000; // according to PlayState, it times 1000.
 		Debug.quickWatch(lifePosition, "Heart-" + character);
+		if (arrest)
+		{
+			// changeBPM(0);
+			curHR = 0;
+			checkWhichHeartTierWent(curHR);
+			return;
+		}
+		lifePosition += elapsed * 1000; // according to PlayState, it times 1000.
 
 		// copy from MusicBeatState! try to use existing infrastructures, idk.
 		if (TimingStruct.AllTimings.length > 1)
@@ -474,8 +481,11 @@ class JantungOrgan
 			arrest = true; // this always turns on. do CPR to untrue this!
 		}
 
-		crochet = ((60 / curHR) * 1000);
-		stepCrochet = crochet / 4;
+		if (!arrest)
+		{
+			crochet = ((60 / curHR) * 1000);
+			stepCrochet = crochet / 4;
+		}
 	}
 
 	// Moar functions
@@ -499,6 +509,33 @@ class JantungOrgan
 	public function blowMouth()
 	{
 		breathCPRToken += giveCPRTokenEachBlow;
+	}
+
+	// CPR Chest compression
+	public function compressChest()
+	{
+		currCompression += breathCPRToken > 0 ? 1 : 0;
+		// wait, lung is own organ. damn, that's complicated! then you should ask Lung class instead of here!!!
+		cprSuccess();
+	}
+
+	public function cprSuccess()
+	{
+		// TODO: if currCompression is above threshold, then status alive again.
+		if (currCompression > 10)
+		{
+			// alive
+			arrest = false;
+			curHR = 50;
+			stimulate(ADRENAL, 50);
+
+			currCompression = 0;
+			breathCPRToken = 0;
+
+			// crochet = ((60 / curHR) * 1000);
+			// stepCrochet = crochet / 4;
+			checkWhichHeartTierWent(curHR);
+		}
 	}
 
 	public function getHeartRate():Float
