@@ -295,7 +295,7 @@ class KadeEngineFPS extends TextField
 
 			// JOELwindows7: psyched check danger status
 			// JOELwindows7: Okay, on second thought you know what? let's just tell which one is in danger.
-			memoryUsageTooHigh = memoryUsage > 3000;
+			memoryUsageTooHigh = memoryUsage >= 3000;
 			fpsTooLow = currentFPS <= 60;
 			// if (memoryUsage > 3000 || currentFPS <= FlxG.save.data.fpsCap / 2)
 			if (memoryUsageTooHigh || fpsTooLow) // JOELwindows7: no uuuh, Why half of the fps cap? perhaps, panic only if uh..

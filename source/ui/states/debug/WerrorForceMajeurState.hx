@@ -235,10 +235,10 @@ class WerrorForceMajeurState extends CoreState
 		// firmwareName = StringTools.replace(firmwareName, "-", "");
 
 		// path = "./crash/" + "KadeEngine_" + dateNow + "_SemiCaught.txt";
-		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt';
 
 		#if sys
-		path = '${Sys.getCwd()}crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+		path = '${Sys.getCwd()}/crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt';
 		#end
 
 		path = Path.normalize(path);

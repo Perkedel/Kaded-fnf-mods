@@ -2348,6 +2348,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			if (destroy)
 				babyArrow.destroy();
 		});
+
+		// JOELwindows7: perform misc extra init checks
+		extraInitCheck();
 	}
 
 	// JOELwindows7: & readd everything
@@ -12128,6 +12131,23 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				Paths.sound(target, library);
 			case 'music':
 				Paths.music(target, library);
+		}
+	}
+
+	// JOELwindows7: some other checks
+	function extraInitCheck(){
+		// JOELwindows7: BPM decimaled
+		// https://github.com/Perkedel/Kaded-fnf-mods/issues/42
+		if (SONG.bpm % 1 != 0){
+			// https://stackoverflow.com/a/2304062/9079640
+			Debug.logWarn('PlayState DECIMAL TEMPO: Your Init Tempo (${SONG.bpm}) is decimal!! This may cause messed up rhythms. Ensure your BPM is whole number unless your music is itself decimal tempo\n
+			btw, who the peck would use Decimal Tempo in a music huh?!\nMaybe you should instead times 10 it couple times over until it no longers decimal, just saying.. like if 150.5 to 1505 something2\n
+			woi dengerin tempo lu itu koma-koma-an!! kok pake acara koma-koma-an segala sih, pusing tau!
+			');
+
+			// although this may cause problems still, since this code framework might has no double precisison and could cause whole `20` to be `20.0000759832475` something2.
+			// if only there is function like `isWhole()`;
+			// var teston = Math.
 		}
 	}
 } // u looked :O -ides
