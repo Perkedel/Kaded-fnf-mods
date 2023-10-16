@@ -218,6 +218,7 @@ class ModCore
 		output.addType("lua", TextFileFormat.PLAINTEXT);
 		// output.addType("hx", TextFileFormat.PLAINTEXT);
 		output.addType("hscript", TextFileFormat.PLAINTEXT); // Ohups! here enigma hscript too!!!
+		output.addType("nim", TextFileFormat.PLAINTEXT); //
 
 		// JOELwindows7: Don't forget! CSV & TSV files as lines!!! wait dedicated formats!
 		output.addType("csv", TextFileFormat.CSV);
