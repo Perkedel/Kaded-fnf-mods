@@ -340,6 +340,9 @@ class Main extends Sprite
 		// JOELwindows7: YoshiCrafter Windows API pls
 		// WindowsAPI.setWindowToDarkMode();
 
+		// JOELwindows7: sayofthelor's Screenshooters
+		// FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
+
 		// JOELwindows7: Flixel Studio
 		#if debug
 		FlxStudio.create();

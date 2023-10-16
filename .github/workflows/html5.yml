@@ -38,7 +38,7 @@ jobs:
           sudo apt-get update
           sudo apt upgrade -y
           sudo apt install luajit -y
-          sudo apt install build-essential avr-libc libc6-dev -y
+          sudo apt install build-essential avr-libc libc6-dev libpng12-dev -y
           sudo apt-get install gcc g++ gcc-multilib g++-multilib -y
           sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
           sudo apt install libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev libvlc-dev libvlccore-dev -y

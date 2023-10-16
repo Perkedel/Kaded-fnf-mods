@@ -639,6 +639,9 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://github.com/FNF-CNE-Devs/YoshiCrafterEngine/blob/main/source/logging/LogsOverlay.hx YoshiCrafter. Ayy.. wait.
 - https://github.com/FNF-CNE-Devs/YoshiCrafterEngine/blob/main/source/WindowsAPI.hx#L80 YoshiCrafter. Ayy Windows API. Can I *borrow*, if.. YOINK!! thancc. from [here](https://community.openfl.org/t/transparent-desktop-window-background-confusion/11026/8) & [this](https://community.haxe.org/t/transparent-openfl-desktop-window-background-confusion/1157)
 - https://lib.haxe.org/p/winapi/
+- https://lib.haxe.org/p/flixel-screenshot-plugin/ sayofthelor. Better Screenshotter?!?!?!??!
+- https://lib.haxe.org/p/zerolib-flixel/ 01010111. Extra Flixel stuffs
+- https://lib.haxe.org/p/scrollable-area/
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 

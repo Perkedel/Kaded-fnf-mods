@@ -539,6 +539,7 @@
 
 	<!-- JOELwindows7: the Tinkerbell stuffs and for the depend on it -->
 	<haxelib name="tink_core"/>
+	<!-- <haxelib name="tink_lang"/> -->
 
 	<!-- JOELwindows7: HaxeUI stuffs -->
 	<!-- <haxelib name="haxeui"/> -->
@@ -629,6 +630,29 @@
 
 	<!-- JOELwindows7: Flixel Studio https://github.com/Dovyski/flixel-studio -->
 	<haxelib name="flixel-studio" if='debug'/>
+
+	<!-- JOELwindows7: fponticelli's thx -->
+	<!-- <haxelib name="thx.core"/> -->
+	<!-- <haxelib name="thx.culture"/> -->
+
+	<!-- JOELwindows7: Haxe Math ya -->
+	<!-- <haxelib name="hxmath"/> -->
+
+	<!-- JOELwindows7: tired to sort, just add here -->
+	<!-- <haxelib name="hx3compat"/> -->
+	<!-- <haxelib name="hxColorToolkit"/> -->
+	<!-- <haxelib name="roxlib"/> -->
+	<!-- <haxelib name="flixel-screenshot-plugin"/> -->
+	<!-- <haxelib name="flixel-retrotools"/> -->
+	<!-- <haxelib name="flix"/> -->
+	<!-- <haxelib name="zerolib-flixel"/> -->
+	<!-- <haxelib name="hxmp4"/> -->
+	<!-- <haxelib name="flx-jamkit"/> -->
+	<!-- <haxelib name="flixel-window"/> -->
+	<!-- <haxelib name="flxgif" unless="web"/> -->
+	<!-- <haxelib name="FlixelStripShapes"/> -->
+	<!-- <haxelib name="FlashCache"/> -->
+	<!-- <haxelib name="scrollable-area"/> -->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

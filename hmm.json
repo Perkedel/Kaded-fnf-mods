@@ -20,6 +20,11 @@
             "version": null
         },
         {
+            "name": "formatter",
+            "type": "haxelib",
+            "version": null
+        },
+        {
             "name": "svg",
             "type": "haxelib",
             "version": null
@@ -51,7 +56,7 @@
             "version": null
         },
         {
-            "name": "flixel-template",
+            "name": "flixel-templates",
             "type": "haxelib",
             "version": null
         },
@@ -123,6 +128,106 @@
         },
         {
             "name": "tink_core",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_lang",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_macro",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_typecrawler",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_cli",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_xml",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_color",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_json",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_await",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_geom2",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_syntaxhub",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_template",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_streams",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_concurrent",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_tcp",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_http",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_clone",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_validation",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_web",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_stringly",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_chunk",
             "type": "haxelib",
             "version": null
         },
@@ -370,6 +475,126 @@
         },
         {
             "name": "winapi",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "thx.core",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "thx.culture",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "thx.semver",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "pecan",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxmath",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hx3compat",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxColorToolkit",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "roxlib",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "screenManager",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxPiScreenCapture",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-retrotools",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flix",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxmp4",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "zerolib-flixel",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-window",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flx-jamkit",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flxgif",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "FlixelStripShapes",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "FlashCache",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "scrollable-area",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "munit",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hlopenal",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "mockatoo",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "zigcall",
             "type": "haxelib",
             "version": null
         },

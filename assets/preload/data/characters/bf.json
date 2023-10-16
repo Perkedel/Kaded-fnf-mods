@@ -18,8 +18,8 @@
     "isDeathCharacter": false,
     "font": "Ubuntu Bold",
     "fontDrop": "Ubuntu Bold",
-    "fontColor": "0xFF3F2021",
-    "fontColorDrop": "0xFFD89494",
+    "fontColor": "#3F2021",
+    "fontColorDrop": "#D89494",
     "camPos": [0,0],
     "charPos": [0,0],
     "dialogueChatSoundPaths": [
