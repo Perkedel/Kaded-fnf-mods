@@ -212,11 +212,21 @@ class ModCore
 		var output = polymod.format.ParseRules.getDefault();
 		// Ensure TXT files have merge support.
 		output.addType("txt", TextFileFormat.LINES);
+		output.addType("md", TextFileFormat.LINES);
 
 		// JOELwindows7: pls help idk how to add lua & stuffs!!!
 		output.addType("lua", TextFileFormat.PLAINTEXT);
 		// output.addType("hx", TextFileFormat.PLAINTEXT);
 		output.addType("hscript", TextFileFormat.PLAINTEXT); // Ohups! here enigma hscript too!!!
+
+		// JOELwindows7: Don't forget! CSV & TSV files as lines!!! wait dedicated formats!
+		output.addType("csv", TextFileFormat.CSV);
+		output.addType("tsv", TextFileFormat.TSV);
+
+		// JOELwindows7: Also others!!!
+		output.addType("json", TextFileFormat.JSON);
+		output.addType("jsonc", TextFileFormat.JSON);
+		output.addType("xml", TextFileFormat.XML);
 
 		// You can specify the format of a specific file, with file extension.
 		// output.addFile("data/introText.txt", TextFileFormat.LINES)

@@ -632,8 +632,8 @@
 	<haxelib name="flixel-studio" if='debug'/>
 
 	<!-- JOELwindows7: fponticelli's thx -->
-	<!-- <haxelib name="thx.core"/> -->
-	<!-- <haxelib name="thx.culture"/> -->
+	<haxelib name="thx.core"/>
+	<haxelib name="thx.culture"/>
 
 	<!-- JOELwindows7: Haxe Math ya -->
 	<!-- <haxelib name="hxmath"/> -->
@@ -642,7 +642,7 @@
 	<!-- <haxelib name="hx3compat"/> -->
 	<!-- <haxelib name="hxColorToolkit"/> -->
 	<!-- <haxelib name="roxlib"/> -->
-	<!-- <haxelib name="flixel-screenshot-plugin"/> -->
+	<haxelib name="flixel-screenshot-plugin"/>
 	<!-- <haxelib name="flixel-retrotools"/> -->
 	<!-- <haxelib name="flix"/> -->
 	<!-- <haxelib name="zerolib-flixel"/> -->
@@ -653,6 +653,7 @@
 	<!-- <haxelib name="FlixelStripShapes"/> -->
 	<!-- <haxelib name="FlashCache"/> -->
 	<!-- <haxelib name="scrollable-area"/> -->
+	<!-- <haxelib name="winapi"/> -->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

@@ -479,6 +479,11 @@
             "version": null
         },
         {
+            "name": "winrpi",
+            "type": "haxelib",
+            "version": null
+        },
+        {
             "name": "thx.core",
             "type": "haxelib",
             "version": null
@@ -595,6 +600,16 @@
         },
         {
             "name": "zigcall",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "winutils",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "sourcemap",
             "type": "haxelib",
             "version": null
         },

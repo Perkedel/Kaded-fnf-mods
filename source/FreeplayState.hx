@@ -44,8 +44,9 @@ import Discord.DiscordClient;
 // import VideoSprite as MP4Sprite; // yep.
 import hxcodec.flixel.FlxVideo as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
 import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yep.
-
+import openfl.utils.Assets as OpenFlAssets;
 #end
+
 using StringTools;
 
 // JOELwindows7: I gotta add stuffs!
@@ -249,6 +250,39 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 	public static var list:Array<String> = [];
 
+	// JOELwindows7: List all song in freeplay without having to text!
+	public static function listFreplaySongs():Array<String>
+	{
+		// inspire & yoink from Altronix Week Data
+		// var newList:Array<String> = new Array<String>();
+		trace('Lets see what song do we have here!');
+		var path = 'data/songs/';
+		var queryPath = '${path}';
+		var library = OpenFlAssets.getLibrary("default");
+		var dataAssets = library.list(null);
+		var results:Array<String> = [];
+
+		for (data in dataAssets)
+		{
+			if (data.indexOf(queryPath) != -1
+				&& data.contains(queryPath)
+				&& data.endsWith('_meta.json')
+				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('/_meta.json', '')))
+			{
+				var suffixPos = data.indexOf(queryPath) + queryPath.length;
+				if (!results.contains(data.substr(suffixPos).replaceAll('/_meta.json', '')))
+				{
+					results.push(data.substr(suffixPos).replaceAll('/_meta.json', ''));
+					// trace('Freeplay JSONing: ${results}');
+				}
+			}
+		}
+		trace('results = ${results}');
+
+		// maybe don't use this because it'll reveal hidden songs.. idk, what do you think?
+		return results;
+	}
+
 	// JOELwindows7: globalize button variables.
 	var accepted:Bool;
 	var charting:Bool;
@@ -308,7 +342,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: pls install weekData
 		weekInfo = FreeplayState.loadWeekDatas(weekInfo);
 
+		// var listTest = listFreplaySongs();
 		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+		Debug.logInfo('FreePlay Song list:\n${list}');
 
 		cached = false;
 
@@ -1070,6 +1106,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		**/
 		// JOELwindows7: android crash if attempt FileSystem stuffs
 		itterateStepmaniaList = FileSystem.readDirectory("assets/sm/");
+		// itterateStepmaniaList = OpenFlAssets.getLibrary("assets/sm/");
 
 		trace('There are ${itterateStepmaniaList.length}');
 		itterateStepmaniaCount = 0;

@@ -341,7 +341,7 @@ class Main extends Sprite
 		// WindowsAPI.setWindowToDarkMode();
 
 		// JOELwindows7: sayofthelor's Screenshooters
-		// FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
+		FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
 
 		// JOELwindows7: Flixel Studio
 		#if debug

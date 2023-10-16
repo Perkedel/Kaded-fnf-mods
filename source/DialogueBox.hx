@@ -712,8 +712,18 @@ class DialogueBox extends FlxUIGroup
 		portraitMiddle.visible = false;
 	}
 
-	function initiatePortraitCustom(character:String = 'dad', side:Int = 0)
+	// function initiatePortraitCustom(character:String = 'dad', side:Int = 0)
+	function initiatePortraitCustom(newSpriteX:Int = -20, newSpriteY:Int = 40, zooming:Float = 0.9, textureXmlPath:String = 'weeb/gfPortrait',
+			name:String = 'enter', prefix:String = 'Boyfriend portrait enter', frameRate:Int = 24, flip:Bool = false, ?library = 'shared')
 	{
+		portraitJustDoIt = new FlxUISprite(newSpriteX, newSpriteY);
+		portraitJustDoIt.frames = Paths.getSparrowAtlas(textureXmlPath, library);
+		portraitJustDoIt.animation.addByPrefix(name, prefix, frameRate, flip);
+		portraitJustDoIt.setGraphicSize(Std.int(portraitMiddle.width * CoolUtil.daPixelZoom * zooming));
+		portraitJustDoIt.updateHitbox();
+		portraitJustDoIt.scrollFactor.set();
+		add(portraitJustDoIt);
+		portraitJustDoIt.visible = false;
 	}
 
 	function startDialogue():Void
