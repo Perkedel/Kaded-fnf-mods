@@ -20,6 +20,14 @@ class CoolUtil
 
 	public static function difficultyFromInt(difficulty:Int):String
 	{
+		// JOELwindows7: But first, refresh based on current language!
+		difficultyArray = [
+			getText("$GAMEPLAY_DIFFICULTY_EASY"), // Easy
+			getText("$GAMEPLAY_DIFFICULTY_MEDIUM"), // Normal
+			getText("$GAMEPLAY_DIFFICULTY_HARD"), // Hard
+			getText("$GAMEPLAY_DIFFICULTY_INSANE"), // Pro
+			getText("$GAMEPLAY_DIFFICULTY_IMPOSSIBLE"), // Errected
+		];
 		return difficultyArray[difficulty];
 	}
 
