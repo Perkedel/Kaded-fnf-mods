@@ -33,135 +33,159 @@ import flixel.group.FlxSpriteGroup;
  * The infamous default background of Perkedel Technologies. Now animated here yeya!
  * @author JOELwindows7
  */
-class QmovephBackground extends FlxGroup{
-    var bg:FlxUISprite;
-    var stars:FlxTypedGroup<QmovephFlying>;
-    var starSpawnTime:Float;
-    var bubbles:FlxTypedGroup<QmovephFlying>;
-    var bubbleSpawnTime:Float;
-    public function new(){
-        
-        super();
-    }
-    public function startDoing(){
-        // bg = FlxGradient.createGradientFlxSprite(
-        //     FlxG.width, FlxG.height,
-        //     [
-        //         FlxColor.fromRGB(0,160,255),
-        //         FlxColor.fromRGB(0,206,255),
-        //         FlxColor.fromRGB(80,80,80)
-        //     ]
-        //     )
-        //     ;
-        bg = new FlxUISprite(0,0,Paths.image("DefaultBackground-empty720p"));
-        trace("addre");
-        stars = new FlxTypedGroup<QmovephFlying>(50);
-        trace("dreea");
-        bubbles = new FlxTypedGroup<QmovephFlying>(50);
-        trace("druuu " + Std.string(bg) + " " + Std.string(stars) + " " + Std.string(bubbles) + " ");
-        add(bg);
-        trace("add bg");
-        add(stars);
-        trace("add stars");
-        add(bubbles);
-        trace("druuua");
-    }
-    override function update(elapsed:Float){
-        if(stars != null){
-            starSpawnTime += elapsed * 5;
-            if (starSpawnTime > 1)
-            {
-                starSpawnTime--;
-                stars.add(stars.recycle(QmovephFlying.new));
-            }
-        }   
+class QmovephBackground extends FlxGroup
+{
+	var bg:FlxUISprite;
+	var bgClassic:FlxSprite;
+	var stars:FlxTypedGroup<QmovephFlying>;
+	var starSpawnTime:Float;
+	var bubbles:FlxTypedGroup<QmovephFlying>;
+	var bubbleSpawnTime:Float;
 
-        if(bubbles != null){
-            bubbleSpawnTime += elapsed * 5;
-            if (bubbleSpawnTime > 1)
-            {
-                bubbleSpawnTime--;
-                var reBubble = bubbles.recycle(QmovephFlying.new);
-                reBubble.aStar = false;
-                bubbles.add(reBubble);
-            }
-        }
+	public function new()
+	{
+		super();
+	}
 
-        super.update(elapsed);
-    }
+	public function startDoing()
+	{
+		// bg = FlxGradient.createGradientFlxSprite(
+		//     FlxG.width, FlxG.height,
+		//     [
+		//         FlxColor.fromRGB(0,160,255),
+		//         FlxColor.fromRGB(0,206,255),
+		//         FlxColor.fromRGB(80,80,80)
+		//     ]
+		//     )
+		//     ;
+		// bg = new FlxUISprite(0,0,Paths.image("DefaultBackground-empty720p"));
+		// bg = cast FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [
+		// 	FlxColor.fromRGB(0, 160, 255),
+		// 	FlxColor.fromRGB(0, 206, 255),
+		// 	FlxColor.fromRGB(80, 80, 80)
+		// ]); // try yoink Psych Transition again
+		// bg = cast FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [
+		// 	0xFF00A0FF,
+		// 	0xFF00CEFF,
+		// 	0xFF505050,
+		// ]); // damn it still not working at all!
+		bgClassic = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xFF00A0FF, 0xFF00CEFF, 0xFF505050,]); // pls work lah
+		trace("addre");
+		stars = new FlxTypedGroup<QmovephFlying>(50);
+		trace("dreea");
+		bubbles = new FlxTypedGroup<QmovephFlying>(50);
+		trace("druuu " + Std.string(bg) + " " + Std.string(stars) + " " + Std.string(bubbles) + " ");
+		// add(bg);
+		add(bgClassic);
+		trace("add bg");
+		add(stars);
+		trace("add stars");
+		add(bubbles);
+		trace("druuua");
+	}
+
+	override function update(elapsed:Float)
+	{
+		if (stars != null)
+		{
+			starSpawnTime += elapsed * 5;
+			if (starSpawnTime > 1)
+			{
+				starSpawnTime--;
+				stars.add(stars.recycle(QmovephFlying.new));
+			}
+		}
+
+		if (bubbles != null)
+		{
+			bubbleSpawnTime += elapsed * 5;
+			if (bubbleSpawnTime > 1)
+			{
+				bubbleSpawnTime--;
+				var reBubble = bubbles.recycle(QmovephFlying.new);
+				reBubble.aStar = false;
+				bubbles.add(reBubble);
+			}
+		}
+
+		super.update(elapsed);
+	}
 }
 
 /**
  * The flying objects in this Qmoveph background. can be circle or star
  * @author JOELwindows7
  */
-class QmovephFlying extends FlxUISprite{
-    public var aStar:Bool = true;
-    public function new()
-    {
-        super();
-        // this.aStar = aStar;
-        if(this.aStar){
-            //trace("Star pls");
-        } else {
-            //trace("Bubbles pls");
-        }
-        kill();
-    }
+class QmovephFlying extends FlxUISprite
+{
+	public var aStar:Bool = true;
 
-    override public function revive()
-    {
-        var ratio = FlxG.random.float(0.2,1.2);
-        scale.x = ratio;
-        scale.y = ratio;
-        x = FlxG.width;
-        y = aStar? 
-            FlxG.random.int(0, Std.int((FlxG.height/2) - height)):
-            FlxG.random.int(Std.int((FlxG.height/2)-height), Std.int(FlxG.height - height))
-            ;
-        loadGraphic(Paths.image(aStar? "QmovephStar" : "QmovephBubble"));
-        velocity.x = -(FlxG.random.float(200,750));
-        angularVelocity = FlxG.random.float(-720,720);
-        color = FlxG.random.color(FlxColor.fromRGB(10,10,10),FlxColor.WHITE);
-        updateHitbox();
-        super.revive();
-    }
+	public function new()
+	{
+		super();
+		// this.aStar = aStar;
+		if (this.aStar)
+		{
+			// trace("Star pls");
+		}
+		else
+		{
+			// trace("Bubbles pls");
+		}
+		kill();
+	}
 
-    override public function update(elapsed:Float)
-    {
-        if (x < -width)
-            kill();
-        super.update(elapsed);
-    }
+	override public function revive()
+	{
+		var ratio = FlxG.random.float(0.2, 1.2);
+		scale.x = ratio;
+		scale.y = ratio;
+		x = FlxG.width;
+		y = aStar ? FlxG.random.int(0,
+			Std.int((FlxG.height / 2) - height)) : FlxG.random.int(Std.int((FlxG.height / 2) - height), Std.int(FlxG.height - height));
+		loadGraphic(Paths.image(aStar ? "QmovephStar" : "QmovephBubble"));
+		velocity.x = -(FlxG.random.float(200, 750));
+		angularVelocity = FlxG.random.float(-720, 720);
+		color = FlxG.random.color(FlxColor.fromRGB(10, 10, 10), FlxColor.WHITE);
+		updateHitbox();
+		super.revive();
+	}
+
+	override public function update(elapsed:Float)
+	{
+		if (x < -width)
+			kill();
+		super.update(elapsed);
+	}
 }
 
-class QmovephBubble extends FlxUISprite{
-    public function new()
-    {
-        super();
-        kill();
-    }
+class QmovephBubble extends FlxUISprite
+{
+	public function new()
+	{
+		super();
+		kill();
+	}
 
-    override public function revive()
-    {
-        var ratio = FlxG.random.float(0.2,1.2);
-        scale.x = ratio;
-        scale.y = ratio;
-        x = FlxG.width;
-        y = FlxG.random.int(Std.int((FlxG.height/2)-height), Std.int(FlxG.height - height))
-            ;
-        loadGraphic(Paths.image("QmovephBubble"));
-        velocity.x = -(FlxG.random.float(500,1000));
-        angularVelocity = FlxG.random.float(-720,720);
-        color = FlxG.random.color(FlxColor.fromRGB(10,10,10),FlxColor.WHITE);
-        updateHitbox();
-        super.revive();
-    }
+	override public function revive()
+	{
+		var ratio = FlxG.random.float(0.2, 1.2);
+		scale.x = ratio;
+		scale.y = ratio;
+		x = FlxG.width;
+		y = FlxG.random.int(Std.int((FlxG.height / 2) - height), Std.int(FlxG.height - height));
+		loadGraphic(Paths.image("QmovephBubble"));
+		velocity.x = -(FlxG.random.float(500, 1000));
+		angularVelocity = FlxG.random.float(-720, 720);
+		color = FlxG.random.color(FlxColor.fromRGB(10, 10, 10), FlxColor.WHITE);
+		updateHitbox();
+		super.revive();
+	}
 
-    override public function update(elapsed:Float)
-    {
-        if (x < -width)
-            kill();
-        super.update(elapsed);
-    }
+	override public function update(elapsed:Float)
+	{
+		if (x < -width)
+			kill();
+		super.update(elapsed);
+	}
 }

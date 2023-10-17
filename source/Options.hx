@@ -3170,6 +3170,33 @@ class AnKem0xTestStateOption extends Option
 	}
 }
 
+// JOELwindows7: Waveform test state!
+class AnWaveformTestStateOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.goToState(new WaveformTestState());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Waveform Test";
+	}
+}
+
 // JOELwindows7: Force all weeks to unlock
 class PreUnlockAllWeeksOption extends Option
 {

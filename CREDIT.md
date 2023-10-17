@@ -642,6 +642,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://lib.haxe.org/p/flixel-screenshot-plugin/ sayofthelor. Better Screenshotter?!?!?!??!
 - https://lib.haxe.org/p/zerolib-flixel/ 01010111. Extra Flixel stuffs
 - https://lib.haxe.org/p/scrollable-area/
+- https://www.rgbtohex.net/
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 

@@ -277,6 +277,15 @@ class Highscore
 		return songScores.get(formatSong('week' + week, diff));
 	}
 
+	// JOELwindows7: stringed week score pls for mod specific week!
+	public static function getNewWeekScore(week:String, diff:Int):Int
+	{
+		if (!songScores.exists(formatSong('week' + week, diff)))
+			setScore(formatSong('week' + week, diff), 0);
+
+		return songScores.get(formatSong('week' + week, diff));
+	}
+
 	public static function load():Void
 	{
 		if (FlxG.save.data.songScores != null)

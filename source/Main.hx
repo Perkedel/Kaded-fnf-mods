@@ -1,6 +1,7 @@
 package;
 
 // import utils.api.WindowsAPI;
+import ui.DeprecatedState;
 #if debug
 import flixel.addons.studio.FlxStudio;
 #end
@@ -70,6 +71,7 @@ class Main extends Sprite
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	// var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
 	var initialState:Class<FlxState> = SplashScreen; // The FlxState the game starts with.; JOELwindows7: use my splashscreen yey!
+	// var initialState:Class<FlxState> = DeprecatedState; // JOELwindows7: Deprecation state, because FULL ASS will be released, I think.. (ENGAGE ONLY IN 2024.06)
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var framerate:Int = 120; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.

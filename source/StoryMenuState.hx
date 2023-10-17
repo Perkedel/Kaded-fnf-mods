@@ -109,6 +109,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	var weekBannerPath:Array<String>; // Menu item banner image path
 	var weekUnderlayPath:Array<String>; // LCD underlay image path
 	var weekClickSoundPath:Array<String>; // Click sound path
+	var weekIds:Array<String>; // Week IDs for unique identifying
 
 	var txtWeekTitle:FlxUIText;
 
@@ -180,6 +181,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		weekBannerPath = new Array<String>();
 		weekUnderlayPath = new Array<String>();
 		weekClickSoundPath = new Array<String>();
+		weekIds = new Array<String>();
 		// use the first standardized (from top most upstream possible) array of weeks, which in this one is Week Names array.
 		for (i in 0...weekNames.length)
 		{
@@ -198,6 +200,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			weekBannerPath.insert(i, lineStuffs[4]);
 			weekUnderlayPath.insert(i, lineStuffs[5]);
 			weekClickSoundPath.insert(i, lineStuffs[6]);
+			weekIds.insert(i, lineStuffs[7]);
 		}
 	}
 
@@ -211,6 +214,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		weekUnderlayPath = new Array<String>();
 		weekClickSoundPath = new Array<String>();
 		weekNames = new Array<String>();
+		weekIds = new Array<String>();
 		for (i in 0...WeekData.weeksList.length)
 		{
 			var weekLine:Array<String> = WeekData.weeksLoaded.get(WeekData.weeksList[i]).songs;
@@ -229,6 +233,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			weekUnderlayPath.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekBackground);
 			weekClickSoundPath.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekClickSound);
 			weekNames.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).storyName);
+			weekIds.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).fileName);
 		}
 	}
 
@@ -720,10 +725,12 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 		// USING THESE WEIRD VALUES SO THAT IT DOESNT FLOAT UP
 		sprDifficulty.y = leftArrow.y - 15;
-		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		// intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		intendedScore = Highscore.getNewWeekScore(weekIds[curWeek], curDifficulty); // JOELwindows7: from mod file names
 
 		#if !switch
-		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		// intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		intendedScore = Highscore.getNewWeekScore(weekIds[curWeek], curDifficulty); // JOELwindows7: from mod file names
 		#end
 
 		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
