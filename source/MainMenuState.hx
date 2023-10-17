@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.misc.ColorTween;
 import flixel.addons.ui.FlxUISprite;
 import const.Perkedel;
 import CoreState;
@@ -44,6 +45,10 @@ class MainMenuState extends MusicBeatState
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
 
+	// JOELwindows7: Main Menu color will ya? unselected returns to WHITE tint.
+	var colorShit:Array<FlxColor> = [FlxColor.CYAN, FlxColor.YELLOW, FlxColor.LIME, FlxColor.MAGENTA];
+	var colorTweens:Array<ColorTween>;
+
 	var newGaming:FlxText;
 	var newGaming2:FlxText;
 
@@ -66,6 +71,12 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		// JOELwindows7: an menu color tween
+		colorTweens = new Array<ColorTween>();
+		// for (i in 0...5){
+		// 	colorTweens[i] = new ColorTween();
+		// }
+
 		// JOELwindows7: BOLO clear memory!
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
@@ -413,6 +424,57 @@ class MainMenuState extends MusicBeatState
 		}
 	}
 
+	// JOELwindows7: Please colorize one selected menu and return other unselected back to WHITE tint
+	function colorizeMenu(huh:Int = 0)
+	{
+		// cancel current first
+		for (i in 0...colorTweens.length)
+		{
+			if (colorTweens[i] != null)
+			{
+				colorTweens[i].cancel();
+			}
+		}
+
+		// // now color this one
+		// colorTweens[huh] = FlxTween.color(menuItems.members[huh], 0.5, menuItems.members[huh].color, colorShit[huh], {
+		// 	onComplete: function(twn:FlxTween)
+		// 	{
+		// 		colorTweens[huh] = null;
+		// 	}
+		// });
+
+		// // and whitens the unselected.
+		// menuItems.forEach(function(spr:FlxUISprite){
+		// 	if(spr.ID != huh){
+		// 		colorTweens[spr.ID] = FlxTween.color(spr, 0.5, spr.color, colorShit[huh], {
+		// 			onComplete: function(twn:FlxTween)
+		// 			{
+		// 				colorTweens[huh] = null;
+		// 			}
+		// 		});
+		// 	}
+		// });
+
+		// wait, could've done this instead.
+		menuItems.forEach(function(spr:FlxUISprite)
+		{
+			// var selectColor:FlxColor;
+			// switch(ID){
+
+			// }
+			colorTweens[spr.ID] = FlxTween.color(spr, 0.5, spr.color, spr.ID == curSelected ? colorShit[spr.ID] : FlxColor.WHITE, {
+				// colorTweens[spr.ID] = FlxTween.color(spr, 0.5, spr.color, spr.ID == curSelected ? FlxColor.GREEN : FlxColor.WHITE, {
+				// colorTweens[spr.ID] = FlxTween.color(spr, 0.5, spr.color, spr.ID == curSelected ? FlxColor.GREEN : FlxColor.WHITE, {
+
+				onComplete: function(twn:FlxTween)
+				{
+					colorTweens[curSelected] = null;
+				}
+			});
+		});
+	}
+
 	function changeItem(huh:Int = 0)
 	{
 		if (finishedFunnyMove)
@@ -424,6 +486,7 @@ class MainMenuState extends MusicBeatState
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
 		}
+		colorizeMenu(huh); // JOELwindows7: iyeye
 		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			spr.animation.play('idle');
@@ -456,6 +519,7 @@ class MainMenuState extends MusicBeatState
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
 		}
+		colorizeMenu(huh); // JOELwindows7: iyeye
 		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			spr.animation.play('idle');

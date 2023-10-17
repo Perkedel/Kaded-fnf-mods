@@ -335,6 +335,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			weekThing.ID = i; // JOELwindows7: add ID to compare with curSelected week
+			weekThing.flashingColor = FlxColor.fromString(weekColor[i]);
 			grpWeekText.add(weekThing);
 
 			weekThing.screenCenter(X);
