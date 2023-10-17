@@ -272,6 +272,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				var suffixPos = data.indexOf(queryPath) + queryPath.length;
 				if (!results.contains(data.substr(suffixPos).replaceAll('/_meta.json', '')))
 				{
+					// TODO: parse the _meta.json & see if song `hidden`. if it is, skip.
 					results.push(data.substr(suffixPos).replaceAll('/_meta.json', ''));
 					// trace('Freeplay JSONing: ${results}');
 				}

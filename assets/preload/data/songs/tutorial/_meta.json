@@ -1,5 +1,6 @@
 {
     "name": "Tutorial",
     "offset": 0,
-    "artist": "Kawai Sprite"
+    "artist": "Kawai Sprite",
+    "hidden": false
 }
