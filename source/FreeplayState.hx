@@ -306,11 +306,12 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		// PlayState.wentToChartEditor = false; // JOELwindows7: BOLO resets went to chart editor.
 		// JOELwindows7: BOLO put placeholder if music not playing
-		if (!FlxG.sound.music.playing)
-		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			MainMenuState.freakyPlaying = true;
-		}
+		// if (!FlxG.sound.music.playing)
+		// {
+		// 	FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		// 	MainMenuState.freakyPlaying = true;
+		// }
+		CoolUtil.playMainMenuSong(1); // JOELwindows7: yey new play main menu music
 
 		// JOELwindows7: okey how about attempt to have sys multithreading?
 		#if FEATURE_MULTITHREADING

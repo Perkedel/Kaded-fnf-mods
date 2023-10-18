@@ -90,10 +90,11 @@ class MainMenuState extends MusicBeatState
 
 		PlayState.isStoryMode = false; // JOELwindows7: BOLO. reset flag down
 
-		if (!FlxG.sound.music.playing)
-		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-		}
+		// if (!FlxG.sound.music.playing)
+		// {
+		// 	FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		// }
+		CoolUtil.playMainMenuSong(1); // JOELwindows7: yey new play main menu music
 
 		persistentUpdate = persistentDraw = true;
 
@@ -181,14 +182,15 @@ class MainMenuState extends MusicBeatState
 
 		// JOELwindows7: hard code our download link in case reuploaded without credit no matter what sign given
 		// we also covered both Kade Engine and the vanilla itself
-		var reuploadWord:String = "Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\n"
+		var reuploadWord:String = 'Download Last Funkin Moments for free $0 legit on ${Perkedel.ENGINE_REPO_URL},\n'
 			+ "original Kade Engine at https://github.com/KadeDev/Kade-Engine,\n"
 			+ "and vanilla Funkin at https://github.com/ninjamuffin99/Funkin ,\n"
 			+ "also FULL ASS Funkin at STEAM_URL .\n"
 			+ "play vanilla Funkin at https://www.newgrounds.com/portal/view/770371\n";
 		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 80, 0, reuploadWord, 12);
 		reuploadEdgeCase.scrollFactor.set();
-		reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		// reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		reuploadEdgeCase.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(reuploadEdgeCase);
 		// Kade, ninja, you should do that too. follow this example!
 		// also somehow at the end of the paragraph above, you must `\n` it at the very end. idk why, but that's the workaround

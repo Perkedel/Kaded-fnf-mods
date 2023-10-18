@@ -311,6 +311,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	public var iconP2:HealthIcon; // what could go wrong?
 	public var iconPlayers:FlxTypedGroup<HealthIcon>; // JOELwindows7: okeh, player icons array for later, idk.
 	public var camHUD:FlxCamera;
+	private var camWatermark:FlxCamera; // JOELwindows7: Special private camera for anti-without-credit! intentionally minimal & subtle to make people did not notice first.
 	public var camSustains:FlxCamera;
 	public var camNotes:FlxCamera;
 	public var camGame:FlxCamera; // JOELwindows7: (was private) dude whyn't work anymore after 1.7
@@ -790,6 +791,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		// camGame.viewMarginLeft = 3000; // JOELwindows7: don't know will this work?
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
+		camWatermark = new FlxCamera(); // JOELwindows7: anti-without-credit
+		camWatermark.bgColor.alpha = 0; // JOELwindows7: anti-without-credit yey
 		camSustains = new FlxCamera();
 		camSustains.height = 1300; // JOELwindows7: BOLO sets cam sustains height so high!
 		camSustains.bgColor.alpha = 0;
@@ -810,6 +813,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		FlxG.cameras.add(camSustains); // Long Notes camera
 		FlxG.cameras.add(camNotes); // Single Notes camera
 		FlxG.cameras.add(mainCam); // Main Camera
+		FlxG.cameras.add(camWatermark); // Watermark Camera
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>(); // JOELwindows7: okey why ShadowMario or whoever
 		grpNoteHitlineParticles = new FlxTypedGroup<FlxUISprite>(); // JOELwindows7: okey here note hitlines. inspired from that notesplash & viking timpani game called 'Ragnarock'. Steam.
 		// in the blame init that notesplash group here? Psyched
@@ -1959,7 +1963,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		pauseButton.cameras = [camHUD]; // JOELwindows7: stick the pause button to camera
 		// touchscreenButtons.cameras = [camHUD]; //JOELwindows7: stick the touchscreen buttons to camera
 		kadeEngineWatermark.cameras = [camHUD];
-		reuploadWatermark.cameras = [camHUD]; // JOELwindows7: stick the reupload watermark to camera
+		reuploadWatermark.cameras = [camWatermark]; // JOELwindows7: stick the reupload watermark to camera
 		lyricers.cameras = [camHUD]; // JOELwindows7: stick Kpop Lyric to the camera
 		// creditRollout.cameras = [camHUD]; //JOELwindows7: da credit must be stuck to the HUD field
 		creditRollout.textTitle.cameras = [camHUD]; // JOELwindows7: pls whynt work wtf

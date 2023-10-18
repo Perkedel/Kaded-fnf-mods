@@ -19,6 +19,10 @@ $OPTIONS_SELECT_LANGUAGE	Language 🌐
 $OPTIONS_SELECT_LANGUAGE_DESCRIPTION	Select your language
 $OPTIONS_DOOM_MELT	Melting Screen Transition
 $OPTIONS_DOOM_MELT_DESCRIPTION	<RE>[$PIECE_IS_BETA] Whether to use screen melting effect when switching state
+$OPTIONS_KADE_MUSIC	Select Main Menu Music
+$OPTIONS_KADE_MUSIC_DESCRIPTION	Choose which main menu music to play next time triggered
+$OPTIONS_KADE_MUSIC_OPT_0	Default
+$OPTIONS_KADE_MUSIC_OPT_1	Kade Engine
 $GAMEPLAY	Gameplay
 $GAMEPLAY_BLINK_TEXT_BOTPLAY	BOTPLAY
 $GAMEPLAY_BLINK_TEXT_REPLAY	REPLAY

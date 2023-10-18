@@ -4152,6 +4152,41 @@ class DoomMeltOption extends Option
 	}
 }
 
+// JOELwindows7: Kade Music option
+class KadeMusicOption extends Option
+{
+	public function new(desc:String = "Kade Engine main menu music")
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.kadeMusic = !FlxG.save.data.kadeMusic;
+		display = updateDisplay();
+		// OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return '${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC")} < ${OptionsMenu.getTextOf('$$OPTIONS_KADE_MUSIC_OPT_ + ${FlxG.save.data.kadeMusic}')} >';
+	}
+}
+
 // JOELwindows7: Lyrics Position
 class KpopLyricsPositionOption extends Option
 {

@@ -732,6 +732,23 @@ class CoreState extends FlxUIState implements ICoreStating
 		}
 	}
 
+	// JOELwindows7: Open URLs, yoink from MusicBeatState
+	public function fancyOpenURL(schmancy:String)
+	{
+		// JOELwindows7: Ahem, turns out `FlxG.openURL` already `xdg-open` on itself. System open URL thingy! open File yeah.
+		#if linux
+		// Sys.command('/usr/bin/xdg-open', [schmancy, "&"]);
+		Sys.command('/usr/bin/xdg-open', [schmancy]); // this also got the same issue. how about you forget the `&` (put as bg process)?
+
+		/**
+			xdg-open: unexpected argument '&'
+			Try 'xdg-open --help' for more information.
+		**/
+		#else
+		FlxG.openURL(schmancy);
+		#end
+	}
+
 	// JOELwindows7: Controls!
 	function manageMouse():Void
 	{
@@ -1460,6 +1477,23 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 			throw('WERROR ${e}:${e.message}');
 			return null;
 		}
+	}
+
+	// JOELwindows7: Open URLs, yoink from MusicBeatState
+	public function fancyOpenURL(schmancy:String)
+	{
+		// JOELwindows7: Ahem, turns out `FlxG.openURL` already `xdg-open` on itself. System open URL thingy! open File yeah.
+		#if linux
+		// Sys.command('/usr/bin/xdg-open', [schmancy, "&"]);
+		Sys.command('/usr/bin/xdg-open', [schmancy]); // this also got the same issue. how about you forget the `&` (put as bg process)?
+
+		/**
+			xdg-open: unexpected argument '&'
+			Try 'xdg-open --help' for more information.
+		**/
+		#else
+		FlxG.openURL(schmancy);
+		#end
 	}
 
 	// JOELwindows7: Controls!

@@ -6,6 +6,7 @@
 	-->
 	
 	<file id="ui" value="ui.tsv"/>
+	<file id="subtitle" value="subtitle.tsv"/>
 	<file id="data" value="more_data.tsv"/>
 	
 	<file id="fonts" value="fonts.xml"/>
@@ -25,7 +26,7 @@
 	
 	<!--American English-->
 	<locale id="en-US" is_default="true" sort="0">	
-		<contributors value="Lars Doucet, Level Up Labs"/>
+		<contributors value="Lars Doucet, Level Up Labs, Joel Robert Justiawan, Perkedel Technologies"/>
 		<ui language="Language" region="Region" accept="Okay" />
 		<label id="en-US,en-GB,en-CA" language="English" region="United States"/>
 		<label id="nb-NO" language="Engelsk" region="U.S.A."/>
@@ -50,7 +51,7 @@
 
 	<!-- JOELwindows7: Bahasa Indonesia -->
 	<locale id="id-ID" sort="3">	
-		<contributors value="JOELwindows7"/>
+		<contributors value="Joel Robert Justiawan, Perkedel Technologies"/>
 		<ui language="Bahasa" region="Daerah" accept="Oke" />
 		<label id="en-US,en-GB,en-CA" language="Indonesia" region="Indonesia"/>
 		<label id="nb-NO" language="Engelsk" region="U.S.A."/>
@@ -95,14 +96,14 @@
 		<!--This means that a fan or other volunteer submitted this to us-->
 		<text id="en-US,en-GB,en-CA,yo-DA" title="VOLUNTEER" body="This is a volunteer fan translation.$N$NContributors:"/>
 		<text id="nb-NO" title="FRIVILLIG" body="Dette er en frivillig oversettelse.$N$NBidragsytere:"/>
-		<text id="id-ID" title="SUKARELA" body="Terjemahan ini merupakan terjemahan sukarela penggemar.$N$NBidragsytere:"/>
+		<text id="id-ID" title="SUKARELA" body="Terjemahan ini merupakan terjemahan sukarela penggemar.$N$NKontributor:"/>
 	</note>
 	
 	<note id="official">
 		<!--This means that we solicited and paid the translator for an official translation-->
 		<text id="en-US,en-GB,en-CA,yo-DA" title="OFFICIAL" body="This is an official (paid) translation.$N$NContributors:"/>
 		<text id="nb-US" title="OFFISIELL" body="Dette er en offisiell (betalt) oversettelse.$N$NBidragsytere:"/>
-		<text id="id-ID" title="RESMI" body="Terjemahan ini merupakan terjemahan resmi (disponsori).$N$NBidragsytere:"/>
+		<text id="id-ID" title="RESMI" body="Terjemahan ini merupakan terjemahan resmi (disponsori).$N$NKontributor:"/>
 	</note>
 	
 </data>
