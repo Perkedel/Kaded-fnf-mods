@@ -16,6 +16,7 @@ class MenuItem extends FlxUIGroup // FlxSpriteGroup
 {
 	public var targetY:Float = 0;
 	public var week:FlxUISprite;
+	public var uniqueName:String = "anWeek"; // JOELwindows7: here unique identifier.
 	public var flashingInt:Int = 0;
 	public var flashingColor:FlxColor = 0xFF33ffff; // JOELwindows7: Make it flash with the color of the week, idk whatever it takes!
 

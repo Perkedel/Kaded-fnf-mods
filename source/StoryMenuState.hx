@@ -278,14 +278,15 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
-		if (FlxG.sound.music != null)
-		{
-			if (!FlxG.sound.music.playing)
-			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				Conductor.changeBPM(102);
-			}
-		}
+		// if (FlxG.sound.music != null)
+		// {
+		// 	if (!FlxG.sound.music.playing)
+		// 	{
+		// 		FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		// 		Conductor.changeBPM(102);
+		// 	}
+		// }
+		CoolUtil.playMainMenuSong(0); // JOELwindows7: NEW PLAY THE MENU!!!
 
 		persistentUpdate = persistentDraw = true;
 
@@ -341,6 +342,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			weekThing.targetY = i;
 			weekThing.ID = i; // JOELwindows7: add ID to compare with curSelected week
 			weekThing.flashingColor = FlxColor.fromString(weekColor[i]);
+			weekThing.uniqueName = weekIds[i];
 			grpWeekText.add(weekThing);
 
 			weekThing.screenCenter(X);

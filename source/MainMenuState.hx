@@ -438,27 +438,9 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		// // now color this one
-		// colorTweens[huh] = FlxTween.color(menuItems.members[huh], 0.5, menuItems.members[huh].color, colorShit[huh], {
-		// 	onComplete: function(twn:FlxTween)
-		// 	{
-		// 		colorTweens[huh] = null;
-		// 	}
-		// });
+		// PAIN IS TEMPORARY, GLORY IS FOREVER
 
-		// // and whitens the unselected.
-		// menuItems.forEach(function(spr:FlxUISprite){
-		// 	if(spr.ID != huh){
-		// 		colorTweens[spr.ID] = FlxTween.color(spr, 0.5, spr.color, colorShit[huh], {
-		// 			onComplete: function(twn:FlxTween)
-		// 			{
-		// 				colorTweens[huh] = null;
-		// 			}
-		// 		});
-		// 	}
-		// });
-
-		// wait, could've done this instead.
+		// wait, could've done this instead. Just query all menu & color depending if this is the selected one.
 		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			// var selectColor:FlxColor;
