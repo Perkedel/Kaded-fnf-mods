@@ -1,0 +1,108 @@
+version: '{build}'
+image: Ubuntu
+environment:
+  global:
+    HAXELIB_ROOT: /home/appveyor/haxelib
+    HAXE_INSTALLDIR: /home/appveyor/haxe
+    BUTLER_DIR: /home/appveyor/
+
+install:
+  - cd /home/appveyor
+  - sudo add-apt-repository ppa:haxe/releases -y
+  - sudo apt update
+  - sudo apt install build-essential libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev -y
+  - sudo apt install neko tar gcc-7 g++-7 gcc-7-multilib g++-7-multilib -y
+  - sudo apt install neko tar gcc g++ gcc-multilib g++-multilib -y
+  - sudo apt install neko tar gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
+  - wget https://github.com/HaxeFoundation/haxe/releases/download/4.2.4/haxe-4.2.4-linux64.tar.gz
+  - mkdir $HAXE_INSTALLDIR
+  - tar -xf haxe-4.2.4-linux64.tar.gz -C $HAXE_INSTALLDIR
+  - export PATH=$PATH:$HAXE_INSTALLDIR/haxe_20211022152000_ab0c054
+  - mkdir $HAXELIB_ROOT && haxelib setup $HAXELIB_ROOT
+  - haxelib install hxp
+  - haxelib install svg
+  - haxelib install lime
+  - haxelib install lime-tools
+  - haxelib install openfl
+  - haxelib install flixel
+  - haxelib run lime setup flixel -y
+  - haxelib run lime setup -y
+  - haxelib install flixel-tools
+  - haxelib install flixel-addons
+  - haxelib install flixel-ui
+  - haxelib install hscript
+  - haxelib git faxe https://github.com/uhrobots/faxe
+  - haxelib git polymod https://github.com/larsiusprime/polymod.git
+  - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+  # - haxelib git extension-webm https://github.com/KadeDev/extension-webm
+  - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  - haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
+  - haxelib run lime rebuild extension-webm linux
+  # - haxelib install linc_luajit
+  # - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  # - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git
+  - haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+  - haxelib install actuate
+  # JOELwindows7: Android permissioner
+  - haxelib install android6permissions
+  # - haxelib install androidhx
+  - haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
+  - haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
+  - haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
+  - haxelib install uniontypes #BulbyVR used this
+  - haxelib install json2object #BulbyVR used this to convert JSON to object
+  # - haxelib git haxevlc https://github.com/datee/HaxeVLC.git # for VLC.
+  - haxelib install extension-webview #luckydog7 for Android
+  - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
+  - haxelib install haxe-files
+  - haxelib install hxcpp-debug-server
+  - haxelib install tink_core
+  - haxelib install grig.audio
+  - haxelib install grig.midi
+  # JOELwindows7: the GameJolt API
+  - haxelib git tentools https://github.com/TentaRJ/tentools.git
+  - haxelib git systools https://github.com/haya3218/systools
+  - haxelib run lime rebuild systools linux
+  - haxelib list
+  # JOELwindows7: okay now the butler
+  - wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+  - unzip butler.zip
+  - chmod +x ./butler
+  # see where we are, what contents are now, and then go into the project.
+  - pwd
+  - ls
+  - cd /home/appveyor/projects/kaded-fnf-mods-linux
+  # download GJKeys empty
+  - wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+  - mv ./GJkeys.hx /home/appveyor/projects/kaded-fnf-mods-linux/source/GJKeys.hx
+
+build_script:
+  - cd /home/appveyor/projects/kaded-fnf-mods-linux
+  # - haxelib run lime rebuild discord_rpc linux
+  # - haxelib run lime rebuild extension-webm linux
+  # - haxelib run lime rebuild linc_luajit linux # JOELwindows7: because it seems it only had windows?
+  - haxelib run lime build linux
+  # - haxelib run lime build linux -32 -D32bit
+
+after_build:
+  - cd ~
+  - pwd
+  - ls
+  - tar -cvf last-funkin-moments.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin .
+  # - tar -cvf last-funkin-moments-32bit.tar -C /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin .
+  - ls
+  # JOELwindows7: upload to itch
+  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin joelwindows7/last-funkin-moments:linux-appveyor; fi
+  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor; fi
+  # wtf appveyor did not expect git
+  - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/release/linux/bin joelwindows7/last-funkin-moments:linux-appveyor
+  # - /home/appveyor/butler push /home/appveyor/projects/kaded-fnf-mods-linux/export/32bit/linux/bin joelwindows7/last-funkin-moments:linux32-appveyor
+
+artifacts:
+- path: last-funkin-moments.tar
+  name: Last Funkin Moments for Linux
+# - path: last-funkin-moments-32bit.tar
+#   name: Last Funkin Moments for Linux 32Bit
+- path: export/release/linux/bin
+  name: last-funkin-moments
+  type: zip

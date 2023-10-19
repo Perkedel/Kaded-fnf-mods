@@ -1,0 +1,102 @@
+# Taken from https://github.com/andyli/HaxeCI/blob/master/appveyor.yml
+version: "{build}"
+
+environment:
+  global:
+    HAXELIB_ROOT: C:\projects\haxelib
+
+install:
+  # http://help.appveyor.com/discussions/problems/5616-not-able-to-build-due-to-problem-in-chocolateyinstallps1
+  - ps: Set-Service wuauserv -StartupType Manual
+  # Install all Visual C++ versions package, uhh, we got vcredist140 here.
+  # - cinst vcredist-all -y
+  - choco install vcredist140
+  # Install the neko chocolatey package (https://chocolatey.org/packages/neko)
+  - cinst neko -y
+  # Install the haxe chocolatey package (https://chocolatey.org/packages/haxe)
+  - cinst haxe -y
+  # JOELwindows7: Install the wget and stuffs
+  - cinst wget -y # downloader
+  - cinst butler -y # upload to itch io
+  # - cinst zip -y # zip it
+  # - cinst unzip -y # unzip it
+  - RefreshEnv
+  # Setup haxelib
+  - mkdir "%HAXELIB_ROOT%"
+  - haxelib setup "%HAXELIB_ROOT%"
+  # Install project dependencies
+  - haxelib install hxp
+  - haxelib install format
+  - haxelib install svg
+  - haxelib install lime
+  - haxelib install lime-tools
+  - RefreshEnv
+  - haxelib install openfl
+  - haxelib install flixel
+  - haxelib run lime setup flixel -y
+  - haxelib run lime setup -y
+  - haxelib install flixel-tools
+  # haxelib run flixel-tools setup -y # Can't do this since it asks [y/n] even with -y argument! Stupid
+  - haxelib install flixel-addons
+  - haxelib install flixel-ui
+  - haxelib install hscript
+  - haxelib install newgrounds
+  - haxelib install flixel-addons
+  - haxelib git faxe https://github.com/uhrobots/faxe
+  - haxelib git polymod https://github.com/larsiusprime/polymod.git
+  - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+  # - haxelib git extension-webm https://github.com/KadeDev/extension-webm
+  - haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+  - haxelib run lime rebuild extension-webm windows
+  - haxelib run lime rebuild extension-webm html5
+  # - haxelib install linc_luajit
+  # - haxelib git linc_luajit https://github.com/JOELwindows7/linc_luajit.git # has Linux library finally
+  # - haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit.git
+  - haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+  - haxelib install actuate 
+  #- haxelib run lime rebuild extension-webm windows
+  #why here's dublicate lmao
+  # JOELwindows7: Android permissioner
+  - haxelib install android6permissions
+  # - haxelib install androidhx
+  - haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
+  - haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
+  - haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
+  - haxelib install uniontypes #BulbyVR used this
+  - haxelib install json2object #BulbyVR used this to convert JSON to object
+  # - haxelib git haxevlc https://github.com/datee/HaxeVLC.git # for VLC.
+  - haxelib install extension-webview #luckydog7 for Android
+  - haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
+  - haxelib git xinput https://github.com/furusystems/openfl-xinput.git
+  - haxelib install haxe-files
+  - haxelib install hxcpp-debug-server
+  - haxelib install tink_core
+  - haxelib install grig.audio
+  - haxelib install grig.midi
+  # JOELwindows7: the GameJolt API
+  - haxelib git tentools https://github.com/TentaRJ/tentools.git
+  - haxelib git systools https://github.com/haya3218/systools
+  - haxelib run lime rebuild systools windows
+  - haxelib list
+  - dir
+ # download placeholding keys
+  - wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+  - mv .\GJKeys.hx C:\projects\kaded-fnf-mods-winHTML5\source\GJKeys.hx
+
+# No tests idk lol
+build_script:
+  - dir
+  - haxelib run lime rebuild extension-webm windows
+  - haxelib run lime build html5
+
+after_build:
+  - dir
+  # JOELwindows7: upload to itch
+  # - if [[ $(git log -1 --oneline) == *"[RELEASE]"* ]]; then butler push C:\projects\export\kaded-fnf-mods-winHTML5\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor; fi
+  # wtf, appveyor did not expect Git
+  - butler push C:\projects\kaded-fnf-mods-winHTML5\export\release\html5\bin joelwindows7/last-funkin-moments:html5-appveyor
+
+artifacts:
+  - path: export/release/html5/bin
+    name: last-funkin-moments-html5
+    type: zip
