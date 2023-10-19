@@ -15,11 +15,13 @@ $SPLASH_SLOGAN	A mod of Friday Night Funkin'
 $SPLASH_BIOS_BUTTON	Press ESCAPE / Gamepad SELECT to go to BIOS setting
 $SPLASH_BIOS_SETTING	BIOS Setting
 $SPLASH_WELCOME	Welcome to Last Funkin Moments!
+$INTRO_TEXT_0	this intro
+$INTRO_TEXT_1	in english
 $OPTIONS_SELECT_LANGUAGE	Language 🌐
 $OPTIONS_SELECT_LANGUAGE_DESCRIPTION	Select your language
 $OPTIONS_DOOM_MELT	Melting Screen Transition
 $OPTIONS_DOOM_MELT_DESCRIPTION	<RE>[$PIECE_IS_BETA] Whether to use screen melting effect when switching state
-$OPTIONS_KADE_MUSIC	Select Main Menu Music
+$OPTIONS_KADE_MUSIC	Main Menu Music
 $OPTIONS_KADE_MUSIC_DESCRIPTION	Choose which main menu music to play next time triggered
 $OPTIONS_KADE_MUSIC_OPT_0	Default
 $OPTIONS_KADE_MUSIC_OPT_1	Kade Engine

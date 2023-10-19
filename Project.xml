@@ -173,7 +173,8 @@
 	<haxedef name="FEATURE_AWAY_3D"/>
 
 	<!-- FORCE_INCLUDE_DLC to include separate_mods anyway which previously included only in debug build -->
-	<haxedef name="FORCE_INCLUDE_DLC" if="debug"/>
+	<!-- <haxedef name="FORCE_INCLUDE_DLC" if="debug"/> -->
+	<haxedef name="FORCE_INCLUDE_DLC" unless="final"/>
 	
 	<!-- Experimentals -->
 	<!-- Kade + YinYang48 Hex Weekend Kade Engine features. BUG on FlxDrawQuadItem on function render: 

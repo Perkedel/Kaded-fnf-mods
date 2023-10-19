@@ -483,8 +483,39 @@ class KadeEngineData
 		if (FlxG.save.data.kpopLyricsPosition == null)
 			FlxG.save.data.kpopLyricsPosition = 0;
 
+		// JOELwindows7: Select your music
 		if (FlxG.save.data.kadeMusic == null)
+		{
 			FlxG.save.data.kadeMusic = 0;
+
+			// JOELwindows7: Oh s888! I made mistake
+			if (FlxG.save.data.kadeMusic == false)
+				FlxG.save.data.kadeMusic = 0;
+
+			if (FlxG.save.data.kadeMusic == true)
+				FlxG.save.data.kadeMusic = 1;
+
+			if (FlxG.save.data.kadeMusic > Perkedel.MAIN_MENU_MUSICS.length -1)
+				FlxG.save.data.kadeMusic = Perkedel.MAIN_MENU_MUSICS.length - 1;
+
+			if (FlxG.save.data.kadeMusic < 0)
+				FlxG.save.data.kadeMusic = 0;
+		}
+		else
+		{
+			// JOELwindows7: Oh s888! I made mistake
+			if (FlxG.save.data.kadeMusic == false)
+				FlxG.save.data.kadeMusic = 0;
+
+			if (FlxG.save.data.kadeMusic == true)
+				FlxG.save.data.kadeMusic = 1;
+
+			if (FlxG.save.data.kadeMusic > Perkedel.MAIN_MENU_MUSICS.length - 1)
+				FlxG.save.data.kadeMusic = Perkedel.MAIN_MENU_MUSICS.length - 1;
+
+			if (FlxG.save.data.kadeMusic < 0)
+				FlxG.save.data.kadeMusic = 0;
+		}
 
 		// JOELwindows7: Select Language ID
 		if (FlxG.save.data.languageID == null)

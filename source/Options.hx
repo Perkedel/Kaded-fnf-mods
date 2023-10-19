@@ -1,5 +1,6 @@
 package;
 
+import firetongue.FireTongue;
 import ui.states.transition.PsychTransition;
 import utils.Initializations;
 import ui.states.modding.ModMenuState;
@@ -4163,19 +4164,29 @@ class KadeMusicOption extends Option
 
 	public override function left():Bool
 	{
-		press(); // same as press
-		return false;
+		FlxG.save.data.kadeMusic--;
+		if (FlxG.save.data.kadeMusic < 0)
+			FlxG.save.data.kadeMusic = Perkedel.MAIN_MENU_MUSICS.length - 1;
+		return press(); // same as press
+		// return false;
 	}
 
 	public override function right():Bool
 	{
-		press(); // same as press
-		return false;
+		FlxG.save.data.kadeMusic++;
+		if (FlxG.save.data.kadeMusic > Perkedel.MAIN_MENU_MUSICS.length - 1)
+			FlxG.save.data.kadeMusic = 0;
+		return press(); // same as press
+		// return false;
 	}
 
 	public override function press():Bool
 	{
-		FlxG.save.data.kadeMusic = !FlxG.save.data.kadeMusic;
+		if (!(OptionsMenu.isInPause || PlayState.inDaPlay))
+		{
+			CoolUtil.playMainMenuSong(1, true);
+		}
+		// FlxG.save.data.kadeMusic = !FlxG.save.data.kadeMusic;
 		display = updateDisplay();
 		// OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
 		return true;
@@ -4183,7 +4194,7 @@ class KadeMusicOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return '${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC")} < ${OptionsMenu.getTextOf('$$OPTIONS_KADE_MUSIC_OPT_${FlxG.save.data.kadeMusic}')} >';
+		return '${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC")} < ${OptionsMenu.getTextOf('$$OPTIONS_KADE_MUSIC_OPT_${Std.int(FlxG.save.data.kadeMusic)}')} >';
 		// return '${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC")} < ${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC_OPT_" + Std.string(FlxG.save.data.kadeMusic))} >';
 	}
 }
@@ -4285,8 +4296,9 @@ class LanguageSelectorOption extends Option
 	{
 		Initializations.refreshLanguage();
 
-		return
-			'${OptionsMenu.getTextOf("$OPTIONS_SELECT_LANGUAGE")} < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][1]} >';
+		return // '${OptionsMenu.getTextOf("$OPTIONS_SELECT_LANGUAGE")} < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][1]} >';
+			// '${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.LanguageNative)} (${CoolUtil.getIndexString(IndexString.Language)}) >';
+			'${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.Language)} >';
 	}
 }
 

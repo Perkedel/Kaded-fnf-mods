@@ -251,5 +251,7 @@ class Perkedel
 		],
 	];
 
+	public static final MAIN_MENU_MUSICS:Array<Array<Dynamic>> = [['freakyMenu', 102], ['ke_freakyMenu', 102],];
+
 	public static final LANGUAGES_AVAILABLE:Array<Array<String>> = [['en-US', 'English (US)'], ['id-ID', 'Bahasa Indonesia'],];
 }

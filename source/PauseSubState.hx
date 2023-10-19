@@ -607,6 +607,21 @@ class PauseSubState extends MusicBeatSubstate
 				}
 			});
 		}
+
+		// JOELwindows7: because as out of focus window, the pauser failed..
+		if (PlayState.inDaPlay)
+		{
+			if (PlayState.instance != null)
+			{
+				// if(PlayState.instance.vocals != null)
+				// 	if(PlayState.instance.vocals.playing)
+				// 		PlayState.instance.vocals.pause();
+
+				// This guy especially.
+				if (PlayState.instance.paused && FlxG.sound.music.playing)
+					FlxG.sound.music.pause();
+			}
+		}
 	}
 
 	override function destroy()

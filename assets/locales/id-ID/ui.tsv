@@ -15,11 +15,13 @@ $SPLASH_SLOGAN	Sebuah modifikasi Friday Night Funkin'
 $SPLASH_BIOS_BUTTON	Tekan ESCAPE / SELECT di stik 'tuk pergi ke setelan BIOS
 $SPLASH_BIOS_SETTING	Pengaturan BIOS
 $SPLASH_WELCOME	Selamat datang di Last Funkin Moments!
+$INTRO_TEXT_0	intro ini
+$INTRO_TEXT_1	dalam b indo
 $OPTIONS_SELECT_LANGUAGE	Bahasa 🌐
 $OPTIONS_SELECT_LANGUAGE_DESCRIPTION	Pilih Bahasa Anda
 $OPTIONS_DOOM_MELT	Melting Screen Transition
 $OPTIONS_DOOM_MELT_DESCRIPTION	<RE>[$PIECE_IS_BETA] Gunakan efek layar meleleh ala Doom saat berganti State
-$OPTIONS_KADE_MUSIC	Pilih musik menu utama
+$OPTIONS_KADE_MUSIC	Musik Menu Utama
 $OPTIONS_KADE_MUSIC_DESCRIPTION	Pilih musik mana yang akan dimainkan saat akan dimainkan lagi
 $OPTIONS_KADE_MUSIC_OPT_0	Default
 $OPTIONS_KADE_MUSIC_OPT_1	Kade Engine

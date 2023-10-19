@@ -770,6 +770,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 						diffsThatExist.push(cDiff);
 						CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
 						CoolUtil.difficultyArray.push(cDiff);
+						CoolUtil.difficultyArrayWord.push(cDiff); // JOELwindows7: word too!!!!!
 					}
 				}
 			}
@@ -912,6 +913,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 					diffsThatExist.push(cDiff);
 					CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
 					CoolUtil.difficultyArray.push(cDiff);
+					CoolUtil.difficultyArrayWord.push(cDiff); // JOELwindows7: words word words
 				}
 			}
 		}
@@ -1032,6 +1034,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 						diffsThatExist.push(cDiff);
 						CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
 						CoolUtil.difficultyArray.push(cDiff);
+						CoolUtil.difficultyArrayWord.push(cDiff); // JOELwindows7: words yeyeyeyey
 					}
 				}
 			}
@@ -2510,7 +2513,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		if (songData.get(songs[curSelected].songName)[curDifficulty] != null)
 		{
 			diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-			diffText.text = 'DIFFICULTY: < ' + CoolUtil.difficultyFromInt(curDifficulty).toUpperCase() + ' >'; // also let's add this too.
+			// diffText.text = 'DIFFICULTY: < ' + CoolUtil.difficultyFromInt(curDifficulty).toUpperCase() + ' >'; // also let's add this too.
+			diffText.text = 'DIFFICULTY: < ' + CoolUtil.difficultyWordFromInt(curDifficulty).toUpperCase() + ' >'; // also let's add this too. using this
 			diffCalcText.alpha = 1;
 			diffText.alpha = 1;
 		}

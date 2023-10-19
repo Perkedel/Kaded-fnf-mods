@@ -469,6 +469,8 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 		// JOELwindows7: stuffs
 		AchievementUnlocked.whichIs("story_mode");
+
+		CoolUtil.playMainMenuSong(1); // JOELwindows7: do it again for good measure
 	}
 
 	override function update(elapsed:Float)

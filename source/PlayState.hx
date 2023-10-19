@@ -1799,8 +1799,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			+ 50, 0, // SONG.songName
 			SONG.songId // JOELwindows7: damn, you should've used Song ID instead. the top bar already covered the name for us!
 			+ (FlxMath.roundDecimal(songMultiplier, 2) != 1.00 ? " (" + FlxMath.roundDecimal(songMultiplier, 2) + "x)" : "")
-			+ " - "
-			+ CoolUtil.difficultyFromInt(storyDifficulty) // + (Main.watermarks ? " | KE " + MainMenuState.kadeEngineVer : "")
+			+ " - " // + CoolUtil.difficultyFromInt(storyDifficulty) // + (Main.watermarks ? " | KE " + MainMenuState.kadeEngineVer : "")
+			+
+			CoolUtil.difficultyWordFromInt(storyDifficulty) // + (Main.watermarks ? " | KE " + MainMenuState.kadeEngineVer : "") // JOELwindows7: And I there worded it.
 				// + (Main.perkedelMark ? " | LFM " + MainMenuState.lastFunkinMomentVer : "")
 			, 16);
 		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -2620,8 +2621,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						GameplayCustomizeState.freeplayStage = 'stage';
 						GameplayCustomizeState.freeplaySong = 'bopeebo';
 						GameplayCustomizeState.freeplayWeek = 1;
-						FlxG.sound.playMusic(Paths.music('freakyMenu'));
-						Conductor.changeBPM(102);
+						// FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						// Conductor.changeBPM(102);
 						PsychTransition.nextCamera = mainCam;
 						// FlxG.switchState(new StoryMenuState());
 						// FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
@@ -9220,8 +9221,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				{
 					// lyricers.text = lyricing[curSection][0] + "\n" + lyricing[curSection][1];
 					var filterLyric:Array<String> = [
-						lyricing[Std.int(Math.floor(curBeat / 4))][0] != null ? lyricing[Std.int(Math.floor(curBeat / 4))][0] : '',
-						lyricing[Std.int(Math.floor(curBeat / 4))][1] != null ? lyricing[Std.int(Math.floor(curBeat / 4))][1] : '',
+						CoolUtil.getText(lyricing[Std.int(Math.floor(curBeat / 4))][0] != null ? lyricing[Std.int(Math.floor(curBeat / 4))][0] : '',
+							'subtitle'),
+						CoolUtil.getText(lyricing[Std.int(Math.floor(curBeat / 4))][1] != null ? lyricing[Std.int(Math.floor(curBeat / 4))][1] : '',
+							'subtitle'),
 					];
 					// lyricers.text = lyricing[Std.int(Math.floor(curBeat / 4))][0] + "\n" + lyricing[Std.int(Math.floor(curBeat / 4))][1];
 					lyricers.text = '${filterLyric[0]}\n${filterLyric[1]}';
@@ -11253,8 +11256,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						GameplayCustomizeState.freeplayStage = 'stage';
 						GameplayCustomizeState.freeplaySong = 'bopeebo';
 						GameplayCustomizeState.freeplayWeek = 1;
-						FlxG.sound.playMusic(Paths.music('freakyMenu'));
-						Conductor.changeBPM(102);
+						// FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						// Conductor.changeBPM(102);
 						// FlxG.switchState(new StoryMenuState());
 						// FlxG.switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());
 						switchState(SONG.hasEpilogueVideo ? VideoCutscener.getThe(SONG.epilogueVideoPath, new StoryMenuState()) : new StoryMenuState());

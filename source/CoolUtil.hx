@@ -1,5 +1,6 @@
 package;
 
+import firetongue.FireTongue;
 import openfl.display.BitmapData;
 import flixel.FlxSprite;
 import lime.utils.Assets;
@@ -7,12 +8,14 @@ import lime.system.System;
 import tjson.TJSON;
 import openfl.utils.Assets as OpenFlAssets;
 import Song.SongData;
+import firetongue.Replace;
 
 using StringTools;
 
 class CoolUtil
 {
 	public static var difficultyArray:Array<String> = ['Easy', "Normal", "Hard"];
+	public static var difficultyArrayWord:Array<String> = ['Easy', "Normal", "Hard"];
 
 	public static var suffixDiffsArray:Array<String> = ['-easy', "", "-hard"]; // JOELwindows7: BOLO
 
@@ -21,14 +24,34 @@ class CoolUtil
 	public static function difficultyFromInt(difficulty:Int):String
 	{
 		// JOELwindows7: But first, refresh based on current language!
-		difficultyArray = [
+		// difficultyArray = [
+		// 	getText("$GAMEPLAY_DIFFICULTY_EASY"), // Easy
+		// 	getText("$GAMEPLAY_DIFFICULTY_MEDIUM"), // Normal
+		// 	getText("$GAMEPLAY_DIFFICULTY_HARD"), // Hard
+		// 	getText("$GAMEPLAY_DIFFICULTY_INSANE"), // Pro
+		// 	getText("$GAMEPLAY_DIFFICULTY_IMPOSSIBLE"), // Errected
+		// ];
+		difficultyArrayWord = [
 			getText("$GAMEPLAY_DIFFICULTY_EASY"), // Easy
 			getText("$GAMEPLAY_DIFFICULTY_MEDIUM"), // Normal
 			getText("$GAMEPLAY_DIFFICULTY_HARD"), // Hard
-			getText("$GAMEPLAY_DIFFICULTY_INSANE"), // Pro
-			getText("$GAMEPLAY_DIFFICULTY_IMPOSSIBLE"), // Errected
+			// getText("$GAMEPLAY_DIFFICULTY_INSANE"), // Pro
+			// getText("$GAMEPLAY_DIFFICULTY_IMPOSSIBLE"), // Errected
 		];
 		return difficultyArray[difficulty];
+	}
+
+	public static function difficultyWordFromInt(difficulty:Int):String
+	{
+		// JOELwindows7: But first, refresh based on current language!
+		difficultyArrayWord = [
+			getText("$GAMEPLAY_DIFFICULTY_EASY"), // Easy
+			getText("$GAMEPLAY_DIFFICULTY_MEDIUM"), // Normal
+			getText("$GAMEPLAY_DIFFICULTY_HARD"), // Hard
+			// getText("$GAMEPLAY_DIFFICULTY_INSANE"), // Pro
+			// getText("$GAMEPLAY_DIFFICULTY_IMPOSSIBLE"), // Errected
+		];
+		return difficultyArrayWord[difficulty];
 	}
 
 	public static function coolTextFile(path:String):Array<String>
@@ -120,10 +143,72 @@ class CoolUtil
 		return Flag;
 	}
 
+	// JOElwindows7: FireTongue replace by flag
+	public static function replaceText(string:String, flags:Array<String>, values:Array<String>):String
+	{
+		return Replace.flags(string, flags, values);
+	}
+
 	// JOELwindows7: Alias FireTongue
 	public static function getText(Flag:String, Context:String = "ui", Safe:Bool = true)
 	{
 		return coolFireTongueText(Flag, Context, Safe);
+	}
+
+	// JOELwindows7: firetongue index strings
+	public static function getIndexString(indexString:IndexString, targetLocale:String = "", currLocale:String = ""):String
+	{
+		try
+		{
+			if (Main.tongue != null)
+				return Main.tongue.getIndexString(indexString, targetLocale, currLocale);
+		}
+		catch (e)
+		{
+		}
+		return indexString;
+	}
+
+	// JOELwindows7: firetongue get note title
+	public static function getNoteTitle(locale:String = 'en-US', id:String):String
+	{
+		try
+		{
+			if (Main.tongue != null)
+				return Main.tongue.getNoteTitle(locale, id);
+		}
+		catch (e)
+		{
+		}
+		return "";
+	}
+
+	// JOELwindows7: firetongue get note body
+	public static function getNoteBody(locale:String = 'en-US', id:String):String
+	{
+		try
+		{
+			if (Main.tongue != null)
+				return Main.tongue.getNoteBody(locale, id);
+		}
+		catch (e)
+		{
+		}
+		return "";
+	}
+
+	// JOELwindows7: firetongue index attribute
+	public function getIndexAttribute(targetLocale:String = 'en-US', attribute:String, ?child:String = ""):String
+	{
+		try
+		{
+			if (Main.tongue != null)
+				return Main.tongue.getIndexAttribute(targetLocale, attribute, child);
+		}
+		catch (e)
+		{
+		}
+		return "";
 	}
 
 	public static function numberArray(max:Int, ?min = 0):Array<Int>
@@ -273,31 +358,33 @@ class CoolUtil
 	}
 
 	// JOELwindows7: BOLO's way of selecting & playing main menu song based on watermark situation
-	inline public static function playMainMenuSong(volume:Float = 1)
+	inline public static function playMainMenuSong(volume:Float = 1, forced:Bool = false)
 	{
 		var chooseMusicPath:String;
 		var chooseMusicBpm:Float;
-		switch (FlxG.save.data.kadeMusic)
-		{
-			case 0:
-				chooseMusicPath = "freakyMenu";
-				chooseMusicBpm = 102;
-			case 1:
-				chooseMusicPath = "ke_freakyMenu";
-				chooseMusicBpm = 102;
-			default:
-				chooseMusicPath = "freakyMenu";
-				chooseMusicBpm = 102;
-		}
+		// switch (FlxG.save.data.kadeMusic)
+		// {
+		// 	case 0:
+		// 		chooseMusicPath = "freakyMenu";
+		// 		chooseMusicBpm = 102;
+		// 	case 1:
+		// 		chooseMusicPath = "ke_freakyMenu";
+		// 		chooseMusicBpm = 102;
+		// 	default:
+		// 		chooseMusicPath = "freakyMenu";
+		// 		chooseMusicBpm = 102;
+		// }
+		chooseMusicPath = Std.string(Perkedel.MAIN_MENU_MUSICS[FlxG.save.data.kadeMusic][0]);
+		chooseMusicBpm = Std.parseFloat(Perkedel.MAIN_MENU_MUSICS[FlxG.save.data.kadeMusic][1]);
 		// if (MainMenuState.freakyPlaying)
 		// {
 		if (FlxG.sound.music != null)
 		{
 			// TODO: if there is menu with different BPM, get this handled! maybe use table list of BPM with its event of BPM change idk..
-			if (!FlxG.sound.music.playing)
+			if (!FlxG.sound.music.playing || forced)
 			{
 				// FlxG.sound.playMusic(Paths.music(FlxG.save.data.watermark ? "ke_freakyMenu" : "freakyMenu"));
-				FlxG.sound.playMusic(Paths.music(chooseMusicPath), 0);
+				FlxG.sound.playMusic(Paths.music(chooseMusicPath), volume);
 				// Conductor.changeBPM(102);
 				Conductor.changeBPM(chooseMusicBpm);
 				MainMenuState.freakyPlaying = true;
