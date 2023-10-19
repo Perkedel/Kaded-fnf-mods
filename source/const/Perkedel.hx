@@ -251,7 +251,11 @@ class Perkedel
 		],
 	];
 
-	public static final MAIN_MENU_MUSICS:Array<Array<Dynamic>> = [['freakyMenu', 102], ['ke_freakyMenu', 102],];
+	public static final MAIN_MENU_MUSICS:Array<Array<Dynamic>> = [
+		// path filename of the music
+		['freakyMenu', 102], // Default
+		['ke_freakyMenu', 102], // Kade Engine
+	];
 
 	public static final LANGUAGES_AVAILABLE:Array<Array<String>> = [['en-US', 'English (US)'], ['id-ID', 'Bahasa Indonesia'],];
 }

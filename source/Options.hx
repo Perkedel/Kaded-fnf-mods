@@ -4298,7 +4298,9 @@ class LanguageSelectorOption extends Option
 
 		return // '${OptionsMenu.getTextOf("$OPTIONS_SELECT_LANGUAGE")} < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][1]} >';
 			// '${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.LanguageNative)} (${CoolUtil.getIndexString(IndexString.Language)}) >';
-			'${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.Language)} >';
+			// '${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.Language)} >';
+			'${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.Language)} (${CoolUtil.getIndexString(IndexString.Region)})>';
+		// '${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.LanguageBilingual)}>';
 	}
 }
 
