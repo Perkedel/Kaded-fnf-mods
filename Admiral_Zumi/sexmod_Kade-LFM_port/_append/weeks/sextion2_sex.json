@@ -1,0 +1,30 @@
+{
+	"storyName": "oh god bf from fnf turned into a female women",
+	"hideFreeplay": false,
+	"weekBackground": "",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
+	"weekBefore": "sextion2",
+	"startUnlocked": true,
+	"weekCharacters": [
+		"",
+		"bf",
+		""
+	],
+	"songs": [
+		[
+			"fnfbf",
+			"bf",
+			[
+				186,
+				233,
+				255
+			]
+		]
+	],
+	"hideStoryMode": false,
+	"weekName": "Custom Week"
+}
