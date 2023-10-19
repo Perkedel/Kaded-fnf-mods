@@ -692,6 +692,8 @@ class TitleState extends MusicBeatState
 
 	inline function justMenuGoMain()
 	{
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
 		switchState(new MainMenuState()); // Just pecking go to menu already! JOELwindows7: get here hex switch state yeah
 		clean();
 
@@ -700,6 +702,7 @@ class TitleState extends MusicBeatState
 		MainMenuState.kadeEngineVer += '${MainMenuState.nightly}';
 
 		collapseToasts(); // JOELwindows7: collapse all toasts!
+		});
 	}
 
 	function createCoolText(textArray:Array<String>)

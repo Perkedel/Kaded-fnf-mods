@@ -256,6 +256,8 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		// JOELwindows7: make mouse cursor visible
 		FlxG.mouse.visible = true;
+
+		PlayState.instance.executeModchartState('gameOver', [blueBallCounter]); // JOELwindows7: pls
 	}
 
 	var startVibin:Bool = false;
@@ -274,6 +276,9 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (FlxG.save.data.InstantRespawn || FlxG.save.data.optimize) // JOELwindows7: BOLO also instant respawn if optimize?!
 		{
+			// JOELwindows7: Destroy Modchart before that.
+			PlayState.instance.scronchModcharts();
+
 			// LoadingState.loadAndSwitchState(new PlayState());
 			PlayState.instance.switchState(new PlayState(), true, true, true, true); // JOELwindows7: Hex weekend switchstate pls
 		}
@@ -281,6 +286,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (controls.BACK || haveBacked)
 		{
 			FlxG.sound.music.stop();
+
+			// JOELwindows7: Destroy Modchart before that.
+			PlayState.instance.scronchModcharts();
 
 			if (PlayState.isStoryMode)
 			{
@@ -332,6 +340,8 @@ class GameOverSubstate extends MusicBeatSubstate
 				});
 			}
 
+			PlayState.instance.executeModchartState('gameOverAnimationDone', [blueBallCounter]); // JOELwindows7: pls
+
 			startVibin = true; // JOELwindows7: move this to down, okay. like BOLO did.
 		}
 		else
@@ -376,7 +386,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			bf.playAnim('deathLoop', true);
 		}
-		FlxG.log.add('beat');
+		// FlxG.log.add('beat');
+		Debug.logTrace('dead beat');
 	}
 
 	var isEnding:Bool = false;
@@ -418,10 +429,16 @@ class GameOverSubstate extends MusicBeatSubstate
 					{}
 			}
 
+			// TODO: JOELwindows7: do not kill modchart in GameOVer, only do this when endBullshit.
+			PlayState.instance.executeModchartState('endGameOver', [blueBallCounter]);
+
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{
+					// JOELwindows7: Destroy Modchart before that.
+					PlayState.instance.scronchModcharts();
+
 					// LoadingState.loadAndSwitchState(new PlayState());
 					PlayState.instance.switchState(new PlayState(), true, true, true, true, PlayState.instance); // JOELwindows7: hex switch state lol
 					PlayState.stageTesting = false;

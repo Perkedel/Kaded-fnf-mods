@@ -162,4 +162,20 @@ function colorizeColorablebyKey(note, justOne, toWhichBg)
     }
 }
 
+function gameOver(blueballs)
+{
+    // When gameOver
+}
+
+function gameOverAnimationFinished(blueballs)
+{
+    // when gameOver animation finished
+}
+
+function endGameOver(blueballs)
+{
+    // when press enter to retry
+}
+
+
 trace("finish loading hscript <3 yay cool and good.");

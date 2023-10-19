@@ -342,12 +342,18 @@ class Main extends Sprite
 		// JOELwindows7: YoshiCrafter Windows API pls
 		// WindowsAPI.setWindowToDarkMode();
 
-		// JOELwindows7: sayofthelor's Screenshooters
-		FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
-
 		// JOELwindows7: Flixel Studio
 		#if debug
 		FlxStudio.create();
+		#end
+
+		// JOELwindows7: sayofthelor's Screenshooters
+		FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
+
+		// JOELwindows7: plugins above blocks my debugger!
+		#if FLX_DEBUG
+		game.removeChild(game.debugger);
+		game.addChild(game.debugger);
 		#end
 
 		// JOELwindows7: now build Xbox controllers

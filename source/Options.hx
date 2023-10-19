@@ -4183,7 +4183,8 @@ class KadeMusicOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return '${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC")} < ${OptionsMenu.getTextOf('$$OPTIONS_KADE_MUSIC_OPT_ + ${FlxG.save.data.kadeMusic}')} >';
+		return '${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC")} < ${OptionsMenu.getTextOf('$$OPTIONS_KADE_MUSIC_OPT_${FlxG.save.data.kadeMusic}')} >';
+		// return '${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC")} < ${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC_OPT_" + Std.string(FlxG.save.data.kadeMusic))} >';
 	}
 }
 
@@ -4341,7 +4342,7 @@ class OptimizeOption extends Option
 			description = desc;
 		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
 		// requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
-		OptionsMenu.markRestartSong();
+		// OptionsMenu.markRestartSong();
 		// acceptValues = true;
 	}
 
@@ -4351,6 +4352,7 @@ class OptimizeOption extends Option
 			return false;
 		FlxG.save.data.optimize = !FlxG.save.data.optimize;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong();
 		return true;
 	}
 
@@ -4378,7 +4380,7 @@ class Background extends Option
 		else
 			description = desc;
 		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
-		OptionsMenu.markRestartSong();
+		// OptionsMenu.markRestartSong();
 		// acceptValues = true;
 	}
 
@@ -4388,6 +4390,7 @@ class Background extends Option
 			return false;
 		FlxG.save.data.background = !FlxG.save.data.background;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong();
 		return true;
 	}
 

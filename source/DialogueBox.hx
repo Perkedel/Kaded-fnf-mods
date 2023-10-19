@@ -734,7 +734,11 @@ class DialogueBox extends FlxUIGroup
 		// add(theDialog);
 
 		// swagDialogue.text = ;
-		swagDialogue.resetText(dialogueList[0]);
+		// swagDialogue.resetText(dialogueList[0]);
+		swagDialogue.resetText(CoolUtil.getText(dialogueList[0],
+			'subtitle')); // JOELwindows7: You can now rely on the `subtitle.tsv` file of your firetongue language yey!
+		// ALthough if you want it's recommended to stick with the lore's language rather than translatable `$` references.
+		// it's here for early lifehoods audience such as lullaby mods, where language accessibility matters.
 		swagDialogue.start(0.04, true, false, null, swagDialogueOnComplete.bind());
 
 		// JOELwindows7: tired to go everything invisiblize each. let's invisiblez all first instead

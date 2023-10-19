@@ -104,8 +104,8 @@ class Initializations
 		return initialized;
 	}
 
-	public static function changeLanguageID(into:String = 'en-US'){
-			
+	public static function changeLanguageID(into:String = 'en-US')
+	{
 		refreshLanguage();
 	}
 
@@ -151,5 +151,11 @@ class Initializations
 				trace('WERROR Refresh language ${e.message}:\n${e.details()}');
 			}
 		}
+	}
+
+	// JOELwindows7: where is check update?
+	public static function justCheckUpdate()
+	{
+		// https://github.com/HaxeFlixel/flixel-demos/blob/dev/Other/FlxAsyncLoop/source/MenuState.hx
 	}
 }

@@ -286,7 +286,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		// 		Conductor.changeBPM(102);
 		// 	}
 		// }
-		CoolUtil.playMainMenuSong(0); // JOELwindows7: NEW PLAY THE MENU!!!
+		CoolUtil.playMainMenuSong(1); // JOELwindows7: NEW PLAY THE MENU!!!
 
 		persistentUpdate = persistentDraw = true;
 

@@ -11760,8 +11760,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	}
 
 	// JOELwindows7: execute function for each of the modchart available
-	function executeModchartState(name:String, args:Array<Dynamic>)
+	public function executeModchartState(name:String, args:Array<Dynamic>)
 	{
+		// maybe don't public. ask the user to @privateAccess instead?
 		#if FEATURE_LUAMODCHART
 		if (executeModchart && luaModchart != null)
 		{
@@ -11787,7 +11788,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	}
 
 	// JOELwindows7: set one variable for each of the modchart available
-	function setModchartVar(name:String, value:Dynamic)
+	public function setModchartVar(name:String, value:Dynamic)
 	{
 		#if FEATURE_LUAMODCHART
 		if (executeModchart && luaModchart != null)

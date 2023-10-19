@@ -121,8 +121,10 @@ class OptionsMenu extends CoreSubState
 
 	public static var visibleRange = [114, 640]; // JOELwindows7: was 640
 
-	public var upToHowManyCatsOnScreen:Int = 5; // JOELwindows7: by default there was 4 categories. Now we have 6 on first row, 1 on second row.
-	public var upToHowManyCatsOnSecond:Int = 2;
+	public var upToHowManyCatsOnScreen:Int = 6; // JOELwindows7: by default there was 4 categories. Now we have 6 on first row, 1 on second row. f888 how the 5 we do this?
+	public var upToHowManyCatsOnSecond:Int = 3;
+
+	public var minimumStuffItemPositionY:Int = 125; // JOELwindows7L: no more selectedCat.titleObject.y
 
 	public static var markForGameplayRestart:Bool = false; // JOELwindows7: mark this true to tell that you have to restart song.
 
@@ -204,6 +206,7 @@ class OptionsMenu extends CoreSubState
 			// JOELwindows7: Audio
 			new OptionCata(640, 40, 'Audio', [
 				new AdjustVolumeOption("Adjust Audio volume"),
+				new KadeMusicOption(CoolUtil.getText("$OPTIONS_KADE_MUSIC_DESCRIPTION")),
 				// new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."), //JOELwindows7: how about move it here?
 				new AccidentVolumeKeysOption("Enable / Disable volume shortcut key all time beyond pause menu (- decrease, + increase, 0 mute)"),
 				new HitsoundOption("Enable / Disable Gameplay Hitsound everytime note got hit in Gameplay (not in Editor)"),
@@ -417,7 +420,8 @@ class OptionsMenu extends CoreSubState
 			for (i in 0...selectedCat.options.length)
 			{
 				var opt = selectedCat.optionObjects.members[i];
-				opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+				// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+				opt.y = minimumStuffItemPositionY + 54 + (46 * i); // JOElwindows7: idk how!
 				// opt.y = options[4].titleObject.y + 54 + (46 * i); // JOELwindows7: pls figure this one out
 			}
 
@@ -448,7 +452,8 @@ class OptionsMenu extends CoreSubState
 				{
 					var opt = selectedCat.optionObjects.members[i];
 					opt.ID = i; // JOELwindows7: assign ID to each option member.
-					opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+					// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+					opt.y = minimumStuffItemPositionY + 54 + (46 * i); // JOELwindows7: idk how
 					// opt.y = options[4].titleObject.y + 54 + (46 * i); // JOELwindows7: I think figurely, 4 is `up to how many`?
 				}
 			}
@@ -730,7 +735,8 @@ class OptionsMenu extends CoreSubState
 								var opt = selectedCat.optionObjects.members[i];
 								// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
 								// JOELwindows7: let's make fancy
-								menuTweenSo[0][i] = FlxTween.tween(opt, {y: selectedCat.titleObject.y + 54 + (46 * i)}, menuTweenTime,
+								// menuTweenSo[0][i] = FlxTween.tween(opt, {y: selectedCat.titleObject.y + 54 + (46 * i)}, menuTweenTime,
+								menuTweenSo[0][i] = FlxTween.tween(opt, {y: minimumStuffItemPositionY + 54 + (46 * i)}, menuTweenTime,
 									{ease: FlxEase.quadInOut});
 							}
 							selectedOptionIndex = 0;
@@ -811,7 +817,8 @@ class OptionsMenu extends CoreSubState
 								var opt = selectedCat.optionObjects.members[i];
 								// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
 								// JOELwindows7: attempt fancy movement
-								menuTweenSo[0][i] = FlxTween.tween(opt, {y: selectedCat.titleObject.y + 54 + (46 * i)}, menuTweenTime,
+								// menuTweenSo[0][i] = FlxTween.tween(opt, {y: selectedCat.titleObject.y + 54 + (46 * i)}, menuTweenTime,
+								menuTweenSo[0][i] = FlxTween.tween(opt, {y: minimumStuffItemPositionY + 54 + (46 * i)}, menuTweenTime,
 									{ease: FlxEase.quadInOut});
 							}
 						}
@@ -875,7 +882,8 @@ class OptionsMenu extends CoreSubState
 						for (i in 0...selectedCat.options.length)
 						{
 							var opt = selectedCat.optionObjects.members[i];
-							opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+							// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+							opt.y = minimumStuffItemPositionY + 54 + (46 * i); // JOELwindows7: idk how
 						}
 						selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
 						isInCat = true;
@@ -926,7 +934,8 @@ class OptionsMenu extends CoreSubState
 				for (i in 0...selectedCat.options.length)
 				{
 					var opt = selectedCat.optionObjects.members[i];
-					opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+					// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
+					opt.y = minimumStuffItemPositionY + 54 + (46 * i); // JOELwindows7: idk how
 				}
 				selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
 				isInCat = true;
@@ -962,7 +971,8 @@ class OptionsMenu extends CoreSubState
 					var opt = selectedCat.optionObjects.members[i];
 					// opt.y = selectedCat.titleObject.y + 54 + (46 * i);
 					// JOELwindows7: make fancy movement
-					menuTweenSo[0][i] = FlxTween.tween(opt, {y: selectedCat.titleObject.y + 54 + (46 * i)}, menuTweenTime, {ease: FlxEase.quadInOut});
+					// menuTweenSo[0][i] = FlxTween.tween(opt, {y: selectedCat.titleObject.y + 54 + (46 * i)}, menuTweenTime, {ease: FlxEase.quadInOut});
+					menuTweenSo[0][i] = FlxTween.tween(opt, {y: minimumStuffItemPositionY + 54 + (46 * i)}, menuTweenTime, {ease: FlxEase.quadInOut});
 				}
 				selectedOptionIndex = 0;
 			}
@@ -1087,8 +1097,9 @@ class OptionsMenu extends CoreSubState
 			// options[i].width = background.width / upToHowManyCatsOnScreen; //Unfortunately this only adjust the hitbox, not the graphic.
 			options[prakstend].setGraphicSize(Std.int(Math.max(background.width / upToHowManyCatsOnSecond, options[prakstend].width)),
 				Std.int(options[prakstend].height));
-			options[prakstend].x = (background.width / upToHowManyCatsOnSecond) * i;
-			options[prakstend].y = 10; // JOELwindows7: maybe like this?
+			options[prakstend].x = (background.width / upToHowManyCatsOnSecond) * i + background.x;
+			// options[prakstend].y = options[prakstend].height * 2; // JOELwindows7: maybe like this?
+			options[prakstend].y = 110; // JOELwindows7: or this?
 			// I guess..
 			// oh almost forgot!
 			options[prakstend].titleObject.x = options[prakstend].x + (options[prakstend].width / 2) - (options[prakstend].titleObject.width / 2);
