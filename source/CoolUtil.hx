@@ -70,7 +70,8 @@ class CoolUtil
 		catch (e)
 		{
 			Debug.logError('WERROR Cool String File! ${e.message}\n${e.details()}');
-			daList = null;
+			// daList = null;
+			daList = [];
 			// wait we're talking just string or what?
 		}
 
@@ -272,7 +273,7 @@ class CoolUtil
 	}
 
 	// JOELwindows7: BOLO's way of selecting & playing main menu song based on watermark situation
-	public static function playMainMenuSong(volume:Float = 1)
+	inline public static function playMainMenuSong(volume:Float = 1)
 	{
 		var chooseMusicPath:String;
 		var chooseMusicBpm:Float;
@@ -303,6 +304,8 @@ class CoolUtil
 			}
 		}
 		// }
+
+		// should we also make non-inline version?
 	}
 
 	// JOELwindows7: Portable song data cleaner

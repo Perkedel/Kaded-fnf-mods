@@ -311,7 +311,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	public var iconP2:HealthIcon; // what could go wrong?
 	public var iconPlayers:FlxTypedGroup<HealthIcon>; // JOELwindows7: okeh, player icons array for later, idk.
 	public var camHUD:FlxCamera;
+
 	private var camWatermark:FlxCamera; // JOELwindows7: Special private camera for anti-without-credit! intentionally minimal & subtle to make people did not notice first.
+
 	public var camSustains:FlxCamera;
 	public var camNotes:FlxCamera;
 	public var camGame:FlxCamera; // JOELwindows7: (was private) dude whyn't work anymore after 1.7
@@ -2405,7 +2407,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							onComplete: function(twn:FlxTween)
 							{
 								babyArrow.y += 10;
-								babyArrow.alpha = 1;
+								// babyArrow.alpha = 1;
 								babyArrow.visible = visible;
 							}
 						}); // JOELwindows7: managed BOLO tween.
@@ -2413,6 +2415,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				}
 				else
 				{
+					babyArrow.alpha = visible ? 1 : 0; // JOELwindows7: ye
 					babyArrow.visible = visible;
 					babyArrow.resetPosToCheckpoint();
 				}
@@ -2451,7 +2454,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							onComplete: function(twn:FlxTween)
 							{
 								babyArrow.y += 10;
-								babyArrow.alpha = 1;
+								// babyArrow.alpha = 1;
 								babyArrow.visible = visible;
 							}
 						}); // JOELwindows7: managed BOLO tween.
@@ -2459,6 +2462,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				}
 				else
 				{
+					babyArrow.alpha = visible ? 1 : 0; // JOELwindows7: ye
 					babyArrow.visible = visible;
 					babyArrow.resetPosToCheckpoint();
 				}
@@ -2544,6 +2548,18 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				mainCamShaders = [];
 				var newCamEffects:Array<BitmapFilter> = [];
 				mainCam.setFilters(newCamEffects);
+			case 'camnotes' | 'notes':
+				camNotesShaders = [];
+				var newCamEffects:Array<BitmapFilter> = [];
+				camNotes.setFilters(newCamEffects);
+			case 'camsustains' | 'sustains':
+				camSustainsShaders = [];
+				var newCamEffects:Array<BitmapFilter> = [];
+				camSustains.setFilters(newCamEffects);
+			case 'camstrums' | 'strums':
+				camStrumsShaders = [];
+				var newCamEffects:Array<BitmapFilter> = [];
+				camStrums.setFilters(newCamEffects);
 		}
 	}
 

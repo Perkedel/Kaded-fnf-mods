@@ -15,17 +15,17 @@ class DeprecatedState extends CoreState
 		[
 			'AWAITING PRODUCT',
 			"FULL ASS has not been announced yet",
-			"We are awaiting FULL ASS to be appeared on Steam.\nPlease visit\nSTEAM_URL\n& wishlist the game as soon as it appeared.\nWe encourage all gamers to buy it,\nbecause once FULL ASS releases, this mod will soon be deprecated &\nall contents of ours will be ported there.\nIf you'd like to download our legacy stuffs,\n they will be available at Admiral Zumi's Odysee later. Thank you."
+			"We are awaiting FULL ASS to be appeared on Steam.\nPlease visit\nSTEAM_URL\n& wishlist the game as soon as it appeared.\nWe encourage all gamers to buy it,\nbecause once FULL ASS releases, this mod will soon be deprecated &\nall contents of ours will be ported there.\nIf you'd like to download our legacy stuffs,\nthey will be available at Admiral Zumi's Odysee later.\n(DM Subject = `DOWNLOAD_LFM_LEGACY`)\nThank you."
 		],
 		[
 			'DEPRECATION IN PROGRESS',
 			"Last Funkin Moment will be deprecated soon. Thancc for playing.",
-			"The FULL ASS Steam page has been appeared on Steam.\nPlease visit\nSTEAM_URL\n& wishlist the game instead.\nWe encourage all gamers to buy it,\nbecause this mod will soon be deprecated &\nall contents of ours will be ported there.\nIf you'd like to download our legacy stuffs,\n they are available at Admiral Zumi's Odysee. Thank you."
+			"The FULL ASS Steam page has been appeared on Steam.\nPlease visit\nSTEAM_URL\n& wishlist the game instead.\nWe encourage all gamers to buy it as soon as possible,\nbecause this mod will soon be deprecated &\nall contents of ours will be ported there.\nIf you'd like to download our legacy stuffs,\nthey are available at Admiral Zumi's Odysee.\n(DM Subject = `DOWNLOAD_LFM_LEGACY`)\nThank you."
 		],
 		[
 			'DEPRECATED',
 			"Last Funkin Moment has been Deprecated. Thancc for playing.",
-			"The FULL ASS has been released.\nPlease visit\nSTEAM_URL\n& purchase the game instead.\nThis mod has been deprecated & all contents of ours will be\nported there.\nIf you'd like to download our legacy stuffs,\n they are available at Admiral Zumi's Odysee. Thank you."
+			"The FULL ASS has been released (along with the mod suport).\nPlease visit\nSTEAM_URL\n& purchase the game instead.\nThis mod has been deprecated & all contents of ours will be\nported there.\nIf you'd like to download our legacy stuffs,\nthey are available at Admiral Zumi's Odysee.\n(DM Subject = `DOWNLOAD_LFM_LEGACY`)\nThank you."
 		],
 	];
 	public static var deprecationLevelSelect:Int = 0;
@@ -80,7 +80,7 @@ class DeprecatedState extends CoreState
 	{
 		if (FlxG.gamepads.anyJustPressed(A) || FlxG.keys.justPressed.ENTER || haveClicked)
 		{
-			// fancyOpenURL(Perkedel.DONATE_BUTTON_URL);
+			fancyOpenURL(Perkedel.DONATE_BUTTON_URL); // TODO: pls steam URL if there is.
 			haveClicked = false; // JOELwindows7: press OK button.
 		}
 

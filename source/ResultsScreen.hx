@@ -240,8 +240,9 @@ class ResultsScreen extends CoreSubState
 
 			if (PlayState.isStoryMode)
 			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				Conductor.changeBPM(102);
+				// FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				// Conductor.changeBPM(102);
+				// JOELwindows7: // above used
 				// FlxG.switchState(new MainMenuState());
 				// JOELwindows7: works with Android
 				FlxG.switchState(handoverHasVideo ? VideoCutscener.getThe(handoverVideoPath, new StoryMenuState()) : new StoryMenuState());
