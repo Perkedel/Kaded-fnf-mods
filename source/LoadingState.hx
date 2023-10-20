@@ -165,6 +165,8 @@ class LoadingState extends MusicBeatState
 
 		// JOELwindows7: and the too long timer
 		tooLongDidntLoadTimer.start(Perkedel.LOADING_TOO_LONG_TIME_THRESHOLD, onTooLongDidntLoad);
+
+		super.create();
 	}
 
 	function checkLoadSong(path:String)

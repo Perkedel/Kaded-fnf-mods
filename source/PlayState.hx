@@ -4511,7 +4511,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			Stage.update(elapsed);
 
 		// JOELwindows7: BOLO tween & timer manager updates
-		if (!paused)
+		if (!paused || outroSceneCalled)
 		{
 			tweenManager.update(elapsed);
 			timerManager.update(elapsed);
@@ -11024,11 +11024,16 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					// 	{
 					// 	}
 					// });
-
+					Debug.logInfo('Contemplate for 10 Second');
+					var contemplateCount:Float = 10;
+					createTimer(1,function(tmr:FlxTimer){
+						Debug.logInfo('Contemplating ${contemplateCount}');
+						contemplateCount--;
+					},10);
 					createTimer(10, function(tmr:FlxTimer)
 					{
-						outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
-							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						// outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 					});
 				case 'eggnog':
 					// JOELwindows7: right, we've migrated those here yey. add more things if necessary.
@@ -11046,8 +11051,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 					createTimer(3, function(tmr:FlxTimer)
 					{
-						outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
-							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						// outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 					});
 				case 'sky':
 					// da bbpanzu sky `theManifestCutscene`
@@ -11080,8 +11085,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						createTimer(5, function(e:FlxTimer)
 						{
 							// LoadingState.loadAndSwitchState(new PlayState());
-							outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
-								handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+							// outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+							decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 						});
 					});
 				case 'manifest':
@@ -11127,8 +11132,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					{
 						// FlxG.sound.music.stop();
 						endingSound.stop();
-						outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
-							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						// outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 					});
 				default:
 					#if FEATURE_LUAMODCHART
