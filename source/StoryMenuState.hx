@@ -37,8 +37,9 @@ import Discord.DiscordClient;
 // import VideoSprite as MP4Sprite; // yep.
 import hxcodec.flixel.FlxVideo as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
 import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yep.
-
+import utils.assets.MenuCharacter as BoloMenuCharacter;
 #end
+
 using StringTools;
 
 // JOELwindows7: FlxUI fy here yeah!
@@ -118,7 +119,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	var txtTracklist:FlxUIText;
 
 	var grpWeekText:FlxTypedGroup<MenuItem>;
-	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
+	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>; // TODO: JOELwindows7: change to BOLO
 
 	var grpLocks:FlxTypedGroup<FlxUISprite>;
 
@@ -327,7 +328,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		var blackBarThingie:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
 		add(blackBarThingie);
 
-		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();
+		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>(); // TODO: JOELwindows7: change to BOLO
 
 		trace("Line 70");
 
@@ -365,9 +366,19 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 		trace("Line 96");
 
+		// TODO: JOELwindows7: change to BOLO
 		grpWeekCharacters.add(new MenuCharacter(0, 100, 0.5, false));
 		grpWeekCharacters.add(new MenuCharacter(450, 25, 0.9, true));
 		grpWeekCharacters.add(new MenuCharacter(850, 100, 0.5, true));
+
+		// var charArray:Array<String> = weekCharacters ; //weeksLoaded[0].characters;
+		// for (char in 0...3)
+		// {
+		// 	var weekCharacterThing:BoloMenuCharacter = new BoloMenuCharacter((FlxG.width * 0.25) * (1 + char) - 150, charArray[char]);
+		// 	weekCharacterThing.y += 70;
+		// 	grpWeekCharacters.add(weekCharacterThing);
+		// }
+
 		// JOELwindows7: hey, try the week 7 way, yoinked by luckdydog7
 		// for (char in 0...3)
 		// {
@@ -801,6 +812,14 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		grpWeekCharacters.members[0].setCharacter(weekCharacters[curWeek][0]);
 		grpWeekCharacters.members[1].setCharacter(weekCharacters[curWeek][1]);
 		grpWeekCharacters.members[2].setCharacter(weekCharacters[curWeek][2]);
+
+		// TODO: JOELwindows7: change to BOLO
+		// var weekArray:Array<String> = weekCharacters //weeksLoaded[curWeek].characters;
+		// for (i in 0...grpWeekCharacters.length)
+		// {
+		// 	grpWeekCharacters.members[i].changeCharacter(weekArray[i]);
+		// 	grpWeekCharacters.members[i].changeColor(weekColor[curWeek]); // pls use tween
+		// }
 
 		// JOELwindows7: set underlay image
 		if (weekUnderlayPath[curWeek] != null && weekUnderlayPath[curWeek] != "")

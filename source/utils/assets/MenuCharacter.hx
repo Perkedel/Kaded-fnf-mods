@@ -3,8 +3,11 @@ package utils.assets;
 
 // JOELwindows7: yoink BOLO
 // https://github.com/BoloVEVO/Kade-Engine/blob/stable/source/funkin/menus/objects/MenuCharacter.hx
+import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxG;
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 
 typedef MenuCharData =
 {
@@ -16,7 +19,7 @@ typedef MenuCharData =
 	var flipped:Bool;
 }
 
-class MenuCharacter extends FlxSprite
+class MenuCharacter extends FlxUISprite
 {
 	public var character:String;
 	public var hasConfirmAnimation:Bool = false;
@@ -75,5 +78,10 @@ class MenuCharacter extends FlxSprite
 				offset.set(charJson.position[0], charJson.position[1]);
 				animation.play('idle');
 		}
+	}
+
+	// JOELwindows7: extra twist, change color
+	public function changeColor(into:FlxColor){
+		color = into;
 	}
 }

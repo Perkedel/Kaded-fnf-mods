@@ -1,0 +1,11 @@
+{
+	
+	"image": "Menu_Hookx",
+	"position": [
+		0,
+		0
+	],
+	"scale": 1,
+	"idle_anim": "M Hookx Idle",
+	"confirm_anim": "M Hookx Idle"
+}
