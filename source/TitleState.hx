@@ -830,11 +830,11 @@ class TitleState extends MusicBeatState
 			// credTextShit.screenCenter();
 			case 9:
 				// createCoolText([curWacky[0]]);
-				createCoolText([CoolUtil.getText(curWacky[0])]); // JOELwindows7: experiment the translated intro text
+				createCoolText([CoolUtil.getText(curWacky[0], 'subtitle')]); // JOELwindows7: experiment the translated intro text
 			// credTextShit.visible = true;
 			case 11:
 				// addMoreText(curWacky[1]);
-				addMoreText(CoolUtil.getText(curWacky[1])); // JOELwindows7: oh yeah!
+				addMoreText(CoolUtil.getText(curWacky[1], 'subtitle')); // JOELwindows7: oh yeah!
 			// credTextShit.text += '\nlmao';
 			case 12:
 				deleteCoolText();
