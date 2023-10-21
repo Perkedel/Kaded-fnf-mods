@@ -645,7 +645,7 @@
 	<!-- <haxelib name="hx3compat"/> -->
 	<!-- <haxelib name="hxColorToolkit"/> -->
 	<!-- <haxelib name="roxlib"/> -->
-	<haxelib name="flixel-screenshot-plugin"/>
+	<haxelib name="flixel-screenshot-plugin" unless='debug'/>
 	<!-- <haxelib name="flixel-retrotools"/> -->
 	<!-- <haxelib name="flix"/> -->
 	<!-- <haxelib name="zerolib-flixel"/> -->

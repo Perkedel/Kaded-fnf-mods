@@ -1,4 +1,11 @@
 flag	content
+$COMMA	<C>
+$QUOTATION	<Q>
+$QUOTATION_LEFT	<LQ>
+$QUOTATION_RIGHT	<RQ>
+$NEWLINE	<N>
+$TAB	<T>
+$VAR_EXAMPLE	<X>
 $INSTRUCTIONS	Click a flag to load text from that locale.<N>Several files are intentionally missing from various locales.<N>This showcases the <LQ>missing file check<RQ> feature.<N>Click a file format to test parsing of that file format.<N>
 $HELLO_WORLD	Hello, World!
 $TEST_STRING	My mom took the elevator to the defense department.
@@ -15,6 +22,8 @@ $SPLASH_SLOGAN	A mod of Friday Night Funkin'
 $SPLASH_BIOS_BUTTON	Press ESCAPE / Gamepad SELECT to go to BIOS setting
 $SPLASH_BIOS_SETTING	BIOS Setting
 $SPLASH_WELCOME	Welcome to Last Funkin Moments!
+$SPLASH_TOAST_TITLE	Cool and good
+$SPLASH_TOAST_Description	Welcome to Last Funkin Moments<N> Today's Kontraktua Majoris<N> (2 of 3): Sky<C> Whitty
 $INTRO_TEXT_0	this intro
 $INTRO_TEXT_1	in english
 $OPTIONS_SELECT_LANGUAGE	Language 🌐

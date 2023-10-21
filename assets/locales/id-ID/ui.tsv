@@ -1,4 +1,11 @@
 flag	content
+$COMMA	<C>
+$QUOTATION	<Q>
+$QUOTATION_LEFT	<LQ>
+$QUOTATION_RIGHT	<RQ>
+$NEWLINE	<N>
+$TAB	<T>
+$VAR_EXAMPLE	<X>
 $INSTRUCTIONS	Klik sebuah bendera untuk memuat teks dari bahasa tersebut.<N>Beberapa file memang hilang secara sengaja dari bahasa-bahasa lainnya.<N> Ini untuk menunjukan fitur <LQ>cek file yang tidak ditemukan<RQ>.
 $HELLO_WORLD	Halo, Dunia!
 $TEST_STRING	Ibu saya menggunakan lift untuk pergi ke departmen pertahanan.
@@ -15,6 +22,8 @@ $SPLASH_SLOGAN	Sebuah modifikasi Friday Night Funkin'
 $SPLASH_BIOS_BUTTON	Tekan ESCAPE / SELECT di stik 'tuk pergi ke setelan BIOS
 $SPLASH_BIOS_SETTING	Pengaturan BIOS
 $SPLASH_WELCOME	Selamat datang di Last Funkin Moments!
+$SPLASH_TOAST_TITLE	Cool and good
+$SPLASH_TOAST_Description	Selamat datang di Last Funkin Moments<N> Kontraktua Majoris saat ini<N> (2 dr 3): Sky<C> Whitty
 $INTRO_TEXT_0	intro ini
 $INTRO_TEXT_1	dalam b indo
 $OPTIONS_SELECT_LANGUAGE	Bahasa 🌐

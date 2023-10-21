@@ -343,18 +343,19 @@ class Main extends Sprite
 		// JOELwindows7: YoshiCrafter Windows API pls
 		// WindowsAPI.setWindowToDarkMode();
 
-		// JOELwindows7: Flixel Studio
 		#if debug
-		FlxStudio.create();
-		#end
-
+		#else
 		// JOELwindows7: sayofthelor's Screenshooters
 		FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
+		#end
 
-		// JOELwindows7: plugins above blocks my debugger!
 		#if FLX_DEBUG
+		// JOELwindows7: Flixel Studio
+		FlxStudio.create();
+		// JOELwindows7: plugins above blocks my debugger!
 		game.removeChild(game.debugger);
 		game.addChild(game.debugger);
+		#else
 		#end
 
 		// JOELwindows7: now build Xbox controllers
@@ -374,7 +375,9 @@ class Main extends Sprite
 		#end
 		// JOELwindows7: finally, have a GameJolt toast
 		addChild(gjToastManager); // Needs to be added after the game. that's how layout stack workss
-		gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION, false);
+		// gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION, false);
+		gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION,
+			false); // damn it, you must init FireTongue should've immediately! wait you need save..
 
 		// JOELwindows7: Oh don't forget! the loading bar
 		loadingBar = new LoadingBar(0, 0, 0xFFFFFF);
