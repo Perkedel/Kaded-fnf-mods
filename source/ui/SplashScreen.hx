@@ -326,6 +326,7 @@ class SplashScreen extends MusicBeatState
 			});
 		}
 
+		NoteskinHelpers.updateNoteskins();
 		Initializations.refreshLanguage();
 	}
 

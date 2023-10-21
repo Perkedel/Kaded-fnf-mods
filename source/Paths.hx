@@ -117,6 +117,17 @@ class Paths
 		return Assets.getText('assets/data/$string/lyrics.txt');
 	}
 
+	// JOELwindows7: raw text file
+	static public function getTextFile(string:String)
+	{
+		return OpenFlAssets.getText(string);
+	}
+
+	static public function getXMLTextFile(string:String)
+	{
+		return Assets.getText('$string.xml');
+	}
+
 	/**
 	 * For a given key and library for an image, returns the corresponding BitmapData.
 	 		* We can probably move the cache handling here.

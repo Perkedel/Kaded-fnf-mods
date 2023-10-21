@@ -213,6 +213,9 @@ class CoreState extends FlxUIState implements ICoreStating
 		if (Main.tongue == null)
 		{
 			Main.tongue = new FireTongueEx();
+			if (Main.tongues == null)
+				Main.tongues = new Array<FireTongueEx>();
+			Main.tongues[0] = Main.tongue;
 			Main.tongue.initialize({locale: "en-US"});
 			FlxUIState.static_tongue = Main.tongue;
 		}
@@ -276,6 +279,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	{
 		backButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale), Std.int(backButton.height * scale));
+		backButton.alpha = .5;
 		backButton.scrollFactor.set();
 		backButton.updateHitbox();
 		backButton.antialiasing = FlxG.save.data.antialiasing;
@@ -289,6 +293,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	{
 		leftButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale), Std.int(leftButton.height * scale));
+		leftButton.alpha = .5;
 		leftButton.scrollFactor.set();
 		leftButton.updateHitbox();
 		leftButton.antialiasing = FlxG.save.data.antialiasing;
@@ -302,6 +307,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	{
 		rightButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale), Std.int(rightButton.height * scale));
+		rightButton.alpha = .5;
 		rightButton.scrollFactor.set();
 		rightButton.updateHitbox();
 		rightButton.antialiasing = FlxG.save.data.antialiasing;
@@ -315,6 +321,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	{
 		upButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
 		upButton.setGraphicSize(Std.int(upButton.width * scale), Std.int(upButton.height * scale));
+		upButton.alpha = .5;
 		upButton.scrollFactor.set();
 		upButton.updateHitbox();
 		upButton.antialiasing = FlxG.save.data.antialiasing;
@@ -328,6 +335,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	{
 		downButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
 		downButton.setGraphicSize(Std.int(downButton.width * scale), Std.int(downButton.height * scale));
+		downButton.alpha = .5;
 		downButton.scrollFactor.set();
 		downButton.updateHitbox();
 		downButton.antialiasing = FlxG.save.data.antialiasing;
@@ -341,6 +349,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	{
 		pauseButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('pauseButton'));
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale), Std.int(pauseButton.height * scale));
+		pauseButton.alpha = .5;
 		pauseButton.scrollFactor.set();
 		pauseButton.updateHitbox();
 		pauseButton.antialiasing = FlxG.save.data.antialiasing;
@@ -354,6 +363,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	{
 		acceptButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('acceptButton'));
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale), Std.int(acceptButton.height * scale));
+		acceptButton.alpha = .5;
 		acceptButton.scrollFactor.set();
 		acceptButton.updateHitbox();
 		acceptButton.antialiasing = FlxG.save.data.antialiasing;
@@ -367,6 +377,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	{
 		retryButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('retryButton'));
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale), Std.int(retryButton.height * scale));
+		retryButton.alpha = .5;
 		retryButton.scrollFactor.set();
 		retryButton.updateHitbox();
 		retryButton.antialiasing = FlxG.save.data.antialiasing;
@@ -380,6 +391,7 @@ class CoreState extends FlxUIState implements ICoreStating
 	{
 		viewReplayButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale), Std.int(viewReplayButton.height * scale));
+		viewReplayButton.alpha = .5;
 		viewReplayButton.scrollFactor.set();
 		viewReplayButton.updateHitbox();
 		viewReplayButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1022,6 +1034,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		backButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale), Std.int(backButton.height * scale));
+		backButton.alpha = .5;
 		backButton.scrollFactor.set();
 		backButton.updateHitbox();
 		backButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1035,6 +1048,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		leftButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale), Std.int(leftButton.height * scale));
+		leftButton.alpha = .5;
 		leftButton.scrollFactor.set();
 		leftButton.updateHitbox();
 		leftButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1048,6 +1062,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		rightButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale), Std.int(rightButton.height * scale));
+		rightButton.alpha = .5;
 		rightButton.scrollFactor.set();
 		rightButton.updateHitbox();
 		rightButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1061,6 +1076,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		upButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
 		upButton.setGraphicSize(Std.int(upButton.width * scale), Std.int(upButton.height * scale));
+		upButton.alpha = .5;
 		upButton.scrollFactor.set();
 		upButton.updateHitbox();
 		upButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1074,6 +1090,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		downButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
 		downButton.setGraphicSize(Std.int(downButton.width * scale), Std.int(downButton.height * scale));
+		downButton.alpha = .5;
 		downButton.scrollFactor.set();
 		downButton.updateHitbox();
 		downButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1087,6 +1104,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		pauseButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('pauseButton'));
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale), Std.int(pauseButton.height * scale));
+		pauseButton.alpha = .5;
 		pauseButton.scrollFactor.set();
 		pauseButton.updateHitbox();
 		pauseButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1100,6 +1118,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		acceptButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('acceptButton'));
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale), Std.int(acceptButton.height * scale));
+		acceptButton.alpha = .5;
 		acceptButton.scrollFactor.set();
 		acceptButton.updateHitbox();
 		acceptButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1113,6 +1132,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		retryButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('retryButton'));
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale), Std.int(retryButton.height * scale));
+		retryButton.alpha = .5;
 		retryButton.scrollFactor.set();
 		retryButton.updateHitbox();
 		retryButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1126,6 +1146,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	{
 		viewReplayButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale), Std.int(viewReplayButton.height * scale));
+		viewReplayButton.alpha = .5;
 		viewReplayButton.scrollFactor.set();
 		viewReplayButton.updateHitbox();
 		viewReplayButton.antialiasing = FlxG.save.data.antialiasing;

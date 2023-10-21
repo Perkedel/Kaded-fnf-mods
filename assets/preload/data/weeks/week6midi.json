@@ -1,0 +1,23 @@
+{
+	"songs": [
+		"senpai-midi",
+		"roses-midi",
+		"thorns-midi"
+	],
+
+	"weekCharacters": [
+		"senpai",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Senpai",
+	"weekColor": "pink",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":true,
+	"storyName": "Hating_Simulator_nokia.jar Microemulator",
+	"weekBefore": "week5",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
+}

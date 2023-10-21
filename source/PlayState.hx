@@ -10995,6 +10995,28 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		if (!outroSceneCalled)
 		{
 			outroSceneCalled = true;
+
+			// JOELwindows7: move modchart calls here
+			#if FEATURE_LUAMODCHART
+			if (luaModchart != null)
+			{
+				luaModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+			}
+			if (stageScript != null)
+			{
+				stageScript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+			}
+			#end
+			if (hscriptModchart != null)
+			{
+				hscriptModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+			}
+			if (stageHscript != null)
+			{
+				stageHscript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
+			}
+
+			// then to usual outro cutscene.
 			switch (handoverName.toLowerCase())
 			{
 				case 'mayday': // blacken the screen like going to Winter Horrorland but slowed and sadder
@@ -11136,24 +11158,6 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 					});
 				default:
-					#if FEATURE_LUAMODCHART
-					if (luaModchart != null)
-					{
-						luaModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
-					}
-					if (stageScript != null)
-					{
-						stageScript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
-					}
-					#end
-					if (hscriptModchart != null)
-					{
-						hscriptModchart.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
-					}
-					if (stageHscript != null)
-					{
-						stageHscript.executeState("outroCutscene", []); // JOELwindows7: here outro cutscene yey!
-					}
 					decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
 						handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath, SONG.outroCutSceneDoneManually);
 			}

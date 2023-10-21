@@ -1,0 +1,21 @@
+{
+	"songs": [
+		"fortritri"
+	],
+
+	"weekCharacters": [
+		"hookx",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "",
+	"weekColor": "white",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":true,
+	"storyName": "Silence is music",
+	"weekBefore": "tutorial",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
+}

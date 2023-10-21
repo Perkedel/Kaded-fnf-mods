@@ -1,5 +1,6 @@
 package;
 
+import cpp.abi.Abi;
 import flixel.addons.ui.FlxUISprite;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.FlxG;
@@ -720,4 +721,37 @@ class Note extends FlxUISprite
 			}
 		}
 	}
+}
+
+// JOELwindows7: Pls noteskin file
+typedef NoteskinFile =
+{
+	/*
+		JSON
+
+			{
+			"name": "empty",
+			"displayName": "Template Noteskins JSON",
+			"noteskinPath": "Arrows",
+			"noteskinMinePath": "Arrows-mine",
+			"noteskinImportantPath": "",
+			"noteskinNeverPath": "",
+			"noteskinSpecialPath": "",
+			"splashPath": "'Arrows-splash",
+			"splashMinePath": "Arrows-splash-duar",
+			"isPixel": false
+			}
+	 */
+	// var arrows:String;
+	// var mines:String;
+	// var nevers:String;
+	// var important:String;
+	var name:String;
+	var ?displayName:String;
+	var noteskinPath:String;
+	var noteskinMinePath:String;
+	var noteskinImportantPath:String;
+	var splashPath:String;
+	var ?splashMinePath:String;
+	var isPixel:Bool;
 }

@@ -3,6 +3,8 @@ package utils.assets;
 
 // JOELwindows7: yoink BOLO
 // https://github.com/BoloVEVO/Kade-Engine/blob/stable/source/funkin/menus/objects/MenuCharacter.hx
+import flixel.tweens.misc.ColorTween;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxG;
@@ -23,6 +25,7 @@ class MenuCharacter extends FlxUISprite
 {
 	public var character:String;
 	public var hasConfirmAnimation:Bool = false;
+	var colorTween:ColorTween; // oh yeahhhhhh
 
 	public function new(x:Float, character:String = 'bf')
 	{
@@ -80,8 +83,21 @@ class MenuCharacter extends FlxUISprite
 		}
 	}
 
+	// JOELwindows7: Hey, buddy, you better Bophead.
+	public function bopHead(LastFrame:Bool = false):Void{
+		if (animation.name == "confirm")
+			return;
+		if (LastFrame)
+		{
+			animation.finish();
+		}
+	}
+
 	// JOELwindows7: extra twist, change color
-	public function changeColor(into:FlxColor){
-		color = into;
+	public function changeColor(into:FlxColor,duration:Float = 1){
+		// color = into;
+		if (colorTween != null)
+			colorTween.cancel();
+		colorTween.tween(duration,color,into,this);
 	}
 }

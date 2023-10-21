@@ -100,6 +100,7 @@ class Main extends Sprite
 	// JOELwindows7: Please LarsiusPrime's FireTongue
 	// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/Main.hx
 	public static var tongue:FireTongueEx;
+	public static var tongues:Array<FireTongueEx>; // add multiple tongues!!!
 
 	// JOELwindows7: Please no demonic reference about Mark of what the peck!
 	/*

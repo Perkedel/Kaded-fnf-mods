@@ -80,7 +80,10 @@ class WeekData
 		this.fileName = fileName;
 	}
 
-	static var defaultWeeks:Array<String> = ['tutorial', 'week1', 'week2', 'week3', 'week4', 'week5', 'week6', 'week7'];
+	static var defaultWeeks:Array<String> = [
+		'tutorial', 'week1', 'week2', 'week3', 'week4', 'week5', 'week6', 'week7', 'week5720NG', 'week6midi', 'weekFortritri', 'weekAmfrost',
+		'weekIndonesiaRaya', 'weekToxic'
+	];
 
 	public static function reloadWeekFiles(isStoryMode:Null<Bool> = false)
 	{
