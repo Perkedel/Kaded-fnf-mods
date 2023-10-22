@@ -1,5 +1,9 @@
 package ui;
 
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.addons.ui.FlxUISprite;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.addons.ui.FlxUIText;
@@ -28,11 +32,17 @@ class DeprecatedState extends CoreState
 			"The FULL ASS has been released (along with the mod suport).\nPlease visit\nSTEAM_URL\n& purchase the game instead.\nThis mod has been deprecated & all contents of ours will be\nported there.\nIf you'd like to download our legacy stuffs,\nthey are available at Admiral Zumi's Odysee.\n(DM Subject = `DOWNLOAD_LFM_LEGACY`)\nThank you."
 		],
 	];
-	public static var deprecationLevelSelect:Int = 0;
+	public static var deprecationLevelSelect:Int = Perkedel.OBSOLESENCE_MODE;
 
 	override function create()
 	{
 		super.create();
+
+		// Work around object ghost bug as the default transparent bg leaves mark.
+		var antiGhost = new FlxUISprite();
+		antiGhost.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		antiGhost.scrollFactor.set();
+		add(antiGhost);
 
 		// YOINK ForceMajeur
 		var bottomText = new FlxUIText(0, 0, 0, "ENTER to visit FULL ASS Steam | ESC to start mod anyways");
@@ -46,7 +56,7 @@ class DeprecatedState extends CoreState
 		var exceptionText = new FlxUIText();
 		exceptionText.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE);
 		exceptionText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 1);
-		exceptionText.text = deprecationLevelings[deprecationLevelSelect][1];
+		exceptionText.text = deprecationLevelings[Perkedel.OBSOLESENCE_MODE][1] + '\n\n${Perkedel.STAY_LONGER_VOUCHER}';
 		exceptionText.color = FlxColor.RED;
 		exceptionText.screenCenter(X);
 		exceptionText.y += 24;
@@ -55,12 +65,32 @@ class DeprecatedState extends CoreState
 		var crashShit = new FlxUIText();
 		crashShit.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, CENTER);
 		crashShit.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 1);
-		crashShit.text = deprecationLevelings[deprecationLevelSelect][2];
+		crashShit.text = deprecationLevelings[Perkedel.OBSOLESENCE_MODE][2];
 		crashShit.screenCenter(XY);
 		// crashShit.y += exceptionText.y + exceptionText.height + 20;
 		add(crashShit);
 
-		setSectionTitle(deprecationLevelings[deprecationLevelSelect][0]);
+		// yoink logo from our outdated substate! including swing too!
+		var lfmLogo:FlxUISprite = cast new FlxUISprite(FlxG.width, 0).loadGraphic(Paths.loadImage('art/LFMicon256'));
+		lfmLogo.scale.y = .5;
+		lfmLogo.scale.x = .5;
+		lfmLogo.x -= lfmLogo.frameHeight;
+		lfmLogo.y -= 0;
+		lfmLogo.alpha = .8;
+		lfmLogo.antialiasing = FlxG.save.data.antialiasing;
+		add(lfmLogo);
+		FlxTween.angle(lfmLogo, lfmLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
+
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			// JOELwindows7: the LFM logo swing too
+			if (lfmLogo.angle == -10)
+				FlxTween.angle(lfmLogo, lfmLogo.angle, 10, 2, {ease: FlxEase.quartInOut});
+			else
+				FlxTween.angle(lfmLogo, lfmLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
+		}, 0);
+
+		setSectionTitle(deprecationLevelings[Perkedel.OBSOLESENCE_MODE][0]);
 
 		addBackButton(); // JOELwindows7: back button pls.
 		// addLeftButton(Std.int(bottomText.x + bottomText.width + 10), FlxG.height - 100);

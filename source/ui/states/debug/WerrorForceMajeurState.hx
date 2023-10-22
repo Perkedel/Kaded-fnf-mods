@@ -19,6 +19,7 @@
 // yoink from https://github.com/Paidyy/Funkin-PEngine/blob/main/source/Main.hx
 package ui.states.debug;
 
+import flixel.addons.ui.FlxUISprite;
 import flixel.addons.ui.FlxUIText;
 import flixel.util.FlxColor;
 import haxe.Exception;
@@ -60,6 +61,12 @@ class WerrorForceMajeurState extends CoreState
 		trace(exception);
 
 		super.create();
+
+		// Work around object ghost bug as the default transparent bg leaves mark.
+		var antiGhost = new FlxUISprite();
+		antiGhost.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		antiGhost.scrollFactor.set();
+		add(antiGhost);
 
 		// var bg = new Background(FlxColor.fromString("#696969"));
 		// bg.scrollFactor.set(0, 0);
@@ -225,9 +232,11 @@ class WerrorForceMajeurState extends CoreState
 	{
 		var errMsg:String = "";
 		var errHdr:String = ""; // da header
+		var errTotal:String = ""; // & to total all these.
 		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
 		var dateNow:String = Date.now().toString();
+		var dateNowRaw:String = Date.now().toString();
 		var firmwareName:String = Perkedel.ENGINE_ID;
 
 		dateNow = StringTools.replace(dateNow, " ", "_");
@@ -265,7 +274,11 @@ class WerrorForceMajeurState extends CoreState
 			+ '\n```\n'
 			+ '# Firmware name & version:\n'
 			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\n\n'
+			+ '# Crashes at:'
+			+ 'Date: ${dateNowRaw}'
 			+ '# Please report this error to our Github page:\n ${Perkedel.ENGINE_BUGREPORT_URL}\n\n> Crash Handler written by: Paidyy, sqirra-rng';
+
+		errTotal = errHdr + errMsg;
 
 		try
 		{
@@ -283,16 +296,16 @@ class WerrorForceMajeurState extends CoreState
 			if (!FileSystem.exists(checkCrashFolderPath))
 				FileSystem.createDirectory(checkCrashFolderPath);
 
-			File.saveContent(path, errHdr + errMsg + "\n");
+			File.saveContent(path, errTotal + "\n");
 			#end
 
 			#if sys
 			Sys.println('===============');
-			Sys.println(errHdr + errMsg);
+			Sys.println(errTotal);
 			Sys.println('===============');
 			Sys.println("Crash dump saved in " + Path.normalize(path));
 			#else
-			trace(errHdr + errMsg);
+			trace(errTotal);
 			trace('error');
 			#end
 		}
@@ -301,12 +314,12 @@ class WerrorForceMajeurState extends CoreState
 			#if sys
 			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when wanted to write to ${path}\n\n$e:\n\ne${e.details()}');
 			Sys.println('Anyway pls detail!:\n===============');
-			Sys.println(errHdr + errMsg);
+			Sys.println(errTotal);
 			Sys.println('================\nThere, clipboard pls');
 			#else
 			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when wanted to write to ${path}\n\n$e:\n\ne${e.details()}');
 			trace('Anyway pls detail!:\n===============');
-			trace(errHdr + errMsg);
+			trace(errTotal);
 			trace('================\nThere, clipboard pls');
 			#end
 		}

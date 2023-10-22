@@ -589,9 +589,11 @@ class Main extends Sprite
 
 		var errMsg:String = "";
 		var errHdr:String = ""; // JOELwindows7: da header
+		var errTotal:String = ""; // JOELwindows7: & to total all these.
 		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
 		var dateNow:String = Date.now().toString();
+		var dateNowRaw:String = Date.now().toString();
 		var firmwareName:String = Perkedel.ENGINE_ID;
 
 		dateNow = StringTools.replace(dateNow, " ", "_");
@@ -621,7 +623,11 @@ class Main extends Sprite
 			+ '\n```\n'
 			+ '# Firmware name & version:\n'
 			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\n\n'
+			+ '# Crashes at:'
+			+ 'Date: ${dateNowRaw}'
 			+ '# Please report this error to our Github page:\n ${Perkedel.ENGINE_BUGREPORT_URL}\n\n> Crash Handler written by: Paidyy, sqirra-rng';
+
+		errTotal = errHdr + errMsg;
 
 		// if (!FileSystem.exists("./crash/"))
 		// 	FileSystem.createDirectory("./crash/");
@@ -637,16 +643,16 @@ class Main extends Sprite
 			if (!FileSystem.exists("./crash/"))
 				FileSystem.createDirectory("./crash/");
 
-			File.saveContent(path, errHdr + errMsg + "\n");
+			File.saveContent(path, errTotal + "\n");
 			#end
 
 			#if sys
 			Sys.println('===============');
-			Sys.println(errHdr + errMsg);
+			Sys.println(errTotal);
 			Sys.println('===============');
 			Sys.println("Crash dump saved in " + Path.normalize(path));
 			#else
-			trace(errHdr + errMsg);
+			trace(errTotal);
 			trace('error');
 			#end
 		}
@@ -655,12 +661,12 @@ class Main extends Sprite
 			#if sys
 			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when trying to ${path}:\n\n$e:\n\ne${e.details()}');
 			Sys.println('Anyway pls detail!:\n===============');
-			Sys.println(errHdr + errMsg);
+			Sys.println(errTotal);
 			Sys.println('================\nThere, clipboard pls');
 			#else
 			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when trying to ${path}:\n\n$e:\n\ne${e.details()}');
 			trace('Anyway pls detail!:\n===============');
-			trace(errHdr + errMsg);
+			trace(errTotal);
 			trace('================\nThere, clipboard pls');
 			#end
 		}
