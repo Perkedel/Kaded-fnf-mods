@@ -326,6 +326,8 @@ class HaxeScriptState
 		#end
 
 		script = Assets.getText(rawMode ? Paths.hscript(path) : patho).trim();
+		// TODO: add global script to be merged if exists. use += another getText file. also others if users inclined to
+		script += '\n\n' + Assets.getText(Paths.hscript('scripts/songs/_global')).trim();
 		// trace(script);
 		trace('got the script! let\'s parse it!');
 		prog = parser.parseString(script);

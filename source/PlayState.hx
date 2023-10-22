@@ -4023,7 +4023,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	private function generateStaticArrows(player:Int, ?tween:Bool = true):Void // JOELwindows7: BOLO add.
 		// you can now optionally disable tween strum bar fancy entrance!
 	{
-		for (i in 0...4)
+		for (i in 0...4) // JOELwindows7: this max number affects how powerful Shaggy is?
 		{
 			// FlxG.log.add(i);
 			var babyArrow:StaticArrow = new StaticArrow(-10, strumLine.y);

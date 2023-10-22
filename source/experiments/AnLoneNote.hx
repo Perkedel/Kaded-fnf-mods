@@ -27,13 +27,37 @@ class AnLoneNote extends AbstractTestMenu
 		super.create();
 		addInfoText("Lone Note\n\n\nHow does your chosen Noteskin looks like.");
 		Debug.logInfo('test note');
-		var thing = new Note(0, 0, null, false, true, null, null, 0);
-		// var thing = new FlxUISprite();
-		// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
-		// thing.x = FlxG.width / 2;
-		// thing.y = FlxG.height / 2;
-		thing.screenCenter();
-		add(thing);
+		for (h in -1...5)
+		{
+			for (i in 0...4)
+			{
+				var thing = new Note(0, i, null, false, true, null, null, h);
+				// var thing = new FlxUISprite();
+				// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
+				// thing.x = FlxG.width / 2;
+				// thing.y = FlxG.height / 2;
+				// thing.screenCenter();
+				// thing.screenCenter(Y);
+				thing.y = (75 + 100 * h); // / (FlxG.height);
+				thing.x = (75 + 100 * i); // / (FlxG.width);
+				add(thing);
+			}
+		}
+		Debug.logInfo('test receptor');
+		for (i in 0...3)
+		{
+			var thing = new Note(0, i, null, false, true, null, null, 0);
+			var thing = new FlxUISprite();
+			// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
+			// thing.x = FlxG.width / 2;
+			// thing.y = FlxG.height / 2;
+			// thing.screenCenter();
+			// thing.screenCenter(Y);
+			// thing.y = (25 + 10 * h) / (FlxG.height);
+			// thing.x = (50 + 25 * i) / (FlxG.width);
+			// add(thing);
+		}
+
 		Debug.logInfo('ayy');
 	}
 

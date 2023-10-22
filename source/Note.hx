@@ -86,6 +86,8 @@ class Note extends FlxUISprite
 	public var originAngle:Float = 0; // The angle the OG note of the sus note had (?)
 
 	public var dataColor:Array<String> = ['purple', 'blue', 'green', 'red'];
+	public var dataColorCap:Array<String> = ['PURPLE', 'BLUE', 'GREEN', 'RED']; // JOELwindows7: EYY YEA
+	public var dataColorDir:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT']; // JOELwindows7: OOPS
 	public var quantityColor:Array<Int> = [RED_NOTE, 2, BLUE_NOTE, 2, PURP_NOTE, 2, GREEN_NOTE, 2];
 	public var arrowAngles:Array<Int> = [180, 90, 270, 0];
 
@@ -187,6 +189,8 @@ class Note extends FlxUISprite
 			// JOELwindows7: noteType speziale
 			switch (noteType)
 			{
+				// case -1:
+				// receptor. use below play animation!
 				// case 0:
 				// normal. use default!
 				// case 1:
@@ -211,6 +215,7 @@ class Note extends FlxUISprite
 
 			for (i in 0...4)
 			{
+				animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 				animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 				animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 				animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -259,6 +264,7 @@ class Note extends FlxUISprite
 					{
 						animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
 						animation.add(dataColor[i] + 'hold', [i]); // Holds
+						animation.add(dataColor[i] + 'static', [i]); // Receptor notes (if it uses main sprite)
 						animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
 					}
 
@@ -330,6 +336,7 @@ class Note extends FlxUISprite
 
 					for (i in 0...4)
 					{
+						animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -344,7 +351,10 @@ class Note extends FlxUISprite
 
 		// x += swagWidth * noteData;
 		x += swagWidth * (noteData % 4); // JOELwindows7: idk why BOLO has this here, idk.. note row id modulo how many row we had..
-		animation.play(dataColor[noteData] + 'Scroll');
+
+		// animation.play(dataColor[noteData] + 'Scroll');
+		animation.play(dataColor[noteData] + (noteType < 0 ? 'static' : 'Scroll')); // JOELwindows7: NOW CAN PLAY STATIC NOTES
+
 		originColor = noteData; // The note's origin color will be checked by its sustain notes
 
 		// JOELwindows7: whoa, the PlayState.instance can be null! make sure be careful
@@ -577,6 +587,8 @@ class Note extends FlxUISprite
 	{
 		if (inCharter)
 		{
+			// JOELwindows7: PLEASE!! JUST REFRESH 'EM UP!
+
 			// JOELwindows7: noteType speziale
 			switch (noteType)
 			{
@@ -592,6 +604,7 @@ class Note extends FlxUISprite
 
 			for (i in 0...4)
 			{
+				animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 				animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 				animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 				animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -640,6 +653,7 @@ class Note extends FlxUISprite
 					{
 						animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
 						animation.add(dataColor[i] + 'hold', [i]); // Holds
+						animation.add(dataColor[i] + 'static', [i]); // Receptor notes (if it uses main sprite)
 						animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
 					}
 
@@ -709,6 +723,7 @@ class Note extends FlxUISprite
 
 					for (i in 0...4)
 					{
+						animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails

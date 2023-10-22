@@ -1,0 +1,13 @@
+// Global Script for all song to load this.
+// will be merged after main song script loaded.
+// Mods can also merge this file per mod.
+// you can also use separate files too!
+// by JOELwindows7
+// Perkedel Technologies
+// GNU GPL v3
+
+function sampleGlobal(){
+    trace('Hello global!');
+}
+
+trace('parsed Global Script');
