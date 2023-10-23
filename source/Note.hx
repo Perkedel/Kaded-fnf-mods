@@ -196,7 +196,7 @@ class Note extends FlxUISprite
 				// normal. use default!
 				// case 1:
 				// powerup special
-				case 2:
+				case 2 | 4:
 					Debug.logTrace("Whoah dude they adds mine?");
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
 						noteType);
@@ -324,7 +324,7 @@ class Note extends FlxUISprite
 					// JOELwindows7: okay let's be advanced
 					switch (noteType)
 					{
-						case 2:
+						case 2 | 4:
 							// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(NoteSkinHelpers.giveMeNoteSkinPath(noteType) +
 							// 	'-mine') : PlayState.noteskinSpriteMine;
 							// frames = PlayState.SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(PlayState.SONG.noteStyle, noteType,
@@ -603,7 +603,7 @@ class Note extends FlxUISprite
 			// JOELwindows7: noteType speziale
 			switch (noteType)
 			{
-				case 2:
+				case 2 | 4:
 					// frames = Paths.getSparrowAtlas('NOTE_assets_special');
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
 						2);
@@ -615,7 +615,8 @@ class Note extends FlxUISprite
 
 			for (i in 0...4)
 			{
-				animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
+				if (noteType < 0)
+					animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 				animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 				animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 				animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -652,19 +653,33 @@ class Note extends FlxUISprite
 				case 'pixel':
 					// JOELwindows7: resafety check I guess.
 					// loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
-					loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin),
-						true, 17, 17);
-					if (isSustainNote)
-						// loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
-						loadGraphic(PlayState.noteskinPixelSpriteEnds != null ? PlayState.noteskinPixelSpriteEnds : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
-							true),
-							true, 7, 6);
+					// TODO: revamp this noter pixel! combine!
+					switch (noteType)
+					{
+						case 2 | 4:
+							loadGraphic(PlayState.noteskinPixelSpriteMine != null ? PlayState.noteskinPixelSpriteMine : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+								false, noteType),
+								true, 17, 17);
+							if (isSustainNote) // loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+								loadGraphic(PlayState.noteskinPixelSpriteEndsMine != null ? PlayState.noteskinPixelSpriteEndsMine : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+									true, noteType),
+									true, 7, 6);
+						default:
+							loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+								false, noteType),
+								true, 17, 17);
+							if (isSustainNote) // loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+								loadGraphic(PlayState.noteskinPixelSpriteEnds != null ? PlayState.noteskinPixelSpriteEnds : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+									true, noteType),
+									true, 7, 6);
+					}
 
 					for (i in 0...4)
 					{
 						animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
 						animation.add(dataColor[i] + 'hold', [i]); // Holds
-						animation.add(dataColor[i] + 'static', [i]); // Receptor notes (if it uses main sprite)
+						if (noteType < 0)
+							animation.add(dataColor[i] + 'static', [i]); // Receptor notes (if it uses main sprite)
 						animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
 					}
 
@@ -722,7 +737,7 @@ class Note extends FlxUISprite
 					// JOELwindows7: okay let's be advanced
 					switch (noteType)
 					{
-						case 2:
+						case 2 | 4:
 							frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle +
 								'-mine') : PlayState.noteskinSpriteMine;
 						// frames = PlayState.noteskinSpriteMine;
@@ -734,7 +749,8 @@ class Note extends FlxUISprite
 
 					for (i in 0...4)
 					{
-						animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
+						if (noteType < 0)
+							animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails

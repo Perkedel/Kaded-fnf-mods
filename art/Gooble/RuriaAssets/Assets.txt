@@ -1,0 +1,7 @@
+1299 width
+2339 height
+
+Counter
+20 frames gf dance
+every 10 frames it's normal
+left first right last
