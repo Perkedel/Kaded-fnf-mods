@@ -105,6 +105,7 @@ class Note extends FlxUISprite
 	public var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound audio file to play when hit & hitsound option enabled.
 	public var hitlinePath:String = "HitLineParticle"; // JOELwindows7: hitline particle to emit when hit & hitline option enabled. idk this always on?
 	public var vowelType:Int = 0; // JOELwindows7: vowel type. radpas12131's mod. a i u e o.
+	public var noQuantize:Bool = false; // JOELwindows7: force the note to not quantize, useful for testing.
 
 	// IDEA: JOELwindows7: you can have more variables about string or whatever too! like
 	// sylables or phoneme for VOCALOID
@@ -215,7 +216,8 @@ class Note extends FlxUISprite
 
 			for (i in 0...4)
 			{
-				animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
+				if (noteType < 0)
+					animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 				animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 				animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 				animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -264,7 +266,8 @@ class Note extends FlxUISprite
 					{
 						animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
 						animation.add(dataColor[i] + 'hold', [i]); // Holds
-						animation.add(dataColor[i] + 'static', [i]); // Receptor notes (if it uses main sprite)
+						if (noteType < 0)
+							animation.add(dataColor[i] + 'static', [i]); // Receptor notes (if it uses main sprite)
 						animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
 					}
 
@@ -336,7 +339,8 @@ class Note extends FlxUISprite
 
 					for (i in 0...4)
 					{
-						animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
+						if (noteType < 0)
+							animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -369,6 +373,7 @@ class Note extends FlxUISprite
 		// Okay, now I have installed force option. idk this still not recommended because again, pre-rotate messes up your rotation
 		// craze calculations!
 		if (FlxG.save.data.stepMania
+			&& !noQuantize // JOELwindows7: yey tester no quantization
 			&& !isSustainNote
 			&& !(PlayState.instance != null ? (PlayState.instance.executeModchart || PlayState.instance.executeModHscript) : false))
 		{
@@ -391,7 +396,8 @@ class Note extends FlxUISprite
 			else if (beatRow % (192 / 32) == 0)
 				col = quantityColor[4];
 
-			animation.play(dataColor[col] + 'Scroll');
+			// animation.play(dataColor[col] + 'Scroll');
+			animation.play(dataColor[col] + (noteType < 0 ? 'static' : 'Scroll')); // JOELwindows7: NOW CAN PLAY STATIC NOTES
 			if (FlxG.save.data.rotateSprites)
 			{
 				localAngle -= arrowAngles[col];
@@ -463,6 +469,9 @@ class Note extends FlxUISprite
 		}
 
 		// Debug.logTrace("NOte newed enojy");
+
+		// JOELwindows7: BOLO update all hitbox one last time
+		updateHitbox();
 	}
 
 	override function update(elapsed:Float)
@@ -512,6 +521,8 @@ class Note extends FlxUISprite
 				// JOELwindows7: spin mine!!! and other deadly & useful notes
 				angularVelocity = switch (noteType)
 				{
+					case -1: // receptor
+						0;
 					case 1: // powerup
 						0;
 					case 2: // mine
@@ -735,6 +746,8 @@ class Note extends FlxUISprite
 					antialiasing = FlxG.save.data.antialiasing;
 			}
 		}
+		// JOELwindows7: BOLO update all hitbox one last time
+		updateHitbox();
 	}
 }
 

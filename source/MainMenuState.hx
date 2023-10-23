@@ -71,6 +71,7 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+
 		// JOELwindows7: an menu color tween
 		colorTweens = new Array<ColorTween>();
 		// for (i in 0...5){

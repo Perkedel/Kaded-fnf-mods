@@ -31,7 +31,8 @@ class AnLoneNote extends AbstractTestMenu
 		{
 			for (i in 0...4)
 			{
-				var thing = new Note(0, i, null, false, true, null, null, h);
+				var thing = new Note(0, i, null, false, true, null, i * 4, h);
+				thing.noQuantize = true;
 				// var thing = new FlxUISprite();
 				// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
 				// thing.x = FlxG.width / 2;
@@ -40,6 +41,7 @@ class AnLoneNote extends AbstractTestMenu
 				// thing.screenCenter(Y);
 				thing.y = (75 + 100 * h); // / (FlxG.height);
 				thing.x = (75 + 100 * i); // / (FlxG.width);
+				thing.updateHitbox();
 				add(thing);
 			}
 		}

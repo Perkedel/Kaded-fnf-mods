@@ -110,7 +110,8 @@ class DeprecatedState extends CoreState
 	{
 		if (FlxG.gamepads.anyJustPressed(A) || FlxG.keys.justPressed.ENTER || haveClicked)
 		{
-			fancyOpenURL(Perkedel.DONATE_BUTTON_URL); // TODO: pls steam URL if there is.
+			// fancyOpenURL(Perkedel.DONATE_BUTTON_URL); // TODO: pls steam URL if there is.
+			fancyOpenURL(Perkedel.OFFICIAL_WEBSITE_BUTTON_URL); // I think this should suffice
 			haveClicked = false; // JOELwindows7: press OK button.
 		}
 

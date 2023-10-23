@@ -521,7 +521,12 @@ class Paths
 	}
 
 	// JOELwindows7: BOLO's dump exclusion thingy
-	public static var dumpExclusions:Array<String> = ['assets/music/freakyMenu.$SOUND_EXT', 'assets/shared/music/breakfast.$SOUND_EXT'];
+	public static var dumpExclusions:Array<String> = [
+		'assets/music/freakyMenu.$SOUND_EXT',
+		'assets/music/ke-freakyMenu.$SOUND_EXT',
+		'assets/music/freshchill.$SOUND_EXT',
+		'assets/shared/music/breakfast.$SOUND_EXT',
+	];
 
 	// JOELwindows7: BOLO's star of the show, clear unused memory!!!
 	/// haya I love you for the base cache dump I took to the max

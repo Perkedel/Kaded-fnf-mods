@@ -389,7 +389,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 							trace("Converting " + file.header.TITLE);
 							_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 							var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
+							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", FlxColor.YELLOW, file, "assets/sm/" + i);
 							songs.push(meta);
 							var song = Song.loadFromJsonRAW(data);
 							songData.set(file.header.TITLE, [song, song, song]);
@@ -402,7 +402,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 							trace("Converting " + file.header.TITLE);
 							_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 							var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
+							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", FlxColor.YELLOW, file, "assets/sm/" + i);
 							songs.push(meta);
 							var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + i + "/converted.json"));
 							trace("got content lol");
@@ -1154,7 +1154,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 					trace("Converting " + file.header.TITLE);
 					_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 					var data = file.convertToFNF("assets/sm/" + thon + "/converted.json");
-					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + thon);
+					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", FlxColor.YELLOW, file, "assets/sm/" + thon);
 					songs.push(meta);
 					var song = Song.loadFromJsonRAW(data);
 					songData.set(file.header.TITLE, [song, song, song]);
@@ -1167,7 +1167,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 					trace("Converting " + file.header.TITLE);
 					_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 					var data = file.convertToFNF("assets/sm/" + thon + "/converted.json");
-					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + thon);
+					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", FlxColor.YELLOW, file, "assets/sm/" + thon);
 					songs.push(meta);
 					var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + thon + "/converted.json"));
 					trace("got content lol");

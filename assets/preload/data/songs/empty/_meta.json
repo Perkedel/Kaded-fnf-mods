@@ -3,6 +3,7 @@
     "offset": 0,
     "artist": "none",
     "stage": "stage",
+    "bgColor": "#9271fd",
     "isCreditRoll": false,
     "creditRunsOnce": false,
     "delayBeforeStart": 0.0,

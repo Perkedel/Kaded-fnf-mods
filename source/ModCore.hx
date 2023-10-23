@@ -433,7 +433,7 @@ class ModCoreBackend extends OpenFLBackend
 	public override function clearCache()
 	{
 		super.clearCache();
-		Debug.logWarn('Custom asset cache has been cleared.');
+		Debug.logInfo('Custom asset cache has been cleared.'); // JOELwindows7: why warn?!
 	}
 
 	public override function exists(id:String):Bool

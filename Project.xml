@@ -420,6 +420,9 @@
 	<haxeflag name="--macro" value="allowPackage('flash')" />
 	<!-- https://stackoverflow.com/a/21422639/9079640 -->
 
+	<!-- What is this Psych my.pack?! -->
+	<haxeflag name="--macro" value="include('my.pack')" />
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />

@@ -242,6 +242,10 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 	override function create()
 	{
+		// JOELwindows7: BOLO clear memory!
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+
 		// JOELwindows7: Do the work for the weeklist pls!
 		// JOELwindows7: Okay, why not weeklist also procedural? just asking?
 		// not all people are into coding.

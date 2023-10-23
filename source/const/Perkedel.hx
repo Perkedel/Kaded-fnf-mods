@@ -52,6 +52,7 @@ class Perkedel
 	public static final ENGINE_CHANGELOG_PREFIX_URL:String = 'https://odysee.com/@JOELwindows7/LFM-changelog-'; // here URL of change log prefix, appened by what version needed there.
 	public static final ENGINE_CORE_HANDLE_CRASH:Bool = true; // if true, engine will handle crash and restart. if false, engine will not handle crash and restart.
 	public static final DONATE_BUTTON_URL:String = 'https://odysee.com/@JOELwindows7:a/LFM-links:a'; // here URL of donate button
+	public static final OFFICIAL_WEBSITE_BUTTON_URL:String = 'https://funkin.me/'; // here URL of official website
 	public static final ENABLE_MODS:Bool = true;
 	public static final ENABLE_VERSION_CHECK:Bool = true;
 	public static final CHART_EVENTS:Array<String> = [
