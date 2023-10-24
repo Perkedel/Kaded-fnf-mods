@@ -551,6 +551,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		FlxG.mouse.visible = false;
 		instance = this;
 
+		
+
 		// JOELwindows7: BOLO instantiate managers
 		tweenManager = new FlxTweenManager();
 		timerManager = new FlxTimerManager();
@@ -597,6 +599,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			lyricExists = false;
 		}
 
+		inDaPlay = true; // JOELwindows7: over here!
+
 		previousRate = songMultiplier - 0.05;
 
 		if (previousRate < 1.00)
@@ -613,7 +617,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
-		inDaPlay = true;
+		// inDaPlay = true; // JOELwindows7: move to earliest
 
 		if (currentSong != SONG.songName)
 		{
@@ -11048,14 +11052,16 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					// });
 					Debug.logInfo('Contemplate for 10 Second');
 					var contemplateCount:Float = 10;
-					createTimer(1,function(tmr:FlxTimer){
+					createTimer(1, function(tmr:FlxTimer)
+					{
 						Debug.logInfo('Contemplating ${contemplateCount}');
 						contemplateCount--;
-					},10);
+					}, 10);
 					createTimer(10, function(tmr:FlxTimer)
 					{
 						// outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
-						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 					});
 				case 'eggnog':
 					// JOELwindows7: right, we've migrated those here yey. add more things if necessary.
@@ -11074,7 +11080,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 					createTimer(3, function(tmr:FlxTimer)
 					{
 						// outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
-						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 					});
 				case 'sky':
 					// da bbpanzu sky `theManifestCutscene`
@@ -11108,7 +11115,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						{
 							// LoadingState.loadAndSwitchState(new PlayState());
 							// outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
-							decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath, handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+							decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+								handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 						});
 					});
 				case 'manifest':
@@ -11155,7 +11163,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 						// FlxG.sound.music.stop();
 						endingSound.stop();
 						// outroSceneIsDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
-						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
+						decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
+							handoverHasTankmanEpilogueVid, handoverTankmanEpilogueVidPath);
 					});
 				default:
 					decideOutroSceneDone(isNextSong, handoverName, handoverDelayFirst, handoverHasEpilogueVid, handoverEpilogueVidPath,
@@ -11529,9 +11538,10 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// JOELwindows7: spawn note splash core Pyschedly
 	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0, rating:Int = 0)
 	{
-		var skin:String = 'Arrow-splash'; // TODO: JOELwindows7: use `-duar` for mines (note type 2)
-		if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0 && PlayState.SONG.useCustomNoteStyle)
-			skin = PlayState.SONG.noteStyle + "-splash" + (noteType == 2 ? "-duar" : "");
+		var skin:String = '${FlxG.save.data.noteskin}-splash${(noteType == 2 ? "-duar" : "")}' ; // DONE: JOELwindows7: use `-duar` for mines (note type 2) ; Arrow-splash
+		if (PlayState.SONG != null) // JOELwindows7: make sure not null
+			if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0 && PlayState.SONG.useCustomNoteStyle)
+				skin = PlayState.SONG.noteStyle + (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "") + "-splash" + (noteType == 2 ? "-duar" : "");
 
 		// var hue:Float = ClientPrefs.arrowHSV[data % 4][0] / 360;
 		// var sat:Float = ClientPrefs.arrowHSV[data % 4][1] / 100;

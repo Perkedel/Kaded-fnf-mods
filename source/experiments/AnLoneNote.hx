@@ -24,6 +24,7 @@ class AnLoneNote extends AbstractTestMenu
 {
 	override function create()
 	{
+		PlayState.inDaPlay = false;
 		super.create();
 		addInfoText("Lone Note\n\n\nHow does your chosen Noteskin looks like.");
 		Debug.logInfo('test note');
@@ -31,8 +32,10 @@ class AnLoneNote extends AbstractTestMenu
 		{
 			for (i in 0...4)
 			{
-				var thing = new Note(0, i, null, false, true, null, i * 4, h);
+				// Note Arrow
+				var thing:Note = new Note(0, i, null, false, true, null, i * 4, h);
 				thing.noQuantize = true;
+				thing.refreshNoteLook();
 				// var thing = new FlxUISprite();
 				// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
 				// thing.x = FlxG.width / 2;
@@ -43,6 +46,11 @@ class AnLoneNote extends AbstractTestMenu
 				thing.x = (75 + 100 * i); // / (FlxG.width);
 				thing.updateHitbox();
 				add(thing);
+
+				// Note Splash
+				var ngocrot:NoteSplash = new NoteSplash(0, 0, 0);
+				ngocrot.setupNoteSplash(thing.x, thing.y, i, FlxG.save.data.noteskin + '-splash' + (h == 2 ? '-duar' : ''), 0, 0, 0, h, true);
+				add(ngocrot);
 			}
 		}
 		Debug.logInfo('test receptor');

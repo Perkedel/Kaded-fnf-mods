@@ -470,7 +470,7 @@ class Note extends FlxUISprite
 
 		// Debug.logTrace("NOte newed enojy");
 
-		// JOELwindows7: BOLO update all hitbox one last time
+		// JOELwindows7: update all hitbox one last time
 		updateHitbox();
 	}
 
@@ -762,7 +762,7 @@ class Note extends FlxUISprite
 					antialiasing = FlxG.save.data.antialiasing;
 			}
 		}
-		// JOELwindows7: BOLO update all hitbox one last time
+		// JOELwindows7: update all hitbox one last time
 		updateHitbox();
 	}
 }
