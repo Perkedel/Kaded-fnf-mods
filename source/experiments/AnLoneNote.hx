@@ -24,6 +24,8 @@ class AnLoneNote extends AbstractTestMenu
 {
 	override function create()
 	{
+		Paths.clearStoredMemory(); // JOELwindows7: BOLO clear memory!
+		Paths.clearUnusedMemory(); // JOELwindows7: BOLO clear unused memory
 		PlayState.inDaPlay = false;
 		super.create();
 		addInfoText("Lone Note\n\n\nHow does your chosen Noteskin looks like.");
@@ -33,8 +35,8 @@ class AnLoneNote extends AbstractTestMenu
 			for (i in 0...4)
 			{
 				// Note Arrow
-				var thing:Note = new Note(0, i, null, false, true, null, i * 4, h);
-				thing.noQuantize = true;
+				var thing:Note = new Note(0, i, null, false, true, null, i * 4, h, true);
+				// thing.noQuantize = true;
 				thing.refreshNoteLook();
 				// var thing = new FlxUISprite();
 				// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
@@ -49,6 +51,7 @@ class AnLoneNote extends AbstractTestMenu
 
 				// Note Splash
 				var ngocrot:NoteSplash = new NoteSplash(0, 0, 0);
+				// ngocrot.setupNoteSplash(thing.x, thing.y, i, FlxG.save.data.noteskin + '-splash' + (h == 2 ? '-duar' : ''), 0, 0, 0, h, true);
 				ngocrot.setupNoteSplash(thing.x, thing.y, i, FlxG.save.data.noteskin + '-splash' + (h == 2 ? '-duar' : ''), 0, 0, 0, h, true);
 				add(ngocrot);
 			}

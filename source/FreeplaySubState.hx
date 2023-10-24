@@ -68,7 +68,9 @@ class ModMenu extends CoreSubState
 			new Modchart("Toggle Song Modchart if it has it."),
 			new HealthDrain("Toggle Opponent Health Drain when singing."),
 			new HealthGain("Toggle how many health you want to gain."),
-			new HealthLoss("Toggle how many health you want to loss.")
+			new HealthLoss("Toggle how many health you want to loss."),
+			new NoteskinModifier("Select your noteskin"),
+			new BotPlayModifier("Toggle to have the game automatically play for you"),
 		];
 
 		titleObject = new FlxUIText(176, 49, 0, 'GAMEPLAY MODIFIERS');

@@ -118,7 +118,7 @@ class Note extends FlxUISprite
 	var leBpm:Float = 0;
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
-			?bet:Float = 0, ?noteType:Int = 0) // JOELwindows7: edge long noteType
+			?bet:Float = 0, ?noteType:Int = 0, ?noQuantize:Bool = false) // JOELwindows7: edge long noteType
 	{
 		super();
 
@@ -131,6 +131,7 @@ class Note extends FlxUISprite
 		this.noteType = noteType; // JOELwindows7: oh yeah noteType
 		this.prevNote = prevNote;
 		this.inCharter = inCharter;
+		this.noQuantize = noQuantize;
 		isSustainNote = sustainNote;
 		// hitsoundPath = hitsoundId; // yeah the note hitsound
 

@@ -1706,7 +1706,7 @@ class BotPlay extends Option
 
 	public override function left():Bool
 	{
-		OptionsMenu.markRestartSong();
+		// OptionsMenu.markRestartSong();
 		FlxG.save.data.botplay = !FlxG.save.data.botplay;
 		trace('BotPlay : ' + FlxG.save.data.botplay);
 		display = updateDisplay();

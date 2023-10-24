@@ -1,7 +1,6 @@
 package;
 
 // JOELwindows7: YOINK FROM https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/Modifiers.hx
-
 import lime.app.Application;
 import lime.system.DisplayMode;
 import flixel.util.FlxColor;
@@ -359,4 +358,89 @@ class Mirror extends Modifier
 	{
 		return "Mirror mode: < " + (FlxG.save.data.mirror ? "on" : "off") + " >";
 	}
+}
+
+// JOELwindows7: Hey, give me noteskin!
+class NoteskinModifier extends Modifier
+{
+	public function new(desc:String)
+	{
+		super();
+		// if (OptionsMenu.isInPause)
+		// 	description = "This option cannot be toggled in the pause menu.";
+		// else
+		// 	description = desc;
+		// requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
+
+		// JOELwindows7: c'mon let them change it. this noteskin index save data loads only on create.
+		// if (requiresRestartSong)
+		// 	description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc;
+		// else
+		description = desc;
+
+		// JOELwindows7: I got it. you want to apply noteskin right now no restart. It's heavy. you need to tell n number of notes +
+		// strum notes + hold bar to change image. BUT, maybe later. why not, I guess.
+	}
+
+	public override function left():Bool
+	{
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		FlxG.save.data.noteskin--;
+		if (FlxG.save.data.noteskin < 0)
+			FlxG.save.data.noteskin = NoteskinHelpers.getNoteskins().length - 1;
+		display = updateDisplay();
+		// OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		// if (OptionsMenu.isInPause)
+		// 	return false;
+		FlxG.save.data.noteskin++;
+		if (FlxG.save.data.noteskin > NoteskinHelpers.getNoteskins().length - 1)
+			FlxG.save.data.noteskin = 0;
+		display = updateDisplay();
+		// OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
+		return true;
+	}
+
+	public override function getValue():String
+	{
+		return "Noteskin: < " + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin) + " >";
+	}
+}
+
+// JOELwindows7: and botplay!
+class BotPlayModifier extends Modifier
+{
+	public function new(desc:String)
+	{
+		super();
+		// if (OptionsMenu.isInPause)
+		// 	// description = "This option cannot be toggled in the pause menu.";
+		// 	// description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		// 	description = Perkedel.OPTION_SAY_NEED_RESTART_SONG + desc; // JOELwindows7: here with new const for it.
+		// else
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		// OptionsMenu.markRestartSong();
+		FlxG.save.data.botplay = !FlxG.save.data.botplay;
+		trace('BotPlay : ' + FlxG.save.data.botplay);
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+		return "BotPlay: < " + (FlxG.save.data.botplay ? "on" : "off") + " >";
 }
