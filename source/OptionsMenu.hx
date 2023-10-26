@@ -265,6 +265,7 @@ class OptionsMenu extends CoreSubState
 				new PrintSongChartContentOption("Toggle whether Song Chart to be printed (WILL DELAY LONGER THE CONTENT IS)"),
 				new PrintAnnoyingDebugWarnOption("Toggle whether should frequent warns appears (is annoying)"),
 				new ModConfigurationsOption("Configure which Polymod Kade-LFM mods to be loaded"),
+				new LogLevelSelectorOption(CoolUtil.getText("$OPTIONS_LOG_LEVEL_DESCRIPTION")),
 			]),
 			// JOELwindows7: was 935, 40. was 1100, 40
 			new OptionCata(50, 140, "Saves", [

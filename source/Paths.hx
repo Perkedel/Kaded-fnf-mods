@@ -1,5 +1,8 @@
 package;
 
+#if FEATURE_MODCORE
+import polymod.Polymod;
+#end
 import flixel.graphics.frames.FlxFramesCollection;
 import flash.media.Sound;
 import openfl.display.BitmapData;
@@ -566,6 +569,10 @@ class Paths
 		#if FEATURE_MULTITHREADING
 		// clear remaining objects
 		MasterObjectLoader.resetAssets();
+		#end
+
+		#if FEATURE_MODCORE
+		Polymod.clearCache(); // also clear the cache
 		#end
 
 		// clear anything not in the tracked assets list

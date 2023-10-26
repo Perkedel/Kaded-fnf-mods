@@ -642,7 +642,8 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		curSelected += change;
 
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		// FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		playSoundEffect('scrollMenu',.4);
 
 		if (curSelected < 0)
 			curSelected = menuItems.length - 1;

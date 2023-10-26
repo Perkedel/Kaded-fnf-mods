@@ -34,6 +34,8 @@ $OPTIONS_KADE_MUSIC	Main Menu Music
 $OPTIONS_KADE_MUSIC_DESCRIPTION	Choose which main menu music to play next time triggered
 $OPTIONS_KADE_MUSIC_OPT_0	Default
 $OPTIONS_KADE_MUSIC_OPT_1	Kade Engine
+$OPTIONS_LOG_LEVEL	Log Level
+$OPTIONS_LOG_LEVEL_DESCRIPTION	What level type should the log be shown in the console? TRACE means all
 $GAMEPLAY	Gameplay
 $GAMEPLAY_BLINK_TEXT_BOTPLAY	BOTPLAY
 $GAMEPLAY_BLINK_TEXT_REPLAY	REPLAY

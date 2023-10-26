@@ -18,6 +18,10 @@
 
 package;
 
+import openfl.Lib;
+import openfl.text.TextFormatAlign;
+import openfl.text.TextFormat;
+import openfl.text.TextField;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.text.FlxText;
@@ -169,6 +173,7 @@ class VideoSelfContained extends MusicBeatState
 		if (FlxG.keys.justPressed.P || FlxG.mouse.justPressed)
 		{
 			txt.text = pauseText;
+			// txt_ultimate.text = pauseText;
 			trace("PRESSED PAUSE");
 			// GlobalVideo.get().togglePause();
 			videoSprite.togglePause();
@@ -182,6 +187,7 @@ class VideoSelfContained extends MusicBeatState
 				// GlobalVideo.get().unalpha();
 				videoSprite.undim();
 				txt.text = defaultText;
+				// txt_ultimate.text = defaultText;
 			}
 		}
 	}
@@ -204,10 +210,11 @@ class VLCState extends MusicBeatState
 	var toTrans:FlxState;
 	var source:String;
 
-	public var pauseText:String = "Press P To Pause/Unpause";
+	public var pauseText:String = "Press P or OPTION To Pause/Unpause\nHold ENTER / A to skip";
 	public var autoPause:Bool = false;
 	public var musicPaused:Bool = false;
 	public var txt:FlxUIText;
+	public var txt_ultimate:TextField; // pls just OpenFl it!
 	public var peckingVolume:Float = 1;
 	public var fillSkip:Float = 0;
 	public var maxFillSkip:Float = 1;
@@ -237,10 +244,15 @@ class VLCState extends MusicBeatState
 		super.create();
 		// FlxG.autoPause = false;
 
+		var stageWidth:Int = Lib.current.stage.stageWidth;
+		var stageHeight:Int = Lib.current.stage.stageHeight;
+
 		#if FEATURE_VLC
 		theVLC = new MP4Handler();
 		// theVLC.finishCallback = donedCallback;
 		theVLC.onEndReached.add(donedCallback);
+		theVLC.onPaused.add(pausedCallback);
+		theVLC.onPlaying.add(playedCallback);
 		#end
 
 		trace('manufactured the VLC');
@@ -306,6 +318,22 @@ class VLCState extends MusicBeatState
 		txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		txt.screenCenter();
 		add(txt);
+		// FlxG.addChildBelowMouse(txt,0);
+
+		// here, use openFl text, used on Splash Screen
+		txt_ultimate = new TextField();
+		txt_ultimate.selectable = false;
+		txt_ultimate.embedFonts = true;
+		var dtf = new TextFormat(openfl.utils.Assets.getFont("assets/fonts/vcr.ttf").fontName, 24, 0xffffff);
+		dtf.align = TextFormatAlign.CENTER;
+		txt_ultimate.defaultTextFormat = dtf;
+		txt_ultimate.text = "";
+		txt_ultimate.width = 1000;
+		// FlxG.stage.addChild(txt_ultimate);
+		FlxG.addChildBelowMouse(txt_ultimate);
+		// txt_ultimate.x = stageWidth / 2 - txt_ultimate.textWidth / 2;
+		txt_ultimate.x = 100;
+		txt_ultimate.y = stageHeight - 100;
 	}
 
 	override function update(elapsed:Float)
@@ -314,6 +342,7 @@ class VLCState extends MusicBeatState
 		if (FlxG.keys.justPressed.P || FlxG.mouse.justPressed)
 		{
 			txt.text = pauseText;
+			txt_ultimate.text = pauseText;
 			trace("PRESSED PAUSE");
 			// GlobalVideo.get().togglePause();
 			// videoSprite.togglePause();
@@ -325,11 +354,15 @@ class VLCState extends MusicBeatState
 			// 	//GlobalVideo.get().unalpha();
 			//     videoSprite.undim();
 			// 	txt.text = defaultText;
+			// 	txt_ultimate.text = defaultText;
 			// }
 			#if FEATURE_VLC
 			if (theVLC != null)
 			{
 				theVLC.togglePaused();
+				if (theVLC.isPlaying)
+				{
+				}
 			}
 			#end
 		}
@@ -364,6 +397,7 @@ class VLCState extends MusicBeatState
 
 	function donedCallback()
 	{
+		FlxG.stage.removeChild(txt_ultimate);
 		#if FEATURE_VLC
 		if (theVLC != null)
 			theVLC.dispose();
@@ -373,6 +407,18 @@ class VLCState extends MusicBeatState
 		// FlxG.switchState(toTrans);
 		switchState(toTrans);
 		// LoadingState.loadAndSwitchState(toTrans);
+	}
+
+	function pausedCallback()
+	{
+		txt.text = pauseText;
+		txt_ultimate.text = pauseText;
+	}
+
+	function playedCallback()
+	{
+		txt.text = '';
+		txt_ultimate.text = '';
 	}
 
 	/*
@@ -422,5 +468,22 @@ class VLCState extends MusicBeatState
 			theVLC.resume();
 		}
 		#end
+	}
+
+	override public function destroy()
+	{
+		txt_ultimate = null;
+		super.destroy();
+	}
+
+	override public function onResize(Width:Int, Height:Int):Void
+	{
+		super.onResize(Width, Height);
+		// txt_ultimate.width = Width / FlxG.game.scaleX;
+		// txt_ultimate.x = 0;
+		// txt_ultimate.x = 100;
+		// txt_ultimate.y = _sprite.y + 80 * FlxG.game.scaleY;
+		// txt_ultimate.y = (_sprite.y) * FlxG.game.scaleY;
+		// txt_ultimate.y = FlxG.game.scaleY / 2;
 	}
 }

@@ -146,7 +146,8 @@ class SplashScreen extends MusicBeatState
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
 		_sprite = new Sprite();
-		FlxG.stage.addChild(_sprite);
+		// FlxG.stage.addChild(_sprite);
+		FlxG.addChildBelowMouse(_sprite);
 		_sprite.scaleX = _sprite.scaleY = .5;
 		_sprite.y = stageHeight - 40;
 		_gfx = _sprite.graphics;
@@ -158,7 +159,8 @@ class SplashScreen extends MusicBeatState
 		dtf.align = TextFormatAlign.CENTER;
 		_text.defaultTextFormat = dtf;
 		_text.text = "HaxeFlixel";
-		FlxG.stage.addChild(_text);
+		// FlxG.stage.addChild(_text);
+		FlxG.addChildBelowMouse(_text);
 		_text.x = stageWidth / 2 - _text.textWidth / 2;
 		_text.y = stageHeight - 40;
 
@@ -171,7 +173,8 @@ class SplashScreen extends MusicBeatState
 		dtf2.align = TextFormatAlign.CENTER;
 		_poweredByText.defaultTextFormat = dtf2;
 		_poweredByText.text = "Powered by";
-		FlxG.stage.addChild(_poweredByText);
+		// FlxG.stage.addChild(_poweredByText);
+		FlxG.addChildBelowMouse(_poweredByText);
 		_poweredByText.y = stageHeight - 90;
 
 		onResize(stageWidth, stageHeight);

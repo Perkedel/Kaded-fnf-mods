@@ -44,8 +44,8 @@ class AnLoneNote extends AbstractTestMenu
 				// thing.y = FlxG.height / 2;
 				// thing.screenCenter();
 				// thing.screenCenter(Y);
-				thing.y = (75 + 100 * h); // / (FlxG.height);
-				thing.x = (75 + 100 * i); // / (FlxG.width);
+				thing.y = (100 + 100 * h); // / (FlxG.height);
+				thing.x = (100 + 100 * i); // / (FlxG.width);
 				thing.updateHitbox();
 				add(thing);
 

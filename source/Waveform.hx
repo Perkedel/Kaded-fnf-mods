@@ -54,6 +54,8 @@ class Waveform extends FlxUISprite
 
 		var totalSamples = (data.length / (buffer.bitsPerSample / 8) / buffer.channels);
 
+		trace('There are ${totalSamples} samples');
+
 		var min:Float = 0;
 		var max:Float = 0;
 
@@ -77,7 +79,7 @@ class Waveform extends FlxUISprite
 					min = sample;
 			}
 
-			trace("sample " + index);
+			// trace("sample " + index);
 
 			var pixelsMin:Float = Math.abs(min * 300);
 			var pixelsMax:Float = max * 300;

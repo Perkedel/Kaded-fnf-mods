@@ -108,6 +108,7 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+import openfl.utils.Assets as OpenFlAssets;
 #if FEATURE_DISCORD
 import Discord.DiscordClient;
 #end
@@ -550,8 +551,6 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		Paths.clearStoredMemory(); // JOELwindows7: BOLO clear memory!
 		FlxG.mouse.visible = false;
 		instance = this;
-
-		
 
 		// JOELwindows7: BOLO instantiate managers
 		tweenManager = new FlxTweenManager();
@@ -3713,19 +3712,25 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 
 		trace('loaded vocals');
 
+		// if (!isSM)
+		// {
 		FlxG.sound.list.add(vocals);
 		FlxG.sound.list.add(vocals2);
-
+		// }
+ 
 		if (!paused)
 		{
 			// trace("Geh Generate song");
 			#if FEATURE_STEPMANIA
 			if (!isStoryMode && isSM)
 			{
+				// JOELwindows7: OpenFlAssets does not work since these file are not embedded / compiled which data bits are
 				trace("Loading " + pathToSm + "/" + sm.header.MUSIC);
 				var bytes = File.getBytes(pathToSm + "/" + sm.header.MUSIC);
+				// var bytes = OpenFlAssets.getBytes(pathToSm + "/" + sm.header.MUSIC); // JOELwindows7: will you please use OpenFlAssets instead?
 				var sound = new Sound();
 				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+				// sound.loadCompressedDataFromByteArray(bytes, bytes.length); // JOELwindows7: pls yes?
 				FlxG.sound.playMusic(sound, 1, false); // JOELwindows7: DO NOT PECKING FORGET TO DESTROY THE LOOP
 				// Otherwise the end of the song is spasm since the end music signal does not trigger with loop ON.
 			}
@@ -11538,10 +11543,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 	// JOELwindows7: spawn note splash core Pyschedly
 	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, noteType:Int = 0, rating:Int = 0)
 	{
-		var skin:String = '${FlxG.save.data.noteskin}-splash${(noteType == 2 ? "-duar" : "")}' ; // DONE: JOELwindows7: use `-duar` for mines (note type 2) ; Arrow-splash
+		var skin:String = '${FlxG.save.data.noteskin}-splash${(noteType == 2 ? "-duar" : "")}'; // DONE: JOELwindows7: use `-duar` for mines (note type 2) ; Arrow-splash
 		if (PlayState.SONG != null) // JOELwindows7: make sure not null
 			if (PlayState.SONG.noteStyle != null && PlayState.SONG.noteStyle.length > 0 && PlayState.SONG.useCustomNoteStyle)
-				skin = PlayState.SONG.noteStyle + (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "") + "-splash" + (noteType == 2 ? "-duar" : "");
+				skin = PlayState.SONG.noteStyle
+					+ (PlayState.SONG.noteStyle.contains("pixel") ? "-pixel" : "")
+					+ "-splash"
+					+ (noteType == 2 ? "-duar" : "");
 
 		// var hue:Float = ClientPrefs.arrowHSV[data % 4][0] / 360;
 		// var sat:Float = ClientPrefs.arrowHSV[data % 4][1] / 100;

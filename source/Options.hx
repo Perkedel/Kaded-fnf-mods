@@ -4252,6 +4252,52 @@ class KpopLyricsPositionOption extends Option
 	}
 }
 
+// JOELwindows7: Log Level selector
+class LogLevelSelectorOption extends Option{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		var catchWhatIndex:Int = DebugLogWriter.LOG_LEVELS.indexOf(FlxG.save.data.debugLogLevel);
+		// press(); // same as press
+		catchWhatIndex--;
+		if (catchWhatIndex < 0)
+			catchWhatIndex = DebugLogWriter.LOG_LEVELS.length - 1;
+		FlxG.save.data.debugLogLevel = DebugLogWriter.LOG_LEVELS[catchWhatIndex];
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		var catchWhatIndex:Int = DebugLogWriter.LOG_LEVELS.indexOf(FlxG.save.data.debugLogLevel);
+		// press(); // same as press
+		catchWhatIndex++;
+		if (catchWhatIndex > DebugLogWriter.LOG_LEVELS.length - 1)
+			catchWhatIndex = 0;
+		FlxG.save.data.debugLogLevel = DebugLogWriter.LOG_LEVELS[catchWhatIndex];
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		// FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
+		right();
+		// display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return '${CoolUtil.getText('$$OPTIONS_LOG_LEVEL')} < ${FlxG.save.data.debugLogLevel} >';
+	}
+}
+
 // JOELwindows7: Language selector!!!
 class LanguageSelectorOption extends Option
 {

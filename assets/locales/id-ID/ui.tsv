@@ -34,6 +34,8 @@ $OPTIONS_KADE_MUSIC	Musik Menu Utama
 $OPTIONS_KADE_MUSIC_DESCRIPTION	Pilih musik mana yang akan dimainkan saat akan dimainkan lagi
 $OPTIONS_KADE_MUSIC_OPT_0	Default
 $OPTIONS_KADE_MUSIC_OPT_1	Kade Engine
+$OPTIONS_LOG_LEVEL	Tingkat Log
+$OPTIONS_LOG_LEVEL_DESCRIPTION	Berapa jenis tingkat pencatatan yang dapat muncul di konsol? TRACE berarti semuanya
 $GAMEPLAY	Permainan
 $GAMEPLAY_BLINK_TEXT_BOTPLAY	OTOMATIS
 $GAMEPLAY_BLINK_TEXT_REPLAY	REKAMAN

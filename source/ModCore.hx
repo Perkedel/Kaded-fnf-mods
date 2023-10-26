@@ -116,6 +116,14 @@ class ModCore
 
 			// Parsing rules for various data formats.
 			parseRules: buildParseRules(),
+
+			#if firetongue
+			// Firetongue for language support
+			firetongue: Main.tongue,
+			#end
+
+			// Perform scripted classes
+			useScriptedClasses: true,
 		});
 
 		Debug.logInfo('Mod loading complete. We loaded ${loadedModList.length} / ${ids.length} mods.');

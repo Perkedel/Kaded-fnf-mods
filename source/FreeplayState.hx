@@ -2038,11 +2038,14 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			if (songs[curSelected].songCharacter == "sm")
 			{
 				#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
+				// OpenFlAssets does not work since these file are not embedded / compiled which data bits are
 				var data = songs[curSelected];
 				trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
 				var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				// var bytes = OpenFlAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: This too. OpenFlAsset instead pls
 				var sound = new Sound();
 				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+				// sound.loadCompressedDataFromByteArray(bytes, bytes.length); // JOELwindows7: Yeah
 				FlxG.sound.playMusic(sound, 0.7, true); // JOELwindows7: heh bruh, forgot fade in!
 				MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
 				curPlayed = curSelected;
@@ -2230,11 +2233,14 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			if (songs[curSelected].songCharacter == "sm")
 			{
 				#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
+				// OpenFlAssets does not work since these file are not embedded / compiled which data bits are
 				var data = songs[curSelected];
 				trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
 				var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				// var bytes = OpenFlAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: Cmon pls let me openFlAssets
 				var sound = new Sound();
 				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+				// sound.loadCompressedDataFromByteArray(bytes, bytes.length); // JOELwindows7: Pretty pls
 				FlxG.sound.playMusic(sound, 0.7, true); // JOELwindows7: heh bruh, forgot fade in!
 				MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
 				curPlayed = curSelected;
