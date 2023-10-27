@@ -2041,8 +2041,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				// OpenFlAssets does not work since these file are not embedded / compiled which data bits are
 				var data = songs[curSelected];
 				trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
-				var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				// var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
 				// var bytes = OpenFlAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: This too. OpenFlAsset instead pls
+				var bytes = FNFAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: hey, FNF Assets BulbyVR
 				var sound = new Sound();
 				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
 				// sound.loadCompressedDataFromByteArray(bytes, bytes.length); // JOELwindows7: Yeah
@@ -2236,8 +2237,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				// OpenFlAssets does not work since these file are not embedded / compiled which data bits are
 				var data = songs[curSelected];
 				trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
-				var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				// var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
 				// var bytes = OpenFlAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: Cmon pls let me openFlAssets
+				var bytes = FNFAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: hey, FNF Assets BulbyVR
 				var sound = new Sound();
 				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
 				// sound.loadCompressedDataFromByteArray(bytes, bytes.length); // JOELwindows7: Pretty pls

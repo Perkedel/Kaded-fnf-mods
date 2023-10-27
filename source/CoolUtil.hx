@@ -64,7 +64,8 @@ class CoolUtil
 
 		try
 		{
-			daList = OpenFlAssets.getText(path).trim().split('\n');
+			// daList = OpenFlAssets.getText(path).trim().split('\n');
+			daList = FNFAssets.getText(path).trim().split('\n'); // JOELwindows7: pls BulbyVR it! Modding+
 		}
 		catch (e)
 		{
@@ -454,8 +455,9 @@ class CoolUtil
 	}
 }
 
-// JOELwindows7: BOLO 
+// JOELwindows7: BOLO
 // https://github.com/BoloVEVO/Kade-Engine/blob/b6bf12ed71dd8cfd85907793548bb0320839254a/source/funkin/_backend/utils/CoolUtil.hx
+
 /**
 	* Helper Class of FlxBitmapText
 	** WARNING: NON-LEFT ALIGNMENT might break some position properties such as X,Y and functions like screenCenter()

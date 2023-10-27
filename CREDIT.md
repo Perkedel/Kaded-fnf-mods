@@ -504,7 +504,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://knowyourmeme.com/memes/meme-man all meme man information Special meme fresh.
 - https://calver.org/ Use the calendar versioning system! let's see if that works. For us, our scheme will be **`YYYY.0M.MINOR.MICRO`** idk. I believe just to track the time when this was released.
 - https://gamebanana.com/mods/44208 ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 ), Asset Warning: has NC, ND) FNF Modding plus Bulby VR. Chart JSON parameter added here and the compatibility now is being added. inspire the Haxe Script modchart.
-- https://github.com/TheDrawingCoder-Gamer/Funkin ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 )) BulbyVR. the source code for FNFM+ above. the gamebanana page has been trashed, because troubles here and there.
+- https://github.com/TheDrawingCoder-Gamer/Funkin https://github.com/FunkinModdingPlus/ModdingPlus ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 )) BulbyVR. the source code for FNFM+ above. the gamebanana page has been trashed, because troubles here and there.
 - https://gamebanana.com/tools/7158 FunkinVortex. inspire the Modding Plus specific chart JSON parameters here and there!
 - https://github.com/haxorplatform/androidhx android haxe template project. attempted android porting faile
 - https://lib.haxe.org/p/android6permissions android 6 permission checker for haxe. attempted android porting faile

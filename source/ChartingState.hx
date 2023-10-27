@@ -246,14 +246,19 @@ class ChartingState extends MusicBeatState
 			if (PlayState.isSM)
 			{
 				#if FEATURE_STEPMANIA
-				_song = Song.conversionChecks(Song.loadFromJsonRAW(File.getContent(PlayState.pathToSm + "/converted.json")));
+				// _song = Song.conversionChecks(Song.loadFromJsonRAW(File.getContent(PlayState.pathToSm + "/converted.json")));
+				_song = Song.conversionChecks(Song.loadFromJsonRAW(FNFAssets.getText(PlayState.pathToSm +
+					"/converted.json"))); // JOELwindows7: use FNF assets instead!
+				lastPath = PlayState.pathToSm + "/converted.json";
 				#end
 			}
 			else
 			{
 				var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
+				lastPath = Paths.json('songs/${PlayState.SONG.songId}/${PlayState.SONG.songId}${diff}');
 			} // JOELwindows7: so it has to be anything supported by sys
+			alreadySavedBefore = true;
 		}
 		else
 		{
@@ -1544,6 +1549,7 @@ class ChartingState extends MusicBeatState
 
 		var restart = new FlxUIButton(10, 140, "Reset Chart", function()
 		{
+			alreadySavedBefore = false; // JOELwindows7: no accident allowed
 			for (ii in 0..._song.notes.length)
 			{
 				for (i in 0..._song.notes[ii].sectionNotes.length)
@@ -4492,6 +4498,7 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(songId:String):Void
 	{
+		alreadySavedBefore = false; // JOELwindows7: remember, no accident allowed
 		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
 
 		PlayState.SONG = Song.loadFromJson(songId, difficultyArray[PlayState.storyDifficulty]);
@@ -4532,6 +4539,7 @@ class ChartingState extends MusicBeatState
 
 	function loadAutosave():Void
 	{
+		alreadySavedBefore = false; // JOELwindows7: don't forget no accident pls
 		while (curRenderedNotes.members.length > 0)
 		{
 			curRenderedNotes.remove(curRenderedNotes.members[0], true);
@@ -4606,8 +4614,10 @@ class ChartingState extends MusicBeatState
 		FlxG.save.flush();
 	}
 
-	public function saveLevel() // JOELwindows7: make this public for others to tell idk.
+	// JOELwindows7: iyey craft the save data!
+	inline public function craftTheSave()
 	{
+		// JOELwindows7: encapsulate part that craft the save!
 		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
 
 		var toRemove = [];
@@ -4684,9 +4694,95 @@ class ChartingState extends MusicBeatState
 		// var data:String = Json.stringify(json, null, "\t"); // JOELwindows7: must use `TAB` instead!!!!
 		// var data:String = TJSON.stringify(json, null, " "); // JOELwindows7: what?! you don't have stringify?
 		var data:String = TJSON.encode(json, "fancy"); // JOELwindows7: wait, it's called encode!
+		return data;
+	}
+
+	public function saveLevel() // JOELwindows7: make this public for others to tell idk.
+	{
+		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+
+		// var toRemove = [];
+
+		// for (i in _song.notes)
+		// {
+		// 	if (i.startTime > FlxG.sound.music.length)
+		// 		toRemove.push(i);
+		// }
+
+		// for (i in toRemove)
+		// 	_song.notes.remove(i);
+
+		// toRemove = []; // clear memory
+
+		// // JOELwindows7: copy migrate from sectionNotes into betterSectionNotes
+		// for (i in _song.notes)
+		// {
+		// 	// JOELwindows7: for safety, init that betterSectionNotes array
+		// 	// type is `Array<NoteInSection>` from `Section.hx`
+		// 	i.betterSectionNotes = []; // yeah basically this is auto-conversion output anyway.
+		// 	// btw, this type of section notes should've been built like so.
+		// 	// ah well, let this by my own sTILE note section.
+
+		// 	for (j in 0...i.sectionNotes.length)
+		// 	{
+		// 		var stringedNoteType:String = switch (i.sectionNotes[j][5])
+		// 		{
+		// 			case 0:
+		// 				'default'; // regular note
+		// 			case 1:
+		// 				'special'; // powerup
+		// 			case 2:
+		// 				'mine'; // decrease HP
+		// 			case 3:
+		// 				'important'; // critical do not miss or die
+		// 			case 4:
+		// 				'never'; // critical do not step or die
+		// 			case _:
+		// 				'default';
+		// 		};
+
+		// 		// i.betterSectionNotes
+		// 		i.betterSectionNotes[j] = {
+		// 			strumTime: i.sectionNotes[j][0],
+		// 			noteData: i.sectionNotes[j][1],
+		// 			sustainLength: i.sectionNotes[j][2],
+		// 			isAlt: i.sectionNotes[j][3],
+		// 			beat: i.sectionNotes[j][4],
+		// 			noteType: i.sectionNotes[j][5],
+		// 			noteTypeId: stringedNoteType,
+		// 			hitsoundPath: i.sectionNotes[j][6],
+		// 			vowelType: i.sectionNotes[j][7],
+		// 			hitsoundUseIt: i.sectionNotes[j][8],
+		// 		}
+		// 	}
+		// }
+
+		// // JOELwindows7: some modificates first
+		// // _modificatesBeforeSave(difficultyArray);
+		// _modificatesBeforeSave();
+
+		// var json = {
+		// 	"ProgramUsed": Perkedel.ENGINE_NAME,
+		// 	"generatedBy": 'charting',
+		// 	"charter": _song.charter,
+		// 	"song": _song,
+		// };
+
+		// // JOELwindows7: make save JSON pretty
+		// // https://haxe.org/manual/std-Json-encoding.html
+		// // var data:String = Json.stringify(json, "\t");
+		// // var data:String = Json.stringify(json, null, " ");
+		// // var data:String = Json.stringify(json, null, "\t"); // JOELwindows7: must use `TAB` instead!!!!
+		// // var data:String = TJSON.stringify(json, null, " "); // JOELwindows7: what?! you don't have stringify?
+		// var data:String = TJSON.encode(json, "fancy"); // JOELwindows7: wait, it's called encode!
+		var data:String = craftTheSave(); // JOELwindows7: just wrap them here!
 
 		if ((data != null) && (data.length > 0))
 		{
+			// if (alreadySavedBefore){
+			// 	// JOELwindows7: pls BulbyVR's just save now
+			// 	FNFAssets.saveContent(data.trim(),_song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
+			// } else {
 			// #if (systools)
 			// JOELwindows7: use the Dialog file save instead!
 			// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/FileBrowse/source/PlayState.hx
@@ -4703,11 +4799,13 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
 			// #end
+			// }
 		}
 	}
 
 	// JOELwindows7: the just save function. if you already saved as before like above, here save just save without dialog box
 	public var alreadySavedBefore:Bool = false;
+	public var lastPath:String = "";
 
 	public function justSaveNow():Void
 	{
@@ -4718,7 +4816,13 @@ class ChartingState extends MusicBeatState
 			// PAIN IS TEMPORARY, GLORY IS FOREVER. LOL WINTERGATAN
 
 			// TEMPORARY!!! pls help me write file instead of dialog box
-			saveLevel();
+			// saveLevel();
+
+			var data:String = craftTheSave(); // JOELwindows7: just wrap them here!
+			if ((data != null) && (data.length > 0))
+			{
+				FNFAssets.saveContent(data.trim(), lastPath);
+			}
 		}
 		else
 		{
@@ -4776,11 +4880,19 @@ class ChartingState extends MusicBeatState
 	 */
 	function onSaveComplete(_):Void
 	{
+		try
+		{
+			Debug.logInfo('Saved to ${_file.name}');
+			lastPath = _file.name;
+			alreadySavedBefore = true; // JOELwindows7: mark this already saved before.
+		}
+		catch (e)
+		{
+		}
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
-		alreadySavedBefore = true; // JOELwindows7: mark this already saved before.
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
 		// JOELwindows7: trace the success & sound it
 		Debug.logInfo("Yay level saved! cool and good");

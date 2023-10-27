@@ -3726,8 +3726,9 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			{
 				// JOELwindows7: OpenFlAssets does not work since these file are not embedded / compiled which data bits are
 				trace("Loading " + pathToSm + "/" + sm.header.MUSIC);
-				var bytes = File.getBytes(pathToSm + "/" + sm.header.MUSIC);
+				// var bytes = File.getBytes(pathToSm + "/" + sm.header.MUSIC);
 				// var bytes = OpenFlAssets.getBytes(pathToSm + "/" + sm.header.MUSIC); // JOELwindows7: will you please use OpenFlAssets instead?
+				var bytes = FNFAssets.getBytes(pathToSm + "/" + sm.header.MUSIC); // JOELwindows7: hey FNF Assets BulbyVR pls!
 				var sound = new Sound();
 				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
 				// sound.loadCompressedDataFromByteArray(bytes, bytes.length); // JOELwindows7: pls yes?

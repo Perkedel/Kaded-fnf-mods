@@ -397,7 +397,8 @@ class VLCState extends MusicBeatState
 
 	function donedCallback()
 	{
-		FlxG.stage.removeChild(txt_ultimate);
+		if (txt_ultimate != null)
+			FlxG.stage.removeChild(txt_ultimate);
 		#if FEATURE_VLC
 		if (theVLC != null)
 			theVLC.dispose();
@@ -465,7 +466,7 @@ class VLCState extends MusicBeatState
 		if (theVLC != null)
 		{
 			// unpause the VLC
-			theVLC.resume();
+			// theVLC.resume();
 		}
 		#end
 	}
