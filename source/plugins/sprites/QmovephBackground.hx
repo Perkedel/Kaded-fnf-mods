@@ -84,6 +84,27 @@ class QmovephBackground extends FlxGroup
 		trace("druuua");
 	}
 
+	// Yey set BG color!
+	public function setBgColors(into:Array<FlxColor>)
+	{
+		if (into == null || into.length == 0)
+			into = Perkedel.QMOVEPH_BG_COLORS;
+
+		bgClassic = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, into);
+		trace('Change BG colors into ${into}');
+		remove(bgClassic);
+		remove(stars);
+		remove(bubbles);
+
+		// re add
+		add(bgClassic);
+		trace("add bg");
+		add(stars);
+		trace("add stars");
+		add(bubbles);
+		trace("druuua");
+	}
+
 	override function update(elapsed:Float)
 	{
 		if (stars != null)

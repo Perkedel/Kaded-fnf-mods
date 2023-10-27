@@ -177,6 +177,9 @@ class Perkedel
 	public static final SEPARATOR_DIALOG:String = "::";
 	public static final SEPARATOR_LYRIC:String = "::";
 
+	public static final QMOVEPH_BG_COLORS:Array<FlxColor> = [0xFF00A0FF, 0xFF00CEFF, 0xFF505050,];
+	public static final QMOVEPH_BG_COLORS_STORY:Array<FlxColor> = [0xFF020077, 0xFF002833, 0xFF0D051F,];
+
 	// Here image misc
 	public static final CRASH_TEXT_BANNER:String = "
 	████████████████████████████████████████████████████████████████████████████████

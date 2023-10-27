@@ -96,7 +96,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	public static var songData:Map<String, Array<SongData>> = [];
 
 	// JOELwindows7: globalize bg variable to be refered for color change
-	var bg:FlxSprite;
+	var bg:FlxUISprite;
 
 	// JOELwindows7: aesthetic
 	var bgColorTween:ColorTween; // FlxTween change bg color.

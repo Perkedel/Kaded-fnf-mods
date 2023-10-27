@@ -1,5 +1,7 @@
 package;
 
+import Shader.CRTShader;
+import flixel.system.FlxAssets.FlxShader;
 import utils.assets.WeekData;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.ui.FlxUISprite;
@@ -39,6 +41,7 @@ import hxcodec.flixel.FlxVideo as MP4Handler; // wJOELwindows7: BrightFyre & Pol
 import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yep.
 import utils.assets.MenuCharacter as BoloMenuCharacter;
 #end
+import openfl.filters.*;
 
 using StringTools;
 
@@ -295,6 +298,15 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 		persistentUpdate = persistentDraw = true;
 
+		// JOELwindows7: try to install Qmoveph bg
+		if (Main.watermarks && Main.perkedelMark)
+		{
+			// installDefaultBekgron();
+			installSophisticatedDefaultBekgron();
+			if (qmovephBekgron != null)
+				qmovephBekgron.setBgColors(Perkedel.QMOVEPH_BG_COLORS_STORY);
+		}
+
 		scoreText = new FlxUIText(10, 10, 0, "SCORE: 49324858", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
 
@@ -311,13 +323,16 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		// JOELwindows7: yeah
 		// Mark selection for campaign menu ui assets
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		yellowBG = cast new FlxUISprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE); // JOELwindows7: globalized lol
+		yellowBG = new FlxUISprite(0, 56);
+		yellowBG.makeGraphic(FlxG.width, 400, FlxColor.WHITE); // JOELwindows7: globalized lol
+		yellowBG.alpha = 0.5;
 		// original color was 0xFFF9CF51
 		// You must be white as a base colorable.
 
 		trace("Line smothing");
 		// JOELwindows7: add Underlay image first. also the cast
-		underlayBG = cast new FlxUISprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+		underlayBG = new FlxUISprite(0, 56);
+		underlayBG.makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
 		underlayBG.alpha = .3; // Just like the LCD watch game toy.
 		// 64 bit, 32 bit, 16 bit. 8 bit, 4 Bit, 2 BIt, 1 BiT, HALF bIT, QUARTER BIT, THE WRIST GAAAAAAAAAME!!!
 		// lmao angry game review lololol
@@ -329,7 +344,14 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		add(grpLocks);
 
 		// JOELwindows7: yo! sup!
-		var blackBarThingie:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
+		var blackBarThingie:FlxUISprite = new FlxUISprite();
+		blackBarThingie.makeGraphic(FlxG.width, 56, FlxColor.BLACK);
+		@:privateAccess {
+			// blackBarThingie.shader = new BlurFilter();
+			// blackBarThingie.shader = new FlxShader();
+			blackBarThingie.shader = new CRTShader(); // ugh, use last BOLO!
+		}
+		blackBarThingie.alpha = .5; // JOELwindows7: pls not anymore
 		add(blackBarThingie);
 
 		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>(); // TODO: JOELwindows7: change to BOLO
