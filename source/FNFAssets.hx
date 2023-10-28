@@ -125,10 +125,10 @@ class FNFAssets
 	 * @param id The file to check
 	 * @return Bool If file exists, true.
 	 */
-	public static function exists(id:String):Bool
+	public static function exists(id:String, type:AssetType = null):Bool
 	{
 		#if sys
-		var path = Assets.exists(id) ? Assets.getPath(id) : null;
+		var path = Assets.exists(id, type) ? Assets.getPath(id) : null;
 		if (path == null)
 			path = id;
 		else
@@ -136,7 +136,7 @@ class FNFAssets
 			return true;
 		return FileSystem.exists(path);
 		#else
-		return Assets.exists(id);
+		return Assets.exists(id, type);
 		#end
 	}
 
