@@ -159,7 +159,7 @@ class FNFAssets
 		{
 			return BitmapData.fromFile(path);
 		}
-		catch (e:Any)
+		catch (e:Any) 
 		{
 			throw 'File $path doesn\'t exist or cannot be read.';
 		}
