@@ -18,6 +18,9 @@
 
 package;
 
+import flixel.util.FlxColor;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
 import flixel.addons.text.FlxTypeText;
 import ui.states.transition.PsychTransition;
 import flixel.addons.transition.FlxTransitionableState;
@@ -94,7 +97,7 @@ enum ExtraLoadingType
  * GNU GPL v3
  * @author JOELwindows7
  */
-class CoreState extends FlxUIState implements ICoreStating
+class CoreState extends FlxUIState implements ICoreStating implements INapoleonSaying
 {
 	// JOELwindows7: do not forget instance
 	public static var instance:CoreState;
@@ -128,7 +131,6 @@ class CoreState extends FlxUIState implements ICoreStating
 	private var haveViewReplayedHeld:Bool = false;
 	private var haveDebugSevenedHeld:Bool = false;
 	private var haveShiftedHeld:Bool = false;
-
 	var backButton:FlxUISprite; // JOELwindows7: the back button here
 	var leftButton:FlxUISprite; // JOELwindows7: the left button here
 	var rightButton:FlxUISprite; // JOELwindows7: the right button here
@@ -143,9 +145,9 @@ class CoreState extends FlxUIState implements ICoreStating
 	var starfield3D:FlxStarField3D;
 	var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
 	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
+
 	// var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
 	var hourGlass:FlxUISprite; // JOELwindows7: animated gravity hourglass Piskel
-
 	// JOELwindows7: okay, let's be real button instead.
 	var backButtonReal:FlxUIButton;
 	var leftButtonReal:FlxUIButton;
@@ -763,10 +765,10 @@ class CoreState extends FlxUIState implements ICoreStating
 	}
 
 	// JOELwindows7: There's nothing we can do
-	var miniSoldierSaying:FlxTypeText; // Partner
-	var miniGeneralSaying:FlxTypeText; // Napoleon
+	public var miniSoldierSaying:FlxTypeText; // Partner
+	public var miniGeneralSaying:FlxTypeText; // Napoleon
 
-	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0)
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0):Void
 	{
 		miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\n what do we do now?!');
 		miniSoldierSaying.font = "Ubuntu Bold";
@@ -779,6 +781,28 @@ class CoreState extends FlxUIState implements ICoreStating
 		add(miniGeneralSaying);
 		miniSoldierSaying.resetText('Sire! $whatWouldSay!\n what do we do now?!');
 		miniGeneralSaying.resetText('There is nothing we can do.');
+		miniSoldierSaying.start(.1, true, false, null, function()
+		{
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+				miniGeneralSaying.start(.1, true, false, null, function()
+				{
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+					{
+						FlxTween.tween(miniSoldierSaying, {alpha: 0}, 1, {
+							onComplete: function(twn:FlxTween)
+							{
+							}
+						});
+						FlxTween.tween(miniGeneralSaying, {alpha: 0, color: FlxColor.RED}, 5, {
+							onComplete: function(twn:FlxTween)
+							{
+							}
+						});
+					});
+				});
+			});
+		});
 	}
 
 	// JOELwindows7: Controls!
@@ -898,33 +922,24 @@ class CoreState extends FlxUIState implements ICoreStating
  * 
  * @author JOELwindows7
  */
-class CoreSubState extends FlxUISubState implements ICoreStating
+class CoreSubState extends FlxUISubState implements ICoreStating implements INapoleonSaying
 {
 	// JOELwindows7: do not forget instance
 	public static var instance:CoreSubState;
 
 	// JOELwindows7: copy screen size
 	var screenWidth:Int;
-
 	var screenHeight:Int;
-
 	var starfield2D:FlxStarField2D;
-
 	var starfield3D:FlxStarField3D;
-
 	var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
-
 	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
-
 	var hourGlass:FlxUISprite;
-
 	var defaultBekgron:FlxBackdrop;
-
 	var qmovephBekgron:QmovephBackground;
-
 	var _virtualpad:FlxVirtualPad;
-
 	var trackedinputs:Array<FlxActionInput>;
+
 	// JOELwindows7: mouse support flags
 	private var haveClicked:Bool = false;
 	private var haveBacked:Bool = false;
@@ -950,7 +965,6 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	private var haveViewReplayedHeld:Bool = false;
 	private var haveDebugSevenedHeld:Bool = false;
 	private var haveShiftedHeld:Bool = false;
-
 	var backButton:FlxUISprite; // JOELwindows7: the back button here
 	var leftButton:FlxUISprite; // JOELwindows7: the left button here
 	var rightButton:FlxUISprite; // JOELwindows7: the right button here
@@ -960,7 +974,6 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	var acceptButton:FlxUISprite; // JOELwindows7: the accept button here
 	var retryButton:FlxUISprite; // JOELwindows7: the retry button here
 	var viewReplayButton:FlxUISprite; // JOELwindows7: the view replay button here
-
 	// JOELwindows7: okay, let's be real button instead.
 	var backButtonReal:FlxUIButton;
 	var leftButtonReal:FlxUIButton;
@@ -1537,6 +1550,47 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 		#end
 	}
 
+	// JOELwindows7: There's nothing we can do
+	public var miniSoldierSaying:FlxTypeText; // Partner
+	public var miniGeneralSaying:FlxTypeText; // Napoleon
+
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0):Void
+	{
+		miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\n what do we do now?!');
+		miniSoldierSaying.font = "Ubuntu Bold";
+		miniSoldierSaying.prefix = "H: ";
+		miniGeneralSaying = new FlxTypeText(x, y + miniSoldierSaying.y, 400, 'There is nothing we can do.');
+		miniGeneralSaying.font = "Ubuntu Bold";
+		miniGeneralSaying.prefix = "N: ";
+
+		add(miniSoldierSaying);
+		add(miniGeneralSaying);
+		miniSoldierSaying.resetText('Sire! $whatWouldSay!\n what do we do now?!');
+		miniGeneralSaying.resetText('There is nothing we can do.');
+		miniSoldierSaying.start(.1, true, false, null, function()
+		{
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+				miniGeneralSaying.start(.1, true, false, null, function()
+				{
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+					{
+						FlxTween.tween(miniSoldierSaying, {alpha: 0}, 1, {
+							onComplete: function(twn:FlxTween)
+							{
+							}
+						});
+						FlxTween.tween(miniGeneralSaying, {alpha: 0, color: FlxColor.RED}, 5, {
+							onComplete: function(twn:FlxTween)
+							{
+							}
+						});
+					});
+				});
+			});
+		});
+	}
+
 	// JOELwindows7: Controls!
 	function manageMouse():Void
 	{
@@ -1909,4 +1963,56 @@ interface ICoreStating
 	private function updateFirstGamepad(gamepad:FlxGamepad):Void;
 	private function updateAllGamepads(gamepad:Array<FlxGamepad>):Void;
 	private function manageJoypad():Void;
+}
+
+/*
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+ */
+interface INapoleonSaying
+{
+	// JOELwindows7: There's nothing we can do
+	public var miniSoldierSaying:FlxTypeText; // Partner
+	public var miniGeneralSaying:FlxTypeText; // Napoleon
+
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0):Void;
 }
