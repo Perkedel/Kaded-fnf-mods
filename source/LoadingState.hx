@@ -172,7 +172,7 @@ class LoadingState extends MusicBeatState
 	function checkLoadSong(path:String)
 	{
 		if (path != null)
-		{ // JOELwindows7: BOLO added safety!!!
+		{ // JOELwindows7: BOLO added safety!!! BulbyVR convert to FNFAssets. was OpenFlAssets. nvm, method does not exist
 			if (!OpenFlAssets.cache.hasSound(path))
 			{
 				var library = OpenFlAssets.getLibrary("songs");
