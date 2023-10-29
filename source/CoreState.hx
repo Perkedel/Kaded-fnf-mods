@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.addons.text.FlxTypeText;
 import ui.states.transition.PsychTransition;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIButton;
@@ -759,6 +760,25 @@ class CoreState extends FlxUIState implements ICoreStating
 		#else
 		FlxG.openURL(schmancy);
 		#end
+	}
+
+	// JOELwindows7: There's nothing we can do
+	var miniSoldierSaying:FlxTypeText; // Partner
+	var miniGeneralSaying:FlxTypeText; // Napoleon
+
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0)
+	{
+		miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\n what do we do now?!');
+		miniSoldierSaying.font = "Ubuntu Bold";
+		miniSoldierSaying.prefix = "H: ";
+		miniGeneralSaying = new FlxTypeText(x, y + miniSoldierSaying.y, 400, 'There is nothing we can do.');
+		miniGeneralSaying.font = "Ubuntu Bold";
+		miniGeneralSaying.prefix = "N: ";
+
+		add(miniSoldierSaying);
+		add(miniGeneralSaying);
+		miniSoldierSaying.resetText('Sire! $whatWouldSay!\n what do we do now?!');
+		miniGeneralSaying.resetText('There is nothing we can do.');
 	}
 
 	// JOELwindows7: Controls!
