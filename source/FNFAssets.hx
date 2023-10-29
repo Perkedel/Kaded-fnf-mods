@@ -302,6 +302,11 @@ class HScriptAssets
 		return FNFAssets.getText(id);
 	}
 
+	public static function getAsset(id:String, type:AssetType):Dynamic
+	{
+		return FNFAssets.getAsset(id, type);
+	}
+
 	public static function getBytes(id:String):Bytes
 	{
 		return FNFAssets.getBytes(id);

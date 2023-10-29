@@ -1,5 +1,6 @@
 package;
 
+import FNFAssets;
 import flixel.effects.FlxFlicker;
 import CoolUtil;
 import flixel.input.keyboard.FlxKey;
@@ -325,9 +326,9 @@ class HaxeScriptState
 			patho = PlayState.pathToSm + "/modchart.hscript";
 		#end
 
-		script = Assets.getText(rawMode ? Paths.hscript(path) : patho).trim();
+		script = FNFAssets.getText(rawMode ? Paths.hscript(path) : patho).trim();
 		// TODO: add global script to be merged if exists. use += another getText file. also others if users inclined to
-		script += '\n\n' + Assets.getText(Paths.hscript('scripts/songs/_global')).trim();
+		script += '\n\n' + FNFAssets.getText(Paths.hscript('scripts/songs/_global')).trim();
 		// trace(script);
 		trace('got the script! let\'s parse it!');
 		prog = parser.parseString(script);
@@ -2067,6 +2068,7 @@ class HaxeScriptState
 		reterp.variables.set('CompareTypes', CompareTypes); // oh wow it works. hope not crash
 
 		reterp.variables.set("FlxG", HscriptGlobals);
+		reterp.variables.set('Assets', HScriptAssets); // JOELwindows7: hey hey FNF Assets will ya?
 		reterp.variables.set("FlxTimer", FlxTimer);
 		reterp.variables.set("FlxTween", FlxTween);
 		reterp.variables.set("FlxFlicker", FlxFlicker); // JOELwindow7: there is this, people!
@@ -2784,7 +2786,7 @@ class HscriptSoundFrontEndWrapper
 	public var music(get, set):FlxSound;
 	public var muteKeys(get, never):Array<FlxKey>; // JOELwindows7: get only
 	public var muted(get, never):Bool; // JOELwindows7: get only
-	public var soundTrayEnabled(get, set):Bool;
+	public var soundTrayEnabled(get, never):Bool;
 
 	// no mute keys because why do you need that. JOELwindows7: maybe just try the get, no set?
 	function get_muteKeys()
@@ -2798,17 +2800,17 @@ class HscriptSoundFrontEndWrapper
 		return wrapping.muted;
 	}
 
-	// no soundtray enabled because i'm lazy. JOELwindows7:NO!! DO NOT!!!
+	// no soundtray enabled because i'm lazy. JOELwindows7:NO!! DO NOT!!! nvm, just get only
 	function get_soundTrayEnabled()
 	{
 		return wrapping.soundTrayEnabled;
 	}
 
-	function set_soundTrayEnabled(a)
-	{
-		return wrapping.soundTrayEnabled = a;
-	}
-
+	// function set_soundTrayEnabled(a)
+	// {
+	// 	return wrapping.soundTrayEnabled = a;
+	// }
+	//
 	// no volume because i don't trust you guys
 	function get_defaultMusicGroup()
 	{
