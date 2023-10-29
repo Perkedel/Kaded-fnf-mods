@@ -266,7 +266,20 @@ class LoadingState extends MusicBeatState
 	function onLoad()
 	{
 		if (stopMusic && FlxG.sound.music != null)
-			FlxG.sound.music.stop();
+		{
+			// DONE: JOELwindows7: fade it out!
+			FlxTween.tween(FlxG.sound.music, {volume: 0}, .5, {
+				onComplete: function(twn:FlxTween)
+				{
+					if (FlxG.sound.music != null)
+					{
+						FlxG.sound.music.stop();
+						FlxG.sound.music.volume = 1;
+					}
+				}
+			});
+			// FlxG.sound.music.stop();
+		}
 
 		// JOELwindows7: got loaded
 		_loadingBar.setInfoText("Done Loading!");
