@@ -319,6 +319,12 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
 
+			// JOELwindows7: Blueball more than serveral times will Napoleon
+			if (GameOverSubstate.getBlueballCounter() > 5
+				|| PlayState.SONG.songId.contains('napoleon')
+				|| PlayState.SONG.songId.contains('amour-plastique'))
+				installSaying('We have been bluballing for about ${GameOverSubstate.getBlueballCounter()} times now', 50, FlxG.height - 300);
+
 			FlxTween.tween(backButton, {y: FlxG.height - 100, alpha: 1}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
 			// JOELwindows7: also week 7 gameover pls. luckydog7 yeah
 			// if (daStage == 'tankStage' || daStage == 'tankStage2') // wrong! it should be who's player 2!!
@@ -400,6 +406,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (!isEnding)
 		{
+			stopTheSaying(); // JOELwindows7: stop the Napoleon first!
 			PlayState.startTime = 0;
 			isEnding = true;
 			bf.playAnim('deathConfirm', true);

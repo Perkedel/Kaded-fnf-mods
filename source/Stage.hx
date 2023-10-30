@@ -1,5 +1,7 @@
 package;
 
+import flixel.graphics.FlxGraphic;
+import flixel.graphics.tile.FlxGraphicsShader;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.addons.ui.FlxUISprite;
 import flixel.math.FlxAngle;
@@ -2221,7 +2223,11 @@ class Stage extends MusicBeatState
 							switch (atlaser.AtlasType)
 							{
 								case 'SparrowAtlas':
-									totalAtlas.addAtlas(Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic));
+									// if (totalAtlas != null)
+									// 	totalAtlas.addAtlas(Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" +
+									// 		dataBg.graphic));
+									// else
+									// 	totalAtlas = Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic);
 
 								case 'NoAtlas':
 
@@ -2231,9 +2237,10 @@ class Stage extends MusicBeatState
 					}
 				}
 
-				if(totalAtlas != null){
-					anBgThing.frames = totalAtlas;
-				}
+				// if (totalAtlas != null)
+				// {
+				// 	anBgThing.frames = totalAtlas;
+				// }
 
 				anBgThing.setGraphicSize(Std.int(anBgThing.width * dataBg.scale[0]), Std.int(anBgThing.height * dataBg.scale[1]));
 				if (dataBg.colorable)

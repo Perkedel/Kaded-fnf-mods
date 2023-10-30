@@ -809,6 +809,8 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
 		}
 		if (miniSoldierSaying == null)
 			miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\nWhat do we do now?!\n\n', Std.int(size));
+		else
+			remove(miniSoldierSaying);
 		miniSoldierSaying.alpha = 0;
 		miniSoldierSaying.x = x;
 		miniSoldierSaying.y = y;
@@ -819,6 +821,8 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
 		miniSoldierSaying.updateHitbox();
 		if (miniGeneralSaying == null)
 			miniGeneralSaying = new FlxTypeText(x, y + 50, 400, 'There is nothing we can do.\n\n', Std.int(size));
+		else
+			remove(miniGeneralSaying);
 		miniGeneralSaying.alpha = 0;
 		miniGeneralSaying.color = FlxColor.WHITE;
 		miniGeneralSaying.x = x;
@@ -879,6 +883,39 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
 				});
 			});
 		});
+	}
+
+	public function stopTheSaying():Void
+	{
+		if (miniTweenSaying == null)
+			miniTweenSaying = new Array<VarTween>();
+		if (miniTweenColoring == null)
+			miniTweenColoring = new Array<ColorTween>();
+		else
+		{
+			for (twn in miniTweenSaying)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+			for (twn in miniTweenColoring)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+		}
+		if (miniSoldierSaying != null)
+		{
+			miniSoldierSaying.alpha = 0;
+			miniSoldierSaying.color = FlxColor.WHITE;
+			remove(miniSoldierSaying);
+		}
+		if (miniGeneralSaying != null)
+		{
+			miniGeneralSaying.alpha = 0;
+			miniGeneralSaying.color = FlxColor.WHITE;
+			remove(miniSoldierSaying);
+		}
 	}
 
 	// JOELwindows7: Controls!
@@ -1741,6 +1778,39 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 		});
 	}
 
+	public function stopTheSaying():Void
+	{
+		if (miniTweenSaying == null)
+			miniTweenSaying = new Array<VarTween>();
+		if (miniTweenColoring == null)
+			miniTweenColoring = new Array<ColorTween>();
+		else
+		{
+			for (twn in miniTweenSaying)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+			for (twn in miniTweenColoring)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+		}
+		if (miniSoldierSaying != null)
+		{
+			miniSoldierSaying.alpha = 0;
+			miniSoldierSaying.color = FlxColor.WHITE;
+			remove(miniSoldierSaying);
+		}
+		if (miniGeneralSaying != null)
+		{
+			miniGeneralSaying.alpha = 0;
+			miniGeneralSaying.color = FlxColor.WHITE;
+			remove(miniSoldierSaying);
+		}
+	}
+
 	// JOELwindows7: Controls!
 	function manageMouse():Void
 	{
@@ -2167,4 +2237,5 @@ interface INapoleonSaying
 	public var miniTweenColoring:Array<ColorTween>; // tweeners colors
 
 	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0, size:Float = 12, font:String = 'Ubuntu Bold'):Void;
+	public function stopTheSaying():Void;
 }
