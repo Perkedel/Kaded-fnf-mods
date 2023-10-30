@@ -3717,7 +3717,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		FlxG.sound.list.add(vocals);
 		FlxG.sound.list.add(vocals2);
 		// }
- 
+
 		if (!paused)
 		{
 			// trace("Geh Generate song");
@@ -9703,7 +9703,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 				createTimer(0.01, function(tmr:FlxTimer)
 				{
 					tightBars.play(true);
-					tankKludgeText.text = '[Tankman Captain] Heh, pretty tight bars';
+					tankKludgeText.text = '[Tankman Captain] Heh, pretty tight bars'; // `nanggung amat`
 					tankKludgeText.screenCenter(X);
 					createTimer(2, function(tmr:FlxTimer)
 					{
@@ -9879,7 +9879,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 								tankKludgeText.text = 'PEOPLE DIE!!';
 								createTimer(1.7, function(tmr:FlxTimer)
 								{
-									tankKludgeText.text = 'Command,\n(right hand signal soldiers on speaker) get ready to fire!';
+									tankKludgeText.text = 'Command,\nget ready to fire! (right hand signal soldiers on speaker)';
 									tankKludgeText.screenCenter(X);
 									createTimer(2.1, function(tmr:FlxTimer)
 									{
@@ -9934,13 +9934,18 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 							Stage.swagBacks['picoCutscene'].visible = true;
 							Stage.swagBacks['picoCutscene'].animation.play('anim', true);
 							Controls.vibrate(0, 90); // JOELwindows7: bang! pico shoots tankmen!
-							createTimer(1, function(tmr:FlxTimer)
+							createTimer(.01, function(tmr:FlxTimer)
 							{
-								tankKludgeText.text = '[Pico] (point gun to left soldier)\n[Left soldier] WHAAAAA!!!!';
+								tankKludgeText.text = '[Pico] (shot right soldier while kicking Girlfriend bringing her onto Boyfriend then point gun to left soldier)';
+								tankKludgeText.screenCenter(X);
+							});
+							createTimer(.97, function(tmr:FlxTimer)
+							{
+								tankKludgeText.text = '[Left soldier] WHAAAAA!!!!';
 								tankKludgeText.screenCenter(X);
 							});
 							// JOELwindows7: & then the other
-							createTimer(1.6, function(tmr:FlxTimer)
+							createTimer(1.2, function(tmr:FlxTimer)
 							{
 								Controls.vibrate(0, 95);
 								tankKludgeText.text = '[Pico] (BANG)!!\n[Left soldier] (eik serkat!)';

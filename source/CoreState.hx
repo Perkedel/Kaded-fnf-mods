@@ -809,7 +809,7 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
 		}
 		if (miniSoldierSaying == null)
 			miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\nWhat do we do now?!\n\n', Std.int(size));
-		miniSoldierSaying.alpha = 1;
+		miniSoldierSaying.alpha = 0;
 		miniSoldierSaying.x = x;
 		miniSoldierSaying.y = y;
 		miniSoldierSaying.font = font;
@@ -834,12 +834,24 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
 		miniSoldierSaying.resetText(composeSoldierWords);
 		miniGeneralSaying.resetText(composeGeneralWords);
 		trace(composeSoldierWords);
+		miniTweenSaying[3] = FlxTween.tween(miniSoldierSaying, {alpha: 1}, .2, {
+			onComplete: function(twn:FlxTween)
+			{
+				trace('dred');
+			}
+		});
 		miniSoldierSaying.start(.05, true, false, null, function()
 		{
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				trace(composeGeneralWords);
-				miniGeneralSaying.alpha = 1;
+				// miniGeneralSaying.alpha = 1;
+				miniTweenSaying[4] = FlxTween.tween(miniGeneralSaying, {alpha: 1}, .1, {
+					onComplete: function(twn:FlxTween)
+					{
+						trace('drid');
+					}
+				});
 				miniGeneralSaying.start(.05, true, false, null, function()
 				{
 					new FlxTimer().start(1, function(tmr:FlxTimer)
@@ -1657,7 +1669,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 		}
 		if (miniSoldierSaying == null)
 			miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\nWhat do we do now?!\n\n', Std.int(size));
-		miniSoldierSaying.alpha = 1;
+		miniSoldierSaying.alpha = 0;
 		miniSoldierSaying.x = x;
 		miniSoldierSaying.y = y;
 		miniSoldierSaying.font = font;
@@ -1682,12 +1694,24 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 		miniSoldierSaying.resetText(composeSoldierWords);
 		miniGeneralSaying.resetText(composeGeneralWords);
 		trace(composeSoldierWords);
+		miniTweenSaying[3] = FlxTween.tween(miniSoldierSaying, {alpha: 1}, .2, {
+			onComplete: function(twn:FlxTween)
+			{
+				trace('dred');
+			}
+		});
 		miniSoldierSaying.start(.05, true, false, null, function()
 		{
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				trace(composeGeneralWords);
-				miniGeneralSaying.alpha = 1;
+				// miniGeneralSaying.alpha = 1;
+				miniTweenSaying[4] = FlxTween.tween(miniGeneralSaying, {alpha: 1}, .1, {
+					onComplete: function(twn:FlxTween)
+					{
+						trace('drid');
+					}
+				});
 				miniGeneralSaying.start(.05, true, false, null, function()
 				{
 					new FlxTimer().start(1, function(tmr:FlxTimer)
