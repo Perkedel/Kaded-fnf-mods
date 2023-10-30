@@ -259,6 +259,7 @@ class OptionsMenu extends CoreSubState
 				new AnMiniWindowOption("EXPERIMENTAL! Test MiniWindow using debugger's windowing"),
 				new AnKem0xTestStateOption("EXPERIMENTAL! Test Kem0x's Nexus Engine stuffs"),
 				new AnWaveformTestStateOption("EXPERIMENTAL! Test gedehari's Waveform"),
+				new AnNapoleonTestStateOption("EXPERIMENTAL! Test Napoleon dialogs"),
 				// new OutOfSegsWarningOption("Toggle whether Out of Any Segs to be printed (`ON` WILL CAUSE LAG)"),
 				new FreeplayThreadedOption("BETA! Enable Freeplay Threading, may cause system instabilities"),
 				new WorkaroundNoVideoOption("Disable Video Cutscener to workaround crash when trying to start loading video or whatever"),

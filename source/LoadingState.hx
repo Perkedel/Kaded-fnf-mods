@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.misc.VarTween;
 import flixel.math.FlxMath;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUISprite;
@@ -50,6 +51,8 @@ class LoadingState extends MusicBeatState
 
 	var tooLongDidntLoadTimer:FlxTimer; // JOELwindows7: here too long didn't load timer that if runs out appears skip & cancel button.
 	var deservesTooLongDidntLoad:Bool = false; // JOELwindows7: only activates when it is too long!
+
+	public static var poorLittleVolumeDowner:VarTween; // JOELwindows7: pls have this stopped once you arrived to the state!
 
 	function new(target:FlxState, stopMusic:Bool, ?previously:FlxState) // JOELwindows7: here previously
 	{
@@ -268,7 +271,7 @@ class LoadingState extends MusicBeatState
 		if (stopMusic && FlxG.sound.music != null)
 		{
 			// DONE: JOELwindows7: fade it out!
-			FlxTween.tween(FlxG.sound.music, {volume: 0}, .5, {
+			poorLittleVolumeDowner = FlxTween.tween(FlxG.sound.music, {volume: 0}, .5, {
 				onComplete: function(twn:FlxTween)
 				{
 					if (FlxG.sound.music != null)

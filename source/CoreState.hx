@@ -18,6 +18,8 @@
 
 package;
 
+import flixel.tweens.misc.ColorTween;
+import flixel.tweens.misc.VarTween;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
@@ -210,6 +212,10 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
 		// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/GlobalUIState.hx
 		if (!FlxTransitionableState.skipNextTransOut)
 			openSubState(new PsychTransition(0.75, true));
+
+		// JOELwindows7: do stop all tweens to prevent unexpected leftover motions
+		if (LoadingState.poorLittleVolumeDowner != null)
+			LoadingState.poorLittleVolumeDowner.cancel();
 
 		// JOELwindows7: LarsiusPrime's FireTongue pls
 		// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/State_Title.hx
@@ -767,36 +773,94 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
 	// JOELwindows7: There's nothing we can do
 	public var miniSoldierSaying:FlxTypeText; // Partner
 	public var miniGeneralSaying:FlxTypeText; // Napoleon
+	public var miniTweenSaying:Array<VarTween>; // tweeners
+	public var miniTweenColoring:Array<ColorTween>; // tweeners colors
 
-	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0):Void
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0, size:Float = 12, font:String = 'Ubuntu Bold'):Void
 	{
-		miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\n what do we do now?!');
-		miniSoldierSaying.font = "Ubuntu Bold";
+		var composeSoldierWords:String = 'Sire! $whatWouldSay!\nWhat do we do now?!';
+		var composeGeneralWords:String = 'There is nothing we can do.\n\n';
+		// if (miniSoldierSaying != null)
+		// {
+		// 	miniSoldierSaying.destroy();
+		// 	miniSoldierSaying = null;
+		// }
+		// if (miniGeneralSaying != null)
+		// {
+		// 	miniGeneralSaying.destroy();
+		// 	miniGeneralSaying = null;
+		// }
+		if (miniTweenSaying == null)
+			miniTweenSaying = new Array<VarTween>();
+		if (miniTweenColoring == null)
+			miniTweenColoring = new Array<ColorTween>();
+		else
+		{
+			for (twn in miniTweenSaying)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+			for (twn in miniTweenColoring)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+		}
+		if (miniSoldierSaying == null)
+			miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\nWhat do we do now?!\n\n', Std.int(size));
+		miniSoldierSaying.alpha = 1;
+		miniSoldierSaying.x = x;
+		miniSoldierSaying.y = y;
+		miniSoldierSaying.font = font;
+		miniSoldierSaying.size = Std.int(size);
 		miniSoldierSaying.prefix = "H: ";
-		miniGeneralSaying = new FlxTypeText(x, y + miniSoldierSaying.y, 400, 'There is nothing we can do.');
+		miniSoldierSaying.scrollFactor.set();
+		miniSoldierSaying.updateHitbox();
+		if (miniGeneralSaying == null)
+			miniGeneralSaying = new FlxTypeText(x, y + 50, 400, 'There is nothing we can do.\n\n', Std.int(size));
+		miniGeneralSaying.alpha = 0;
+		miniGeneralSaying.color = FlxColor.WHITE;
+		miniGeneralSaying.x = x;
+		miniGeneralSaying.y = y + 50;
 		miniGeneralSaying.font = "Ubuntu Bold";
+		miniGeneralSaying.size = Std.int(size);
 		miniGeneralSaying.prefix = "N: ";
+		miniGeneralSaying.scrollFactor.set();
+		miniGeneralSaying.updateHitbox();
 
 		add(miniSoldierSaying);
 		add(miniGeneralSaying);
-		miniSoldierSaying.resetText('Sire! $whatWouldSay!\n what do we do now?!');
-		miniGeneralSaying.resetText('There is nothing we can do.');
-		miniSoldierSaying.start(.1, true, false, null, function()
+		miniSoldierSaying.resetText(composeSoldierWords);
+		miniGeneralSaying.resetText(composeGeneralWords);
+		trace(composeSoldierWords);
+		miniSoldierSaying.start(.05, true, false, null, function()
 		{
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				miniGeneralSaying.start(.1, true, false, null, function()
+				trace(composeGeneralWords);
+				miniGeneralSaying.alpha = 1;
+				miniGeneralSaying.start(.05, true, false, null, function()
 				{
 					new FlxTimer().start(1, function(tmr:FlxTimer)
 					{
-						FlxTween.tween(miniSoldierSaying, {alpha: 0}, 1, {
+						trace('Yep!');
+						miniTweenSaying[0] = FlxTween.tween(miniSoldierSaying, {alpha: 0}, 1, {
 							onComplete: function(twn:FlxTween)
 							{
+								trace('blub');
 							}
 						});
-						FlxTween.tween(miniGeneralSaying, {alpha: 0, color: FlxColor.RED}, 5, {
+						miniTweenSaying[1] = FlxTween.tween(miniGeneralSaying, {alpha: 0}, 10, {
 							onComplete: function(twn:FlxTween)
 							{
+								trace('blab');
+							}
+						});
+						miniTweenColoring[1] = FlxTween.color(miniGeneralSaying, 5, miniGeneralSaying.color, FlxColor.RED, {
+							onComplete: function(twn:FlxTween)
+							{
+								trace('blib');
 							}
 						});
 					});
@@ -1023,6 +1087,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 
 	override function create()
 	{
+		// JOELwindows7: do stop all tweens to prevent unexpected leftover motions
+		// if (LoadingState.poorLittleVolumeDowner != null)
+		// 	LoadingState.poorLittleVolumeDowner.cancel();
+
 		// JOELwindows7: LarsiusPrime's FireTongue pls
 		// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/State_Title.hx
 		if (Main.tongue == null)
@@ -1553,36 +1621,94 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 	// JOELwindows7: There's nothing we can do
 	public var miniSoldierSaying:FlxTypeText; // Partner
 	public var miniGeneralSaying:FlxTypeText; // Napoleon
+	public var miniTweenSaying:Array<VarTween>; // tweeners
+	public var miniTweenColoring:Array<ColorTween>; // tweeners colors
 
-	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0):Void
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0, size:Float = 12, font:String = 'Ubuntu Bold'):Void
 	{
-		miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\n what do we do now?!');
-		miniSoldierSaying.font = "Ubuntu Bold";
+		var composeSoldierWords:String = 'Sire! $whatWouldSay!\nWhat do we do now?!';
+		var composeGeneralWords:String = 'There is nothing we can do.\n\n';
+		// if (miniSoldierSaying != null)
+		// {
+		// 	miniSoldierSaying.destroy();
+		// 	miniSoldierSaying = null;
+		// }
+		// if (miniGeneralSaying != null)
+		// {
+		// 	miniGeneralSaying.destroy();
+		// 	miniGeneralSaying = null;
+		// }
+		if (miniTweenSaying == null)
+			miniTweenSaying = new Array<VarTween>();
+		if (miniTweenColoring == null)
+			miniTweenColoring = new Array<ColorTween>();
+		else
+		{
+			for (twn in miniTweenSaying)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+			for (twn in miniTweenColoring)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+		}
+		if (miniSoldierSaying == null)
+			miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\nWhat do we do now?!\n\n', Std.int(size));
+		miniSoldierSaying.alpha = 1;
+		miniSoldierSaying.x = x;
+		miniSoldierSaying.y = y;
+		miniSoldierSaying.font = font;
+		miniSoldierSaying.size = Std.int(size);
 		miniSoldierSaying.prefix = "H: ";
-		miniGeneralSaying = new FlxTypeText(x, y + miniSoldierSaying.y, 400, 'There is nothing we can do.');
+		miniSoldierSaying.scrollFactor.set();
+		miniSoldierSaying.updateHitbox();
+		if (miniGeneralSaying == null)
+			miniGeneralSaying = new FlxTypeText(x, y + 50, 400, 'There is nothing we can do.\n\n', Std.int(size));
+		miniGeneralSaying.alpha = 0;
+		miniGeneralSaying.color = FlxColor.WHITE;
+		miniGeneralSaying.x = x;
+		miniGeneralSaying.y = y + 50;
 		miniGeneralSaying.font = "Ubuntu Bold";
+		miniGeneralSaying.size = Std.int(size);
 		miniGeneralSaying.prefix = "N: ";
+		miniGeneralSaying.scrollFactor.set();
+		miniGeneralSaying.updateHitbox();
 
 		add(miniSoldierSaying);
 		add(miniGeneralSaying);
-		miniSoldierSaying.resetText('Sire! $whatWouldSay!\n what do we do now?!');
-		miniGeneralSaying.resetText('There is nothing we can do.');
-		miniSoldierSaying.start(.1, true, false, null, function()
+		miniSoldierSaying.resetText(composeSoldierWords);
+		miniGeneralSaying.resetText(composeGeneralWords);
+		trace(composeSoldierWords);
+		miniSoldierSaying.start(.05, true, false, null, function()
 		{
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				miniGeneralSaying.start(.1, true, false, null, function()
+				trace(composeGeneralWords);
+				miniGeneralSaying.alpha = 1;
+				miniGeneralSaying.start(.05, true, false, null, function()
 				{
 					new FlxTimer().start(1, function(tmr:FlxTimer)
 					{
-						FlxTween.tween(miniSoldierSaying, {alpha: 0}, 1, {
+						trace('Yep!');
+						miniTweenSaying[0] = FlxTween.tween(miniSoldierSaying, {alpha: 0}, 1, {
 							onComplete: function(twn:FlxTween)
 							{
+								trace('blub');
 							}
 						});
-						FlxTween.tween(miniGeneralSaying, {alpha: 0, color: FlxColor.RED}, 5, {
+						miniTweenSaying[1] = FlxTween.tween(miniGeneralSaying, {alpha: 0}, 10, {
 							onComplete: function(twn:FlxTween)
 							{
+								trace('blab');
+							}
+						});
+						miniTweenColoring[1] = FlxTween.color(miniGeneralSaying, 5, miniGeneralSaying.color, FlxColor.RED, {
+							onComplete: function(twn:FlxTween)
+							{
+								trace('blib');
 							}
 						});
 					});
@@ -2013,6 +2139,8 @@ interface INapoleonSaying
 	// JOELwindows7: There's nothing we can do
 	public var miniSoldierSaying:FlxTypeText; // Partner
 	public var miniGeneralSaying:FlxTypeText; // Napoleon
+	public var miniTweenSaying:Array<VarTween>; // tweeners
+	public var miniTweenColoring:Array<ColorTween>; // tweeners colors
 
-	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0):Void;
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0, size:Float = 12, font:String = 'Ubuntu Bold'):Void;
 }

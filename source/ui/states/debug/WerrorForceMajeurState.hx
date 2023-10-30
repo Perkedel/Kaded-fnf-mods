@@ -115,7 +115,7 @@ class WerrorForceMajeurState extends CoreState
 		// JOELwindows7: Napoleon there's nothing we can do
 		try
 		{
-			installSaying('We have encountered ${exception.toString()}!!\nWhat do we do?!', 250, FlxG.height - 300);
+			installSaying('We have encountered `${exception.toString()}`!!', 50, FlxG.height - 300);
 		}
 		catch (e)
 		{
