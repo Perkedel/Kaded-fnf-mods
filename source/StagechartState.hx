@@ -2,6 +2,7 @@
 // Lua
 // JOELwindows7: okay, please widen the area of support for macOS and Linux too.
 // dang failed. I guess we go back to only Windows..
+import Character;
 import openfl.display3D.textures.VideoTexture;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -40,6 +41,10 @@ typedef SwagBackground =
 	var graphic:String;
 	var active:Bool;
 	var isXML:Bool;
+	var ?AtlasType:String;
+	var ?extraAtlases:Array<ExtraAtlasAssets>;
+
+	var ?hasExtraAtlases:Bool;
 	var frameXMLName:String;
 	var prefixXMLName:String;
 	var frameRate:Int;

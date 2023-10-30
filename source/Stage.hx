@@ -1,5 +1,6 @@
 package;
 
+import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.addons.ui.FlxUISprite;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
@@ -2177,6 +2178,8 @@ class Stage extends MusicBeatState
 		{
 			var dataBg:SwagBackground = customStage.backgroundImages[i];
 			var anBgThing:FlxUISprite = new FlxUISprite(dataBg.position[0], dataBg.position[1]);
+			var totalAtlas:FlxAtlasFrames;
+			// TODO: renew Atlasings use Character!
 			multiColorable[i] = dataBg.colorable;
 			trace("spawning bg " + dataBg.callName);
 			if (dataBg.generateMode)
@@ -2186,15 +2189,52 @@ class Stage extends MusicBeatState
 			}
 			else
 			{
-				if (dataBg.isXML)
+				switch (dataBg.AtlasType)
 				{
-					anBgThing.frames = Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic);
-					anBgThing.animation.addByPrefix(dataBg.frameXMLName, dataBg.prefixXMLName, dataBg.frameRate, dataBg.mirrored);
+					case 'SparrowAtlas':
+						totalAtlas = Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic);
+						anBgThing.frames = Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic);
+						anBgThing.animation.addByPrefix(dataBg.frameXMLName, dataBg.prefixXMLName, dataBg.frameRate, dataBg.mirrored);
+					case 'NoAtlas':
+						anBgThing.loadGraphic(Paths.image("stages/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic));
+
+					default:
+						if (dataBg.isXML)
+						{
+							totalAtlas = Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic);
+							anBgThing.frames = Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic);
+							anBgThing.animation.addByPrefix(dataBg.frameXMLName, dataBg.prefixXMLName, dataBg.frameRate, dataBg.mirrored);
+						}
+						else
+						{
+							anBgThing.loadGraphic(Paths.image("stages/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic));
+						}
 				}
-				else
+				if (dataBg.hasExtraAtlases == null)
+					dataBg.hasExtraAtlases = false;
+				if (dataBg.extraAtlases != null)
 				{
-					anBgThing.loadGraphic(Paths.image("stages/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic));
+					if (dataBg.hasExtraAtlases && dataBg.extraAtlases.length > 0)
+					{
+						for (atlaser in dataBg.extraAtlases)
+						{
+							switch (atlaser.AtlasType)
+							{
+								case 'SparrowAtlas':
+									totalAtlas.addAtlas(Paths.getSparrowAtlas("stage/" + CoolUtil.toCompatCase(PlayState.SONG.stage) + "/" + dataBg.graphic));
+
+								case 'NoAtlas':
+
+								default:
+							}
+						}
+					}
 				}
+
+				if(totalAtlas != null){
+					anBgThing.frames = totalAtlas;
+				}
+
 				anBgThing.setGraphicSize(Std.int(anBgThing.width * dataBg.scale[0]), Std.int(anBgThing.height * dataBg.scale[1]));
 				if (dataBg.colorable)
 				{
