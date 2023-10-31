@@ -120,6 +120,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 	public var mainCam:FlxCamera; // JOELwindows7: have yourself a dedicated camera
 	public var camGame:FlxCamera; // JOELwindows7: and this default ones.
+
 	var camHUD:FlxCamera; // JOELwindows7: and for the overlays
 
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
@@ -584,6 +585,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// diffCalcText = new FlxUIText(scoreText.x, scoreText.y + 66, 0, "", 24);
 		diffCalcText = new FlxUIText(scoreText.x, scoreText.y + 136, 0, "", 24); // JOELwindows7: BOLO
 		diffCalcText.font = scoreText.font;
+		diffCalcText.cameras = [camHUD];
+		diffCalcText.scrollFactor.set();
 		add(diffCalcText);
 
 		trace('diff calc texa');
@@ -591,6 +594,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// previewtext = new FlxUIText(scoreText.x, scoreText.y + 96, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24);
 		previewtext = new FlxUIText(scoreText.x, scoreText.y + 166, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24); // JOELwindows7: BOLO
 		previewtext.font = scoreText.font;
+		previewtext.cameras = [camHUD];
+		previewtext.scrollFactor.set();
 		add(previewtext);
 
 		trace('preview texa');
@@ -605,6 +610,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			+ "CTRL to open Gameplay Modifiers\n" + "";
 		helpText.font = scoreText.font;
 		helpText.color = 0xFFfaff96;
+		helpText.cameras = [camHUD];
+		helpText.scrollFactor.set();
 		add(helpText);
 		trace('add help text');
 
