@@ -245,6 +245,7 @@ class Main extends Sprite
 			zoom = Math.min(ratioX, ratioY);
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
+			trace('auto adjusting game size: zoom = ${zoom}, width = ${gameWidth}, height = ${gameHeight}; ratio = (${ratioX},${ratioY})'); // JOELwindows7: idk 
 		}
 
 		#if !cpp
