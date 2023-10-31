@@ -344,19 +344,19 @@ class Main extends Sprite
 		// WindowsAPI.setWindowToDarkMode();
 
 		#if debug
-		#else
-		// JOELwindows7: sayofthelor's Screenshooters
-		FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
-		#end
-
-		#if FLX_DEBUG
 		// JOELwindows7: Flixel Studio
 		FlxStudio.create();
 		// JOELwindows7: plugins above blocks my debugger!
 		game.removeChild(game.debugger);
 		game.addChild(game.debugger);
 		#else
+		// JOELwindows7: sayofthelor's Screenshooters
+		#if FEATURE_FILESYSTEM
+		FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
 		#end
+		#end
+
+		FlxG.plugins.add(new plugins.sprites.Donse());
 
 		// JOELwindows7: now build Xbox controllers
 		#if EXPERIMENTAL_OPENFL_XINPUT

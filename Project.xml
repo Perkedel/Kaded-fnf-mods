@@ -39,7 +39,17 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" />
+	<!-- <window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" /> -->
+	<!-- JOELwindows7: pls doggydentures 4K!!! -->
+	<!-- https://github.com/doggy-dentures/4ktest/blob/main/Project.xml -->
+	<!-- https://gamebanana.com/mods/440772 -->
+	<!-- https://en.wikipedia.org/wiki/4K_resolution -->
+	<!-- 
+		RESOLUTIONS
+		- UHD = width="3840" height="2160"
+		- 4K DCI = width="4096" height="2160"
+	 -->
+	<window width="4096" height="2160" fps="" background="#000000" hardware="true" vsync="false" />
 
 	<!--HTML5-specific-->
 	<window if="html5" resizable="true" />
@@ -48,7 +58,8 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/>
+	<!-- <window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/> -->
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false"/>
 	<!-- JOELwindows7: make it resizable due to Samsung Dex just in case -->
 	<!-- do not make it resizable! it will look silly on big screen! especially gameplay!!! -->
 	<!-- also luckydog7 force it 720p -->
@@ -648,7 +659,7 @@
 	<!-- <haxelib name="hx3compat"/> -->
 	<!-- <haxelib name="hxColorToolkit"/> -->
 	<!-- <haxelib name="roxlib"/> -->
-	<haxelib name="flixel-screenshot-plugin" unless='debug'/>
+	<haxelib name="flixel-screenshot-plugin" unless='debug || web'/>
 	<!-- <haxelib name="flixel-retrotools"/> -->
 	<!-- <haxelib name="flix"/> -->
 	<!-- <haxelib name="zerolib-flixel"/> -->

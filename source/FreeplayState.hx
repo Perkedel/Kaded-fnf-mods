@@ -1,5 +1,7 @@
 package;
 
+import ui.states.transition.PsychTransition;
+import flixel.FlxCamera;
 import utils.assets.WeekData;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.ui.FlxUISprite;
@@ -115,6 +117,10 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	static var loadedUp:Bool = false; // JOELwindows7: flag to raise when loading complete.
 	static var legacySynchronousLoading:Bool = true; // JOELwindows7: keep false to use new async loading.
 	static var unthreadLoading:Bool = false; // JOELwindows7: keep false to use Kade's threaded loading.
+
+	public var mainCam:FlxCamera; // JOELwindows7: have yourself a dedicated camera
+	public var camGame:FlxCamera; // JOELwindows7: and this default ones.
+	var camHUD:FlxCamera; // JOELwindows7: and for the overlays
 
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
@@ -304,6 +310,19 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
 
+		// JOELwindows7: I suggest that you add own camera here, coz.. there's an ghost staeter displaying here.
+		camGame = new FlxCamera();
+		mainCam = new FlxCamera();
+		mainCam.bgColor.alpha = 0;
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+		FlxG.cameras.reset(camGame); // Game Camera (where stage and characters are)
+		FlxG.cameras.add(camHUD); // the HUD
+		FlxG.cameras.add(mainCam); // Main Camera
+		FlxCamera.defaultCameras = [camGame];
+		// JOELwindows7: BOLO set transition for Psyched to main cam
+		PsychTransition.nextCamera = mainCam;
+
 		// PlayState.wentToChartEditor = false; // JOELwindows7: BOLO resets went to chart editor.
 		// JOELwindows7: BOLO put placeholder if music not playing
 		// if (!FlxG.sound.music.playing)
@@ -444,6 +463,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		// var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('menuBGBlue'));
 		bg = new FlxUISprite();
+		// bg.cameras = [camGame];
 		bg.loadGraphic(Paths.image('MenuBGDesatAlt')); // JOELwindows7: here global. was menuDesat
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
@@ -467,6 +487,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				// var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
 				songText = new Alphabet(0, (70 * i) + 30, songFixedName, true, false, true); // JOELwindows7: BOLO globalize
 				songText.isMenuItem = true;
+				// songText.cameras = [camGame];
 				songText.targetY = i;
 				songText.ID = i; // ID the song text to compare curSelected song.
 				grpSongs.add(songText);
@@ -489,6 +510,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		scoreText = new FlxText(FlxG.width * 0.65, 5, 0, "", 32);
 		// scoreText.autoSize = false;
+		scoreText.cameras = [camHUD];
+		scoreText.scrollFactor.set();
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		// scoreText.alignment = RIGHT;
 
@@ -496,7 +519,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		// JOELwindows7: there are additional BOLO's notes
 		var bottomBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(Std.int(FlxG.width), 26, 0xFF000000);
+		bottomBG.cameras = [camHUD];
 		bottomBG.alpha = 0.6;
+		bottomBG.scrollFactor.set();
 		add(bottomBG);
 
 		// JOELwindows7: BOLO has manual preview "Press SPACE to listen to the Song Instrumental /". well, no need!
@@ -510,6 +535,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		var downText:FlxText = new FlxText(bottomBG.x, bottomBG.y + 4, FlxG.width, bottomText, 16);
 		downText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT);
+		downText.cameras = [camHUD];
 		downText.scrollFactor.set();
 		add(downText);
 		// end additional
@@ -518,6 +544,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.4), 337, 0xFF000000); // JOELwindows7: height was 135.
 		scoreBG.alpha = 0.6;
+		scoreBG.cameras = [camHUD];
+		scoreBG.scrollFactor.set();
 		add(scoreBG);
 
 		trace('score BG will ya');
@@ -535,6 +563,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: oh man, BOLO's opponent text slid here!
 		opponentText = new FlxText(scoreText.x, scoreText.y + 66, 0, "", 24);
 		opponentText.font = scoreText.font;
+		opponentText.cameras = [camHUD];
+		opponentText.scrollFactor.set();
 		add(opponentText);
 
 		trace('opponent texa');
@@ -543,6 +573,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// diffText = new FlxUIText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		diffText = new FlxUIText(scoreText.x, scoreText.y + 106, 0, "", 24); // JOELwindows7: BOLO
 		diffText.font = scoreText.font;
+		diffText.cameras = [camHUD];
+		diffText.scrollFactor.set();
 		add(diffText);
 
 		comboText.font = diffText.font; // JOELwindows7: do it here bruh.

@@ -1,6 +1,7 @@
 flag	content
 $INTRO_TEXT_0	intro ini
 $INTRO_TEXT_1	dalam b indo
+$TANKMAN_STORY	Subtitel Minggu 7
 $TANKMAN_STORY_UGH_WELLWELL	[Tankman Captain] Well well well, what do we got here?
 $TANKMAN_STORY_UGH_BEEP	[Boyfriend] BEEP!
 $TANKMAN_STORY_UGH_WESHOULDJUST	[Tankman Captain] We should just KILL YOU but...
@@ -32,6 +33,8 @@ $TANKMAN_STORY_STRESS_LETSROCK_CENSORED	Let's ROCK<C> you little 8888
 $TANKMAN_STORY_STRESS_EXDEE	(Boyfriend & Girlfriend went bruh moment)<N>[Tankman] XD!!!!!
 $TANKMAN_STORY_STRESS_YOULITTLE	.. You little cunts!
 $TANKMAN_STORY_STRESS_YOULITTLE_CENSORED	.. You little 88888!
+$TANKMAN_STORY_STRESS_HEH	Heh!...
+$TANKMAN_STORY_STRESS_PRETTYGOOD	Pretty good!..
 $TANKMAN_GAMEOVER	Week 7 Game Over
 $TANKMAN_GAMEOVER_INSULTS	Week 7 Game Over insults
 $TANKMAN_GAMEOVER_INSULTS_0	I said let's rock, not suck cock<C> XD!!!!!!
