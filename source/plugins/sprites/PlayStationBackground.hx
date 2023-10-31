@@ -23,7 +23,7 @@ import openfl.display.Sprite;
 import flixel.FlxBasic;
 import openfl.display.BitmapData;
 
-@:bitmap("art/KE_HTML5_BG.png") class DaConsoleBG extends BitmapData
+@:bitmap("art/launchImage.png") class DaConsoleBG extends BitmapData
 {
 }
 
@@ -59,7 +59,7 @@ class PlayStationBackground extends Sprite
 
 		// pls install PlayStation bg
 		consoleBGSprite = new Sprite();
-		consoleBGBitmap = new Bitmap(new DaConsoleBG(0, 0));
+		consoleBGBitmap = new Bitmap(new DaConsoleBG(0, 0, true));
 		consoleBGSprite.addChild(consoleBGBitmap);
 		container.addChild(consoleBGSprite);
 
