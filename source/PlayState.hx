@@ -3788,7 +3788,8 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		{
 			Debug.logInfo("Install Song Position bar!");
 			// JOELwindows7: bruh
-			songPosBG = cast new FlxUISprite(0, 10).loadGraphic(Paths.loadImage('healthBar'));
+			songPosBG = new FlxUISprite(0, 10);
+			songPosBG.loadGraphic(Paths.loadImage('healthBar'));
 			if (PlayStateChangeables.useDownscroll)
 				songPosBG.y = FlxG.height * 0.9 + 35;
 			songPosBG.screenCenter(X);
@@ -3858,6 +3859,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			songName.text = SONG.artist + " - " + SONG.songName + ' (' + FlxStringUtil.formatTime(songLength, true) + ')';
 			songName.y = songPosBG.y + (songPosBG.height / 3);
 			songName.alpha = 0; // JOELwindows7: invisibilize first.
+			songName.screenCenter(X); // JOELwindows7: you know what? let's just screen center it and call it the day.
 			add(songName);
 
 			songName.screenCenter(X);

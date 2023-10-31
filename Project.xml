@@ -48,8 +48,10 @@
 		RESOLUTIONS
 		- UHD = width="3840" height="2160"
 		- 4K DCI = width="4096" height="2160"
+		- 1080p = width="1920" height="1080"
 	 -->
-	<window width="4096" height="2160" fps="" background="#000000" hardware="true" vsync="false" />
+	<!-- <window width="4096" height="2160" fps="" background="#000000" hardware="true" vsync="false" /> -->
+	<window width="1920" height="1080" fps="" background="#000000" hardware="true" vsync="false" />
 
 	<!--HTML5-specific-->
 	<window if="html5" resizable="true" />

@@ -286,126 +286,135 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
 	// JOELwindows7: buttons
 	private function addBackButton(x:Int = 100, y:Int = 720 - 100, scale:Float = .5)
 	{
-		backButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('backButton'));
+		backButton = new FlxUISprite(x, y);
+		backButton.loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale), Std.int(backButton.height * scale));
 		backButton.alpha = .5;
 		backButton.scrollFactor.set();
 		backButton.updateHitbox();
 		backButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			backButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	backButton.cameras = [camControl];
 		add(backButton);
 		return backButton;
 	}
 
 	private function addLeftButton(x:Int = 100, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		leftButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
+		leftButton = new FlxUISprite(x, y);
+		leftButton.loadGraphic(Paths.image('leftAdjustButton'));
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale), Std.int(leftButton.height * scale));
 		leftButton.alpha = .5;
 		leftButton.scrollFactor.set();
 		leftButton.updateHitbox();
 		leftButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			leftButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	leftButton.cameras = [camControl];
 		add(leftButton);
 		return leftButton;
 	}
 
 	private function addRightButton(x:Int = 525, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		rightButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
+		rightButton = new FlxUISprite(x, y);
+		rightButton.loadGraphic(Paths.image('rightAdjustButton'));
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale), Std.int(rightButton.height * scale));
 		rightButton.alpha = .5;
 		rightButton.scrollFactor.set();
 		rightButton.updateHitbox();
 		rightButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			rightButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	rightButton.cameras = [camControl];
 		add(rightButton);
 		return rightButton;
 	}
 
 	private function addUpButton(x:Int = 240, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		upButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
+		upButton = new FlxUISprite(x, y);
+		upButton.loadGraphic(Paths.image('upAdjustButton'));
 		upButton.setGraphicSize(Std.int(upButton.width * scale), Std.int(upButton.height * scale));
 		upButton.alpha = .5;
 		upButton.scrollFactor.set();
 		upButton.updateHitbox();
 		upButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			upButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	upButton.cameras = [camControl];
 		add(upButton);
 		return upButton;
 	}
 
 	private function addDownButton(x:Int = 450, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		downButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
+		downButton = new FlxUISprite(x, y);
+		downButton.loadGraphic(Paths.image('downAdjustButton'));
 		downButton.setGraphicSize(Std.int(downButton.width * scale), Std.int(downButton.height * scale));
 		downButton.alpha = .5;
 		downButton.scrollFactor.set();
 		downButton.updateHitbox();
 		downButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			downButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	downButton.cameras = [camControl];
 		add(downButton);
 		return downButton;
 	}
 
 	private function addPauseButton(x:Int = 640, y:Int = 10, scale:Float = .5)
 	{
-		pauseButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('pauseButton'));
+		pauseButton = new FlxUISprite(x, y);
+		pauseButton.loadGraphic(Paths.image('pauseButton'));
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale), Std.int(pauseButton.height * scale));
 		pauseButton.alpha = .5;
 		pauseButton.scrollFactor.set();
 		pauseButton.updateHitbox();
 		pauseButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			pauseButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	pauseButton.cameras = [camControl];
 		add(pauseButton);
 		return pauseButton;
 	}
 
 	private function addAcceptButton(x:Int = 1280 - 100, y:Int = 720 - 100, scale:Float = .5)
 	{
-		acceptButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('acceptButton'));
+		acceptButton = new FlxUISprite(x, y);
+		acceptButton.loadGraphic(Paths.image('acceptButton'));
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale), Std.int(acceptButton.height * scale));
 		acceptButton.alpha = .5;
 		acceptButton.scrollFactor.set();
 		acceptButton.updateHitbox();
 		acceptButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			acceptButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	acceptButton.cameras = [camControl];
 		add(acceptButton);
 		return acceptButton;
 	}
 
 	private function addRetryButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		retryButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('retryButton'));
+		retryButton = new FlxUISprite(x, y);
+		retryButton.loadGraphic(Paths.image('retryButton'));
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale), Std.int(retryButton.height * scale));
 		retryButton.alpha = .5;
 		retryButton.scrollFactor.set();
 		retryButton.updateHitbox();
 		retryButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			retryButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	retryButton.cameras = [camControl];
 		add(retryButton);
 		return retryButton;
 	}
 
 	private function addViewReplayButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		viewReplayButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
+		viewReplayButton = new FlxUISprite(x, y);
+		viewReplayButton.loadGraphic(Paths.image('viewReplayButton'));
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale), Std.int(viewReplayButton.height * scale));
 		viewReplayButton.alpha = .5;
 		viewReplayButton.scrollFactor.set();
 		viewReplayButton.updateHitbox();
 		viewReplayButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			viewReplayButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	viewReplayButton.cameras = [camControl];
 		add(viewReplayButton);
 		return viewReplayButton;
 	}
@@ -1152,8 +1161,16 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 		super.create();
 
 		// JOELwindows7: manage Stuffs first
-		manageMouse();
-		manageJoypad();
+		try
+		{
+			manageMouse();
+			manageJoypad();
+		}
+		catch (e)
+		{
+			trace('Early faile to to manage controls: ${e}\n${e.details()}\n\nI hope the next normal should not be like this bruh!');
+		}
+		initCamControl();
 	}
 
 	override function update(elapsed:Float)
@@ -1182,7 +1199,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 	// JOELwindows7: buttons
 	private function addBackButton(x:Int = 720 - 200, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		backButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('backButton'));
+		backButton = new FlxUISprite(x, y);
+		backButton.loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale), Std.int(backButton.height * scale));
 		backButton.alpha = .5;
 		backButton.scrollFactor.set();
@@ -1196,7 +1214,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 
 	private function addLeftButton(x:Int = 100, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		leftButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
+		leftButton = new FlxUISprite(x, y);
+		leftButton.loadGraphic(Paths.image('leftAdjustButton'));
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale), Std.int(leftButton.height * scale));
 		leftButton.alpha = .5;
 		leftButton.scrollFactor.set();
@@ -1210,7 +1229,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 
 	private function addRightButton(x:Int = 525, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		rightButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
+		rightButton = new FlxUISprite(x, y);
+		rightButton.loadGraphic(Paths.image('rightAdjustButton'));
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale), Std.int(rightButton.height * scale));
 		rightButton.alpha = .5;
 		rightButton.scrollFactor.set();
@@ -1224,7 +1244,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 
 	private function addUpButton(x:Int = 240, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		upButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
+		upButton = new FlxUISprite(x, y);
+		upButton.loadGraphic(Paths.image('upAdjustButton'));
 		upButton.setGraphicSize(Std.int(upButton.width * scale), Std.int(upButton.height * scale));
 		upButton.alpha = .5;
 		upButton.scrollFactor.set();
@@ -1238,7 +1259,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 
 	private function addDownButton(x:Int = 450, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		downButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
+		downButton = new FlxUISprite(x, y);
+		downButton.loadGraphic(Paths.image('downAdjustButton'));
 		downButton.setGraphicSize(Std.int(downButton.width * scale), Std.int(downButton.height * scale));
 		downButton.alpha = .5;
 		downButton.scrollFactor.set();
@@ -1252,7 +1274,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 
 	private function addPauseButton(x:Int = 640, y:Int = 10, scale:Float = .5)
 	{
-		pauseButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('pauseButton'));
+		pauseButton = new FlxUISprite(x, y);
+		pauseButton.loadGraphic(Paths.image('pauseButton'));
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale), Std.int(pauseButton.height * scale));
 		pauseButton.alpha = .5;
 		pauseButton.scrollFactor.set();
@@ -1266,7 +1289,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 
 	private function addAcceptButton(x:Int = 1280, y:Int = 360, scale:Float = .5)
 	{
-		acceptButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('acceptButton'));
+		acceptButton = new FlxUISprite(x, y);
+		acceptButton.loadGraphic(Paths.image('acceptButton'));
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale), Std.int(acceptButton.height * scale));
 		acceptButton.alpha = .5;
 		acceptButton.scrollFactor.set();
@@ -1280,7 +1304,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 
 	private function addRetryButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		retryButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('retryButton'));
+		retryButton = new FlxUISprite(x, y);
+		retryButton.loadGraphic(Paths.image('retryButton'));
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale), Std.int(retryButton.height * scale));
 		retryButton.alpha = .5;
 		retryButton.scrollFactor.set();
@@ -1294,7 +1319,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 
 	private function addViewReplayButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		viewReplayButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
+		viewReplayButton = new FlxUISprite(x, y);
+		viewReplayButton.loadGraphic(Paths.image('viewReplayButton'));
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale), Std.int(viewReplayButton.height * scale));
 		viewReplayButton.alpha = .5;
 		viewReplayButton.scrollFactor.set();

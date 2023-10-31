@@ -1,6 +1,7 @@
 package;
 
 // import utils.api.WindowsAPI;
+import plugins.sprites.PlayStationBackground;
 import ui.DeprecatedState;
 #if debug
 import flixel.addons.studio.FlxStudio;
@@ -89,6 +90,7 @@ class Main extends Sprite
 	public static var chosenMarkNum:Int = 0;
 
 	public static var gjToastManager:GJToastManager; // JOELwindows7: TentaRJ Gamejolter now has Toast yey! FORMATTER STOP PECK THIS UP FEMALE DOG!!!
+	public static var playStationBG:PlayStationBackground; // JOELwindows7: and this one used by Toby Fox and friends to beautify compensate screen blackbars
 	public static var loadingBar:LoadingBar; // JOELwindows7: the loading bar thingy.
 
 	// JOELwindows7: furusystem & karaidon Xinput thingy
@@ -249,8 +251,13 @@ class Main extends Sprite
 		framerate = 60;
 		#end
 
+		// JOELwindows7: install PlayStatin Background
+		playStationBG = new PlayStationBackground();
+
 		// JOELwindows7: install the toast for GameJolter
 		gjToastManager = new GJToastManager();
+
+		addChild(playStationBG); // JOELwindows7: add it first!
 
 		// JOELwindows7: Friggin Screen Grab functions
 		// inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
@@ -347,8 +354,8 @@ class Main extends Sprite
 		// JOELwindows7: Flixel Studio
 		FlxStudio.create();
 		// JOELwindows7: plugins above blocks my debugger!
-		game.removeChild(game.debugger);
-		game.addChild(game.debugger);
+		// game.removeChild(game.debugger);
+		// game.addChild(game.debugger);
 		#else
 		// JOELwindows7: sayofthelor's Screenshooters
 		#if FEATURE_FILESYSTEM
@@ -378,6 +385,8 @@ class Main extends Sprite
 		// gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION, false);
 		gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION,
 			false); // damn it, you must init FireTongue should've immediately! wait you need save..
+
+		// addChild(playStationBG); // JOELwindows7: and it this.
 
 		// JOELwindows7: Oh don't forget! the loading bar
 		loadingBar = new LoadingBar(0, 0, 0xFFFFFF);

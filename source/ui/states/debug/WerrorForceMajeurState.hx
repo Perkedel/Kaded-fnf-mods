@@ -19,6 +19,7 @@
 // yoink from https://github.com/Paidyy/Funkin-PEngine/blob/main/source/Main.hx
 package ui.states.debug;
 
+import flixel.util.FlxTimer;
 import flixel.addons.ui.FlxUISprite;
 import flixel.addons.ui.FlxUIText;
 import flixel.util.FlxColor;
@@ -113,14 +114,17 @@ class WerrorForceMajeurState extends CoreState
 		setSectionTitle('WERROR: ${exception.toString()}');
 
 		// JOELwindows7: Napoleon there's nothing we can do
-		try
+		new FlxTimer().start(2, function(tmr:FlxTimer)
 		{
-			installSaying('We have encountered `${exception.toString()}`!!', 50, FlxG.height - 300);
-		}
-		catch (e)
-		{
-			trace('Napoleon faile: ${e}\n${e.details()}');
-		}
+			try
+			{
+				installSaying('We have encountered `${exception.toString()}`!!', 50, FlxG.height - 300);
+			}
+			catch (e)
+			{
+				trace('Napoleon faile: ${e}\n${e.details()}');
+			}
+		});
 
 		addBackButton(); // JOELwindows7: back button pls.
 		// addLeftButton(Std.int(bottomText.x + bottomText.width + 10), FlxG.height - 100);

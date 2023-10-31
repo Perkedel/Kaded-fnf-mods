@@ -311,6 +311,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
 
+		super.create(); // JOELwindows7: call now!!!
+
 		// JOELwindows7: I suggest that you add own camera here, coz.. there's an ghost staeter displaying here.
 		camGame = new FlxCamera();
 		mainCam = new FlxCamera();
@@ -472,12 +474,6 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
-		// JOELwindows7: back button
-		addBackButton(20, FlxG.height);
-		// JOELwindows7: and difficulty button
-		addLeftButton(FlxG.width - 350, FlxG.height); // was -100
-		addRightButton(FlxG.width - 100, FlxG.height); // was -100
-
 		trace('Button dez');
 
 		if (legacySynchronousLoading)
@@ -557,6 +553,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// comboText = new FlxText(diffText.x + 100, diffText.y, 0, "", 24); // was width 0
 		comboText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		// comboText.font = diffText.font; // JOELwindows7: bruh, diff text was not made until there bellow man.
+		comboText.cameras = [camHUD];
+		comboText.scrollFactor.set();
 		add(comboText);
 
 		trace('combo texa');
@@ -679,11 +677,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		}
 		#end
 
-		super.create();
-
-		FlxTween.tween(backButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
-		FlxTween.tween(leftButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left button! was 90 y
-		FlxTween.tween(rightButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween right button! was 90 y
+		// super.create(); // JOELwindows7: don't call late
 
 		if (legacySynchronousLoading)
 		{
@@ -730,6 +724,20 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				changeDiff();
 			}
 		}
+
+		// JOELwindows7: back button
+		addBackButton(20, FlxG.height);
+		// JOELwindows7: and difficulty button
+		addLeftButton(FlxG.width - 350, FlxG.height); // was -100
+		addRightButton(FlxG.width - 100, FlxG.height); // was -100
+		backButton.cameras = [camHUD];
+		leftButton.cameras = [camHUD];
+		rightButton.cameras = [camHUD];
+
+		FlxTween.tween(backButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left button! was 90 y
+		FlxTween.tween(rightButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween right button! was 90 y
+		// IDEA: Corestate install buttons package post create!
 	}
 
 	public static var cached:Bool = false;
@@ -1636,7 +1644,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		{
 			openMod = true;
 			FlxG.sound.play(Paths.sound('scrollMenu'));
-			openSubState(new FreeplaySubState.ModMenu());
+			openSubState(new FreeplaySubState.ModMenu()); // gameplay modifier substate menu
 		}
 
 		// JOELwindows7: there you are, audio manipulate lol

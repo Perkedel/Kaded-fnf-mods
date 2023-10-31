@@ -1,5 +1,6 @@
 // import Console.ConsoleOutputStream;
 // import flixel.system.macros.FlxGitSHA;
+import DokiDoki;
 import haxe.display.Protocol.Version;
 import lime.app.Application;
 import lime.system.System as LimeSys;
@@ -297,6 +298,9 @@ class Debug
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(Song, [
 			"chartVersion", "song", "speed", "player1", "player2", "gfVersion", "noteStyle", "stage", "variables", "diffVariables",
 		], []));
+		// FlxG.debugger.addTrackerProfile(new TrackerProfile(DokiDoki,['heartSpecs','character','initHR','minHR','maxHR','hearts'],[])); // JOELwindows7: ey heartbeat organ yeyeyey
+		FlxG.debugger.addTrackerProfile(new TrackerProfile(JantungOrgan, ['character', 'isEmulator', 'curHR', 'initHR', 'minHR', 'maxHR'],
+			[])); // JOELwindows7: ey heartbeat organ yeyeyey
 		// JOELwindows7: oh haaiii
 		// JOELwindows7: oh hi there. lol A Hat in Time, Hat kid yey!!!
 		// add variables & diffVariables to that tracker profile for that song yeah
