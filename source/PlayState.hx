@@ -9947,7 +9947,7 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 								tankKludgeText.screenCenter(X);
 							});
 							// JOELwindows7: & then the other
-							createTimer(1.2, function(tmr:FlxTimer)
+							createTimer(1.3, function(tmr:FlxTimer)
 							{
 								Controls.vibrate(0, 95);
 								tankKludgeText.text = '[Pico] (BANG)!!\n[Left soldier] (eik serkat!)';
@@ -10697,10 +10697,14 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 		if (is3D)
 		{
 			installStarfield3D(Std.int(x), Std.int(y), Std.int(width), Std.int(height), starAmount);
+			if (camGame != null)
+				starfield3D.cameras = [camGame];
 		}
 		else
 		{
 			installStarfield2D(Std.int(x), Std.int(y), Std.int(width), Std.int(height), starAmount);
+			if (camGame != null)
+				starfield2D.cameras = [camGame];
 		}
 		if (behind)
 		{

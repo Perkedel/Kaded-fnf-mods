@@ -18,6 +18,7 @@
 
 package;
 
+import flixel.FlxBasic;
 import flixel.tweens.misc.ColorTween;
 import flixel.tweens.misc.VarTween;
 import flixel.util.FlxColor;
@@ -99,7 +100,7 @@ enum ExtraLoadingType
  * GNU GPL v3
  * @author JOELwindows7
  */
-class CoreState extends FlxUIState implements ICoreStating implements INapoleonSaying
+class CoreState extends FlxUIState implements ICoreStating implements INapoleonSaying implements IAttachCamera
 {
 	// JOELwindows7: do not forget instance
 	public static var instance:CoreState;
@@ -985,6 +986,34 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
 			updateAllGamepads(joypadAllActive);
 		}
 	}
+
+	// JOELwindows7: Attach camera set
+
+	/**
+	 * Attach a camera to the Flx object
+	 * @param object the object to be attached with
+	 * @param camera the camera to be attached to
+	 */
+	public function attachToOnlyThisCamera(object:FlxBasic, camera:FlxCamera):Void
+	{
+		if (camera != null)
+			object.cameras = [camera];
+	}
+
+	/**
+	 * Attach these cameras to the Flx object
+	 * @param object the object to be attached with
+	 * @param cameras array of the camera to attach to
+	 */
+	public function attachToTheseCameras(object:FlxBasic, cameras:Array<FlxCamera>):Void
+	{
+		object.cameras = [];
+		for (to in cameras)
+		{
+			if (to != null)
+				object.cameras.push(to);
+		}
+	}
 }
 
 // SEPARATOR BECAUSE i GOT CONFUSED WHICH ONE IS CoreState FlxUIState & WHICH ONE IS CoreSubState FlxUISubstate
@@ -1044,7 +1073,7 @@ class CoreState extends FlxUIState implements ICoreStating implements INapoleonS
  * 
  * @author JOELwindows7
  */
-class CoreSubState extends FlxUISubState implements ICoreStating implements INapoleonSaying
+class CoreSubState extends FlxUISubState implements ICoreStating implements INapoleonSaying implements IAttachCamera
 {
 	// JOELwindows7: do not forget instance
 	public static var instance:CoreSubState;
@@ -1895,6 +1924,34 @@ class CoreSubState extends FlxUISubState implements ICoreStating implements INap
 			updateAllGamepads(joypadAllActive);
 		}
 	}
+
+	// JOELwindows7: Attach camera set
+
+	/**
+	 * Attach a camera to the Flx object
+	 * @param object the object to be attached with
+	 * @param camera the camera to be attached to
+	 */
+	public function attachToOnlyThisCamera(object:FlxBasic, camera:FlxCamera):Void
+	{
+		if (camera != null)
+			object.cameras = [camera];
+	}
+
+	/**
+	 * Attach these cameras to the Flx object
+	 * @param object the object to be attached with
+	 * @param cameras array of the camera to attach to
+	 */
+	public function attachToTheseCameras(object:FlxBasic, cameras:Array<FlxCamera>):Void
+	{
+		object.cameras = [];
+		for (to in cameras)
+		{
+			if (to != null)
+				object.cameras.push(to);
+		}
+	}
 }
 
 // separate XML states
@@ -2264,4 +2321,23 @@ interface INapoleonSaying
 
 	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0, size:Float = 12, font:String = 'Ubuntu Bold'):Void;
 	public function stopTheSaying():Void;
+}
+
+interface IAttachCamera
+{
+	// JOELwindows7: Attach camera set
+
+	/**
+	 * Attach a camera to the Flx object
+	 * @param object the object to be attached with
+	 * @param camera the camera to be attached to
+	 */
+	public function attachToOnlyThisCamera(object:FlxBasic, camera:FlxCamera):Void;
+
+	/**
+	 * Attach these cameras to the Flx object
+	 * @param object the object to be attached with
+	 * @param cameras array of the camera to attach to
+	 */
+	public function attachToTheseCameras(object:FlxBasic, cameras:Array<FlxCamera>):Void;
 }
