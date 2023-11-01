@@ -251,6 +251,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		// JOELwindows7: back button to surrender
 		addBackButton(20, FlxG.height + 30);
 		backButton.scrollFactor.set();
+		backButton.cameras = [camHUD];
 		backButton.alpha = 0;
 		// FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
 
@@ -323,7 +324,11 @@ class GameOverSubstate extends MusicBeatSubstate
 			if (GameOverSubstate.getBlueballCounter() > 5
 				|| PlayState.SONG.songId.contains('napoleon')
 				|| PlayState.SONG.songId.contains('amour-plastique'))
+			{
 				installSaying('We have been bluballing for about ${GameOverSubstate.getBlueballCounter()} times now', 50, FlxG.height - 300);
+				miniSoldierSaying.cameras = [camHUD];
+				miniGeneralSaying.cameras = [camHUD];
+			}
 
 			FlxTween.tween(backButton, {y: FlxG.height - 100, alpha: 1}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
 			// JOELwindows7: also week 7 gameover pls. luckydog7 yeah
@@ -338,6 +343,8 @@ class GameOverSubstate extends MusicBeatSubstate
 					// TODO: pls use FireTongue reference instead! like.. getText here. `'$WEEK7_GAMEOVER_TANKMAN_INSULT_' + pickYourInsult`
 					tankmanSubtitle.text = Perkedel.HARDCODE_GAMEOVER_ENEMY_INSULTS[0][pickYourInsult - 1];
 					tankmanSubtitle.scrollFactor.set();
+					tankmanSubtitle.updateHitbox();
+					tankmanSubtitle.cameras = [camHUD];
 				}
 				FlxG.sound.play(Paths.sound('jeffGameover-' + pickYourInsult, 'shared'), 1, false, null, true, function()
 				{
