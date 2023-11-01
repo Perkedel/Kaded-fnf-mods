@@ -1004,7 +1004,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		FreeplayState.songs.push(meta);
 
 		// JOELwindows7: BOLO commented, no, don't! it lags per selections!!! better lag during open this menu, idk..
-		#if FEATURE_FILESYSTEM // JOELwindows7: mitsake fixed. wait, isn't this supposed to be FEATURE_MULTITHREADING instead?
+		#if FEATURE_MULTITHREADING // JOELwindows7: mitsake fixed. wait, isn't this supposed to be FEATURE_MULTITHREADING instead?
 		sys.thread.Thread.create(() ->
 		{
 			FlxG.sound.cache(Paths.inst(songId));

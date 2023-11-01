@@ -159,7 +159,7 @@ class DFJKOption extends Option
 
 	public override function press():Bool
 	{
-		OptionsMenu.instance.selectedCatIndex = 6; // JOELwindows7: was 4. really, why order number?!
+		OptionsMenu.instance.selectedCatIndex = 7; // JOELwindows7: was 4. really, why order number?!
 		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[6], false); // JOELwindows7: don't forget this too
 		return false;
 	}
@@ -1216,7 +1216,7 @@ class Judgement extends Option
 		// 	return false;
 		OptionsMenu.markRestartSong();
 		OptionsMenu.instance.selectedCatIndex = 7; // JOELwindows7: was 5. don't use order!!!!
-		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[7], false); // JOELwindows7: don't forget this too
+		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[8], false); // JOELwindows7: don't forget this too
 		return true;
 	}
 
@@ -1719,8 +1719,8 @@ class BotPlay extends Option
 		return true;
 	}
 
-	private override function updateDisplay():String
-		return "BotPlay: < " + (FlxG.save.data.botplay ? "on" : "off") + " >";
+	private override function updateDisplay():String // return "BotPlay: < " + (FlxG.save.data.botplay ? "on" : "off") + " >";
+		return 'BotPlay: < ${FlxG.save.data.botplay ? "on" : "off"}  >';
 }
 
 class CamZoomOption extends Option
@@ -4296,6 +4296,7 @@ class LogLevelSelectorOption extends Option
 		if (catchWhatIndex < 0)
 			catchWhatIndex = DebugLogWriter.LOG_LEVELS.length - 1;
 		FlxG.save.data.debugLogLevel = DebugLogWriter.LOG_LEVELS[catchWhatIndex];
+		trace('log level ${catchWhatIndex} ${FlxG.save.data.debugLogLevel}');
 		display = updateDisplay();
 		return false;
 	}
@@ -4308,6 +4309,7 @@ class LogLevelSelectorOption extends Option
 		if (catchWhatIndex > DebugLogWriter.LOG_LEVELS.length - 1)
 			catchWhatIndex = 0;
 		FlxG.save.data.debugLogLevel = DebugLogWriter.LOG_LEVELS[catchWhatIndex];
+		trace('log level ${catchWhatIndex} ${FlxG.save.data.debugLogLevel}');
 		display = updateDisplay();
 		return false;
 	}

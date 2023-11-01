@@ -11,6 +11,7 @@ import const.Perkedel;
 // haxe.macro
 import haxe.macro.Expr;
 import haxe.macro.Context;
+import utils.macro.*;
 #else
 // Imports used only outside macros.
 // =====================
