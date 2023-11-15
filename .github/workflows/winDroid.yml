@@ -38,7 +38,7 @@ jobs:
 
       - name: Schlob Chocolatey
         run: |
-          choco install vcredist140
+          # choco install vcredist140
           cinst make -y
           cinst cmake -y
           cinst gcc-arm -y
