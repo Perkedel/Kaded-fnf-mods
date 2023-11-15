@@ -498,11 +498,7 @@
             "type": "haxelib",
             "version": null
         },
-        {
-            "name": "pecan",
-            "type": "haxelib",
-            "version": null
-        },
+        
         {
             "name": "hxmath",
             "type": "haxelib",

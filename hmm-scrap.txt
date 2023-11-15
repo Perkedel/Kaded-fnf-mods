@@ -4,3 +4,8 @@
             "version": null
         },
 
+{
+            "name": "pecan",
+            "type": "haxelib",
+            "version": null
+        },
