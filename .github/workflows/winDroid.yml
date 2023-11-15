@@ -39,17 +39,17 @@ jobs:
       - name: Schlob Chocolatey
         run: |
           # choco install vcredist140
-          cinst make -y
-          cinst cmake -y
-          cinst gcc-arm -y
-          cinst gcc-arm-embedded -y
-          cinst wget -y # downloader
-          cinst butler -y # upload to itch io
-          cinst android-sdk -y
-          cinst android-ndk --version=16.2 -y
-          cinst adb -y
-          cinst androidstudio -y
-          cinst haxe -y
+          choco install make -y
+          choco install cmake -y
+          choco install gcc-arm -y
+          choco install gcc-arm-embedded -y
+          choco install wget -y # downloader
+          choco install butler -y # upload to itch io
+          choco install android-sdk -y
+          choco install android-ndk --version=16.2 -y
+          choco install adb -y
+          choco install androidstudio -y
+          choco install haxe -y
           RefreshEnv
 
       - name: first, lemme download android stuff
