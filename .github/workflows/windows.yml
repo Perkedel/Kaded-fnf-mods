@@ -48,6 +48,7 @@ jobs:
           choco install android-ndk --version=16.2 -y
           choco install adb -y
           choco install haxe -y
+          Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
           RefreshEnv
 
       - name: first, lemme download android stuff

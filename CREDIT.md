@@ -645,6 +645,7 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://www.rgbtohex.net/
 - PLS SAUCE HURT NOTE!!!
 - https://gamebanana.com/members/submissions/mods/1933642 Gooble. 
+- https://github.com/Aurel300/pecan
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
 

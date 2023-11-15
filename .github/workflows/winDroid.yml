@@ -50,6 +50,7 @@ jobs:
           choco install adb -y
           choco install androidstudio -y
           choco install haxe -y
+          Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
           RefreshEnv
 
       - name: first, lemme download android stuff
