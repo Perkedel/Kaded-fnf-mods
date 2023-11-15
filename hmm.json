@@ -610,6 +610,13 @@
             "version": null
         },
         {
+            "name": "pecan",
+            "type": "git",
+            "dir": null,
+            "ref": "master",
+            "url": "https://github.com/Aurel300/pecan"
+        },
+        {
             "name": "hscript",
             "type": "git",
             "dir": null,
