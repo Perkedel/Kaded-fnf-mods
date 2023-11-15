@@ -32,7 +32,7 @@ class DeprecatedState extends CoreState
 			"The FULL ASS has been released (along with the mod suport).\nPlease visit\nSTEAM_URL\n& purchase the game instead.\nThis mod has been deprecated & all contents of ours will be\nported there.\nIf you'd like to download our legacy stuffs,\nthey are available at Admiral Zumi's Odysee.\n(DM Subject = `DOWNLOAD_LFM_LEGACY`)\nThank you."
 		],
 	];
-	public static var deprecationLevelSelect:Int = Perkedel.OBSOLESENCE_MODE;
+	public static var deprecationLevelSelect:Int = Perkedel.OBSOLESENCE_MODE; // Yes, please look at Perkedel constant Obsolesence mode.
 
 	override function create()
 	{
