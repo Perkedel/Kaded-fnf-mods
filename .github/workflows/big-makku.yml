@@ -60,8 +60,8 @@ jobs:
       - name: Obtain macOS binaries for stuffs like luajit
         run: |
           wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Mac/libluajit-5.1.a
-          mkdir -p /Users/runner/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Mac/
-          mv ./libluajit-5.1.a /Users/runner/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Mac/
+          mkdir -p /Users/runner/hostedtoolcache/haxe/4.3.1/x64/lib/linc_luajit/lib/lua/lib/Mac/
+          mv ./libluajit-5.1.a /Users/runner/hostedtoolcache/haxe/4.3.1/x64/lib/linc_luajit/lib/lua/lib/Mac/
       
       - name: Obtain GameJolt empty key
         run: |

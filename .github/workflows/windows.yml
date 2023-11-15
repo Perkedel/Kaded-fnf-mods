@@ -92,20 +92,20 @@ jobs:
           haxelib run lime rebuild yagp linux
           haxelib list
       
-      - name: TEMP patch FlxAction.hx workaround
-        run: |
-          dir C:\
-          dir C:\hostedtoolcache
-          dir "C:\hostedtoolcache\windows"
-          dir "C:\hostedtoolcache\windows\haxe"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.5"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.5\x64"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\flixel"
-          wget "https://gist.github.com/JOELwindows7/118b3a40a76d60e701399a61fb5e1c2d/raw/fef2b6649a4b51d76f912459ef3f107b4bd25905/FlxAction.hx"
-          dir
-          pwd
-          mv ".\FlxAction.hx" "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\flixel\4,11,0\flixel\input\actions\FlxAction.hx" -Force
+      #- name: TEMP patch FlxAction.hx workaround
+      #  run: |
+      #    dir C:\
+      #    dir C:\hostedtoolcache
+      #    dir "C:\hostedtoolcache\windows"
+      #    dir "C:\hostedtoolcache\windows\haxe"
+      #    dir "C:\hostedtoolcache\windows\haxe\4.3.1"
+      #    dir "C:\hostedtoolcache\windows\haxe\4.3.1\x64"
+      #    dir "C:\hostedtoolcache\windows\haxe\4.3.1\x64\lib"
+      #    dir "C:\hostedtoolcache\windows\haxe\4.3.1\x64\lib\flixel"
+      #    wget "https://gist.github.com/JOELwindows7/118b3a40a76d60e701399a61fb5e1c2d/raw/fef2b6649a4b51d76f912459ef3f107b4bd25905/FlxAction.hx"
+      #    dir
+      #    pwd
+      #    mv ".\FlxAction.hx" "C:\hostedtoolcache\windows\haxe\4.3.1\x64\lib\flixel\4,11,0\flixel\input\actions\FlxAction.hx" -Force
       
       - name: Setup Android support
         run: |
@@ -118,7 +118,7 @@ jobs:
         run: |
           wget https://github.com/Perkedel/After-Church/raw/master/RAW%20files/stray%20anything/Borkarounds/extension-webm/ndll/Android.zip
           unzip .\Android.zip
-          mv ".\Android" "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\extension-webm\git\ndll"
+          mv ".\Android" "C:\hostedtoolcache\windows\haxe\4.3.1\x64\lib\extension-webm\git\ndll"
         
       - name: Obtain Gamejolt empty key
         run : |

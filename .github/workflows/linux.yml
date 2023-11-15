@@ -82,8 +82,8 @@ jobs:
       # - name: Obtain stuffs of Linux
       #   run: |
       #     wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
-      #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64
-      #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
+      #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.3.1/x64/lib/linc_luajit/lib/lua/lib/Linux64
+      #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.3.1/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
 
       - name: Obtain GameJolt empty file
         run: |
@@ -101,7 +101,7 @@ jobs:
 
       - name: Push to Itch Linux
         if: ${{github.event_name == 'push'}}
-        uses: josephbmanley/butler-publish-itchio-action@master
+        uses: yeslayla/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: linux-GHAction
