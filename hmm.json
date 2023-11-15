@@ -641,7 +641,6 @@
             "name": "tentools",
             "type": "git",
             "dir": null,
-            "ref": "master",
             "url": "https://github.com/TentaRJ/tentools.git"
         },
         {
