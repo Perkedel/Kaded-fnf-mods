@@ -447,7 +447,7 @@
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
-	<haxelib name="SScript"/>
+	<!-- <haxelib name="SScript"/> -->
 
 	<!-- JOELwindows7: here Altronix -->
 	<haxelib name="away3d" if="FEATURE_AWAY_3D"/>
