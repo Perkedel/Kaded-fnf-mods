@@ -23,7 +23,7 @@ jobs:
       - name: Just do it
         uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.3.1
+          haxe-version: 4.3.2
       - name: Make your dreams come true
         # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
@@ -36,6 +36,7 @@ jobs:
           echo 'you should have all done.'
           haxelib run lime setup flixel -y
           haxelib run lime setup -y
+          haxelib run lime setup sscript -y
           haxelib run lime rebuild linc_luajit mac
           haxelib run lime rebuild extension-webm mac
           haxelib run lime rebuild systools mac
@@ -63,8 +64,8 @@ jobs:
       - name: Obtain macOS binaries for stuffs like luajit
         run: |
           wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Mac/libluajit-5.1.a
-          mkdir -p /Users/runner/hostedtoolcache/haxe/4.3.1/x64/lib/linc_luajit/lib/lua/lib/Mac/
-          mv ./libluajit-5.1.a /Users/runner/hostedtoolcache/haxe/4.3.1/x64/lib/linc_luajit/lib/lua/lib/Mac/
+          mkdir -p /Users/runner/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Mac/
+          mv ./libluajit-5.1.a /Users/runner/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Mac/
       
       - name: Obtain GameJolt empty key
         run: |

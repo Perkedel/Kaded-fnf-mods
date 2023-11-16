@@ -33,7 +33,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.3.1
+          haxe-version: 4.3.2
       # Runs a set of commands using the runners shell
 
       - name: Linuxly set things up first!
@@ -63,6 +63,7 @@ jobs:
           echo 'you should have all done.'
           haxelib run lime setup flixel -y
           haxelib run lime setup -y
+          haxelib run lime setup sscript -y
           haxelib run lime rebuild extension-webm linux
           haxelib run lime rebuild systools linux
           haxelib run lime rebuild yagp linux
@@ -83,8 +84,8 @@ jobs:
       # - name: Obtain stuffs of Linux
       #   run: |
       #     wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
-      #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.3.1/x64/lib/linc_luajit/lib/lua/lib/Linux64
-      #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.3.1/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
+      #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Linux64
+      #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
 
       - name: Obtain GameJolt empty file
         run: |
