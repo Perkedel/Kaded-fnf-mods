@@ -67,6 +67,7 @@ jobs:
           haxelib run lime rebuild extension-webm linux
           haxelib run lime rebuild systools linux
           haxelib run lime rebuild yagp linux
+          haxelib setup hmm
           haxelib list
       
       - name: if there is cache still then just update everything

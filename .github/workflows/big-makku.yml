@@ -41,6 +41,7 @@ jobs:
           haxelib run lime rebuild extension-webm mac
           haxelib run lime rebuild systools mac
           haxelib run lime rebuild yagp mac
+          haxelib setup hmm
           haxelib list
           ls
           pwd

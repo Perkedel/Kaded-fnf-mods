@@ -136,11 +136,7 @@
             "type": "haxelib",
             "version": null
         },
-        {
-            "name": "tink_lang",
-            "type": "haxelib",
-            "version": null
-        },
+        
         {
             "name": "tink_macro",
             "type": "haxelib",

@@ -80,7 +80,7 @@ jobs:
           haxelib run lime rebuild extension-webm windows
           haxelib run lime rebuild extension-webm android
           haxelib run lime rebuild systools windows
-          
+          haxelib setup hmm
           haxelib list
           dir
           pwd
