@@ -517,7 +517,7 @@ class DialogueBox extends FlxUIGroup
 		autoClickDelayLabel.font = 'Pixel Arial 11 Bold';
 		autoClickDelayLabel.color = 0x00000000;
 		autoClickDelayLabel.text = '${CoolUtil.getText("$DIALOGUE_BUTTON_AUTOCLICK_DELAY_LABEL")}: ';
-		autoClickDelayLabel.x = autoclickCheckbox.x - autoClickDelayLabel.width;
+		autoClickDelayLabel.x = autoClickCheckbox.x - autoClickDelayLabel.width;
 		add(autoClickDelayLabel);
 		autoClickTimerDisplay = new FlxPieDial(FlxG.width - 180, 10, 15, FlxColor.GREEN, FlxPieDialShape.CIRCLE, true, 0);
 		add(autoClickTimerDisplay);
