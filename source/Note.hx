@@ -1,6 +1,8 @@
 package;
 
+#if cpp
 import cpp.abi.Abi;
+#end
 import flixel.addons.ui.FlxUISprite;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.FlxG;
