@@ -642,7 +642,7 @@
 
 	<!-- JOELwindows7: haxiomic's console fancy prints -->
 	<!-- https://lib.haxe.org/p/Console.hx/ -->
-	<haxelib name="Console.hx" />
+	<haxelib name="console.hx" />
 
 	<!-- JOELwindows7: Compile time data fetch https://lib.haxe.org/p/compiletime/ -->
 	<haxelib name="compiletime" />
