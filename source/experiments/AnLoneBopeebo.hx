@@ -85,7 +85,8 @@ class AnLoneBopeebo extends AbstractTestMenu implements IManipulateAudio
 			#if (lime >= "8.0.0")
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					FlxG.sound.music._channel.__source.set_pitch(rate);
 			#else
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)

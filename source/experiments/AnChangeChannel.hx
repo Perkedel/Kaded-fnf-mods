@@ -107,7 +107,8 @@ class AnChangeChannel extends AbstractTestMenu implements IManipulateAudio
 				#end
 				#elseif cpp
 				#if (lime >= "8.0.0")
-				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				FlxG.sound.music._channel.__source.set_pitch(rate);
 				#else
 				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
 				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.CHANNELS, channel);

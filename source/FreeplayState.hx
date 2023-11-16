@@ -2597,7 +2597,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				#if web
 				#if (lime >= "8.0.0" && lime_howlerjs)
 				if (FlxG.sound.music != null)
-					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					FlxG.sound.music._channel.__source.set_pitch(rate);
 				#else
 				if (FlxG.sound.music != null)
 					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);

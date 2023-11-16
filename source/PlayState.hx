@@ -12011,13 +12011,16 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			#if (lime >= "8.0.0")
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					FlxG.sound.music._channel.__source.set_pitch(rate);
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.__source.__backend.setPitch(songMultiplier);
+					// vocals._channel.__source.__backend.setPitch(songMultiplier);
+					vocals._channel.__source.__backend.set_pitch(rate);
 			if (vocals2 != null)
 				if (vocals2.playing)
-					vocals2._channel.__source.__backend.setPitch(songMultiplier);
+					// vocals2._channel.__source.__backend.setPitch(songMultiplier);
+					vocals2._channel.__source.__backend.set_pitch(rate);
 			#else
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
