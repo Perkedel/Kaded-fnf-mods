@@ -22,7 +22,9 @@
 package;
 
 import openfl.geom.Rectangle;
+#if FEATURE_SCREENSHOT
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
+#end
 import openfl.display.Bitmap;
 import ui.states.debug.WerrorForceMajeurState;
 import flixel.tweens.FlxTween;
