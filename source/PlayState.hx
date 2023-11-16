@@ -12008,31 +12008,34 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			// add safety too pls!
 			// hmm, perhaps it should be really nested. confirm really if it's not null FIRST,
 			// if not null, then yess evaluate in it.
-			#if (flixel >= "5.4.0")
-			if (FlxG.sound.music != null)
-				if (FlxG.sound.music.playing)
-					FlxG.sound.music.pitch = rate;
-			if (vocals != null)
-				if (vocals.playing)
-					vocals._channel.pitch = rate;
-			if (vocals2 != null)
-				if (vocals2.playing)
-					vocals2._channel.pitch = rate;
-			#else
+			// #if (flixel >= "5.4.0")
+			// if (FlxG.sound.music != null)
+			// 	if (FlxG.sound.music.playing)
+			// 		FlxG.sound.music.pitch = songMultiplier;
+			// if (vocals != null)
+			// 	if (vocals.playing)
+			// 		vocals._channel.pitch = songMultiplier;
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		vocals2._channel.pitch = songMultiplier;
+			// #else
 			#if cpp
 			#if (lime >= "8.0.0")
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
-					// FlxG.sound.music._channel.__source.set_pitch(rate);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(songMultiplier); // openfl 9
+					// FlxG.sound.music._channel.__source.set_pitch(songMultiplier);
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.__source.__backend.setPitch(songMultiplier);
-					// vocals._channel.__source.__backend.set_pitch(rate);
+					// vocals._channel.__source.__backend.setPitch(songMultiplier);
+					vocals._channel.__audioSource.__backend.setPitch(songMultiplier);
+					// vocals._channel.__source.__backend.set_pitch(songMultiplier);
 			if (vocals2 != null)
 				if (vocals2.playing)
-					vocals2._channel.__source.__backend.setPitch(songMultiplier);
-					// vocals2._channel.__source.__backend.set_pitch(rate);
+					// vocals2._channel.__source.__backend.setPitch(songMultiplier);
+					vocals2._channel.__audioSource.__backend.setPitch(songMultiplier);
+					// vocals2._channel.__source.__backend.set_pitch(songMultiplier);
 			#else
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
@@ -12048,26 +12051,32 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			#if (lime >= "8.0.0" && lime_howlerjs)
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(songMultiplier);
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.__source.__backend.setPitch(songMultiplier);
+					// vocals._channel.__source.__backend.setPitch(songMultiplier);
+					vocals._channel.__audioSource.__backend.setPitch(songMultiplier);
 			if (vocals2 != null)
 				if (vocals2.playing)
-					vocals2._channel.__source.__backend.setPitch(songMultiplier);
+					// vocals2._channel.__source.__backend.setPitch(songMultiplier);
+					vocals2._channel.__audioSource.__backend.setPitch(songMultiplier);
 			#else
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+					// FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+					FlxG.sound.music._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+					// vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+					vocals._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
 			if (vocals2 != null)
 				if (vocals2.playing)
-					vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+					// vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+					vocals2._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
 			#end
 			#end
-			#end
+			// #end
 		}
 		#end
 	}

@@ -2594,29 +2594,32 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			// add safety too!
 			if (FlxG.sound.music.playing)
 			{
-				#if (flixel >= "5.4.0")
-				if (FlxG.sound.music != null)
-					FlxG.sound.music.pitch = rate;
-				#else
+				// #if (flixel >= "5.4.0")
+				// if (FlxG.sound.music != null)
+				// 	FlxG.sound.music.pitch = rate;
+				// #else
 				#if web
 				#if (lime >= "8.0.0" && lime_howlerjs)
 				if (FlxG.sound.music != null)
-					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(rate);
 				// FlxG.sound.music._channel.__source.set_pitch(rate);
 				#else
 				if (FlxG.sound.music != null)
-					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+					// FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+					FlxG.sound.music._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(rate);
 				#end
 				#elseif cpp
 				#if (lime >= "8.0.0")
 				if (FlxG.sound.music != null)
-					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(rate);
 				#else
 				if (FlxG.sound.music != null)
 					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
 				#end
 				#end
-				#end
+				// #end
 			}
 		}
 		#end

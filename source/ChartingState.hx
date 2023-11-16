@@ -5086,66 +5086,72 @@ class ChartingState extends MusicBeatState
 			// add safety too pls!
 			// hmm, perhaps it should be really nested. confirm really if it's not null FIRST,
 			// if not null, then yess evaluate in it.
-			#if (flixel >= "5.4.0")
-			if (FlxG.sound.music != null)
-				if (FlxG.sound.music.playing)
-					FlxG.sound.music.pitch = rate;
-			if (vocals != null)
-				if (vocals.playing)
-					vocals.pitch = rate;
-			// if (vocals2 != null)
-			// 	if (vocals2.playing)
-			// 		vocals2.pitch = rate;
-			#else
+			// #if (flixel >= "5.4.0")
+			// #if FLX_PITCH
+			// if (FlxG.sound.music != null)
+			// 	if (FlxG.sound.music.playing)
+			// 		FlxG.sound.music.pitch = speed;
+			// if (vocals != null)
+			// 	if (vocals.playing)
+			// 		vocals.pitch = speed;
+			// // if (vocals2 != null)
+			// // 	if (vocals2.playing)
+			// // 		vocals2.pitch = speed;
+			// #else
+
+			// #end
+			// #else
 			#if cpp
 			#if (lime >= "8.0.0")
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
-					// FlxG.sound.music._channel.__source.set_pitch(rate);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(speed);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(speed);
+					// FlxG.sound.music._channel.__source.set_pitch(speed);
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.__source.__backend.setPitch(songMultiplier);
-					// vocals._channel.__source.__backend.set_pitch(rate);
+					// vocals._channel.__source.__backend.setPitch(speed);
+					vocals._channel.__audioSource.__backend.setPitch(speed);
+					// vocals._channel.__source.__backend.set_pitch(speed);
 			// if (vocals2 != null)
 			// 	if (vocals2.playing)
-			// 		vocals2._channel.__source.__backend.setPitch(songMultiplier);
-			// 		// vocals2._channel.__source.__backend.set_pitch(rate);
+			// 		vocals2._channel.__source.__backend.setPitch(speed);
+			// 		// vocals2._channel.__source.__backend.set_pitch(speed);
 			#else
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
 			if (vocals != null)
 				if (vocals.playing)
-					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
 			// if (vocals2 != null)
 			// 	if (vocals2.playing)
-			// 		lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			// 		lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
 			#end
 			#elseif web
 			#if (lime >= "8.0.0" && lime_howlerjs)
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+					FlxG.sound.music._channel.__source.__backend.setPitch(speed);
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.__source.__backend.setPitch(songMultiplier);
+					vocals._channel.__source.__backend.setPitch(speed);
 			// if (vocals2 != null)
 			// 	if (vocals2.playing)
-			// 		vocals2._channel.__source.__backend.setPitch(songMultiplier);
+			// 		vocals2._channel.__source.__backend.setPitch(speed);
 			#else
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+					vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
 			// if (vocals2 != null)
 			// 	if (vocals2.playing)
-			// 		vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			// 		vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
 			#end
 			#end
-			#end
+			// #end
 		}
 		#end
 	}

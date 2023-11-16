@@ -99,25 +99,28 @@ class AnChangeChannel extends AbstractTestMenu implements IManipulateAudio
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
 			if (FlxG.sound.music.playing)
 			{
-				#if (flixel >= "5.4.0")
-				FlxG.sound.music.pitch = rate;
-				#else
+				// #if (flixel >= "5.4.0")
+				// FlxG.sound.music.pitch = rate;
+				// #else
 				#if web
 				#if (lime >= "8.0.0" && lime_howlerjs)
-				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				FlxG.sound.music._channel.__audioSource.__backend.setPitch(rate);
 				#else
-				FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+				// FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+				FlxG.sound.music._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(rate);
 				#end
 				#elseif cpp
 				#if (lime >= "8.0.0")
-				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				FlxG.sound.music._channel.__audioSource.__backend.setPitch(rate);
 				// FlxG.sound.music._channel.__source.set_pitch(rate);
 				#else
 				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
 				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.CHANNELS, channel);
 				#end
 				#end
-				#end
+				// #end
 			}
 		}
 		#end
