@@ -45,6 +45,11 @@
             "version": null
         },
         {
+            "name": "flixel-screenshot-plugin",
+            "type": "haxelib",
+            "version": null
+        },
+        {
             "name": "flixel-tools",
             "type": "haxelib",
             "version": null
