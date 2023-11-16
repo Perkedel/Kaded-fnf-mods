@@ -50,6 +50,7 @@ jobs:
       - name: script run line haha
         # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
+          haxelib setup hmm
           haxelib install Console.hx
           echo "new Psych's found-way of auto install all libraries"
           echo 'https://github.com/ShadowMario/FNF-PsychEngine/blob/main/hmm.json'
@@ -63,7 +64,6 @@ jobs:
           haxelib run lime rebuild systools html5
           haxelib run lime rebuild systools linux
           haxelib run lime rebuild yagp linux
-          haxelib setup hmm
           haxelib list
       
       - name: if there is cache still then just update everything
