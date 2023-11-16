@@ -79,7 +79,7 @@ class AnLoneBopeebo extends AbstractTestMenu implements IManipulateAudio
 			#if (flixel >= "5.4.0")
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music.set_pitch(rate);
+					FlxG.sound.music.pitch = rate;
 			#else
 			// if (FlxG.sound.music.playing)
 			// {

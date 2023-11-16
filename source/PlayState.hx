@@ -12011,13 +12011,13 @@ class PlayState extends MusicBeatState implements IManipulateAudio
 			#if (flixel >= "5.4.0")
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music.set_pitch(rate);
+					FlxG.sound.music.pitch = rate;
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.set_pitch(rate);
+					vocals._channel.pitch = rate;
 			if (vocals2 != null)
 				if (vocals2.playing)
-					vocals2._channel.set_pitch(rate);
+					vocals2._channel.pitch = rate;
 			#else
 			#if cpp
 			#if (lime >= "8.0.0")

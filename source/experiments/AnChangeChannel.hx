@@ -100,7 +100,7 @@ class AnChangeChannel extends AbstractTestMenu implements IManipulateAudio
 			if (FlxG.sound.music.playing)
 			{
 				#if (flixel >= "5.4.0")
-				FlxG.sound.music.set_pitch(rate);
+				FlxG.sound.music.pitch = rate;
 				#else
 				#if web
 				#if (lime >= "8.0.0" && lime_howlerjs)
