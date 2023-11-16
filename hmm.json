@@ -613,125 +613,126 @@
             "name": "pecan",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/Aurel300/pecan"
         },
         {
             "name": "hscript",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/HaxeFoundation/hscript"
         },
         {
             "name": "discord_rpc",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/Aidan63/linc_discord-rpc"
         },
         {
             "name": "linc_luajit",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/superpowers04/linc_luajit"
         },
         {
             "name": "tentools",
             "type": "git",
             "dir": null,
+            "ref": null,
             "url": "https://github.com/TentaRJ/tentools.git"
         },
         {
             "name": "systools",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/haya3218/systools"
         },
         {
             "name": "crashdumper",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "http://github.com/larsiusprime/crashdumper"
         },
         {
             "name": "extension-webm",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/GrowtopiaFli/extension-webm"
         },
         {
             "name": "hxCodec",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/polybiusproxy/hxCodec"
         },
         {
             "name": "hscript-ex",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/ianharrigan/hscript-ex"
         },
         {
             "name": "xinput",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/furusystems/openfl-xinput.git"
         },
         {
             "name": "extension-androidtools",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/MAJigsaw77/extension-androidtools.git"
         },
         {
             "name": "extension-videoview",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/jigsaw-4277821/extension-videoview.git"
         },
         {
             "name": "yaml",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/Paidyy/haxe-yaml.git"
         },
         {
             "name": "linc_clipboard",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/josuigoa/linc_clipboard.git"
         },
         {
             "name": "haxe-hardware",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/Perkedel/haxe-hardware.git"
         },
         {
             "name": "faxe",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/uhrobots/faxe"
         },
         {
             "name": "flxanimate",
             "type": "git",
             "dir": null,
-            "ref": "master",
+            "ref": null,
             "url": "https://github.com/Dot-Stuff/flxanimate/"
         },
         {
