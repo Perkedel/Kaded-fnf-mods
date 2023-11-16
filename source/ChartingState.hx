@@ -5132,20 +5132,24 @@ class ChartingState extends MusicBeatState
 			#if (lime >= "8.0.0" && lime_howlerjs)
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.setPitch(speed);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(speed);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(speed);
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.__source.__backend.setPitch(speed);
+					// vocals._channel.__source.__backend.setPitch(speed);
+					vocals._channel.__audioSource.__backend.setPitch(speed);
 			// if (vocals2 != null)
 			// 	if (vocals2.playing)
 			// 		vocals2._channel.__source.__backend.setPitch(speed);
 			#else
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
+					// FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
+					FlxG.sound.music._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(speed);
 			if (vocals != null)
 				if (vocals.playing)
-					vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
+					// vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
+					vocals._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(speed);
 			// if (vocals2 != null)
 			// 	if (vocals2.playing)
 			// 		vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);

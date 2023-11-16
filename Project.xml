@@ -242,6 +242,9 @@
 	<!-- JOELwindows7: Console.hx advanced cross platform print to console -->
 	<haxedef name="FEATURE_CONSOLE_HX"/>
 
+	<!-- JOELwindows7: Screenshooter -->
+	<haxedef name="FEATURE_SCREENSHOT" unless='debug | web'/>
+
 	<!-- JOELwindows7: yoinkoid-->
 	<!-- from https://github.com/luckydog7/Funkin-android/blob/master/Project.xml -->
 	<!-- <assets path="assets" include="*.txt"/> -->

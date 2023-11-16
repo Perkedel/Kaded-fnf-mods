@@ -194,7 +194,12 @@ class Game extends FlxGame
 
 	public static function captureScreenshot(?CaptureRegion:Null<Rectangle>, SaveToFile:Bool = false, HideMouse:Bool = true):Bitmap
 	{
+		#if FEATURE_SCREENSHOT
 		lastScreenshotBitmap = FlxScreenGrab.grab(CaptureRegion, SaveToFile, HideMouse);
+		#else
+		lastScreenshotBitmap = null;
+		#end
+
 		return lastScreenshotBitmap;
 	}
 

@@ -17,7 +17,9 @@ import crashdumper.SessionData;
 import ui.SplashScreen;
 import plugins.sprites.LoadingBar;
 import GameJolt;
+#if FEATURE_SCREENSHOT
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
+#end
 import flixel.input.keyboard.FlxKey;
 // import grig.midi.MidiOut;
 // import grig.midi.MidiIn;
@@ -264,7 +266,7 @@ class Main extends Sprite
 		// inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
 		// it had screenshoter so why not?
 		//
-		#if !js
+		#if FEATURE_SCREENSHOT
 		FlxScreenGrab.defineHotKeys([FlxKey.PRINTSCREEN, FlxKey.F6], true, false);
 		#end
 

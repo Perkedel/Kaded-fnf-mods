@@ -46,8 +46,8 @@ import Discord.DiscordClient;
 // import VideoSprite as MP4Sprite; // yep.
 import hxcodec.flixel.FlxVideo as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
 import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yep.
-import openfl.utils.Assets as OpenFlAssets;
 #end
+import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
