@@ -2720,24 +2720,26 @@ class ChartingState extends MusicBeatState
 				{
 					@:privateAccess
 					{
-						#if desktop // JOELwindows7: must be cpp
-						// The __backend.handle attribute is only available on native.
-						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
-						try
-						{
-							// We need to make CERTAIN vocals exist and are non-empty
-							// before we try to play them. Otherwise the game crashes.
-							if (vocals != null && vocals.length > 0)
-							{
-								lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
-							}
-						}
-						catch (e)
-						{
-							// Debug.logTrace("failed to pitch vocals (probably cuz they don't exist)");
-						}
-						#end
+						// #if desktop // JOELwindows7: must be cpp
+						// // The __backend.handle attribute is only available on native.
+						// lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
+						// try
+						// {
+						// 	// We need to make CERTAIN vocals exist and are non-empty
+						// 	// before we try to play them. Otherwise the game crashes.
+						// 	if (vocals != null && vocals.length > 0)
+						// 	{
+						// 		lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
+						// 	}
+						// }
+						// catch (e)
+						// {
+						// 	// Debug.logTrace("failed to pitch vocals (probably cuz they don't exist)");
+						// }
+						// #end
 					}
+
+					manipulateTheAudio();
 				}
 			}
 
@@ -5069,5 +5071,69 @@ class ChartingState extends MusicBeatState
 			Debug.logTrace('Add Voice Waveform');
 			add(waveformVoice);
 		}
+	}
+
+	// JOELwindows7: Manipulate audio
+	function manipulateTheAudio():Void
+	{
+		#if FEATURE_AUDIO_MANIPULATE
+		@:privateAccess
+		{
+			// JOELwindows7: hey, there's a new advanced way of doing this with BOLO's figure outs!
+			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
+			// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx#L2614
+			// add safety too pls!
+			// hmm, perhaps it should be really nested. confirm really if it's not null FIRST,
+			// if not null, then yess evaluate in it.
+			#if cpp
+			#if (lime >= "8.0.0")
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					FlxG.sound.music._channel.__source.set_pitch(rate);
+			if (vocals != null)
+				if (vocals.playing)
+					// vocals._channel.__source.__backend.setPitch(songMultiplier);
+					vocals._channel.__source.__backend.set_pitch(rate);
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		// vocals2._channel.__source.__backend.setPitch(songMultiplier);
+			// 		vocals2._channel.__source.__backend.set_pitch(rate);
+			#else
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			if (vocals != null)
+				if (vocals.playing)
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
+			#end
+			#elseif web
+			#if (lime >= "8.0.0" && lime_howlerjs)
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music._channel.__source.__backend.setPitch(songMultiplier);
+			if (vocals != null)
+				if (vocals.playing)
+					vocals._channel.__source.__backend.setPitch(songMultiplier);
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		vocals2._channel.__source.__backend.setPitch(songMultiplier);
+			#else
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			if (vocals != null)
+				if (vocals.playing)
+					vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			#end
+			#end
+		}
+		#end
 	}
 }
