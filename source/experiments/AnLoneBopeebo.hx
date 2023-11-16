@@ -76,6 +76,11 @@ class AnLoneBopeebo extends AbstractTestMenu implements IManipulateAudio
 		#if FEATURE_AUDIO_MANIPULATE
 		@:privateAccess
 		{
+			#if (flixel >= "5.4.0")
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music.set_pitch(rate);
+			#else
 			// if (FlxG.sound.music.playing)
 			// {
 			// 	lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
@@ -85,8 +90,8 @@ class AnLoneBopeebo extends AbstractTestMenu implements IManipulateAudio
 			#if (lime >= "8.0.0")
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
-					FlxG.sound.music._channel.__source.set_pitch(rate);
+					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+			// FlxG.sound.music._channel.__source.set_pitch(rate);
 			#else
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
@@ -101,6 +106,7 @@ class AnLoneBopeebo extends AbstractTestMenu implements IManipulateAudio
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
 					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+			#end
 			#end
 			#end
 		}

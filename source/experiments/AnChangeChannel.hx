@@ -99,6 +99,9 @@ class AnChangeChannel extends AbstractTestMenu implements IManipulateAudio
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
 			if (FlxG.sound.music.playing)
 			{
+				#if (flixel >= "5.4.0")
+				FlxG.sound.music.set_pitch(rate);
+				#else
 				#if web
 				#if (lime >= "8.0.0" && lime_howlerjs)
 				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
@@ -107,11 +110,12 @@ class AnChangeChannel extends AbstractTestMenu implements IManipulateAudio
 				#end
 				#elseif cpp
 				#if (lime >= "8.0.0")
-				// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
-				FlxG.sound.music._channel.__source.set_pitch(rate);
+				FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				// FlxG.sound.music._channel.__source.set_pitch(rate);
 				#else
 				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
 				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.CHANNELS, channel);
+				#end
 				#end
 				#end
 			}

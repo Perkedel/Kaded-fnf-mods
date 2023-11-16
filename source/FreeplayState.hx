@@ -2594,11 +2594,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			// add safety too!
 			if (FlxG.sound.music.playing)
 			{
+				#if (flixel >= "5.4.0")
+				if (FlxG.sound.music != null)
+					FlxG.sound.music.set_pitch(rate);
+				#else
 				#if web
 				#if (lime >= "8.0.0" && lime_howlerjs)
 				if (FlxG.sound.music != null)
-					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
-					FlxG.sound.music._channel.__source.set_pitch(rate);
+					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+				// FlxG.sound.music._channel.__source.set_pitch(rate);
 				#else
 				if (FlxG.sound.music != null)
 					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
@@ -2610,6 +2614,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				#else
 				if (FlxG.sound.music != null)
 					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
+				#end
 				#end
 				#end
 			}

@@ -5079,26 +5079,38 @@ class ChartingState extends MusicBeatState
 		#if FEATURE_AUDIO_MANIPULATE
 		@:privateAccess
 		{
+
 			// JOELwindows7: hey, there's a new advanced way of doing this with BOLO's figure outs!
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
 			// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx#L2614
 			// add safety too pls!
 			// hmm, perhaps it should be really nested. confirm really if it's not null FIRST,
 			// if not null, then yess evaluate in it.
+			#if (flixel >= "5.4.0")
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					FlxG.sound.music.set_pitch(rate);
+			if (vocals != null)
+				if (vocals.playing)
+					vocals._channel.set_pitch(rate);
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		vocals2._channel.set_pitch(rate);
+			#else
 			#if cpp
 			#if (lime >= "8.0.0")
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
-					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
-					FlxG.sound.music._channel.__source.set_pitch(rate);
+					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					// FlxG.sound.music._channel.__source.set_pitch(rate);
 			if (vocals != null)
 				if (vocals.playing)
-					// vocals._channel.__source.__backend.setPitch(songMultiplier);
-					vocals._channel.__source.__backend.set_pitch(rate);
+					vocals._channel.__source.__backend.setPitch(songMultiplier);
+					// vocals._channel.__source.__backend.set_pitch(rate);
 			// if (vocals2 != null)
 			// 	if (vocals2.playing)
-			// 		// vocals2._channel.__source.__backend.setPitch(songMultiplier);
-			// 		vocals2._channel.__source.__backend.set_pitch(rate);
+			// 		vocals2._channel.__source.__backend.setPitch(songMultiplier);
+			// 		// vocals2._channel.__source.__backend.set_pitch(rate);
 			#else
 			if (FlxG.sound.music != null)
 				if (FlxG.sound.music.playing)
@@ -5131,6 +5143,7 @@ class ChartingState extends MusicBeatState
 			// if (vocals2 != null)
 			// 	if (vocals2.playing)
 			// 		vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(songMultiplier);
+			#end
 			#end
 			#end
 		}

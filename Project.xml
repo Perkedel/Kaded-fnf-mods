@@ -703,6 +703,9 @@
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 
+	<!-- NEW! Allow pitch -->
+	<!-- <haxedef name="FLX_PITCH"/> -->
+
 	<haxedef name="HXCPP_CHECK_POINTER" if="FEATURE_FILESYSTEM" />
 	<haxedef name="HXCPP_STACK_LINE" if="FEATURE_FILESYSTEM" />
 	<haxedef name="HXCPP_GC_BIG_BLOCKS" if="cpp"/>
