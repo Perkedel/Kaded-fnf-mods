@@ -146,11 +146,7 @@
             "type": "haxelib",
             "version": null
         },
-        {
-            "name": "tink_typecrawler",
-            "type": "haxelib",
-            "version": null
-        },
+        
         {
             "name": "tink_cli",
             "type": "haxelib",
