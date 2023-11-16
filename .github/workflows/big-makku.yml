@@ -33,6 +33,8 @@ jobs:
           haxelib install hmm
           haxelib run hmm install
           echo 'you should have all done.'
+          haxelib run lime setup flixel -y
+          haxelib run lime setup -y
           haxelib run lime rebuild linc_luajit mac
           haxelib run lime rebuild extension-webm mac
           haxelib run lime rebuild systools mac

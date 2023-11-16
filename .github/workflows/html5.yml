@@ -55,6 +55,8 @@ jobs:
           haxelib install hmm
           haxelib run hmm install
           echo 'you should have all done.'    
+          haxelib run lime setup flixel -y
+          haxelib run lime setup -y
           haxelib run lime rebuild extension-webm linux
           haxelib run lime rebuild extension-webm html5
           haxelib run lime rebuild systools html5

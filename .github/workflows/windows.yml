@@ -73,6 +73,8 @@ jobs:
           haxelib run hmm install
           echo 'you should have all done.'
           RefreshEnv
+          haxelib run lime setup flixel -y
+          haxelib run lime setup -y
           haxelib run lime rebuild extension-webm windows
           haxelib run lime rebuild extension-webm android
           haxelib run lime rebuild systools windows
