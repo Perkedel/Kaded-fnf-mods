@@ -28,7 +28,7 @@ jobs:
         # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
           haxe -version
-          haxelib install Console.hx -y
+          haxelib install Console.hx
           echo "new Psych's found-way of auto install all libraries"
           echo 'https://github.com/ShadowMario/FNF-PsychEngine/blob/main/hmm.json'
           haxelib install hmm
