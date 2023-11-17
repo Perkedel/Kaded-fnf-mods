@@ -168,7 +168,7 @@
 	^CError: Source path "export/release/linux/obj/ApplicationMain" does not exist
 	```
 	 -->
-	<haxedef name="FEATURE_CLIPBOARD" unless="linux"/>
+	<haxedef name="FEATURE_CLIPBOARD" unless="linux || mac"/>
 
 	<!-- JOELwindows7: Frame counter troubles -->
 	<!-- 
