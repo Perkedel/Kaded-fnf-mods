@@ -18,8 +18,8 @@ class OutdatedSubState extends MusicBeatState
 	public static var leftState:Bool = false;
 	public static var tinggalkanState:Bool = false; // JOELwindows7: left state LFM outdated flag
 
-	public static var needVer:String = "IDFK LOL";
-	public static var needVerLast:String = "ENTAHLAH WKWKWK"; // JOELwindows7: last funkin moment need ver
+	public static var needVer:String = "IDFK_LOL";
+	public static var needVerLast:String = "ENTAHLAH_WKWKWK"; // JOELwindows7: last funkin moment need ver
 	public static var currChanges:String = "dk";
 	public static var perubahanApaSaja:String = "tau"; // JOELwindows7: LFM currChanges
 	public static var whichAreaOutdated:Int = 0; // JOELwindows7: which fork is outdated?

@@ -69,7 +69,7 @@ class Perkedel
 	public static final STARTUP_TOAST_TITLE:String = "Cool and good";
 	public static final STARTUP_TOAST_DESCRIPTION:String = "Welcome to Last Funkin Moments\n Today's Kontraktua Majoris\n (2 of 3): Sky, Whitty";
 	public static final MAX_AVAILABLE_JUDGEMENT_RATING:Int = 3; // only up to sick we have.
-	public static final MAX_NUMBER_OF_LOADING_IMAGES:Int = 8; // how many loading backdrops do we have here?
+	public static final MAX_NUMBER_OF_LOADING_IMAGES:Int = 9; // how many loading backdrops do we have here?
 	public static final DISCLAIMER_SAY:String = "Disclaimer";
 	public static final LOADING_TOO_LONG_TIME_THRESHOLD:Float = 30; // if the loading took more than 30 second
 	public static final LOADING_TOO_LONG_SAY:String = 'Too long, didn\'t load? [OK]/[ENTER]/(START) Skip, [BACK]/[ESC]/(B) Cancel.\n\n====================\n|\tAT YOUR OWN RISK!!\t|\n====================\n\n';
