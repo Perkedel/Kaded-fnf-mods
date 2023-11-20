@@ -91,7 +91,8 @@ jobs:
 
       - name: Build HTML5 now
         run: |
-          haxelib run lime build html5 -final
+          # haxelib run lime build html5 -final
+          haxelib run lime build html5
           
       - uses: actions/upload-artifact@v2
         with:
