@@ -1,4 +1,5 @@
-![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.09-thumb.png )
+![Thumnail 2023.12](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-2023.12-thumb.png )
+<!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.09-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.02-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2021.11-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-toxic-thumb.png ) -->
