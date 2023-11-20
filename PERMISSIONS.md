@@ -16,7 +16,7 @@ The following are documents of permission proves for those who requires such.
 
 ## Open Source Licenses
 
-- https://github.com/ninjamuffin99/Funkin ninja_muffin99. [`if u make mods, open source them, lol!`](https://github.com/ninjamuffin99/Funkin/blob/master/LICENSE ), formerly Apache-2.0, before 16 May 2021. Okey it's back to Apache-2.0 again.
+- https://github.com/ninjamuffin99/Funkin ninja_muffin99. [`if u make mods, open source them, lol!`](https://github.com/ninjamuffin99/Funkin/blob/master/LICENSE ), formerly Apache-2.0, before 16 May 2021. Okey it's back to Apache-2.0 again. EDIT: changed again. **WHAT DO YOU REALLY WANT, BRUH?!?!?!**
 - https://github.com/KadeDev/Kade-Engine KadeDev. [Apache-2.0](https://github.com/KadeDev/Kade-Engine/blob/stable/LICENSE ).
 - https://github.com/Perkedel/HexagonEngine Perkedel Technologies. [GNU GPL v3](https://github.com/Perkedel/HexagonEngine/blob/master/LICENSE ).
 - https://github.com/EnigmaEngine/EnigmaEngine MasterEric. [Apache-2.0](https://github.com/EnigmaEngine/EnigmaEngine/blob/stable/LICENSE )
