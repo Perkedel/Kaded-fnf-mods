@@ -21,6 +21,11 @@
 // btw, coding has been oversaturated with politics for the license part of it. license itself is politic, idk.. coz it has view! side a b c d e f g
 package;
 
+import openfl.geom.Rectangle;
+#if FEATURE_SCREENSHOT
+import flixel.addons.plugin.screengrab.FlxScreenGrab;
+#end
+import openfl.display.Bitmap;
 import ui.states.debug.WerrorForceMajeurState;
 import flixel.tweens.FlxTween;
 import flixel.tweens.misc.VarTween;
@@ -42,8 +47,20 @@ class Game extends FlxGame
 {
 	public static var pauseMusic:FlxSound;
 	public static var pauseMusicTween:VarTween;
+	public static var pauseFadingOut:Bool = false;
 
 	static var hasCrashed:Bool = false;
+
+	public static var lastScreenshotBitmap:Bitmap;
+
+	// JOELwindows7: override creato
+	override function create(_)
+	{
+		super.create(_);
+
+		FlxG.sound.soundTray.volumeDownSound = Paths.sound('GF_4', 'shared');
+		FlxG.sound.soundTray.volumeUpSound = Paths.sound('GF_3', 'shared');
+	}
 
 	override public function update()
 	{
@@ -51,8 +68,22 @@ class Game extends FlxGame
 		{
 			if (pauseMusic.playing)
 			{
-				if (pauseMusicTween != null) // JOELwindows7: don't forget the safety!!!
-					pauseMusicTween.active = true;
+				// if (pauseMusicTween != null) // JOELwindows7: don't forget the safety!!!
+				// 	pauseMusicTween.active = true;
+				if (pauseFadingOut)
+				{
+					if (pauseMusic.volume > 0)
+						pauseMusic.volume -= .5 * FlxG.elapsed;
+					else
+					{
+						stopPauseMusic();
+					}
+				}
+				else
+				{
+					if (pauseMusic.volume < 0.5)
+						pauseMusic.volume += 0.01 * FlxG.elapsed;
+				}
 			}
 		}
 
@@ -87,12 +118,17 @@ class Game extends FlxGame
 							'Fatal WError: ${exc.message}',
 							'The game has crashed. Oh peck!!!\n\n${exc.details()}'
 						]);
-						#elseif web
+						#elseif (web && !emscripten)
 						// use https://www.w3schools.com/js/js_popup.asp
 						Browser.alert('Fatal WError: ${exc.message}\n\nThe game has crashed. Oh peck!!!\n\n ${exc.message}:\n${exc.details()}');
 						#else
 						Debug.logTrace('no notification command available, sadd');
 						#end
+
+						// To Windows:
+						// - https://stackoverflow.com/questions/47115811/how-to-keep-powershell-notification-in-action-center/47123275#47123275
+						// - https://superuser.com/a/1523925/1036816
+						// - https://stackoverflow.com/questions/39535937/what-is-the-notify-send-equivalent-for-windows
 					}
 					catch (wer)
 					{
@@ -106,15 +142,24 @@ class Game extends FlxGame
 		}
 	}
 
+	// JOELwindows7: aaaaa ye
+	// JOELwindows7: Play Sounds pls
+	// public static function playSound(path:String){
+	// }
+
 	public static function playPauseMusic()
 	{
+		pauseFadingOut = false;
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+		Debug.logInfo('Volume 0');
 		pauseMusic.volume = 0;
+		Debug.logInfo('Volume 0 done');
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 		pauseMusic.ID = 9000; // JOELwindows7: don't forget ID it like usual original Kade.
 		FlxG.sound.list.add(pauseMusic);
 
-		pauseMusicTween = FlxTween.tween(pauseMusic, {volume: 0.9}, 15);
+		// pauseMusicTween = FlxTween.tween(pauseMusic, {volume: 0.9}, 15);
+		Debug.logInfo('Pause Music Now Playing');
 	}
 
 	public static function stopPauseMusic()
@@ -126,7 +171,38 @@ class Game extends FlxGame
 		if (pauseMusic != null)
 		{
 			pauseMusic.stop();
+			// pauseMusic.destroy();
 		}
+	}
+
+	public static function fadePauseMusic()
+	{
+		Debug.logTrace('Fade Unpause music now');
+		if (pauseMusicTween != null)
+		{
+			pauseMusicTween.cancel();
+		}
+		if (pauseMusic != null)
+		{
+			// pauseMusicTween = FlxTween.tween(pauseMusic, {volume: 0}, 1, {
+			// 	onComplete: function(twn:FlxTween)
+			// 	{
+			// 		stopPauseMusic();
+			// 	}
+			// });
+			pauseFadingOut = true;
+		}
+	}
+
+	public static function captureScreenshot(?CaptureRegion:Null<Rectangle>, SaveToFile:Bool = false, HideMouse:Bool = true):Bitmap
+	{
+		#if FEATURE_SCREENSHOT
+		lastScreenshotBitmap = FlxScreenGrab.grab(CaptureRegion, SaveToFile, HideMouse);
+		#else
+		lastScreenshotBitmap = null;
+		#end
+
+		return lastScreenshotBitmap;
 	}
 
 	// JOELwindows7: reset tripwire

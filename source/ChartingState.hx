@@ -246,14 +246,19 @@ class ChartingState extends MusicBeatState
 			if (PlayState.isSM)
 			{
 				#if FEATURE_STEPMANIA
-				_song = Song.conversionChecks(Song.loadFromJsonRAW(File.getContent(PlayState.pathToSm + "/converted.json")));
+				// _song = Song.conversionChecks(Song.loadFromJsonRAW(File.getContent(PlayState.pathToSm + "/converted.json")));
+				_song = Song.conversionChecks(Song.loadFromJsonRAW(FNFAssets.getText(PlayState.pathToSm +
+					"/converted.json"))); // JOELwindows7: use FNF assets instead!
+				lastPath = PlayState.pathToSm + "/converted.json";
 				#end
 			}
 			else
 			{
 				var diff:String = ["-easy", "", "-hard"][PlayState.storyDifficulty];
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
+				lastPath = Paths.json('songs/${PlayState.SONG.songId}/${PlayState.SONG.songId}${diff}');
 			} // JOELwindows7: so it has to be anything supported by sys
+			alreadySavedBefore = true;
 		}
 		else
 		{
@@ -1544,6 +1549,7 @@ class ChartingState extends MusicBeatState
 
 		var restart = new FlxUIButton(10, 140, "Reset Chart", function()
 		{
+			alreadySavedBefore = false; // JOELwindows7: no accident allowed
 			for (ii in 0..._song.notes.length)
 			{
 				for (i in 0..._song.notes[ii].sectionNotes.length)
@@ -2520,6 +2526,10 @@ class ChartingState extends MusicBeatState
 					saveRemove.push(i);
 					section.sectionNotes.push(i);
 				}
+				// JOELwindows7: pls remove stacked notes overlapping notes
+				// if (i[1]){
+
+				// }
 			}
 
 			for (i in saveRemove)
@@ -2710,24 +2720,26 @@ class ChartingState extends MusicBeatState
 				{
 					@:privateAccess
 					{
-						#if desktop // JOELwindows7: must be cpp
-						// The __backend.handle attribute is only available on native.
-						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
-						try
-						{
-							// We need to make CERTAIN vocals exist and are non-empty
-							// before we try to play them. Otherwise the game crashes.
-							if (vocals != null && vocals.length > 0)
-							{
-								lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
-							}
-						}
-						catch (e)
-						{
-							// Debug.logTrace("failed to pitch vocals (probably cuz they don't exist)");
-						}
-						#end
+						// #if desktop // JOELwindows7: must be cpp
+						// // The __backend.handle attribute is only available on native.
+						// lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
+						// try
+						// {
+						// 	// We need to make CERTAIN vocals exist and are non-empty
+						// 	// before we try to play them. Otherwise the game crashes.
+						// 	if (vocals != null && vocals.length > 0)
+						// 	{
+						// 		lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
+						// 	}
+						// }
+						// catch (e)
+						// {
+						// 	// Debug.logTrace("failed to pitch vocals (probably cuz they don't exist)");
+						// }
+						// #end
 					}
+
+					manipulateTheAudio();
 				}
 			}
 
@@ -3195,10 +3207,15 @@ class ChartingState extends MusicBeatState
 			camFollow.y = strumLine.y;
 			// JOELwindows7: waveform positioner too too
 			if (waveform != null)
+			{
 				waveform.y = strumLine.y;
+				waveform.x = strumLine.x;
+			}
 			if (waveformVoice != null)
+			{
 				waveformVoice.y = strumLine.y;
-
+				waveformVoice.x = strumLine.x;
+			}
 			bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 				+ " / "
 				+ Std.string(FlxMath.roundDecimal(FlxG.sound.music.length / 1000, 2))
@@ -3217,12 +3234,13 @@ class ChartingState extends MusicBeatState
 				+ "\n"
 				+ (doSnapShit ? "Snap enabled" : "Snap disabled")
 				+ // JOELwindows7: helep! string hard to read!!!
-				(FlxG.save.data.showHelp ? "\n\n" + "Help:\n" + "Ctrl-MWheel : Zoom in/out\n" + "Shift-Left/Right :\nChange playback speed\n"
-					+ "Ctrl-Drag Click : Select notes\n" + "Ctrl-C : Copy notes\n" + "Ctrl-V : Paste notes\n" + "Ctrl-Z : Undo\n"
-					+ "Delete : Delete selection\n" + "CTRL-Left/Right :\n  Change Snap\n" + "Hold Shift : Disable Snap\n"
-					+ "Click or 1/2/3/4/5/6/7/8 :\n\tPlace notes\n" + "Place Note + ALT: Place mines\n" + "Up/Down :\n  Move selected notes 1 step\n"
-					+ "Shift-Up/Down :\nMove selected notes 1 beat\n" + "Space: Play Music\n" + "Enter : Preview\n" +
-					"Press F1 to hide/show help!" : "\nPress F1 to hide/show help!");
+				// (FlxG.save.data.showHelp ? "\n\n" + "Help:\n" + "Ctrl-MWheel : Zoom in/out\n" + "Shift-Left/Right :\nChange playback speed\n"
+				// 	+ "Ctrl-Drag Click : Select notes\n" + "Ctrl-C : Copy notes\n" + "Ctrl-V : Paste notes\n" + "Ctrl-Z : Undo\n"
+				// 	+ "Delete : Delete selection\n" + "CTRL-Left/Right :\n  Change Snap\n" + "Hold Shift : Disable Snap\n"
+				// 	+ "Click or 1/2/3/4/5/6/7/8 :\n\tPlace notes\n" + "Place Note + ALT: Place mines\n" + "Up/Down :\n  Move selected notes 1 step\n"
+				// 	+ "Shift-Up/Down :\nMove selected notes 1 beat\n" + "Space: Play Music\n" + "Enter : Preview\n" +
+				// 	"Press F1 to hide/show help!" : "\nPress F1 to hide/show help!");
+				(FlxG.save.data.showHelp ? Perkedel.CHART_HELP_TEXT : Perkedel.CHART_HELP_TEXT_OFF);
 
 			var left = FlxG.keys.justPressed.ONE;
 			var down = FlxG.keys.justPressed.TWO;
@@ -4482,6 +4500,7 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(songId:String):Void
 	{
+		alreadySavedBefore = false; // JOELwindows7: remember, no accident allowed
 		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
 
 		PlayState.SONG = Song.loadFromJson(songId, difficultyArray[PlayState.storyDifficulty]);
@@ -4522,6 +4541,7 @@ class ChartingState extends MusicBeatState
 
 	function loadAutosave():Void
 	{
+		alreadySavedBefore = false; // JOELwindows7: don't forget no accident pls
 		while (curRenderedNotes.members.length > 0)
 		{
 			curRenderedNotes.remove(curRenderedNotes.members[0], true);
@@ -4596,8 +4616,10 @@ class ChartingState extends MusicBeatState
 		FlxG.save.flush();
 	}
 
-	public function saveLevel() // JOELwindows7: make this public for others to tell idk.
+	// JOELwindows7: iyey craft the save data!
+	inline public function craftTheSave()
 	{
+		// JOELwindows7: encapsulate part that craft the save!
 		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
 
 		var toRemove = [];
@@ -4674,9 +4696,95 @@ class ChartingState extends MusicBeatState
 		// var data:String = Json.stringify(json, null, "\t"); // JOELwindows7: must use `TAB` instead!!!!
 		// var data:String = TJSON.stringify(json, null, " "); // JOELwindows7: what?! you don't have stringify?
 		var data:String = TJSON.encode(json, "fancy"); // JOELwindows7: wait, it's called encode!
+		return data;
+	}
+
+	public function saveLevel() // JOELwindows7: make this public for others to tell idk.
+	{
+		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+
+		// var toRemove = [];
+
+		// for (i in _song.notes)
+		// {
+		// 	if (i.startTime > FlxG.sound.music.length)
+		// 		toRemove.push(i);
+		// }
+
+		// for (i in toRemove)
+		// 	_song.notes.remove(i);
+
+		// toRemove = []; // clear memory
+
+		// // JOELwindows7: copy migrate from sectionNotes into betterSectionNotes
+		// for (i in _song.notes)
+		// {
+		// 	// JOELwindows7: for safety, init that betterSectionNotes array
+		// 	// type is `Array<NoteInSection>` from `Section.hx`
+		// 	i.betterSectionNotes = []; // yeah basically this is auto-conversion output anyway.
+		// 	// btw, this type of section notes should've been built like so.
+		// 	// ah well, let this by my own sTILE note section.
+
+		// 	for (j in 0...i.sectionNotes.length)
+		// 	{
+		// 		var stringedNoteType:String = switch (i.sectionNotes[j][5])
+		// 		{
+		// 			case 0:
+		// 				'default'; // regular note
+		// 			case 1:
+		// 				'special'; // powerup
+		// 			case 2:
+		// 				'mine'; // decrease HP
+		// 			case 3:
+		// 				'important'; // critical do not miss or die
+		// 			case 4:
+		// 				'never'; // critical do not step or die
+		// 			case _:
+		// 				'default';
+		// 		};
+
+		// 		// i.betterSectionNotes
+		// 		i.betterSectionNotes[j] = {
+		// 			strumTime: i.sectionNotes[j][0],
+		// 			noteData: i.sectionNotes[j][1],
+		// 			sustainLength: i.sectionNotes[j][2],
+		// 			isAlt: i.sectionNotes[j][3],
+		// 			beat: i.sectionNotes[j][4],
+		// 			noteType: i.sectionNotes[j][5],
+		// 			noteTypeId: stringedNoteType,
+		// 			hitsoundPath: i.sectionNotes[j][6],
+		// 			vowelType: i.sectionNotes[j][7],
+		// 			hitsoundUseIt: i.sectionNotes[j][8],
+		// 		}
+		// 	}
+		// }
+
+		// // JOELwindows7: some modificates first
+		// // _modificatesBeforeSave(difficultyArray);
+		// _modificatesBeforeSave();
+
+		// var json = {
+		// 	"ProgramUsed": Perkedel.ENGINE_NAME,
+		// 	"generatedBy": 'charting',
+		// 	"charter": _song.charter,
+		// 	"song": _song,
+		// };
+
+		// // JOELwindows7: make save JSON pretty
+		// // https://haxe.org/manual/std-Json-encoding.html
+		// // var data:String = Json.stringify(json, "\t");
+		// // var data:String = Json.stringify(json, null, " ");
+		// // var data:String = Json.stringify(json, null, "\t"); // JOELwindows7: must use `TAB` instead!!!!
+		// // var data:String = TJSON.stringify(json, null, " "); // JOELwindows7: what?! you don't have stringify?
+		// var data:String = TJSON.encode(json, "fancy"); // JOELwindows7: wait, it's called encode!
+		var data:String = craftTheSave(); // JOELwindows7: just wrap them here!
 
 		if ((data != null) && (data.length > 0))
 		{
+			// if (alreadySavedBefore){
+			// 	// JOELwindows7: pls BulbyVR's just save now
+			// 	FNFAssets.saveContent(data.trim(),_song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
+			// } else {
 			// #if (systools)
 			// JOELwindows7: use the Dialog file save instead!
 			// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/FileBrowse/source/PlayState.hx
@@ -4693,11 +4801,13 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
 			// #end
+			// }
 		}
 	}
 
 	// JOELwindows7: the just save function. if you already saved as before like above, here save just save without dialog box
 	public var alreadySavedBefore:Bool = false;
+	public var lastPath:String = "";
 
 	public function justSaveNow():Void
 	{
@@ -4708,7 +4818,13 @@ class ChartingState extends MusicBeatState
 			// PAIN IS TEMPORARY, GLORY IS FOREVER. LOL WINTERGATAN
 
 			// TEMPORARY!!! pls help me write file instead of dialog box
-			saveLevel();
+			// saveLevel();
+
+			var data:String = craftTheSave(); // JOELwindows7: just wrap them here!
+			if ((data != null) && (data.length > 0))
+			{
+				FNFAssets.saveContent(data.trim(), lastPath);
+			}
 		}
 		else
 		{
@@ -4766,11 +4882,19 @@ class ChartingState extends MusicBeatState
 	 */
 	function onSaveComplete(_):Void
 	{
+		try
+		{
+			Debug.logInfo('Saved to ${_file.name}');
+			lastPath = _file.name;
+			alreadySavedBefore = true; // JOELwindows7: mark this already saved before.
+		}
+		catch (e)
+		{
+		}
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
-		alreadySavedBefore = true; // JOELwindows7: mark this already saved before.
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
 		// JOELwindows7: trace the success & sound it
 		Debug.logInfo("Yay level saved! cool and good");
@@ -4850,6 +4974,7 @@ class ChartingState extends MusicBeatState
 		}
 		else if (paused)
 		{
+			Game.stopPauseMusic();
 			FlxG.mouse.visible = true;
 			paused = false;
 		}
@@ -4926,9 +5051,9 @@ class ChartingState extends MusicBeatState
 		else
 		{
 			if (PlayState.SONG.needsVoices)
-				waveformVoice = new Waveform(0, 0, Paths.voices(PlayState.SONG.songId), 720);
+				waveformVoice = new Waveform(100, 0, Paths.voices(PlayState.SONG.songId), 720);
 
-			waveform = new Waveform(0, 0, Paths.inst(PlayState.SONG.songId), 720);
+			waveform = new Waveform(100, 0, Paths.inst(PlayState.SONG.songId), 720);
 		}
 	}
 
@@ -4936,8 +5061,102 @@ class ChartingState extends MusicBeatState
 	function addWaveforms()
 	{
 		if (waveform != null)
+		{
+			Debug.logTrace('Add Music Waveform');
 			add(waveform);
+		}
+
 		if (waveformVoice != null)
+		{
+			Debug.logTrace('Add Voice Waveform');
 			add(waveformVoice);
+		}
+	}
+
+	// JOELwindows7: Manipulate audio
+	function manipulateTheAudio():Void
+	{
+		#if FEATURE_AUDIO_MANIPULATE
+		@:privateAccess
+		{
+
+			// JOELwindows7: hey, there's a new advanced way of doing this with BOLO's figure outs!
+			// https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/FreeplayState.hx
+			// https://github.com/BoloVEVO/Kade-Engine-Public/blame/stable/source/PlayState.hx#L2614
+			// add safety too pls!
+			// hmm, perhaps it should be really nested. confirm really if it's not null FIRST,
+			// if not null, then yess evaluate in it.
+			// #if (flixel >= "5.4.0")
+			// #if FLX_PITCH
+			// if (FlxG.sound.music != null)
+			// 	if (FlxG.sound.music.playing)
+			// 		FlxG.sound.music.pitch = speed;
+			// if (vocals != null)
+			// 	if (vocals.playing)
+			// 		vocals.pitch = speed;
+			// // if (vocals2 != null)
+			// // 	if (vocals2.playing)
+			// // 		vocals2.pitch = speed;
+			// #else
+
+			// #end
+			// #else
+			#if cpp
+			#if (lime >= "8.0.0")
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					// FlxG.sound.music._channel.__source.__backend.setPitch(speed);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(speed);
+					// FlxG.sound.music._channel.__source.set_pitch(speed);
+			if (vocals != null)
+				if (vocals.playing)
+					// vocals._channel.__source.__backend.setPitch(speed);
+					vocals._channel.__audioSource.__backend.setPitch(speed);
+					// vocals._channel.__source.__backend.set_pitch(speed);
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		vocals2._channel.__source.__backend.setPitch(speed);
+			// 		// vocals2._channel.__source.__backend.set_pitch(speed);
+			#else
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
+			if (vocals != null)
+				if (vocals.playing)
+					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		lime.media.openal.AL.sourcef(vocals2._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
+			#end
+			#elseif web
+			#if (lime >= "8.0.0" && lime_howlerjs)
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					// FlxG.sound.music._channel.__source.__backend.setPitch(speed);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(speed);
+			if (vocals != null)
+				if (vocals.playing)
+					// vocals._channel.__source.__backend.setPitch(speed);
+					vocals._channel.__audioSource.__backend.setPitch(speed);
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		vocals2._channel.__source.__backend.setPitch(speed);
+			#else
+			if (FlxG.sound.music != null)
+				if (FlxG.sound.music.playing)
+					// FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
+					FlxG.sound.music._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(speed);
+			if (vocals != null)
+				if (vocals.playing)
+					// vocals._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
+					vocals._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(speed);
+			// if (vocals2 != null)
+			// 	if (vocals2.playing)
+			// 		vocals2._channel.__source.__backend.parent.buffer.__srcHowl.rate(speed);
+			#end
+			#end
+			// #end
+		}
+		#end
 	}
 }

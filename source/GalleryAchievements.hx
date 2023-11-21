@@ -198,6 +198,6 @@ class AchievementUnlocked{
         GameJoltAPI.getTrophy(HardCodeAchievements.listings[nameID].externalAchievmentIDs.gameJolt);
         #end
         // FlxG.save.data.achievementUnlocked[nameID] = true;
-        trace("Achievement Unlocked: " + nameID);
+        trace("Unlock Achievement: " + nameID);
     }
 }

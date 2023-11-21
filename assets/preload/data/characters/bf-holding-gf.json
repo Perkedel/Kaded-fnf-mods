@@ -2,6 +2,8 @@
 	"name": "Boyfriend holding GF",
 	"displayName": "Boyfriend & Girlfriend",
 	"asset": "characters/bfAndGF",
+	"usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
 	"flipX": true,
 	"forceIcon": true,
 	"barColor": "#31B0D1",

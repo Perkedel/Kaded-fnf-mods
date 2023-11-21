@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="Menu_Hookx.png">
+<SubTexture name="M Hookx Idle0000" x="0" y="0" width="505" height="660" frameX="0" frameY="0" frameWidth="505" frameHeight="660" />
+<SubTexture name="M Hookx Idle0001" x="505" y="0" width="505" height="660" frameX="0" frameY="0" frameWidth="505" frameHeight="660" />
+<SubTexture name="M Hookx Idle0002" x="1010" y="0" width="505" height="660" frameX="0" frameY="0" frameWidth="505" frameHeight="660" />
+<SubTexture name="M Hookx Idle0003" x="1010" y="0" width="505" height="660" frameX="0" frameY="0" frameWidth="505" frameHeight="660" />
+<SubTexture name="M Hookx Idle0004" x="1010" y="0" width="505" height="660" frameX="0" frameY="0" frameWidth="505" frameHeight="660" />
+</TextureAtlas>

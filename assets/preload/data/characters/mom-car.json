@@ -2,6 +2,8 @@
     "name": "Mommy Mearest (Car)",
     "displayName": "Mommy Mearest",
     "asset": "characters/momCar",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#D8558E",
     "startingAnim": "idle",
     "camFollow": [0, 100],

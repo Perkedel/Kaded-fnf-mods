@@ -4,8 +4,10 @@ import openfl.geom.Rectangle;
 import haxe.io.Bytes;
 import lime.media.AudioBuffer;
 import flixel.FlxSprite;
+import flixel.addons.ui.FlxUIText;
+import flixel.addons.ui.FlxUISprite;
 
-class Waveform extends FlxSprite
+class Waveform extends FlxUISprite
 {
 	/// referenced from https://github.com/gedehari/HaxeFlixel-Waveform-Rendering/blob/master/source/PlayState.hx
 	/// by gedehari
@@ -52,6 +54,8 @@ class Waveform extends FlxSprite
 
 		var totalSamples = (data.length / (buffer.bitsPerSample / 8) / buffer.channels);
 
+		trace('There are ${totalSamples} samples');
+
 		var min:Float = 0;
 		var max:Float = 0;
 
@@ -75,7 +79,7 @@ class Waveform extends FlxSprite
 					min = sample;
 			}
 
-			trace("sample " + index);
+			// trace("sample " + index);
 
 			var pixelsMin:Float = Math.abs(min * 300);
 			var pixelsMax:Float = max * 300;

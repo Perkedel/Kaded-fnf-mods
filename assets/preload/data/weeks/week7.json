@@ -1,0 +1,23 @@
+{
+	"songs": [
+		"ugh",
+		"guns",
+		"stress"
+	],
+
+	"weekCharacters": [
+		"tankman",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Warzone",
+	"weekColor": "#ffcc00",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":false,
+	"storyName": "TANKMAN",
+	"weekBefore": "week6",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
+}

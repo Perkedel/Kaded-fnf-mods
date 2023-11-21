@@ -1,3 +1,4 @@
+import ui.states.transition.PsychTransition;
 import const.Perkedel;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
@@ -37,7 +38,7 @@ class KadeEngineData
 			FlxG.save.data.offset = 0;
 
 		if (FlxG.save.data.songPosition == null)
-			FlxG.save.data.songPosition = false;
+			FlxG.save.data.songPosition = true;
 
 		if (FlxG.save.data.fps == null)
 			FlxG.save.data.fps = false;
@@ -58,6 +59,14 @@ class KadeEngineData
 		// JOELwindows7: accident vol keys
 		if (FlxG.save.data.accidentVolumeKeys == null)
 			FlxG.save.data.accidentVolumeKeys = false;
+
+		// JOELwindows7: Master Volume
+		if (FlxG.save.data.masterVolume == null)
+			FlxG.save.data.masterVolumet = 1;
+
+		// JOELwindows7: MenuBG Volume
+		if (FlxG.save.data.menuBGVolume == null)
+			FlxG.save.data.menuBGVolume = 1;
 
 		// JOELwindows7: don't forget init save data of fullscreen mode
 		if (FlxG.save.data.fullscreen == null)
@@ -121,7 +130,7 @@ class KadeEngineData
 			FlxG.save.data.colour = true;
 
 		if (FlxG.save.data.stepMania == null)
-			FlxG.save.data.stepMania = false;
+			FlxG.save.data.stepMania = true;
 
 		if (FlxG.save.data.flashing == null)
 			FlxG.save.data.flashing = true;
@@ -136,7 +145,7 @@ class KadeEngineData
 			FlxG.save.data.botplay = false;
 
 		if (FlxG.save.data.cpuStrums == null)
-			FlxG.save.data.cpuStrums = false;
+			FlxG.save.data.cpuStrums = true;
 
 		if (FlxG.save.data.strumline == null)
 			FlxG.save.data.strumline = false;
@@ -467,6 +476,59 @@ class KadeEngineData
 		if (FlxG.save.data.discordMode == null)
 			FlxG.save.data.discordMode = 1;
 
+		// JOELwindows7: Bottom left corner lyric like in KPop TV show
+		if (FlxG.save.data.kpopLyrics == null)
+			FlxG.save.data.kpopLyrics = true;
+
+		if (FlxG.save.data.kpopLyricsPosition == null)
+			FlxG.save.data.kpopLyricsPosition = 0;
+
+		// JOELwindows7: Select your music
+		if (FlxG.save.data.kadeMusic == null)
+		{
+			FlxG.save.data.kadeMusic = 0;
+
+			// JOELwindows7: Oh s888! I made mistake
+			if (FlxG.save.data.kadeMusic == false)
+				FlxG.save.data.kadeMusic = 0;
+
+			if (FlxG.save.data.kadeMusic == true)
+				FlxG.save.data.kadeMusic = 1;
+
+			if (FlxG.save.data.kadeMusic > Perkedel.MAIN_MENU_MUSICS.length -1)
+				FlxG.save.data.kadeMusic = Perkedel.MAIN_MENU_MUSICS.length - 1;
+
+			if (FlxG.save.data.kadeMusic < 0)
+				FlxG.save.data.kadeMusic = 0;
+		}
+		else
+		{
+			// JOELwindows7: Oh s888! I made mistake
+			if (FlxG.save.data.kadeMusic == false)
+				FlxG.save.data.kadeMusic = 0;
+
+			if (FlxG.save.data.kadeMusic == true)
+				FlxG.save.data.kadeMusic = 1;
+
+			if (FlxG.save.data.kadeMusic > Perkedel.MAIN_MENU_MUSICS.length - 1)
+				FlxG.save.data.kadeMusic = Perkedel.MAIN_MENU_MUSICS.length - 1;
+
+			if (FlxG.save.data.kadeMusic < 0)
+				FlxG.save.data.kadeMusic = 0;
+		}
+
+		// JOELwindows7: Select Language ID
+		if (FlxG.save.data.languageID == null)
+			FlxG.save.data.languageID = 'en-US';
+
+		// JOELwindows7: nvm, use index number to Language ID instead. see Perkedel.LANGUAGES_AVAILABLE
+		if (FlxG.save.data.languageSelect == null)
+			FlxG.save.data.languageSelect = 0;
+
+		// JOELwindows7: Capture screenshot before transition & use it as the meltings
+		if (FlxG.save.data.doomTransition == null)
+			FlxG.save.data.doomTransition == PsychTransition.wackyScreenTransitionTechnique;
+
 		// JOELwindows7: workarounds!
 
 		// video cutscene crash on Linux
@@ -494,6 +556,12 @@ class KadeEngineData
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		Debug.logInfo("successfully set FPS settings"); // JOELwindows7: see if Android version crash!
 		#end
+
+		// JOELwindows7: don't forget to set it
+		PsychTransition.wackyScreenTransitionTechnique = FlxG.save.data.doomTransition;
+
+		// JOELwindows7: Oh, volume pls!
+		FlxG.sound.volume = FlxG.save.data.masterVolume;
 	}
 
 	// JOELwindows7: BOLO's reset modifier

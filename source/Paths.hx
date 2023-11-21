@@ -1,5 +1,8 @@
 package;
 
+#if FEATURE_MODCORE
+import polymod.Polymod;
+#end
 import flixel.graphics.frames.FlxFramesCollection;
 import flash.media.Sound;
 import openfl.display.BitmapData;
@@ -19,7 +22,7 @@ using StringTools;
 class Paths
 {
 	// JOELwindows7: not my code. but hey uh, is it has to be it, the web cannot ogg?
-	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
+	inline public static var SOUND_EXT = #if (web || flash) "mp3" #else "ogg" #end;
 	// inline public static var VIDEO_EXT = #if FEATURE_MP4VIDEOS "mp4" #elseif (!FEATURE_MP4VIDEOS || FEATURE_WEBM) "webm" #end; // JOELwindows7: BOLO
 	inline public static var VIDEO_EXT = "webm"; // JOELwindows7: or just settle on WEBM? man that takes time to rerender everything to mo.
 
@@ -33,17 +36,40 @@ class Paths
 	static function getPath(file:String, type:AssetType, library:Null<String>)
 	{
 		// JOELwindows7: hey, you gotta also ignore if it's literally empty string!
+		// hey pls just FNFAssets them! was OpenFlAssets
 		if (library != null && library != '')
 			return getLibraryPath(file, library);
 
 		if (currentLevel != null)
 		{
 			var levelPath = getLibraryPathForce(file, currentLevel);
-			if (OpenFlAssets.exists(levelPath, type))
+			if (FNFAssets.exists(levelPath, type))
 				return levelPath;
 
 			levelPath = getLibraryPathForce(file, "shared");
-			if (OpenFlAssets.exists(levelPath, type))
+			if (FNFAssets.exists(levelPath, type))
+				return levelPath;
+
+			// JOELwindows7: other libraries?
+			levelPath = getLibraryPathForce(file, "thief");
+			if (FNFAssets.exists(levelPath, type))
+				return levelPath;
+
+			levelPath = getLibraryPathForce(file, "odysee");
+			if (FNFAssets.exists(levelPath, type))
+				return levelPath;
+
+			levelPath = getLibraryPathForce(file, "preload_odysee");
+			if (FNFAssets.exists(levelPath, type))
+				return levelPath;
+
+			levelPath = getLibraryPathForce(file, "preload_thief");
+			if (FNFAssets.exists(levelPath, type))
+				return levelPath;
+
+			// JOELwindows7: oooh yeah core it
+			levelPath = getLibraryPathForce(file, "core");
+			if (FNFAssets.exists(levelPath, type))
 				return levelPath;
 		}
 
@@ -77,16 +103,33 @@ class Paths
 		return currentTrackedSounds.get(gottenPath);
 	}
 
-	// JOELwindows7: da hx file
+	// JOELwindows7: da hx file ; pls FNFAssets them BulbyVR Modding+
 	static public function getHaxeScript(string:String)
 	{
-		return Assets.getText('assets/data/$string/HaxeModchart.hx');
+		return FNFAssets.getText('assets/data/$string/HaxeModchart.hx'); // Assets
 	}
 
 	// JOELwindows7: wait, Hx file? okay, my modchart is in hscript!
 	static public function getHaxeModscript(string:String)
 	{
-		return Assets.getText('assets/data/$string/modchart.hscript');
+		return FNFAssets.getText('assets/data/$string/modchart.hscript'); // Assets
+	}
+
+	// JOELwindows7: The Kpop Lyric file!
+	static public function getKpopLyric(string:String)
+	{
+		return FNFAssets.getText('assets/data/$string/lyrics.txt'); // Assets
+	}
+
+	// JOELwindows7: raw text file
+	static public function getTextFile(string:String)
+	{
+		return FNFAssets.getText(string); // OpenFlAssets
+	}
+
+	static public function getXMLTextFile(string:String)
+	{
+		return FNFAssets.getText('$string.xml'); // Assets
 	}
 
 	/**
@@ -118,9 +161,10 @@ class Paths
 		}
 		#end
 
-		if (OpenFlAssets.exists(path, IMAGE))
+		// JOELwindows7: pls BulbyVR Modding+ FNFAssets. was OpenFlAssets
+		if (FNFAssets.exists(path, IMAGE))
 		{
-			var bitmap = OpenFlAssets.getBitmapData(path);
+			var bitmap = FNFAssets.getBitmapData(path);
 			return FlxGraphic.fromBitmapData(bitmap);
 		}
 		else
@@ -147,9 +191,10 @@ class Paths
 		}
 		#end
 
-		if (OpenFlAssets.exists(path, IMAGE))
+		// JOELwindows7: pls BulbyVR Modding+ FNFAssets. was OpenFlAssets
+		if (FNFAssets.exists(path, IMAGE))
 		{
-			var bitmap = OpenFlAssets.getBitmapData(path);
+			var bitmap = FNFAssets.getBitmapData(path);
 			return bitmap;
 		}
 		else
@@ -161,7 +206,7 @@ class Paths
 
 	static public function loadJSON(key:String, ?library:String):Dynamic
 	{
-		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
+		var rawJson = FNFAssets.getText(Paths.json(key, library)).trim(); // JOELwindows7: was OpenFlAssets
 
 		// Perform cleanup on files that have bad data at the end.
 		while (!rawJson.endsWith("}"))
@@ -180,7 +225,7 @@ class Paths
 		catch (e)
 		{
 			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-			Debug.logError(e + ": " + e.message); // JOELwindows7: error title & description
+			Debug.logError(e + ": " + e.message + "\n" + e.details()); // JOELwindows7: error title & description
 
 			// Return null.
 			return null;
@@ -210,6 +255,18 @@ class Paths
 	inline static public function lua(key:String, ?library:String)
 	{
 		return getPath('data/$key.lua', TEXT, library);
+	}
+
+	// JOELwindows7: More
+	inline static public function zig(key:String, ?library:String)
+	{
+		return getPath('data/$key.zig', TEXT, library);
+	}
+
+	// JOELwindows7: MOAR!!
+	inline static public function nim(key:String, ?library:String)
+	{
+		return getPath('data/$key.nim', TEXT, library);
 	}
 
 	/**
@@ -354,7 +411,7 @@ class Paths
 	static public function listSongsToCache()
 	{
 		// We need to query OpenFlAssets, not the file system, because of Polymod.
-		var soundAssets = OpenFlAssets.list(AssetType.MUSIC).concat(OpenFlAssets.list(AssetType.SOUND));
+		var soundAssets = OpenFlAssets.list(AssetType.MUSIC).concat(OpenFlAssets.list(AssetType.SOUND)); // JOELwindows7: was OpenFlAssets . pls BulbyVR Modding+ FNFAssets. nvm, not exist!
 
 		// TODO: Maybe rework this to pull from a text file rather than scan the list of assets.
 		var songNames = [];
@@ -381,34 +438,35 @@ class Paths
 		return songNames;
 	}
 
+	// JOELwindows7: the does exist! pls FNFAssets them Modding+ BulbyVR! were OpenFlAssets
 	static public function doesSoundAssetExist(path:String)
 	{
 		if (path == null || path == "")
 			return false;
-		return OpenFlAssets.exists(path, AssetType.SOUND) || OpenFlAssets.exists(path, AssetType.MUSIC);
+		return FNFAssets.exists(path, AssetType.SOUND) || FNFAssets.exists(path, AssetType.MUSIC);
 	}
 
 	inline static public function doesTextAssetExist(path:String)
 	{
-		return OpenFlAssets.exists(path, AssetType.TEXT);
+		return FNFAssets.exists(path, AssetType.TEXT);
 	}
 
 	// JOELwindows7: also other is exists too pls
 	inline static public function doesImageAssetExist(path:String)
 	{
-		return OpenFlAssets.exists(path, AssetType.IMAGE);
+		return FNFAssets.exists(path, AssetType.IMAGE);
 	}
 
 	// JOELwidows7: as well as anything does exist..
 	inline static public function doesAnythingAssetExist(path:String)
 	{
-		return OpenFlAssets.exists(path, AssetType.SOUND)
-			|| OpenFlAssets.exists(path, AssetType.MUSIC)
-			|| OpenFlAssets.exists(path, AssetType.IMAGE)
-			|| OpenFlAssets.exists(path, AssetType.TEXT)
-			|| OpenFlAssets.exists(path, AssetType.MOVIE_CLIP)
-			|| OpenFlAssets.exists(path, AssetType.FONT)
-			|| OpenFlAssets.exists(path, AssetType.BINARY);
+		return FNFAssets.exists(path, AssetType.SOUND)
+			|| FNFAssets.exists(path, AssetType.MUSIC)
+			|| FNFAssets.exists(path, AssetType.IMAGE)
+			|| FNFAssets.exists(path, AssetType.TEXT)
+			|| FNFAssets.exists(path, AssetType.MOVIE_CLIP)
+			|| FNFAssets.exists(path, AssetType.FONT)
+			|| FNFAssets.exists(path, AssetType.BINARY);
 	}
 
 	// JOELwindows7: too long! make the shorthand.
@@ -426,7 +484,7 @@ class Paths
 	// JOELwindows7: also manually
 	inline static public function manuallyExist(path:String, type:AssetType)
 	{
-		return OpenFlAssets.exists(path, type);
+		return FNFAssets.exists(path, type);
 	}
 
 	// JOELwindows7: peck it! typo too aswell!
@@ -454,9 +512,11 @@ class Paths
 		return getPath('images/$key.xml', TEXT, library);
 	}
 
-	inline static public function font(key:String)
+	inline static public function font(key:String, ?library:String)
 	{
-		return 'assets/fonts/$key';
+		// JOELwindows7: bruh, why directly?!
+		// return 'assets/fonts/$key';
+		return getPath('fonts/$key', FONT, library);
 	}
 
 	// JOELwindows7: BOLO has exclude asset!!!
@@ -468,7 +528,12 @@ class Paths
 	}
 
 	// JOELwindows7: BOLO's dump exclusion thingy
-	public static var dumpExclusions:Array<String> = ['assets/music/freakyMenu.$SOUND_EXT', 'assets/shared/music/breakfast.$SOUND_EXT'];
+	public static var dumpExclusions:Array<String> = [
+		'assets/music/freakyMenu.$SOUND_EXT',
+		'assets/music/ke-freakyMenu.$SOUND_EXT',
+		'assets/music/freshchill.$SOUND_EXT',
+		'assets/shared/music/breakfast.$SOUND_EXT',
+	];
 
 	// JOELwindows7: BOLO's star of the show, clear unused memory!!!
 	/// haya I love you for the base cache dump I took to the max
@@ -508,6 +573,10 @@ class Paths
 		#if FEATURE_MULTITHREADING
 		// clear remaining objects
 		MasterObjectLoader.resetAssets();
+		#end
+
+		#if FEATURE_MODCORE
+		Polymod.clearCache(); // also clear the cache
 		#end
 
 		// clear anything not in the tracked assets list
@@ -564,10 +633,10 @@ class Paths
 		#end
 	}
 
-	// JOELwindows7: BOLO's file exists!!!
+	// JOELwindows7: BOLO's file exists!!! pls also FNFAssets this BulbyVR Modding+. was OpenFlAssets
 	inline static public function fileExists(key:String, type:AssetType, ?library:String)
 	{
-		if (OpenFlAssets.exists(getPath(key, type, library)))
+		if (FNFAssets.exists(getPath(key, type, library)))
 			return true;
 		return false;
 	}
@@ -616,6 +685,36 @@ class Paths
 		return FlxAtlasFrames.fromTexturePackerJson(imageGraphic(key, library), file('images/$key.json', library));
 	}
 
+	// JOELwindows7: XML atlas yey
+	inline static public function getXMLAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		if (isCharacter)
+			return FlxAtlasFrames.fromTexturePackerXml(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.xml', library));
+
+		return FlxAtlasFrames.fromTexturePackerXml(imageGraphic(key, library), file('images/$key.xml', library));
+	}
+
+	// JOELwindows7: Aseprite atlas whatever
+	inline static public function getAsepriteAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		if (isCharacter)
+			return FlxAtlasFrames.fromAseprite(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.json', library));
+
+		return FlxAtlasFrames.fromAseprite(imageGraphic('$key', library, gpuRender), file('images/$key.json', library));
+	}
+
+	// JOELwindows7: finally, libGDX
+	inline static public function getGDXAtlas(key:String, ?library:String, ?isCharacter:Bool = false, ?gpuRender:Bool)
+	{
+		gpuRender = gpuRender != null ? gpuRender : FlxG.save.data.gpuRender;
+		if (isCharacter)
+			return FlxAtlasFrames.fromLibGdx(imageGraphic('characters/$key', library, gpuRender), file('images/characters/$key.txt', library));
+
+		return FlxAtlasFrames.fromLibGdx(imageGraphic('$key', library, gpuRender), file('images/$key.txt', library));
+	}
+
 	// JOELwindows7: the get bitmap sprite sheet for pixel e.g.
 	// inline static public function getBitmapSpriteSheet(key:String, ?library:String, ?isCharacter:Bool = false, ?unique:Bool = false)
 	// {
@@ -634,7 +733,7 @@ class Paths
 
 	inline static public function videoSound(key:String, ?library:String)
 	{
-		return getPath('videos/$key.ogg', SOUND, library);
+		return getPath('videos/$key.$SOUND_EXT', SOUND, library);
 	}
 
 	// JOELwindows7: apparently BrightFyre's MP4 support video Cutscener

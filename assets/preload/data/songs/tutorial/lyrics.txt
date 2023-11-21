@@ -1,0 +1,25 @@
+::
+::
+::
+::
+Left, Right::Left, Right
+Left, Right::Left, Right
+Beep, Bop, Beep, Bop::That's how you do it!
+Beep, Bop, Beep, Bop::That's how you do it!
+Up, Down::Up, Down
+Up, Down::Up, Down
+Paa, Tuu, Paa, Tuuu::That's how you do it!
+Paa, Tuu, Paa, Tuuu::That's how you do it!
+Left, Up::Down, Right
+Left, Up::Down, Right
+Beep, Paa::Tuu, Bop
+Beep, Paa::Tuu, Bop
+Down Down Up::Down Down Right
+Down Down Up::Down Down Right
+Tuu Tuu Paa::Tuu Tuu Bop
+Tuu Tuu Paa::Tuu Tuu Bop
+Down Up Right Up::Right
+Tuu Paa Bop Paa::Bop
+Bop Bop, Tuu Tuu:: 
+Paa, Paa, Paa, Paa::Paa,
+Paa:: 

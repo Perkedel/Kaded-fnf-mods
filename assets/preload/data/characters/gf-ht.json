@@ -2,6 +2,8 @@
     "name": "Television",
     "displayName": "Television",
     "asset": "characters/gfHomeTheater",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#FF0000",
     "startingAnim": "danceRight",
     "isDancing": true,

@@ -2,6 +2,8 @@
     "name": "Sky (annoyed)",
     "displayName": "Sky",
     "asset": "characters/sky_annoyed_assets",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#5000E6",
     "flipX": false,
     "startingAnim": "danceRight",

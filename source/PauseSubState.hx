@@ -117,25 +117,29 @@ class PauseSubState extends MusicBeatSubstate
 			if (!noMusicPls) // JOELwindows7: hey no music if not allowed pls!
 			{
 				playingPause = true;
-				pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
-				pauseMusic.volume = 0;
-				pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
-				pauseMusic.ID = 9000;
+				// pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+				// pauseMusic.volume = 0;
+				// pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
+				// pauseMusic.ID = 9000;
 				// JOELwindows7: install to Game PEngined extensions
-				Game.pauseMusic = pauseMusic;
+				// Game.pauseMusic = pauseMusic;
 
-				FlxG.sound.list.add(pauseMusic);
+				// FlxG.sound.list.add(pauseMusic);
+				Game.playPauseMusic();
+				// pauseMusic = Game.pauseMusic;
+				// pauseMusic.volume = 0;
 			}
 		}
 		else
 		{
-			for (i in FlxG.sound.list)
-			{
-				if (i.ID == 9000) // jankiest static variable
-					pauseMusic = i;
-			}
-			if (noMusicPls && pauseMusic != null)
-				pauseMusic.destroy(); // JOELwindows7: make sure it completely destroy for no music allowed mode.
+			// for (i in FlxG.sound.list)
+			// {
+			// 	if (i.ID == 9000) // jankiest static variable
+			// 		pauseMusic = i;
+			// }
+			// Game.stopPauseMusic();
+			// if (noMusicPls && pauseMusic != null)
+			// 	pauseMusic.destroy(); // JOELwindows7: make sure it completely destroy for no music allowed mode.
 		}
 
 		// JOELwindows7: recast
@@ -246,12 +250,12 @@ class PauseSubState extends MusicBeatSubstate
 		if (pauseMusic != null)
 			if (!noMusicPls) // JOELwindows7: mute if no music is allowed
 			{
-				if (pauseMusic.volume < 0.5)
-					pauseMusic.volume += 0.01 * elapsed;
+				// if (pauseMusic.volume < 0.5)
+				// 	pauseMusic.volume += 0.01 * elapsed;
 			}
 			else
 			{
-				pauseMusic.volume = 0; // JOELwindows7: pecking make sure it sounds like no music at all!!!
+				// pauseMusic.volume = 0; // JOELwindows7: pecking make sure it sounds like no music at all!!!
 			}
 
 		super.update(elapsed);
@@ -603,6 +607,21 @@ class PauseSubState extends MusicBeatSubstate
 				}
 			});
 		}
+
+		// JOELwindows7: because as out of focus window, the pauser failed..
+		if (PlayState.inDaPlay)
+		{
+			if (PlayState.instance != null)
+			{
+				// if(PlayState.instance.vocals != null)
+				// 	if(PlayState.instance.vocals.playing)
+				// 		PlayState.instance.vocals.pause();
+
+				// This guy especially.
+				if (PlayState.instance.paused && FlxG.sound.music.playing)
+					FlxG.sound.music.pause();
+			}
+		}
 	}
 
 	override function destroy()
@@ -610,8 +629,9 @@ class PauseSubState extends MusicBeatSubstate
 		if (!goToOptions && !goConfirmation) // JOELwindows7: check for other go modes
 		{
 			Debug.logTrace("destroying music for pauseeta");
-			if (pauseMusic != null) // JOELwindows7: safety pause music
-				pauseMusic.destroy();
+
+			// if (pauseMusic != null) // JOELwindows7: safety pause music
+			// 	pauseMusic.destroy();
 			playingPause = false;
 		}
 
@@ -622,7 +642,8 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		curSelected += change;
 
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		// FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		playSoundEffect('scrollMenu',.4);
 
 		if (curSelected < 0)
 			curSelected = menuItems.length - 1;

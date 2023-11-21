@@ -58,6 +58,7 @@ class PrepareUnpauseSubstate extends MusicBeatSubstate
 		getReadyText.scrollFactor.set();
 		getReadyText.screenCenter(XY);
 		add(getReadyText);
+		Game.fadePauseMusic();
 
 		if (PlayState.instance != null)
 			PlayState.instance.waitLemmePrepareUnpauseFirst = false;

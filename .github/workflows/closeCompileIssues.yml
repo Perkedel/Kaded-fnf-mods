@@ -15,7 +15,7 @@ jobs:
             {
               "type": "title",
               "regex": ".*compile*",
-              "message": "@${issue.user.login} this issue was automatically closed because we do not offer support for compiling Kade Engine! Please read the https://kadedev.github.io/Kade-Engine/building page"
+              "message": "@${issue.user.login} this issue was automatically closed because we do not offer support for compiling Kade Engine nor Last Funkin Moment! Please read the https://kadedev.github.io/Kade-Engine/building page"
             }
           ]
     # JOELwindows7: hey let's add something I personally wish this never happened.

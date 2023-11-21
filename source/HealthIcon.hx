@@ -51,7 +51,7 @@ class HealthIcon extends FlxUISprite
 		if ((char != 'bf-pixel' && char != 'bf-old' && char != 'bf-holding-gf') && !forceIcon)
 			char = char.split("-")[0];
 
-		if (!OpenFlAssets.exists(Paths.image('icons/icon-' + char)))
+		if (!FNFAssets.exists(Paths.image('icons/icon-' + char))) // JOELwindows7: was OpenFlAssets. use BulbyVR Modding+ FNFAssets
 			char = 'face';
 
 		loadGraphic(Paths.loadImage('icons/icon-' + char), true, 150, 150);

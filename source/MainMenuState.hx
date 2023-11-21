@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.misc.ColorTween;
 import flixel.addons.ui.FlxUISprite;
 import const.Perkedel;
 import CoreState;
@@ -44,6 +45,10 @@ class MainMenuState extends MusicBeatState
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
 
+	// JOELwindows7: Main Menu color will ya? unselected returns to WHITE tint.
+	var colorShit:Array<FlxColor> = [FlxColor.CYAN, FlxColor.YELLOW, FlxColor.LIME, FlxColor.MAGENTA];
+	var colorTweens:Array<ColorTween>;
+
 	var newGaming:FlxText;
 	var newGaming2:FlxText;
 
@@ -66,6 +71,13 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+
+		// JOELwindows7: an menu color tween
+		colorTweens = new Array<ColorTween>();
+		// for (i in 0...5){
+		// 	colorTweens[i] = new ColorTween();
+		// }
+
 		// JOELwindows7: BOLO clear memory!
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
@@ -79,10 +91,11 @@ class MainMenuState extends MusicBeatState
 
 		PlayState.isStoryMode = false; // JOELwindows7: BOLO. reset flag down
 
-		if (!FlxG.sound.music.playing)
-		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-		}
+		// if (!FlxG.sound.music.playing)
+		// {
+		// 	FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		// }
+		CoolUtil.playMainMenuSong(1); // JOELwindows7: yey new play main menu music
 
 		persistentUpdate = persistentDraw = true;
 
@@ -168,20 +181,23 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.60 * (60 / FlxG.save.data.fpsCap));
 
-		// JOELwindows7: hard code our download link in case illegally reuploaded no matter what sign given
+		// JOELwindows7: hard code our download link in case reuploaded without credit no matter what sign given
 		// we also covered both Kade Engine and the vanilla itself
-		var reuploadWord:String = "Download Last Funkin Moments for free $0 legit on https://github.com/Perkedel/kaded-fnf-mods,\n"
+		var reuploadWord:String = 'Download Last Funkin Moments for free $0 legit on ${Perkedel.ENGINE_REPO_URL},\n'
 			+ "original Kade Engine at https://github.com/KadeDev/Kade-Engine,\n"
-			+ "and vanilla Funkin at https://github.com/ninjamuffin99/Funkin .\n"
+			+ "and vanilla Funkin at https://github.com/ninjamuffin99/Funkin ,\n"
+			+ "also FULL ASS Funkin at STEAM_URL .\n"
 			+ "play vanilla Funkin at https://www.newgrounds.com/portal/view/770371\n";
-		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 72, 0, reuploadWord, 12);
+		var reuploadEdgeCase:FlxText = new FlxText(5, FlxG.height - 80, 0, reuploadWord, 12);
 		reuploadEdgeCase.scrollFactor.set();
-		reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		// reuploadEdgeCase.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		reuploadEdgeCase.setFormat(Paths.font("UbuntuMono-R-NF.ttf"), 12, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(reuploadEdgeCase);
 		// Kade, ninja, you should do that too. follow this example!
 		// also somehow at the end of the paragraph above, you must `\n` it at the very end. idk why, but that's the workaround
 		// so the last line of text also shows.
 
+		// TODO: JOELwindows7: add menu description!!! bla bla bla blbalblablb
 		// var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer +  (Main.watermarks ? " FNF - " + kadeEngineVer + " Kade Engine" : "") + (Main.perkedelMark ? " Perkedel Mod v" + lastFunkinMomentVer : ""), 12);
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, gameVer, 12);
 		versionShit.scrollFactor.set();
@@ -411,6 +427,39 @@ class MainMenuState extends MusicBeatState
 		}
 	}
 
+	// JOELwindows7: Please colorize one selected menu and return other unselected back to WHITE tint
+	function colorizeMenu(huh:Int = 0)
+	{
+		// cancel current first
+		for (i in 0...colorTweens.length)
+		{
+			if (colorTweens[i] != null)
+			{
+				colorTweens[i].cancel();
+			}
+		}
+
+		// PAIN IS TEMPORARY, GLORY IS FOREVER
+
+		// wait, could've done this instead. Just query all menu & color depending if this is the selected one.
+		menuItems.forEach(function(spr:FlxUISprite)
+		{
+			// var selectColor:FlxColor;
+			// switch(ID){
+
+			// }
+			colorTweens[spr.ID] = FlxTween.color(spr, 0.5, spr.color, spr.ID == curSelected ? colorShit[spr.ID] : FlxColor.WHITE, {
+				// colorTweens[spr.ID] = FlxTween.color(spr, 0.5, spr.color, spr.ID == curSelected ? FlxColor.GREEN : FlxColor.WHITE, {
+				// colorTweens[spr.ID] = FlxTween.color(spr, 0.5, spr.color, spr.ID == curSelected ? FlxColor.GREEN : FlxColor.WHITE, {
+
+				onComplete: function(twn:FlxTween)
+				{
+					colorTweens[curSelected] = null;
+				}
+			});
+		});
+	}
+
 	function changeItem(huh:Int = 0)
 	{
 		if (finishedFunnyMove)
@@ -422,6 +471,7 @@ class MainMenuState extends MusicBeatState
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
 		}
+		colorizeMenu(huh); // JOELwindows7: iyeye
 		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			spr.animation.play('idle');
@@ -454,6 +504,7 @@ class MainMenuState extends MusicBeatState
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
 		}
+		colorizeMenu(huh); // JOELwindows7: iyeye
 		menuItems.forEach(function(spr:FlxUISprite)
 		{
 			spr.animation.play('idle');

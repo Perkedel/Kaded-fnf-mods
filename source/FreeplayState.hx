@@ -1,5 +1,8 @@
 package;
 
+import ui.states.transition.PsychTransition;
+import flixel.FlxCamera;
+import utils.assets.WeekData;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.ui.FlxUISprite;
 import behavior.audio.IManipulateAudio;
@@ -39,10 +42,13 @@ import Discord.DiscordClient;
 #if FEATURE_VLC
 // import vlc.MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
 // import vlc.MP4Sprite; // yep.
-import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
-import VideoSprite as MP4Sprite; // yep.
-
+// import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+// import VideoSprite as MP4Sprite; // yep.
+import hxcodec.flixel.FlxVideo as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yep.
 #end
+import openfl.utils.Assets as OpenFlAssets;
+
 using StringTools;
 
 // JOELwindows7: I gotta add stuffs!
@@ -92,7 +98,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	public static var songData:Map<String, Array<SongData>> = [];
 
 	// JOELwindows7: globalize bg variable to be refered for color change
-	var bg:FlxSprite;
+	var bg:FlxUISprite;
 
 	// JOELwindows7: aesthetic
 	var bgColorTween:ColorTween; // FlxTween change bg color.
@@ -111,6 +117,11 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	static var loadedUp:Bool = false; // JOELwindows7: flag to raise when loading complete.
 	static var legacySynchronousLoading:Bool = true; // JOELwindows7: keep false to use new async loading.
 	static var unthreadLoading:Bool = false; // JOELwindows7: keep false to use Kade's threaded loading.
+
+	public var mainCam:FlxCamera; // JOELwindows7: have yourself a dedicated camera
+	public var camGame:FlxCamera; // JOELwindows7: and this default ones.
+
+	var camHUD:FlxCamera; // JOELwindows7: and for the overlays
 
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
@@ -134,6 +145,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 	{
 		try
 		{
+			// JOELwindows7: the Altronix week JSON
+			WeekData.reloadWeekFiles(false);
+
 			// JOELwindows7: load weeks
 			if (legacyJSONWeekList)
 				weekDatas = StoryMenuState.loadFromJson('weekList')
@@ -243,6 +257,40 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 	public static var list:Array<String> = [];
 
+	// JOELwindows7: List all song in freeplay without having to text!
+	public static function listFreplaySongs():Array<String>
+	{
+		// inspire & yoink from Altronix Week Data
+		// var newList:Array<String> = new Array<String>();
+		trace('Lets see what song do we have here!');
+		var path = 'data/songs/';
+		var queryPath = '${path}';
+		var library = OpenFlAssets.getLibrary("default");
+		var dataAssets = library.list(null);
+		var results:Array<String> = [];
+
+		for (data in dataAssets)
+		{
+			if (data.indexOf(queryPath) != -1
+				&& data.contains(queryPath)
+				&& data.endsWith('_meta.json')
+				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('/_meta.json', '')))
+			{
+				var suffixPos = data.indexOf(queryPath) + queryPath.length;
+				if (!results.contains(data.substr(suffixPos).replaceAll('/_meta.json', '')))
+				{
+					// TODO: parse the _meta.json & see if song `hidden`. if it is, skip.
+					results.push(data.substr(suffixPos).replaceAll('/_meta.json', ''));
+					// trace('Freeplay JSONing: ${results}');
+				}
+			}
+		}
+		trace('results = ${results}');
+
+		// maybe don't use this because it'll reveal hidden songs.. idk, what do you think?
+		return results;
+	}
+
 	// JOELwindows7: globalize button variables.
 	var accepted:Bool;
 	var charting:Bool;
@@ -263,13 +311,29 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: seriously, cannot you just scan folders and count what folders are in it?
 		clean();
 
+		super.create(); // JOELwindows7: call now!!!
+
+		// JOELwindows7: I suggest that you add own camera here, coz.. there's an ghost staeter displaying here.
+		camGame = new FlxCamera();
+		mainCam = new FlxCamera();
+		mainCam.bgColor.alpha = 0;
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+		FlxG.cameras.reset(camGame); // Game Camera (where stage and characters are)
+		FlxG.cameras.add(camHUD); // the HUD
+		FlxG.cameras.add(mainCam); // Main Camera
+		FlxCamera.defaultCameras = [camGame];
+		// JOELwindows7: BOLO set transition for Psyched to main cam
+		PsychTransition.nextCamera = mainCam;
+
 		// PlayState.wentToChartEditor = false; // JOELwindows7: BOLO resets went to chart editor.
 		// JOELwindows7: BOLO put placeholder if music not playing
-		if (!FlxG.sound.music.playing)
-		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			MainMenuState.freakyPlaying = true;
-		}
+		// if (!FlxG.sound.music.playing)
+		// {
+		// 	FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		// 	MainMenuState.freakyPlaying = true;
+		// }
+		CoolUtil.playMainMenuSong(1); // JOELwindows7: yey new play main menu music
 
 		// JOELwindows7: okey how about attempt to have sys multithreading?
 		#if FEATURE_MULTITHREADING
@@ -302,7 +366,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: pls install weekData
 		weekInfo = FreeplayState.loadWeekDatas(weekInfo);
 
+		// var listTest = listFreplaySongs();
 		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+		Debug.logInfo('FreePlay Song list:\n${list}');
 
 		cached = false;
 
@@ -345,7 +411,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 							trace("Converting " + file.header.TITLE);
 							_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 							var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
+							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", FlxColor.YELLOW, file, "assets/sm/" + i);
 							songs.push(meta);
 							var song = Song.loadFromJsonRAW(data);
 							songData.set(file.header.TITLE, [song, song, song]);
@@ -358,7 +424,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 							trace("Converting " + file.header.TITLE);
 							_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 							var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
+							var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", FlxColor.YELLOW, file, "assets/sm/" + i);
 							songs.push(meta);
 							var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + i + "/converted.json"));
 							trace("got content lol");
@@ -400,18 +466,13 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		// var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('menuBGBlue'));
 		bg = new FlxUISprite();
+		// bg.cameras = [camGame];
 		bg.loadGraphic(Paths.image('MenuBGDesatAlt')); // JOELwindows7: here global. was menuDesat
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
-
-		// JOELwindows7: back button
-		addBackButton(20, FlxG.height);
-		// JOELwindows7: and difficulty button
-		addLeftButton(FlxG.width - 350, FlxG.height); // was -100
-		addRightButton(FlxG.width - 100, FlxG.height); // was -100
 
 		trace('Button dez');
 
@@ -423,6 +484,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				// var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, true);
 				songText = new Alphabet(0, (70 * i) + 30, songFixedName, true, false, true); // JOELwindows7: BOLO globalize
 				songText.isMenuItem = true;
+				// songText.cameras = [camGame];
 				songText.targetY = i;
 				songText.ID = i; // ID the song text to compare curSelected song.
 				grpSongs.add(songText);
@@ -445,6 +507,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		scoreText = new FlxText(FlxG.width * 0.65, 5, 0, "", 32);
 		// scoreText.autoSize = false;
+		scoreText.cameras = [camHUD];
+		scoreText.scrollFactor.set();
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		// scoreText.alignment = RIGHT;
 
@@ -452,7 +516,9 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		// JOELwindows7: there are additional BOLO's notes
 		var bottomBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(Std.int(FlxG.width), 26, 0xFF000000);
+		bottomBG.cameras = [camHUD];
 		bottomBG.alpha = 0.6;
+		bottomBG.scrollFactor.set();
 		add(bottomBG);
 
 		// JOELwindows7: BOLO has manual preview "Press SPACE to listen to the Song Instrumental /". well, no need!
@@ -466,6 +532,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		var downText:FlxText = new FlxText(bottomBG.x, bottomBG.y + 4, FlxG.width, bottomText, 16);
 		downText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT);
+		downText.cameras = [camHUD];
 		downText.scrollFactor.set();
 		add(downText);
 		// end additional
@@ -474,6 +541,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 
 		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.4), 337, 0xFF000000); // JOELwindows7: height was 135.
 		scoreBG.alpha = 0.6;
+		scoreBG.cameras = [camHUD];
+		scoreBG.scrollFactor.set();
 		add(scoreBG);
 
 		trace('score BG will ya');
@@ -484,6 +553,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// comboText = new FlxText(diffText.x + 100, diffText.y, 0, "", 24); // was width 0
 		comboText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		// comboText.font = diffText.font; // JOELwindows7: bruh, diff text was not made until there bellow man.
+		comboText.cameras = [camHUD];
+		comboText.scrollFactor.set();
 		add(comboText);
 
 		trace('combo texa');
@@ -491,6 +562,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// JOELwindows7: oh man, BOLO's opponent text slid here!
 		opponentText = new FlxText(scoreText.x, scoreText.y + 66, 0, "", 24);
 		opponentText.font = scoreText.font;
+		opponentText.cameras = [camHUD];
+		opponentText.scrollFactor.set();
 		add(opponentText);
 
 		trace('opponent texa');
@@ -499,6 +572,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// diffText = new FlxUIText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		diffText = new FlxUIText(scoreText.x, scoreText.y + 106, 0, "", 24); // JOELwindows7: BOLO
 		diffText.font = scoreText.font;
+		diffText.cameras = [camHUD];
+		diffText.scrollFactor.set();
 		add(diffText);
 
 		comboText.font = diffText.font; // JOELwindows7: do it here bruh.
@@ -508,6 +583,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// diffCalcText = new FlxUIText(scoreText.x, scoreText.y + 66, 0, "", 24);
 		diffCalcText = new FlxUIText(scoreText.x, scoreText.y + 136, 0, "", 24); // JOELwindows7: BOLO
 		diffCalcText.font = scoreText.font;
+		diffCalcText.cameras = [camHUD];
+		diffCalcText.scrollFactor.set();
 		add(diffCalcText);
 
 		trace('diff calc texa');
@@ -515,6 +592,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		// previewtext = new FlxUIText(scoreText.x, scoreText.y + 96, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24);
 		previewtext = new FlxUIText(scoreText.x, scoreText.y + 166, 0, "Rate: " + FlxMath.roundDecimal(rate, 2) + "x", 24); // JOELwindows7: BOLO
 		previewtext.font = scoreText.font;
+		previewtext.cameras = [camHUD];
+		previewtext.scrollFactor.set();
 		add(previewtext);
 
 		trace('preview texa');
@@ -529,6 +608,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			+ "CTRL to open Gameplay Modifiers\n" + "";
 		helpText.font = scoreText.font;
 		helpText.color = 0xFFfaff96;
+		helpText.cameras = [camHUD];
+		helpText.scrollFactor.set();
 		add(helpText);
 		trace('add help text');
 
@@ -596,11 +677,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		}
 		#end
 
-		super.create();
-
-		FlxTween.tween(backButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
-		FlxTween.tween(leftButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left button! was 90 y
-		FlxTween.tween(rightButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween right button! was 90 y
+		// super.create(); // JOELwindows7: don't call late
 
 		if (legacySynchronousLoading)
 		{
@@ -647,6 +724,20 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 				changeDiff();
 			}
 		}
+
+		// JOELwindows7: back button
+		addBackButton(20, FlxG.height);
+		// JOELwindows7: and difficulty button
+		addLeftButton(FlxG.width - 350, FlxG.height); // was -100
+		addRightButton(FlxG.width - 100, FlxG.height); // was -100
+		backButton.cameras = [camHUD];
+		leftButton.cameras = [camHUD];
+		rightButton.cameras = [camHUD];
+
+		FlxTween.tween(backButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
+		FlxTween.tween(leftButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween left button! was 90 y
+		FlxTween.tween(rightButton, {y: FlxG.height - 100}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween right button! was 90 y
+		// IDEA: Corestate install buttons package post create!
 	}
 
 	public static var cached:Bool = false;
@@ -726,6 +817,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 						diffsThatExist.push(cDiff);
 						CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
 						CoolUtil.difficultyArray.push(cDiff);
+						CoolUtil.difficultyArrayWord.push(cDiff); // JOELwindows7: word too!!!!!
 					}
 				}
 			}
@@ -868,6 +960,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 					diffsThatExist.push(cDiff);
 					CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
 					CoolUtil.difficultyArray.push(cDiff);
+					CoolUtil.difficultyArrayWord.push(cDiff); // JOELwindows7: words word words
 				}
 			}
 		}
@@ -911,7 +1004,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		FreeplayState.songs.push(meta);
 
 		// JOELwindows7: BOLO commented, no, don't! it lags per selections!!! better lag during open this menu, idk..
-		#if FEATURE_FILESYSTEM // JOELwindows7: mitsake fixed. wait, isn't this supposed to be FEATURE_MULTITHREADING instead?
+		#if FEATURE_MULTITHREADING // JOELwindows7: mitsake fixed. wait, isn't this supposed to be FEATURE_MULTITHREADING instead?
 		sys.thread.Thread.create(() ->
 		{
 			FlxG.sound.cache(Paths.inst(songId));
@@ -988,6 +1081,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 						diffsThatExist.push(cDiff);
 						CoolUtil.suffixDiffsArray.push('-${cDiff.toLowerCase()}');
 						CoolUtil.difficultyArray.push(cDiff);
+						CoolUtil.difficultyArrayWord.push(cDiff); // JOELwindows7: words yeyeyeyey
 					}
 				}
 			}
@@ -1064,6 +1158,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		**/
 		// JOELwindows7: android crash if attempt FileSystem stuffs
 		itterateStepmaniaList = FileSystem.readDirectory("assets/sm/");
+		// itterateStepmaniaList = OpenFlAssets.getLibrary("assets/sm/");
 
 		trace('There are ${itterateStepmaniaList.length}');
 		itterateStepmaniaCount = 0;
@@ -1106,7 +1201,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 					trace("Converting " + file.header.TITLE);
 					_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 					var data = file.convertToFNF("assets/sm/" + thon + "/converted.json");
-					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + thon);
+					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", FlxColor.YELLOW, file, "assets/sm/" + thon);
 					songs.push(meta);
 					var song = Song.loadFromJsonRAW(data);
 					songData.set(file.header.TITLE, [song, song, song]);
@@ -1119,7 +1214,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 					trace("Converting " + file.header.TITLE);
 					_loadingBar.setInfoText("Converting StepMania " + file.header.TITLE + " file...");
 					var data = file.convertToFNF("assets/sm/" + thon + "/converted.json");
-					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + thon);
+					var meta = new FreeplaySongMetadata(file.header.TITLE, 0, "sm", FlxColor.YELLOW, file, "assets/sm/" + thon);
 					songs.push(meta);
 					var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + thon + "/converted.json"));
 					trace("got content lol");
@@ -1549,7 +1644,7 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		{
 			openMod = true;
 			FlxG.sound.play(Paths.sound('scrollMenu'));
-			openSubState(new FreeplaySubState.ModMenu());
+			openSubState(new FreeplaySubState.ModMenu()); // gameplay modifier substate menu
 		}
 
 		// JOELwindows7: there you are, audio manipulate lol
@@ -1805,6 +1900,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		 */
 		// JOELwindows7: No, we already have visiblized it here. let's not surprise the test unit & everyone.
 		PlayState.SONG = currentSongData;
+		// PlayState.lyricing = CoolUtil.getKpopLyric();
+		// PlayState.lyricing = CoolUtil.coolTextFile(Paths.getKpopLyric(currentSongData.name));
 		PlayState.isStoryMode = false;
 		PlayState.storyDifficulty = difficulty;
 		PlayState.storyWeek = songs[curSelected].week;
@@ -1988,11 +2085,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			if (songs[curSelected].songCharacter == "sm")
 			{
 				#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
+				// OpenFlAssets does not work since these file are not embedded / compiled which data bits are
 				var data = songs[curSelected];
 				trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
-				var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				// var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				// var bytes = OpenFlAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: This too. OpenFlAsset instead pls
+				var bytes = FNFAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: hey, FNF Assets BulbyVR
 				var sound = new Sound();
 				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+				// sound.loadCompressedDataFromByteArray(bytes, bytes.length); // JOELwindows7: Yeah
 				FlxG.sound.playMusic(sound, 0.7, true); // JOELwindows7: heh bruh, forgot fade in!
 				MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
 				curPlayed = curSelected;
@@ -2180,11 +2281,15 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			if (songs[curSelected].songCharacter == "sm")
 			{
 				#if FEATURE_STEPMANIA // JOELwindows7: froget the filter lmao
+				// OpenFlAssets does not work since these file are not embedded / compiled which data bits are
 				var data = songs[curSelected];
 				trace("Loading " + data.path + "/" + data.sm.header.MUSIC);
-				var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				// var bytes = File.getBytes(data.path + "/" + data.sm.header.MUSIC);
+				// var bytes = OpenFlAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: Cmon pls let me openFlAssets
+				var bytes = FNFAssets.getBytes(data.path + "/" + data.sm.header.MUSIC); // JOELwindows7: hey, FNF Assets BulbyVR
 				var sound = new Sound();
 				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+				// sound.loadCompressedDataFromByteArray(bytes, bytes.length); // JOELwindows7: Pretty pls
 				FlxG.sound.playMusic(sound, 0.7, true); // JOELwindows7: heh bruh, forgot fade in!
 				MainMenuState.freakyPlaying = false; // JOELwindows7: BOLO flag down freaky playing
 				curPlayed = curSelected;
@@ -2463,7 +2568,8 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 		if (songData.get(songs[curSelected].songName)[curDifficulty] != null)
 		{
 			diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[curDifficulty])}';
-			diffText.text = 'DIFFICULTY: < ' + CoolUtil.difficultyFromInt(curDifficulty).toUpperCase() + ' >'; // also let's add this too.
+			// diffText.text = 'DIFFICULTY: < ' + CoolUtil.difficultyFromInt(curDifficulty).toUpperCase() + ' >'; // also let's add this too.
+			diffText.text = 'DIFFICULTY: < ' + CoolUtil.difficultyWordFromInt(curDifficulty).toUpperCase() + ' >'; // also let's add this too. using this
 			diffCalcText.alpha = 1;
 			diffText.alpha = 1;
 		}
@@ -2488,23 +2594,32 @@ class FreeplayState extends MusicBeatState implements IBGColorTweening implement
 			// add safety too!
 			if (FlxG.sound.music.playing)
 			{
+				// #if (flixel >= "5.4.0")
+				// if (FlxG.sound.music != null)
+				// 	FlxG.sound.music.pitch = rate;
+				// #else
 				#if web
 				#if (lime >= "8.0.0" && lime_howlerjs)
 				if (FlxG.sound.music != null)
-					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(rate);
+				// FlxG.sound.music._channel.__source.set_pitch(rate);
 				#else
 				if (FlxG.sound.music != null)
-					FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+					// FlxG.sound.music._channel.__source.__backend.parent.buffer.__srcHowl.rate(rate);
+					FlxG.sound.music._channel.__audioSource.__backend.parent.buffer.__srcHowl.rate(rate);
 				#end
 				#elseif cpp
 				#if (lime >= "8.0.0")
 				if (FlxG.sound.music != null)
-					FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					// FlxG.sound.music._channel.__source.__backend.setPitch(rate);
+					FlxG.sound.music._channel.__audioSource.__backend.setPitch(rate);
 				#else
 				if (FlxG.sound.music != null)
 					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
 				#end
 				#end
+				// #end
 			}
 		}
 		#end

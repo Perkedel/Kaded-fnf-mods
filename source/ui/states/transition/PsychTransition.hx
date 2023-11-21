@@ -2,6 +2,7 @@ package ui.states.transition;
 
 // JOELwindows7: Yoink from https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/PsychTransition.hx
 // idk, just got this cool little transition substate of some sort, idk..
+import flixel.util.FlxTimer;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -31,8 +32,13 @@ class PsychTransition extends MusicBeatSubstate
 	var transBlack:FlxSprite;
 	var transGradient:FlxSprite;
 
+	public static var wackyScreenTransitionTechnique:Bool = false; // JOELwindows7: flag to use DOOM style screen fall.
+
 	public function new(duration:Float, isTransIn:Bool)
 	{
+		// if (!isTransIn)
+		// 	Game.captureScreenshot();
+		// TODO: get screengrab screenshot when trans in to new scene & use it as transBlack
 		super();
 
 		this.isTransIn = isTransIn;
@@ -42,7 +48,17 @@ class PsychTransition extends MusicBeatSubstate
 		transGradient.scrollFactor.set();
 		add(transGradient);
 
-		transBlack = new FlxSprite().makeGraphic(width, height + 400, FlxColor.BLACK);
+		// JOELwindows7: have take this screenshot pls for transIn
+		var screenShotering:FlxSprite;
+		if (wackyScreenTransitionTechnique)
+			screenShotering = Game.lastScreenshotBitmap != null ? new FlxSprite().loadGraphic(Game.lastScreenshotBitmap.bitmapData) : new FlxSprite()
+				.makeGraphic(width, height
+				+ 400, FlxColor.BLACK);
+		else
+			screenShotering = new FlxSprite().makeGraphic(width, height + 400, FlxColor.BLACK);
+
+		// transBlack = new FlxSprite().makeGraphic(width, height + 400, FlxColor.BLACK);
+		transBlack = screenShotering;
 		transBlack.scrollFactor.set();
 		add(transBlack);
 
@@ -51,7 +67,7 @@ class PsychTransition extends MusicBeatSubstate
 
 		if (isTransIn)
 		{
-			transGradient.y = transBlack.y - transBlack.height;
+			transGradient.y = wackyScreenTransitionTechnique ? -transGradient.height : transBlack.y - transBlack.height;
 			FlxTween.tween(transGradient, {y: transGradient.height + 50}, duration, {
 				onComplete: function(twn:FlxTween)
 				{
@@ -63,17 +79,32 @@ class PsychTransition extends MusicBeatSubstate
 		else
 		{
 			transGradient.y = -transGradient.height;
-			transBlack.y = transGradient.y - transBlack.height + 50;
-			leTween = FlxTween.tween(transGradient, {y: transGradient.height + 50}, duration, {
-				onComplete: function(twn:FlxTween)
+			if (wackyScreenTransitionTechnique)
+			{
+				transBlack.y = 0;
+				var leTimer:FlxTimer = new FlxTimer();
+				leTimer.start(duration, function(tmr:FlxTimer)
 				{
 					if (finishCallback != null)
 					{
 						finishCallback();
 					}
-				},
-				ease: FlxEase.linear
-			});
+				});
+			}
+			else
+			{
+				transBlack.y = transGradient.y - transBlack.height + 50;
+				leTween = FlxTween.tween(transGradient, {y: transGradient.height + 50}, duration, {
+					onComplete: function(twn:FlxTween)
+					{
+						if (finishCallback != null)
+						{
+							finishCallback();
+						}
+					},
+					ease: FlxEase.linear
+				});
+			}
 		}
 	}
 
@@ -84,7 +115,10 @@ class PsychTransition extends MusicBeatSubstate
 		if (isTransIn)
 			transBlack.y = transGradient.y + transGradient.height;
 		else
-			transBlack.y = transGradient.y - transBlack.height;
+		{
+			if (!wackyScreenTransitionTechnique)
+				transBlack.y = transGradient.y - transBlack.height;
+		}
 
 		var camList = FlxG.cameras.list;
 		camera = camList[camList.length - 1];
@@ -96,7 +130,10 @@ class PsychTransition extends MusicBeatSubstate
 		if (isTransIn)
 			transBlack.y = transGradient.y + transGradient.height;
 		else
-			transBlack.y = transGradient.y - transBlack.height;
+		{
+			if (!wackyScreenTransitionTechnique)
+				transBlack.y = transGradient.y - transBlack.height;
+		}
 	}
 
 	override function destroy()

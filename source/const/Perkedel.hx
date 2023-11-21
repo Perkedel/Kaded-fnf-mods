@@ -41,9 +41,10 @@ class Perkedel
 	public static final OPTION_CATEGORY_LENGTH:Int = 6; // How many categories on option menu? was 4, now we got 6. no wait that's DFJK.
 	public static final ENGINE_NAME:String = "Last Funkin Moments"; // oh yeah LFM baby!
 	public static final ENGINE_ID:String = "Last-Funkin-Moments"; // oh yeah LFM baby!
+	public static final ENGINE_ID_CLOSE:String = "LastFunkinMoments"; // oh yeah LFM baby!
 	public static final ENGINE_ABBREVIATE:String = "LFM"; // oh yeah LFM baby!
-	public static final ENGINE_VERSION:String = "2022.10.0"; // current version number yeah!
-	public static final ENGINE_VERSION_NUMBER:Array<Int> = [2022, 10, 0]; // and numbered version
+	public static final ENGINE_VERSION:String = "2023.12.0"; // current version number yeah!
+	public static final ENGINE_VERSION_NUMBER:Array<Int> = [2023, 12, 0]; // and numbered version
 	public static final ENGINE_NIGHTLY:String = ""; // say `-larutmalam` to mark this nightly build
 	public static final ENGINE_VERSION_URL:String = 'https://raw.githubusercontent.com/Perkedel/kaded-fnf-mods/stable/versionLastFunkin.downloadMe'; // here URL check
 	public static final ENGINE_REPO_URL:String = 'https://github.com/Perkedel/kaded-fnf-mods';
@@ -51,17 +52,24 @@ class Perkedel
 	public static final ENGINE_CHANGELOG_PREFIX_URL:String = 'https://odysee.com/@JOELwindows7/LFM-changelog-'; // here URL of change log prefix, appened by what version needed there.
 	public static final ENGINE_CORE_HANDLE_CRASH:Bool = true; // if true, engine will handle crash and restart. if false, engine will not handle crash and restart.
 	public static final DONATE_BUTTON_URL:String = 'https://odysee.com/@JOELwindows7:a/LFM-links:a'; // here URL of donate button
+	public static final OFFICIAL_WEBSITE_BUTTON_URL:String = 'https://funkin.me/'; // here URL of official website
 	public static final ENABLE_MODS:Bool = true;
 	public static final ENABLE_VERSION_CHECK:Bool = true;
 	public static final CHART_EVENTS:Array<String> = [
 		"Camera Zoom in", "HUD Zoom in", "Both Zoom in", "Shake camera", "Cheer Now", "Hey Now", "Cheer Hey Now", "Lightning Strike", "BPM Change",
 		"Scroll Speed Change", "Vibrate for", "LED ON for", "Blammed Lights", "Appear Blackbar", "Disappear Blackbar"
 	];
+	public static final CHART_HELP_TEXT:String = "\n\n" + "Help:\n" + "Ctrl-MWheel : Zoom in/out\n" + "Shift-Left/Right :\nChange playback speed\n"
+		+ "Ctrl-Drag Click : Select notes\n" + "Ctrl-C : Copy notes\n" + "Ctrl-V : Paste notes\n" + "Ctrl-Z : Undo\n" + "Delete : Delete selection\n"
+		+ "CTRL-Left/Right :\n  Change Snap\n" + "Hold Shift : Disable Snap\n" + "Click or 1/2/3/4/5/6/7/8 :\n\tPlace notes\n"
+		+ "Place Note + ALT: Place mines\n" + "Up/Down :\n  Move selected notes 1 step\n" + "Shift-Up/Down :\nMove selected notes 1 beat\n"
+		+ "Space: Play Music\n" + "Enter : Preview\n" + "Press F1 to hide/show help!";
+	public static final CHART_HELP_TEXT_OFF:String = "\nPress F1 to hide/show help!";
 	public static final LFM_ICON_PATH_DOC:String = "art/LFMicon128";
 	public static final STARTUP_TOAST_TITLE:String = "Cool and good";
 	public static final STARTUP_TOAST_DESCRIPTION:String = "Welcome to Last Funkin Moments\n Today's Kontraktua Majoris\n (2 of 3): Sky, Whitty";
 	public static final MAX_AVAILABLE_JUDGEMENT_RATING:Int = 3; // only up to sick we have.
-	public static final MAX_NUMBER_OF_LOADING_IMAGES:Int = 4; // how many loading backdrops do we have here?
+	public static final MAX_NUMBER_OF_LOADING_IMAGES:Int = 9; // how many loading backdrops do we have here?
 	public static final DISCLAIMER_SAY:String = "Disclaimer";
 	public static final LOADING_TOO_LONG_TIME_THRESHOLD:Float = 30; // if the loading took more than 30 second
 	public static final LOADING_TOO_LONG_SAY:String = 'Too long, didn\'t load? [OK]/[ENTER]/(START) Skip, [BACK]/[ESC]/(B) Cancel.\n\n====================\n|\tAT YOUR OWN RISK!!\t|\n====================\n\n';
@@ -161,24 +169,97 @@ class Perkedel
 	public static final VIDEO_DISABLED_OPTION_NAME:String = "(Workaround) Disable Video";
 	public static final VIDEO_DISABLED_TITLE:String = "Video Disabled";
 	public static final VIDEO_DISABLED_DESCRIPTION:String = 'You have setting that disabled video.\nTo reenable, go to Setting, Misc, uncheck ${VIDEO_DISABLED_OPTION_NAME}';
+	public static final LYRIC_ENABLED_OPTION_NAME:String = 'Kpop Lyrics';
+	public static final LYRIC_POSITION_OPTION_NAME:String = 'Lyrics Position';
 
 	public static final API_DISCORD_CLIENT_ID:String = "557069829501091850"; // change to whatever the peck you want lol
 
+	public static final SEPARATOR_DIALOG:String = "::";
+	public static final SEPARATOR_LYRIC:String = "::";
+
+	public static final QMOVEPH_BG_COLORS:Array<FlxColor> = [0xFF00A0FF, 0xFF00CEFF, 0xFF505050,];
+	public static final QMOVEPH_BG_COLORS_STORY:Array<FlxColor> = [0xFF020077, 0xFF002833, 0xFF0D051F,];
+
 	// Here image misc
 	public static final CRASH_TEXT_BANNER:String = "
-	████████████████████████████████████████████████████████████████████████████████\n
-	█      ░▒▒▒▒▒▒▒░                                                               █\n
-	█    ░░░░▒▒▒░░░░░    ███████         █        █  ██    █   ███       ███       █\n
-	█   ░▒░░░░░░▒▒▒░░░   █               █        █ █  █   █   █  █        █       █\n
-	█  ░░▒░░▒▒░░░▒░░▒░░  ███████ █ █ ███ █  ███ ███ ████ ███   █  █ █  █ ███ ████  █\n
-	█         ░▒         █        █  █ █ █  █ █ █ █ █    █ █   █  █ █  █ █ █ █     █\n
-	█    ░▓█████████▒    ███████ █ █ ███ ██ ███ ███  ██  ███   ███  ███  ███ █     █\n
-	█         ░░                     █                                             █\n
-	█         ▒▒                       M E D I T A T I O N ! ! !                   █\n
-	█      ░░▒░▒░▓░                                                                █\n
-	████████████████████████████████████████████████████████████████████████████████\n
-	\n
+	████████████████████████████████████████████████████████████████████████████████
+	█      ░▒▒▒▒▒▒▒░                                                               █
+	█    ░░░░▒▒▒░░░░░    ███████         █        █  ██    █   ███       ███       █
+	█   ░▒░░░░░░▒▒▒░░░   █               █        █ █  █   █   █  █        █       █
+	█  ░░▒░░▒▒░░░▒░░▒░░  ███████ █ █ ███ █  ███ ███ ████ ███   █  █ █  █ ███ ████  █
+	█         ░▒         █        █  █ █ █  █ █ █ █ █    █ █   █  █ █  █ █ █ █     █
+	█    ░▓█████████▒    ███████ █ █ ███ ██ ███ ███  ██  ███   ███  ███  ███ █     █
+	█         ░░                     █                                             █
+	█         ▒▒                       M E D I T A T I O N ! ! !                   █
+	█      ░░▒░▒░▓░                                                                █
+	████████████████████████████████████████████████████████████████████████████████
+	
 	(image by JOELwindows7. CC4.0-BY-SA)\n
-	\n
+	
 	";
+
+	public static final LFM_LOGO_BANNER = "
+	██████████████████████████████████████████████████████████████████████████████
+	█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░▒▒▒█
+	█▒░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▒░▒▒▒▒▒░▒░░░░▒░░░░░▒░▒▒▒▒▒▒█
+	█▒░▒▒▒▒░░░░▒░░░░▒░▒▒▒▒▒░▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒▒▒▒░▒▒▒▒▒▒▒░░▒▒▒░░▒░▒▒░▒░▒░▒░▒░░░░▒▒▒█
+	█▒░▒▒▒▒▒▒▒░▒░▒▒▒▒░▒▒▒▒▒░░░░▒▒▒▒▒▒▒▒▒▒▒░▒░░▒▒▒▒▒▒▒▒▒░▒░▒░▒░▒░░░░▒░▒░▒░▒░▒▒▒▒▒▒█
+	█▒░▒▒▒▒░░░░▒░░░░▒░░░░▒▒░▒▒▒▒░▒▒░▒░░░▒▒░░▒▒▒░▒░░░▒▒▒░▒▒░▒▒░▒▒▒▒▒▒░▒▒▒▒▒░░░░▒▒▒█
+	█▒░▒▒▒▒░▒▒░▒▒▒▒░▒░▒▒▒▒▒░▒▒▒▒░▒▒░▒░▒▒░▒░▒░▒▒░▒░▒▒░▒▒░▒▒▒▒▒░▒░░░░▒░░░▒▒▒▒▒▒▒▒▒▒█
+	█▒░░░░▒▒░░░▒░░░░▒░░░░▒▒░▒▒▒▒▒░░░▒░▒▒░▒░▒▒░▒░▒░▒▒░▒▒░▒▒▒▒▒░▒░▒▒░▒░▒▒▒▒▒s▒▒▒▒▒▒█
+	█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▒▒▒▒▒▒▒▒▒▒█
+	██████████████████████████████████████████████████████████████████████████████
+	";
+
+	public static final HARDCODE_GAMEOVER_ENEMY_INSULTS:Array<Array<String>> = [
+		[
+			// Tankman
+			// '',
+			'I said let\'s rock, not suck cock, XD!!!!!!',
+			'Oh ho my God, what the hell was that?\n what the hell was THAT?',
+			'I guess your shooting hair dyes got in your eyes.\nIt\'s okay, it happens to all of us.',
+			'Maybe you should play Week 1 again. XD!!!!!!!',
+			'Can you even feed yourself? Can you even walk straight?',
+			//
+			'Maybe if you had more friend then you\'d be less depressed and play better, mmM??',
+			'You\'re ugly, and you can\'t keep a rhythm. \nTrully you are cursed.',
+			'Man, are you tired of eating shit yet? XD!!!!!!!',
+			'Ey you\'re getting closer. I won\'t brag about it tho..',
+			'No wonder your parents hate you. .. XD!!!!!!!\n(sniff)!!',
+			//
+			'If you can\'t beat me, how are you gonna survive this harsh and cruel world, hMM??',
+			'The only thing you\'re Funkin\' tonight is your sock.',
+			'Why I\'m wasting my time against some baggy pants... fucked?, XD!!!!!!!!',
+			'Why I\'m wasting my time against some baggy pants... punk?',
+			'Hey here\'s some Friday Night Funkin\' lore for ya:\nI DON\'T LIKE YOU!',
+			//
+			'You just make me wanna cry T_T....',
+			'You know I\'m running outta shit to say here, so you better beat this sometime today, asshole!',
+			'Congratulations, you won. That\'s what I would say if you weren\'t such a Goddamn.. failure, .. XD!!!!!!!',
+			'You gotta press the Arrows, kid, don\'t slap the keyboard like your blind uncle, WHAT??',
+			'You feel that? That\'s called failure and you\'d better get used to it. Heh heh hee...',
+			//
+			'Open your fuckin\' eyes, geez!!',
+			'I hope you\'re not some internet streamer screaming like a sociopath right now..',
+			'That waaas terrible.\nJuuust terrible.',
+			'My dead grandmother has more nimble fingers, come on!!',
+			'Good Lord, what the hell is your problem, man?!\n(Burp).., just do it right, PLEASE!',
+		],
+		[
+			// Shang Tsung
+			'Your soul, is mine!',
+		],
+		[
+			// Sans
+			'Get dunk\'d on, kid.',
+		],
+	];
+
+	public static final MAIN_MENU_MUSICS:Array<Array<Dynamic>> = [
+		// path filename of the music
+		['freakyMenu', 102], // Default
+		['ke_freakyMenu', 102], // Kade Engine
+	];
+
+	public static final LANGUAGES_AVAILABLE:Array<Array<String>> = [['en-US', 'English (US)'], ['id-ID', 'Bahasa Indonesia'],];
 }

@@ -1,0 +1,46 @@
+{
+	"dialogue": [
+		{
+			"expression": "pissed",
+			"text": "ayo we fucking?",
+			"boxState": "angry",
+			"portrait": "bf",
+			"speed": 0.02
+		},
+		{
+			"expression": "shocked",
+			"text": "i mean funkin.",
+			"boxState": "normal",
+			"portrait": "bf",
+			"speed": 0.09
+		},
+		{
+			"expression": "talk",
+			"text": "Sure!",
+			"boxState": "normal",
+			"portrait": "gf",
+			"speed": 0.05
+		},
+		{
+			"expression": "excited",
+			"text": "*dint mean to say that but i aint complaining*",
+			"boxState": "normal",
+			"portrait": "bf",
+			"speed": 0.035
+		},
+		{
+			"expression": "talk",
+			"text": "Better hurry tho, before my dad comes.",
+			"boxState": "normal",
+			"portrait": "gf",
+			"speed": 0.055
+		},
+		{
+			"expression": "talk",
+			"text": "ong",
+			"boxState": "normal",
+			"speed": 0.05,
+			"portrait": "bf"
+		}
+	]
+}

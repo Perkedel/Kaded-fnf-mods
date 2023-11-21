@@ -1,0 +1,25 @@
+{
+	"songs": [
+		"getting-freaky",
+		"breakfast",
+		"dont-stop",
+		"title-classic",
+		"test-vanilla"
+	],
+
+	"weekCharacters": [
+		"hookx",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "amfrost",
+	"weekColor": "#ffff99",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":false,
+	"storyName": "Waiting for Something idk",
+	"weekBefore": "tutorial",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
+}

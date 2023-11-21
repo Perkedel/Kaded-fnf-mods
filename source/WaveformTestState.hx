@@ -18,8 +18,6 @@ class WaveformTestState extends AbstractTestMenu // JOELwindows7: okay folks, ha
 
 	override public function create()
 	{
-		super.create();
-
 		// fuckin stupid ass bitch ass fucking waveform
 		if (PlayState.isSM)
 		{
@@ -37,11 +35,14 @@ class WaveformTestState extends AbstractTestMenu // JOELwindows7: okay folks, ha
 		waveform.drawWaveform();
 		add(waveform);
 
+		super.create();
+		addInfoText("Waveform Test\n\n\nThis is current song waveform in PlayState.");
+
 		// JOELwindows7: now add info text
 		addInfoText("WASD = Move Camera\n");
 
 		// JOELwindows7: change go back to playstate somehow
-		wouldGoBackToStateOf = new PlayState();
+		wouldGoBackToStateOf = PlayState.inDaPlay ? new PlayState() : new MainMenuState();
 		needsSpeciallyLoad = true;
 	}
 

@@ -33,7 +33,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.3.2
       # Runs a set of commands using the runners shell
 
       - name: Linuxly set things up first!
@@ -41,10 +41,11 @@ jobs:
           sudo apt-get update
           sudo apt upgrade -y
           sudo apt install luajit -y
+          # sudo apt install build-essential avr-libc libc6-dev libpng12-dev -y
           sudo apt install build-essential avr-libc libc6-dev -y
           sudo apt-get install gcc g++ gcc-multilib g++-multilib -y
           sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
-          sudo apt install libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev
+          sudo apt install libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev -y
           sudo apt-get install libvlc-dev
           sudo apt-get install libvlccore-dev
           sudo apt-get install vlc-bin
@@ -54,67 +55,19 @@ jobs:
         # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
           haxe -version
-          haxelib install lime
-          haxelib install openfl
-          haxelib install flixel
+          haxelib setup hmm
+          haxelib install Console.hx
+          echo "new Psych's found-way of auto install all libraries"
+          echo 'https://github.com/ShadowMario/FNF-PsychEngine/blob/main/hmm.json'
+          haxelib install hmm
+          haxelib run hmm install
+          echo 'you should have all done.'
           haxelib run lime setup flixel -y
           haxelib run lime setup -y
-          haxelib install flixel-tools
-          haxelib install flixel-addons
-          haxelib install flixel-ui
-          haxelib install hscript
-          haxelib install flixel-addons
-          haxelib git faxe https://github.com/uhrobots/faxe
-          haxelib install polymod
-          haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+          haxelib run lime setup sscript -y
           haxelib run lime rebuild extension-webm linux
-          haxelib install actuate 
-          haxelib git faxe https://github.com/uhrobots/faxe
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          # haxelib git linc_luajit https://github.com/MasterEric/linc_luajit.git
-          # haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
-          haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git
-          haxelib install actuate 
-          haxelib install android6permissions
-          haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
-          haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
-          haxelib install uniontypes #BulbyVR used this
-          haxelib install json2object #BulbyVR used this to convert JSON to object
-          haxelib install extension-webview #luckydog7 for Android
-          haxelib git xinput https://github.com/furusystems/openfl-xinput.git
-          haxelib install haxe-files
-          haxelib install hxcpp-debug-server
-          haxelib install tink_core
-          haxelib install grig.audio
-          haxelib install grig.midi
-          haxelib git tentools https://github.com/TentaRJ/tentools.git
-          haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools linux
-          haxelib install haxe-strings
-          haxelib install firetongue
-          haxelib install hxp
-          haxelib install svg
-          haxelib install format
-          haxelib install lime-tools
-          haxelib install haxeui
-          haxelib install haxeui-core
-          haxelib install haxeui-openfl
-          haxelib install haxeui-flixel
-          haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
-          haxelib install yagp
-          haxelib git crashdumper http://github.com/larsiusprime/crashdumper
           haxelib run lime rebuild yagp linux
-          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
-          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
-          haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
-          haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
-          haxelib install udprotean
-          haxelib install markdown
-          haxelib install openfl-webm
-          # haxelib install hxCodec
-          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib list
       
       - name: if there is cache still then just update everything
@@ -132,8 +85,8 @@ jobs:
       # - name: Obtain stuffs of Linux
       #   run: |
       #     wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
-      #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64
-      #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
+      #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Linux64
+      #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
 
       - name: Obtain GameJolt empty file
         run: |
@@ -151,7 +104,7 @@ jobs:
 
       - name: Push to Itch Linux
         if: ${{github.event_name == 'push'}}
-        uses: josephbmanley/butler-publish-itchio-action@master
+        uses: yeslayla/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: linux-GHAction
@@ -159,16 +112,16 @@ jobs:
           ITCH_USER: joelwindows7
           PACKAGE: export/release/linux/bin
       
-      - name: Yo, release now
-        # uses: softprops/action-gh-release@v0.1.13
-        # if: startsWith(github.ref, 'refs/tags/')
-        #  https://github.com/marketplace/actions/upload-files-to-a-github-release
-        uses: svenstaro/upload-release-action@2.3.0
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: export/release/linux/bin
-          asset_name: Linux Build
-          tag: ${{ github.ref }}
-          overwrite: true
-          # body: "This is my release text"
+      #- name: Yo, release now
+      #  # uses: softprops/action-gh-release@v0.1.13
+      #  # if: startsWith(github.ref, 'refs/tags/')
+      #  #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+      #  uses: svenstaro/upload-release-action@2.3.0
+      #  with:
+      #    repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #    file: export/release/linux/bin
+      #    asset_name: Linux Build
+      #    tag: ${{ github.ref }}
+      #    overwrite: true
+      #    # body: "This is my release text"
 

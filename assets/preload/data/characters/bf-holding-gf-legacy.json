@@ -1,6 +1,8 @@
 {
     "name": "Boyfriend Holding Girlfriend",
     "displayName": "Boyfriend & Girlfriend",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "asset": "tankman/bfAndGF",
     "barColor": "#5000E6",
     "forceIcon": true,

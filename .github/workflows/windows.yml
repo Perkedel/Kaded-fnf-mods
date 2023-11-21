@@ -34,20 +34,21 @@ jobs:
 
       - uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.3.2
       # Runs a set of commands using the runners shell
 
       - name: Schlob Chocolatey
         run: |
-          choco install vcredist140
-          cinst make -y
-          cinst cmake -y
-          cinst wget -y # downloader
-          cinst butler -y # upload to itch io
-          cinst android-sdk -y
-          cinst android-ndk --version=16.2 -y
-          cinst adb -y
-          cinst haxe -y
+          # choco install vcredist140
+          choco install make -y
+          choco install cmake -y
+          choco install wget -y # downloader
+          choco install butler -y # upload to itch io
+          choco install android-sdk -y
+          choco install android-ndk --version=16.2 -y
+          choco install adb -y
+          choco install haxe -y
+          Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
           RefreshEnv
 
       - name: first, lemme download android stuff
@@ -66,65 +67,21 @@ jobs:
       - name: script run line haha
         # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
-          haxelib install lime
+          haxelib setup hmm
+          haxelib install Console.hx
+          echo "new Psych's found-way of auto install all libraries"
+          echo 'https://github.com/ShadowMario/FNF-PsychEngine/blob/main/hmm.json'
+          haxelib install hmm
+          haxelib run hmm install
+          echo 'you should have all done.'
           RefreshEnv
-          haxelib install openfl
-          haxelib install flixel
           haxelib run lime setup flixel -y
           haxelib run lime setup -y
-          haxelib install flixel-tools
-          haxelib install flixel-addons
-          haxelib install flixel-ui
-          haxelib install hscript
-          haxelib install flixel-addons
-          haxelib git faxe https://github.com/uhrobots/faxe
-          haxelib install polymod
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
+          haxelib run lime setup sscript -y
           haxelib run lime rebuild extension-webm windows
           haxelib run lime rebuild extension-webm android
-          haxelib install android6permissions
-          haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
-          haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
-          haxelib install uniontypes #BulbyVR used this
-          haxelib install json2object #BulbyVR used this to convert JSON to object
-          haxelib install extension-webview #luckydog7 for Android
-          haxelib git xinput https://github.com/furusystems/openfl-xinput.git
-          haxelib install haxe-files
-          haxelib install hxcpp-debug-server
-          haxelib install tink_core
-          haxelib install grig.audio
-          haxelib install grig.midi
-          # haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
-          haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
-          haxelib install actuate 
-          haxelib git tentools https://github.com/TentaRJ/tentools.git
-          haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools windows
-          haxelib install haxe-strings
-          haxelib install firetongue
-          haxelib install hxp
-          haxelib install svg
-          haxelib install format
-          haxelib install lime-tools
-          haxelib install haxeui
-          haxelib install haxeui-core
-          haxelib install haxeui-openfl
-          haxelib install haxeui-flixel
-          haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
-          haxelib install yagp
-          haxelib git crashdumper http://github.com/larsiusprime/crashdumper
-          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
-          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
-          haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
-          haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
-          haxelib install udprotean
-          haxelib install markdown
-          haxelib install openfl-webm
-          # haxelib install hxCodec
-          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
+          
           haxelib list
           dir
           pwd
@@ -141,20 +98,20 @@ jobs:
           haxelib run lime rebuild yagp linux
           haxelib list
       
-      - name: TEMP patch FlxAction.hx workaround
-        run: |
-          dir C:\
-          dir C:\hostedtoolcache
-          dir "C:\hostedtoolcache\windows"
-          dir "C:\hostedtoolcache\windows\haxe"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.5"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.5\x64"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib"
-          dir "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\flixel"
-          wget "https://gist.github.com/JOELwindows7/118b3a40a76d60e701399a61fb5e1c2d/raw/fef2b6649a4b51d76f912459ef3f107b4bd25905/FlxAction.hx"
-          dir
-          pwd
-          mv ".\FlxAction.hx" "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\flixel\4,11,0\flixel\input\actions\FlxAction.hx" -Force
+      #- name: TEMP patch FlxAction.hx workaround
+      #  run: |
+      #    dir C:\
+      #    dir C:\hostedtoolcache
+      #    dir "C:\hostedtoolcache\windows"
+      #    dir "C:\hostedtoolcache\windows\haxe"
+      #    dir "C:\hostedtoolcache\windows\haxe\4.3.2"
+      #    dir "C:\hostedtoolcache\windows\haxe\4.3.2\x64"
+      #    dir "C:\hostedtoolcache\windows\haxe\4.3.2\x64\lib"
+      #    dir "C:\hostedtoolcache\windows\haxe\4.3.2\x64\lib\flixel"
+      #    wget "https://gist.github.com/JOELwindows7/118b3a40a76d60e701399a61fb5e1c2d/raw/fef2b6649a4b51d76f912459ef3f107b4bd25905/FlxAction.hx"
+      #    dir
+      #    pwd
+      #    mv ".\FlxAction.hx" "C:\hostedtoolcache\windows\haxe\4.3.2\x64\lib\flixel\4,11,0\flixel\input\actions\FlxAction.hx" -Force
       
       - name: Setup Android support
         run: |
@@ -167,7 +124,7 @@ jobs:
         run: |
           wget https://github.com/Perkedel/After-Church/raw/master/RAW%20files/stray%20anything/Borkarounds/extension-webm/ndll/Android.zip
           unzip .\Android.zip
-          mv ".\Android" "C:\hostedtoolcache\windows\haxe\4.2.5\x64\lib\extension-webm\git\ndll"
+          mv ".\Android" "C:\hostedtoolcache\windows\haxe\4.3.2\x64\lib\extension-webm\git\ndll"
         
       - name: Obtain Gamejolt empty key
         run : |
@@ -200,16 +157,16 @@ jobs:
           pwd
           butler push D:\a\Kaded-fnf-mods\Kaded-fnf-mods\export\release\windows\bin joelwindows7/last-funkin-moments:windows-GHAction
       
-      - name: Yo, release now
-        # uses: softprops/action-gh-release@v0.1.13
-        # if: startsWith(github.ref, 'refs/tags/')
-        #  https://github.com/marketplace/actions/upload-files-to-a-github-release
-        uses: svenstaro/upload-release-action@2.3.0
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: export/release/windows/bin
-          asset_name: Windows Build
-          tag: ${{ github.ref }}
-          overwrite: true
-          # body: "This is my release text"
+      #- name: Yo, release now
+      #  # uses: softprops/action-gh-release@v0.1.13
+      #  # if: startsWith(github.ref, 'refs/tags/')
+      #  #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+      #  uses: svenstaro/upload-release-action@2.3.0
+      #  with:
+      #    repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #    file: export/release/windows/bin
+      #    asset_name: Windows Build
+      #    tag: ${{ github.ref }}
+      #    overwrite: true
+      #    # body: "This is my release text"
 

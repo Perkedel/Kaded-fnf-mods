@@ -36,7 +36,9 @@ class InteractableUIGroup extends FlxUIGroup implements IInteractable implements
 	{
 		super.update(elapsed);
 
+		// #if !web
 		gestureStateData = GestureUtil.handleGestureState(this, gestureStateData);
+		// #end
 	}
 
 	public function onJustPressed(pos:FlxPoint)

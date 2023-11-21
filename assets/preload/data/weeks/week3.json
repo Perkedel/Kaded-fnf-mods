@@ -1,0 +1,23 @@
+{
+	"songs": [
+		"pico",
+		"philly",
+		"blammed"
+	],
+
+	"weekCharacters": [
+		"pico",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "PICO",
+	"weekColor": "#993399",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":false,
+	"storyName": "PICO",
+	"weekBefore": "week2",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
+}

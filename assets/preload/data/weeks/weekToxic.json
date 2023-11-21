@@ -1,0 +1,23 @@
+{
+	"songs": [
+		"doremi",
+		"cradles",
+		"mayday"
+	],
+
+	"weekCharacters": [
+		"hookx",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "view-of-the-world",
+	"weekColor": "#EEEEEE",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":false,
+	"storyName": "Wars on the realm",
+	"weekBefore": "weekMeta",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
+}

@@ -23,72 +23,25 @@ jobs:
       - name: Just do it
         uses: krdlab/setup-haxe@v1.1.6
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.3.2
       - name: Make your dreams come true
         # if: steps.cache-stuff.outputs.cache-hit != 'true'
         run: |
           haxe -version
-          haxelib install hxnodejs
-          haxelib install lime
-          haxelib install openfl
-          haxelib install flixel
+          haxelib setup hmm
+          haxelib install Console.hx
+          echo "new Psych's found-way of auto install all libraries"
+          echo 'https://github.com/ShadowMario/FNF-PsychEngine/blob/main/hmm.json'
+          haxelib install hmm
+          haxelib run hmm install
+          echo 'you should have all done.'
           haxelib run lime setup flixel -y
           haxelib run lime setup -y
-          haxelib install flixel-tools
-          haxelib install flixel-addons
-          haxelib install flixel-ui
-          haxelib install hscript
-          haxelib install newgrounds
-          haxelib install flixel-addons
-          haxelib git faxe https://github.com/uhrobots/faxe
-          haxelib install polymod
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib git extension-webm https://github.com/GrowtopiaFli/extension-webm
-          # haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
-          haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
+          haxelib run lime setup sscript -y
           haxelib run lime rebuild linc_luajit mac
           haxelib run lime rebuild extension-webm mac
-          haxelib install android6permissions
-          haxelib git haxe-hardware https://github.com/Perkedel/haxe-hardware.git
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex # for the alternative against Lua, like BulbyVR's FNFM+
-          haxelib install tjson #BulbyVR used TJSON for JSON parsing instead of built-in JSON handlers.
-          haxelib install uniontypes #BulbyVR used this
-          haxelib install json2object #BulbyVR used this to convert JSON to object
-          haxelib install extension-webview #luckydog7 for Android
-          haxelib git xinput https://github.com/furusystems/openfl-xinput.git
-          haxelib install haxe-files
-          haxelib install hxcpp-debug-server
-          haxelib install tink_core
-          haxelib install grig.audio
-          haxelib install grig.midi
-          haxelib install actuate 
-          haxelib git tentools https://github.com/TentaRJ/tentools.git
-          haxelib git systools https://github.com/haya3218/systools
           haxelib run lime rebuild systools mac
-          haxelib install haxe-strings
-          haxelib install firetongue 
-          haxelib install hxp
-          haxelib install svg
-          haxelib install format
-          haxelib install lime-tools
-          haxelib install haxeui
-          haxelib install haxeui-core
-          haxelib install haxeui-openfl
-          haxelib install haxeui-flixel
-          haxelib git openfl-xinput https://github.com/furusystems/openfl-xinput
-          haxelib install yagp
-          haxelib git crashdumper http://github.com/larsiusprime/crashdumper
           haxelib run lime rebuild yagp mac
-          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
-          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
-          haxelib git yaml https://github.com/Paidyy/haxe-yaml.git
-          haxelib git linc_clipboard https://github.com/josuigoa/linc_clipboard.git
-          haxelib install udprotean
-          haxelib install markdown
-          haxelib install openfl-webm
-          # haxelib install hxCodec
-          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib list
           ls
           pwd
@@ -112,8 +65,8 @@ jobs:
       - name: Obtain macOS binaries for stuffs like luajit
         run: |
           wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Mac/libluajit-5.1.a
-          mkdir -p /Users/runner/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Mac/
-          mv ./libluajit-5.1.a /Users/runner/hostedtoolcache/haxe/4.2.5/x64/lib/linc_luajit/lib/lua/lib/Mac/
+          mkdir -p /Users/runner/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Mac/
+          mv ./libluajit-5.1.a /Users/runner/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Mac/
       
       - name: Obtain GameJolt empty key
         run: |
@@ -148,15 +101,15 @@ jobs:
           hdiutil convert /Users/runner/work/temp.dmg -format UDZO -o last-funkin-moments-macOS.dmg
           /Users/runner/work/butler push last-funkin-moments-macOS.dmg joelwindows7/last-funkin-moments:macOS-GHAction
       
-      - name: Yo, release now
-        # uses: softprops/action-gh-release@v0.1.13
-        # if: startsWith(github.ref, 'refs/tags/')
-        #  https://github.com/marketplace/actions/upload-files-to-a-github-release
-        uses: svenstaro/upload-release-action@2.3.0
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: export/release/macos/bin
-          asset_name: macOS Build
-          tag: ${{ github.ref }}
-          overwrite: true
-          # body: "This is my release text"
+      #- name: Yo, release now
+      #  # uses: softprops/action-gh-release@v0.1.13
+      #  # if: startsWith(github.ref, 'refs/tags/')
+      #  #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+      #  uses: svenstaro/upload-release-action@2.3.0
+      #  with:
+      #    repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #    file: export/release/macos/bin
+      #    asset_name: macOS Build
+      #    tag: ${{ github.ref }}
+      #    overwrite: true
+      #    # body: "This is my release text"

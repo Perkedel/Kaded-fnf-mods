@@ -1,3 +1,6 @@
+// import Console.ConsoleOutputStream;
+// import flixel.system.macros.FlxGitSHA;
+import DokiDoki;
 import haxe.display.Protocol.Version;
 import lime.app.Application;
 import lime.system.System as LimeSys;
@@ -189,8 +192,13 @@ class Debug
 		trace('Initializing Debug tools...');
 
 		// Override Haxe's vanilla trace() calls to use the Flixel console.
+		#if !web
 		Log.trace = function(data:Dynamic, ?info:PosInfos)
 		{
+			// #if web
+			// trace("Trace overidden");
+			// #end
+
 			var paramArray:Array<Dynamic> = [data];
 
 			if (info != null)
@@ -205,10 +213,14 @@ class Debug
 			}
 
 			// JOELwindows7: cmon what happened?
+			#if web
 			// trace("Attempt Override trace");
+			#end
 
 			logTrace(paramArray, info);
 		};
+		#end
+		trace('aaaaaaaaaaaaa');
 
 		// JOELwindows7: what happening?
 		trace("Overriden the trace thing");
@@ -234,6 +246,10 @@ class Debug
 		logInfo('Last Funkin Moments version: ${MainMenuState.lastFunkinMomentVer}'); // JOELwindows7: haha yeah!
 		logInfo('Device: ${LimeSys.deviceVendor}, ${LimeSys.deviceModel}');
 		logInfo('Platform: ${LimeSys.platformLabel}, ${LimeSys.platformName}, ${LimeSys.platformVersion}');
+		logInfo('Compiled: ${CompileTime.buildDateString()}');
+		logInfo('Git Commit: ${CompileTime.buildGitCommitSha()}');
+		// logInfo('Git Commit (FlxGitSHA): ${FlxGitSHA.getGitSHA('.')}');
+		logInfo('on Mobile: ${FlxG.onMobile}');
 	}
 
 	/**
@@ -276,12 +292,16 @@ class Debug
 	static function defineTrackerProfiles()
 	{
 		// Example: This will display all the properties that FlxSprite does, along with curCharacter and barColor.
-		FlxG.debugger.addTrackerProfile(new TrackerProfile(Character, ["curCharacter", "isPlayer", "barColor"], [FlxSprite]));
+		FlxG.debugger.addTrackerProfile(new TrackerProfile(Character, ["curCharacter", "isPlayer", "barColor", "jantungInstances", "heartOrgans"],
+			[FlxSprite]));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(HealthIcon, ["char", "isPlayer", "isOldIcon"], [FlxSprite]));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(Note, ["x", "y", "strumTime", "mustPress", "rawNoteData", "sustainLength"], []));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(Song, [
 			"chartVersion", "song", "speed", "player1", "player2", "gfVersion", "noteStyle", "stage", "variables", "diffVariables",
 		], []));
+		// FlxG.debugger.addTrackerProfile(new TrackerProfile(DokiDoki,['heartSpecs','character','initHR','minHR','maxHR','hearts'],[])); // JOELwindows7: ey heartbeat organ yeyeyey
+		FlxG.debugger.addTrackerProfile(new TrackerProfile(JantungOrgan, ['character', 'isEmulator', 'curHR', 'initHR', 'minHR', 'maxHR'],
+			[])); // JOELwindows7: ey heartbeat organ yeyeyey
 		// JOELwindows7: oh haaiii
 		// JOELwindows7: oh hi there. lol A Hat in Time, Hat kid yey!!!
 		// add variables & diffVariables to that tracker profile for that song yeah
@@ -474,7 +494,11 @@ class DebugLogWriter
 		// Output text to the debug console directly.
 		if (shouldLog(logLevel))
 		{
+			// #if FEATURE_CONSOLE_HX
+			// printConsole(msg); // JOELwindows7: write to Console!
+			// #else
 			printDebug(msg);
+			// #end
 		}
 	}
 
@@ -485,6 +509,32 @@ class DebugLogWriter
 		#else
 		// Pass null to exclude the position.
 		haxe.Log.trace(msg, null);
+		#end
+	}
+
+	// JOELwindows7: NEW Write Console
+	function printConsole(msg:String, logLevel:String = 'TRACE')
+	{
+		// var selectLevel:Console.ConsoleOutputStream;
+		// switch (logLevel)
+		// {
+		// 	default:
+		// 		selectLevel = Log;
+		// }
+		#if FEATURE_CONSOLE_HX
+		switch (logLevel)
+		{
+			case 'TRACE':
+				Console.log(msg);
+			case 'WARN':
+				Console.warn(msg);
+			case 'INFO':
+				Console.success(msg);
+			case 'ERROR':
+				Console.error(msg);
+			default:
+				Console.log(msg);
+		}
 		#end
 	}
 }

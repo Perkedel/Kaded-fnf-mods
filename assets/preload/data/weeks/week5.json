@@ -1,0 +1,23 @@
+{
+	"songs": [
+		"cocoa",
+		"eggnog",
+		"winter-horrorland"
+	],
+
+	"weekCharacters": [
+		"parents-christmas",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Parents",
+	"weekColor": "#3366ff",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":false,
+	"storyName": "RED SNOW",
+	"weekBefore": "week4",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
+}

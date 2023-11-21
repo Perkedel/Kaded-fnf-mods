@@ -2,7 +2,8 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Last Funkin Moments" file="Last Funkin Moments" packageName="com.Perkedel.LastFunkinMoments" package="com.Perkedel.LastFunkinMoments" main="Main" version="0.2.7.1" company="Perkedel Technologies" />
+	<!-- <app title="Friday Night Funkin': Last Funkin Moments" file="Last Funkin Moments" packageName="com.Perkedel.LastFunkinMoments" package="com.Perkedel.LastFunkinMoments" main="Main" version="0.2.7.1" company="Perkedel Technologies" /> -->
+	<app title="Friday Night Funkin': Last Funkin Moments" file="Last Funkin Moments" packageName="com.Perkedel.LastFunkinMoments" package="com.Perkedel.LastFunkinMoments" main="Main" version="2023.12.0" company="Perkedel Technologies" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -32,10 +33,25 @@
 	<!-- well define or haxedef appears to be the same. what do you think? -->
 	<!-- BOLO here uses `define`. -->
 
+	<!-- JOELwindows7: also Altronix openfl pos -->
+	<haxedef name="openflPos"/>
+
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" />
+	<!-- <window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" /> -->
+	<!-- JOELwindows7: pls doggydentures 4K!!! -->
+	<!-- https://github.com/doggy-dentures/4ktest/blob/main/Project.xml -->
+	<!-- https://gamebanana.com/mods/440772 -->
+	<!-- https://en.wikipedia.org/wiki/4K_resolution -->
+	<!-- 
+		RESOLUTIONS
+		- UHD = width="3840" height="2160"
+		- 4K DCI = width="4096" height="2160"
+		- 1080p = width="1920" height="1080"
+	 -->
+	<!-- <window width="4096" height="2160" fps="" background="#000000" hardware="true" vsync="false" /> -->
+	<window width="1920" height="1080" fps="" background="#000000" hardware="true" vsync="false" />
 
 	<!--HTML5-specific-->
 	<window if="html5" resizable="true" />
@@ -44,7 +60,8 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/>
+	<!-- <window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/> -->
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false"/>
 	<!-- JOELwindows7: make it resizable due to Samsung Dex just in case -->
 	<!-- do not make it resizable! it will look silly on big screen! especially gameplay!!! -->
 	<!-- also luckydog7 force it 720p -->
@@ -52,8 +69,22 @@
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
-	<!-- TODO: JOELwindows7: make Linux console more canon than just canon due to other console archaicly proprietary nature -->
+	<!-- PlayStation-spesific -->
+	<window if="playstation" orientation="landscape" fullscreen="true" resizable="false" vsync="false"/>
+
+	<!-- XBOX / UWP Specific -->
+	<window if="uwp" orientation="landscape" fullscreen="true" resizable="true" vsync="false"/>
+
+	<!-- WinCE/WinMobile-specific -->
+	<window if="wince" orientation="landscape" fullscreen="true" resizable="true" vsync="false"/>
+
+	<!-- DONE: JOELwindows7: make Linux console more canon than just canon due to other console archaicly proprietary nature -->
 	<!-- hence you should not hope for console release, just linux it out! AUR or PPA it out! idk.. thancc, GabeN yey! -->
+	<!-- SteamDeck-specific -->
+	<window if="steamdeck" orientation="landscape" fullscreen="true" resizable="true" vsync="false"/>
+
+	<!-- RaspberryPi-specific -->
+	<window if="rpi" orientation="landscape" fullscreen="true" resizable="true" vsync="false"/>
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -77,7 +108,7 @@
 	<haxedef name="FEATURE_LUAMODCHART" if=" cpp" unless="mobile || linux"/>
 	<!-- JOELwindows7: okay fam, we've got libraries for most of the platform here yey, mobile still broken tho, Android yess. -->
 	<!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
-	<haxedef name="FEATURE_WEBM" if="desktop" unless = "neko || hl"/>
+	<haxedef name="FEATURE_WEBM" if="desktop" unless = "neko || hl || java"/>
 	<!-- Defines whether StepMania files can be loaded. -->
 	<haxedef name="FEATURE_STEPMANIA" if="desktop || sys" />
 	<!-- Defines whether the Thread class can be used. -->
@@ -86,7 +117,7 @@
 	<!-- JOELwindows7: Defines whether uh I forgot -->
 
 	<!-- JOELwindows7: Defines whether the WebMer native should be enabled. This is for cpp-->
-	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="hl || neko"/>
+	<haxedef name="FEATURE_WEBM_NATIVE" if="cpp" unless="hl || neko || java || mobile"/>
 	<!-- JOELwindows7: and for JS -->
 	<haxedef name="FEATURE_WEBM_JS" if="web"/>
 	<!-- JOELwindows7: Defines whether the VLC should be enabled. -->
@@ -110,6 +141,12 @@
 	<!-- oh, also MasterEric's way of defining -->
 	<haxedef name="FEATURE_GAMEJOLT" unless="flash || mobile"/>
 
+	<!-- JOELwindows7: (hxCodec PolybiusProxy) LibVLC Logging for hxCodec -->
+	<haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
+
+	<!-- JOELwindows7: contain the fmod faxe -->
+	<haxedef name="FEATURE_FMOD" if="switch"/>
+
 	<!-- JOELwindows7: clipboard error arch linux no solution pls help -->
 	<!-- 
 	```
@@ -131,7 +168,7 @@
 	^CError: Source path "export/release/linux/obj/ApplicationMain" does not exist
 	```
 	 -->
-	<haxedef name="FEATURE_CLIPBOARD" unless="linux"/>
+	<haxedef name="FEATURE_CLIPBOARD" unless="linux || mac"/>
 
 	<!-- JOELwindows7: Frame counter troubles -->
 	<!-- 
@@ -145,8 +182,12 @@
 	<!-- JOELwindows7: here force defines to know. -->
 	<!-- Write override defines for development special features -->
 
+	<!-- JOElwindows7: Please the Away3D like used in Altronix -->
+	<haxedef name="FEATURE_AWAY_3D"/>
+
 	<!-- FORCE_INCLUDE_DLC to include separate_mods anyway which previously included only in debug build -->
-	<haxedef name="FORCE_INCLUDE_DLC" if="debug"/>
+	<!-- <haxedef name="FORCE_INCLUDE_DLC" if="debug"/> -->
+	<haxedef name="FORCE_INCLUDE_DLC" unless="final || release"/>
 	
 	<!-- Experimentals -->
 	<!-- Kade + YinYang48 Hex Weekend Kade Engine features. BUG on FlxDrawQuadItem on function render: 
@@ -195,16 +236,32 @@
 	<!-- JOELwindows7: BOLO final crash handler -->
 	<haxedef name="FEATURE_CRASH_BOLO" unless="html5"/>
 
+	<!-- JOELwindows7: Define debug for modcore like Altronix did -->
+	<haxedef name="POLYMOD_DEBUG" if="debug" />
+
+	<!-- JOELwindows7: Console.hx advanced cross platform print to console -->
+	<haxedef name="FEATURE_CONSOLE_HX"/>
+
+	<!-- JOELwindows7: Screenshooter -->
+	<haxedef name="FEATURE_SCREENSHOT" unless='debug || web'/>
+
 	<!-- JOELwindows7: yoinkoid-->
 	<!-- from https://github.com/luckydog7/Funkin-android/blob/master/Project.xml -->
 	<!-- <assets path="assets" include="*.txt"/> -->
 	<!-- <assets path="assets" include="*.json"/> -->
 	<!-- end yoinkoid -->
 
+	<!-- JOELwindows7: Don't forget the FireTongue locale too! -->
+	<library name="locales" preload="true" />
+	<!-- <assets path="assets/locales"    library="locales"    exclude="*.ogg" if="web"/>
+	<assets path="assets/locales"    library="locales"    exclude="*.mp3" unless="web"/> -->
+	<assets path="assets/locales"    exclude="*.ogg" if="web"/>
+	<assets path="assets/locales"    exclude="*.mp3" unless="web"/>
+
 	<!-- JOELwindows7: add brightfyre infos -->
 	<assets path="assets/preload/videos" rename="assets/videos" include="*.mp4" embed='false' />
-	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
-	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
+	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web || flash"/>
 	<!-- JOELwindows7: new folder for Odysee exclusive & stolen / pirated mods exclusive definitions -->
 	<assets path="assets/preload_odysee" rename="assets/preload_odysee" exclude="*.ogg" if="web odysee"/>
 	<assets path="assets/preload_odysee" rename="assets/preload_odysee" exclude="*.mp3" unless="web" if="odysee"/>
@@ -226,7 +283,7 @@
 	<library name="core"
 					 preload="true"
 					 embed="true" />
-	
+
 	<section if="PRELOAD_ALL">
 		<library name="songs"    preload="true" />
 		<library name="shared"   preload="true" />
@@ -277,52 +334,52 @@
 		<library name="sm"    preload="false" />
 	</section>
 	
-	<assets path="assets/songs"    library="songs"    exclude="*.ogg" if="web"/>
-	<assets path="assets/songs"    library="songs"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/shared"   library="shared"   exclude="*.ogg" if="web"/>
-	<assets path="assets/shared"   library="shared"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/core"   library="core"   exclude="*.ogg" if="web"/>
-	<assets path="assets/core"   library="core"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/scripts"   library="scripts"   exclude="*.ogg" if="web"/>
-	<assets path="assets/scripts"   library="scripts"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/week-1"    library="week-1"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week-1"    library="week-1"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/tutorial" library="tutorial" exclude="*.ogg" if="web"/>
-	<assets path="assets/tutorial" library="tutorial" exclude="*.mp3" unless="web"/>
-	<assets path="assets/week1"    library="week1"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week1"    library="week1"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week2"    library="week2"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week2"    library="week2"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week3"    library="week3"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week3"    library="week3"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week4"    library="week4"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week4"    library="week4"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week5"    library="week5"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week5"    library="week5"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week6"    library="week6"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week7"    library="week7"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week8"    library="week8"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week8"    library="week8"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week9"    library="week9"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week9"    library="week9"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week10"    library="week10"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week10"    library="week10"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week11"    library="week11"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week11"    library="week11"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week12"    library="week12"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week12"    library="week12"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week13"    library="week13"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week13"    library="week13"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week14"    library="week14"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week14"    library="week14"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week15"    library="week15"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week15"    library="week15"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/songs"    library="songs"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/songs"    library="songs"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/shared"   library="shared"   exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/shared"   library="shared"   exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/core"   library="core"   exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/core"   library="core"   exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/scripts"   library="scripts"   exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/scripts"   library="scripts"   exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week-1"    library="week-1"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week-1"    library="week-1"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/tutorial" library="tutorial" exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/tutorial" library="tutorial" exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week1"    library="week1"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week1"    library="week1"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week2"    library="week2"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week2"    library="week2"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week3"    library="week3"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week3"    library="week3"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week4"    library="week4"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week4"    library="week4"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week5"    library="week5"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week5"    library="week5"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week6"    library="week6"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week7"    library="week7"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week8"    library="week8"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week8"    library="week8"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week9"    library="week9"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week9"    library="week9"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week10"    library="week10"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week10"    library="week10"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week11"    library="week11"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week11"    library="week11"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week12"    library="week12"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week12"    library="week12"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week13"    library="week13"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week13"    library="week13"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week14"    library="week14"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week14"    library="week14"    exclude="*.mp3" unless="web || flash"/>
+	<assets path="assets/week15"    library="week15"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week15"    library="week15"    exclude="*.mp3" unless="web || flash"/>
 	<!-- JOELwindows7: please! I'm tired. make it all procedural already -->
 	<!-- wait I think 1.8 has something here?? -->
-	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/week5720NG"    library="week5720NG"    exclude="*.mp3" unless="web || flash"/>
 	<assets path="assets/odysee"    library="odysee"    exclude="*.ogg" if="web odysee"/>
 	<assets path="assets/odysee"    library="odysee"    exclude="*.mp3" unless="web" if="odysee"/>
 	<assets path="assets/thief"    library="thief"    exclude="*.ogg" if="web thief"/>
@@ -331,20 +388,22 @@
 	<assets path="assets/weeks"    library="weeks"    exclude="*.mp3" unless="web"/>
 
 	<!-- JOELwindows7: for GrowtopiaFli Video Cutscener -->
-	<assets path="assets/videos" include="*.mp3" if="web"/>
-	<assets path="assets/videos" include="*.ogg" unless="web"/>
+	<assets path="assets/videos" include="*.mp3" if="web || flash"/>
+	<assets path="assets/videos" include="*.ogg" unless="web || flash"/>
 
 	<!-- for VLC Cutscener BrightFyre yess -->
 	<!-- <assets path="plugins/" rename='' if="windows"/>
 	<assets path="dlls/" rename='' if="windows"/> -->
 	
-	<assets path="assets/sm"    library="sm"    exclude="*.ogg" if="web"/>
-	<assets path="assets/sm"    library="sm"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/sm"    library="sm"    exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/sm"    library="sm"    exclude="*.mp3" unless="web || flash"/>
 
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<!-- JOELwindows7: separate mods folder to not include at all unless debug or forced anyway -->
-	<assets path='separate_mods' rename='mods' embed='false' if='debug || FORCE_INCLUDE_DLC'/>
-	<assets path='Admiral_Zumi' rename='mods' embed='false' if='debug || FORCE_INCLUDE_DLC' unless='HATE_XOP1R4T3 || HATE_PIRACY || LOVE_NFT || NOT_DECENTRALIZED || CENTRALIZED'/>
+	<!-- <assets path='separate_mods' rename='mods' embed='false' if='debug || FORCE_INCLUDE_DLC'/> -->
+	<assets path='separate_mods' rename='mods' embed='false' unless='final'/>
+	<!-- <assets path='Admiral_Zumi' rename='mods' embed='false' if='debug || FORCE_INCLUDE_DLC' unless='HATE_XOP1R4T3 || HATE_PIRACY || LOVE_NFT || NOT_DECENTRALIZED || CENTRALIZED'/> -->
+	<assets path='Admiral_Zumi' rename='mods' embed='false' unless='final || HATE_XOP1R4T3 || HATE_PIRACY || LOVE_NFT || NOT_DECENTRALIZED || CENTRALIZED'/>
 	<!-- <assets path='art/readme.txt' rename='do NOT readme.txt' /> -->
 	<!-- JOELwindows7: now, the readme file is my warez ANSI art description yeyeyeye! cool and good -->
 	<assets path='art/perkedel_readme.txt' rename='do NOT readme.txt' />
@@ -369,9 +428,16 @@
 	-->
 	<assets path="assets/fonts" embed='true'/>
 
+	<!-- JOELwindows7: Maybe add this too? -->
+	<assets path="assets/sounds" embed='true' exclude="*.ogg" if="web || flash"/>
+	<assets path="assets/sounds" embed='true' exclude="*.mp3" unless="web || flash"/>
+
 	<!-- first, call macro allow this -->
 	<haxeflag name="--macro" value="allowPackage('flash')" />
 	<!-- https://stackoverflow.com/a/21422639/9079640 -->
+
+	<!-- What is this Psych my.pack?! -->
+	<haxeflag name="--macro" value="include('my.pack')" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
@@ -384,9 +450,18 @@
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
+	<!-- <haxelib name="SScript"/> -->
+
+	<!-- JOELwindows7: here Altronix -->
+	<haxelib name="away3d" if="FEATURE_AWAY_3D"/>
+	<haxelib name="flxanimate" />
+
+	<!-- JOELwindows7: https://lib.haxe.org/p/AE-Script/ new hscripter, replaces original hscript -->
+	<!-- https://github.com/Altronix-Team/AE-Script/blob/master/src/hscript/Parser.hx -->
+	<!-- <haxelib name="AE-Script" /> -->
 
 	<haxelib name="actuate" />
-	<haxelib name="extension-webm"/> <!-- Make sure to use https://github.com/KadeDev/extension-webm/ -->
+	<haxelib name="extension-webm" unless='hl || neko || mobile'/> <!-- Make sure to use https://github.com/KadeDev/extension-webm/ -->
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
@@ -404,11 +479,17 @@
 	<!-- JOELwindows7: linc_luajit supposedly also available for linux man! -->
 	<haxelib name="hxvm-luajit" />
 	<haxelib name="hxcpp-debug-server" if="cpp"/>
-
+	<!-- JOELwindows7: ParallaxLT as contributed by @Itz-MilesItz-Miles for Psych Engine -->
+	<!-- https://github.com/ShadowMario/FNF-PsychEngine/pull/13397 -->
+	<haxelib name="parallaxlt"/>
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
 
-	
+	<!-- https://lib.haxe.org/p/complex/ -->
+	<haxelib name="complex"/>
+
+	<!-- JOELwindows7: https://lib.haxe.org/p/hxyarn/ -->
+	<haxelib name="hxyarn"/>
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
@@ -461,6 +542,7 @@
 	<!-- <include path="source/vlc/LibVLCBuild.xml" /> -->
 	<!-- https://community.openfl.org/t/does-anyone-know-about-this-native-vlc-video-support-unicorn/8686/5 -->
 	<!-- https://github.com/datee/HaxeVLC -->
+	<!-- https://github.com/polybiusproxy/hxCodec -->
 	<!-- NEW BrightFyre VLC MP4 support (now handed over to PolybiusProxy, as hxCodec) -->
 	<!-- <haxelib name="hxCodec" if="cpp desktop || mobile" unless="neko || hl"/> -->
 	<!-- <haxelib name="hxCodec" if="FEATURE_VLC" unless="web"/> -->
@@ -479,6 +561,7 @@
 
 	<!-- JOELwindows7: the Tinkerbell stuffs and for the depend on it -->
 	<haxelib name="tink_core"/>
+	<!-- <haxelib name="tink_lang"/> -->
 
 	<!-- JOELwindows7: HaxeUI stuffs -->
 	<!-- <haxelib name="haxeui"/> -->
@@ -489,10 +572,10 @@
 
 	<!-- JOELwindows7: TentaRJ's GameJolt tools -->
 	<haxelib name="tentools" />
-	<haxelib name="systools" unless = "mobile"/>
-	<ndll name="systools" haxelib="systools" unless = "flash || mobile"/>
+	<haxelib name="systools" unless = "mobile || hl"/>
+	<ndll name="systools" haxelib="systools" unless = "flash || mobile || hl || neko"/>
 	<!-- Final touch to have this -->
-	<haxedef name="gamejolt" if="tentools systools" unless= "mobile"/>
+	<haxedef name="gamejolt" if="tentools systools" unless= "mobile || hl || neko"/>
 	
 
 	<!-- JOELwindows7: extra needed for Enigma whoahow -->
@@ -556,6 +639,44 @@
 	<haxelib name="linc_clipboard" unless = "FEATURE_CLIPBOARD"/>
 	<haxelib name="markdown" />
 
+	<!-- JOELwindows7: RealyUniqueName null safety -->
+	<!-- https://lib.haxe.org/p/safety/ -->
+	<!-- <haxelib name="safety" /> -->
+
+	<!-- JOELwindows7: haxiomic's console fancy prints -->
+	<!-- https://lib.haxe.org/p/Console.hx/ -->
+	<haxelib name="console.hx" />
+
+	<!-- JOELwindows7: Compile time data fetch https://lib.haxe.org/p/compiletime/ -->
+	<haxelib name="compiletime" />
+
+	<!-- JOELwindows7: Flixel Studio https://github.com/Dovyski/flixel-studio -->
+	<haxelib name="flixel-studio" if='debug'/>
+
+	<!-- JOELwindows7: fponticelli's thx -->
+	<haxelib name="thx.core"/>
+	<haxelib name="thx.culture"/>
+
+	<!-- JOELwindows7: Haxe Math ya -->
+	<!-- <haxelib name="hxmath"/> -->
+
+	<!-- JOELwindows7: tired to sort, just add here -->
+	<!-- <haxelib name="hx3compat"/> -->
+	<!-- <haxelib name="hxColorToolkit"/> -->
+	<!-- <haxelib name="roxlib"/> -->
+	<haxelib name="flixel-screenshot-plugin" unless='debug || web'/>
+	<!-- <haxelib name="flixel-retrotools"/> -->
+	<!-- <haxelib name="flix"/> -->
+	<!-- <haxelib name="zerolib-flixel"/> -->
+	<!-- <haxelib name="hxmp4"/> -->
+	<!-- <haxelib name="flx-jamkit"/> -->
+	<!-- <haxelib name="flixel-window"/> -->
+	<!-- <haxelib name="flxgif" unless="web"/> -->
+	<!-- <haxelib name="FlixelStripShapes"/> -->
+	<!-- <haxelib name="FlashCache"/> -->
+	<!-- <haxelib name="scrollable-area"/> -->
+	<!-- <haxelib name="winapi"/> -->
+
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
@@ -585,6 +706,11 @@
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 
+	<!-- NEW! Allow pitch -->
+	<!-- <haxedef name="FLX_PITCH"/> -->
+
+	<haxedef name="HXCPP_CHECK_POINTER" if="FEATURE_FILESYSTEM" />
+	<haxedef name="HXCPP_STACK_LINE" if="FEATURE_FILESYSTEM" />
 	<haxedef name="HXCPP_GC_BIG_BLOCKS" if="cpp"/>
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
@@ -633,7 +759,7 @@
 
 	<!-- Never disable debug message, especially on Mobile -->
 	<haxeflag name="--no-traces" unless="debug || mobile" />
-	<haxeflag name="--dce full" if="release || final" />
+	<haxeflag name="--dce full" if="release || final" unless="debug" />
 	<!-- BOLO removes DCE entirely, but uh isn't this deoptimize the game? let's just disable dce on debug, idk. -->
 	<haxeflag name="-dce no" if="debug"/>
 
@@ -685,6 +811,14 @@
 	<!-- JOELwindows7: Use defines has been moved to top according to BOLO -->
 	<!-- So the library reference if statements will also already defined for it. -->
 
-	
+	<!-- JOELwindows7: Finally, cool bonus! -->
+	<!-- <echo value="Compile the Last Funkin Momments"/> -->
+
+	<!-- JOELwindows7: Altronix run macro -->
+	<!-- <haxeflag name="macro" value="utils.macro.CheckHaxeVersion.checkHaxeVersion()" /> -->
+
+	<!-- JOELwindows7: RealyUniqueName Null Safety Macros -->
+	<!-- https://lib.haxe.org/p/safety/ -->
+
 
 </project>

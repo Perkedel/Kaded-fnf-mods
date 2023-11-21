@@ -1,0 +1,21 @@
+{
+	"songs": [
+		"indonesia-raya"
+	],
+
+	"weekCharacters": [
+		"",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "",
+	"weekColor": "red",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":true,
+	"storyName": "Indonesia Raya",
+	"weekBefore": "tutorial",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
+}

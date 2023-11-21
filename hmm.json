@@ -1,0 +1,753 @@
+{
+    "dependencies": [{
+            "name": "lime",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "lime-tools",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "actuate",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "format",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "formatter",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "svg",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "openfl",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-addons",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-screenshot-plugin",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-tools",
+            "type": "haxelib",
+            "version": null
+        },
+        
+        {
+            "name": "flixel-demos",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-templates",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-ui",
+            "type": "haxelib",
+            "version": null
+        },
+        
+        {
+            "name": "polymod",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxcpp",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxcpp-debug-server",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "grig.audio",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "grig.midi",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tjson",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxjsonast",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxCodec",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "SScript",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxcpp-debug-server",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "markdown",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "firetongue",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_core",
+            "type": "haxelib",
+            "version": null
+        },
+        
+        {
+            "name": "tink_macro",
+            "type": "haxelib",
+            "version": null
+        },
+        
+        {
+            "name": "tink_cli",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_xml",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_color",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_json",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_await",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_geom2",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_syntaxhub",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_template",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_streams",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_concurrent",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_tcp",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_http",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_clone",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_validation",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_web",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_stringly",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "tink_chunk",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "haxe-strings",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "haxe-files",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxp",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "openfl-webm",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "yagp",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "haxeui",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "haxeui-core",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "haxeui-flixel",
+            "type": "haxelib",
+            "version": null
+        },
+        
+        {
+            "name": "haxeui-html5",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "haxeui-openfl",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "android6permissions",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "threejs",
+            "type": "haxelib",
+            "version": null
+        },
+        
+        {
+            "name": "lime-samples",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "openfl-samples",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "extension-webview",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "uniontypes",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "format",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "json2object",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "newgrounds",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxnodejs",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "parallaxlt",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxjava",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "HaxeGJClient",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "AE-Script",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "complex",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxyarn",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "electron",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "away3d",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "safety",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "Console.hx",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "uuid",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "howlerjs",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "random",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "stb_ogg_sound",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxargs",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "exception",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxlibc",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "sure",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "ansi",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hashlink",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "datetime",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "vscode",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "ase",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "haxe-ws",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "openfl-compatibility",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "compiletime",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxmidilib",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "rtmidi-wrapper",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "winapi",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "winrpi",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "thx.core",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "thx.culture",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "thx.semver",
+            "type": "haxelib",
+            "version": null
+        },
+        
+        {
+            "name": "hxmath",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hx3compat",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxColorToolkit",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "roxlib",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "screenManager",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxPiScreenCapture",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-retrotools",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flix",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hxmp4",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "zerolib-flixel",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flixel-window",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flx-jamkit",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "flxgif",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "FlixelStripShapes",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "FlashCache",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "scrollable-area",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "munit",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "hlopenal",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "mockatoo",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "zigcall",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "winutils",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "sourcemap",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "pecan",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/Aurel300/pecan"
+        },
+        {
+            "name": "hscript",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/HaxeFoundation/hscript"
+        },
+        {
+            "name": "discord_rpc",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/Aidan63/linc_discord-rpc"
+        },
+        {
+            "name": "linc_luajit",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/superpowers04/linc_luajit"
+        },
+        {
+            "name": "hxvm-luajit",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/nebulazorua/hxvm-luajit"
+        },
+        {
+            "name": "tentools",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/TentaRJ/tentools.git"
+        },
+        {
+            "name": "systools",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/haya3218/systools"
+        },
+        {
+            "name": "crashdumper",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "http://github.com/larsiusprime/crashdumper"
+        },
+        {
+            "name": "extension-webm",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/GrowtopiaFli/extension-webm"
+        },
+        {
+            "name": "hxCodec",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/polybiusproxy/hxCodec"
+        },
+        {
+            "name": "hscript-ex",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/ianharrigan/hscript-ex"
+        },
+        {
+            "name": "xinput",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/furusystems/openfl-xinput.git"
+        },
+        {
+            "name": "extension-androidtools",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/MAJigsaw77/extension-androidtools.git"
+        },
+        {
+            "name": "extension-videoview",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/mcagabe19-stuff/extension-videoview.git"
+        },
+        {
+            "name": "yaml",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/Paidyy/haxe-yaml.git"
+        },
+        {
+            "name": "linc_clipboard",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/josuigoa/linc_clipboard.git"
+        },
+        {
+            "name": "haxe-hardware",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/Perkedel/haxe-hardware.git"
+        },
+        {
+            "name": "faxe",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/uhrobots/faxe"
+        },
+        {
+            "name": "flxanimate",
+            "type": "git",
+            "dir": null,
+            "ref": null,
+            "url": "https://github.com/Dot-Stuff/flxanimate/"
+        },
+        {
+            "name": "thx.semver",
+            "type": "haxelib",
+            "version": null
+        },
+        {
+            "name": "udprotean",
+            "type": "haxelib",
+            "version": null
+        }
+    ]
+}

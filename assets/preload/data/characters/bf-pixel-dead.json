@@ -2,6 +2,8 @@
     "name": "Boyfriend (Pixel Day) (Game Over)",
     "displayName": "Boyfriend",
     "asset": "characters/bfPixelsDEAD",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#31B0D1",
     "flipX": true,
     "scale": 6,

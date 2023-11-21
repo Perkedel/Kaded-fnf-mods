@@ -1,5 +1,8 @@
 package;
 
+#if cpp
+import cpp.abi.Abi;
+#end
 import flixel.addons.ui.FlxUISprite;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.FlxG;
@@ -85,6 +88,8 @@ class Note extends FlxUISprite
 	public var originAngle:Float = 0; // The angle the OG note of the sus note had (?)
 
 	public var dataColor:Array<String> = ['purple', 'blue', 'green', 'red'];
+	public var dataColorCap:Array<String> = ['PURPLE', 'BLUE', 'GREEN', 'RED']; // JOELwindows7: EYY YEA
+	public var dataColorDir:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT']; // JOELwindows7: OOPS
 	public var quantityColor:Array<Int> = [RED_NOTE, 2, BLUE_NOTE, 2, PURP_NOTE, 2, GREEN_NOTE, 2];
 	public var arrowAngles:Array<Int> = [180, 90, 270, 0];
 
@@ -102,6 +107,7 @@ class Note extends FlxUISprite
 	public var hitsoundPath:String = "SNAP"; // JOELwindows7: hitsound audio file to play when hit & hitsound option enabled.
 	public var hitlinePath:String = "HitLineParticle"; // JOELwindows7: hitline particle to emit when hit & hitline option enabled. idk this always on?
 	public var vowelType:Int = 0; // JOELwindows7: vowel type. radpas12131's mod. a i u e o.
+	public var noQuantize:Bool = false; // JOELwindows7: force the note to not quantize, useful for testing.
 
 	// IDEA: JOELwindows7: you can have more variables about string or whatever too! like
 	// sylables or phoneme for VOCALOID
@@ -114,7 +120,7 @@ class Note extends FlxUISprite
 	var leBpm:Float = 0;
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
-			?bet:Float = 0, ?noteType:Int = 0) // JOELwindows7: edge long noteType
+			?bet:Float = 0, ?noteType:Int = 0, ?noQuantize:Bool = false) // JOELwindows7: edge long noteType
 	{
 		super();
 
@@ -127,6 +133,7 @@ class Note extends FlxUISprite
 		this.noteType = noteType; // JOELwindows7: oh yeah noteType
 		this.prevNote = prevNote;
 		this.inCharter = inCharter;
+		this.noQuantize = noQuantize;
 		isSustainNote = sustainNote;
 		// hitsoundPath = hitsoundId; // yeah the note hitsound
 
@@ -186,11 +193,13 @@ class Note extends FlxUISprite
 			// JOELwindows7: noteType speziale
 			switch (noteType)
 			{
+				// case -1:
+				// receptor. use below play animation!
 				// case 0:
 				// normal. use default!
 				// case 1:
 				// powerup special
-				case 2:
+				case 2 | 4:
 					Debug.logTrace("Whoah dude they adds mine?");
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
 						noteType);
@@ -210,6 +219,8 @@ class Note extends FlxUISprite
 
 			for (i in 0...4)
 			{
+				if (noteType < 0)
+					animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 				animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 				animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 				animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -258,6 +269,8 @@ class Note extends FlxUISprite
 					{
 						animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
 						animation.add(dataColor[i] + 'hold', [i]); // Holds
+						if (noteType < 0)
+							animation.add(dataColor[i] + 'static', [i]); // Receptor notes (if it uses main sprite)
 						animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
 					}
 
@@ -314,7 +327,7 @@ class Note extends FlxUISprite
 					// JOELwindows7: okay let's be advanced
 					switch (noteType)
 					{
-						case 2:
+						case 2 | 4:
 							// frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas(NoteSkinHelpers.giveMeNoteSkinPath(noteType) +
 							// 	'-mine') : PlayState.noteskinSpriteMine;
 							// frames = PlayState.SONG.useCustomNoteStyle ? NoteskinHelpers.generateNoteskinSpriteFromSay(PlayState.SONG.noteStyle, noteType,
@@ -329,6 +342,8 @@ class Note extends FlxUISprite
 
 					for (i in 0...4)
 					{
+						if (noteType < 0)
+							animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -343,7 +358,10 @@ class Note extends FlxUISprite
 
 		// x += swagWidth * noteData;
 		x += swagWidth * (noteData % 4); // JOELwindows7: idk why BOLO has this here, idk.. note row id modulo how many row we had..
-		animation.play(dataColor[noteData] + 'Scroll');
+
+		// animation.play(dataColor[noteData] + 'Scroll');
+		animation.play(dataColor[noteData] + (noteType < 0 ? 'static' : 'Scroll')); // JOELwindows7: NOW CAN PLAY STATIC NOTES
+
 		originColor = noteData; // The note's origin color will be checked by its sustain notes
 
 		// JOELwindows7: whoa, the PlayState.instance can be null! make sure be careful
@@ -358,6 +376,7 @@ class Note extends FlxUISprite
 		// Okay, now I have installed force option. idk this still not recommended because again, pre-rotate messes up your rotation
 		// craze calculations!
 		if (FlxG.save.data.stepMania
+			&& !noQuantize // JOELwindows7: yey tester no quantization
 			&& !isSustainNote
 			&& !(PlayState.instance != null ? (PlayState.instance.executeModchart || PlayState.instance.executeModHscript) : false))
 		{
@@ -380,7 +399,8 @@ class Note extends FlxUISprite
 			else if (beatRow % (192 / 32) == 0)
 				col = quantityColor[4];
 
-			animation.play(dataColor[col] + 'Scroll');
+			// animation.play(dataColor[col] + 'Scroll');
+			animation.play(dataColor[col] + (noteType < 0 ? 'static' : 'Scroll')); // JOELwindows7: NOW CAN PLAY STATIC NOTES
 			if (FlxG.save.data.rotateSprites)
 			{
 				localAngle -= arrowAngles[col];
@@ -452,6 +472,9 @@ class Note extends FlxUISprite
 		}
 
 		// Debug.logTrace("NOte newed enojy");
+
+		// JOELwindows7: update all hitbox one last time
+		updateHitbox();
 	}
 
 	override function update(elapsed:Float)
@@ -501,6 +524,8 @@ class Note extends FlxUISprite
 				// JOELwindows7: spin mine!!! and other deadly & useful notes
 				angularVelocity = switch (noteType)
 				{
+					case -1: // receptor
+						0;
 					case 1: // powerup
 						0;
 					case 2: // mine
@@ -576,10 +601,12 @@ class Note extends FlxUISprite
 	{
 		if (inCharter)
 		{
+			// JOELwindows7: PLEASE!! JUST REFRESH 'EM UP!
+
 			// JOELwindows7: noteType speziale
 			switch (noteType)
 			{
-				case 2:
+				case 2 | 4:
 					// frames = Paths.getSparrowAtlas('NOTE_assets_special');
 					frames = PlayState.noteskinSpriteMine != null ? PlayState.noteskinSpriteMine : NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin,
 						2);
@@ -591,6 +618,8 @@ class Note extends FlxUISprite
 
 			for (i in 0...4)
 			{
+				if (noteType < 0)
+					animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 				animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 				animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 				animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -627,18 +656,33 @@ class Note extends FlxUISprite
 				case 'pixel':
 					// JOELwindows7: resafety check I guess.
 					// loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
-					loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin),
-						true, 17, 17);
-					if (isSustainNote)
-						// loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
-						loadGraphic(PlayState.noteskinPixelSpriteEnds != null ? PlayState.noteskinPixelSpriteEnds : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
-							true),
-							true, 7, 6);
+					// TODO: revamp this noter pixel! combine!
+					switch (noteType)
+					{
+						case 2 | 4:
+							loadGraphic(PlayState.noteskinPixelSpriteMine != null ? PlayState.noteskinPixelSpriteMine : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+								false, noteType),
+								true, 17, 17);
+							if (isSustainNote) // loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+								loadGraphic(PlayState.noteskinPixelSpriteEndsMine != null ? PlayState.noteskinPixelSpriteEndsMine : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+									true, noteType),
+									true, 7, 6);
+						default:
+							loadGraphic(PlayState.noteskinPixelSprite != null ? PlayState.noteskinPixelSprite : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+								false, noteType),
+								true, 17, 17);
+							if (isSustainNote) // loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
+								loadGraphic(PlayState.noteskinPixelSpriteEnds != null ? PlayState.noteskinPixelSpriteEnds : NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin,
+									true, noteType),
+									true, 7, 6);
+					}
 
 					for (i in 0...4)
 					{
 						animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
 						animation.add(dataColor[i] + 'hold', [i]); // Holds
+						if (noteType < 0)
+							animation.add(dataColor[i] + 'static', [i]); // Receptor notes (if it uses main sprite)
 						animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
 					}
 
@@ -696,7 +740,7 @@ class Note extends FlxUISprite
 					// JOELwindows7: okay let's be advanced
 					switch (noteType)
 					{
-						case 2:
+						case 2 | 4:
 							frames = PlayState.SONG.useCustomNoteStyle ? Paths.getSparrowAtlas('noteskins/' + PlayState.SONG.noteStyle +
 								'-mine') : PlayState.noteskinSpriteMine;
 						// frames = PlayState.noteskinSpriteMine;
@@ -708,6 +752,8 @@ class Note extends FlxUISprite
 
 					for (i in 0...4)
 					{
+						if (noteType < 0)
+							animation.addByPrefix(dataColor[i] + 'static', 'arrow' + dataColorDir[i]); // Receptor notes
 						animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
 						animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 						animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
@@ -719,5 +765,40 @@ class Note extends FlxUISprite
 					antialiasing = FlxG.save.data.antialiasing;
 			}
 		}
+		// JOELwindows7: update all hitbox one last time
+		updateHitbox();
 	}
+}
+
+// JOELwindows7: Pls noteskin file
+typedef NoteskinFile =
+{
+	/*
+		JSON
+
+			{
+			"name": "empty",
+			"displayName": "Template Noteskins JSON",
+			"noteskinPath": "Arrows",
+			"noteskinMinePath": "Arrows-mine",
+			"noteskinImportantPath": "",
+			"noteskinNeverPath": "",
+			"noteskinSpecialPath": "",
+			"splashPath": "'Arrows-splash",
+			"splashMinePath": "Arrows-splash-duar",
+			"isPixel": false
+			}
+	 */
+	// var arrows:String;
+	// var mines:String;
+	// var nevers:String;
+	// var important:String;
+	var name:String;
+	var ?displayName:String;
+	var noteskinPath:String;
+	var noteskinMinePath:String;
+	var noteskinImportantPath:String;
+	var splashPath:String;
+	var ?splashMinePath:String;
+	var isPixel:Bool;
 }

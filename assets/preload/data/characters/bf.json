@@ -2,6 +2,12 @@
     "name": "Boyfriend",
     "displayName": "Boyfriend",
     "asset": "characters/BOYFRIEND",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
+    "hasExtraAtlases": false,
+    "extraAtlases":[
+
+    ],
     "barColor": "#31B0D1",
     "flipX": true,
     "startingAnim": "idle",
@@ -10,10 +16,10 @@
     "deathCharacter": "bf",
     "deathCharacterIsSameAsThis": true,
     "isDeathCharacter": false,
-    "font": "Pixel Arial 11 Bold",
-    "fontDrop": "Pixel Arial 11 Bold",
-    "fontColor": "0xFF3F2021",
-    "fontColorDrop": "0xFFD89494",
+    "font": "Ubuntu Bold",
+    "fontDrop": "Ubuntu Bold",
+    "fontColor": "#3F2021",
+    "fontColorDrop": "#D89494",
     "camPos": [0,0],
     "charPos": [0,0],
     "dialogueChatSoundPaths": [

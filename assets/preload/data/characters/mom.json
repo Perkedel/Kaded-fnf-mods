@@ -2,6 +2,8 @@
     "name": "Mommy Mearest",
     "displayName": "Mommy Mearest",
     "asset": "characters/Mom_Assets",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#D8558E",
     "startingAnim": "idle",
     "camFollow": [0, 100],

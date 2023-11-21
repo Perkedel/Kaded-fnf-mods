@@ -1,5 +1,8 @@
 package;
 
+import firetongue.FireTongue;
+import ui.states.transition.PsychTransition;
+import utils.Initializations;
 import ui.states.modding.ModMenuState;
 import ui.GameJoltGateway;
 import GalleryAchievements;
@@ -156,7 +159,7 @@ class DFJKOption extends Option
 
 	public override function press():Bool
 	{
-		OptionsMenu.instance.selectedCatIndex = 6; // JOELwindows7: was 4. really, why order number?!
+		OptionsMenu.instance.selectedCatIndex = 7; // JOELwindows7: was 4. really, why order number?!
 		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[6], false); // JOELwindows7: don't forget this too
 		return false;
 	}
@@ -1213,7 +1216,7 @@ class Judgement extends Option
 		// 	return false;
 		OptionsMenu.markRestartSong();
 		OptionsMenu.instance.selectedCatIndex = 7; // JOELwindows7: was 5. don't use order!!!!
-		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[7], false); // JOELwindows7: don't forget this too
+		OptionsMenu.instance.switchCat(OptionsMenu.instance.options[8], false); // JOELwindows7: don't forget this too
 		return true;
 	}
 
@@ -1703,7 +1706,7 @@ class BotPlay extends Option
 
 	public override function left():Bool
 	{
-		OptionsMenu.markRestartSong();
+		// OptionsMenu.markRestartSong();
 		FlxG.save.data.botplay = !FlxG.save.data.botplay;
 		trace('BotPlay : ' + FlxG.save.data.botplay);
 		display = updateDisplay();
@@ -1716,8 +1719,8 @@ class BotPlay extends Option
 		return true;
 	}
 
-	private override function updateDisplay():String
-		return "BotPlay: < " + (FlxG.save.data.botplay ? "on" : "off") + " >";
+	private override function updateDisplay():String // return "BotPlay: < " + (FlxG.save.data.botplay ? "on" : "off") + " >";
+		return 'BotPlay: < ${FlxG.save.data.botplay ? "on" : "off"}  >';
 }
 
 class CamZoomOption extends Option
@@ -2808,12 +2811,14 @@ class AdjustVolumeOption extends Option
 	public override function press():Bool
 	{
 		display = updateDisplay();
+		// FlxG.save.data.masterVolume = FlxG.sound.volume;
 		return true;
 	}
 
 	override function right():Bool
 	{
 		FlxG.sound.changeVolume(.1);
+		// FlxG.save.data.masterVolume = FlxG.sound.volume;
 		display = updateDisplay();
 		return true;
 	}
@@ -2821,6 +2826,7 @@ class AdjustVolumeOption extends Option
 	override function left():Bool
 	{
 		FlxG.sound.changeVolume(-.1);
+		// FlxG.save.data.masterVolume = FlxG.sound.volume;
 		display = updateDisplay();
 		return true;
 	}
@@ -2848,6 +2854,7 @@ class AdjustVolumeOption extends Option
 		{
 			shoomSays += ' '; // was `U` before. now space supported so yeah.
 		}
+		FlxG.save.data.masterVolume = FlxG.sound.volume;
 		return "Volume < " + shoomSays + " (" + Std.string(Std.int(FlxG.sound.volume * 100)) + "%)" + " >";
 	}
 
@@ -3161,6 +3168,60 @@ class AnKem0xTestStateOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Kem0x Test";
+	}
+}
+
+// JOELwindows7: Waveform test state!
+class AnWaveformTestStateOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.goToState(new WaveformTestState());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Waveform Test";
+	}
+}
+
+// JOELwindows7: Napoleon Test state
+class AnNapoleonTestStateOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			// description = "This option cannot be toggled in the pause menu.";
+			description = Perkedel.OPTION_SAY_CANNOT_ACCESS_IN_PAUSE + desc; // JOELwindows7: here with new const for it.
+		else
+			description = desc;
+	}
+
+	public override function press():Bool
+	{
+		// OptionsMenu.instance.openSubState(new KeyBindMenu()); //open substate.
+		// FlxG.switchState(new LoadReplayState()); //or open new state.
+		OptionsMenu.goToState(new AnNapoleonSaying());
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Napoleon Test";
 	}
 }
 
@@ -4044,7 +4105,278 @@ class WorkaroundNoVideoOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return '${Perkedel.VIDEO_DISABLED_OPTION_NAME} <${FlxG.save.data.disableVideoCutscener ? "Video Disabled" : "Video Enabled"}>';
+		return '${Perkedel.VIDEO_DISABLED_OPTION_NAME} < Video ${FlxG.save.data.disableVideoCutscener ? "Disabled" : "Enabled"}>';
+	}
+}
+
+// JOELwindows7: Lyric!
+class KpopLyricsOption extends Option
+{
+	public function new(desc:String = "Should the song lyrics be displayed")
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.kpopLyrics = !FlxG.save.data.kpopLyrics;
+		display = updateDisplay();
+		// OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return '${Perkedel.LYRIC_ENABLED_OPTION_NAME} < Lyrics ${FlxG.save.data.kpopLyrics ? "Enabled" : "Disabled"}>';
+	}
+}
+
+// JOELwindows7: Doom fall melt screen attempt
+class DoomMeltOption extends Option
+{
+	public function new(desc:String = "Doom Melt Screen")
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		press(); // same as press
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.doomTransition = !FlxG.save.data.doomTransition;
+		display = updateDisplay();
+		// OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		PsychTransition.wackyScreenTransitionTechnique = FlxG.save.data.doomTransition;
+		return '${OptionsMenu.getTextOf("$OPTIONS_DOOM_MELT")} < ${FlxG.save.data.doomTransition ? "Enabled" : "Disabled"}>';
+	}
+}
+
+// JOELwindows7: Kade Music option
+class KadeMusicOption extends Option
+{
+	public function new(desc:String = "Kade Engine main menu music")
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.kadeMusic--;
+		if (FlxG.save.data.kadeMusic < 0)
+			FlxG.save.data.kadeMusic = Perkedel.MAIN_MENU_MUSICS.length - 1;
+		return press(); // same as press
+		// return false;
+	}
+
+	public override function right():Bool
+	{
+		FlxG.save.data.kadeMusic++;
+		if (FlxG.save.data.kadeMusic > Perkedel.MAIN_MENU_MUSICS.length - 1)
+			FlxG.save.data.kadeMusic = 0;
+		return press(); // same as press
+		// return false;
+	}
+
+	public override function press():Bool
+	{
+		if (!(OptionsMenu.isInPause || PlayState.inDaPlay))
+		{
+			CoolUtil.playMainMenuSong(1, true);
+		}
+		// FlxG.save.data.kadeMusic = !FlxG.save.data.kadeMusic;
+		display = updateDisplay();
+		// OptionsMenu.markRestartSong(); // JOELwindows7: mark restart song required.
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return '${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC")} < ${OptionsMenu.getTextOf('$$OPTIONS_KADE_MUSIC_OPT_${Std.int(FlxG.save.data.kadeMusic)}')} >';
+		// return '${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC")} < ${OptionsMenu.getTextOf("$OPTIONS_KADE_MUSIC_OPT_" + Std.string(FlxG.save.data.kadeMusic))} >';
+	}
+}
+
+// JOELwindows7: Lyrics Position
+class KpopLyricsPositionOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.kpopLyricsPosition--;
+		if (FlxG.save.data.kpopLyricsPosition < 0)
+			FlxG.save.data.kpopLyricsPosition = 2;
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.kpopLyricsPosition++;
+		if (FlxG.save.data.kpopLyricsPosition > 2)
+			FlxG.save.data.kpopLyricsPosition = 0;
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		// FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
+		right();
+		// display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return '${Perkedel.LYRIC_POSITION_OPTION_NAME} < ' + (switch (Std.int(FlxG.save.data.kpopLyricsPosition))
+		{
+			case 0:
+				"Left";
+			case 1:
+				"Center";
+			case 2:
+				"Right";
+			case _:
+				"???";
+		}) + ' >';
+	}
+}
+
+// JOELwindows7: Log Level selector
+class LogLevelSelectorOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		var catchWhatIndex:Int = DebugLogWriter.LOG_LEVELS.indexOf(FlxG.save.data.debugLogLevel);
+		// press(); // same as press
+		catchWhatIndex--;
+		if (catchWhatIndex < 0)
+			catchWhatIndex = DebugLogWriter.LOG_LEVELS.length - 1;
+		FlxG.save.data.debugLogLevel = DebugLogWriter.LOG_LEVELS[catchWhatIndex];
+		trace('log level ${catchWhatIndex} ${FlxG.save.data.debugLogLevel}');
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		var catchWhatIndex:Int = DebugLogWriter.LOG_LEVELS.indexOf(FlxG.save.data.debugLogLevel);
+		// press(); // same as press
+		catchWhatIndex++;
+		if (catchWhatIndex > DebugLogWriter.LOG_LEVELS.length - 1)
+			catchWhatIndex = 0;
+		FlxG.save.data.debugLogLevel = DebugLogWriter.LOG_LEVELS[catchWhatIndex];
+		trace('log level ${catchWhatIndex} ${FlxG.save.data.debugLogLevel}');
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		// FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
+		right();
+		// display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return '${CoolUtil.getText('$$OPTIONS_LOG_LEVEL')} < ${FlxG.save.data.debugLogLevel} >';
+	}
+}
+
+// JOELwindows7: Language selector!!!
+class LanguageSelectorOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.languageSelect--;
+		if (FlxG.save.data.languageSelect < 0)
+			FlxG.save.data.languageSelect = Perkedel.LANGUAGES_AVAILABLE.length - 1;
+		FlxG.save.data.languageID = Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0];
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function right():Bool
+	{
+		// press(); // same as press
+		FlxG.save.data.languageSelect++;
+		if (FlxG.save.data.languageSelect > Perkedel.LANGUAGES_AVAILABLE.length - 1)
+			FlxG.save.data.languageSelect = 0;
+		FlxG.save.data.languageID = Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0];
+		display = updateDisplay();
+		return false;
+	}
+
+	public override function press():Bool
+	{
+		// FlxG.save.data.unpausePreparation = !FlxG.save.data.unpausePreparation;
+		// right();
+		FlxG.save.data.languageID = Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0];
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		Initializations.refreshLanguage();
+
+		return // '${OptionsMenu.getTextOf("$OPTIONS_SELECT_LANGUAGE")} < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][1]} >';
+			// '${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.LanguageNative)} (${CoolUtil.getIndexString(IndexString.Language)}) >';
+			// '${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.Language)} >';
+			'${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.Language)} (${CoolUtil.getIndexString(IndexString.Region)})>';
+		// '${CoolUtil.getIndexString(IndexString.TheWordLanguage)} (LANG) < [${Perkedel.LANGUAGES_AVAILABLE[FlxG.save.data.languageSelect][0]}] ${CoolUtil.getIndexString(IndexString.LanguageBilingual)}>';
 	}
 }
 
@@ -4100,7 +4432,7 @@ class OptimizeOption extends Option
 			description = desc;
 		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
 		// requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
-		OptionsMenu.markRestartSong();
+		// OptionsMenu.markRestartSong();
 		// acceptValues = true;
 	}
 
@@ -4110,6 +4442,7 @@ class OptimizeOption extends Option
 			return false;
 		FlxG.save.data.optimize = !FlxG.save.data.optimize;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong();
 		return true;
 	}
 
@@ -4137,7 +4470,7 @@ class Background extends Option
 		else
 			description = desc;
 		requiresRestartSong = true; // JOELwindows7: just tell you just have to restart it yess.
-		OptionsMenu.markRestartSong();
+		// OptionsMenu.markRestartSong();
 		// acceptValues = true;
 	}
 
@@ -4147,6 +4480,7 @@ class Background extends Option
 			return false;
 		FlxG.save.data.background = !FlxG.save.data.background;
 		display = updateDisplay();
+		OptionsMenu.markRestartSong();
 		return true;
 	}
 

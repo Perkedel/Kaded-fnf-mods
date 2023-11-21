@@ -54,6 +54,10 @@ class PlayerSettings
 		}
 
 		var numGamepads = FlxG.gamepads.numActiveGamepads;
+
+		// JOELwindows7: Pls tell everything about this thing here!!!!!!!!!!
+		Debug.logInfo('PlayerSetting: We have ${numGamepads} Gamepads here.');
+
 		if (numGamepads > 0)
 		{
 			var gamepad = FlxG.gamepads.getByID(0);
@@ -61,6 +65,7 @@ class PlayerSettings
 				throw 'Unexpected null gamepad. id:0';
 
 			player1.controls.addDefaultGamepad(0);
+			Debug.logInfo('PlayerSetting: Player 1 = ${gamepad.name}');
 
 			// JOELwindows7: add to our array first
 			players[0] = player1;
@@ -79,6 +84,7 @@ class PlayerSettings
 				throw 'Unexpected null gamepad. id:1';
 
 			player2.controls.addDefaultGamepad(1);
+			Debug.logInfo('PlayerSetting: Player 2 = ${gamepad.name}');
 
 			// JOELwindows7: add to our array first
 			players[1] = player2;
@@ -99,6 +105,7 @@ class PlayerSettings
 					throw 'Unexpected null gamepad. id:$i';
 
 				players[i].controls.addDefaultGamepad(i);
+				Debug.logInfo('PlayerSetting: Player ${i} = ${gamepad.name}');
 			}
 
 		// DeviceManager.init();

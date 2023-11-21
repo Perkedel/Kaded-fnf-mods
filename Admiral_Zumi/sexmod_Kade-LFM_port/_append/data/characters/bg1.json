@@ -1,0 +1,34 @@
+{
+	"animations": [
+		{
+			"loop": true,
+			"offsets": [
+				596,
+				405
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "pbg2",
+			"indices": []
+		}
+	],
+	"no_antialiasing": true,
+	"image": "characters/bg1",
+	"position": [
+		140,
+		240
+	],
+	"healthicon": "gf",
+	"flip_x": true,
+	"healthbar_colors": [
+		165,
+		0,
+		77
+	],
+	"camera_position": [
+		-130,
+		-250
+	],
+	"sing_duration": 4,
+	"scale": 0.3
+}

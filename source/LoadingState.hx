@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.misc.VarTween;
 import flixel.math.FlxMath;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUISprite;
@@ -51,6 +52,8 @@ class LoadingState extends MusicBeatState
 	var tooLongDidntLoadTimer:FlxTimer; // JOELwindows7: here too long didn't load timer that if runs out appears skip & cancel button.
 	var deservesTooLongDidntLoad:Bool = false; // JOELwindows7: only activates when it is too long!
 
+	public static var poorLittleVolumeDowner:VarTween; // JOELwindows7: pls have this stopped once you arrived to the state!
+
 	function new(target:FlxState, stopMusic:Bool, ?previously:FlxState) // JOELwindows7: here previously
 	{
 		super();
@@ -90,8 +93,7 @@ class LoadingState extends MusicBeatState
 		// https://github.com/luckydog7/Funkin-android/blob/master/source/LoadingState.hx
 		// cast too!
 		loadBar = cast new FlxUISprite(0,
-			FlxG.height - 20).makeGraphic(FlxG.width, 10,
-				0xffff00ff); // JOELwindows7: was -59694, now use BOLO's proper hex 0xfffffab8! nvm. use same magenta!
+			FlxG.height - 20).makeGraphic(FlxG.width, 10, 0xffff00ff); // JOELwindows7: was -59694, now use BOLO's proper hex 0xfffffab8! nvm. use same magenta!
 		loadBar.screenCenter(FlxAxes.X);
 		loadBar.antialiasing = FlxG.save.data.antialiasing; // JOELwindows7: BOLO antialias the loading bar too!
 		add(loadBar);
@@ -166,12 +168,14 @@ class LoadingState extends MusicBeatState
 
 		// JOELwindows7: and the too long timer
 		tooLongDidntLoadTimer.start(Perkedel.LOADING_TOO_LONG_TIME_THRESHOLD, onTooLongDidntLoad);
+
+		super.create();
 	}
 
 	function checkLoadSong(path:String)
 	{
 		if (path != null)
-		{ // JOELwindows7: BOLO added safety!!!
+		{ // JOELwindows7: BOLO added safety!!! BulbyVR convert to FNFAssets. was OpenFlAssets. nvm, method does not exist
 			if (!OpenFlAssets.cache.hasSound(path))
 			{
 				var library = OpenFlAssets.getLibrary("songs");
@@ -233,7 +237,8 @@ class LoadingState extends MusicBeatState
 			// _loadingBar.setPercentage((callbacks.getFired().length / callbacks.getUnfired().length) * 100); // already onProgress
 
 			// JOELwindows7: here new BOLO's way
-			loadingText.text = 'Loading [${callbacks.length - callbacks.numRemaining}/${callbacks.length}]';
+			// loadingText.text = 'Loading [${callbacks.length - callbacks.numRemaining}/${callbacks.length}]';
+			loadingText.text = '${CoolUtil.getText("$LOADING_JUST_LOADING")} [${callbacks.length - callbacks.numRemaining}/${callbacks.length}]'; // JOELwindows7: FireTongue pls
 			targetShit = FlxMath.remapToRange(callbacks.numRemaining / callbacks.length, 1, 0, 0, 1);
 			// loadBar.scale.x += 0.5 * (targetShit - loadBar.scale.x);
 			loadBar.scale.x += (targetShit - loadBar.scale.x); // JOELwindows7: I mean, why do you halve half it?
@@ -264,7 +269,20 @@ class LoadingState extends MusicBeatState
 	function onLoad()
 	{
 		if (stopMusic && FlxG.sound.music != null)
-			FlxG.sound.music.stop();
+		{
+			// DONE: JOELwindows7: fade it out!
+			poorLittleVolumeDowner = FlxTween.tween(FlxG.sound.music, {volume: 0}, .5, {
+				onComplete: function(twn:FlxTween)
+				{
+					if (FlxG.sound.music != null)
+					{
+						FlxG.sound.music.stop();
+						FlxG.sound.music.volume = 1;
+					}
+				}
+			});
+			// FlxG.sound.music.stop();
+		}
 
 		// JOELwindows7: got loaded
 		_loadingBar.setInfoText("Done Loading!");

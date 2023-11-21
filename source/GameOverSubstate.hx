@@ -10,6 +10,22 @@ import flixel.FlxSubState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.addons.ui.FlxUIText;
+import flixel.graphics.atlas.FlxAtlas;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
+import flixel.system.FlxSound;
+import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.ui.FlxBar;
+import flixel.util.FlxCollision;
+import flixel.util.FlxColor;
+import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
 
 // JOELwindows7: FlxUI fy!!!
 class GameOverSubstate extends MusicBeatSubstate
@@ -39,11 +55,20 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public static var instance:GameOverSubstate; // JOELwindows7: BOLO has instanceoid
 
+	public var tankmanSubtitle:FlxUIText; // JOELwindows7: week 7 game over subtitle
+
 	// JOELwindows7: BOLO has create
 	override function create()
 	{
 		Paths.clearUnusedMemory();
 		instance = this;
+
+		// JOELwindows7: add here yeo
+		// JOELwindows7: add tankman insults text
+		tankmanSubtitle = new FlxUIText(100, 150, 0, " \n ", 20);
+		tankmanSubtitle.setFormat(Paths.font("Ubuntu-R-NF.ttf"), 14, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		tankmanSubtitle.scrollFactor.set();
+		add(tankmanSubtitle);
 
 		super.create();
 	}
@@ -226,11 +251,14 @@ class GameOverSubstate extends MusicBeatSubstate
 		// JOELwindows7: back button to surrender
 		addBackButton(20, FlxG.height + 30);
 		backButton.scrollFactor.set();
+		backButton.cameras = [camHUD];
 		backButton.alpha = 0;
 		// FlxTween.tween(backButton,{y:FlxG.height - 100},2,{ease: FlxEase.elasticInOut}); //JOELwindows7: also tween back button!
 
 		// JOELwindows7: make mouse cursor visible
 		FlxG.mouse.visible = true;
+
+		PlayState.instance.executeModchartState('gameOver', [blueBallCounter]); // JOELwindows7: pls
 	}
 
 	var startVibin:Bool = false;
@@ -249,6 +277,9 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (FlxG.save.data.InstantRespawn || FlxG.save.data.optimize) // JOELwindows7: BOLO also instant respawn if optimize?!
 		{
+			// JOELwindows7: Destroy Modchart before that.
+			PlayState.instance.scronchModcharts();
+
 			// LoadingState.loadAndSwitchState(new PlayState());
 			PlayState.instance.switchState(new PlayState(), true, true, true, true); // JOELwindows7: Hex weekend switchstate pls
 		}
@@ -256,6 +287,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (controls.BACK || haveBacked)
 		{
 			FlxG.sound.music.stop();
+
+			// JOELwindows7: Destroy Modchart before that.
+			PlayState.instance.scronchModcharts();
 
 			if (PlayState.isStoryMode)
 			{
@@ -286,19 +320,40 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix + detectMemeSuffix + detectMidiSuffix));
 
+			// JOELwindows7: Blueball more than serveral times will Napoleon
+			if (GameOverSubstate.getBlueballCounter() > 5
+				|| PlayState.SONG.songId.contains('napoleon')
+				|| PlayState.SONG.songId.contains('amour-plastique'))
+			{
+				installSaying('We have been bluballing for about ${GameOverSubstate.getBlueballCounter()} times now', 50, FlxG.height - 300);
+				miniSoldierSaying.cameras = [camHUD];
+				miniGeneralSaying.cameras = [camHUD];
+			}
+
 			FlxTween.tween(backButton, {y: FlxG.height - 100, alpha: 1}, 2, {ease: FlxEase.elasticInOut}); // JOELwindows7: also tween back button!
 			// JOELwindows7: also week 7 gameover pls. luckydog7 yeah
 			// if (daStage == 'tankStage' || daStage == 'tankStage2') // wrong! it should be who's player 2!!
 			if (daDad == 'tankman')
 			{
 				// JOELwindows7: first, because the original does game over reduce volume, let's do it now!
+				var pickYourInsult:Int = FlxG.random.int(1, 25);
 				FlxG.sound.music.fadeOut(.2, .2); // and BOLO used .2
-				FlxG.sound.play(Paths.sound('jeffGameover-' + FlxG.random.int(1, 25), 'shared'), 1, false, null, true, function()
+				if (tankmanSubtitle != null)
+				{
+					// TODO: pls use FireTongue reference instead! like.. getText here. `'$WEEK7_GAMEOVER_TANKMAN_INSULT_' + pickYourInsult`
+					tankmanSubtitle.text = Perkedel.HARDCODE_GAMEOVER_ENEMY_INSULTS[0][pickYourInsult - 1];
+					tankmanSubtitle.scrollFactor.set();
+					tankmanSubtitle.updateHitbox();
+					tankmanSubtitle.cameras = [camHUD];
+				}
+				FlxG.sound.play(Paths.sound('jeffGameover-' + pickYourInsult, 'shared'), 1, false, null, true, function()
 				{
 					// JOELwindows7: but BOLO has more!!!
 					FlxG.sound.music.fadeIn(0.2, 1, 4);
 				});
 			}
+
+			PlayState.instance.executeModchartState('gameOverAnimationDone', [blueBallCounter]); // JOELwindows7: pls
 
 			startVibin = true; // JOELwindows7: move this to down, okay. like BOLO did.
 		}
@@ -344,7 +399,8 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			bf.playAnim('deathLoop', true);
 		}
-		FlxG.log.add('beat');
+		// FlxG.log.add('beat');
+		Debug.logTrace('dead beat');
 	}
 
 	var isEnding:Bool = false;
@@ -357,6 +413,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (!isEnding)
 		{
+			stopTheSaying(); // JOELwindows7: stop the Napoleon first!
 			PlayState.startTime = 0;
 			isEnding = true;
 			bf.playAnim('deathConfirm', true);
@@ -386,10 +443,16 @@ class GameOverSubstate extends MusicBeatSubstate
 					{}
 			}
 
+			// TODO: JOELwindows7: do not kill modchart in GameOVer, only do this when endBullshit.
+			PlayState.instance.executeModchartState('endGameOver', [blueBallCounter]);
+
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{
+					// JOELwindows7: Destroy Modchart before that.
+					PlayState.instance.scronchModcharts();
+
 					// LoadingState.loadAndSwitchState(new PlayState());
 					PlayState.instance.switchState(new PlayState(), true, true, true, true, PlayState.instance); // JOELwindows7: hex switch state lol
 					PlayState.stageTesting = false;

@@ -52,6 +52,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
+import flixel.addons.ui.FlxUIState;
 
 /**
  * A splash screen for the application.
@@ -96,7 +97,8 @@ class SplashScreen extends MusicBeatState
 	public function new()
 	{
 		// check mod support
-		@:privateAccess {
+		@:privateAccess
+		{
 			#if FEATURE_MODCORE
 			CarryAround._supportsModding = true;
 			#else
@@ -144,7 +146,8 @@ class SplashScreen extends MusicBeatState
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
 		_sprite = new Sprite();
-		FlxG.stage.addChild(_sprite);
+		// FlxG.stage.addChild(_sprite);
+		FlxG.addChildBelowMouse(_sprite);
 		_sprite.scaleX = _sprite.scaleY = .5;
 		_sprite.y = stageHeight - 40;
 		_gfx = _sprite.graphics;
@@ -156,7 +159,8 @@ class SplashScreen extends MusicBeatState
 		dtf.align = TextFormatAlign.CENTER;
 		_text.defaultTextFormat = dtf;
 		_text.text = "HaxeFlixel";
-		FlxG.stage.addChild(_text);
+		// FlxG.stage.addChild(_text);
+		FlxG.addChildBelowMouse(_text);
 		_text.x = stageWidth / 2 - _text.textWidth / 2;
 		_text.y = stageHeight - 40;
 
@@ -169,19 +173,22 @@ class SplashScreen extends MusicBeatState
 		dtf2.align = TextFormatAlign.CENTER;
 		_poweredByText.defaultTextFormat = dtf2;
 		_poweredByText.text = "Powered by";
-		FlxG.stage.addChild(_poweredByText);
+		// FlxG.stage.addChild(_poweredByText);
+		FlxG.addChildBelowMouse(_poweredByText);
 		_poweredByText.y = stageHeight - 90;
 
 		onResize(stageWidth, stageHeight);
 
-		_aModOfText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 150), 0, "A mod of Friday Night Funkin", 24);
+		// _aModOfText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 150), 0, "A mod of Friday Night Funkin", 24);
+		_aModOfText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 150), 0, getText("$SPLASH_SLOGAN"), 24);
 		_aModOfText.setFormat(Paths.font("UbuntuMono-R.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		_aModOfText.scrollFactor.set();
 		_aModOfText.screenCenter(XY);
 		_aModOfText.y += 150;
 		add(_aModOfText);
 
-		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, Perkedel.BIOS_BUTTON_SAY, 18);
+		// _aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, Perkedel.BIOS_BUTTON_SAY, 18);
+		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, getText("$SPLASH_BIOS_BUTTON"), 18);
 		_aPressEscapeToBiosText.setFormat(Paths.font("UbuntuMono-R.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		_aPressEscapeToBiosText.scrollFactor.set();
 		_aPressEscapeToBiosText.screenCenter(XY);
@@ -189,7 +196,9 @@ class SplashScreen extends MusicBeatState
 		add(_aPressEscapeToBiosText);
 		_aPressEscapeToBiosText.visible = !CarryAround.modAlreadyLoaded() && CarryAround.supportsModding(); // only visiblize if not already loaded & supports modding
 
-		_aPressEscapeToBiosButton = new FlxUIButton(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 230), "BIOS Setting", onBiosButtonClick);
+		// _aPressEscapeToBiosButton = new FlxUIButton(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 230), "BIOS Setting", onBiosButtonClick);
+		_aPressEscapeToBiosButton = new FlxUIButton(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 230), getText("$SPLASH_BIOS_SETTING"),
+			onBiosButtonClick);
 		_aPressEscapeToBiosButton.setSize(90, 50);
 		_aPressEscapeToBiosButton.setGraphicSize(90, 50);
 		_aPressEscapeToBiosButton.updateHitbox();
@@ -220,6 +229,11 @@ class SplashScreen extends MusicBeatState
 
 		// if (nextState != null)
 		// 	FlxG.switchState(nextState);
+
+		// and here logo yey
+		Debug.logInfo(Perkedel.LFM_LOGO_BANNER);
+		// Debug.logInfo("Welcome to Last Funkin Moments!");
+		Debug.logInfo(getText("$SPLASH_WELCOME"));
 	}
 
 	override public function update(elapsed:Float)
@@ -229,7 +243,8 @@ class SplashScreen extends MusicBeatState
 		{
 			if (CarryAround.supportsModding())
 			{
-				_aPressEscapeToBiosText.text = Perkedel.BIOS_BUTTON_SAY
+				// _aPressEscapeToBiosText.text = Perkedel.BIOS_BUTTON_SAY
+				_aPressEscapeToBiosText.text = getText("$SPLASH_BIOS_BUTTON")
 					+ " ("
 					+ (_beginSplashTimer != null ? Std.string(HelperFunctions.truncateFloat(_beginSplashTimer.timeLeft, 1)) : "")
 					+ ")";
@@ -313,6 +328,9 @@ class SplashScreen extends MusicBeatState
 				finishedFlicker();
 			});
 		}
+
+		NoteskinHelpers.updateNoteskins();
+		Initializations.refreshLanguage();
 	}
 
 	function finishedFlicker()

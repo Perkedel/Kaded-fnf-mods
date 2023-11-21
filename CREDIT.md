@@ -231,7 +231,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://api.haxeflixel.com/flixel/ui/FlxDPadMode.html dpad mode for the virtual pad
 - https://snippets.haxeflixel.com/input/keyboard/ keyboard how to
 - https://snippets.haxeflixel.com/input/ what input examples
-- https://gamebanana.com/threads/219778 avoid reuploading sky mod for the time being. I think, that's indefinite. Oh, speaking of browsing Git commit history, that's what I did. I turn back to time, right before the removal of Sky mod, and take everything Sky as all as I can. Assets, Codes, Projects, everything I know it would have one. May come back later if I missed anything. ssssshh, don't tell bbpanzu! if he know this he'll turn back in time and force push this alternate timeline like if Sky never been existed. wait a minute. uh oh! peck!
+- https://gamebanana.com/threads/219778 ~~avoid reuploading sky mod for the time being. I think, that's indefinite. Oh, speaking of browsing Git commit history, that's what I did. I turn back to time, right before the removal of Sky mod, and take everything Sky as all as I can. Assets, Codes, Projects, everything I know it would have one. May come back later if I missed anything. ssssshh, don't tell bbpanzu! if he know this he'll turn back in time and force push this alternate timeline like if Sky never been existed. wait a minute. uh oh! peck!~~ resolved
 - https://youtu.be/7awd-y_DTQY PEAR & https://twitter.com/gothmei/status/1309307834677571585 gothmei. peck, the tweet is gone. there is no preservation in twitter after all. We lost the little pogchamp voice. oh wait, PEAR still has it!
 - https://haxeflixel.com/documentation/flxtween/ how to tween
 - https://youtu.be/u1DKR9cOxnM Funkin modder direct trailer 
@@ -296,7 +296,7 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
 - https://github.com/karaidon/hXInput ah help
 - https://handbrake.fr/ Convert video. Gratis & open source
 - https://twitter.com/KadeDeveloper/status/1417958060014772224?s=20 about Whitty. Do not reupload RAW. just the mod there is to it.
-- https://twitter.com/KadeDeveloper/status/1417938858285494273?s=20 whitty gone.
+- https://twitter.com/KadeDeveloper/status/1417938858285494273?s=20 ~~whitty gone.~~
 - https://twitter.com/HiPhlox/status/1418519037005365249?s=20 one of bobcon
 - https://twitter.com/JOELwindows7/status/1418617463466434561?s=20 blns helep insert cameoid
 - https://community.haxe.org/t/solved-raspberry-pi-setup-issue/1111 rebuild lime itself for RPi with `lime rebuild lime rpi`
@@ -404,12 +404,27 @@ Hey, am I allowed to relicense? I was meant to just license part of my mods that
     > WHO CARES..
     > PUT IT ALL IN MY MOUT.
 - tebarek
-
-
+- Sky public domain but then cancel public domain 💀
+- https://github.com/Perkedel/Kaded-fnf-mods/issues/44 
+- https://twitter.com/Alexander0110_/status/1597235683491733504?t=K7CL4zBMUGGzE7owQg8tRQ&s=19
+- https://twitter.com/01Alexander10_/status/1594684037238558721?t=l9FA2gP8OK_tEomAoOFp4A&s=19
+- the KPOP TV show has lyric!
+- https://haxeflixel.com/blog/16-HaxeFlixel-5-4-0/ COMBINE THE ATLAS!!!!!!!
+- https://github.com/HaxeFoundation/hscript pls latest instead
+- https://roy-torley.github.io/Inkscape_Tutorial/Tutorial07/Tutorial07.html
+- https://graphicdesign.stackexchange.com/questions/36025/how-do-i-shear-a-selection-in-inkscape
+- https://stackoverflow.com/questions/10168193/haxe-and-windows-api
+- https://stackoverflow.com/questions/1080635/others-library-define-naming-conflict
+- https://api.haxeflixel.com/lime/ui/Window.html
+- https://github.com/larsiusprime/SteamWrap
+- https://github.com/HeapsIO/hlsteam
+- https://www.openfl.org/learn/npm/api/pages/lime/app/Application.html
 
 # in event of git merge conflict
+
 use VScode and Github desktop!
 ## New
+
 - cease all works
 - commit and push new commit to your GitHub now.
 - go to conflict solving branch. pull the last commit from main to here.
@@ -427,6 +442,7 @@ use VScode and Github desktop!
 - push while you're at `main` now!
 
 ## legacyed
+
 - make sure to backup your last mod commit into a new branch first.
 - pull your latest commit from main to the conflict solving branch
 - try to checkout the new topic branch that conflict with the default branch where you supposed to merge all topic into default. 
@@ -437,6 +453,7 @@ use VScode and Github desktop!
 - after all conflict resolved you can commit merge. yay
 
 ## involved helps
+
 - https://stackoverflow.com/questions/6006737/git-merge-errors/6006775
 - https://stackoverflow.com/questions/57044187/git-error-you-need-to-resolve-your-current-index-first#57044188
 - https://stackoverflow.com/questions/36086202/git-merge-is-not-possible-because-i-have-unmerged-files
@@ -444,6 +461,7 @@ use VScode and Github desktop!
 - https://stackoverflow.com/questions/36086202/git-merge-is-not-possible-because-i-have-unmerged-files
 
 # Musics involved
+
 - https://linktr.ee/TheFatRat TheFatRat songs
 - https://gamebanana.com/mods/43569 SeaNothing's MIDI remake of FNF songs
 - https://youtu.be/RWf50T52n58 AFI Junior - Guruku Tersayang
@@ -486,7 +504,7 @@ Note: in Game Banana, mods that did not have license written will set to CC4.0-B
 - https://knowyourmeme.com/memes/meme-man all meme man information Special meme fresh.
 - https://calver.org/ Use the calendar versioning system! let's see if that works. For us, our scheme will be **`YYYY.0M.MINOR.MICRO`** idk. I believe just to track the time when this was released.
 - https://gamebanana.com/mods/44208 ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 ), Asset Warning: has NC, ND) FNF Modding plus Bulby VR. Chart JSON parameter added here and the compatibility now is being added. inspire the Haxe Script modchart.
-- https://github.com/TheDrawingCoder-Gamer/Funkin ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 )) BulbyVR. the source code for FNFM+ above. the gamebanana page has been trashed, because troubles here and there.
+- https://github.com/TheDrawingCoder-Gamer/Funkin https://github.com/FunkinModdingPlus/ModdingPlus ([Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0 )) BulbyVR. the source code for FNFM+ above. the gamebanana page has been trashed, because troubles here and there.
 - https://gamebanana.com/tools/7158 FunkinVortex. inspire the Modding Plus specific chart JSON parameters here and there!
 - https://github.com/haxorplatform/androidhx android haxe template project. attempted android porting faile
 - https://lib.haxe.org/p/android6permissions android 6 permission checker for haxe. attempted android porting faile
@@ -592,8 +610,49 @@ Free Download / Stream: http://ncs.io/CradlesYO
 - https://youtu.be/hr7GyFM7pX4 (WARNING: Unknown license) Dairy Orange. Fart reverb
 - https://gamebanana.com/tools/10566 (WARNING: NO SOURCE CODE AVAILABLE AS OF 2022-09-16) Lua Modchart editor yey methewhenmethe. Godot app. WIP atm
 - https://github.com/ryanoasis/nerd-fonts https://nerdfonts.com Nerd Fonts (ryanoasis). Collection of Patched famous developer fonts with icons for everything that wants icon!!!
+- https://www.lyrics.com/sublyric/97872/KawaiSprite%2C+ninjamuffin99%2C+PhantomArcade%2C+evilsk8r/Monster+%28Friday+Night+Funkin%27%29 lyrics dot come. Please internal song `Monster` the lyric!!!!
+- https://genius.com/Bassetfilms-winter-horrorland-lyrics Genius lyrics. Please internal song `Winter Horrorland` the lyric!!!!
+- https://youtu.be/KBtk5FUeJbk?si=vJa2lNp2SojfM_S8 Sub Urban. Cradles lyric!!!!
+- https://youtu.be/hJqYc62NCKo?si=1qPKuipCo4GmMEKx TheFatRat. We'll meet again lyric!!! most above 2016 ish should have these in description
+- https://youtu.be/DT61L8hbbJ4?si=zMUyC8PCjou5fGig TheFatRat. Mayday lyric!!!! wait, where are you? https://youtu.be/AcNy8QV4MhE?si=oOIPBkQ4kDn1G55- ok, 7clouds got the written!
+- https://youtu.be/e2ZhrVxtbpk?si=QLsAcJ53ew1NZctR MediaGamesGuide. Tankman week 7 all line game over. YouTube's auto substitle captioned it for me. But I still don't trust you.
+- https://g.co/kgs/G5nEDN Google. Google got Musixmatch for `Ku tetap cinta Yesus` song. search yes.
+- https://www.detik.com/jatim/berita/d-6611130/lirik-lagu-indonesia-raya-serta-maknanya Detik. Indonesia Raya (National Anthem) Lyric & meaning.
+- https://moawling.gumroad.com/l/fnf-sprites?layout=profile&recommended_by=library moawling. Just in case, I'm gonna place these official FNF Pixel assets source here along with FLAs I could find.
+- https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/Main.hx LarsiusPrime. FireTongue stuffs.
+- https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/State_Title.hx LarsiusPrime. FireTongue stuffs.
+- https://lib.haxe.org/p/HaxeGJClient/ GamerPablito. NEW GAMEJOLT CLIENT.
+- hhttps://lib.haxe.org/p/AE-Script/ Altronix Engine. Better Hscripter, based on [CNE Hscript](https://github.com/FNF-CNE-Devs/hscript-improved). Is this conflict with original hscript? **Yes it does**, so this is replacement! pls [Altronix Engine source code](https://github.com/Altronix-Team/FNF-AltronixEngine)
+- https://lib.haxe.org/p/complex/ Kisetil. Complex Math library.
+- https://lib.haxe.org/p/hxyarn/ cxsquared. YarnSpinner Dialogue pls.
+- https://github.com/Altronix-Team/FNF-AltronixEngine Altronix Engine. You know what? let's just yoink some of Altronix stuff too, I don't care anymore. As usual, keep the name.
+- https://lib.haxe.org/p/safety/ RealyUniqueName. Null safety will ya?.
+- https://lib.haxe.org/p/Console.hx/ Haxiomic. the COnsole fancy prints!!!!!
+- https://lib.haxe.org/p/haxe-ws/
+- https://lib.haxe.org/p/hxlibc/
+- https://github.com/Dovyski/flixel-studio Dovyski. The comprehensive Flixel in-game editor. Use the debug `~` menu and click **interaction tool**
+- https://lib.haxe.org/p/hxmidilib/
+- https://github.com/OIIOIIOI/hxmidilib
+- https://code.google.com/archive/p/as3midilib/
+- https://code.google.com/archive/p/as3midilib/
+- https://lib.haxe.org/p/rtmidi-wrapper/
+- https://github.com/FNF-CNE-Devs/YoshiCrafterEngine/blob/main/source/logging/LogsOverlay.hx YoshiCrafter. Ayy.. wait.
+- https://github.com/FNF-CNE-Devs/YoshiCrafterEngine/blob/main/source/WindowsAPI.hx#L80 YoshiCrafter. Ayy Windows API. Can I *borrow*, if.. YOINK!! thancc. from [here](https://community.openfl.org/t/transparent-desktop-window-background-confusion/11026/8) & [this](https://community.haxe.org/t/transparent-openfl-desktop-window-background-confusion/1157)
+- https://lib.haxe.org/p/winapi/
+- https://lib.haxe.org/p/flixel-screenshot-plugin/ sayofthelor. Better Screenshotter?!?!?!??!
+- https://lib.haxe.org/p/zerolib-flixel/ 01010111. Extra Flixel stuffs
+- https://lib.haxe.org/p/scrollable-area/
+- https://www.rgbtohex.net/
+- PLS SAUCE HURT NOTE!!!
+- https://gamebanana.com/members/submissions/mods/1933642 Gooble. 
+- https://github.com/Aurel300/pecan
 
 # other mods that got removed / pre-removed (ERROR fail to yoink)(foreshadowing) because a death wish found in the license (such as No Derivative in Creative Commons). I'm sorry, make your luck now for the next time!
+
+**EDIT X0p1r4t3**: We will return these files shortly but only to as reckless to place it. For clarification, Last Funkin Moment ownership has been transferred from Van Elektronische to X0p1r4t3 Eenvreensment, hence License Safety & Fear Protocol will be also cleared, since this fear is only on Van Elektronische. Additionally, other copyrighted files will also be installed, not as tidy as well, i.e. background unused parts (To avoid exposing gamers against Copyright Federals across galaxies).
+
+**EDIT X0p1r4t3 2**: Files may not be here, but on Kolmoroltzzet.
+
 > Why am I not credited?!
 
 > why my mods got removed?!

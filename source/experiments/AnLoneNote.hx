@@ -24,16 +24,53 @@ class AnLoneNote extends AbstractTestMenu
 {
 	override function create()
 	{
+		Paths.clearStoredMemory(); // JOELwindows7: BOLO clear memory!
+		Paths.clearUnusedMemory(); // JOELwindows7: BOLO clear unused memory
+		PlayState.inDaPlay = false;
 		super.create();
 		addInfoText("Lone Note\n\n\nHow does your chosen Noteskin looks like.");
 		Debug.logInfo('test note');
-		var thing = new Note(0, 0, null, false, true, null, null, 0);
-		// var thing = new FlxUISprite();
-		// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
-		// thing.x = FlxG.width / 2;
-		// thing.y = FlxG.height / 2;
-		thing.screenCenter();
-		add(thing);
+		for (h in -1...5)
+		{
+			for (i in 0...4)
+			{
+				// Note Arrow
+				var thing:Note = new Note(0, i, null, false, true, null, i * 4, h, true);
+				// thing.noQuantize = true;
+				thing.refreshNoteLook();
+				// var thing = new FlxUISprite();
+				// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
+				// thing.x = FlxG.width / 2;
+				// thing.y = FlxG.height / 2;
+				// thing.screenCenter();
+				// thing.screenCenter(Y);
+				thing.y = (100 + 100 * h); // / (FlxG.height);
+				thing.x = (100 + 100 * i); // / (FlxG.width);
+				thing.updateHitbox();
+				add(thing);
+
+				// Note Splash
+				var ngocrot:NoteSplash = new NoteSplash(0, 0, 0);
+				// ngocrot.setupNoteSplash(thing.x, thing.y, i, FlxG.save.data.noteskin + '-splash' + (h == 2 ? '-duar' : ''), 0, 0, 0, h, true);
+				ngocrot.setupNoteSplash(thing.x, thing.y, i, FlxG.save.data.noteskin + '-splash' + (h == 2 ? '-duar' : ''), 0, 0, 0, h, true);
+				add(ngocrot);
+			}
+		}
+		Debug.logInfo('test receptor');
+		for (i in 0...3)
+		{
+			var thing = new Note(0, i, null, false, true, null, null, 0);
+			var thing = new FlxUISprite();
+			// thing.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin, 0);
+			// thing.x = FlxG.width / 2;
+			// thing.y = FlxG.height / 2;
+			// thing.screenCenter();
+			// thing.screenCenter(Y);
+			// thing.y = (25 + 10 * h) / (FlxG.height);
+			// thing.x = (50 + 25 * i) / (FlxG.width);
+			// add(thing);
+		}
+
 		Debug.logInfo('ayy');
 	}
 

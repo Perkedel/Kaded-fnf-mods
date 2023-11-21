@@ -18,6 +18,13 @@
 
 package;
 
+import flixel.FlxBasic;
+import flixel.tweens.misc.ColorTween;
+import flixel.tweens.misc.VarTween;
+import flixel.util.FlxColor;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.addons.text.FlxTypeText;
 import ui.states.transition.PsychTransition;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIButton;
@@ -38,6 +45,7 @@ import flixel.FlxCamera;
 import flixel.group.FlxGroup;
 import flixel.addons.display.FlxStarField;
 import flixel.FlxSprite;
+import flixel.util.FlxAxes;
 import TouchScreenControls;
 import plugins.sprites.QmovephBackground;
 import flixel.addons.display.FlxBackdrop;
@@ -92,7 +100,7 @@ enum ExtraLoadingType
  * GNU GPL v3
  * @author JOELwindows7
  */
-class CoreState extends FlxUIState implements ICoreStating
+class CoreState extends FlxUIState implements ICoreStating implements INapoleonSaying implements IAttachCamera
 {
 	// JOELwindows7: do not forget instance
 	public static var instance:CoreState;
@@ -126,7 +134,6 @@ class CoreState extends FlxUIState implements ICoreStating
 	private var haveViewReplayedHeld:Bool = false;
 	private var haveDebugSevenedHeld:Bool = false;
 	private var haveShiftedHeld:Bool = false;
-
 	var backButton:FlxUISprite; // JOELwindows7: the back button here
 	var leftButton:FlxUISprite; // JOELwindows7: the left button here
 	var rightButton:FlxUISprite; // JOELwindows7: the right button here
@@ -141,9 +148,9 @@ class CoreState extends FlxUIState implements ICoreStating
 	var starfield3D:FlxStarField3D;
 	var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
 	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
+
 	// var touchscreenButtons:TouchScreenControls; //JOELwindows7: the touchscreen buttons here
 	var hourGlass:FlxUISprite; // JOELwindows7: animated gravity hourglass Piskel
-
 	// JOELwindows7: okay, let's be real button instead.
 	var backButtonReal:FlxUIButton;
 	var leftButtonReal:FlxUIButton;
@@ -207,6 +214,22 @@ class CoreState extends FlxUIState implements ICoreStating
 		if (!FlxTransitionableState.skipNextTransOut)
 			openSubState(new PsychTransition(0.75, true));
 
+		// JOELwindows7: do stop all tweens to prevent unexpected leftover motions
+		if (LoadingState.poorLittleVolumeDowner != null)
+			LoadingState.poorLittleVolumeDowner.cancel();
+
+		// JOELwindows7: LarsiusPrime's FireTongue pls
+		// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/State_Title.hx
+		if (Main.tongue == null)
+		{
+			Main.tongue = new FireTongueEx();
+			if (Main.tongues == null)
+				Main.tongues = new Array<FireTongueEx>();
+			Main.tongues[0] = Main.tongue;
+			Main.tongue.initialize({locale: "en-US"});
+			FlxUIState.static_tongue = Main.tongue;
+		}
+
 		super.create();
 
 		initCamControl(); // JOELwindows7: init the cam control now!
@@ -264,117 +287,135 @@ class CoreState extends FlxUIState implements ICoreStating
 	// JOELwindows7: buttons
 	private function addBackButton(x:Int = 100, y:Int = 720 - 100, scale:Float = .5)
 	{
-		backButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('backButton'));
+		backButton = new FlxUISprite(x, y);
+		backButton.loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale), Std.int(backButton.height * scale));
+		backButton.alpha = .5;
 		backButton.scrollFactor.set();
 		backButton.updateHitbox();
 		backButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			backButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	backButton.cameras = [camControl];
 		add(backButton);
 		return backButton;
 	}
 
 	private function addLeftButton(x:Int = 100, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		leftButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
+		leftButton = new FlxUISprite(x, y);
+		leftButton.loadGraphic(Paths.image('leftAdjustButton'));
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale), Std.int(leftButton.height * scale));
+		leftButton.alpha = .5;
 		leftButton.scrollFactor.set();
 		leftButton.updateHitbox();
 		leftButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			leftButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	leftButton.cameras = [camControl];
 		add(leftButton);
 		return leftButton;
 	}
 
 	private function addRightButton(x:Int = 525, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		rightButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
+		rightButton = new FlxUISprite(x, y);
+		rightButton.loadGraphic(Paths.image('rightAdjustButton'));
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale), Std.int(rightButton.height * scale));
+		rightButton.alpha = .5;
 		rightButton.scrollFactor.set();
 		rightButton.updateHitbox();
 		rightButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			rightButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	rightButton.cameras = [camControl];
 		add(rightButton);
 		return rightButton;
 	}
 
 	private function addUpButton(x:Int = 240, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		upButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
+		upButton = new FlxUISprite(x, y);
+		upButton.loadGraphic(Paths.image('upAdjustButton'));
 		upButton.setGraphicSize(Std.int(upButton.width * scale), Std.int(upButton.height * scale));
+		upButton.alpha = .5;
 		upButton.scrollFactor.set();
 		upButton.updateHitbox();
 		upButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			upButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	upButton.cameras = [camControl];
 		add(upButton);
 		return upButton;
 	}
 
 	private function addDownButton(x:Int = 450, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		downButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
+		downButton = new FlxUISprite(x, y);
+		downButton.loadGraphic(Paths.image('downAdjustButton'));
 		downButton.setGraphicSize(Std.int(downButton.width * scale), Std.int(downButton.height * scale));
+		downButton.alpha = .5;
 		downButton.scrollFactor.set();
 		downButton.updateHitbox();
 		downButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			downButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	downButton.cameras = [camControl];
 		add(downButton);
 		return downButton;
 	}
 
 	private function addPauseButton(x:Int = 640, y:Int = 10, scale:Float = .5)
 	{
-		pauseButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('pauseButton'));
+		pauseButton = new FlxUISprite(x, y);
+		pauseButton.loadGraphic(Paths.image('pauseButton'));
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale), Std.int(pauseButton.height * scale));
+		pauseButton.alpha = .5;
 		pauseButton.scrollFactor.set();
 		pauseButton.updateHitbox();
 		pauseButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			pauseButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	pauseButton.cameras = [camControl];
 		add(pauseButton);
 		return pauseButton;
 	}
 
 	private function addAcceptButton(x:Int = 1280 - 100, y:Int = 720 - 100, scale:Float = .5)
 	{
-		acceptButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('acceptButton'));
+		acceptButton = new FlxUISprite(x, y);
+		acceptButton.loadGraphic(Paths.image('acceptButton'));
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale), Std.int(acceptButton.height * scale));
+		acceptButton.alpha = .5;
 		acceptButton.scrollFactor.set();
 		acceptButton.updateHitbox();
 		acceptButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			acceptButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	acceptButton.cameras = [camControl];
 		add(acceptButton);
 		return acceptButton;
 	}
 
 	private function addRetryButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		retryButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('retryButton'));
+		retryButton = new FlxUISprite(x, y);
+		retryButton.loadGraphic(Paths.image('retryButton'));
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale), Std.int(retryButton.height * scale));
+		retryButton.alpha = .5;
 		retryButton.scrollFactor.set();
 		retryButton.updateHitbox();
 		retryButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			retryButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	retryButton.cameras = [camControl];
 		add(retryButton);
 		return retryButton;
 	}
 
 	private function addViewReplayButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		viewReplayButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
+		viewReplayButton = new FlxUISprite(x, y);
+		viewReplayButton.loadGraphic(Paths.image('viewReplayButton'));
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale), Std.int(viewReplayButton.height * scale));
+		viewReplayButton.alpha = .5;
 		viewReplayButton.scrollFactor.set();
 		viewReplayButton.updateHitbox();
 		viewReplayButton.antialiasing = FlxG.save.data.antialiasing;
-		if (camControl != null)
-			viewReplayButton.cameras = [camControl];
+		// if (camControl != null)
+		// 	viewReplayButton.cameras = [camControl];
 		add(viewReplayButton);
 		return viewReplayButton;
 	}
@@ -598,7 +639,8 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	function installDefaultBekgron():FlxBackdrop
 	{
-		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		// defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), FlxAxes.XY, 0, 0); // 50 0
 		// defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
 		defaultBekgron.velocity.x = -100;
 		defaultBekgron.updateHitbox();
@@ -608,7 +650,8 @@ class CoreState extends FlxUIState implements ICoreStating
 
 	function justInitDefaultBekgron():FlxBackdrop
 	{
-		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		// var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), FlxAxes.XY, 0, 0); // 50 0
 		theBekgron.velocity.x = -100;
 		theBekgron.updateHitbox();
 		return theBekgron;
@@ -720,6 +763,172 @@ class CoreState extends FlxUIState implements ICoreStating
 		}
 	}
 
+	// JOELwindows7: Open URLs, yoink from MusicBeatState
+	public function fancyOpenURL(schmancy:String)
+	{
+		// JOELwindows7: Ahem, turns out `FlxG.openURL` already `xdg-open` on itself. System open URL thingy! open File yeah.
+		#if linux
+		// Sys.command('/usr/bin/xdg-open', [schmancy, "&"]);
+		Sys.command('/usr/bin/xdg-open', [schmancy]); // this also got the same issue. how about you forget the `&` (put as bg process)?
+
+		/**
+			xdg-open: unexpected argument '&'
+			Try 'xdg-open --help' for more information.
+		**/
+		#else
+		FlxG.openURL(schmancy);
+		#end
+	}
+
+	// JOELwindows7: There's nothing we can do
+	public var miniSoldierSaying:FlxTypeText; // Partner
+	public var miniGeneralSaying:FlxTypeText; // Napoleon
+	public var miniTweenSaying:Array<VarTween>; // tweeners
+	public var miniTweenColoring:Array<ColorTween>; // tweeners colors
+
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0, size:Float = 12, font:String = 'Ubuntu Bold'):Void
+	{
+		var composeSoldierWords:String = 'Sire! $whatWouldSay!\nWhat do we do now?!';
+		var composeGeneralWords:String = 'There is nothing we can do.\n\n';
+		// if (miniSoldierSaying != null)
+		// {
+		// 	miniSoldierSaying.destroy();
+		// 	miniSoldierSaying = null;
+		// }
+		// if (miniGeneralSaying != null)
+		// {
+		// 	miniGeneralSaying.destroy();
+		// 	miniGeneralSaying = null;
+		// }
+		if (miniTweenSaying == null)
+			miniTweenSaying = new Array<VarTween>();
+		if (miniTweenColoring == null)
+			miniTweenColoring = new Array<ColorTween>();
+		else
+		{
+			for (twn in miniTweenSaying)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+			for (twn in miniTweenColoring)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+		}
+		if (miniSoldierSaying == null)
+			miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\nWhat do we do now?!\n\n', Std.int(size));
+		else
+			remove(miniSoldierSaying);
+		miniSoldierSaying.alpha = 0;
+		miniSoldierSaying.x = x;
+		miniSoldierSaying.y = y;
+		miniSoldierSaying.font = font;
+		miniSoldierSaying.size = Std.int(size);
+		miniSoldierSaying.prefix = "H: ";
+		miniSoldierSaying.scrollFactor.set();
+		miniSoldierSaying.updateHitbox();
+		if (miniGeneralSaying == null)
+			miniGeneralSaying = new FlxTypeText(x, y + 50, 400, 'There is nothing we can do.\n\n', Std.int(size));
+		else
+			remove(miniGeneralSaying);
+		miniGeneralSaying.alpha = 0;
+		miniGeneralSaying.color = FlxColor.WHITE;
+		miniGeneralSaying.x = x;
+		miniGeneralSaying.y = y + 50;
+		miniGeneralSaying.font = "Ubuntu Bold";
+		miniGeneralSaying.size = Std.int(size);
+		miniGeneralSaying.prefix = "N: ";
+		miniGeneralSaying.scrollFactor.set();
+		miniGeneralSaying.updateHitbox();
+
+		add(miniSoldierSaying);
+		add(miniGeneralSaying);
+		miniSoldierSaying.resetText(composeSoldierWords);
+		miniGeneralSaying.resetText(composeGeneralWords);
+		trace(composeSoldierWords);
+		miniTweenSaying[3] = FlxTween.tween(miniSoldierSaying, {alpha: 1}, .2, {
+			onComplete: function(twn:FlxTween)
+			{
+				trace('dred');
+			}
+		});
+		miniSoldierSaying.start(.05, true, false, null, function()
+		{
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+				trace(composeGeneralWords);
+				// miniGeneralSaying.alpha = 1;
+				miniTweenSaying[4] = FlxTween.tween(miniGeneralSaying, {alpha: 1}, .1, {
+					onComplete: function(twn:FlxTween)
+					{
+						trace('drid');
+					}
+				});
+				miniGeneralSaying.start(.05, true, false, null, function()
+				{
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+					{
+						trace('Yep!');
+						miniTweenSaying[0] = FlxTween.tween(miniSoldierSaying, {alpha: 0}, 1, {
+							onComplete: function(twn:FlxTween)
+							{
+								trace('blub');
+							}
+						});
+						miniTweenSaying[1] = FlxTween.tween(miniGeneralSaying, {alpha: 0}, 10, {
+							onComplete: function(twn:FlxTween)
+							{
+								trace('blab');
+							}
+						});
+						miniTweenColoring[1] = FlxTween.color(miniGeneralSaying, 5, miniGeneralSaying.color, FlxColor.RED, {
+							onComplete: function(twn:FlxTween)
+							{
+								trace('blib');
+							}
+						});
+					});
+				});
+			});
+		});
+	}
+
+	public function stopTheSaying():Void
+	{
+		if (miniTweenSaying == null)
+			miniTweenSaying = new Array<VarTween>();
+		if (miniTweenColoring == null)
+			miniTweenColoring = new Array<ColorTween>();
+		else
+		{
+			for (twn in miniTweenSaying)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+			for (twn in miniTweenColoring)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+		}
+		if (miniSoldierSaying != null)
+		{
+			miniSoldierSaying.alpha = 0;
+			miniSoldierSaying.color = FlxColor.WHITE;
+			remove(miniSoldierSaying);
+		}
+		if (miniGeneralSaying != null)
+		{
+			miniGeneralSaying.alpha = 0;
+			miniGeneralSaying.color = FlxColor.WHITE;
+			remove(miniSoldierSaying);
+		}
+	}
+
+	// JOELwindows7: Controls!
 	function manageMouse():Void
 	{
 		// JOELwindows7: nothing. use this special update to manage mouse
@@ -733,6 +942,18 @@ class CoreState extends FlxUIState implements ICoreStating
 		{
 			rawMouseHeld = false;
 		}
+	}
+
+	function updateLastGamepad(gamepad:FlxGamepad):Void
+	{
+	}
+
+	function updateFirstGamepad(gamepad:FlxGamepad):Void
+	{
+	}
+
+	function updateAllGamepads(gamepad:Array<FlxGamepad>):Void
+	{
 	}
 
 	function manageJoypad():Void
@@ -750,6 +971,48 @@ class CoreState extends FlxUIState implements ICoreStating
 			Main.xboxControllers[i].poll();
 		}
 		#end
+
+		// JOELwindows7: Also, consider https://haxeflixel.com/documentation/gamepads/
+		if (joypadFirstActive != null)
+		{
+			updateFirstGamepad(joypadFirstActive);
+		}
+		if (joypadLastActive != null)
+		{
+			updateLastGamepad(joypadLastActive);
+		}
+		if (joypadAllActive != null)
+		{
+			updateAllGamepads(joypadAllActive);
+		}
+	}
+
+	// JOELwindows7: Attach camera set
+
+	/**
+	 * Attach a camera to the Flx object
+	 * @param object the object to be attached with
+	 * @param camera the camera to be attached to
+	 */
+	public function attachToOnlyThisCamera(object:FlxBasic, camera:FlxCamera):Void
+	{
+		if (camera != null)
+			object.cameras = [camera];
+	}
+
+	/**
+	 * Attach these cameras to the Flx object
+	 * @param object the object to be attached with
+	 * @param cameras array of the camera to attach to
+	 */
+	public function attachToTheseCameras(object:FlxBasic, cameras:Array<FlxCamera>):Void
+	{
+		object.cameras = [];
+		for (to in cameras)
+		{
+			if (to != null)
+				object.cameras.push(to);
+		}
 	}
 }
 
@@ -810,33 +1073,24 @@ class CoreState extends FlxUIState implements ICoreStating
  * 
  * @author JOELwindows7
  */
-class CoreSubState extends FlxUISubState implements ICoreStating
+class CoreSubState extends FlxUISubState implements ICoreStating implements INapoleonSaying implements IAttachCamera
 {
 	// JOELwindows7: do not forget instance
 	public static var instance:CoreSubState;
 
 	// JOELwindows7: copy screen size
 	var screenWidth:Int;
-
 	var screenHeight:Int;
-
 	var starfield2D:FlxStarField2D;
-
 	var starfield3D:FlxStarField3D;
-
 	var multiStarfield2D:FlxTypedGroup<FlxStarField2D>;
-
 	var multiStarfield3D:FlxTypedGroup<FlxStarField3D>;
-
 	var hourGlass:FlxUISprite;
-
 	var defaultBekgron:FlxBackdrop;
-
 	var qmovephBekgron:QmovephBackground;
-
 	var _virtualpad:FlxVirtualPad;
-
 	var trackedinputs:Array<FlxActionInput>;
+
 	// JOELwindows7: mouse support flags
 	private var haveClicked:Bool = false;
 	private var haveBacked:Bool = false;
@@ -862,7 +1116,6 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	private var haveViewReplayedHeld:Bool = false;
 	private var haveDebugSevenedHeld:Bool = false;
 	private var haveShiftedHeld:Bool = false;
-
 	var backButton:FlxUISprite; // JOELwindows7: the back button here
 	var leftButton:FlxUISprite; // JOELwindows7: the left button here
 	var rightButton:FlxUISprite; // JOELwindows7: the right button here
@@ -872,7 +1125,6 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	var acceptButton:FlxUISprite; // JOELwindows7: the accept button here
 	var retryButton:FlxUISprite; // JOELwindows7: the retry button here
 	var viewReplayButton:FlxUISprite; // JOELwindows7: the view replay button here
-
 	// JOELwindows7: okay, let's be real button instead.
 	var backButtonReal:FlxUIButton;
 	var leftButtonReal:FlxUIButton;
@@ -922,11 +1174,32 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	override function create()
 	{
+		// JOELwindows7: do stop all tweens to prevent unexpected leftover motions
+		// if (LoadingState.poorLittleVolumeDowner != null)
+		// 	LoadingState.poorLittleVolumeDowner.cancel();
+
+		// JOELwindows7: LarsiusPrime's FireTongue pls
+		// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/State_Title.hx
+		if (Main.tongue == null)
+		{
+			Main.tongue = new FireTongueEx();
+			Main.tongue.initialize({locale: "en-US"});
+			FlxUIState.static_tongue = Main.tongue;
+		}
+
 		super.create();
 
 		// JOELwindows7: manage Stuffs first
-		manageMouse();
-		manageJoypad();
+		try
+		{
+			manageMouse();
+			manageJoypad();
+		}
+		catch (e)
+		{
+			trace('Early faile to to manage controls: ${e}\n${e.details()}\n\nI hope the next normal should not be like this bruh!');
+		}
+		initCamControl();
 	}
 
 	override function update(elapsed:Float)
@@ -955,8 +1228,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 	// JOELwindows7: buttons
 	private function addBackButton(x:Int = 720 - 200, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		backButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('backButton'));
+		backButton = new FlxUISprite(x, y);
+		backButton.loadGraphic(Paths.image('backButton'));
 		backButton.setGraphicSize(Std.int(backButton.width * scale), Std.int(backButton.height * scale));
+		backButton.alpha = .5;
 		backButton.scrollFactor.set();
 		backButton.updateHitbox();
 		backButton.antialiasing = FlxG.save.data.antialiasing;
@@ -968,8 +1243,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addLeftButton(x:Int = 100, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		leftButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('leftAdjustButton'));
+		leftButton = new FlxUISprite(x, y);
+		leftButton.loadGraphic(Paths.image('leftAdjustButton'));
 		leftButton.setGraphicSize(Std.int(leftButton.width * scale), Std.int(leftButton.height * scale));
+		leftButton.alpha = .5;
 		leftButton.scrollFactor.set();
 		leftButton.updateHitbox();
 		leftButton.antialiasing = FlxG.save.data.antialiasing;
@@ -981,8 +1258,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addRightButton(x:Int = 525, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		rightButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('rightAdjustButton'));
+		rightButton = new FlxUISprite(x, y);
+		rightButton.loadGraphic(Paths.image('rightAdjustButton'));
 		rightButton.setGraphicSize(Std.int(rightButton.width * scale), Std.int(rightButton.height * scale));
+		rightButton.alpha = .5;
 		rightButton.scrollFactor.set();
 		rightButton.updateHitbox();
 		rightButton.antialiasing = FlxG.save.data.antialiasing;
@@ -994,8 +1273,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addUpButton(x:Int = 240, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		upButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('upAdjustButton'));
+		upButton = new FlxUISprite(x, y);
+		upButton.loadGraphic(Paths.image('upAdjustButton'));
 		upButton.setGraphicSize(Std.int(upButton.width * scale), Std.int(upButton.height * scale));
+		upButton.alpha = .5;
 		upButton.scrollFactor.set();
 		upButton.updateHitbox();
 		upButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1007,8 +1288,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addDownButton(x:Int = 450, y:Int = 1280 - 100, scale:Float = .5)
 	{
-		downButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('downAdjustButton'));
+		downButton = new FlxUISprite(x, y);
+		downButton.loadGraphic(Paths.image('downAdjustButton'));
 		downButton.setGraphicSize(Std.int(downButton.width * scale), Std.int(downButton.height * scale));
+		downButton.alpha = .5;
 		downButton.scrollFactor.set();
 		downButton.updateHitbox();
 		downButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1020,8 +1303,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addPauseButton(x:Int = 640, y:Int = 10, scale:Float = .5)
 	{
-		pauseButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('pauseButton'));
+		pauseButton = new FlxUISprite(x, y);
+		pauseButton.loadGraphic(Paths.image('pauseButton'));
 		pauseButton.setGraphicSize(Std.int(pauseButton.width * scale), Std.int(pauseButton.height * scale));
+		pauseButton.alpha = .5;
 		pauseButton.scrollFactor.set();
 		pauseButton.updateHitbox();
 		pauseButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1033,8 +1318,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addAcceptButton(x:Int = 1280, y:Int = 360, scale:Float = .5)
 	{
-		acceptButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('acceptButton'));
+		acceptButton = new FlxUISprite(x, y);
+		acceptButton.loadGraphic(Paths.image('acceptButton'));
 		acceptButton.setGraphicSize(Std.int(acceptButton.width * scale), Std.int(acceptButton.height * scale));
+		acceptButton.alpha = .5;
 		acceptButton.scrollFactor.set();
 		acceptButton.updateHitbox();
 		acceptButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1046,8 +1333,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addRetryButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		retryButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('retryButton'));
+		retryButton = new FlxUISprite(x, y);
+		retryButton.loadGraphic(Paths.image('retryButton'));
 		retryButton.setGraphicSize(Std.int(retryButton.width * scale), Std.int(retryButton.height * scale));
+		retryButton.alpha = .5;
 		retryButton.scrollFactor.set();
 		retryButton.updateHitbox();
 		retryButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1059,8 +1348,10 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	private function addViewReplayButton(x:Int = 500, y:Int = 500, scale:Float = .5)
 	{
-		viewReplayButton = cast new FlxUISprite(x, y).loadGraphic(Paths.image('viewReplayButton'));
+		viewReplayButton = new FlxUISprite(x, y);
+		viewReplayButton.loadGraphic(Paths.image('viewReplayButton'));
 		viewReplayButton.setGraphicSize(Std.int(viewReplayButton.width * scale), Std.int(viewReplayButton.height * scale));
+		viewReplayButton.alpha = .5;
 		viewReplayButton.scrollFactor.set();
 		viewReplayButton.updateHitbox();
 		viewReplayButton.antialiasing = FlxG.save.data.antialiasing;
@@ -1289,7 +1580,8 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	function installDefaultBekgron():FlxBackdrop
 	{
-		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		// defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		defaultBekgron = new FlxBackdrop(Paths.image('DefaultBackground-720p'), FlxAxes.XY, 50, 0);
 		// defaultBekgron.setGraphicSize(FlxG.width,FlxG.height);
 		defaultBekgron.velocity.x = -100;
 		defaultBekgron.updateHitbox();
@@ -1299,7 +1591,7 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 
 	function justInitDefaultBekgron():FlxBackdrop
 	{
-		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), 50, 0, true, false);
+		var theBekgron:FlxBackdrop = new FlxBackdrop(Paths.image('DefaultBackground-720p'), FlxAxes.XY, 50, 0);
 		theBekgron.velocity.x = -100;
 		theBekgron.updateHitbox();
 		return theBekgron;
@@ -1413,6 +1705,168 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 		}
 	}
 
+	// JOELwindows7: Open URLs, yoink from MusicBeatState
+	public function fancyOpenURL(schmancy:String)
+	{
+		// JOELwindows7: Ahem, turns out `FlxG.openURL` already `xdg-open` on itself. System open URL thingy! open File yeah.
+		#if linux
+		// Sys.command('/usr/bin/xdg-open', [schmancy, "&"]);
+		Sys.command('/usr/bin/xdg-open', [schmancy]); // this also got the same issue. how about you forget the `&` (put as bg process)?
+
+		/**
+			xdg-open: unexpected argument '&'
+			Try 'xdg-open --help' for more information.
+		**/
+		#else
+		FlxG.openURL(schmancy);
+		#end
+	}
+
+	// JOELwindows7: There's nothing we can do
+	public var miniSoldierSaying:FlxTypeText; // Partner
+	public var miniGeneralSaying:FlxTypeText; // Napoleon
+	public var miniTweenSaying:Array<VarTween>; // tweeners
+	public var miniTweenColoring:Array<ColorTween>; // tweeners colors
+
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0, size:Float = 12, font:String = 'Ubuntu Bold'):Void
+	{
+		var composeSoldierWords:String = 'Sire! $whatWouldSay!\nWhat do we do now?!';
+		var composeGeneralWords:String = 'There is nothing we can do.\n\n';
+		// if (miniSoldierSaying != null)
+		// {
+		// 	miniSoldierSaying.destroy();
+		// 	miniSoldierSaying = null;
+		// }
+		// if (miniGeneralSaying != null)
+		// {
+		// 	miniGeneralSaying.destroy();
+		// 	miniGeneralSaying = null;
+		// }
+		if (miniTweenSaying == null)
+			miniTweenSaying = new Array<VarTween>();
+		if (miniTweenColoring == null)
+			miniTweenColoring = new Array<ColorTween>();
+		else
+		{
+			for (twn in miniTweenSaying)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+			for (twn in miniTweenColoring)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+		}
+		if (miniSoldierSaying == null)
+			miniSoldierSaying = new FlxTypeText(x, y, 400, 'Sire! $whatWouldSay!\nWhat do we do now?!\n\n', Std.int(size));
+		miniSoldierSaying.alpha = 0;
+		miniSoldierSaying.x = x;
+		miniSoldierSaying.y = y;
+		miniSoldierSaying.font = font;
+		miniSoldierSaying.size = Std.int(size);
+		miniSoldierSaying.prefix = "H: ";
+		miniSoldierSaying.scrollFactor.set();
+		miniSoldierSaying.updateHitbox();
+		if (miniGeneralSaying == null)
+			miniGeneralSaying = new FlxTypeText(x, y + 50, 400, 'There is nothing we can do.\n\n', Std.int(size));
+		miniGeneralSaying.alpha = 0;
+		miniGeneralSaying.color = FlxColor.WHITE;
+		miniGeneralSaying.x = x;
+		miniGeneralSaying.y = y + 50;
+		miniGeneralSaying.font = "Ubuntu Bold";
+		miniGeneralSaying.size = Std.int(size);
+		miniGeneralSaying.prefix = "N: ";
+		miniGeneralSaying.scrollFactor.set();
+		miniGeneralSaying.updateHitbox();
+
+		add(miniSoldierSaying);
+		add(miniGeneralSaying);
+		miniSoldierSaying.resetText(composeSoldierWords);
+		miniGeneralSaying.resetText(composeGeneralWords);
+		trace(composeSoldierWords);
+		miniTweenSaying[3] = FlxTween.tween(miniSoldierSaying, {alpha: 1}, .2, {
+			onComplete: function(twn:FlxTween)
+			{
+				trace('dred');
+			}
+		});
+		miniSoldierSaying.start(.05, true, false, null, function()
+		{
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+				trace(composeGeneralWords);
+				// miniGeneralSaying.alpha = 1;
+				miniTweenSaying[4] = FlxTween.tween(miniGeneralSaying, {alpha: 1}, .1, {
+					onComplete: function(twn:FlxTween)
+					{
+						trace('drid');
+					}
+				});
+				miniGeneralSaying.start(.05, true, false, null, function()
+				{
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+					{
+						trace('Yep!');
+						miniTweenSaying[0] = FlxTween.tween(miniSoldierSaying, {alpha: 0}, 1, {
+							onComplete: function(twn:FlxTween)
+							{
+								trace('blub');
+							}
+						});
+						miniTweenSaying[1] = FlxTween.tween(miniGeneralSaying, {alpha: 0}, 10, {
+							onComplete: function(twn:FlxTween)
+							{
+								trace('blab');
+							}
+						});
+						miniTweenColoring[1] = FlxTween.color(miniGeneralSaying, 5, miniGeneralSaying.color, FlxColor.RED, {
+							onComplete: function(twn:FlxTween)
+							{
+								trace('blib');
+							}
+						});
+					});
+				});
+			});
+		});
+	}
+
+	public function stopTheSaying():Void
+	{
+		if (miniTweenSaying == null)
+			miniTweenSaying = new Array<VarTween>();
+		if (miniTweenColoring == null)
+			miniTweenColoring = new Array<ColorTween>();
+		else
+		{
+			for (twn in miniTweenSaying)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+			for (twn in miniTweenColoring)
+			{
+				if (twn != null)
+					twn.cancel();
+			}
+		}
+		if (miniSoldierSaying != null)
+		{
+			miniSoldierSaying.alpha = 0;
+			miniSoldierSaying.color = FlxColor.WHITE;
+			remove(miniSoldierSaying);
+		}
+		if (miniGeneralSaying != null)
+		{
+			miniGeneralSaying.alpha = 0;
+			miniGeneralSaying.color = FlxColor.WHITE;
+			remove(miniSoldierSaying);
+		}
+	}
+
+	// JOELwindows7: Controls!
 	function manageMouse():Void
 	{
 		// JOELwindows7: nothing. use this to manage mouse
@@ -1426,6 +1880,18 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 		{
 			rawMouseHeld = false;
 		}
+	}
+
+	function updateLastGamepad(gamepad:FlxGamepad):Void
+	{
+	}
+
+	function updateFirstGamepad(gamepad:FlxGamepad):Void
+	{
+	}
+
+	function updateAllGamepads(gamepad:Array<FlxGamepad>):Void
+	{
 	}
 
 	function manageJoypad():Void
@@ -1443,6 +1909,48 @@ class CoreSubState extends FlxUISubState implements ICoreStating
 			Main.xboxControllers[i].poll();
 		}
 		#end
+
+		// JOELwindows7: Also, consider https://haxeflixel.com/documentation/gamepads/
+		if (joypadFirstActive != null)
+		{
+			updateFirstGamepad(joypadFirstActive);
+		}
+		if (joypadLastActive != null)
+		{
+			updateLastGamepad(joypadLastActive);
+		}
+		if (joypadAllActive != null)
+		{
+			updateAllGamepads(joypadAllActive);
+		}
+	}
+
+	// JOELwindows7: Attach camera set
+
+	/**
+	 * Attach a camera to the Flx object
+	 * @param object the object to be attached with
+	 * @param camera the camera to be attached to
+	 */
+	public function attachToOnlyThisCamera(object:FlxBasic, camera:FlxCamera):Void
+	{
+		if (camera != null)
+			object.cameras = [camera];
+	}
+
+	/**
+	 * Attach these cameras to the Flx object
+	 * @param object the object to be attached with
+	 * @param cameras array of the camera to attach to
+	 */
+	public function attachToTheseCameras(object:FlxBasic, cameras:Array<FlxCamera>):Void
+	{
+		object.cameras = [];
+		for (to in cameras)
+		{
+			if (to != null)
+				object.cameras.push(to);
+		}
 	}
 }
 
@@ -1754,5 +2262,82 @@ interface ICoreStating
 
 	private function manageMouse():Void;
 
+	private function updateLastGamepad(gamepad:FlxGamepad):Void;
+	private function updateFirstGamepad(gamepad:FlxGamepad):Void;
+	private function updateAllGamepads(gamepad:Array<FlxGamepad>):Void;
 	private function manageJoypad():Void;
+}
+
+/*
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+	aa
+ */
+interface INapoleonSaying
+{
+	// JOELwindows7: There's nothing we can do
+	public var miniSoldierSaying:FlxTypeText; // Partner
+	public var miniGeneralSaying:FlxTypeText; // Napoleon
+	public var miniTweenSaying:Array<VarTween>; // tweeners
+	public var miniTweenColoring:Array<ColorTween>; // tweeners colors
+
+	public function installSaying(whatWouldSay:String, x:Float = 0, y:Float = 0, size:Float = 12, font:String = 'Ubuntu Bold'):Void;
+	public function stopTheSaying():Void;
+}
+
+interface IAttachCamera
+{
+	// JOELwindows7: Attach camera set
+
+	/**
+	 * Attach a camera to the Flx object
+	 * @param object the object to be attached with
+	 * @param camera the camera to be attached to
+	 */
+	public function attachToOnlyThisCamera(object:FlxBasic, camera:FlxCamera):Void;
+
+	/**
+	 * Attach these cameras to the Flx object
+	 * @param object the object to be attached with
+	 * @param cameras array of the camera to attach to
+	 */
+	public function attachToTheseCameras(object:FlxBasic, cameras:Array<FlxCamera>):Void;
 }

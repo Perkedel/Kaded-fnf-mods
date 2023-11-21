@@ -1,0 +1,21 @@
+{
+	"songs": [
+		"tutorial"
+	],
+
+	"weekCharacters": [
+		"",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Tutorial",
+	"weekColor": "#F9CF51",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked": true,
+	"storyName": "Empty",
+	"weekBefore": "",
+
+    "hideStoryMode": false,
+    "hideFreeplay": false
+}

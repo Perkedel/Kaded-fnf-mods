@@ -97,7 +97,7 @@ class ModCore
 			// Framework being used to load assets. We're using a CUSTOM one which extends the OpenFL one.
 			framework: CUSTOM,
 			// The current version of our API.
-			apiVersion: API_VERSION,
+			// apiVersion: API_VERSION,
 			// Call this function any time an error occurs.
 			errorCallback: onPolymodError,
 			// Enforce semantic version patterns for each mod.
@@ -116,6 +116,14 @@ class ModCore
 
 			// Parsing rules for various data formats.
 			parseRules: buildParseRules(),
+
+			#if firetongue
+			// Firetongue for language support
+			firetongue: Main.tongue,
+			#end
+
+			// Perform scripted classes
+			useScriptedClasses: true,
 		});
 
 		Debug.logInfo('Mod loading complete. We loaded ${loadedModList.length} / ${ids.length} mods.');
@@ -165,7 +173,10 @@ class ModCore
 	static function getModIds():Array<String>
 	{
 		Debug.logInfo('Scanning the mods folder...');
-		var modMetadata = Polymod.scan(MOD_DIRECTORY);
+		// var modMetadata = Polymod.scan(MOD_DIRECTORY);
+		var modMetadata = Polymod.scan({
+			modRoot: MOD_DIRECTORY,
+		});
 		Debug.logInfo('Found ${modMetadata.length} mods when scanning.');
 		var modIds = [for (i in modMetadata) i.id];
 		return modIds;
@@ -190,7 +201,10 @@ class ModCore
 	public static function getAllMods():Array<ModMetadata>
 	{
 		Debug.logInfo('Scanning the mods folder...');
-		var modMetadata = Polymod.scan(MOD_DIRECTORY);
+		// var modMetadata = Polymod.scan(MOD_DIRECTORY);
+		var modMetadata = Polymod.scan({
+			modRoot: MOD_DIRECTORY,
+		});
 		Debug.logInfo('Found ${modMetadata.length} mods when scanning.');
 		return modMetadata;
 	}
@@ -206,11 +220,22 @@ class ModCore
 		var output = polymod.format.ParseRules.getDefault();
 		// Ensure TXT files have merge support.
 		output.addType("txt", TextFileFormat.LINES);
+		output.addType("md", TextFileFormat.LINES);
 
 		// JOELwindows7: pls help idk how to add lua & stuffs!!!
 		output.addType("lua", TextFileFormat.PLAINTEXT);
 		// output.addType("hx", TextFileFormat.PLAINTEXT);
 		output.addType("hscript", TextFileFormat.PLAINTEXT); // Ohups! here enigma hscript too!!!
+		output.addType("nim", TextFileFormat.PLAINTEXT); //
+
+		// JOELwindows7: Don't forget! CSV & TSV files as lines!!! wait dedicated formats!
+		output.addType("csv", TextFileFormat.CSV);
+		output.addType("tsv", TextFileFormat.TSV);
+
+		// JOELwindows7: Also others!!!
+		output.addType("json", TextFileFormat.JSON);
+		output.addType("jsonc", TextFileFormat.JSON);
+		output.addType("xml", TextFileFormat.XML);
 
 		// You can specify the format of a specific file, with file extension.
 		// output.addFile("data/introText.txt", TextFileFormat.LINES)
@@ -236,15 +261,90 @@ class ModCore
 					0:00.15 [ERROR] Your Lime/OpenFL configuration is using custom asset libraries, and you provided frameworkParams in Polymod.init(), but we couldn't find a match for this asset library: (week7)
 					PS C:\Users\joelr\Documents\starring codes\Haxe Projects\Kaded-fnf-mods> 
 				```
+
+				```
+				0:03.64 [INFO ] DONE when unknown: Done loading mod mods/introMod
+				0:03.64 [ERROR] [WERROR] lime_missing_asset_library_reference when init: Your Lime/OpenFL configuration is using custom asset libraries, and you provided frameworkParams in Polymod.init(), but we couldn't find a match for this asset library: (locales)
+				0:07.70 [ERROR] (Game/update#91): Fatal Werror: Null Object Reference
+				Exception: Null Object Reference
+				Called from ModCore.initialize (ModCore.hx line 31)
+				Called from ui.SplashScreen.intoStateNow (ui/SplashScreen.hx line 297)
+				Called from ui.SplashScreen.beginSplashShow (ui/SplashScreen.hx line 273)
+				Called from flixel.util.FlxTimer.onLoopFinished (flixel/util/FlxTimer.hx line 205)
+				Called from flixel.util.FlxTimerManager.update (flixel/util/FlxTimer.hx line 295)
+				Called from flixel.FlxGame.update (flixel/FlxGame.hx line 750)
+				AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!
+
+				[file_open,W:\starring codes\Haxe Projects\Kaded-fnf-mods\export\release\windows\bin/crash/Last-Funkin-Moments_2023-10-10_19'17'30_SemiCaught.txt"]:
+
+				eException: [file_open,W:\starring codes\Haxe Projects\Kaded-fnf-mods\export\release\windows\bin/crash/Last-Funkin-Moments_2023-10-10_19'17'30_SemiCaught.txt"]
+				Called from sys.io.File.saveContent (C:\HaxeToolkit\haxe\std/cpp/_std/sys/io/File.hx line 39)
+				Anyway pls detail!:
+				===============
+				```
+
+						████████████████████████████████████████████████████████████████████████████████
+						█      ░▒▒▒▒▒▒▒░                                                               █
+						█    ░░░░▒▒▒░░░░░    ███████         █        █  ██    █   ███       ███       █
+						█   ░▒░░░░░░▒▒▒░░░   █               █        █ █  █   █   █  █        █       █
+						█  ░░▒░░▒▒░░░▒░░▒░░  ███████ █ █ ███ █  ███ ███ ████ ███   █  █ █  █ ███ ████  █
+						█         ░▒         █        █  █ █ █  █ █ █ █ █    █ █   █  █ █  █ █ █ █     █
+						█    ░▓█████████▒    ███████ █ █ ███ ██ ███ ███  ██  ███   ███  ███  ███ █     █
+						█         ░░                     █                                             █
+						█         ▒▒                       M E D I T A T I O N ! ! !                   █
+						█      ░░▒░▒░▓░                                                                █
+						████████████████████████████████████████████████████████████████████████████████
+
+						(image by JOELwindows7. CC4.0-BY-SA)
+
+
+
+				```
+				ModCore.hx (line 121)
+				ModCore.hx (line 31)
+				ui/SplashScreen.hx (line 297)
+				ui/SplashScreen.hx (line 273)
+				flixel/util/FlxTimer.hx (line 205)
+				flixel/util/FlxTimer.hx (line 295)
+				flixel/FlxGame.hx (line 750)
+				# SEMI-FATAL WhewCaught WError: `Null Object Reference`
+
+				```
+				Exception: Null Object Reference
+				Called from ModCore.initialize (ModCore.hx line 31)
+				Called from ui.SplashScreen.intoStateNow (ui/SplashScreen.hx line 297)
+				Called from ui.SplashScreen.beginSplashShow (ui/SplashScreen.hx line 273)
+				Called from flixel.util.FlxTimer.onLoopFinished (flixel/util/FlxTimer.hx line 205)
+				Called from flixel.util.FlxTimerManager.update (flixel/util/FlxTimer.hx line 295)
+				Called from flixel.FlxGame.update (flixel/FlxGame.hx line 750)
+				```
+				# Firmware name & version:
+				Last Funkin Moments v2023.12.0
+
+				# Please report this error to our Github page:
+				https://github.com/Perkedel/kaded-fnf-mods/issues
+
+				> Crash Handler written by: Paidyy, sqirra-rng
+				================
+				There, clipboard pls
+				0:09.51 [INFO ] (Character/parseDataFile#114): Generating character (gf) from JSON data...
+				```
+
+				```
+				0:03.64 [ERROR] [WERROR] lime_missing_asset_library_reference when init: Your Lime/OpenFL configuration is using custom asset libraries, and you provided frameworkParams in Polymod.init(), but we couldn't find a match for this asset library: (locales)
+				```
 			 */
+
 			// JOELwindows7: Just what the peck?! also add Enigma yoinkeh stuffs
 			assetLibraryPaths: [
 				"default" => "./preload", // ./preload
 				"sm" => "./sm",
 				"songs" => "./songs",
+				"sounds" => "./sounds",
+				"shaders" => "./shaders",
+				"scripts" => "./scripts",
 				"shared" => "./",
 				"tutorial" => "./tutorial",
-				"scripts" => "./scripts",
 				"week1" => "./week1",
 				"week2" => "./week2",
 				"week3" => "./week3",
@@ -263,6 +363,7 @@ class ModCore
 				"weeks" => "./weeks",
 				"thief" => "./thief",
 				"videos" => "./videos",
+				"ui" => "./ui",
 				"preload_odysee" => "./preload_odysee",
 				"preload_thief" => "./preload_thief",
 				"fonts" => "./fonts",
@@ -270,6 +371,7 @@ class ModCore
 				"week-1" => "./week-1",
 				"exclude" => "./exclude",
 				"week5720NG" => "./week5720NG",
+				"locales" => "./locales",
 				'core' => './_core', // Don't override these files.
 			]
 		}
@@ -282,12 +384,12 @@ class ModCore
 		{
 			// JOELwindows7: more werror messages! & Advanced readout
 			case MOD_LOAD_PREPARE:
-				Debug.logInfo('PREPARE when ${error.origin}: ${error.message}', null);
+				Debug.logInfo('PREPARE when ${error.origin}:\n${error.message}', null);
 			case MOD_LOAD_DONE:
-				Debug.logInfo('DONE when ${error.origin}: ${error.message}', null);
+				Debug.logInfo('DONE when ${error.origin}:\n${error.message}', null);
 			// case MOD_LOAD_FAILED:
 			case MISSING_ICON:
-				Debug.logWarn('When ${error.origin}, a mod is missing an icon, will load anyways but please add one : ${error.message}', null);
+				Debug.logWarn('When ${error.origin}, a mod is missing an icon, will load anyways but please add one :\n${error.message}', null);
 			// case "parse_mod_version":
 			// case "parse_api_version":
 			// case "parse_mod_api_version":
@@ -310,11 +412,11 @@ class ModCore
 				{
 					// JOELwindows7: advanced readout now yey
 					case NOTICE:
-						Debug.logInfo('[NOTICE] ${error.code} when ${error.origin}: ${error.message}', null);
+						Debug.logInfo('[NOTICE] ${error.code} when ${error.origin}:\n${error.message}', null);
 					case WARNING:
-						Debug.logWarn('[WARNING] ${error.code} when ${error.origin}: ${error.message}', null);
+						Debug.logWarn('[WARNING] ${error.code} when ${error.origin}:\n${error.message}', null);
 					case ERROR:
-						Debug.logError('[WERROR] ${error.code} when ${error.origin}: ${error.message}', null);
+						Debug.logError('[WERROR] ${error.code} when ${error.origin}:\n${error.message}', null);
 				}
 		}
 	}
@@ -339,7 +441,7 @@ class ModCoreBackend extends OpenFLBackend
 	public override function clearCache()
 	{
 		super.clearCache();
-		Debug.logWarn('Custom asset cache has been cleared.');
+		Debug.logInfo('Custom asset cache has been cleared.'); // JOELwindows7: why warn?!
 	}
 
 	public override function exists(id:String):Bool

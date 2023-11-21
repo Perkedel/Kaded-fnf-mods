@@ -1,5 +1,8 @@
 package;
 
+import Shader.CRTShader;
+import flixel.system.FlxAssets.FlxShader;
+import utils.assets.WeekData;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.ui.FlxUISprite;
 import ui.states.IBGColorTweening;
@@ -32,10 +35,14 @@ import Discord.DiscordClient;
 #if FEATURE_VLC
 // import vlc.MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
 // import vlc.MP4Sprite; // yep.
-import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
-import VideoSprite as MP4Sprite; // yep.
-
+// import VideoHandler as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+// import VideoSprite as MP4Sprite; // yep.
+import hxcodec.flixel.FlxVideo as MP4Handler; // wJOELwindows7: BrightFyre & PolybiusProxy hxCodec
+import hxcodec.flixel.FlxVideoSprite as MP4Sprite; // yep.
+import utils.assets.MenuCharacter as BoloMenuCharacter;
 #end
+import openfl.filters.*;
+
 using StringTools;
 
 // JOELwindows7: FlxUI fy here yeah!
@@ -106,6 +113,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	var weekBannerPath:Array<String>; // Menu item banner image path
 	var weekUnderlayPath:Array<String>; // LCD underlay image path
 	var weekClickSoundPath:Array<String>; // Click sound path
+	var weekIds:Array<String>; // Week IDs for unique identifying
 
 	var txtWeekTitle:FlxUIText;
 
@@ -114,7 +122,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 	var txtTracklist:FlxUIText;
 
 	var grpWeekText:FlxTypedGroup<MenuItem>;
-	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
+	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>; // TODO: JOELwindows7: change to BOLO
 
 	var grpLocks:FlxTypedGroup<FlxUISprite>;
 
@@ -177,6 +185,7 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		weekBannerPath = new Array<String>();
 		weekUnderlayPath = new Array<String>();
 		weekClickSoundPath = new Array<String>();
+		weekIds = new Array<String>();
 		// use the first standardized (from top most upstream possible) array of weeks, which in this one is Week Names array.
 		for (i in 0...weekNames.length)
 		{
@@ -195,6 +204,40 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			weekBannerPath.insert(i, lineStuffs[4]);
 			weekUnderlayPath.insert(i, lineStuffs[5]);
 			weekClickSoundPath.insert(i, lineStuffs[6]);
+			weekIds.insert(i, lineStuffs[7]);
+		}
+	}
+
+	// JOELwindows7: Okay, so I Altronix
+	function altronixWeekList()
+	{
+		weekDatas = new Array<Dynamic>();
+		weekCharacters = new Array<Dynamic>();
+		weekColor = new Array<String>();
+		weekBannerPath = new Array<String>();
+		weekUnderlayPath = new Array<String>();
+		weekClickSoundPath = new Array<String>();
+		weekNames = new Array<String>();
+		weekIds = new Array<String>();
+		for (i in 0...WeekData.weeksList.length)
+		{
+			var weekLine:Array<String> = WeekData.weeksLoaded.get(WeekData.weeksList[i]).songs;
+			var weekSongs:Array<String> = new Array<String>(); // remember, if empty, must initialize!
+			for (j in 0...weekLine.length)
+			{
+				var song:String = weekLine[j];
+				// weekDatas[i].push(song);
+				weekSongs.push(song);
+			}
+			weekDatas.insert(i, weekSongs);
+			// var lineStuffs:Array<String> = weekStuffs[i].split(':');
+			weekCharacters.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekCharacters);
+			weekColor.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekColor);
+			weekBannerPath.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekImage);
+			weekUnderlayPath.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekBackground);
+			weekClickSoundPath.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).weekClickSound);
+			weekNames.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).storyName);
+			weekIds.insert(i, WeekData.weeksLoaded.get(WeekData.weeksList[i]).fileName);
 		}
 	}
 
@@ -202,6 +245,10 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 	override function create()
 	{
+		// JOELwindows7: BOLO clear memory!
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+
 		// JOELwindows7: Do the work for the weeklist pls!
 		// JOELwindows7: Okay, why not weeklist also procedural? just asking?
 		// not all people are into coding.
@@ -213,11 +260,19 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 				LOL wintergatan
 			// */ // a fed. looks like comment inside comment block doesn't affect. only after closing.
 		legacyJSONWeekList = false; // JOELwindows7: turn off after you completed new weeklist. DONE
-		// TODO: JOELwindow7: implement Master Eric's granular week JSON.
+
+		// JOELwindows7: the Altronix week JSON
+		WeekData.reloadWeekFiles(true);
+
+		// DONE: JOELwindow7: implement Master Eric's granular week JSON. nvm, maybe we have Altronix already?
 		if (legacyJSONWeekList)
 			jsonWeekList();
 		else
 			textedWeekList();
+		// altronixWeekList(); // JOELwindows7: Whenever it's ready!
+
+		if (curWeek >= WeekData.weeksList.length)
+			curWeek = 0;
 
 		weekUnlocked = unlockWeeks();
 
@@ -231,16 +286,26 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
-		if (FlxG.sound.music != null)
-		{
-			if (!FlxG.sound.music.playing)
-			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				Conductor.changeBPM(102);
-			}
-		}
+		// if (FlxG.sound.music != null)
+		// {
+		// 	if (!FlxG.sound.music.playing)
+		// 	{
+		// 		FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		// 		Conductor.changeBPM(102);
+		// 	}
+		// }
+		CoolUtil.playMainMenuSong(1); // JOELwindows7: NEW PLAY THE MENU!!!
 
 		persistentUpdate = persistentDraw = true;
+
+		// JOELwindows7: try to install Qmoveph bg
+		if (Main.watermarks && Main.perkedelMark)
+		{
+			// installDefaultBekgron();
+			installSophisticatedDefaultBekgron();
+			if (qmovephBekgron != null)
+				qmovephBekgron.setBgColors(Perkedel.QMOVEPH_BG_COLORS_STORY);
+		}
 
 		scoreText = new FlxUIText(10, 10, 0, "SCORE: 49324858", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
@@ -258,13 +323,16 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		// JOELwindows7: yeah
 		// Mark selection for campaign menu ui assets
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		yellowBG = cast new FlxUISprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE); // JOELwindows7: globalized lol
+		yellowBG = new FlxUISprite(0, 56);
+		yellowBG.makeGraphic(FlxG.width, 400, FlxColor.WHITE); // JOELwindows7: globalized lol
+		yellowBG.alpha = 0.5;
 		// original color was 0xFFF9CF51
 		// You must be white as a base colorable.
 
 		trace("Line smothing");
 		// JOELwindows7: add Underlay image first. also the cast
-		underlayBG = cast new FlxUISprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
+		underlayBG = new FlxUISprite(0, 56);
+		underlayBG.makeGraphic(FlxG.width, 400, FlxColor.TRANSPARENT);
 		underlayBG.alpha = .3; // Just like the LCD watch game toy.
 		// 64 bit, 32 bit, 16 bit. 8 bit, 4 Bit, 2 BIt, 1 BiT, HALF bIT, QUARTER BIT, THE WRIST GAAAAAAAAAME!!!
 		// lmao angry game review lololol
@@ -276,10 +344,17 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		add(grpLocks);
 
 		// JOELwindows7: yo! sup!
-		var blackBarThingie:FlxUISprite = cast new FlxUISprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
+		var blackBarThingie:FlxUISprite = new FlxUISprite();
+		blackBarThingie.makeGraphic(FlxG.width, 56, FlxColor.BLACK);
+		@:privateAccess {
+			// blackBarThingie.shader = new BlurFilter();
+			// blackBarThingie.shader = new FlxShader();
+			blackBarThingie.shader = new CRTShader(); // ugh, use last BOLO!
+		}
+		blackBarThingie.alpha = .5; // JOELwindows7: pls not anymore
 		add(blackBarThingie);
 
-		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();
+		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>(); // TODO: JOELwindows7: change to BOLO
 
 		trace("Line 70");
 
@@ -293,6 +368,8 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			weekThing.ID = i; // JOELwindows7: add ID to compare with curSelected week
+			weekThing.flashingColor = FlxColor.fromString(weekColor[i]);
+			weekThing.uniqueName = weekIds[i];
 			grpWeekText.add(weekThing);
 
 			weekThing.screenCenter(X);
@@ -315,9 +392,19 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 		trace("Line 96");
 
+		// TODO: JOELwindows7: change to BOLO
 		grpWeekCharacters.add(new MenuCharacter(0, 100, 0.5, false));
 		grpWeekCharacters.add(new MenuCharacter(450, 25, 0.9, true));
 		grpWeekCharacters.add(new MenuCharacter(850, 100, 0.5, true));
+
+		// var charArray:Array<String> = weekCharacters ; //weeksLoaded[0].characters;
+		// for (char in 0...3)
+		// {
+		// 	var weekCharacterThing:BoloMenuCharacter = new BoloMenuCharacter((FlxG.width * 0.25) * (1 + char) - 150, charArray[char]);
+		// 	weekCharacterThing.y += 70;
+		// 	grpWeekCharacters.add(weekCharacterThing);
+		// }
+
 		// JOELwindows7: hey, try the week 7 way, yoinked by luckdydog7
 		// for (char in 0...3)
 		// {
@@ -419,6 +506,8 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 		// JOELwindows7: stuffs
 		AchievementUnlocked.whichIs("story_mode");
+
+		CoolUtil.playMainMenuSong(1); // JOELwindows7: do it again for good measure
 	}
 
 	override function update(elapsed:Float)
@@ -599,6 +688,9 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 			{
 				// JOELwindows7: change click sound based on week selected
 				Controls.vibrate(0, 50); // JOELwindows7: give feedback!!!
+				// FlxG.sound.play(Paths.sound(weekClickSoundPath[curWeek] != null
+				// 	&& weekClickSoundPath[curWeek] != ''
+				// 	&& Paths.doesSoundAssetExist(weekClickSoundPath[curWeek]) ? weekClickSoundPath[curWeek] : 'confirmMenu'));
 				FlxG.sound.play(Paths.sound(weekClickSoundPath[curWeek] != null
 					&& weekClickSoundPath[curWeek] != '' ? weekClickSoundPath[curWeek] : 'confirmMenu'));
 
@@ -674,10 +766,12 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 
 		// USING THESE WEIRD VALUES SO THAT IT DOESNT FLOAT UP
 		sprDifficulty.y = leftArrow.y - 15;
-		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		// intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		intendedScore = Highscore.getNewWeekScore(weekIds[curWeek], curDifficulty); // JOELwindows7: from mod file names
 
 		#if !switch
-		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		// intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		intendedScore = Highscore.getNewWeekScore(weekIds[curWeek], curDifficulty); // JOELwindows7: from mod file names
 		#end
 
 		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
@@ -744,6 +838,14 @@ class StoryMenuState extends MusicBeatState implements IBGColorTweening
 		grpWeekCharacters.members[0].setCharacter(weekCharacters[curWeek][0]);
 		grpWeekCharacters.members[1].setCharacter(weekCharacters[curWeek][1]);
 		grpWeekCharacters.members[2].setCharacter(weekCharacters[curWeek][2]);
+
+		// TODO: JOELwindows7: change to BOLO
+		// var weekArray:Array<String> = weekCharacters //weeksLoaded[curWeek].characters;
+		// for (i in 0...grpWeekCharacters.length)
+		// {
+		// 	grpWeekCharacters.members[i].changeCharacter(weekArray[i]);
+		// 	grpWeekCharacters.members[i].changeColor(weekColor[curWeek]); // pls use tween
+		// }
 
 		// JOELwindows7: set underlay image
 		if (weekUnderlayPath[curWeek] != null && weekUnderlayPath[curWeek] != "")

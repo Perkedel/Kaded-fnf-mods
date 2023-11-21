@@ -16,7 +16,9 @@ class MenuItem extends FlxUIGroup // FlxSpriteGroup
 {
 	public var targetY:Float = 0;
 	public var week:FlxUISprite;
+	public var uniqueName:String = "anWeek"; // JOELwindows7: here unique identifier.
 	public var flashingInt:Int = 0;
+	public var flashingColor:FlxColor = 0xFF33ffff; // JOELwindows7: Make it flash with the color of the week, idk whatever it takes!
 
 	public function new(x:Float, y:Float, weekNum:Int = 0, useCustomImagePath:Bool = false, imagePath:String = "")
 	{
@@ -63,7 +65,8 @@ class MenuItem extends FlxUIGroup // FlxSpriteGroup
 			flashingInt += 1;
 
 		if (flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2))
-			week.color = 0xFF33ffff;
+			// week.color = 0xFF33ffff;
+			week.color = flashingColor;
 		else if (FlxG.save.data.flashing)
 			week.color = FlxColor.WHITE;
 	}

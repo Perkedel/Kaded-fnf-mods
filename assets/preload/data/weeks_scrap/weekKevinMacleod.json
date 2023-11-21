@@ -1,0 +1,27 @@
+{
+	"songs": [
+		"cipher",
+		"exhilarate",
+		"heartbreaking",
+		"monkeys-spinning-monkeys",
+		"go-cart",
+		"ouroboros",
+		"who-likes-to-party"
+	],
+
+	"weekCharacters": [
+		"hookx",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Dad",
+	"weekColor": "#EEEEEE",
+	"weekClickSound": "ConfirmMenu",
+	
+	"startUnlocked":true,
+	"storyName": "Overbuse: Kevin Macleod",
+	"weekBefore": "tutorial",
+
+	"hideStoryMode": false,
+    "hideFreeplay": false
+}

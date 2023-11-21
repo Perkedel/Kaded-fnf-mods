@@ -2,6 +2,8 @@
     "name": "Pico (Shooting)",
     "displayName": "Pico",
     "asset": "tankman/picoSpeaker",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#B7D855",
     "startingAnim": "shoot1",
     "isDancing": false,

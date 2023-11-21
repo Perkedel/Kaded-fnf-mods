@@ -57,6 +57,8 @@ class ModMenu extends CoreSubState
 
 	override function create()
 	{
+		super.create(); // JOELwindows7: call create now!
+
 		modObjects = new FlxTypedGroup();
 
 		modifiers = [
@@ -68,11 +70,15 @@ class ModMenu extends CoreSubState
 			new Modchart("Toggle Song Modchart if it has it."),
 			new HealthDrain("Toggle Opponent Health Drain when singing."),
 			new HealthGain("Toggle how many health you want to gain."),
-			new HealthLoss("Toggle how many health you want to loss.")
+			new HealthLoss("Toggle how many health you want to loss."),
+			new NoteskinModifier("Select your noteskin"),
+			new BotPlayModifier("Toggle to have the game automatically play for you"),
 		];
 
 		titleObject = new FlxUIText(176, 49, 0, 'GAMEPLAY MODIFIERS');
 		titleObject.setFormat(Paths.font("vcr.ttf"), 35, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		if (camControl != null)
+			titleObject.cameras = [camControl];
 		titleObject.borderSize = 3;
 
 		for (i in 0...modifiers.length)
@@ -80,6 +86,8 @@ class ModMenu extends CoreSubState
 			var mod = modifiers[i];
 			text = new FlxUIText(72, titleObject.y + 72 + (46 * i), 0, mod.getValue());
 			text.setFormat(Paths.font("vcr.ttf"), 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			if (camControl != null)
+				text.cameras = [camControl];
 			text.borderSize = 3;
 			text.borderQuality = 1;
 			text.scrollFactor.set();
@@ -92,8 +100,12 @@ class ModMenu extends CoreSubState
 		instance = this;
 
 		menu = new FlxTypedGroup<FlxUISprite>();
+		if (camControl != null)
+			menu.cameras = [camControl];
 
 		shownStuff = new FlxTypedGroup<FlxUIText>();
+		if (camControl != null)
+			shownStuff.cameras = [camControl];
 
 		selectedModifier = modifiers[0];
 
@@ -101,18 +113,24 @@ class ModMenu extends CoreSubState
 		background.makeGraphic(690, 640, FlxColor.BLACK);
 		background.alpha = 0.5;
 		background.scrollFactor.set();
+		if (camControl != null)
+			background.cameras = [camControl];
 		menu.add(background);
 
 		descTop = new FlxUISprite(30, 39);
 		descTop.makeGraphic(690, 55, FlxColor.BLACK);
 		descTop.alpha = 0.3;
 		descTop.scrollFactor.set();
+		if (camControl != null)
+			descTop.cameras = [camControl];
 		menu.add(descTop);
 
 		descBack = new FlxUISprite(30, 642);
 		descBack.makeGraphic(690, 38, FlxColor.BLACK);
 		descBack.alpha = 0.3;
 		descBack.scrollFactor.set();
+		if (camControl != null)
+			descBack.cameras = [camControl];
 		menu.add(descBack);
 
 		add(menu);
@@ -120,6 +138,8 @@ class ModMenu extends CoreSubState
 
 		descText = new FlxUIText(62, 648);
 		descText.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		if (camControl != null)
+			descText.cameras = [camControl];
 		descText.borderSize = 2;
 
 		add(descBack);
@@ -139,7 +159,7 @@ class ModMenu extends CoreSubState
 		addAcceptButton(FlxG.width - 100, Std.int(FlxG.height / 2), .4);
 		addDownButton(FlxG.width - 100, Std.int(FlxG.height / 2) + 200, .4);
 
-		super.create();
+		// super.create();
 	}
 
 	public function selectModifier(mod:Modifier)

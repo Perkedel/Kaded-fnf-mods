@@ -183,9 +183,10 @@ class MusicBeatState extends CoreState
 	 * @param trans whether to have transition
 	 * @param song is this a song loading?
 	 */
-	public function switchState(nextState:FlxState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false, stopMusic:Bool = false,
-			?previously:FlxState)
+	public function switchState(nextState:FlxState, goToLoading:Bool = true, trans:Bool = true, song:Bool = false, stopMusic:Bool = false, ?previously:FlxState)
 	{
+		// Game.captureScreenshot();
+
 		#if EXPERIMENTAL_HEX_WEEKEND
 		if (fuckYou)
 			return;
@@ -282,6 +283,7 @@ class MusicBeatState extends CoreState
 		MusicBeatState.switchingState = true;
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
+		Game.captureScreenshot();
 		if (!FlxTransitionableState.skipNextTransIn)
 		{
 			leState.openSubState(new PsychTransition(0.75, false));
@@ -491,20 +493,23 @@ class MusicBeatState extends CoreState
 		// do literally nothing dumbass
 	}
 
-	public function fancyOpenURL(schmancy:String)
+	override public function fancyOpenURL(schmancy:String)
 	{
 		// JOELwindows7: Ahem, turns out `FlxG.openURL` already `xdg-open` on itself. System open URL thingy! open File yeah.
-		#if linux
-		// Sys.command('/usr/bin/xdg-open', [schmancy, "&"]);
-		Sys.command('/usr/bin/xdg-open', [schmancy]); // this also got the same issue. how about you forget the `&` (put as bg process)?
+		// #if linux
+		// // Sys.command('/usr/bin/xdg-open', [schmancy, "&"]);
+		// Sys.command('/usr/bin/xdg-open', [schmancy]); // this also got the same issue. how about you forget the `&` (put as bg process)?
 
-		/**
-			xdg-open: unexpected argument '&'
-			Try 'xdg-open --help' for more information.
-		**/
-		#else
-		FlxG.openURL(schmancy);
-		#end
+		// /**
+		// 	xdg-open: unexpected argument '&'
+		// 	Try 'xdg-open --help' for more information.
+		// **/
+		// #else
+		// FlxG.openURL(schmancy);
+		// #end
+
+		// JOELwindows7: now internalized
+		super.fancyOpenURL(schmancy);
 	}
 
 	// JOELwindows7: everything I add has been moved to CoreState.hx

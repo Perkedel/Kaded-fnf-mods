@@ -2,6 +2,8 @@
   "name": "Girlfriend (Tankmen)",
   "displayName": "Girlfriend",
   "asset": "characters/gfTankmen",
+  "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
   "barColor": "#A5004D",
   "camPos":[0,140],
   "isDancing": true,

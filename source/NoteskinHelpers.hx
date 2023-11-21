@@ -20,31 +20,71 @@ class NoteskinHelpers
 
 	public static function updateNoteskins()
 	{
+		// JOELwindows7: ala Altronix week data pls!
+		trace('hey list the noteskin at ${'images/noteskins'}');
+		var library = OpenFlAssets.getLibrary("shared");
+		var dataAssets = library.list(null);
+		var queryPath = 'images/noteskins/';
+
 		noteskinArray = [];
 		xmlData = [];
-		#if FEATURE_FILESYSTEM
+		// TODO: use JSON!!!
+		// #if FEATURE_FILESYSTEM
+		// var count:Int = 0;
+		// for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/noteskins")))
+		// {
+		// 	// JOELwindows7: make sure the special type are not considered different option.
+		// 	// these are pixel, mine do not step, special power up, important must step or ded, never step or ded, splash, etc. idk.
+		// 	if (i.contains("-pixel") || i.contains("-mine") || i.contains("-special") || i.contains("-important") || i.contains("-never")
+		// 		|| i.contains("-splash"))
+		// 		continue;
+		// 	if (i.endsWith(".xml"))
+		// 	{
+		// 		xmlData.push(sys.io.File.getContent(FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + i));
+		// 		continue;
+		// 	}
+
+		// 	if (!i.endsWith(".png"))
+		// 		continue;
+		// 	noteskinArray.push(i.replace(".png", ""));
+		// }
+		// #else
+		// // noteskinArray = ["Arrows", "Circles", "Saubo"]; // JOELwindows7: lemme pecking try this. ugh so confusing!
+		// noteskinArray = CoolUtil.coolTextFile(Paths.txt('data/noteskinSettingList')); // JOElwindows7: right, let's just manual filing instead, shall we?
+		// #end
+
+		// JOELwindows7: Yes, this Altronix style week JSONing, edited for here noteskin combining above filesystemer.
 		var count:Int = 0;
-		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/noteskins")))
+		for (i in dataAssets)
 		{
 			// JOELwindows7: make sure the special type are not considered different option.
 			// these are pixel, mine do not step, special power up, important must step or ded, never step or ded, splash, etc. idk.
-			if (i.contains("-pixel") || i.contains("-mine") || i.contains("-special") || i.contains("-important") || i.contains("-never")
-				|| i.contains("-splash"))
-				continue;
-			if (i.endsWith(".xml"))
+			if (i.indexOf(queryPath) != -1)
 			{
-				xmlData.push(sys.io.File.getContent(FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + i));
-				continue;
-			}
+				var suffixPos = i.indexOf(queryPath) + queryPath.length;
 
-			if (!i.endsWith(".png"))
-				continue;
-			noteskinArray.push(i.replace(".png", ""));
+				if (i.contains("-pixel") || i.contains("-mine") || i.contains("-special") || i.contains("-important") || i.contains("-never")
+					|| i.contains("-splash") || i.contains("NOTE_ASSETS") || i.contains("NOTE_assets") || i.contains("arrowEnds")
+					|| i.contains("AttackNOTE_assets") || i.contains("HURTNOTE_assets") || i.contains("HURTnoteSplashes") || i.contains("noteSplashes")
+					|| i.contains("vcherrykai16_notes_pack_1"))
+					continue;
+				if (i.endsWith(".xml"))
+				{
+					// xmlData.push(Paths.getXMLTextFile(i.substr(suffixPos).replaceAll('.xml', '')));
+					#if FEATURE_FILESYSTEM
+					if (FileSystem.exists(i))
+						xmlData.push(sys.io.File.getContent(FileSystem.absolutePath(i)));
+					#end
+					continue;
+				}
+
+				if (!i.endsWith(".png"))
+					continue;
+				// noteskinArray.push(i.replace(".png", "").replace(suffixPos, ""));
+				// data.substr(suffixPos).replaceAll('.json', '')
+				noteskinArray.push(i.substr(suffixPos).replaceAll(".png", ""));
+			}
 		}
-		#else
-		// noteskinArray = ["Arrows", "Circles", "Saubo"]; // JOELwindows7: lemme pecking try this. ugh so confusing!
-		noteskinArray = CoolUtil.coolTextFile(Paths.txt('data/noteskinSettingList')); // JOElwindows7: right, let's just manual filing instead, shall we?
-		#end
 
 		return noteskinArray;
 	}
@@ -209,8 +249,7 @@ class NoteskinHelpers
 		// 	.result() : BitmapData.loadFromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared"))).result();
 		// return Paths.getSparrowAtlas('noteskins/' + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin), "shared");
 
-		return Paths.doesImageAssetExist(Paths.image(path,
-			'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
+		return Paths.doesImageAssetExist(Paths.image(path, 'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
 		// #else
 		// // return BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
 		// // JOELwindows7:here because Android requires Asset2File
@@ -262,8 +301,7 @@ class NoteskinHelpers
 		// 	'shared')) ? BitmapData.loadFromFile(Asset2File.getPath(Paths.image(path, 'shared')))
 		// 	.result() : BitmapData.loadFromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel', "shared"))).result();
 
-		return Paths.doesImageAssetExist(Paths.image(path,
-			'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
+		return Paths.doesImageAssetExist(Paths.image(path, 'shared')) ? Paths.loadBitmap(path, 'shared') : Paths.loadBitmap('noteskins/Arrows-pixel', "shared");
 		// #else
 		// return BitmapData.fromFile(Asset2File.getPath(Paths.image('noteskins/Arrows-pixel$typetypeSuffix', "shared")));
 		// #end
@@ -304,3 +342,4 @@ class NoteskinHelpers
 		return Asset2File.getPath(Paths.image('noteskins/' + say, "shared"));
 	}
 }
+// JOELwindows7:

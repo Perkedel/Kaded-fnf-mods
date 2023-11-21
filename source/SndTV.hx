@@ -1,3 +1,4 @@
+#if FEATURE_FMOD
 import h2d.Tweenie.TType;
 
 // praise delahee, i'll figure out what this shit means later!
@@ -315,3 +316,4 @@ class SndTV
 		}
 	}
 }
+#end

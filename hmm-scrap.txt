@@ -1,0 +1,21 @@
+{
+            "name": "hscript",
+            "type": "haxelib",
+            "version": null
+        },
+
+{
+            "name": "pecan",
+            "type": "haxelib",
+            "version": null
+        },
+{
+            "name": "tink_typecrawler",
+            "type": "haxelib",
+            "version": null
+        },
+{
+            "name": "tink_lang",
+            "type": "haxelib",
+            "version": null
+        },

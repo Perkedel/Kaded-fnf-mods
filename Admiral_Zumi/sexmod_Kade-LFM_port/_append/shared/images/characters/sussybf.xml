@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="sussybf.png">
+	<!-- Created with Adobe Animate version 21.0.7.42652 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="blankidle0000" x="0" y="0" width="100" height="100"/>
+	<SubTexture name="blankidle0001" x="0" y="0" width="100" height="100"/>
+	<SubTexture name="blankidle0002" x="0" y="0" width="100" height="100"/>
+	<SubTexture name="fade0000" x="100" y="0" width="536" height="300"/>
+	<SubTexture name="fade0001" x="636" y="0" width="536" height="300"/>
+	<SubTexture name="fade0002" x="1172" y="0" width="536" height="300"/>
+	<SubTexture name="fade0003" x="0" y="300" width="536" height="300"/>
+	<SubTexture name="fade0004" x="536" y="300" width="536" height="300"/>
+	<SubTexture name="fade0005" x="1072" y="300" width="536" height="300"/>
+	<SubTexture name="fade0006" x="0" y="600" width="536" height="300"/>
+	<SubTexture name="fade0007" x="536" y="600" width="536" height="300"/>
+	<SubTexture name="fade0008" x="1072" y="600" width="536" height="300"/>
+	<SubTexture name="fade0009" x="0" y="900" width="536" height="300"/>
+	<SubTexture name="fade0010" x="536" y="900" width="536" height="300"/>
+	<SubTexture name="fade0011" x="1072" y="900" width="536" height="300"/>
+	<SubTexture name="fade0012" x="0" y="1200" width="536" height="300"/>
+	<SubTexture name="flash0000" x="536" y="1200" width="430" height="255"/>
+	<SubTexture name="flash0001" x="966" y="1200" width="430" height="255"/>
+	<SubTexture name="flash0002" x="1396" y="1200" width="430" height="255"/>
+	<SubTexture name="flash0003" x="0" y="1500" width="430" height="255"/>
+	<SubTexture name="flash0004" x="430" y="1500" width="430" height="255"/>
+	<SubTexture name="flash0005" x="860" y="1500" width="430" height="255"/>
+	<SubTexture name="flash0006" x="1290" y="1500" width="430" height="255"/>
+	<SubTexture name="flash0007" x="0" y="1755" width="430" height="255"/>
+</TextureAtlas>

@@ -2,6 +2,8 @@
     "name": "Monster (Christmas)",
     "displayName": "Monster",
     "asset": "characters/monsterChristmas",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#F3FF6E",
     "startingAnim": "idle",
     "heartOrgans": [{

@@ -5,7 +5,8 @@
 	    The engine will NOT load any files that are not listed.	
 	-->
 	
-	<file id="data" value="data.tsv"/>
+	<file id="ui" value="ui.tsv"/>
+	<file id="subtitle" value="subtitle.tsv"/>
 	<file id="data" value="more_data.tsv"/>
 	
 	<file id="fonts" value="fonts.xml"/>
@@ -25,11 +26,11 @@
 	
 	<!--American English-->
 	<locale id="en-US" is_default="true" sort="0">	
-		<contributors value="Lars Doucet, Level Up Labs"/>
+		<contributors value="Lars Doucet, Level Up Labs, Joel Robert Justiawan, Perkedel Technologies"/>
 		<ui language="Language" region="Region" accept="Okay" />
 		<label id="en-US,en-GB,en-CA" language="English" region="United States"/>
 		<label id="nb-NO" language="Engelsk" region="U.S.A."/>
-		<label id="id-ID" language="Indonesian" region="Indonesia"/>
+		<label id="id-ID" language="Bahasa Inggris" region="Amerika"/>
 	</locale>
 	
 	<!--British English-->
@@ -37,7 +38,7 @@
 		<ui language="Language" region="Region"/>
 		<label id="en-US,en-GB,en-CA,yo-DA" language="English" region="Great Britain"/>
 		<label id="nb-NO" language="Engelsk" region="Stor-Britannia"/>
-		<label id="id-ID" language="Indonesian" region="Indonesia"/>
+		<label id="id-ID" language="Bahasa Inggris Britania" region="Britania Raya"/>
 	</locale>
 	
 	<!--Canadian English-->
@@ -45,16 +46,16 @@
 		<ui language="Language" region="Region"/>
 		<label id="en-US,en-GB,en-CA,yo-DA" language="English" region="Canada"/>
 		<label id="nb-NO" language="Engelsk" region="Canada"/>
-		<label id="id-ID" language="Indonesian" region="Indonesia"/>
+		<label id="id-ID" language="Bahasa Inggris Kanada" region="Kanada"/>
 	</locale>
 
 	<!-- JOELwindows7: Bahasa Indonesia -->
 	<locale id="id-ID" sort="3">	
-		<contributors value="JOELwindows7"/>
+		<contributors value="Joel Robert Justiawan, Perkedel Technologies"/>
 		<ui language="Bahasa" region="Daerah" accept="Oke" />
-		<label id="en-US,en-GB,en-CA" language="Indonesia" region="Indonesia"/>
-		<label id="nb-NO" language="Engelsk" region="U.S.A."/>
-		<label id="id-ID" language="Indonesia" region="Indonesia"/>
+		<label id="en-US,en-GB,en-CA" language="Indonesian" region="Indonesia"/>
+		<label id="nb-NO" language="Indonesisk" region="Indonesia"/>
+		<label id="id-ID" language="Bahasa Indonesia" region="Indonesia"/>
 	</locale>
 	
 	<!--Norwegian Bokmål-->
@@ -62,15 +63,16 @@
 		<ui language="Språk" region="Område"/>
 		<label id="en-US,en-GB,en-CA,yo-DA" language="Norwegian" region="Norway (Bokmål)"/>
 		<label id="nb-NO" language="Norsk" region="Norge (Bokmål)"/>
-		<label id="id-ID" language="Indonesia" region="Indonesia"/>
+		<label id="id-ID" language="Bahasa Norwegia" region="Norwegia (Bokmål)"/>
 	</locale>
 	
 	<!--Dagoban Yoda-ish-->
 	<locale id="yo-DA" sort="7">
+		<contributors value="Lars Doucet, Level Up Labs, Joel Robert Justiawan, Perkedel Technologies"/>
 		<ui language="Language" region="Dagobah"/>
 		<label id="en-US,en-GB,en-CA,yo-DA" language="Yoda-ish" region="Dagobah"/>
 		<label id="nb-NO" language="Yoda-isk" region="Dagobah"/>
-		<label id="id-ID" language="Indonesia" region="Indonesia"/>
+		<label id="id-ID" language="Bahasa Inggris Yoda" region="Dagobah"/>
 	</locale>
 	
 	<!---
@@ -86,23 +88,26 @@
 	
 	<note id="beta">
 		<!--This means that the translation has not been properly integrated yet-->
-		<text id="en-US,en-GB,en-CA,yo-DA" title="BETA" body="This translation is still in beta. Untranslated text, missing characters, and other visual glitches are very likely not the fault of the translator."/>
+		<text id="en-US,en-GB,en-CA" title="BETA" body="This translation is still in beta. Untranslated text, missing characters, and other visual glitches are very likely not the fault of the translator."/>
+		<text id="yo-DA" title="BETA" body="Still in beta, this translation is. Untranslated text, missing characters, and other visual glitches fault of the translator, are very likely not."/>
 		<text id="nb-NO" title="BETA" body="Denne oversettelsen er fortsatt i beta. Uoversatt tekst, manglende bokstaver, og andre visuelle problemer er svært sannsynlig ikke feil av oversetteren."/>
 		<text id="id-ID" title="BETA" body="Terjemahan ini masih dalam beta. Teks yang belum diterjemahkan, karakter terlewat, dan glitch visual lainnya bukan merupakan kesalahan para penerjemah."/>
 	</note>
 	
 	<note id="volunteer">
 		<!--This means that a fan or other volunteer submitted this to us-->
-		<text id="en-US,en-GB,en-CA,yo-DA" title="VOLUNTEER" body="This is a volunteer fan translation.$N$NContributors:"/>
+		<text id="en-US,en-GB,en-CA" title="VOLUNTEER" body="This is a volunteer fan translation.$N$NContributors:"/>
+		<text id="yo-DA" title="VOLUNTEER" body="Volunteer fan translation, this is.$N$NContributors:"/>
 		<text id="nb-NO" title="FRIVILLIG" body="Dette er en frivillig oversettelse.$N$NBidragsytere:"/>
-		<text id="id-ID" title="SUKARELA" body="Terjemahan ini merupakan terjemahan sukarela penggemar.$N$NBidragsytere:"/>
+		<text id="id-ID" title="SUKARELA" body="Terjemahan ini merupakan terjemahan sukarela penggemar.$N$NKontributor:"/>
 	</note>
 	
 	<note id="official">
 		<!--This means that we solicited and paid the translator for an official translation-->
-		<text id="en-US,en-GB,en-CA,yo-DA" title="OFFICIAL" body="This is an official (paid) translation.$N$NContributors:"/>
+		<text id="en-US,en-GB,en-CA" title="OFFICIAL" body="This is an official (paid) translation.$N$NContributors:"/>
+		<text id="yo-DA" title="OFFICIAL" body="Official (paid), translation this is.$N$NContributors:"/>
 		<text id="nb-US" title="OFFISIELL" body="Dette er en offisiell (betalt) oversettelse.$N$NBidragsytere:"/>
-		<text id="id-ID" title="RESMI" body="Terjemahan ini merupakan terjemahan resmi (disponsori).$N$NBidragsytere:"/>
+		<text id="id-ID" title="RESMI" body="Terjemahan ini merupakan terjemahan resmi (disponsori).$N$NKontributor:"/>
 	</note>
 	
 </data>

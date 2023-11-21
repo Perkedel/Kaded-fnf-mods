@@ -260,7 +260,6 @@ class KadeEngineFPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-
 			// JOELwindows7: here comes the Psyched memory RAM megas!
 			// https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/openfl/display/FPS.hx
 			// var memoryMegas:Float = 0; // already globalized!
@@ -286,7 +285,12 @@ class KadeEngineFPS extends TextField
 			// here's BOLO's implementation https://github.com/BoloVEVO/Kade-Engine-Public/blob/stable/source/KadeEngineFPS.hx
 			#end
 			text += (Main.watermarks ? "KE " + "v" + MainMenuState.kadeEngineVer + "\n" : "");
-			text += (Main.perkedelMark ? "LFM v" + MainMenuState.lastFunkinMomentVer + "\n" : "");
+			text += (Main.perkedelMark ? "LFM v"
+				+ MainMenuState.lastFunkinMomentVer
+				+ " ("
+				+ '${CompileTime.buildGitCommitSha()}'
+				+ ") "
+				+ "\n" : "");
 			// JOELwindows7: OH COOL!! GREAT IDEA, BOLO. Debug mode indicator, yess!!!
 			text += '${(#if debug "DEBUG MODE\n" #elseif release "RELEASE MODE\n" #else "" #end)}';
 			text += '$extraInfo\n'; // JOELwindows7: see, not that hard. I know it's not perfect but should shorten it this.
@@ -295,7 +299,7 @@ class KadeEngineFPS extends TextField
 
 			// JOELwindows7: psyched check danger status
 			// JOELwindows7: Okay, on second thought you know what? let's just tell which one is in danger.
-			memoryUsageTooHigh = memoryUsage > 3000;
+			memoryUsageTooHigh = memoryUsage >= 3000;
 			fpsTooLow = currentFPS <= 60;
 			// if (memoryUsage > 3000 || currentFPS <= FlxG.save.data.fpsCap / 2)
 			if (memoryUsageTooHigh || fpsTooLow) // JOELwindows7: no uuuh, Why half of the fps cap? perhaps, panic only if uh..

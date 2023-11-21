@@ -2,6 +2,8 @@
     "name": "Girlfriend (Crucified)",
     "displayName": "Girlfriend",
     "asset": "characters/gfCrucified",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#A5004D",
     "startingAnim": "danceRight",
     "isDancing": true,

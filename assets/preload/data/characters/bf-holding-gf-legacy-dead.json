@@ -2,6 +2,8 @@
     "name": "Boyfriend Holding Girlfriend (Dead)",
     "displayName": "Boyfriend & Girlfriend",
     "asset": "tankman/bfHoldingGF-DEAD",
+    "usePackerAtlas": false,
+    "AtlasType": "SparrowAtlas",
     "barColor": "#5000E6",
     "flipX": true,
     "startingAnim": "firstDeath",

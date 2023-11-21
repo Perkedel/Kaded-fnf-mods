@@ -1,0 +1,30 @@
+{
+	"storyName": "ohmgaod",
+	"hideFreeplay": false,
+	"weekBackground": "",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
+	"weekBefore": "tutorial",
+	"startUnlocked": true,
+	"hideStoryMode": true,
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"songs": [
+		[
+			"pokemoan",
+			"gard",
+			[
+				120,
+				173,
+				120
+			]
+		]
+	],
+	"weekName": "Custom Week"
+}

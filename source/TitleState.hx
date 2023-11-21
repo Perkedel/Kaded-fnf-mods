@@ -1,5 +1,6 @@
 package;
 
+import ui.DeprecatedState;
 import flixel.addons.ui.FlxUISprite;
 import flixel.addons.display.FlxBackdrop;
 import plugins.sprites.QmovephBackground;
@@ -341,7 +342,8 @@ class TitleState extends MusicBeatState
 			// music.loadStream(Paths.music('freakyMenu'));
 			// FlxG.sound.list.add(music);
 			// music.play();
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0); // damn, new way borks here
+			// CoolUtil.playMainMenuSong(0) ; // JOELwindows7: NEW PLAY THE MENU!!!
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);
@@ -447,57 +449,19 @@ class TitleState extends MusicBeatState
 			MainMenuState.firstStart = true;
 			MainMenuState.finishedFunnyMove = false;
 
-			new FlxTimer().start(2, function(tmr:FlxTimer)
+			// JOELwindows7: Now will hemlemot to depend by depreciations.
+			switch (DeprecatedState.deprecationLevelSelect)
 			{
-				// Get current version of Kade Engine
+				case 0:
+					checkKadeUpdate();
+				case 1:
+					checkKadeUpdate();
+				case 2:
+					justMenuGoMain();
+				default:
+					checkKadeUpdate();
+			}
 
-				// JOELwindows7: do this if not mobile since in there this doesn't work
-				// according to the luckydog7 and mods that don't care update
-				#if FEATURE_HTTP
-				var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/master/version.downloadMe");
-				var returnedData:Array<String> = [];
-
-				http.onData = function(data:String)
-				{
-					returnedData[0] = data.substring(0, data.indexOf(';'));
-					returnedData[1] = data.substring(data.indexOf('-'), data.length);
-					if (!MainMenuState.kadeEngineVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState)
-					{
-						alreadyDecideOutdated = true;
-						trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.kadeEngineVer);
-						OutdatedSubState.needVer = returnedData[0];
-						OutdatedSubState.currChanges = returnedData[1];
-						// FlxG.switchState(new OutdatedSubState());
-						switchState(new OutdatedSubState()); // JOELwindows7: hex switch state lol
-						clean();
-					}
-					else
-					{
-						// FlxG.switchState(new MainMenuState());
-						// switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
-						// clean();
-						// JOELwindows7: hey, now step by step to this one
-						checkLFMUpdate();
-					}
-				}
-
-				http.onError = function(error)
-				{
-					trace('error: $error');
-					// FlxG.switchState(new MainMenuState()); // fail but we go anyway
-					// switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: hex switch state lol
-					// clean();
-					// JOELwindows7: hey, now step by step to this one
-					checkLFMUpdate();
-				}
-
-				http.request();
-				#else
-				// see bellow update (LFM update check) check else
-				// it already done go to menu for me.
-				checkLFMUpdate();
-				#end
-			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 
 			// JOELwindows7: Last Funkin Moments outdated marks
@@ -515,6 +479,69 @@ class TitleState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+	}
+
+	inline function checkKadeUpdate()
+	{
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			// Get current version of Kade Engine
+
+			// JOELwindows7: do this if not mobile since in there this doesn't work
+			// according to the luckydog7 and mods that don't care update
+			// Hey Kade no longer Engine. pls take it off and leave it for us. DO NOT REMOVE KADE ATTRIBUTES!!! Credit policy.
+
+			// BEGIN COMMENT
+			// #if FEATURE_HTTP
+			// var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/master/version.downloadMe");
+			// var returnedData:Array<String> = [];
+
+			// http.onData = function(data:String)
+			// {
+			// 	returnedData[0] = data.substring(0, data.indexOf(';'));
+			// 	returnedData[1] = data.substring(data.indexOf('-'), data.length);
+			// 	if (!MainMenuState.kadeEngineVer.contains(returnedData[0].trim()) && !OutdatedSubState.leftState)
+			// 	{
+			// 		alreadyDecideOutdated = true;
+			// 		trace('outdated lmao! ' + returnedData[0] + ' != ' + MainMenuState.kadeEngineVer);
+			// 		OutdatedSubState.needVer = returnedData[0];
+			// 		OutdatedSubState.currChanges = returnedData[1];
+			// 		// FlxG.switchState(new OutdatedSubState());
+			// 		switchState(new OutdatedSubState()); // JOELwindows7: hex switch state lol
+			// 		clean();
+			// 	}
+			// 	else
+			// 	{
+			// 		// FlxG.switchState(new MainMenuState());
+			// 		// switchState(new MainMenuState()); // JOELwindows7: hex switch state lol
+			// 		// clean();
+			// 		// JOELwindows7: hey, now step by step to this one
+			// 		checkLFMUpdate();
+			// 	}
+			// }
+
+			// http.onError = function(error)
+			// {
+			// 	trace('error: $error');
+			// 	// FlxG.switchState(new MainMenuState()); // fail but we go anyway
+			// 	// switchState(new MainMenuState()); // fail but we go anyway; JOELwindows7: hex switch state lol
+			// 	// clean();
+			// 	// JOELwindows7: hey, now step by step to this one
+			// 	checkLFMUpdate();
+			// }
+
+			// http.request();
+			// #else
+			// END COMMENT
+
+			// see bellow update (LFM update check) check else
+			// it already done go to menu for me.
+			checkLFMUpdate();
+
+			// BEGIN COMMENT
+			// #end
+			// END COMMENT
+		});
 	}
 
 	// JOELwindows7: oh race condition! don't start 2 timer at the same time. do it step by step! check update this, and then ours.
@@ -671,6 +698,21 @@ class TitleState extends MusicBeatState
 		collapseToasts(); // JOELwindows7: collapse all toasts!
 	}
 
+	inline function justMenuGoMain()
+	{
+		new FlxTimer().start(2, function(tmr:FlxTimer)
+		{
+			switchState(new MainMenuState()); // Just pecking go to menu already! JOELwindows7: get here hex switch state yeah
+			clean();
+
+			// now refresh both version says
+			MainMenuState.lastFunkinMomentVer += '${MainMenuState.larutMalam}';
+			MainMenuState.kadeEngineVer += '${MainMenuState.nightly}';
+
+			collapseToasts(); // JOELwindows7: collapse all toasts!
+		});
+	}
+
 	function createCoolText(textArray:Array<String>)
 	{
 		for (i in 0...textArray.length)
@@ -723,7 +765,9 @@ class TitleState extends MusicBeatState
 				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 			// credTextShit.visible = true;
 			case 3:
-				addMoreText('present');
+				// JOELwindows7: FireTonguefy
+				// addMoreText('present');
+				addMoreText(CoolUtil.getText("$TITLE_PRESENTS"));
 			// credTextShit.text += '\npresent...';
 			// credTextShit.addText();
 			case 4:
@@ -734,15 +778,27 @@ class TitleState extends MusicBeatState
 			case 5:
 				if (Main.watermarks)
 				{
+					// JOELwindows7: FireTonguefy
 					if (Main.odyseeMark)
-						createCoolText(['are we partnered', 'with']);
+						// createCoolText(['are we partnered', 'with']);
+						createCoolText([
+							CoolUtil.getText("$TITLE_ARE_WE_PARTNERED"),
+							CoolUtil.getText("$TITLE_ARE_WE_PARTNERED_WITH")
+						]);
 					else if (Main.perkedelMark)
-						createCoolText(['last funkin moments', 'by']);
+						// createCoolText(['last funkin moments', 'by']);
+						createCoolText(['last funkin moments', CoolUtil.getText("$TITLE_PRODUCT_BY")]);
 					else
-						createCoolText(['Kade Engine', 'by']);
+						// createCoolText(['Kade Engine', 'by']);
+						createCoolText(['Kade Engine', CoolUtil.getText("$TITLE_PRODUCT_BY")]);
 				}
 				else
-					createCoolText(['In Partnership', 'with']);
+					// JOELwindows7: Firetonguefy too!
+					// createCoolText(['In Partnership', 'with']);
+					createCoolText([
+						CoolUtil.getText("$TITLE_IN_PARTNERSHIP"),
+						CoolUtil.getText("$TITLE_IN_PARTNERSHIP_WITH")
+					]);
 			case 7:
 				if (Main.watermarks)
 					if (Main.odyseeMark)
@@ -773,10 +829,12 @@ class TitleState extends MusicBeatState
 			// credTextShit.text = 'Shoutouts Tom Fulp';
 			// credTextShit.screenCenter();
 			case 9:
-				createCoolText([curWacky[0]]);
+				// createCoolText([curWacky[0]]);
+				createCoolText([CoolUtil.getText(curWacky[0], 'subtitle')]); // JOELwindows7: experiment the translated intro text
 			// credTextShit.visible = true;
 			case 11:
-				addMoreText(curWacky[1]);
+				// addMoreText(curWacky[1]);
+				addMoreText(CoolUtil.getText(curWacky[1], 'subtitle')); // JOELwindows7: oh yeah!
 			// credTextShit.text += '\nlmao';
 			case 12:
 				deleteCoolText();
@@ -793,7 +851,7 @@ class TitleState extends MusicBeatState
 			// credTextShit.text += '\nNight';
 			case 15:
 				// addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
-				addMoreText(Main.perkedelMark ? 'Moments' : 'Funkin');
+				addMoreText(Main.perkedelMark ? 'Moments' : 'Funkin\'');
 			case 16:
 				skipIntro();
 		}

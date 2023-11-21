@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="pico.png">
+	<!-- Created with Adobe Animate version 21.0.7.42652 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="anger0000" x="100" y="100" width="590" height="594"/>
+	<SubTexture name="black0000" x="710" y="100" width="590" height="594"/>
+	<SubTexture name="pico0000" x="1320" y="100" width="453" height="475"/>
+	<SubTexture name="pico0001" x="1320" y="100" width="453" height="475"/>
+	<SubTexture name="pico0002" x="1793" y="100" width="453" height="475"/>
+	<SubTexture name="pico0003" x="1793" y="100" width="453" height="475"/>
+	<SubTexture name="pico0004" x="2266" y="100" width="453" height="475"/>
+	<SubTexture name="pico0005" x="2739" y="100" width="453" height="475"/>
+	<SubTexture name="pico0006" x="3212" y="100" width="453" height="475"/>
+	<SubTexture name="pico0007" x="100" y="714" width="453" height="475"/>
+	<SubTexture name="pico0008" x="573" y="714" width="453" height="475"/>
+	<SubTexture name="pico0009" x="573" y="714" width="453" height="475"/>
+	<SubTexture name="pico0010" x="573" y="714" width="453" height="475"/>
+	<SubTexture name="pico0011" x="573" y="714" width="453" height="475"/>
+	<SubTexture name="pico0012" x="573" y="714" width="453" height="475"/>
+	<SubTexture name="pico0013" x="573" y="714" width="453" height="475"/>
+	<SubTexture name="whites0000" x="1046" y="714" width="590" height="594"/>
+</TextureAtlas>

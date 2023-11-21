@@ -1,5 +1,11 @@
 package;
 
+// import utils.api.WindowsAPI;
+import plugins.sprites.PlayStationBackground;
+import ui.DeprecatedState;
+#if debug
+import flixel.addons.studio.FlxStudio;
+#end
 import ui.states.debug.WerrorForceMajeurState;
 import ui.states.debug.WerrorCrashState;
 import openfl.system.System;
@@ -11,7 +17,9 @@ import crashdumper.SessionData;
 import ui.SplashScreen;
 import plugins.sprites.LoadingBar;
 import GameJolt;
+#if FEATURE_SCREENSHOT
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
+#end
 import flixel.input.keyboard.FlxKey;
 // import grig.midi.MidiOut;
 // import grig.midi.MidiIn;
@@ -21,7 +29,7 @@ import flixel.util.FlxTimer;
 import com.player03.android6.Permissions;
 #end
 import android.Permissions as AndroidPermissions;
-import android.Hardware;
+// import android.Hardware;
 #end
 #if FEATURE_WEBM_NATIVE
 import webm.WebmPlayer;
@@ -58,6 +66,7 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 #end
+import firetongue.FireTongue;
 
 class Main extends Sprite
 {
@@ -65,6 +74,7 @@ class Main extends Sprite
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	// var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
 	var initialState:Class<FlxState> = SplashScreen; // The FlxState the game starts with.; JOELwindows7: use my splashscreen yey!
+	// var initialState:Class<FlxState> = DeprecatedState; // JOELwindows7: Deprecation state, because FULL ASS will be released, I think.. (ENGAGE ONLY IN 2024.06)
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var framerate:Int = 120; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
@@ -82,6 +92,7 @@ class Main extends Sprite
 	public static var chosenMarkNum:Int = 0;
 
 	public static var gjToastManager:GJToastManager; // JOELwindows7: TentaRJ Gamejolter now has Toast yey! FORMATTER STOP PECK THIS UP FEMALE DOG!!!
+	public static var playStationBG:PlayStationBackground; // JOELwindows7: and this one used by Toby Fox and friends to beautify compensate screen blackbars
 	public static var loadingBar:LoadingBar; // JOELwindows7: the loading bar thingy.
 
 	// JOELwindows7: furusystem & karaidon Xinput thingy
@@ -89,6 +100,11 @@ class Main extends Sprite
 	public static var xboxControllers:Array<XBox360Controller> = [];
 	public static final xboxControllerNum:Int = 7;
 	#end
+
+	// JOELwindows7: Please LarsiusPrime's FireTongue
+	// https://github.com/HaxeFlixel/flixel-demos/blob/dev/UserInterface/RPGInterface/source/Main.hx
+	public static var tongue:FireTongueEx;
+	public static var tongues:Array<FireTongueEx>; // add multiple tongues!!!
 
 	// JOELwindows7: Please no demonic reference about Mark of what the peck!
 	/*
@@ -107,6 +123,7 @@ class Main extends Sprite
 		trace("yey");
 		trace("Last Funkin Moments v" + Perkedel.ENGINE_VERSION); // JOELwindows7: idk why crash on android.
 		// pls don't destroy debug only because you don't have filesystem access!!
+		Console.log('<cyan><b>Last Funkin Moments v${Perkedel.ENGINE_VERSION}</></>');
 
 		// JOELwindows7: totally try catch now!
 		try
@@ -166,10 +183,12 @@ class Main extends Sprite
 			#end
 			// JOELwindows7: from https://github.com/jigsaw-4277821/extension-androidtools
 			// #if (extension-androidtools)
-			AndroidPermissions.requestPermissions([
-				AndroidPermissions.READ_EXTERNAL_STORAGE,
-				AndroidPermissions.WRITE_EXTERNAL_STORAGE
-			]);
+			// AndroidPermissions.requestPermissions([
+			// 	AndroidPermissions.READ_EXTERNAL_STORAGE,
+			// 	AndroidPermissions.WRITE_EXTERNAL_STORAGE
+			// ]);
+			AndroidPermissions.requestPermission(AndroidPermissions.READ_EXTERNAL_STORAGE);
+			AndroidPermissions.requestPermission(AndroidPermissions.WRITE_EXTERNAL_STORAGE);
 			// #end
 			#end
 			// wtf, it doesn't work if Debug situation?! I don't get it!
@@ -197,11 +216,13 @@ class Main extends Sprite
 		// JOELwindows7: try catch now!
 		try
 		{
+			trace('Let\'s init');
 			if (hasEventListener(Event.ADDED_TO_STAGE))
 			{
 				removeEventListener(Event.ADDED_TO_STAGE, init);
 			}
 
+			trace('Setup the game now!');
 			setupGame();
 
 			// JOELwindows7: no, install crashdumper after everything.
@@ -226,20 +247,26 @@ class Main extends Sprite
 			zoom = Math.min(ratioX, ratioY);
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
+			trace('auto adjusting game size: zoom = ${zoom}, width = ${gameWidth}, height = ${gameHeight}; ratio = (${ratioX},${ratioY})'); // JOELwindows7: idk 
 		}
 
 		#if !cpp
 		framerate = 60;
 		#end
 
+		// JOELwindows7: install PlayStatin Background
+		playStationBG = new PlayStationBackground();
+
 		// JOELwindows7: install the toast for GameJolter
 		gjToastManager = new GJToastManager();
+
+		addChild(playStationBG); // JOELwindows7: add it first!
 
 		// JOELwindows7: Friggin Screen Grab functions
 		// inspired from https://gamebanana.com/mods/55620 (FNF but it's LOVE lua)
 		// it had screenshoter so why not?
 		//
-		#if !js
+		#if FEATURE_SCREENSHOT
 		FlxScreenGrab.defineHotKeys([FlxKey.PRINTSCREEN, FlxKey.F6], true, false);
 		#end
 
@@ -284,6 +311,8 @@ class Main extends Sprite
 		#end
 		// end GrowtopiaFli Video Cutscener
 
+		trace('Let s a go');
+
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
 		trace("inited program");
@@ -317,8 +346,27 @@ class Main extends Sprite
 
 		// game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		// JOELwindows7: hey, here use PEnginify extensions!
-		game = new Game(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		// game = new Game(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		game = new Game(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
+
+		// JOELwindows7: YoshiCrafter Windows API pls
+		// WindowsAPI.setWindowToDarkMode();
+
+		#if debug
+		// JOELwindows7: Flixel Studio
+		FlxStudio.create();
+		// JOELwindows7: plugins above blocks my debugger!
+		// game.removeChild(game.debugger);
+		// game.addChild(game.debugger);
+		#else
+		// JOELwindows7: sayofthelor's Screenshooters
+		#if FEATURE_FILESYSTEM
+		FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
+		#end
+		#end
+
+		FlxG.plugins.add(new plugins.sprites.Donse());
 
 		// JOELwindows7: now build Xbox controllers
 		#if EXPERIMENTAL_OPENFL_XINPUT
@@ -337,7 +385,11 @@ class Main extends Sprite
 		#end
 		// JOELwindows7: finally, have a GameJolt toast
 		addChild(gjToastManager); // Needs to be added after the game. that's how layout stack workss
-		gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION, false);
+		// gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION, false);
+		gjToastManager.createToast(Paths.image(Perkedel.LFM_ICON_PATH_DOC), Perkedel.STARTUP_TOAST_TITLE, Perkedel.STARTUP_TOAST_DESCRIPTION,
+			false); // damn it, you must init FireTongue should've immediately! wait you need save..
+
+		// addChild(playStationBG); // JOELwindows7: and it this.
 
 		// JOELwindows7: Oh don't forget! the loading bar
 		loadingBar = new LoadingBar(0, 0, 0xFFFFFF);
@@ -376,6 +428,8 @@ class Main extends Sprite
 		#if FEATURE_CRASH_BOLO
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
+
+		trace('Done the Setup Game cool and good');
 	}
 
 	var game:FlxGame;
@@ -486,7 +540,8 @@ class Main extends Sprite
 	// JOELwindows7: and function to be called on crash yess.
 	function werrorCrash(crashDumpener:CrashDumper)
 	{
-		@:privateAccess {
+		@:privateAccess
+		{
 			#if flash
 			Debug.displayAlert('WERROR ${crashDumpener.theError}', 'Oh no! Werror:\n${crashDumpener.errorMessageStr()}');
 			#else
@@ -546,16 +601,20 @@ class Main extends Sprite
 
 		var errMsg:String = "";
 		var errHdr:String = ""; // JOELwindows7: da header
+		var errTotal:String = ""; // JOELwindows7: & to total all these.
 		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
 		var dateNow:String = Date.now().toString();
+		var dateNowRaw:String = Date.now().toString();
 		var firmwareName:String = Perkedel.ENGINE_ID;
 
 		dateNow = StringTools.replace(dateNow, " ", "_");
-		dateNow = StringTools.replace(dateNow, ":", "'");
+		dateNow = StringTools.replace(dateNow, ":", "-");
 
 		// path = "./crash/" + "KadeEngine_" + dateNow + ".txt";
 		path = './crash/${firmwareName}_${dateNow}_${errorDiffFileName}.txt"';
+
+		path = Path.normalize(path);
 
 		for (stackItem in callStack)
 		{
@@ -576,7 +635,11 @@ class Main extends Sprite
 			+ '\n```\n'
 			+ '# Firmware name & version:\n'
 			+ '${Perkedel.ENGINE_NAME} v${Perkedel.ENGINE_VERSION}\n\n'
+			+ '# Crashes at:'
+			+ 'Date: ${dateNowRaw}'
 			+ '# Please report this error to our Github page:\n ${Perkedel.ENGINE_BUGREPORT_URL}\n\n> Crash Handler written by: Paidyy, sqirra-rng';
+
+		errTotal = errHdr + errMsg;
 
 		// if (!FileSystem.exists("./crash/"))
 		// 	FileSystem.createDirectory("./crash/");
@@ -592,30 +655,30 @@ class Main extends Sprite
 			if (!FileSystem.exists("./crash/"))
 				FileSystem.createDirectory("./crash/");
 
-			File.saveContent(path, errHdr + errMsg + "\n");
+			File.saveContent(path, errTotal + "\n");
 			#end
 
 			#if sys
 			Sys.println('===============');
-			Sys.println(errHdr + errMsg);
+			Sys.println(errTotal);
 			Sys.println('===============');
 			Sys.println("Crash dump saved in " + Path.normalize(path));
 			#else
-			trace(errHdr + errMsg);
+			trace(errTotal);
 			trace('error');
 			#end
 		}
 		catch (e)
 		{
 			#if sys
-			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			Sys.println('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when trying to ${path}:\n\n$e:\n\ne${e.details()}');
 			Sys.println('Anyway pls detail!:\n===============');
-			Sys.println(errHdr + errMsg);
+			Sys.println(errTotal);
 			Sys.println('================\nThere, clipboard pls');
 			#else
-			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!!\n\n$e:\n\ne${e.details()}');
+			trace('AAAAAAAAAAAAAARGH!!! PECK NECK!!! FILE WRITING PECKING FAILED!!! when trying to ${path}:\n\n$e:\n\ne${e.details()}');
 			trace('Anyway pls detail!:\n===============');
-			trace(errHdr + errMsg);
+			trace(errTotal);
 			trace('================\nThere, clipboard pls');
 			#end
 		}

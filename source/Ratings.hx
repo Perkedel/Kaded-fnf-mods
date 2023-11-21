@@ -90,12 +90,16 @@ class Ratings
 				break;
 			}
 		}
+		// JOELwindows7: FireTongue pls
 		if (accuracy == 0 && !PlayStateChangeables.practiceMode)
-			letterRanking = "You suck lmao";
+			// letterRanking = "You suck lmao";
+			letterRanking = CoolUtil.getText("$GAMEPLAY_RESULT_LETTER_RANKING_SUCK");
 		else if (PlayStateChangeables.botPlay && !PlayState.loadRep)
-			letterRanking = "BotPlay";
+			// letterRanking = "BotPlay";
+			letterRanking = CoolUtil.getText("$GAMEPLAY_RESULT_LETTER_RANKING_BOTPLAY");
 		else if (PlayStateChangeables.practiceMode)
-			letterRanking = "PRACTICE";
+			// letterRanking = "PRACTICE";
+			letterRanking = CoolUtil.getText("$GAMEPLAY_RESULT_LETTER_RANKING_PRACTICE");
 		return letterRanking;
 	}
 
@@ -182,7 +186,8 @@ class Ratings
 		}
 
 		if (accuracy == 0)
-			ranking = "N/A";
+			// ranking = "N/A";
+			ranking = CoolUtil.getText("$ABBREVIATION_NOT_AVAILABLE");
 		else if (FlxG.save.data.botplay && !PlayState.loadRep)
 			ranking = "BotPlay";
 
@@ -343,11 +348,14 @@ class Ratings
 			(!PlayStateChangeables.botPlay
 				|| PlayState.loadRep ? "Score:" + (Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score) + // Score
 					(FlxG.save.data.accuracyDisplay ? // Accuracy Toggle
-						" | Combo Breaks:"
+						// " | Combo Breaks: "
+						' | ${CoolUtil.getText("$GAMEPLAY_RANKING_BAR_COMBO_BREAKS")}: '
 						+ PlayState.misses
 						+ // 	Misses/Combo Breaks
-						" | Accuracy:"
-						+ (PlayStateChangeables.botPlay && !PlayState.loadRep ? "N/A" : HelperFunctions.truncateFloat(accuracy, 2) + " %")
+						// " | Accuracy: "
+						' | ${CoolUtil.getText("$GAMEPLAY_RANKING_BAR_ACCURACY")}:'
+						+ (PlayStateChangeables.botPlay
+							&& !PlayState.loadRep ? CoolUtil.getText("$ABBREVIATION_NOT_AVAILABLE") : HelperFunctions.truncateFloat(accuracy, 2) + " %") // N/A
 						+ // 	Accuracy
 						" | "
 						+ GenerateLetterRank(accuracy) : "") : "" // 	Letter Rank

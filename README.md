@@ -1,4 +1,5 @@
-![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.09-thumb.png )
+![Thumbnail 2023.12](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Inkscape/Week%20Strong/week-2023.12-thumb.png )
+<!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.09-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2022.02-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-2021.11-thumb.png ) -->
 <!-- ![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Inkscape/Week%20Strong/week-toxic-thumb.png ) -->
@@ -26,6 +27,7 @@ also a **Friday Night Funkin modding engine** (LFMengine) yey!!!
 <!-- calm down sir, I know, we gotta hold on tight! -->
 
 ## Download NOW
+
 - Odysee
   - [Linux x64](https://odysee.com/@JOELwindows7:a/last-funkin-moments:b?r=9hvWdwFXX2X5QfVxwhMoWQ5U1aWaNnvx )
   - ~~[Linux 32 bit](https://odysee.com/@JOELwindows7:a/last-funkin-32bit )~~
@@ -43,6 +45,7 @@ I mean, if the antivirus thought that file is `malicious`, it's false positive. 
 if you don't trust it, check around the source code and its libraries referred.
 
 ## To share mods made for this LFM. IMPORTANT!!!
+
 Please just upload publish the Polymod LFM, **NOT** the executable. Please, have respect with the disk space! storage is luxury.
 
 It is also ***PRO GAMER MOVE*** if you completely rely only towards Polymod LFM rather than modifying the source code, and then upload the executable which is **PECKING HUGE**. NA ah! Please utilize Polymod LFM! if you believe there are serveral feature missing in e.g. the modchart capabilities, Please submit [`ISSUE`](https://github.com/Perkedel/Kaded-fnf-mods/issues) with `FEATURE_REQUEST` as the template. We will happily discuss and consider as best as we can to grant your wish.
@@ -50,6 +53,7 @@ It is also ***PRO GAMER MOVE*** if you completely rely only towards Polymod LFM 
 see folder `/example_mods/`, `/Admiral_Zumi/`, `/separate_mods/` for examples of Polymod LFM sub-mods.
 
 ### *Sir! But my platform doesn't have Polymod modcore, we tried compiling the support for it & unlocked it for my OS but it still not compile & if does, it crash!*
+
 Oh. uh..  😬sssssss, ummm... Well, that was arrogance of me, my apology. I shouldn't have done that.
 
 I see. Right so, I understand. Me too. I tried to Polymod in my environment here on Arch with VScode terminal. it does compile, but crashes before even went to splash screen. just loading & then crash without clear explanation that could figure how to make solution resolve.
@@ -61,7 +65,8 @@ And also the Polymod is essential for mods that are controversial & is suicidal 
 In conclusion, This is your download, you free to do anything, I just recommend this easier way to manage custom things, if you messed it up, figure out yourself or download from scratch again, bla bla bla. If you publish something involving our stuffs or others make sure credit at least URL where you got it from, yeah. and make sure that when you publish something, it's easy to setup so ***everyone*** from various skill level can join in idk..
 
 ## Using API
-- GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (**Private, do not share** if filled with your keys). Here's the code:
+
+- GameJolt. https://github.com/TentaRJ/GameJolt-FNF-Integration . Please follow the instruction if you wish to compile the game. You will need to create a class named `source/GJKeys.hx` (**Private, do not share** if filled with your keys). Here's the code:  
 ```haxe
 package;
 class GJKeys
@@ -74,8 +79,11 @@ class GJKeys
 Unfortunately folks, we still not witness JUCE integrator to Haxe, OpenFl, HaxeFlixel, or whatever around here. 😭😭😭😭😭😭😭😭😭😭😭😭😭😭
 
 ## Status
+
 ## Build
+
 ### GitHub Action
+
 - Linux [![Linux Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/linux.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/linux.yml)
 - Windows [![Windows Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/windows.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/windows.yml)
 - Android [![Windows Droid Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/winDroid.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/winDroid.yml)
@@ -83,7 +91,9 @@ Unfortunately folks, we still not witness JUCE integrator to Haxe, OpenFl, HaxeF
 - macOS [![macOS Build CI](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/big-makku.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/big-makku.yml)
 - Auto Close Compile Issues [![Autocloser](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/closeCompileIssues.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/closeCompileIssues.yml)
 - Close stale issues [![Close inactive issues](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/staleIssue.yml/badge.svg)](https://github.com/Perkedel/Kaded-fnf-mods/actions/workflows/staleIssue.yml)
+
 ### Appveyor (Brogen)
+
 - Linux [![Build status Linux](https://ci.appveyor.com/api/projects/status/kq3gqj252bxmt57i?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux)  
 - Linux ~~32 Bit~~Raspberry Pi [![Build status](https://ci.appveyor.com/api/projects/status/ou9xo42n9cwce9bt?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-linux32)
 - Windows [![Build status Windows](https://ci.appveyor.com/api/projects/status/6m6urhdk0hx9esci?svg=true)](https://ci.appveyor.com/project/JOELwindows7/kaded-fnf-mods-windows)
@@ -94,19 +104,23 @@ Unfortunately folks, we still not witness JUCE integrator to Haxe, OpenFl, HaxeF
 
 ## License
 ### FOSSA 
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods?ref=badge_large)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods?ref=badge_small)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FPerkedel%2FKaded-fnf-mods?ref=badge_shield)
 
 ## Mods comeback status (Protoglin Amexamlef)
+
 - Sky ✅. https://gamebanana.com/mods/44555 . More: [NuSky + SkyVerse](https://gamebanana.com/mods/369981 ), [ReManifested](https://gamebanana.com/mods/370008 )
 - Whitty ✅. https://gamebanana.com/mods/44214 . More: [Definitive Psyched](https://gamebanana.com/mods/354884 )
 - Mid Fight Masses ❌. (*Because one of the contributor had pranked us saying this comeback but it's a fool in time like this, maybe we should just... idk, just saying.*)
 
 ## Stuff
+
 - WakaTime Total [![wakatime](https://wakatime.com/badge/user/dbc5f9fc-c736-48c6-83db-e5a221526daa.svg)](https://wakatime.com/@dbc5f9fc-c736-48c6-83db-e5a221526daa)
 
 ## We have:
+
 Tons. check each today's update what has added yay.
 
 <!-- (Unmarketed) We also have some yoinks from other mods without permission. Checkout [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) at section `other mods that wins the inclusion`. Yes, even we are *stealing* quote on quote, we always make sure mod page link url are always credited, along with their names of whom submited them. -->
@@ -116,16 +130,23 @@ check out [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/C
 enjoy the last drops of funkin before everything went. went, I can't say this. you don't want to hear this.
 
 # Today's Update!
+
 ## 2021.08 Week Merdeka! Dirgahayu Republik Indonesia ke-76
+
 full changelog: https://odysee.com/@JOELwindows7:a/LFM-changelog-2021.08.162:5?r=FuQAe8A6FYG9dBHJjkXxdkq1V1Zn9VHn
+
 ### Today's update we got
+
 - Week Merdeka. [Indonesia Raya](https://en.wikipedia.org/wiki/Indonesia_Raya ) cipt. [W.R. Supratman](https://en.wikipedia.org/wiki/Wage_Rudolf_Supratman ) with MIDI cover arranged by [Didi Haryadi](http://songsindonesia.didiharyadi.com/ ).
 - Week BG color guys. each week selected has their color.
 - Qmoveph Background. installed in Title screen yeay
 - etc.
+
 ## 2021.07 Week Meta! Hookx again, but we are waiting for someone.
+
 Hookx invited bf and gf again to a landscape view of mountain with a dead tree bark. They're waiting for someone.
 ### Today's update we got
+
 - Week Meta. using internal UI musics. Getting Freaky, Game Over, Breakfast, Classic Menu song, and TEST.
 - Amfrost stage where the Week Meta takes place! it got mountain view over there, a dead tree bark, and sandy ground.
 - GF wears masker too!!! even demons respects health protocol, don't you people be ashamed by her?
@@ -135,9 +156,10 @@ Hookx invited bf and gf again to a landscape view of mountain with a dead tree b
 - more options!!! (beware though, don't touch Reset data options)
 - wuwuuwuwuwuwuwuw
 ## 2021.06 Week Strong! vs. Hookx the friendly Karaoke robot!
-[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/week-strong-new-added-2.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/week-strong-new-added-2.png )
-[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/hookx-dancing-here.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/hookx-dancing-here.png )
-[![](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/new-unique-song-thumb.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/new-unique-song-thumb.png )
+
+[![Week Strong new added](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/week-strong-new-added-2.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/week-strong-new-added-2.png )
+[![Hookx dancing here](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/hookx-dancing-here.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/hookx-dancing-here.png )
+[![New unique song](https://github.com/Perkedel/After-Church/raw/master/RAW%20files/Skrensut/new-unique-song-thumb.png )](https://github.com/Perkedel/After-Church/blob/master/RAW%20files/Skrensut/new-unique-song-thumb.png )
 
 After the coronavirus pandemic seems regressing day by day as many vaccines clouter finally reaches family level, Boyfriend, Girlfriend, Pico, and families got their vaccines and all people can finally travel freely to all countries. The humanity once again gained victory in herd immunity. But what shall they do?
 
@@ -147,6 +169,7 @@ Jakarta Fair finally opens again after the gruelling cruelty of coronavirus has 
 
 Well, it's not the live person he met but another robot instead. Why not try though? I think Hookx got something interesting. So then Boyfriend proceed interacting with that robot that shapped like a portrait TV.
 ### Today we got
+
 - Week Strong! vs. Hookx the friendly karaoke robot! ft. 3 TheFatRat Songs: Windfall, Rule The World, We'll meet again
 - new **UNIQUE** stages (which unfortunately are also hard code too):
   - Jakarta Fair. inside one of the walking mini booth in the Van Elektronische booth
@@ -167,11 +190,12 @@ Well, it's not the live person he met but another robot instead. Why not try tho
 - **Define Headbang permission in the chart!!!** this `allowedToHeadbang` variable that controls permission to `hey`, `cheers`, `nganguk / shake head`, etc. is now available for JSON chart!!! Now, you can set this each difficulty yay!
 - **Define whether this song has dialog, in the chart!!!** you can now adjust `hasDialogueChat` (before song begin) & `hasEpilogueChat` (after song finish) to enable whether should this dialogue show. and also **IT WILL ALSO LOAD THE DIALOGUE AND EPILOGUE CHAT FILE FOR YOU!!!** WHOAH!!! that includes the video as well.
 - **More Lua functions!!!** we have mirrored some or most of the special functions found in `Playstate` class, to Lua modchart. now you can go brrr with those function, mwuahahahahahaa!!! we also mirrored the variables too as well.
-- 
+- .
 - idk what next?
 - CODE LICENSED GNU GPL v3 instead of some sort of *Open Source but proprietarism-allowing-forking* licenses. ASSETS (only for Perkedel originals like Week Strong, Week 4'33") Licensed CC4.0-BY-SA as shown in GameBanana Page!!! yoinkers, **you can steal this (the original Perkedel week ones yess) but pls credit!** oh, better be higher quality than ever pls, not just mere reupload, yeah serious (okay irony prevention. if your mod has any quality changes except this mod you yoinked which means you just yoink my mod (because no idea what to mod in Last Funkin Moment right now), but you did made other enhancement (your original mod, quality change internal and external), that's completely fine.). and of course, Share Alike remember? yess!! OPEN SOURCE BOTH MODS & ASSETS, for real (The FLA, SVG, PSD, KRA, XM, BLEND, FBX, anything! all format). Yes, it's a great privillege that KadeEngine (and FNF formerly but still compliant) is licensed Apache (the one that is Android). This license allow forker to change license, don't know to where ups or down, but basically we can enforce more here yeah. Ah yess, finally. License that is not absolutely restrictive at all.
 
 ### Features TheFatRat songs, Jakarta Fair, references, and more!
+
 Windfall, Rule The World, & We'll meet again
 
 - https://linktr.ee/TheFatRat
@@ -182,19 +206,23 @@ Windfall, Rule The World, & We'll meet again
 BONUS WEEK! 4'33" . John Cage - 4'33" . John Cage did made a composition. and it's silent. just that. that's it. yes.
 
 # Credits
+
 as always, credits to all stuff involved will be on [`CREDIT.md`](https://github.com/Perkedel/Kaded-fnf-mods/blob/master/CREDIT.md ) thancc
 
-
-
 # ERROR
+
 ## Missing files
+
 ...
 
 # Misc
+
 ## Legacy Majoris
+
 - https://gamebanana.com/mods/44214
 
 ## [For the badge](https://forthebadge.com/ )
+
 [![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/ages-12.svg)](https://forthebadge.com)
@@ -231,26 +259,32 @@ as always, credits to all stuff involved will be on [`CREDIT.md`](https://github
 [![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](https://forthebadge.com)
 
 ## some nice articles
+
 [![]("https://gamebanana.com/tuts/embeddables/14079?type=large")](https://gamebanana.com/tuts/14079)
 
 ### My Miku (Miku Expo 2021)
+
 - http://paint.mikuexpo.com/studio.php?id=57afdd4ffe146803efca580c79002680 Hoyheid
 - http://paint.mikuexpo.com/studio.php?id=39c96c01e2f6d5574f7c4afca74785e2 Genos Miku
 
 ### Old web meme, by BonkMaykr, one of the greatest Uberstylist here at GameBanana
+
 https://gamebanana.com/blogs/19216  
-[![]("https://gamebanana.com/blogs/embeddables/19216?type=large")](https://gamebanana.com/blogs/19216)
+[![Gamebanana Embed Old Web meme]("https://gamebanana.com/blogs/embeddables/19216?type=large")](https://gamebanana.com/blogs/19216)
 
 <div style="border:10px inset #cccccc;background:url(https://bonkmaykr.xyz/dream/img/center.png),url(https://bonkmaykr.xyz/dream/img/bg2.webp);background-position:center center, center center;background-repeat:no-repeat no-repeat, repeat repeat;display:block;height:400px;background-attachment:scroll, fixed;"></div>
 
 yeah lol
 
 ### Cars
-Owner & model. License plate UUID. facing license plate. specs bar.
+
+Owner & model. License plate UUID. facing license plate. specs bar.  
+
 - Sky's Hyundai IONIQ 5 (Indonesia Cikarang Version) Signature Long Range (Modded-frankensteined, fulfill all misses). 6ac4ea02-0194-45e4-a1cf-a636af63ab98. ISKY-AB98. Dasandim, ⚡Pure Full EV, 🏠Personal.
 - Latsufir's Prototype Dasandim Military Tough Saucer Mk. 2019. 4dd6fa8f-bd5d-4c64-a5b0-b1e6a4edae56. LUCY-AE56. Dasandim, ☢️ Mini Reactor, 🏠Personal. 
 
 ## todo
+
 - ~~redecorate for Perkedel temp week works~~
 - ~~week strong. vs. Hookx the friendly singing portrait tv robot assistant~~
 - hey, weren't we supposed to build sTILE instead?
@@ -258,14 +292,17 @@ Owner & model. License plate UUID. facing license plate. specs bar.
 - abandon this mod when the procedural way of loading everything new (weeks, stages, background, scripts, etc.) has been ready on the upstream or the OG upstream, backport everything there.
 
 ## studio
+
 We have studio in GameBanana https://gamebanana.com/studios/35672 . Just to seize the opportunity before anyone impersonate our brand, as well as to contain and collects our mods in GameBanana yay.
 
 edit: goned the day. we lack more than 1 person after 1 week.
 
-![](https://github.com/Perkedel/kaded-fnf-mods/raw/stable/LastFunkinMomentsLogo.png)
+![Last funkin moments logo](https://github.com/Perkedel/kaded-fnf-mods/raw/stable/LastFunkinMomentsLogo.png)
 
 ## scrap
+
 ### extra anim frame info
+
 ```
 "frameRate": 24,
             "frameIndices": [],
@@ -308,7 +345,7 @@ aaaaaaaaaaaa
 
 aaaaaaaaaaaa
 
-asdfhauighgiuergrbi
+asdfhauighgiuergrbifer
  -->
 <!-- Kade Descriptions -->
 # Kade Engine Descriptions

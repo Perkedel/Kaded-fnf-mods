@@ -130,4 +130,16 @@ function colorizeColorablebyKey(note, justOne, toWhichBg)
     end
 end
 
+function gameOver(blueballs)
+    -- When gameOver
+end
+    
+function gameOverAnimationFinished(blueballs)
+    -- when gameOver animation finished
+end
+
+function endGameOver(blueballs)
+    -- when press enter to retry
+end
+
 print("Mod Chart script loaded :)")
