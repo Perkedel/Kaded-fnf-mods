@@ -1,0 +1,328 @@
+name: Linux Build CI
+
+# JOELwindows7: have write permission pls
+permissions:
+  contents: write
+
+# Controls when the workflow will run
+# on: [push, pull_request]
+on: [push]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Firstly first, you must create a rolling release.
+  # https://github.com/brain-hackers/ResetKit/blob/main/.github/workflows/build.yml
+  create_release:
+    name: Create release
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Generate release name
+        id: release_name
+        # https://github.community/t/how-to-get-just-the-tag-name/16241/4
+        run: echo "name=${GITHUB_REF/refs\/*s\//}" >> $GITHUB_OUTPUT
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.release_name.outputs.name }}
+          release_name: ${{ steps.release_name.outputs.name }}
+          body: ''
+          draft: false
+          prerelease: true
+
+
+  # This workflow contains a single job called "build"
+  build:
+    # First, build strategy
+    # https://stackoverflow.com/a/68940067/9079640
+    # https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
+    name: Build FNF
+    needs: [create_release]
+    strategy:
+        matrix:
+            name: [Linux-x64, Windows-x64, Windows-Android, macOS-intel, HTML5-asmjs]
+            title: [Linux, Windows, Android, macOS, HTML5]
+            os: [ubuntu-latest, windows-latest, windows-latest, macos-latest, ubuntu-latest]
+            gamejolt-script: [/home/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx, D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx, D:\a\Kaded-fnf-mods\Kaded-fnf-mods\source\GJKeys.hx, /Users/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx, /home/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx]
+            command: [linux, windows, android, macos, html5]
+            compile: [linux, windows, android, macos, html5]
+            flag: [final, final, final, final, release]
+            compress: [tar.gz, zip, zip, dmg, tar.gz]
+            compressMime: [application/gzip, application/zip, application/zip, application/x-apple-diskimage, application/gzip]
+            file_result: [linux_x64, windows_x64, android, macos_intel, html5_asmjs]
+            env: [
+                {
+                    HOME: /home/runner,
+                    ANDROID_SDK_LOC: /home/runner/Android/android-sdk,
+                    ANDROID_NDK_ROOT_LOC: /home/runner/Android,
+                    ANDROID_CMD_LOC: /home/runner/projects/android-cmd,
+                    SLASH: /
+                },
+                {
+                    HOME: D:\a,
+                    ANDROID_SDK_LOC: D:\a\android-sdk,
+                    ANDROID_NDK_ROOT_LOC: D:\a\Android,
+                    ANDROID_CMD_LOC: D:\a\android-cmd,
+                    SLASH: \
+                },
+                {
+                    HOME: D:\a,
+                    ANDROID_SDK_LOC: D:\a\Android\android-sdk,
+                    ANDROID_NDK_ROOT_LOC: D:\a\Android,
+                    ANDROID_CMD_LOC: D:\a\android-cmd,
+                    SLASH: \
+                },
+                {
+                    HOME: /Users/runner,
+                    ANDROID_SDK_LOC: /Users/runner/Android/android-sdk,
+                    ANDROID_NDK_ROOT_LOC: /Users/runner/Android,
+                    ANDROID_CMD_LOC: /Users/runner/projects/android-cmd,
+                    SLASH: /
+                },
+                {
+                    HOME: /home/runner,
+                    ANDROID_SDK_LOC: /home/runner/Android/android-sdk,
+                    ANDROID_NDK_ROOT_LOC: /home/runner/Android,
+                    ANDROID_CMD_LOC: /home/runner/projects/android-cmd,
+                    SLASH: /
+                },
+            ]
+                
+            
+
+    # The type of runner that the job will run on
+    runs-on: ${{matrix.os}}
+    # bruh, that's it? thancc BOLO, I didn't see that up. anyway, how to cutting edge for it anyway?
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+        - name: Anounce What is this
+          run: |
+            echo "We are now compiling ${{matrix.name}}"
+        - uses: actions/checkout@v2
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+
+        # Uname is UNIX POSIX?
+        # https://developer.apple.com/forums/thread/668206
+        # https://apple.stackexchange.com/q/420452
+        - name: Uname pls
+          if: ${{matrix.os}} == 'ubuntu-latest' || ${{matrix.os}} == 'macos-latest'
+          run: |
+            uname -a
+
+        - name: first, begin caching stuffs (linux)
+          if: ${{matrix.os}} == 'ubuntu-latest'
+          uses: actions/cache@v2.1.7
+          id: cache-stuff-linux
+          with:
+            path: |
+                ~/work/Kaded-fnf-mods/Kaded-fnf-mods/export/
+                /opt/hostedtoolcache/haxe/
+            key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+        
+        - name: first, begin caching stuffs (Windows)
+          if: ${{matrix.os}} == 'windows-latest'
+          uses: actions/cache@v2.1.7
+          id: cache-stuff-win
+          with:
+            path: |
+                D:\a\Kaded-fnf-mods\Kaded-fnf-mods\export\
+                C:\hostedtoolcache\haxe\
+            key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+
+        - uses: krdlab/setup-haxe@v1.1.6
+          with:
+            haxe-version: 4.3.2
+        # Runs a set of commands using the runners shell
+
+        - name: Linuxly set things up first!
+          if: ${{matrix.os}} == 'ubuntu-latest'
+          run: |
+            sudo apt-get update
+            sudo apt upgrade -y
+            sudo apt install luajit -y
+            # sudo apt install build-essential avr-libc libc6-dev libpng12-dev -y
+            sudo apt install build-essential avr-libc libc6-dev -y
+            sudo apt-get install gcc g++ gcc-multilib g++-multilib -y
+            sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
+            sudo apt install libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev -y
+            sudo apt-get install libvlc-dev
+            sudo apt-get install libvlccore-dev
+            sudo apt-get install vlc-bin
+            sudo apt-get -y install libidn2-0 libidn12 libidn2-dev
+        
+        - name: Schlob Chocolatey
+          if: ${{matrix.os}} == 'windows-latest'
+          run: |
+            # choco install vcredist140
+            choco install make -y
+            choco install cmake -y
+            choco install wget -y # downloader
+            choco install butler -y # upload to itch io
+            choco install android-sdk -y
+            choco install android-ndk --version=16.2 -y
+            choco install adb -y
+            choco install haxe -y
+            Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+            RefreshEnv
+        
+        - name: first, lemme download android stuff
+          run: |
+            wget -q -O android_ndk.zip https://dl.google.com/android/repository/android-ndk-r15c-windows-x86_64.zip?hl=fi
+            wget -q -O android_cmd.zip https://dl.google.com/android/repository/commandlinetools-win-7302050_latest.zip
+            wget -q -O android_build-tools.zip https://dl.google.com/android/repository/build-tools_r30.0.1-windows.zip
+            wget -q -O android_platforms.zip https://dl.google.com/android/repository/android-19_r04.zip
+            wget -q -O android_platform-tools.zip https://dl.google.com/android/repository/platform-tools_r31.0.2-windows.zip
+            unzip -q .${{matrix.env.SLASH}}android_ndk.zip -d "${{matrix.env.ANDROID_NDK_ROOT_LOC}}"
+            unzip -q .${{matrix.env.SLASH}}android_cmd.zip -d "${{matrix.env.ANDROID_SDK_LOC}}"
+            unzip -q -n .${{matrix.env.SLASH}}android_build-tools.zip -d "${{matrix.env.ANDROID_SDK_LOC}}${{matrix.env.SLASH}}build-tools"
+            unzip -q .${{matrix.env.SLASH}}android_platforms.zip -d "${{matrix.env.ANDROID_SDK_LOC}}"
+            unzip -q -n .${{matrix.env.SLASH}}android_platform-tools.zip -d "${{matrix.env.ANDROID_SDK_LOC}}"
+
+        - name: script run line haha
+          # if: steps.cache-stuff.outputs.cache-hit != 'true'
+          run: |
+            haxe -version
+            haxelib setup hmm
+            haxelib install Console.hx
+            echo "new Psych's found-way of auto install all libraries"
+            echo 'https://github.com/ShadowMario/FNF-PsychEngine/blob/main/hmm.json'
+            haxelib install hmm
+            haxelib run hmm install
+            echo 'you should have all done.'
+            haxelib run lime setup flixel -y
+            haxelib run lime setup -y
+            haxelib run lime setup sscript -y
+            haxelib run lime rebuild extension-webm ${{matrix.command}}
+            haxelib run lime rebuild systools ${{matrix.command}}
+            haxelib run lime rebuild yagp ${{matrix.command}}
+            haxelib list
+      
+        # - name: if there is cache still then just update everything
+        #   if: steps.cache-stuff-win.outputs.cache-hit == 'true' || steps.cache-stuff-linux.outputs.cache-hit == 'true'
+        #   run: |
+        #     haxe -version
+        #     haxelib update --always
+        #     haxelib run lime setup flixel -y
+        #     haxelib run lime setup -y
+        #     haxelib run lime rebuild extension-webm linux
+        #     haxelib run lime rebuild systools linux
+        #     haxelib run lime rebuild yagp linux
+        #     haxelib list
+      
+        # - name: Obtain stuffs of Linux
+        #   run: |
+        #     wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
+        #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Linux64
+        #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
+
+        - name: Obtain GameJolt empty file
+          run: |
+            wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+            mv .${{matrix.env.SLASH}}GJkeys.hx ${{matrix.gamejolt-script}}
+
+        - name: Oh peck, I can't believe you've done this (Windows)
+          if: ${{matrix.os}} == 'windows-latest'
+          run: |
+            echo butler check
+            butler -h
+            ls
+            pwd
+
+        - name: Oh peck, I can't believe you've done this (macOS)
+          run: |
+            wget -q -O butler.zip https://broth.itch.ovh/butler/darwin-amd64/LATEST/archive/default
+            unzip ./butler.zip
+            mv ./butler /Users/runner/work
+            ls
+            pwd
+
+        - name: Build ${{matrix.title}} now
+          run: |
+            haxelib run lime build ${{matrix.command}} -${{matrix.flag}}
+          
+        - uses: actions/upload-artifact@v2
+          with:
+            name: ${{matrix.title}} Build
+            path: export/release/${{matrix.compile}}/bin
+
+        - name: Push to Itch ${{matrix.title}}
+          if: ${{github.event_name == 'push'}} && ${{matrix.os}} == 'ubuntu-latest'
+          uses: yeslayla/butler-publish-itchio-action@master
+          env:
+            BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+            CHANNEL: ${{matrix.compile}}-GHAction
+            ITCH_GAME: last-funkin-moments
+            ITCH_USER: joelwindows7
+            PACKAGE: export/release/${{matrix.compile}}/bin
+        
+        - name: Manually push to Itch Windows because that Action container only support Linux wtf bro
+          if: ${{matrix.os}} == 'windows-latest'
+          env: 
+            BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+            BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+          run: |
+            ls
+            pwd
+            butler push D:\a\Kaded-fnf-mods\Kaded-fnf-mods\export\release\windows\bin joelwindows7/last-funkin-moments:windows-GHAction
+
+        - name: Manually push to Itch macOS because that Action container only support Linux wtf bro
+          if: ${{matrix.os}} == 'macos-latest'
+          env: 
+            BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+            BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+          run: |
+            hdiutil create /Users/runner/work/temp.dmg -ov -volname "last-funkin-moments-macOS_intel" -fs HFS+ -srcfolder "/Users/runner/work/Kaded-fnf-mods/kaded-fnf-mods/export/release/macos/bin"
+            ls
+            pwd
+            hdiutil convert /Users/runner/work/temp.dmg -format UDZO -o last-funkin-moments-macOS_intel.dmg
+            /Users/runner/work/butler push last-funkin-moments-macOS_intel.dmg joelwindows7/last-funkin-moments:macOS-GHAction
+      
+        #- name: Yo, release now
+        #  # uses: softprops/action-gh-release@v0.1.13
+        #  # if: startsWith(github.ref, 'refs/tags/')
+        #  #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+        #  uses: svenstaro/upload-release-action@2.3.0
+        #  with:
+        #    repo_token: ${{ secrets.GITHUB_TOKEN }}
+        #    file: export/release/linux/bin
+        #    asset_name: Linux Build
+        #    tag: ${{ github.ref }}
+        #    overwrite: true
+        #    # body: "This is my release text"
+        
+        # and there you go..
+        # https://github.com/brain-hackers/ResetKit/blob/main/.github/workflows/build.yml
+        # https://en.wikipedia.org/wiki/Gzip
+        # https://en.wikipedia.org/wiki/Tar_(computing)
+        - name: Release Last Funkin Moment
+          if: ${{matrix.os != 'macos-latest'}}
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ needs.create_release.outputs.upload_url }}
+            asset_path: export/release/${{matrix.compile}}/bin
+            asset_name: last-funkin-moments-${{matrix.file_result}}.${{matrix.compress}}
+            asset_content_type: ${{matrix.compressMime}}
+        
+        # https://en.wikipedia.org/wiki/Apple_Disk_Image
+        - name: Release Last Funkin Moment (macOS)
+          if: ${{matrix.os == 'macos-latest'}}
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ needs.create_release.outputs.upload_url }}
+            asset_path: last-funkin-moments-macOS_intel.dmg
+            asset_name: last-funkin-moments-${{matrix.file_result}}.${{matrix.compress}}
+            asset_content_type: ${{matrix.compressMime}}
+

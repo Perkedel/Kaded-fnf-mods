@@ -94,6 +94,8 @@ class SplashScreen extends MusicBeatState
 	var _productLogo:FlxUISprite;
 	var _companyLogo:FlxUISprite;
 
+	var _disclaimerText:FlxUIText; // the disclaimer
+
 	public function new()
 	{
 		// check mod support
@@ -186,6 +188,13 @@ class SplashScreen extends MusicBeatState
 		_aModOfText.screenCenter(XY);
 		_aModOfText.y += 150;
 		add(_aModOfText);
+
+		_disclaimerText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 170), 0, getText("$DISCLAIMER_WARNING"), 12);
+		_disclaimerText.setFormat(Paths.font("UbuntuMono-R.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		_disclaimerText.scrollFactor.set();
+		_disclaimerText.screenCenter(XY);
+		_disclaimerText.y += 170;
+		add(_disclaimerText);
 
 		// _aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, Perkedel.BIOS_BUTTON_SAY, 18);
 		_aPressEscapeToBiosText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 180), 0, getText("$SPLASH_BIOS_BUTTON"), 18);
