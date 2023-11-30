@@ -190,7 +190,7 @@ class SplashScreen extends MusicBeatState
 		add(_aModOfText);
 
 		_disclaimerText = new FlxUIText(Std.int(FlxG.width / 2), Std.int((FlxG.height / 2) + 170), 0, getText("$DISCLAIMER_WARNING"), 12);
-		_disclaimerText.setFormat(Paths.font("UbuntuMono-R.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		_disclaimerText.setFormat(Paths.font("UbuntuMono-R.ttf"), 12, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		_disclaimerText.scrollFactor.set();
 		_disclaimerText.screenCenter(XY);
 		_disclaimerText.y += 170;
