@@ -1,0 +1,123 @@
+name: HTML5 Build CI
+
+# JOELwindows7: have write permission pls
+permissions:
+  contents: write
+
+# Controls when the workflow will run
+on: [push, pull_request]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+
+      - name: first, begin caching stuffs
+        uses: actions/cache@v2.1.7
+        id: cache-stuff
+        with:
+          path: |
+            ~/work/Kaded-fnf-mods/Kaded-fnf-mods/export/
+            /opt/hostedtoolcache/haxe/
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+
+      - uses: krdlab/setup-haxe@v1.1.6
+        with:
+          haxe-version: 4.3.2
+      # Runs a set of commands using the runners shell
+      
+      - name: Linuxly set things up first!
+        run: |
+          sudo apt-get update
+          sudo apt upgrade -y
+          sudo apt install luajit -y
+          # sudo apt install build-essential avr-libc libc6-dev libpng12-dev -y
+          sudo apt install build-essential avr-libc libc6-dev -y
+          sudo apt-get install gcc g++ gcc-multilib g++-multilib -y
+          sudo apt install gcc-9 g++-9 gcc-9-multilib g++-9-multilib -y
+          sudo apt install libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev libvlc-dev libvlccore-dev -y
+          sudo apt-get install libvlc-dev
+          sudo apt-get install libvlccore-dev
+          sudo apt-get install vlc-bin
+
+      - name: script run line haha
+        # if: steps.cache-stuff.outputs.cache-hit != 'true'
+        run: |
+          haxelib setup hmm
+          haxelib install Console.hx
+          echo "new Psych's found-way of auto install all libraries"
+          echo 'https://github.com/ShadowMario/FNF-PsychEngine/blob/main/hmm.json'
+          haxelib install hmm
+          haxelib run hmm install
+          echo 'you should have all done.'    
+          haxelib run lime setup flixel -y
+          haxelib run lime setup -y
+          haxelib run lime rebuild extension-webm linux
+          haxelib run lime rebuild extension-webm html5
+          haxelib run lime rebuild systools html5
+          haxelib run lime rebuild systools linux
+          haxelib run lime rebuild yagp linux
+          haxelib list
+      
+      - name: if there is cache still then just update everything
+        if: steps.cache-stuff.outputs.cache-hit == 'true'
+        run: |
+          haxelib update --always
+          haxelib run lime setup flixel -y
+          haxelib run lime setup -y
+          haxelib run lime setup sscript -y
+          haxelib run lime rebuild extension-webm linux
+          haxelib run lime rebuild systools linux
+          haxelib run lime rebuild yagp linux
+          haxelib list
+
+      # - name: Obtain stuffs of Linux
+      #   run: |
+      #     wget https://github.com/nebulazorua/linc_luajit/raw/master/lib/lua/lib/Linux64/libluajit.so
+      #     sudo mkdir -p /opt/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Linux64
+      #     sudo mv ./libluajit.so /opt/hostedtoolcache/haxe/4.3.2/x64/lib/linc_luajit/lib/lua/lib/Linux64/libluajit.so
+
+      - name: Obtain GameJolt empty file
+        run: |
+          wget https://gist.github.com/JOELwindows7/ba79db473ab5e4765293fb19c62240cb/raw/d5fc74359ec9ae272003c5d715d04b4dbbd7810d/GJkeys.hx
+          mv ./GJkeys.hx /home/runner/work/Kaded-fnf-mods/Kaded-fnf-mods/source/GJKeys.hx
+
+      - name: Build HTML5 now
+        run: |
+          # haxelib run lime build html5 -final
+          haxelib run lime build html5
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: HTML5 Build
+          path: export/release/html5/bin
+      
+      - name: Push to Itch HTML5
+        if: ${{github.event_name == 'push'}}
+        uses: yeslayla/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: html5-GHAction
+          ITCH_GAME: last-funkin-moments
+          ITCH_USER: joelwindows7
+          PACKAGE: export/release/html5/bin
+      
+      #- name: Yo, release now
+      #  # uses: softprops/action-gh-release@v0.1.13
+      #  # if: startsWith(github.ref, 'refs/tags/')
+      #  #  https://github.com/marketplace/actions/upload-files-to-a-github-release
+      #  uses: svenstaro/upload-release-action@2.3.0
+      #  with:
+      #    repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #    file: export/release/html5/bin
+      #    asset_name: HTML5 Build
+      #    tag: ${{ github.ref }}
+      #    overwrite: true
+      #    # body: "This is my release text"
