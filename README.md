@@ -10,6 +10,8 @@
 
 # [![](https://github.com/Perkedel/Kaded-fnf-mods/raw/stable/art/LFMicon64.png )]() Last Funkin Moments
 
+> 🛑 ERROR: Due to sheer amount of non-stop war & irrecoverabilities going on around this rabbit hole, all the upcoming bonuses for Full Ass has been suspended indefinitely. We apologize for your inconveniences.
+
 collection of FNF mods by Perkedel! Enjoy the funkin moment while it still last!
 
 also a **Friday Night Funkin modding engine** (LFMengine) yey!!!
@@ -280,8 +282,8 @@ yeah lol
 
 Owner & model. License plate UUID. facing license plate. specs bar.  
 
-- Sky's Hyundai IONIQ 5 (Indonesia Cikarang Version) Signature Long Range (Modded-frankensteined, fulfill all misses). 6ac4ea02-0194-45e4-a1cf-a636af63ab98. ISKY-AB98. Dasandim, ⚡Pure Full EV, 🏠Personal.
-- Latsufir's Prototype Dasandim Military Tough Saucer Mk. 2019. 4dd6fa8f-bd5d-4c64-a5b0-b1e6a4edae56. LUCY-AE56. Dasandim, ☢️ Mini Reactor, 🏠Personal. 
+- Sky's Hyundai IONIQ 5 (Indonesia Cikarang Version) Signature Long Range (Modded-frankensteined, fulfill all misses). `6ac4ea02-0194-45e4-a1cf-a636af63ab98`. `ISKY-AB98`. Dasandim, ⚡Pure Full EV, 🏠Personal.
+- Latsufir's Prototype Dasandim Military Tough Saucer Mk. 2019. `4dd6fa8f-bd5d-4c64-a5b0-b1e6a4edae56`. `LUCY-AE56`. Dasandim, ☢️ Mini Reactor, 🏠Personal. 
 
 ## todo
 
